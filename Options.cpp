@@ -316,23 +316,23 @@ void COptions::loadOpeners()
 
 		m_aOpeners[1].szName = "Web Browser (HTTP)";
 		m_aOpeners[1].szExecute = "http://%s/";
-		m_aOpeners[0].bCommandLine = FALSE;
+		m_aOpeners[1].bCommandLine = FALSE;
 
 		m_aOpeners[2].szName = "FTP";
 		m_aOpeners[2].szExecute = "ftp://%s/";
-		m_aOpeners[0].bCommandLine = FALSE;
+		m_aOpeners[2].bCommandLine = FALSE;
 
 		m_aOpeners[3].szName = "Telnet";
 		m_aOpeners[3].szExecute = "telnet://%s/";
-		m_aOpeners[0].bCommandLine = FALSE;
+		m_aOpeners[3].bCommandLine = FALSE;
 
 		m_aOpeners[4].szName = "Ping";
 		m_aOpeners[4].szExecute = "ping %s";
-		m_aOpeners[0].bCommandLine = TRUE;
+		m_aOpeners[4].bCommandLine = TRUE;
 
-		m_aOpeners[4].szName = "Traceroute";
-		m_aOpeners[4].szExecute = "tracert %s";
-		m_aOpeners[0].bCommandLine = TRUE;
+		m_aOpeners[5].szName = "Traceroute";
+		m_aOpeners[5].szExecute = "tracert %s";
+		m_aOpeners[5].bCommandLine = TRUE;
 	}
 
 }
