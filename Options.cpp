@@ -333,6 +333,10 @@ void COptions::loadOpeners()
 		m_aOpeners[5].szName = "Traceroute";
 		m_aOpeners[5].szExecute = "tracert %s";
 		m_aOpeners[5].bCommandLine = TRUE;
+
+		m_aOpeners[6].szName = "GeoLocate (Website)";
+		m_aOpeners[6].szExecute = "http://www.geobutton.com/IpLocator.htm?GetLocation&ipaddress=%s";
+		m_aOpeners[6].bCommandLine = FALSE;
 	}
 
 }
