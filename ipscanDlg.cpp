@@ -319,11 +319,18 @@ BOOL CIpscanDlg::OnInitDialog()
 		m_ip1.SetWindowText(cCmdLine->m_szStartIP);
 		m_ip2.SetWindowText(cCmdLine->m_szEndIP);
 		m_ip2_virgin = FALSE;
-		if (cCmdLine->m_szFilename.GetLength() > 0)
+
+		m_nOptions = cCmdLine->m_nOptions;
+
+		if (m_nOptions & CMDO_SAVE_TO_FILE)
 		{
 			m_szDefaultFileName = new CString(cCmdLine->m_szFilename);
 		}
-		CIpscanDlg::OnButton1();
+		
+		if (m_nOptions & CMDO_START_SCAN)
+		{
+			CIpscanDlg::OnButton1();
+		}
 	}
 	delete cCmdLine;
 	
@@ -491,7 +498,7 @@ finish_all:
 			{
 				// Program was invoked via command-line, so save data to file & exit
 
-				CSaveToFile tmp(d, FALSE, m_szDefaultFileName->GetBuffer(255));
+				CSaveToFile tmp(d, FALSE, m_szDefaultFileName->GetBuffer(255), m_nOptions & CMDO_SAVE_CSV);
 				ExitProcess(0);
 			}
 			else

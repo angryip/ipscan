@@ -9,9 +9,17 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+// Command-line options
+#define CMDO_START_SCAN		1
+#define CMDO_NOT_EXIT		2
+#define CMDO_SAVE_TO_FILE	4
+#define CMDO_SAVE_CSV		8
+
+
 class CCommandLine 
 {
 public:
+	int m_nOptions;
 	CString m_szFilename;
 	CString m_szEndIP;
 	CString m_szStartIP;

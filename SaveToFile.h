@@ -27,7 +27,7 @@ public:
 	void saveToTXT();
 	BOOL queryFilename();
 
-	CSaveToFile(CIpscanDlg *dlg, BOOL bSaveSelection = FALSE, LPSTR szFileName = NULL);
+	CSaveToFile(CIpscanDlg *dlg, BOOL bSaveSelection = FALSE, LPSTR szFileName = NULL, BOOL bCSV = FALSE);
 	virtual ~CSaveToFile();
 
 };

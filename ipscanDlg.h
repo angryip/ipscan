@@ -29,6 +29,7 @@ class CIpscanDlg : public CDialog
 {
 // Construction
 public:
+	int m_nOptions;
 	CString *m_szDefaultFileName;
 	int m_display;
 	CBitmap killbmp;
