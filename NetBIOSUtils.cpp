@@ -15,7 +15,6 @@
 
 #include "stdafx.h"
 #include "NetBIOSUtils.h"
-#include "NetBIOSOptions.h"
 #include "Scanner.h"
 
 #ifdef _DEBUG
@@ -67,24 +66,19 @@ CNetBIOSUtils::~CNetBIOSUtils()
 	// Nothing's here
 }
 
-void CNetBIOSUtils::setIP(LPCSTR szIP)
-{
-	m_szIP = szIP;
-}
-
-void CNetBIOSUtils::setIP(DWORD nIP)
+BOOL CNetBIOSUtils::GetNames(DWORD nIP, CString *szUserName, CString *szComputerName, CString *szGroupName, CString *szMacAddress)
 {
 	in_addr in;
 	in.S_un.S_addr = nIP;
 	LPSTR ipa = inet_ntoa(in);	
-	m_szIP = ipa;
+	return CNetBIOSUtils::GetNames(ipa, szUserName, szComputerName, szGroupName, szMacAddress);
 }
 
-BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CString *szGroupName, CString *szMacAddress)
+BOOL CNetBIOSUtils::GetNames(LPCSTR szIP, CString *szUserName, CString *szComputerName, CString *szGroupName, CString *szMacAddress)
 {	    
 	char buf[1000];    
 
-	UINT nRetrievedLen = RetrieveData((char*) &buf, sizeof(buf));
+	UINT nRetrievedLen = CNetBIOSUtils::RetrieveData(szIP, (char*) &buf, sizeof(buf));
 
 	if (nRetrievedLen == 0)
 		return FALSE;
@@ -104,41 +98,6 @@ BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CStri
         // response too small for num_names
         return FALSE;
     }
-
-    
-	/*for (int i = 0; i < data->num_names; i++) 
-	{
-        szTemp.Format("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c<0x%02x> %s",
-                r->name_array[i].nb_name[0],
-                r->name_array[i].nb_name[1],
-                r->name_array[i].nb_name[2],
-                r->name_array[i].nb_name[3],
-                r->name_array[i].nb_name[4],
-                r->name_array[i].nb_name[5],
-                r->name_array[i].nb_name[6],
-                r->name_array[i].nb_name[7],
-                r->name_array[i].nb_name[8],
-                r->name_array[i].nb_name[9],
-                r->name_array[i].nb_name[10],
-                r->name_array[i].nb_name[11],
-                r->name_array[i].nb_name[12],
-                r->name_array[i].nb_name[13],
-                r->name_array[i].nb_name[14],
-                r->name_array[i].nb_name[15],
-                (r->name_array[i].name_flags & 128) ? "Group " : "Unique");
-		szOutput += szTemp;
-
-        for (j=0; j<NUM_SUFFIX; j++) {
-            if ((r->name_array[i].nb_name[15] == Suffixes[j].suff)
-                && ((r->name_array[i].name_flags & Suffixes[j].nf_mask)
-                    == Suffixes[j].nf_pattern)) {
-                szTemp.Format("  %s", Suffixes[j].usage);
-				szOutput += szTemp;
-                break;
-            }
-        }
-        szOutput += "\n";
-    }*/
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////    
 	char szName[16];
@@ -200,12 +159,10 @@ BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CStri
 			data->name_array[data->num_names].nb_name[5]);
 	}
 
-
     return TRUE;
-
 }
 
-int CNetBIOSUtils::RetrieveData(char *buf, int nBufSize)
+int CNetBIOSUtils::RetrieveData(LPCSTR szIP, char *buf, int nBufSize)
 {	
 	struct sockaddr_in caddr;
 	SOCKET hSocket;    	
@@ -227,7 +184,7 @@ int CNetBIOSUtils::RetrieveData(char *buf, int nBufSize)
 
     memset((char *) &caddr, 0, sizeof(caddr));
     caddr.sin_family = AF_INET;
-	caddr.sin_addr.S_un.S_addr = inet_addr(m_szIP);
+	caddr.sin_addr.S_un.S_addr = inet_addr(szIP);
     caddr.sin_port = htons(137);
 
 	nRetBufSize = sizeof(NETBIOS_REQUEST) - 1;	

@@ -73,36 +73,36 @@ TScannerColumn g_BuiltInScannerColumns[] =
 	{
 		/*pScanFunction*/ &ScanIntDoNetBIOSComputerName,
 		/*pInfoFunction*/ &ScanIntInfoNetBIOSComputerName,
-		/*pSetuFunction*/ &ScanIntSetupNetBIOS,
-		/*pInitFunction*/ &ScanIntInitNetBIOS,
-		/*pFinaFunction*/ &ScanIntFinalizeNetBIOS,
+		/*pSetuFunction*/ NULL,
+		/*pInitFunction*/ NULL,
+		/*pFinaFunction*/ NULL,
 		/*bBuiltinColum*/ TRUE
 	},
 	// NetBIOS Group Name
 	{
 		/*pScanFunction*/ &ScanIntDoNetBIOSGroupName,
 		/*pInfoFunction*/ &ScanIntInfoNetBIOSGroupName,
-		/*pSetuFunction*/ &ScanIntSetupNetBIOS,
-		/*pInitFunction*/ &ScanIntInitNetBIOS,
-		/*pFinaFunction*/ &ScanIntFinalizeNetBIOS,
+		/*pSetuFunction*/ NULL,
+		/*pInitFunction*/ NULL,
+		/*pFinaFunction*/ NULL,
 		/*bBuiltinColum*/ TRUE
 	},
 	// NetBIOS User Name
 	{
 		/*pScanFunction*/ &ScanIntDoNetBIOSUserName,
 		/*pInfoFunction*/ &ScanIntInfoNetBIOSUserName,
-		/*pSetuFunction*/ &ScanIntSetupNetBIOS,
-		/*pInitFunction*/ &ScanIntInitNetBIOS,
-		/*pFinaFunction*/ &ScanIntFinalizeNetBIOS,
+		/*pSetuFunction*/ NULL,
+		/*pInitFunction*/ NULL,
+		/*pFinaFunction*/ NULL,
 		/*bBuiltinColum*/ TRUE
 	},
 	// Mac Address
 	{
 		/*pScanFunction*/ &ScanIntDoNetBIOSMacAddress,
 		/*pInfoFunction*/ &ScanIntInfoNetBIOSMacAddress,
-		/*pSetuFunction*/ &ScanIntSetupNetBIOS,
-		/*pInitFunction*/ &ScanIntInitNetBIOS,
-		/*pFinaFunction*/ &ScanIntFinalizeNetBIOS,
+		/*pSetuFunction*/ NULL,
+		/*pInitFunction*/ NULL,
+		/*pFinaFunction*/ NULL,
 		/*bBuiltinColum*/ TRUE
 	}
 };

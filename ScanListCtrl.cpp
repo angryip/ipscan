@@ -444,9 +444,7 @@ void CScanListCtrl::ShowNetBIOSInfo()
 	
 	GetItemText(nCurrentItem, CL_IP, (char*)&ipstr, 16);
 
-	CNetBIOSUtils cNetBIOS;
-	cNetBIOS.setIP((char*)&ipstr);
-	if (!cNetBIOS.GetNames(&szUserName, &szComputerName, &szGroupName, &szMacAddress))
+	if (!CNetBIOSUtils::GetNames((char*)&ipstr, &szUserName, &szComputerName, &szGroupName, &szMacAddress))
 	{
 		MessageBox("Cannot get NetBIOS information","Error",MB_OK | MB_ICONERROR);
 		return;

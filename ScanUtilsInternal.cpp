@@ -19,7 +19,6 @@
 #include "Scanner.h"
 #include "ms_icmp.h"
 #include "NetBIOSUtils.h"
-#include "NetBIOSOptions.h"
 
 
 #ifdef _DEBUG
@@ -46,10 +45,6 @@ typedef DWORD (FAR WINAPI *TIcmpSendEcho)(
 TIcmpSendEcho lpfnIcmpSendEcho;
 
 char aPingDataBuf[32];
-
-// For NetBIOS
-
-CNetBIOSUtils *g_NetBIOSUtils = NULL;
 
 //////////////////////////////////////////////////////////////////////////////////
 // PING
@@ -206,37 +201,12 @@ BOOL ScanIntInfoHostname(TInfoStruct *pInfoStruct)
 
 // Init / Finalization
 
-BOOL ScanIntInitNetBIOS()
-{
-	if (g_NetBIOSUtils == NULL)
-		g_NetBIOSUtils = new CNetBIOSUtils();
-	return TRUE;
-}
-
-BOOL ScanIntFinalizeNetBIOS()
-{
-	if (g_NetBIOSUtils != NULL)
-	{
-		delete g_NetBIOSUtils;
-		g_NetBIOSUtils = NULL;
-	}
-	return TRUE;
-}
-
-BOOL ScanIntSetupNetBIOS(HWND hwndParent)
-{
-	CNetBIOSOptions cDlg;
-	cDlg.DoModal();	
-	return TRUE;
-}
-
 // Computer Name
 
 BOOL ScanIntDoNetBIOSComputerName(DWORD nIP, LPSTR szReturn, int nBufferLen)
 {
-	CString szComputerName;
-	g_NetBIOSUtils->setIP(nIP);
-	g_NetBIOSUtils->GetNames(NULL, &szComputerName, NULL, NULL);
+	CString szComputerName;	
+	CNetBIOSUtils::GetNames(nIP, NULL, &szComputerName, NULL, NULL);
 	if (szComputerName.GetLength() > nBufferLen)
 		szComputerName.SetAt(nBufferLen - 1, 0);
 	strcpy(szReturn, szComputerName);
@@ -254,9 +224,8 @@ BOOL ScanIntInfoNetBIOSComputerName(TInfoStruct *pInfoStruct)
 
 BOOL ScanIntDoNetBIOSGroupName(DWORD nIP, LPSTR szReturn, int nBufferLen)
 {
-	CString szGroupName;
-	g_NetBIOSUtils->setIP(nIP);
-	g_NetBIOSUtils->GetNames(NULL, NULL, &szGroupName, NULL);
+	CString szGroupName;	
+	CNetBIOSUtils::GetNames(nIP, NULL, NULL, &szGroupName, NULL);
 	if (szGroupName.GetLength() > nBufferLen)
 		szGroupName.SetAt(nBufferLen - 1, 0);
 	strcpy(szReturn, szGroupName);
@@ -274,9 +243,8 @@ BOOL ScanIntInfoNetBIOSGroupName(TInfoStruct *pInfoStruct)
 
 BOOL ScanIntDoNetBIOSUserName(DWORD nIP, LPSTR szReturn, int nBufferLen)
 {
-	CString szUserName;
-	g_NetBIOSUtils->setIP(nIP);
-	g_NetBIOSUtils->GetNames(&szUserName, NULL, NULL, NULL);
+	CString szUserName;	
+	CNetBIOSUtils::GetNames(nIP, &szUserName, NULL, NULL, NULL);
 	if (szUserName.GetLength() > nBufferLen)
 		szUserName.SetAt(nBufferLen - 1, 0);
 	strcpy(szReturn, szUserName);
@@ -294,9 +262,8 @@ BOOL ScanIntInfoNetBIOSUserName(TInfoStruct *pInfoStruct)
 
 BOOL ScanIntDoNetBIOSMacAddress(DWORD nIP, LPSTR szReturn, int nBufferLen)
 {
-	CString szMacAddress;
-	g_NetBIOSUtils->setIP(nIP);
-	g_NetBIOSUtils->GetNames(NULL, NULL, NULL, &szMacAddress);
+	CString szMacAddress;	
+	CNetBIOSUtils::GetNames(nIP, NULL, NULL, NULL, &szMacAddress);
 	if (szMacAddress.GetLength() > nBufferLen)
 		szMacAddress.SetAt(nBufferLen - 1, 0);
 	strcpy(szReturn, szMacAddress);

@@ -24,16 +24,13 @@
 class CNetBIOSUtils
 {
 protected:
-	int RetrieveData(char *buf, int nBufSize);	
-	CString m_szIP;	
+	static int RetrieveData(LPCSTR szIP, char *buf, int nBufSize);		
 
 public:			
 	CNetBIOSUtils();
-	virtual ~CNetBIOSUtils();
-	void setIP(LPCSTR szIP);
-	void setIP(DWORD nIP);
-	BOOL GetNames(CString *szUserName, CString *szComputerName, CString *szGroupName, CString *szMacAddress);	
-	
+	virtual ~CNetBIOSUtils();	
+	static BOOL GetNames(LPCSTR szIP, CString *szUserName, CString *szComputerName, CString *szGroupName, CString *szMacAddress);
+	static BOOL GetNames(DWORD nIP, CString *szUserName, CString *szComputerName, CString *szGroupName, CString *szMacAddress);
 };
 
 #endif // !defined(AFX_SCANFUNC_H__15CE10D2_FC18_44BA_A9CA_52346AC446E3__INCLUDED_)
