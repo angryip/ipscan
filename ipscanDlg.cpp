@@ -402,7 +402,11 @@ BOOL CIpscanDlg::OnInitDialog()
 		{
 			CIpscanDlg::OnButtonScan();
 		}
-	}	
+	}
+	else
+	{
+		m_nCmdLineOptions = 0;
+	}
 
 	#ifdef DEBUG_MESSAGES
 		AfxMessageBox("OnInitDialog(): Finished", 0, 0);
@@ -441,7 +445,7 @@ void CIpscanDlg::OnSysCommand(UINT nID, LPARAM lParam)
 void CIpscanDlg::OnPaint() 
 {
 	if (m_nCmdLineOptions & CMDO_HIDE_WINDOW)
-	{
+	{		
 		ShowWindow(SW_HIDE);
 	}
 

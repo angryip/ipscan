@@ -30,7 +30,7 @@ static char THIS_FILE[]=__FILE__;
 
 CCommandLine::CCommandLine()
 {
-	
+	m_nOptions = 0;
 }
 
 CCommandLine::~CCommandLine()
