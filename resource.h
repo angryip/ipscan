@@ -95,6 +95,8 @@
 #define IDC_SELECT_COLUMNS              1080
 #define IDC_SELECTED_COLUMNS            1081
 #define IDC_SELECT_ALL                  1082
+#define IDC_MOVE_UP                     1083
+#define IDC_MOVE_DOWN                   1084
 #define ID_BUTTONABOUT                  32771
 #define IDS_FIRSTCOLUMN                 32772
 #define IDS_STRING32773                 32773
