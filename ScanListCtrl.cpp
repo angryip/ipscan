@@ -533,7 +533,10 @@ void CScanListCtrl::GoToNextDeadIP()
 void CScanListCtrl::GoToNextOpenPortIP()
 {
 	if (!g_options->m_bScanPorts)
+	{
+		MessageBox("Ports were not scanned", NULL, MB_OK | MB_ICONHAND);
 		return;
+	}
 
 	SetFocus();	
 	int i = GetCurrentSelectedItem();
@@ -553,7 +556,10 @@ void CScanListCtrl::GoToNextOpenPortIP()
 void CScanListCtrl::GoToNextClosedPortIP()
 {
 	if (!g_options->m_bScanPorts)
+	{
+		MessageBox("Ports were not scanned", NULL, MB_OK | MB_ICONHAND);
 		return;
+	}
 
 	SetFocus();	
 	int i = GetCurrentSelectedItem();

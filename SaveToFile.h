@@ -12,23 +12,26 @@
 
 // File type constants
 
-#define FILE_TYPE_TXT 0
-#define FILE_TYPE_CSV 1
+#define FILE_TYPE_TXT	0
+#define FILE_TYPE_CSV	1
+#define FILE_TYPE_XML	2
+#define FILE_TYPE_HTML	3
 
 class CSaveToFile  
 {
-public:
+public:	
 	BOOL m_bAppend;
 	BOOL m_saveselection;
 	CString m_filename;
 	int m_filetype;	
 	CIpscanDlg *m_dlg;
 
-	void saveToCSV();
-	void saveToTXT();
+	void saveToCSV(FILE *fileHandle);
+	void saveToTXT(FILE *fileHandle);
+	void saveToHTML(FILE *fileHandle);
 	BOOL queryFilename();
 
-	CSaveToFile(CIpscanDlg *dlg, BOOL bSaveSelection = FALSE, LPSTR szFileName = NULL, BOOL bCSV = FALSE, BOOL bAppend = FALSE);
+	CSaveToFile(CIpscanDlg *dlg, BOOL bSaveSelection = FALSE, LPSTR szFileName = NULL, int nFileFormat = -1, BOOL bAppend = FALSE);
 	virtual ~CSaveToFile();
 
 };

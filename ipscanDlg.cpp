@@ -378,6 +378,7 @@ BOOL CIpscanDlg::OnInitDialog()
 		m_ip2_virgin = FALSE;
 
 		m_nCmdLineOptions = cCmdLine->m_nOptions;
+		m_nCmdLineFileFormat = cCmdLine->m_nFileFormat;
 
 		if (m_nCmdLineOptions & CMDO_SAVE_TO_FILE)
 		{
@@ -605,7 +606,7 @@ void CIpscanDlg::OnButtonScan()
 			{
 				// Program was invoked via command-line, so save data to file & exit
 
-				CSaveToFile tmp(d, FALSE, m_szDefaultFileName->GetBuffer(255), m_nCmdLineOptions & CMDO_SAVE_CSV, m_nCmdLineOptions & CMDO_APPEND_FILE);
+				CSaveToFile tmp(d, FALSE, m_szDefaultFileName->GetBuffer(255), m_nCmdLineFileFormat, m_nCmdLineOptions & CMDO_APPEND_FILE);
 				
 				if (!(m_nCmdLineOptions & CMDO_NOT_EXIT))
 					ExitProcess(0);

@@ -23,6 +23,7 @@ class CIpscanDlg : public CDialog
 {
 // Construction
 public:	
+	int m_nCmdLineFileFormat;
 	void EnableMenuItems(BOOL bEnable);
 	CBitmap m_bmpShowAdvanced;
 	int m_nCmdLineOptions;

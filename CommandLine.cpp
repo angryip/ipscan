@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "ipscan.h"
 #include "CommandLine.h"
+#include "SaveToFile.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -34,7 +35,6 @@ BOOL CCommandLine::process()
 		// too few or too many parameters
 		if (__argc<3) 
 		{
-	
 			displayHelp();
 			exit(1);
 		}
@@ -53,13 +53,29 @@ BOOL CCommandLine::process()
 					switch (__targv[i][j])
 					{
 						case 's': 
-							m_nOptions |= CMDO_START_SCAN; break;
-						case 'c': 
-							m_nOptions |= CMDO_SAVE_CSV; break;
+							m_nOptions |= CMDO_START_SCAN; 
+							break;						
 						case 'e': 
-							m_nOptions |= CMDO_NOT_EXIT; break;
+							m_nOptions |= CMDO_NOT_EXIT; 
+							break;
 						case 'a': 
-							m_nOptions |= CMDO_APPEND_FILE; break;
+							m_nOptions |= CMDO_APPEND_FILE; 
+							break;
+						case 'f': 
+							if (j == 1)	// Accept "f" only as a first character
+							{
+								switch (__targv[i][j+2])	// "-f:X" - check the X character
+								{
+									case 'c':
+										m_nFileFormat = FILE_TYPE_CSV; break;
+									case 'h': 
+										m_nFileFormat = FILE_TYPE_HTML; break;
+									default:
+										m_nFileFormat = FILE_TYPE_TXT; break;
+								}
+								__targv[i][j+1] = 0;	// To exit from for loop
+							}							
+							break;
 						default:
 							CString err = "Unknown option: ";
 							err += __targv[i][j];
@@ -106,9 +122,9 @@ void CCommandLine::displayHelp()
 				"Note: if 3rd parameter is given, then the program will\n"
 				"close after saving data to a file\n\n"
 				"Additional options:\n"
-				"\t-s\tautomatically start scanning (if filename is not given)\n"
-				"\t-c\tfile format is CSV, not TXT\n"
+				"\t-s\tautomatically start scanning (if filename is not given)\n"				
 				"\t-e\tdo not exit after saving data\n"
 				"\t-a\tappend to the file, do not overwrite\n"
+				"\t-f:X\tFile format. X can be 'csv', 'html' or 'txt'.\n"
 			   ,"Angry IP Scanner Help",MB_OK | MB_ICONINFORMATION);
 }

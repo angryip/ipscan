@@ -212,4 +212,18 @@ void COptions::setWindowPos()
 	// Column widths are restored in CScanner::initListColumns()
 }
 
+CString COptions::getCurrentDate()
+{
+	TCHAR szTime[128];
 
+	CString szDateTime;
+
+	GetDateFormat(LOCALE_USER_DEFAULT, 0, NULL, NULL, (LPSTR)&szTime, sizeof(szTime) / sizeof(TCHAR));
+	szDateTime = szTime;
+
+	szDateTime += TCHAR(' ');	
+	GetTimeFormat(LOCALE_USER_DEFAULT, 0, NULL, NULL, (LPSTR)&szTime, sizeof(szTime) / sizeof(TCHAR));
+	szDateTime += szTime;	 
+	
+	return szDateTime;
+}
