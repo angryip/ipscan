@@ -176,7 +176,9 @@ BOOL CNetBIOSUtils::GetNames(CString &szUserName, CString &szComputerName, CStri
 			break;
 		}
 	}
-	szUserName.Delete(szUserName.Find("$"));
+	int nDollarIndex = szUserName.Find('$'); 
+	if (nDollarIndex >= 0)
+		szUserName.Delete(nDollarIndex);
 
 	// get mac address
    	szMacAddress.Format(_T("%02X-%02X-%02X-%02X-%02X-%02X"),
