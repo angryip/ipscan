@@ -801,7 +801,11 @@ void CIpscanDlg::OnRescanIP()
 
 		m_list.ZeroResultsForItem(m_menucuritem);		
 		
+		g_scanner->initScanning();
+		
 		ScanningThread((void*)m_menucuritem);
+
+		g_scanner->finalizeScanning();
 		
 		m_nScanMode = SCAN_MODE_NOT_SCANNING;
 
