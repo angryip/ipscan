@@ -225,15 +225,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	app = AfxGetApp();
 	d = (CIpscanDlg*)app->m_pMainWnd;
 
-	m_resolve = app->GetProfileInt("","GetHostName",TRUE);
-	m_delay = app->GetProfileInt("","Delay",20);
-	m_maxthreads = app->GetProfileInt("","MaxThreads",100);
-	m_scanport = app->GetProfileInt("","ScanPort",FALSE);
-	m_port = app->GetProfileInt("","PortNum",139);
-	m_retrifdead = app->GetProfileInt("","RetrIfDead",FALSE);
-	m_portondead = app->GetProfileInt("","PortOnDead",FALSE);
-	m_timeout = app->GetProfileInt("","Timeout",5000);
-	m_display = app->GetProfileInt("","DisplayOptions",0);
+	COptionsDlg::loadOptions(d);
 
 	ThreadProcRescanThisIP = -1;
 	
@@ -918,29 +910,7 @@ void CIpscanDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 
 void CIpscanDlg::OnOptionsSaveoptions() 
 {	
-	CString szURL; szURL.LoadString(IDS_HOMEPAGE);
-
-	app->WriteProfileString("", "URL", szURL);
-	app->WriteProfileInt("","Delay",m_delay);
-	app->WriteProfileInt("","MaxThreads",m_maxthreads);
-	app->WriteProfileInt("","ScanPort",m_scanport);
-	app->WriteProfileInt("","PortNum",m_port);
-	app->WriteProfileInt("","RetrIfDead",m_retrifdead);
-	app->WriteProfileInt("","PortOnDead",m_portondead);
-	app->WriteProfileInt("","Timeout",m_timeout);
-	app->WriteProfileInt("","GetHostname",m_resolve);	
-	app->WriteProfileInt("","DisplayOptions",m_display);	
-	RECT rc;
-	GetWindowRect(&rc);
-	app->WriteProfileInt("","Left",rc.left);
-	app->WriteProfileInt("","Top",rc.top);
-	app->WriteProfileInt("","Bottom",rc.bottom);
-	app->WriteProfileInt("","Right",rc.right);
-	CString str;
-	for (int i=0; i<C_COLUMNS; i++) {
-		str.Format("Col%d",i);
-		app->WriteProfileInt("",str,m_list.GetColumnWidth(i));
-	}
+	COptionsDlg::saveOptions(d);
 }
 
 void CIpscanDlg::OnFieldchangedIpaddress1(NMHDR* pNMHDR, LRESULT* pResult) 

@@ -166,3 +166,46 @@ void COptionsDlg::OnChangeEdit1()
 	}*/
 }
 
+
+void COptionsDlg::saveOptions(CIpscanDlg *d)
+{
+	CWinApp *app = AfxGetApp();
+
+	CString szURL; szURL.LoadString(IDS_HOMEPAGE);
+	app->WriteProfileString("", "URL", szURL);	
+	app->WriteProfileInt("","Delay",d->m_delay);
+	app->WriteProfileInt("","MaxThreads",d->m_maxthreads);
+	app->WriteProfileInt("","ScanPort",d->m_scanport);
+	app->WriteProfileInt("","PortNum",d->m_port);
+	app->WriteProfileInt("","RetrIfDead",d->m_retrifdead);
+	app->WriteProfileInt("","PortOnDead",d->m_portondead);
+	app->WriteProfileInt("","Timeout",d->m_timeout);
+	app->WriteProfileInt("","GetHostname",d->m_resolve);	
+	app->WriteProfileInt("","DisplayOptions",d->m_display);	
+	RECT rc;
+	d->GetWindowRect(&rc);
+	app->WriteProfileInt("","Left",rc.left);
+	app->WriteProfileInt("","Top",rc.top);
+	app->WriteProfileInt("","Bottom",rc.bottom);
+	app->WriteProfileInt("","Right",rc.right);
+	CString str;
+	for (int i=0; i < C_COLUMNS; i++) {
+		str.Format("Col%d",i);
+		app->WriteProfileInt("",str,d->m_list.GetColumnWidth(i));
+	}
+}
+
+void COptionsDlg::loadOptions(CIpscanDlg *d)
+{
+	CWinApp *app = AfxGetApp();
+
+	d->m_resolve = app->GetProfileInt("","GetHostName",TRUE);
+	d->m_delay = app->GetProfileInt("","Delay",20);
+	d->m_maxthreads = app->GetProfileInt("","MaxThreads",100);
+	d->m_scanport = app->GetProfileInt("","ScanPort",FALSE);
+	d->m_port = app->GetProfileInt("","PortNum",139);
+	d->m_retrifdead = app->GetProfileInt("","RetrIfDead",FALSE);
+	d->m_portondead = app->GetProfileInt("","PortOnDead",FALSE);
+	d->m_timeout = app->GetProfileInt("","Timeout",5000);
+	d->m_display = app->GetProfileInt("","DisplayOptions",0);
+}

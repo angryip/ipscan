@@ -4,6 +4,9 @@
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
+
+#include "IpscanDlg.h"
+
 // OptionsDlg.h : header file
 //
 
@@ -14,6 +17,8 @@ class COptionsDlg : public CDialog
 {
 // Construction
 public:
+	static void loadOptions(CIpscanDlg *d);
+	static void saveOptions(CIpscanDlg *d);
 	COptionsDlg(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
