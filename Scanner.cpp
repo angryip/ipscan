@@ -333,6 +333,17 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 		nIP = g_d->m_list.GetNumericIP(nItemIndex);		// IP address is obtained from the list (knowing the item index)
 	}
 
+	// At this place, the nIP is known, so let's initialize some stuff for inserting items
+	in_addr structInAddr;
+	structInAddr.S_un.S_addr = nIP;
+	char *szIP = inet_ntoa(structInAddr);
+
+	if (bParameterIsIP && g_options->m_neDisplayOptions == DISPLAY_ALL)
+	{
+		// Insert an item if all items should be inserted
+		nItemIndex = g_d->m_list.InsertItem(g_d->m_list.GetItemCount(), szIP, 2);	// 2nd image - "?"
+	}
+
 	char szTmp[512];	// Temporary string. Scanning functions will return data using it.
 
 	// Ping it! (column number 1), Check if it is alive
@@ -342,10 +353,7 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 	{
 		if (bParameterIsIP && g_options->m_neDisplayOptions == DISPLAY_ALIVE)
 		{
-			// Insert an item if it is not RescanIP() who called us and scanning mode is DISPLAY_ALIVE
-			in_addr structInAddr;
-			structInAddr.S_un.S_addr = nIP;
-			char *szIP = inet_ntoa(structInAddr);
+			// Insert an item if it is not RescanIP() who called us and scanning mode is DISPLAY_ALIVE			
 			nItemIndex = g_d->m_list.InsertItem(g_d->m_list.GetItemCount(), szIP, 2);	// 2nd image - "?"
 		}
 	
@@ -370,10 +378,7 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 		{
 			if (bParameterIsIP)
 			{
-				// Insert an item if it is not RescanIP() who called us and scanning mode is DISPLAY_OPENPORT
-				in_addr structInAddr;
-				structInAddr.S_un.S_addr = nIP;
-				char *szIP = inet_ntoa(structInAddr);
+				// Insert an item if it is not RescanIP() who called us and scanning mode is DISPLAY_OPENPORT				
 				nItemIndex = g_d->m_list.InsertItem(g_d->m_list.GetItemCount(), szIP, 2);	// 2nd image - "?"
 			}
 		}

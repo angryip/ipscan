@@ -669,6 +669,9 @@ int CScanListCtrl::DeleteAllDeadHosts()
 {
 	int nDeleted = 0;
 	int nItems = GetItemCount();
+
+	SetRedraw(FALSE);
+
 	for (int i=0; i < nItems; i++)
 	{
 		CString szText = GetItemText(i, CL_PING);
@@ -682,6 +685,8 @@ int CScanListCtrl::DeleteAllDeadHosts()
 		}
 	}
 
+	SetRedraw();
+
 	return nDeleted;
 }
 
@@ -689,6 +694,9 @@ int CScanListCtrl::DeleteAllAliveHosts()
 {
 	int nDeleted = 0;
 	int nItems = GetItemCount();
+
+	SetRedraw(FALSE);
+
 	for (int i=0; i < nItems; i++)
 	{
 		CString szText = GetItemText(i, CL_PING);
@@ -701,6 +709,9 @@ int CScanListCtrl::DeleteAllAliveHosts()
 			nDeleted++;
 		}
 	}
+
+	SetRedraw(TRUE);
+
 	return nDeleted;
 }
 
@@ -712,6 +723,8 @@ int CScanListCtrl::DeleteAllClosedPortsHosts()
 	int nDeleted = 0;
 	int nItems = GetItemCount();
 	int nPortsColumn = g_scanner->getColumnCount();	// The last column
+
+	SetRedraw(FALSE);
 
 	for (int i=0; i < nItems; i++)
 	{
@@ -725,6 +738,9 @@ int CScanListCtrl::DeleteAllClosedPortsHosts()
 			nDeleted++;
 		}
 	}
+
+	SetRedraw(TRUE);
+
 	return nDeleted;
 }
 
@@ -736,6 +752,8 @@ int CScanListCtrl::DeleteAllOpenPortsHosts()
 	int nDeleted = 0;
 	int nItems = GetItemCount();
 	int nPortsColumn = g_scanner->getColumnCount();	// The last column
+
+	SetRedraw(FALSE);
 
 	for (int i=0; i < nItems; i++)
 	{
@@ -749,6 +767,9 @@ int CScanListCtrl::DeleteAllOpenPortsHosts()
 			nDeleted++;
 		}
 	}
+
+	SetRedraw(TRUE);
+
 	return nDeleted;
 }
 
@@ -759,6 +780,8 @@ void CScanListCtrl::DeleteSelectedItems()
 
 	pos = GetFirstSelectedItemPosition();
 	nFirstItemIndex = GetNextSelectedItem(pos);
+
+	SetRedraw(FALSE);
 	
 	do 
 	{
@@ -769,6 +792,8 @@ void CScanListCtrl::DeleteSelectedItems()
 	while (nItemIndex >= 0);
 
 	SetSelectedItem(nFirstItemIndex);
+
+	SetRedraw(TRUE);
 
 	Invalidate();
 	UpdateWindow();

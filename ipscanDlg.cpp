@@ -699,14 +699,7 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 		char *szIP;
 		in.S_un.S_addr = htonl(g_nCurrentIP);
 		szIP = inet_ntoa(in);
-		status(szIP);
-		
-		if (!g_bScanExistingItems && g_options->m_neDisplayOptions == DISPLAY_ALL)
-		{
-			// Insert an item only if display options is set to display ALL IPs
-			// In other cases, it will be inserted later by CScanner::doScanIP
-			nItemIndex = m_list.InsertItem(m_list.GetItemCount(), szIP, 2);	// 2nd image - "?"
-		}		
+		status(szIP);		
 
 		if (g_bScanExistingItems)
 		{
