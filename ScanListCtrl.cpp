@@ -864,10 +864,8 @@ void CScanListCtrl::OnPaint()
 	// Draw the notification in case the list is empty
 	if (GetItemCount() <= 0)
 	{
-		COLORREF clrText = ::GetSysColor(COLOR_WINDOWTEXT);
+		COLORREF clrText = ::GetSysColor(COLOR_BTNFACE);
 		COLORREF clrTextBk = ::GetSysColor(COLOR_WINDOW);
-
-		clrText = (clrText + clrTextBk) / 2;
 
 		CDC* pDC = GetDC();
 		// Save dc state
