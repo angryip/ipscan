@@ -174,6 +174,10 @@ SOURCE=.\QueryDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\RandomIPFeed.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\RandomIPFeedDlg.cpp
 # End Source File
 # Begin Source File
@@ -292,6 +296,10 @@ SOURCE=.\PortDlg.h
 # Begin Source File
 
 SOURCE=.\QueryDlg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\RandomIPFeed.h
 # End Source File
 # Begin Source File
 
