@@ -56,7 +56,10 @@
 #define IDC_RADIO2                      1047
 #define IDC_RADIO3                      1048
 #define IDC_HTTP_FORUM                  1049
-#define IDC_CHECK4                      1050
+#define IDC_COPY_PROGRAM                1050
+#define IDC_INSTALL_PATH                1051
+#define IDC_CREATE_GROUP                1052
+#define IDC_CREATE_DESKTOP_SHORTCUT     1053
 #define ID_BUTTONABOUT                  32771
 #define IDS_FIRSTCOLUMN                 32772
 #define IDS_STRING32773                 32773
@@ -117,7 +120,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        150
 #define _APS_NEXT_COMMAND_VALUE         32812
-#define _APS_NEXT_CONTROL_VALUE         1051
+#define _APS_NEXT_CONTROL_VALUE         1054
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

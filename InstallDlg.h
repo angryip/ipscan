@@ -19,7 +19,10 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CInstallDlg)
 	enum { IDD = IDD_INSTALL_DLG };
-		// NOTE: the ClassWizard will add data members here
+	CEdit	m_ctlInstallPath;
+	CButton	m_ctlCreateGroup;
+	CButton	m_ctlCreateDesktopShortcut;
+	CButton	m_ctlCopyProgram;
 	//}}AFX_DATA
 
 
@@ -35,7 +38,8 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(CInstallDlg)
-		// NOTE: the ClassWizard will add member functions here
+	virtual BOOL OnInitDialog();
+	afx_msg void OnInstall();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
