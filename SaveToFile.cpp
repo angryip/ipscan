@@ -23,7 +23,8 @@ CSaveToFile::CSaveToFile(CIpscanDlg *dlg, BOOL bSaveSelection, LPSTR szFileName,
 
 	m_bAppend = bAppend;
 	
-	if (dlg->m_list.GetItemCount() == 0) 
+	// Display this error message only if wasn't invoked via command-line
+	if (!dlg->m_szDefaultFileName && dlg->m_list.GetItemCount() == 0) 
 	{
 		dlg->MessageBox("The list is empty!",NULL,MB_OK | MB_ICONHAND);
 		return;
@@ -110,7 +111,7 @@ void CSaveToFile::saveToTXT(FILE *fileHandle)
 			  "Visit " + szHomepage + " for the latest version\n\n", fileHandle);
 	}
 
-	fputs("Scanned ", fileHandle);
+	fputs("\nScanned ", fileHandle);
 	in_addr inAddr;	
 	inAddr.S_un.S_addr = htonl(g_nStartIP); fputs(inet_ntoa(inAddr), fileHandle);
 	fputs(" - ", fileHandle);
