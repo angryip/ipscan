@@ -152,6 +152,7 @@ protected:
 	afx_msg void OnUtilsRemoveSettingsFromRegistry();
 	afx_msg void OnCommandsOpencomputerConfigure();
 	afx_msg void OnHelpDonationPage();
+	afx_msg void OnHelpCheckForNewerVersion();
 	//}}AFX_MSG
 	
 	afx_msg void OnExecuteShowMenu(UINT nID);

@@ -211,9 +211,10 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_FAVOURITES_DELETEFAVOURITE, OnFavouritesDeleteFavourite)
 	ON_COMMAND(ID_UTILS_WIPETRACESREMOVESETTINGSFROMREGISTRY, OnUtilsRemoveSettingsFromRegistry)	
 	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_CONFIGURE, OnCommandsOpencomputerConfigure)
+	ON_COMMAND(ID_HELP_DONATIONPAGE, OnHelpDonationPage)
 	ON_COMMAND(ID_OPTIONS_SELECT_COLUMNS, OnSelectColumns)
 	ON_COMMAND(ID_OPTIONS_SELECTPORTS, OnSelectPortsClicked)
-	ON_COMMAND(ID_HELP_DONATIONPAGE, OnHelpDonationPage)
+	ON_COMMAND(ID_HELP_CHECKFORNEWERVERSION, OnHelpCheckForNewerVersion)
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_RANGE(ID_MENU_SHOW_CMD_001, ID_MENU_SHOW_CMD_099, OnExecuteShowMenu)
@@ -1541,3 +1542,7 @@ void CIpscanDlg::OnCommandsOpencomputerConfigure()
 	dlg.DoModal();
 }
 
+void CIpscanDlg::OnHelpCheckForNewerVersion() 
+{
+	CIpscanApp::CheckForNewerVersion();
+}

@@ -117,6 +117,8 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Command-line Usage",         ID_HELP_COMMANDLINE
         MENUITEM SEPARATOR
+        MENUITEM "Check for newer version...",  ID_HELP_CHECKFORNEWERVERSION
+        MENUITEM SEPARATOR
         MENUITEM "&About...\tF12",              ID_HELP_ABOUT
     END
 END
