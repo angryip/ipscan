@@ -20,8 +20,22 @@ typedef struct
 typedef BOOL (__cdecl TScanFunction)(DWORD nIP, LPSTR szReturn, int nBufferLen);
 
 typedef BOOL (__cdecl TInitFunction)();
+typedef BOOL (__cdecl TFinalizeFunction)();
 
 typedef BOOL (__cdecl TInfoFunction)(TInfoStruct *pInfoStruct);
+
+// Structure to hold all functions of a service (plugin)
+
+typedef struct
+{
+	TScanFunction *pScanFunction;
+	TInfoFunction *pInfoFunction;
+	
+	TInitFunction *pInitFunction;
+	TFinalizeFunction *pFinalizeFunction;
+
+	CString *pszColumnName;
+} TScannerColumn;
 
 
 class CScanner  
@@ -38,13 +52,10 @@ public:
 	virtual ~CScanner();
 
 protected:
-	TInitFunction * m_pInitFunctions[100];
-	TScanFunction * m_pScanFunctions[100];	
-	TInfoFunction * m_pInfoFunctions[100];
+	TScannerColumn m_Columns[100];
+	int m_nColumnCount;
 
 	CWinApp * m_app;
-	CString * m_pszColumnNames[100];
-	int m_nColumnCount;
 };
 
 // ordinary function

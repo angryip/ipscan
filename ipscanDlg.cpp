@@ -767,8 +767,9 @@ void CIpscanDlg::OnWindozesucksShownetbiosinfo()
 	status("Getting info...");
 	m_list.GetItemText(m_menucuritem,CL_IP,(char*)&ipstr,16);
 
-	CNetBIOSUtils cNetBIOS((char*)&ipstr);
-	if (!cNetBIOS.GetNames(szUserName, szComputerName, szGroupName, szMacAddress))
+	CNetBIOSUtils cNetBIOS;
+	cNetBIOS.setIP((char*)&ipstr);
+	if (!cNetBIOS.GetNames(&szUserName, &szComputerName, &szGroupName, &szMacAddress))
 	{
 		MessageBox("Cannot get NetBIOS information.","Error",MB_OK | MB_ICONERROR);
 		goto exit_func;

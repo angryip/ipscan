@@ -21,6 +21,63 @@ CDialog *g_dlg;
 CIpscanDlg *g_d; 
 CScanner *g_scanner;
 
+//////////////////////////////////////////////////////////////////////
+// Built-in plugins (scanner columns)
+//////////////////////////////////////////////////////////////////////
+
+TScannerColumn g_BuiltInScannerColumns[] = 
+{
+	// IP is always 0!!
+	{
+		/*pScanFunction*/ &ScanIntDoDummy,
+		/*pInfoFunction*/ &ScanIntInfoDummy,
+		/*pInitFunction*/ NULL,
+		/*pFinaFunction*/ NULL
+	},
+	// Ping is always 1!!
+	{
+		/*pScanFunction*/ &ScanIntDoPing, 
+		/*pInfoFunction*/ &ScanIntInfoPing,
+		/*pInitFunction*/ &ScanIntInitPing,
+		/*pFinaFunction*/ NULL
+	},
+	// Hostname
+	{
+		/*pScanFunction*/ &ScanIntDoHostname,
+		/*pInfoFunction*/ &ScanIntInfoHostname,
+		/*pInitFunction*/ NULL,
+		/*pFinaFunction*/ NULL
+	},
+	// NetBIOS Computer Name
+	{
+		/*pScanFunction*/ &ScanIntDoNetBIOSComputerName,
+		/*pInfoFunction*/ &ScanIntInfoNetBIOSComputerName,
+		/*pInitFunction*/ &ScanIntInitNetBIOS,
+		/*pFinaFunction*/ &ScanIntFinalizeNetBIOS
+	},
+	// NetBIOS Group Name
+	{
+		/*pScanFunction*/ &ScanIntDoNetBIOSGroupName,
+		/*pInfoFunction*/ &ScanIntInfoNetBIOSGroupName,
+		/*pInitFunction*/ &ScanIntInitNetBIOS,
+		/*pFinaFunction*/ &ScanIntFinalizeNetBIOS
+	},
+	// NetBIOS User Name
+	{
+		/*pScanFunction*/ &ScanIntDoNetBIOSUserName,
+		/*pInfoFunction*/ &ScanIntInfoNetBIOSUserName,
+		/*pInitFunction*/ &ScanIntInitNetBIOS,
+		/*pFinaFunction*/ &ScanIntFinalizeNetBIOS
+	},
+	// Mac Address
+	{
+		/*pScanFunction*/ &ScanIntDoNetBIOSMacAddress,
+		/*pInfoFunction*/ &ScanIntInfoNetBIOSMacAddress,
+		/*pInitFunction*/ &ScanIntInitNetBIOS,
+		/*pFinaFunction*/ &ScanIntFinalizeNetBIOS
+	}
+};
+
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -29,36 +86,28 @@ CScanner *g_scanner;
 CScanner::CScanner()
 {
 	m_app = AfxGetApp();
-	m_nColumnCount = 3;
+	m_nColumnCount = sizeof(g_BuiltInScannerColumns) / sizeof(TScannerColumn);
 
 	TInfoStruct infoStruct;
+	
+	memcpy(&m_Columns, &g_BuiltInScannerColumns, sizeof(g_BuiltInScannerColumns));
 
-	m_pInfoFunctions[0] = &ScanIntInfoDummy;
-	m_pInitFunctions[0] = &ScanIntInitDummy;
-	m_pScanFunctions[0] = &ScanIntDoDummy;
-	m_pszColumnNames[0] = new CString("IP");
-
-	m_pScanFunctions[1] = &ScanIntDoPing;
-	m_pInitFunctions[1] = &ScanIntInitPing;	
-	m_pInfoFunctions[1] = &ScanIntInfoPing;
-
-	m_pScanFunctions[2] = &ScanIntDoHostname;
-	m_pInitFunctions[2] = NULL;
-	m_pInfoFunctions[2] = &ScanIntInfoHostname;
-
+	m_Columns[0].pszColumnName = new CString("IP");
+	
 	for (int i=1; i < m_nColumnCount; i++)
 	{
-		m_pInfoFunctions[i](&infoStruct);
+		m_Columns[i].pInfoFunction(&infoStruct);		
 		
-		m_pszColumnNames[i] = new CString(infoStruct.szColumnName);
+		m_Columns[i].pszColumnName = new CString(infoStruct.szColumnName);		
 	}
+
 }
 
 CScanner::~CScanner()
 {
 	for (int i = 0; i < m_nColumnCount; i++)
 	{
-		delete m_pszColumnNames[i];
+		delete m_Columns[i].pszColumnName;
 	}
 }
 
@@ -69,14 +118,14 @@ int CScanner::getColumnCount()
 
 BOOL CScanner::getColumnName(int nIndex, CString &szColumnHeader)
 {
-	szColumnHeader = *m_pszColumnNames[nIndex];
+	szColumnHeader = *m_Columns[nIndex].pszColumnName;
 	return TRUE;
 }
 
 int CScanner::getColumnWidth(int nIndex)
 {
 	CString str;
-	str.Format("Col %s Width", m_pszColumnNames[nIndex]);
+	str.Format("Col %s Width", m_Columns[nIndex].pszColumnName);
 	int nWidth = m_app->GetProfileInt("",str,-1);
 		
 	if (nWidth == -1) 
@@ -104,7 +153,7 @@ void CScanner::initListColumns(CListCtrl *pListCtrl)
 	for (nCol=0; nCol < m_nColumnCount; nCol++) 
 	{					
 		nWidth = getColumnWidth(nCol);
-		pListCtrl->InsertColumn(nCol, *m_pszColumnNames[nCol], LVCFMT_LEFT, nWidth, nCol);
+		pListCtrl->InsertColumn(nCol, *m_Columns[nCol].pszColumnName, LVCFMT_LEFT, nWidth, nCol);
 	}
 	
 }
@@ -113,8 +162,8 @@ BOOL CScanner::initScanning()
 {
 	for (int i=0; i < m_nColumnCount; i++)
 	{
-		if (m_pInitFunctions[i] != NULL)
-			m_pInitFunctions[i]();
+		if (m_Columns[i].pInitFunction != NULL)
+			m_Columns[i].pInitFunction();
 	}
 	return TRUE;
 }
@@ -130,7 +179,7 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 	char szTmp[512];
 
 	// Ping it!
-	BOOL bAlive = m_pScanFunctions[1](nIP, (char*) &szTmp, sizeof(szTmp));
+	BOOL bAlive = m_Columns[1].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));
 	g_d->m_list.SetItemText(nItemIndex, 1, (char*) &szTmp);
 	
 	if (bAlive)
@@ -145,9 +194,9 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 	// Run other scans
 	for (int i=2; i < m_nColumnCount; i++)
 	{
-		if (m_pInfoFunctions[i] != NULL)
+		if (m_Columns[i].pInfoFunction != NULL)
 		{
-			m_pScanFunctions[i](nIP, (char*) &szTmp, sizeof(szTmp));
+			m_Columns[i].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));
 		}
 		else
 		{

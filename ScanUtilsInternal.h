@@ -24,4 +24,20 @@ TInfoFunction ScanIntInfoPing;
 TScanFunction ScanIntDoHostname;	
 TInfoFunction ScanIntInfoHostname;
 
+TInitFunction ScanIntInitNetBIOS;
+TFinalizeFunction ScanIntFinalizeNetBIOS;
+
+TScanFunction ScanIntDoNetBIOSComputerName;
+TInfoFunction ScanIntInfoNetBIOSComputerName;
+
+TScanFunction ScanIntDoNetBIOSGroupName;
+TInfoFunction ScanIntInfoNetBIOSGroupName;
+
+TScanFunction ScanIntDoNetBIOSUserName;
+TInfoFunction ScanIntInfoNetBIOSUserName;
+
+TScanFunction ScanIntDoNetBIOSMacAddress;
+TInfoFunction ScanIntInfoNetBIOSMacAddress;
+
+
 #endif // !defined(AFX_SCANUTILSINTERNAL_H__5E681616_ED94_40B6_9DE0_29332AC01E60__INCLUDED_)

@@ -149,7 +149,10 @@ BOOL ScanIntDoHostname(DWORD nIP, LPSTR szReturn, int nBufferLen)
 	hostent *he = gethostbyaddr((char*)&nIP, 4, 0);
 	if (he) 
 	{
-		memcpy(szReturn, he->h_name, nBufferLen);
+		if (nBufferLen > 0 && strlen(he->h_name) > nBufferLen)
+			he->h_name[nBufferLen-1] = 0;
+
+		strcpy(szReturn, he->h_name);		
 	} 
 	else
 	{
@@ -164,3 +167,78 @@ BOOL ScanIntInfoHostname(TInfoStruct *pInfoStruct)
 	strcpy(pInfoStruct->szPluginName, "Resolve hostname");
 	return TRUE;
 }
+
+
+/////////////////////////////////////////////////////////////////////////////////
+// NETBIOS
+/////////////////////////////////////////////////////////////////////////////////
+
+// Init / Finalization
+
+BOOL ScanIntInitNetBIOS()
+{
+	return TRUE;
+}
+
+BOOL ScanIntFinalizeNetBIOS()
+{
+	return TRUE;
+}
+
+// Computer Name
+
+BOOL ScanIntDoNetBIOSComputerName(DWORD nIP, LPSTR szReturn, int nBufferLen)
+{
+	szReturn[0] = 0;
+	return TRUE;
+}
+
+BOOL ScanIntInfoNetBIOSComputerName(TInfoStruct *pInfoStruct)
+{
+	memset(pInfoStruct, 0, sizeof(TInfoStruct));
+	return TRUE;
+}
+
+// Group Name
+
+BOOL ScanIntDoNetBIOSGroupName(DWORD nIP, LPSTR szReturn, int nBufferLen)
+{
+	szReturn[0] = 0;
+	return TRUE;
+}
+
+BOOL ScanIntInfoNetBIOSGroupName(TInfoStruct *pInfoStruct)
+{
+	memset(pInfoStruct, 0, sizeof(TInfoStruct));
+	return TRUE;
+}
+
+// User Name
+
+BOOL ScanIntDoNetBIOSUserName(DWORD nIP, LPSTR szReturn, int nBufferLen)
+{
+	szReturn[0] = 0;
+	return TRUE;
+}
+
+BOOL ScanIntInfoNetBIOSUserName(TInfoStruct *pInfoStruct)
+{
+	memset(pInfoStruct, 0, sizeof(TInfoStruct));
+	return TRUE;
+}
+
+// Mac Address
+
+BOOL ScanIntDoNetBIOSMacAddress(DWORD nIP, LPSTR szReturn, int nBufferLen)
+{
+	szReturn[0] = 0;
+	return TRUE;
+}
+
+BOOL ScanIntInfoNetBIOSMacAddress(TInfoStruct *pInfoStruct)
+{
+	memset(pInfoStruct, 0, sizeof(TInfoStruct));
+	return TRUE;
+}
+
+

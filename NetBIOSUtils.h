@@ -30,10 +30,12 @@ protected:
 	CString m_szIP;
 	
 
-public:	
-	CNetBIOSUtils(CString szIPAddress);
+public:			
+	CNetBIOSUtils();
 	virtual ~CNetBIOSUtils();
-	BOOL GetNames(CString &szUserName, CString &szComputerName, CString &szGroupName, CString &szMacAddress);	
+	void setIP(LPCSTR szIP);
+	void setIP(DWORD nIP);
+	BOOL GetNames(CString *szUserName, CString *szComputerName, CString *szGroupName, CString *szMacAddress);	
 	
 };
 

@@ -18,9 +18,8 @@ static char THIS_FILE[]=__FILE__;
 
 #define CONST_OWN_NETBIOS_NAME "ANGRYIPSCAN"
 
-CNetBIOSUtils::CNetBIOSUtils(CString szIPAddress)
-{
-	m_szIP = szIPAddress;
+CNetBIOSUtils::CNetBIOSUtils()
+{	
 	GetLanaNumber();
 	Reset(m_nLana, 20, 30);
 	AddName(m_nLana, CONST_OWN_NETBIOS_NAME);
@@ -29,6 +28,17 @@ CNetBIOSUtils::CNetBIOSUtils(CString szIPAddress)
 CNetBIOSUtils::~CNetBIOSUtils()
 {
 	DeleteName(m_nLana, CONST_OWN_NETBIOS_NAME);
+}
+
+void CNetBIOSUtils::setIP(LPCSTR szIP)
+{
+	m_szIP = szIP;
+}
+
+void CNetBIOSUtils::setIP(DWORD nIP)
+{
+	hostent *he = gethostbyaddr((char*) &nIP, sizeof(nIP), 0);
+	m_szIP = he->h_name;
 }
 
 void CNetBIOSUtils::MakeName(char *achDest, LPCSTR szSrc)
@@ -125,7 +135,7 @@ void CNetBIOSUtils::GetLanaNumber()
 	m_nLana = lan_num.lana[0];
 }
 
-BOOL CNetBIOSUtils::GetNames(CString &szUserName, CString &szComputerName, CString &szGroupName, CString &szMacAddress)
+BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CString *szGroupName, CString *szMacAddress)
 {	
     int cbBuffer;
     ADAPTER_STATUS *pStatus;
@@ -152,42 +162,54 @@ BOOL CNetBIOSUtils::GetNames(CString &szUserName, CString &szComputerName, CStri
 	char szName[16];
 
 	// get computer name
-	memcpy(&szName, pNames[0].name, 15); szName[15] = 0;
-	szComputerName = szName;
+	if (szComputerName != NULL)
+	{
+		memcpy(&szName, pNames[0].name, 15); szName[15] = 0;
+		*szComputerName = szName;
+	}
 
 	// get group name
-    for (i = 0; i < pStatus->name_count; i++)
+	if (szGroupName != NULL)
 	{
-		if ((pNames[i].name_flags & GROUP_NAME) == GROUP_NAME)
+		for (i = 0; i < pStatus->name_count; i++)
 		{
-			memcpy(&szName, pNames[i].name, 15); szName[15] = 0;
-			szGroupName = szName;
-			break;
+			if ((pNames[i].name_flags & GROUP_NAME) == GROUP_NAME)
+			{
+				memcpy(&szName, pNames[i].name, 15); szName[15] = 0;
+				*szGroupName = szName;
+				break;
+			}
 		}
 	}
 
 	// get user name
-	for (i = pStatus->name_count-1; i >= 0; i--)
+	if (szUserName != NULL)
 	{
-		if (pNames[i].name[15] == 3)
+		for (i = pStatus->name_count-1; i >= 0; i--)
 		{
-			memcpy(&szName, pNames[i].name, 15); szName[15] = 0;
-			szUserName = szName;
-			break;
+			if (pNames[i].name[15] == 3)
+			{
+				memcpy(&szName, pNames[i].name, 15); szName[15] = 0;
+				*szUserName = szName;
+				break;
+			}
 		}
+		int nDollarIndex = szUserName->Find('$'); 
+		if (nDollarIndex >= 0)
+			szUserName->Delete(nDollarIndex);
 	}
-	int nDollarIndex = szUserName.Find('$'); 
-	if (nDollarIndex >= 0)
-		szUserName.Delete(nDollarIndex);
 
 	// get mac address
-   	szMacAddress.Format(_T("%02X-%02X-%02X-%02X-%02X-%02X"),
-		pStatus->adapter_address[0],
-		pStatus->adapter_address[1],
-		pStatus->adapter_address[2],
-		pStatus->adapter_address[3],
-		pStatus->adapter_address[4],
-		pStatus->adapter_address[5]);
+	if (szMacAddress != NULL)
+	{
+   		szMacAddress->Format(_T("%02X-%02X-%02X-%02X-%02X-%02X"),
+			pStatus->adapter_address[0],
+			pStatus->adapter_address[1],
+			pStatus->adapter_address[2],
+			pStatus->adapter_address[3],
+			pStatus->adapter_address[4],
+			pStatus->adapter_address[5]);
+	}
 
     HeapFree (hHeap, 0, pStatus);
 
