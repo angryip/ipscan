@@ -73,6 +73,7 @@ public:
 
 // Implementation
 protected:		
+	CToolTipCtrl * m_pToolTips;
 	CBitmap m_bmpSelectColumns;
 	BOOL m_bSysCommand;
 	CBitmap m_bmpHideAdvanced;

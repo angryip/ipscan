@@ -106,6 +106,7 @@ CIpscanDlg::CIpscanDlg(CWnd* pParent /*=NULL*/)
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	m_szDefaultFileName = NULL;
+	m_pToolTips = NULL;
 }
 
 void CIpscanDlg::DoDataExchange(CDataExchange* pDX)
@@ -251,6 +252,19 @@ BOOL CIpscanDlg::OnInitDialog()
 	m_bmpShowAdvanced.LoadMappedBitmap(IDB_SHOW_ADVANCED);
 	m_bmpSelectColumns.LoadMappedBitmap(IDB_SELECT_COLUMNS);
 	((CButton*)GetDlgItem(IDC_SELECT_COLUMNS))->SetBitmap((HBITMAP)m_bmpSelectColumns.m_hObject);
+
+	// Add Tooltips
+	m_pToolTips = new CToolTipCtrl;
+	m_pToolTips->Create(this);
+	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTON1), "Start/Stop Scanning");
+	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTONIPUP), "Use the IP address of the specified hostname");
+	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTONPASTE), "Paste the IP address from clipboard");
+	m_pToolTips->AddTool(GetDlgItem(IDC_CLASS_D), "Make a class B range from the above IP addresses");
+	m_pToolTips->AddTool(GetDlgItem(IDC_CLASS_C), "Make a class C range from the above IP addresses");
+	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTON_TO_ADVANCED), "Show/Hide additional controls");
+	m_pToolTips->AddTool(GetDlgItem(IDC_SELECT_COLUMNS), "Select columns to be scanned");	
+	m_pToolTips->AddTool(GetDlgItem(IDC_SELECT_PORTS), "Select TCP ports to be scanned");	
+	m_pToolTips->Activate(TRUE);
 	
 	// Set window size
 	RECT rc;
@@ -778,7 +792,11 @@ void CIpscanDlg::OnGotoHostname()
 
 BOOL CIpscanDlg::PreTranslateMessage(MSG* pMsg) 
 {
-	if (TranslateAccelerator(m_hWnd,hAccel,pMsg ) ) return TRUE;
+	if (TranslateAccelerator(m_hWnd,hAccel,pMsg ) ) 
+		return TRUE;
+
+	if (m_pToolTips != NULL)
+		m_pToolTips->RelayEvent(pMsg);
 
 	return CDialog::PreTranslateMessage(pMsg);
 }
@@ -972,6 +990,7 @@ void CIpscanDlg::OnDestroy()
 	
 	delete(g_scanner);
 	delete(m_szDefaultFileName);
+	delete(m_pToolTips);
 }
 
 void CIpscanDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct) 
