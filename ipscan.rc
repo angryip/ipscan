@@ -65,12 +65,12 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "IP -> Clipboard\tCtrl+C",     ID_COMMANDS_IPCLIPBOARD
     END
-    POPUP "&Favourites"
+    POPUP "&Favorites"
     BEGIN
         MENUITEM "&Add current range...\tCtrl+B", 
                                                 ID_FAVOURITES_ADDCURRENTRANGE
 
-        MENUITEM "Delete favourite...",         ID_FAVOURITES_DELETEFAVOURITE
+        MENUITEM "Delete favorite...",          ID_FAVOURITES_DELETEFAVOURITE
 
         MENUITEM SEPARATOR
     END
@@ -401,13 +401,13 @@ END
 
 IDD_FAVOURITE_DELETE DIALOG DISCARDABLE  0, 0, 186, 63
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Delete Favourite"
+CAPTION "Delete Favorite"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "&Delete",IDOK,33,42,50,14
     PUSHBUTTON      "&Cancel",IDCANCEL,103,42,50,14
-    LTEXT           "Select a favourite from the list to delete it:",
-                    IDC_STATIC,7,7,130,8
+    LTEXT           "Select a favorite from the list to delete it:",
+                    IDC_STATIC,7,7,126,8
     COMBOBOX        IDC_FAV_LIST,7,21,172,95,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
 END

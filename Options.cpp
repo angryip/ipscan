@@ -415,8 +415,8 @@ void COptions::addFavourite()
 
 	CQueryDlg dlg(pDlg);
 
-	dlg.m_szCaption = "Add Favourite";
-	dlg.m_szQueryText = "Enter the name of current favourite:";	
+	dlg.m_szCaption = "Add Favorite";
+	dlg.m_szQueryText = "Enter the name of current favorite:";	
 
 	CString szTmp;	
 
