@@ -243,6 +243,8 @@ BOOL CIpscanDlg::OnInitDialog()
 		m_list.InsertColumn(iCol,str,LVCFMT_LEFT,w,iCol);
 	}
 
+	m_list.SetExtendedStyle(LVS_EX_FULLROWSELECT);
+
 	// Set button's bitmaps
 	m_bmpuparrow.LoadMappedBitmap(IDB_UPARROW);
 	((CButton*)GetDlgItem(IDC_BUTTONIPUP))->SetBitmap((HBITMAP)m_bmpuparrow.m_hObject);
@@ -425,7 +427,9 @@ void CIpscanDlg::OnButton1()
 		m_scanning=TRUE;
 		
 		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)stopbmp.m_hObject); // stop scanning button
-		m_list.DeleteAllItems();
+		//m_list.SetRedraw(FALSE);
+		m_list.DeleteAllItems();		
+		//m_list.SetRedraw(TRUE);
 
 		CMenu *tmp = GetMenu();
 		tmp->GetSubMenu(3)->EnableMenuItem(ID_OPTIONS_OPTIONS,MF_GRAYED);
@@ -609,6 +613,8 @@ UINT ThreadProc(LPVOID cur_ip)
 	DWORD ReplyCount;
 	ReplyCount = lpfnIcmpSendEcho(hICMP, in.S_un.S_addr, DataBuf, 32, 
 		&IPInfo, RepData, sizeof(RepData), d->m_timeout);
+
+	lpfnIcmpCloseHandle(hICMP);
 	
 	if (!ReplyCount) 
 	{
