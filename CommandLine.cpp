@@ -39,7 +39,7 @@ CCommandLine::~CCommandLine()
 }
 
 BOOL CCommandLine::process()
-{
+{	
 	if (__argc!=1) 
 	{
 	
@@ -71,6 +71,9 @@ BOOL CCommandLine::process()
 							break;
 						case 'a': 
 							m_nOptions |= CMDO_APPEND_FILE; 
+							break;
+						case 'h':
+							m_nOptions |= CMDO_HIDE_WINDOW;
 							break;
 						case 'f': 
 							if (j == 1)	// Accept "f" only as a first character
@@ -110,12 +113,19 @@ BOOL CCommandLine::process()
 					case 3: m_szFilename = (CString)__targv[i]; break;
 				}
 			}
-		}
+		}		
 		
 		if (m_szFilename.GetLength() > 0) 
-		{
+		{			
 			m_nOptions |= CMDO_SAVE_TO_FILE;
 			m_nOptions |= CMDO_START_SCAN;
+		}
+		else
+		{
+			if (m_nOptions & CMDO_HIDE_WINDOW)
+			{
+				MessageBox(0, "Filename is not given, will not hide the window", "Warning", MB_OK | MB_ICONWARNING);
+			}
 		}
 
 		return TRUE;
@@ -138,6 +148,8 @@ void CCommandLine::displayHelp()
 				"\t-s\tautomatically start scanning (if filename is not given)\n"				
 				"\t-e\tdo not exit after saving data\n"
 				"\t-a\tappend to the file, do not overwrite\n"
-				"\t-f:X\tFile format. X can be 'csv', 'html' or 'txt'.\n"
+				"\t-h\tHide main window while scanning. Be careful with this!\n"
+				"\t  \tRun only from batch files with this option.\n"
+				"\t-f:X\tFile format. X can be 'csv', 'html', 'txt' or 'xml'.\n"
 			   ,"Angry IP Scanner Help",MB_OK | MB_ICONINFORMATION);
 }

@@ -129,7 +129,10 @@ void CScanListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		
 		GetOpenPorts(nItem, szOpenPorts);
 
-		szOpenPorts = "Open ports: " + szOpenPorts;		
+		if (szOpenPorts.GetLength() == 0)
+			szOpenPorts = "Open ports: ???";
+		else
+			szOpenPorts = "Open ports: " + szOpenPorts;		
 
 		pDC->DrawText(szOpenPorts, -1, rcCol, DT_LEFT | DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP 
 					| DT_BOTTOM | DT_END_ELLIPSIS);

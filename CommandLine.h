@@ -26,6 +26,7 @@
 #define CMDO_NOT_EXIT		2
 #define CMDO_SAVE_TO_FILE	4
 #define CMDO_APPEND_FILE	16
+#define CMDO_HIDE_WINDOW	32
 
 
 class CCommandLine 

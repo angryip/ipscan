@@ -383,34 +383,33 @@ BOOL CIpscanDlg::OnInitDialog()
 	#endif
 
 	// Process command-line
-	CCommandLine *cCmdLine = new CCommandLine();
-	if (cCmdLine->process())
+	CCommandLine cCmdLine;
+	if (cCmdLine.process())
 	{		
-		m_ip1.SetWindowText(cCmdLine->m_szStartIP);
-		m_ip2.SetWindowText(cCmdLine->m_szEndIP);
+		m_ip1.SetWindowText(cCmdLine.m_szStartIP);
+		m_ip2.SetWindowText(cCmdLine.m_szEndIP);
 		m_ip2_virgin = FALSE;
 
-		m_nCmdLineOptions = cCmdLine->m_nOptions;
-		m_nCmdLineFileFormat = cCmdLine->m_nFileFormat;
+		m_nCmdLineOptions = cCmdLine.m_nOptions;
+		m_nCmdLineFileFormat = cCmdLine.m_nFileFormat;
 
 		if (m_nCmdLineOptions & CMDO_SAVE_TO_FILE)
 		{
-			m_szDefaultFileName = new CString(cCmdLine->m_szFilename);
+			m_szDefaultFileName = new CString(cCmdLine.m_szFilename);
 		}
 		
 		if (m_nCmdLineOptions & CMDO_START_SCAN)
 		{
 			CIpscanDlg::OnButtonScan();
 		}
-	}
-	delete cCmdLine;
+	}	
 
 	#ifdef DEBUG_MESSAGES
 		AfxMessageBox("OnInitDialog(): Finished", 0, 0);
 	#endif
 
 	// Initialize the critical section (used for synchronization of threads)
-	InitializeCriticalSection(&g_criticalSection);
+	InitializeCriticalSection(&g_criticalSection);	
 	
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -441,6 +440,11 @@ void CIpscanDlg::OnSysCommand(UINT nID, LPARAM lParam)
 
 void CIpscanDlg::OnPaint() 
 {
+	if (m_nCmdLineOptions & CMDO_HIDE_WINDOW)
+	{
+		ShowWindow(SW_HIDE);
+	}
+
 	if (IsIconic())
 	{
 		CPaintDC dc(this); // device context for painting
@@ -459,10 +463,8 @@ void CIpscanDlg::OnPaint()
 		dc.DrawIcon(x, y, m_hIcon);
 	}
 	else
-	{
-	
-		CDialog::OnPaint();
-		
+	{	
+		CDialog::OnPaint();	
 	}
 }
 
@@ -488,7 +490,7 @@ void CIpscanDlg::OnSize(UINT nType, int cx, int cy)
 	if (m_list.m_hWnd != NULL) 
 	{
 		HandleResizing(cx, cy);
-	}
+	}	
 }
 
 void CIpscanDlg::OnIpExit() 
@@ -830,8 +832,8 @@ void CAboutDlg::OnAboutOK()
 }
 
 void CIpscanDlg::OnShowWindow(BOOL bShow, UINT nStatus) 
-{
-	CDialog::OnShowWindow(bShow, nStatus);
+{	
+	CDialog::OnShowWindow(bShow, nStatus);	
 }
 
 void CIpscanDlg::OnOptionsSaveoptions() 
