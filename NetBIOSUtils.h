@@ -2,7 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include <nb30.h>
+#include "netbios30.h"
 
 #if !defined(AFX_SCANFUNC_H__15CE10D2_FC18_44BA_A9CA_52346AC446E3__INCLUDED_)
 #define AFX_SCANFUNC_H__15CE10D2_FC18_44BA_A9CA_52346AC446E3__INCLUDED_
@@ -10,6 +10,8 @@
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
+
+typedef UCHAR (APIENTRY *tNetBiosFunc)(PNCB pncb);
 
 typedef struct _ASTAT_
 {

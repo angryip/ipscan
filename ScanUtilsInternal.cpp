@@ -56,7 +56,7 @@ BOOL ScanIntInitPing()
 			szTmp.LoadString(IDS_SCAN_HOMEPAGE);
 			szTmp = "ICMP.DLL is not found. Program will not work.\n"
 		    		"You can find this DLL on Angry IP Scanner homepage: " + szTmp;
-			MessageBox(0, szTmp,"Error",MB_OK | MB_ICONHAND);
+			MessageBox(0, szTmp,"Fatal Error",MB_OK | MB_ICONHAND);
 			exit(666);
 		}
 

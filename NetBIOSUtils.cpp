@@ -18,8 +18,20 @@ static char THIS_FILE[]=__FILE__;
 
 #define CONST_OWN_NETBIOS_NAME "ANGRYIPSCAN"
 
+tNetBiosFunc pNetBiosFunc;
+
 CNetBIOSUtils::CNetBIOSUtils()
 {	
+	HMODULE hDll = LoadLibrary("netapi32.dll");	
+
+	pNetBiosFunc = (tNetBiosFunc) GetProcAddress(hDll, "Netbios");
+	
+	if (!hDll || !pNetBiosFunc)
+	{
+		MessageBox(0, "NETAPI32.DLL cannot be loaded, so NetBIOS scanning is not functional.", "Fatal Error", MB_OK | MB_ICONHAND);
+		exit(1);
+	}
+
 	GetLanaNumber();
 	Reset(m_nLana, 20, 30);
 	AddName(m_nLana, CONST_OWN_NETBIOS_NAME);
@@ -66,7 +78,7 @@ BOOL CNetBIOSUtils::Reset(int nLana, int nSessions, int nNames)
     ncb.ncb_callname[0] = nSessions;  // maximum sessions 
     ncb.ncb_callname[2] = nNames;   // maximum names 
 
-    Netbios (&ncb);    
+    pNetBiosFunc(&ncb);    
 
     return (NRC_GOODRET == ncb.ncb_retcode);
 	
@@ -83,7 +95,7 @@ BOOL CNetBIOSUtils::AddName(int nLana, LPCSTR szName)
 
     MakeName ((char*)ncb.ncb_name, szName);
 
-    Netbios (&ncb);    
+    pNetBiosFunc (&ncb);    
 
     return (NRC_GOODRET == ncb.ncb_retcode);
 }
@@ -102,7 +114,7 @@ BOOL CNetBIOSUtils::AdapterStatus(int nLana, PVOID pBuffer, int cbBuffer, LPCSTR
 
     MakeName((char*)&ncb.ncb_callname, szName);
 
-    Netbios (&ncb);    
+    pNetBiosFunc(&ncb);    
 
     return (NRC_GOODRET == ncb.ncb_retcode);
 }
@@ -117,7 +129,7 @@ BOOL CNetBIOSUtils::DeleteName(int nLana, LPCSTR szName)
 
     MakeName ((char*)ncb.ncb_name, szName);
 
-    Netbios (&ncb);
+    pNetBiosFunc(&ncb);
 
     return (NRC_GOODRET == ncb.ncb_retcode);
 }
@@ -132,7 +144,7 @@ void CNetBIOSUtils::GetLanaNumber()
 	ncb.ncb_buffer = (unsigned char *) &lan_num; 
 	ncb.ncb_length = sizeof(lan_num);
 
-	Netbios((NCB*) &ncb);
+	pNetBiosFunc((NCB*) &ncb);
 
 	m_nLana = lan_num.lana[0];
 }
