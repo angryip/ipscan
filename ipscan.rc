@@ -140,8 +140,8 @@ BEGIN
                     WS_GROUP,13,68,42,10
     CONTROL         "Only alive",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,55,
                     68,47,10
-    CONTROL         "Only open ports",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON | 
-                    NOT WS_VISIBLE,104,69,65,10
+    CONTROL         "Only open ports",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,
+                    104,69,65,10
     CONTROL         "Resolve host names",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,7,91,80,10
     CONTROL         "Try to resolve hostname if host is dead",IDC_CHECK3,
@@ -161,8 +161,6 @@ BEGIN
     LTEXT           "ms",IDC_STATIC,94,37,10,8
     EDITTEXT        IDC_EDIT3,89,131,62,12,ES_AUTOHSCROLL | NOT WS_VISIBLE
     GROUPBOX        "Display options",IDC_STATIC,7,57,165,26
-    LTEXT           "Coming soon (in the next version)!",IDC_STATIC,13,69,
-                    107,8,NOT WS_VISIBLE
 END
 
 
@@ -372,7 +370,7 @@ BEGIN
     IDS_STRING32789         "1"
     IDS_STRING32790         "1"
     IDS_STRING32791         "1"
-    IDS_VERSION             "1.88"
+    IDS_VERSION             "1.89"
     IDS_SCAN_HOMEPAGE       "http://www.angryziber.com/ipscan/"
     IDS_HOMEPAGE            "http://www.angryziber.com/"
     IDS_MAIL                "angryziber@angryziber.com"

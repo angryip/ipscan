@@ -98,8 +98,8 @@ BOOL CCommandLine::process()
 
 void CCommandLine::displayHelp()
 {
-	MessageBox(0, "Command-line usage:\n\n"
-				"ipscan.exe <start_ip> <end_ip> [filename]\n"
+	MessageBox(0, "Command-line parameters:\n\n"
+				"<start_ip> <end_ip> [filename]\n"
 				"\tstart_ip\t- starting IP address\n"
 				"\tend_ip\t- ending IP address\n"
 				"\tfilename\t- filename to save listing to (optional)\n\n"
@@ -108,7 +108,7 @@ void CCommandLine::displayHelp()
 				"Additional options:\n"
 				"\t-s\tautomatically start scanning (if filename is not given)\n"
 				"\t-c\tfile format is CSV, not TXT\n"
-				"\t-e\tdo not exit after after saving data\n"
+				"\t-e\tdo not exit after saving data\n"
 				"\t-a\tappend to the file, do not overwrite\n"
 			   ,"Angry IP Scanner Help",MB_OK | MB_ICONINFORMATION);
 }

@@ -13,6 +13,7 @@
 #include "SaveToFile.h"
 #include <winbase.h>
 #include "MessageDlg.h"
+#include "NetBIOSUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -985,82 +986,38 @@ void CIpscanDlg::OnClassD()
 
 void CIpscanDlg::OnWindozesucksShownetbiosinfo() 
 {
+	CString szMessage;
+	char ipstr[16];	
+	CString szUserName, szComputerName, szGroupName, szMacAddress;
+	CMessageDlg cMessageDlg(this);
+	
 	POSITION pos = m_list.GetFirstSelectedItemPosition();
 	m_menucuritem = m_list.GetNextSelectedItem(pos);
 	if (m_menucuritem<0) { ErrorNotSelected();return;}
-	char ipstr[16],str[600],comspec[600],tempdir[60];
-	STARTUPINFO si;
-	PROCESS_INFORMATION pi;
-	FILE *f;
-	char *tmp;
-
+	
 	status("Getting info...");
 	m_list.GetItemText(m_menucuritem,CL_IP,(char*)&ipstr,16);
-	GetEnvironmentVariable("COMSPEC",(char*)&comspec,sizeof(comspec));
-	GetTempPath(sizeof(tempdir),(char*)&tempdir);
-	strcat((char*)&tempdir,"ipsnbt.tmp");
-	DeleteFile((char*)&tempdir);
-	sprintf((char*)&str,"%s /c nbtstat.exe -A %s >%s",(char*)comspec,(char*)&ipstr,(char*)&tempdir);
-	FillMemory(&si,sizeof(si),0);
-	si.cb = sizeof(si);
-	si.dwFlags = STARTF_USESHOWWINDOW;
-	si.wShowWindow = SW_HIDE;
-	if (!CreateProcess(NULL,(char*)&str,NULL,NULL,TRUE,0,NULL,NULL,&si,&pi)) {
-		MessageBox("Windows networking is not installed","Error",MB_OK | MB_ICONERROR);
-		goto exit_func;
-	}
-	WaitForSingleObject(pi.hProcess,3000);
-	f = fopen((char*)&tempdir,"rt");
-	if (!f) {
-		MessageBox("Unknown error or windows networking is not installed","Error",MB_OK | MB_ICONERROR);
-		goto exit_func;
-	}
-//	while (str[0]!='-' && !feof(f)) fgets((char*)&str,sizeof(str),f);
-//	if (feof(f)) { 
-//		MessageBox("NetBIOS service is not running on the specified host or host is dead","Error",MB_OK | MB_ICONERROR);
-//		goto exit_func;
-//	}
-	/*int tmp=1;
-	while (!foef(f)) {
-		fgets((char*)&str,sizeof(str),f);
-		if strstr((char*)&str,">  UNIQUE") {
-			if
-		}
-	}*/
 
-	int charindex;
-	
-	while (!strstr((char*)&str,">  UNIQUE") && !feof(f)) fgets((char*)&str,sizeof(str),f);
-	if (feof(f)) { 
-		MessageBox("NetBIOS service is not running on the specified host or host is dead","Error",MB_OK | MB_ICONERROR);
+	CNetBIOSUtils cNetBIOS((char*)&ipstr);
+	if (!cNetBIOS.GetNames(szUserName, szComputerName, szGroupName, szMacAddress))
+	{
+		MessageBox("Cannot get NetBIOS information.","Error",MB_OK | MB_ICONERROR);
 		goto exit_func;
 	}
-	for (charindex = 0; str[charindex] != 0 && str[charindex] != '<'; charindex++);
-	str[charindex]=0; sprintf((char*)&comspec,"NetBIOS info for %s\n\nName:\t\t%s\nWorkgroup:\t",(char*)&ipstr,(char*)&str);
-	while (!strstr((char*)&str,">  GROUP")) fgets((char*)&str,sizeof(str),f);
 	
-	str[charindex]=0; strcat((char*)&comspec,(char*)&str);
-	ipstr[0]=0;
-	for(;;) {
-		while ((strstr((char*)&str,"<03>  UNIQUE")==0 && (str[0]!=10 && str[0]!=13)) || strchr((char*)&str,'$')!=0) {
-			fgets((char*)&str,sizeof(str),f);
-		}
-		if (str[0]==10 || str[0]==13) break;
-		str[charindex]=0; strcpy((char*)&ipstr,(char*)&str);
-	} 
-	strcat((char*)&comspec,"\nUsername:\t");
-	if (ipstr[0]==0) 
-		strcat((char*)&comspec,"<Unknown>");
-	else
-		strcat((char*)&comspec,(char*)&ipstr);
-	fseek(f,0,0);
-	while (!(tmp = strstr((char*)&str,"= ")) && !feof(f)) fgets((char*)&str,sizeof(str),f);
-	tmp+=2;
-	strcat((char*)&comspec,"\nMAC Address:\t");
-	strcat((char*)&comspec,tmp);
-	fclose(f);
-	DeleteFile((char*)&tempdir);
-	MessageBox((char*)&comspec,"NetBIOS",MB_OK | MB_ICONINFORMATION);
+	szMessage.Format(
+		"NetBIOS information for %s\r\n\r\n"
+		"Computer Name:\t%s\r\n"
+		"Workgroup Name:\t%s\r\n"
+		"Username:\t%s\r\n"
+		"\r\n"
+		"MAC Address:\r\n%s",
+		(char*) &ipstr, szComputerName, szGroupName, szUserName, szMacAddress
+	);
+
+	cMessageDlg.setMessageText(szMessage);
+	cMessageDlg.DoModal();
+
 exit_func:
 	status("Ready");
 }

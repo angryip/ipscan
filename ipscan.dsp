@@ -122,6 +122,10 @@ SOURCE=.\MessageDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\NetBIOSUtils.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\OptionsDlg.cpp
 # End Source File
 # Begin Source File
@@ -164,6 +168,10 @@ SOURCE=.\Link.h
 # Begin Source File
 
 SOURCE=.\MessageDlg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\NetBIOSUtils.h
 # End Source File
 # Begin Source File
 
