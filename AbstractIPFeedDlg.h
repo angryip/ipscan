@@ -9,8 +9,8 @@
  * You may not rename the program and distribute it.                 *
  *********************************************************************/
 
-#if !defined(AFX_IPRANGE_H__4E9AAB13_1D19_41DA_9A00_971A87F8F6A5__INCLUDED_)
-#define AFX_IPRANGE_H__4E9AAB13_1D19_41DA_9A00_971A87F8F6A5__INCLUDED_
+#if !defined(AFX_ABSTRACTIPRANGEDLG_H__4E9AAB13_1D19_41DA_9A00_971A87F8F6A5__INCLUDED_)
+#define AFX_ABSTRACTIPRANGEDLG_H__4E9AAB13_1D19_41DA_9A00_971A87F8F6A5__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
@@ -18,54 +18,35 @@
 // IPRangeDlg.h : header file
 //
 
-#include "AbstractIPFeedDlg.h"
-
 /////////////////////////////////////////////////////////////////////////////
 // CIPRangeDlg dialog
 
-class CIPRangeDlg : public CAbstractIPFeedDlg
+class CAbstractIPFeedDlg : public CDialog
 {
 // Construction
 public:
-	CAbstractIPFeed * createIPFeed();
-
-	CIPRangeDlg(CWnd* pParent = NULL);   // standard constructor
-
-// Dialog Data
-	//{{AFX_DATA(CIPRangeDlg)
-	enum { IDD = IDD_IP_FEED_IP_RANGE };
-	CIPAddressCtrl	m_ctIPEnd;
-	CIPAddressCtrl	m_ctIPStart;
-	CButton	m_btnIPUp;
-	CString	m_szHostname;
-	//}}AFX_DATA
-
-	BOOL m_bIp2Virgin;
-
+	virtual CAbstractIPFeed * createIPFeed() = 0;
+	
+	CAbstractIPFeedDlg(int nIDD, CWnd* pParent = NULL);   // standard constructor
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CIPRangeDlg)
 	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	public:
-//	virtual CWnd * SetFocus();
+	virtual CWnd * SetFocus();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
+	CToolTipCtrl * m_pToolTips;
+
 	// Generated message map functions
 	//{{AFX_MSG(CIPRangeDlg)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnDestroy();
-	afx_msg void OnButtonipup();
-	afx_msg void OnFieldchangedIpaddress1(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnFieldchangedIpaddress2(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnButtonpaste();
-	afx_msg void OnClassC();
-	afx_msg void OnClassD();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
@@ -73,4 +54,4 @@ protected:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
-#endif // !defined(AFX_IPRANGE_H__4E9AAB13_1D19_41DA_9A00_971A87F8F6A5__INCLUDED_)
+#endif // !defined(AFX_ABSTRACTIPRANGEDLG_H__4E9AAB13_1D19_41DA_9A00_971A87F8F6A5__INCLUDED_)

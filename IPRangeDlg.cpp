@@ -30,7 +30,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CIPRangeDlg::CIPRangeDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CIPRangeDlg::IDD, pParent)
+	: CAbstractIPFeedDlg(CIPRangeDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CIPRange)
 	m_szHostname = _T("");
@@ -55,6 +55,7 @@ BEGIN_MESSAGE_MAP(CIPRangeDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTONIPUP, OnButtonipup)
 	ON_NOTIFY(IPN_FIELDCHANGED, IDC_IPADDRESS1, OnFieldchangedIpaddress1)
 	ON_NOTIFY(IPN_FIELDCHANGED, IDC_IPADDRESS2, OnFieldchangedIpaddress2)
+	ON_BN_CLICKED(IDC_BUTTONPASTE, OnButtonpaste)
 	ON_BN_CLICKED(IDC_CLASS_C, OnClassC)
 	ON_BN_CLICKED(IDC_CLASS_D, OnClassD)
 	//}}AFX_MSG_MAP
@@ -65,7 +66,7 @@ END_MESSAGE_MAP()
 
 BOOL CIPRangeDlg::OnInitDialog() 
 {
-	CDialog::OnInitDialog();
+	CAbstractIPFeedDlg::OnInitDialog();
 	
 	// Initialize controls
 	m_bIp2Virgin = TRUE;
@@ -93,8 +94,6 @@ BOOL CIPRangeDlg::OnInitDialog()
 	OnFieldchangedIpaddress1(NULL, NULL);
 
 	// Initialize tooltips
-	m_pToolTips = new CToolTipCtrl;
-	m_pToolTips->Create(this);
 	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTONIPUP), "Use the IP address of the specified hostname");
 	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTONPASTE), "Paste the IP address from clipboard");
 	m_pToolTips->AddTool(GetDlgItem(IDC_CLASS_D), "Make a class B range from the above IP addresses");
@@ -104,19 +103,8 @@ BOOL CIPRangeDlg::OnInitDialog()
 	return TRUE;  
 }
 
-void CIPRangeDlg::OnDestroy() 
-{
-	CDialog::OnDestroy();	
-	
-	if (g_pIPFeed != NULL)
-		delete(g_pIPFeed);
-}
-
 BOOL CIPRangeDlg::PreTranslateMessage(MSG* pMsg) 
 {
-	if (m_pToolTips != NULL)
-		m_pToolTips->RelayEvent(pMsg);
-
 	// Check for Enter key presses
 	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN)
 	{
@@ -129,9 +117,29 @@ BOOL CIPRangeDlg::PreTranslateMessage(MSG* pMsg)
 		}
 	}
 
-	return CDialog::PreTranslateMessage(pMsg);
+	return CAbstractIPFeedDlg::PreTranslateMessage(pMsg);
 }
 
+void CIPRangeDlg::OnButtonpaste() 
+{
+	OpenClipboard();
+	HGLOBAL hglbCopy = GetClipboardData(CF_TEXT);
+	CloseClipboard();	
+
+	if (hglbCopy==NULL) {
+		MessageBox("Clipboard is empty","Error",MB_OK | MB_ICONHAND);
+		return;
+	}
+
+	LPTSTR lp;
+	lp = (char*)GlobalLock(hglbCopy);	
+	
+	m_ctIPStart.SetWindowText(lp);
+	m_ctIPEnd.SetWindowText(lp);
+	m_bIp2Virgin = TRUE;
+
+	GlobalUnlock(lp);	
+}
 
 void CIPRangeDlg::OnButtonipup() 
 {
@@ -218,7 +226,7 @@ CAbstractIPFeed * CIPRangeDlg::createIPFeed()
 	return new CIPRangeIPFeed(nStartIP, nEndIP);
 }
 
-CWnd * CIPRangeDlg::SetFocus()
+/*This should be implemented in the base class CWnd * CIPRangeDlg::SetFocus()
 {
 	return m_ctIPStart.SetFocus();
-}
+}*/

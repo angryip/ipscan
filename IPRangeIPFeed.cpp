@@ -89,3 +89,16 @@ CString CIPRangeIPFeed::getScanSummary()
 	return szResult;
 }
 
+CString CIPRangeIPFeed::serialize()
+{
+	CString szResult;
+
+	szResult.Format("%u|%u", m_nStartIP, m_nEndIP);
+
+	return szResult;
+}
+	
+BOOL CIPRangeIPFeed::unserialize(CString& szSettings)
+{
+	return FALSE;
+}

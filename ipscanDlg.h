@@ -22,7 +22,7 @@
 #include "resource.h"
 #include "Scanner.h"
 #include "ScanListCtrl.h"
-#include "IpRangeDlg.h"
+#include "AbstractIPFeedDlg.h"
 #include "AbstractIPFeed.h"
 
 #define SCAN_MODE_NOT_SCANNING	0
@@ -58,7 +58,7 @@ public:
 	CMenu * m_menuContext;
 	unsigned long m_tickcount;	
 	int m_nScanMode;
-	CIPRangeDlg m_dlgIPRange;
+	CAbstractIPFeedDlg *m_dlgIPFeed;
 	
 	CIpscanDlg(CWnd* pParent = NULL);	// standard constructor
 
@@ -123,8 +123,7 @@ protected:
 	afx_msg void OnGotoNextdead();
 	afx_msg void OnGotoNextopenport();
 	afx_msg void OnGotoNextclosedport();
-	afx_msg void OnGotoHostname();
-	afx_msg void OnButtonpaste();
+	afx_msg void OnGotoHostname();	
 	afx_msg void OnHelpCommandline();
 	afx_msg void OnHelpForum();
 	afx_msg void OnOptionsInstallProgram();

@@ -31,6 +31,7 @@
 #include "SelectColumnsDlg.h"
 #include "QueryDlg.h"
 #include "EditOpenersDlg.h"
+#include "IPRangeDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -178,8 +179,7 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_GOTO_NEXTDEAD, OnGotoNextdead)
 	ON_COMMAND(ID_GOTO_NEXTOPENPORT, OnGotoNextopenport)
 	ON_COMMAND(ID_GOTO_NEXTCLOSEDPORT, OnGotoNextclosedport)
-	ON_COMMAND(ID_GOTO_HOSTNAME, OnGotoHostname)	
-	ON_BN_CLICKED(IDC_BUTTONPASTE, OnButtonpaste)
+	ON_COMMAND(ID_GOTO_HOSTNAME, OnGotoHostname)		
 	ON_COMMAND(ID_HELP_COMMANDLINE, OnHelpCommandline)
 	ON_COMMAND(ID_HELP_FORUM, OnHelpForum)
 	ON_COMMAND(ID_OPTIONS_INSTALL_PROGRAM, OnOptionsInstallProgram)
@@ -326,12 +326,13 @@ BOOL CIpscanDlg::OnInitDialog()
 	}
 
 	// Create IP feed dialogs
-	VERIFY(m_dlgIPRange.Create(CIPRangeDlg::IDD, this));
+	m_dlgIPFeed = new CIPRangeDlg();
+	ASSERT(m_dlgIPFeed->Create(CIPRangeDlg::IDD, this));
 	
 	// Add items to the listbox
 	CString szText;
-	m_dlgIPRange.GetWindowText(szText);
-	VERIFY(m_ctIPFeed.AddString(szText) == 0);
+	m_dlgIPFeed->GetWindowText(szText);
+	ASSERT(m_ctIPFeed.AddString(szText) == 0);
 
 	// Update currently selected feeder
 	m_ctIPFeed.SetCurSel(0);
@@ -372,7 +373,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	str.LoadString(IDS_VERSION);
 	SetWindowText("Angry IP Scanner "+str);	
 
-	m_dlgIPRange.SetFocus();
+	m_dlgIPFeed->SetFocus();
 
 
 	#ifdef DEBUG_MESSAGES
@@ -383,9 +384,9 @@ BOOL CIpscanDlg::OnInitDialog()
 	CCommandLine cCmdLine;
 	if (cCmdLine.process())
 	{		
-		/*m_dlgIPRange.m_ctIPStart.SetWindowText(cCmdLine.m_szStartIP);
-		m_dlgIPRange.m_ctIPEnd.SetWindowText(cCmdLine.m_szEndIP);
-		m_dlgIPRange.m_bIp2Virgin = FALSE;
+		/*m_dlgIPFeed->m_ctIPStart.SetWindowText(cCmdLine.m_szStartIP);
+		m_dlgIPFeed->m_ctIPEnd.SetWindowText(cCmdLine.m_szEndIP);
+		m_dlgIPFeed->m_bIp2Virgin = FALSE;
 
 		m_nCmdLineOptions = cCmdLine.m_nOptions;
 		m_nCmdLineFileFormat = cCmdLine.m_nFileFormat;
@@ -503,9 +504,9 @@ void CIpscanDlg::UpdateCurrentIPFeedDialog()
 	int nCurrentFeed = m_ctIPFeed.GetCurSel();
 
 	// TODO: add more feeders here
-	m_dlgIPRange.ShowWindow(nCurrentFeed == 0 ? SW_SHOW : SW_HIDE);	
+	m_dlgIPFeed->ShowWindow(nCurrentFeed == 0 ? SW_SHOW : SW_HIDE);	
 	if (nCurrentFeed == 0)
-		m_dlgIPRange.SetFocus();
+		m_dlgIPFeed->SetFocus();
 }
 
 void CIpscanDlg::RecreateIPFeed()
@@ -518,7 +519,7 @@ void CIpscanDlg::RecreateIPFeed()
 	}
 
 	// Create new IP feed object	
-	g_pIPFeed = m_dlgIPRange.createIPFeed();
+	g_pIPFeed = m_dlgIPFeed->createIPFeed();
 }
 
 void CIpscanDlg::OnButtonScan() 
@@ -611,16 +612,6 @@ void CIpscanDlg::OnButtonScan()
 			{
 				// Stop scanning (but wait for existing threads)
 
-				/*if (g_bScanExistingItems)
-				{
-					g_nEndItemIndex = g_nCurrentItemIndex;
-				}
-				else
-				{
-					g_nEndIP = g_nCurrentIP;
-				}*/
-
-				// TODO: this must be tested so that it works not worse, then the commented out code above
 				m_bScanningAborted = TRUE;
 				
 				m_progress.SetPos(100);				
@@ -653,6 +644,9 @@ void CIpscanDlg::OnButtonScan()
 			m_progress.SetPos(0);
 
 			status(NULL);	// Ready
+
+			// Get attention of the user
+			FlashWindow(TRUE);
 
 			if (m_szDefaultFileName)
 			{
@@ -945,14 +939,6 @@ BOOL CIpscanDlg::PreTranslateMessage(MSG* pMsg)
 	// Check for Enter key presses
 	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN)
 	{
-		// If this is a hostname edit control
-		/* TODO!!! if (pMsg->hwnd == GetDlgItem(IDC_HOSTNAME)->m_hWnd)
-		{
-			m_ipup.SetFocus();
-			OnButtonipup();
-			return TRUE;
-		}
-		else*/
 		// If this is a list control
 		if (pMsg->hwnd == m_list.m_hWnd)
 		{
@@ -965,27 +951,6 @@ BOOL CIpscanDlg::PreTranslateMessage(MSG* pMsg)
 	}
 
 	return CDialog::PreTranslateMessage(pMsg);
-}
-
-void CIpscanDlg::OnButtonpaste() 
-{
-	OpenClipboard();
-	HGLOBAL hglbCopy = GetClipboardData(CF_TEXT);
-	CloseClipboard();	
-
-	if (hglbCopy==NULL) {
-		MessageBox("Clipboard is empty","Error",MB_OK | MB_ICONHAND);
-		return;
-	}
-
-	LPTSTR lp;
-	lp = (char*)GlobalLock(hglbCopy);	
-	
-	m_dlgIPRange.m_ctIPStart.SetWindowText(lp);
-	m_dlgIPRange.m_ctIPEnd.SetWindowText(lp);
-	m_dlgIPRange.m_bIp2Virgin = TRUE;
-
-	GlobalUnlock(lp);	
 }
 
 void CIpscanDlg::OnHelpCommandline() 
@@ -1007,6 +972,7 @@ void CIpscanDlg::OnDestroy()
 	delete(g_scanner);
 	delete(m_szDefaultFileName);
 	delete(m_pToolTips);	
+	delete(m_dlgIPFeed);
 
 	if (g_pIPFeed != NULL)
 		delete(g_pIPFeed);
@@ -1064,7 +1030,7 @@ void CIpscanDlg::OnButtonToAdvanced()
 	GetClientRect(&rc);
 	HandleResizing(rc.right-rc.left, rc.bottom-rc.top);
 		
-	m_dlgIPRange.SetFocus();	
+	m_dlgIPFeed->SetFocus();	
 }
 
 void CIpscanDlg::HandleResizing(int cx, int cy)
@@ -1503,18 +1469,21 @@ void CIpscanDlg::OnExecuteFavouritesMenu(UINT nID)
 
 	int nFavouriteIndex = nID - ID_MENU_FAVOURITES_001;
 	
+	/*
+	TODO: fix favorites!
+
 	char *szIP;
 	in_addr inaddr;
-	
+		
 	inaddr.S_un.S_addr = g_options->m_aFavourites[nFavouriteIndex].nIP1;
 	szIP = inet_ntoa(inaddr);	
-	m_dlgIPRange.m_ctIPStart.SetWindowText(szIP);
+	m_dlgIPFeed->m_ctIPStart.SetWindowText(szIP);
 	
 	inaddr.S_un.S_addr = g_options->m_aFavourites[nFavouriteIndex].nIP2;
 	szIP = inet_ntoa(inaddr);	
-	m_dlgIPRange.m_ctIPEnd.SetWindowText(szIP);
+	m_dlgIPFeed->m_ctIPEnd.SetWindowText(szIP);
 
-	m_dlgIPRange.m_bIp2Virgin = FALSE;
+	m_dlgIPFeed->m_bIp2Virgin = FALSE;*/
 }
 
 void CIpscanDlg::OnFavouritesDeleteFavourite() 

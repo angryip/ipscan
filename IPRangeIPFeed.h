@@ -48,6 +48,9 @@ public:
 
 	virtual CString getScanSummary();
 
+	virtual CString serialize();
+	
+	virtual BOOL unserialize(CString& szSettings);
 };
 
 #endif // !defined(AFX_IPRANGEIPFEED_H__407A3998_D78B_412C_9BB3_CC54DEE737CD__INCLUDED_)
