@@ -153,6 +153,15 @@ void CScanner::initListColumns(CListCtrl *pListCtrl)
 	
 }
 
+void CScanner::initMenuWithColumns(CMenu *pMenu)
+{
+	for (int nCol=0; nCol < m_nColumnCount; nCol++) 
+	{							
+		pMenu->InsertMenu(nCol, MF_BYPOSITION, 1, *m_Columns[nCol].pszColumnName);		
+		pMenu->EnableMenuItem(nCol, MF_BYPOSITION | MF_ENABLED);
+	}
+}
+
 BOOL CScanner::initScanning()
 {
 	for (int i=0; i < m_nColumnCount; i++)
@@ -519,6 +528,8 @@ exit_thread:
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////// THREAD ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
+
+
 
 
 

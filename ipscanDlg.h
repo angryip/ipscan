@@ -46,7 +46,6 @@ public:
 	CBitmap m_bmpuparrow;		
 	int m_menucuritem;
 	CMenu * ctx_item;
-	CMenu * ctx_noitem;
 	CMenu mnu;
 	unsigned long m_tickcount;
 	unsigned long m_endip;

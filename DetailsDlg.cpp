@@ -37,7 +37,7 @@ void CDetailsDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CDetailsDlg, CDialog)
 	//{{AFX_MSG_MAP(CDetailsDlg)
-		// NOTE: the ClassWizard will add message map macros here
+	ON_WM_SHOWWINDOW()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -61,4 +61,21 @@ void CDetailsDlg::setPorts(LPCSTR szPorts)
 		else
 			m_szPortList += szPorts[i];
 	}
+}
+
+BOOL CDetailsDlg::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	
+	return TRUE;  
+}
+
+void CDetailsDlg::OnShowWindow(BOOL bShow, UINT nStatus) 
+{
+	CDialog::OnShowWindow(bShow, nStatus);
+	
+	// Remove annoing selection from the dialog box
+	CEdit *pEdit = (CEdit*) GetDlgItem(IDC_SCANNED_INFO);
+	pEdit->SetSel(0, 0);
+	
 }

@@ -38,7 +38,8 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(CDetailsDlg)
-		// NOTE: the ClassWizard will add member functions here
+	virtual BOOL OnInitDialog();
+	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

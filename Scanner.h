@@ -43,6 +43,7 @@ typedef struct
 class CScanner  
 {
 public:	
+	void initMenuWithColumns(CMenu *pMenu);
 	int m_nAliveHosts;
 	int m_nOpenPorts;
 	int doScanPorts(DWORD nIP, CString &szResults);

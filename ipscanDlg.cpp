@@ -267,14 +267,14 @@ BOOL CIpscanDlg::OnInitDialog()
 	m_scanning=FALSE;
 
 	// Load menu
-	mnu.LoadMenu(IDR_MENU1);
-	//CMenu *showMenu = mnu.GetSubMenu(2);	// Show menu
-	
+	mnu.LoadMenu(IDR_MENU1);	
 
-	ctx_item = mnu.GetSubMenu(2);
-	ctx_noitem = mnu.GetSubMenu(1);	
-	hAccel = LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MENU1));
+	ctx_item = mnu.GetSubMenu(2);	// Should not be stored!
 	
+	g_scanner->initMenuWithColumns(ctx_item->GetSubMenu(2));	// Show menu	
+
+	hAccel = LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MENU1));
+
 	// Set title
 	CString str;
 	str.LoadString(IDS_VERSION);
@@ -597,11 +597,10 @@ void CIpscanDlg::OnRclickList(NMHDR* pNMHDR, LRESULT* pResult)
 	POINT p;
 	GetCursorPos(&p);
 	m_menucuritem = lw->iItem;
-	if (m_menucuritem == 0xFFFFFFFF) {
-		//TrackPopupMenu(ctx_noitem->m_hMenu,TPM_LEFTALIGN | TPM_RIGHTBUTTON,p.x,p.y,0,m_hWnd,NULL);
-	} else {
+	if (m_menucuritem != 0xFFFFFFFF) 
+	{
 		TrackPopupMenu(ctx_item->m_hMenu,TPM_LEFTALIGN | TPM_RIGHTBUTTON,p.x,p.y,0,m_hWnd,NULL);
-	}
+	}	
 	*pResult = 0;
 }
 
