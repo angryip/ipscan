@@ -117,6 +117,10 @@ SOURCE=.\OptionsDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\SaveToFile.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\SearchDlg.cpp
 # End Source File
 # Begin Source File
@@ -151,6 +155,10 @@ SOURCE=.\OptionsDlg.h
 # Begin Source File
 
 SOURCE=.\Resource.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\SaveToFile.h
 # End Source File
 # Begin Source File
 

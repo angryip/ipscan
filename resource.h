@@ -91,7 +91,9 @@
 #define IDS_VERSION                     32792
 #define ID_WINDOZESUCKS_RESCANIP        32792
 #define ID_GOTO_NEXTALIVE               32793
+#define IDS_SCAN_HOMEPAGE               32793
 #define ID_GOTO_NEXTDEAD                32794
+#define IDS_HOMEPAGE                    32794
 #define ID_GOTO_NEXTOPENPORT            32795
 #define ID_GOTO_NEXTCLOSEDPORT          32796
 #define ID_GOTO_HOSTNAME                32797

@@ -30,7 +30,7 @@ IDR_MENU1 MENU DISCARDABLE
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "Save &all to TXT...",         ID_SCAN_SAVETOTXT
+        MENUITEM "Save &all...",                ID_SCAN_SAVETOTXT
         MENUITEM "Save &selection...",          ID_SCAN_SAVESELECTION
         MENUITEM SEPARATOR
         MENUITEM "E&xit\tAlt+F4",               ID_IP_EXIT
@@ -310,6 +310,8 @@ BEGIN
     IDS_STRING32790         "1"
     IDS_STRING32791         "1"
     IDS_VERSION             "1.86"
+    IDS_SCAN_HOMEPAGE       "http://www.angryziber.com/ipscan/"
+    IDS_HOMEPAGE            "http://www.angryziber.com/"
 END
 
 #endif    // Russian resources

@@ -55,8 +55,8 @@ void CCommandLine::displayHelp()
 			   "ipscan.exe <start_ip> <end_ip> [filename]\n"
 			   "\tstart_ip\t- starting IP address\n"
 			   "\tend_ip\t- ending IP address\n"
-			   "\tfilename\t- filename to save listing to (optional)\n"
+			   /*"\tfilename\t- filename to save listing to (optional)\n"
 			   "Note: if 3rd parameter is given, then the program will\n"
-			   "close after saving data to a file",
+			   "close after saving data to a file"*/,
 			   "Angry IP Scanner Help",MB_OK | MB_ICONINFORMATION);
 }
