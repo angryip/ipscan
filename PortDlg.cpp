@@ -197,9 +197,25 @@ void CPortDlg::OnSelchangePortListbox()
 
 void CPortDlg::OnOK() 
 {
-	CString szPortString;
+	CString szPortString, szOldPortString;
 	m_ctPortString.GetWindowText(szPortString);
 
+	szOldPortString = g_options->m_szPorts;
 	g_options->setPortString(szPortString);
-	CDialog::OnOK();
+	
+	if (g_options->parsePortString())
+	{
+		CDialog::OnOK();
+	}
+	else
+	{
+		g_options->setPortString(szOldPortString);
+	}
+}
+
+void CPortDlg::OnCancel() 
+{
+	// Parse old string, as it may have broken by unsuccessful OnOK()
+	g_options->parsePortString();	
+	CDialog::OnCancel();
 }

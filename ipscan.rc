@@ -127,42 +127,36 @@ IDB_BMPKILL             BITMAP  DISCARDABLE     "res\\bmpkill.bmp"
 // Dialog
 //
 
-IDD_OPTIONS DIALOG DISCARDABLE  0, 0, 181, 153
+IDD_OPTIONS DIALOG DISCARDABLE  0, 0, 197, 206
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Options"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "&OK",IDOK,120,7,52,14
-    PUSHBUTTON      "&Cancel",IDCANCEL,120,22,52,14
-    PUSHBUTTON      "&Help!!!",IDC_HELPBTN,120,38,52,14
-    EDITTEXT        IDC_EDIT2,51,7,39,12,ES_AUTOHSCROLL | ES_NUMBER
-    EDITTEXT        IDC_THREADS,51,21,40,12,ES_AUTOHSCROLL | ES_NUMBER
-    EDITTEXT        IDC_TIMEOUT,51,35,40,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "&OK",IDOK,38,185,52,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,102,185,52,14
+    PUSHBUTTON      "?",IDC_HELPBTN,175,185,14,14
+    EDITTEXT        IDC_EDIT2,51,11,39,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_THREADS,51,25,40,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_TIMEOUT,51,39,40,12,ES_AUTOHSCROLL
     CONTROL         "All hosts",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP,13,68,42,10
-    CONTROL         "Only alive",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,55,
-                    68,47,10
+                    WS_GROUP,123,16,42,10
+    CONTROL         "Only alive",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,123,
+                    27,47,10
     CONTROL         "Only open ports",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,
-                    104,69,65,10
-    CONTROL         "Resolve host names",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,7,91,80,10
-    CONTROL         "Try to resolve hostname if host is dead",IDC_CHECK3,
-                    "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,17,
-                    104,137,10
-    CONTROL         "Check for open port",IDC_CHECK2,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,118,79,10
-    CONTROL         "on dead hosts",IDC_CHECKPORTONDEAD,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,93,118,61,10
-    EDITTEXT        IDC_EDIT1,37,131,40,12,ES_AUTOHSCROLL | ES_NUMBER | 
-                    WS_DISABLED
-    LTEXT           "Port:",IDC_STATIC,17,133,16,8
-    LTEXT           "Timer delay:",IDC_STATIC,7,9,39,8
-    LTEXT           "ms",IDC_STATIC,94,9,10,8
-    LTEXT           "Max threads:",IDC_STATIC,7,23,42,8
-    LTEXT           "Ping timeout:",IDC_STATIC,7,37,42,8
-    LTEXT           "ms",IDC_STATIC,94,37,10,8
-    EDITTEXT        IDC_EDIT3,89,131,62,12,ES_AUTOHSCROLL | NOT WS_VISIBLE
-    GROUPBOX        "Display options",IDC_STATIC,7,57,165,26
+                    123,38,63,10
+    LTEXT           "Timer delay:",IDC_STATIC,7,13,39,8
+    LTEXT           "ms",IDC_STATIC,94,13,10,8
+    LTEXT           "Max threads:",IDC_STATIC,7,27,42,8
+    LTEXT           "Ping timeout:",IDC_STATIC,7,41,42,8
+    LTEXT           "ms",IDC_STATIC,94,41,10,8
+    GROUPBOX        "Display",IDC_STATIC,117,7,71,44
+    LISTBOX         IDC_LIST1,6,79,86,101,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Select a plugin:",IDC_STATIC,7,68,50,8
+    GROUPBOX        "None selected",IDC_PLUGIN_OPTIONS_GROUP,98,70,91,111
+    CONTROL         "Continue scanning host if it is dead",
+                    IDC_SCAN_HOST_IF_DEAD,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,56,125,10
 END
 
 
@@ -177,9 +171,9 @@ BEGIN
     IDD_OPTIONS, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 172
+        RIGHTMARGIN, 188
         TOPMARGIN, 7
-        BOTTOMMARGIN, 146
+        BOTTOMMARGIN, 199
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -543,7 +537,7 @@ BEGIN
     CTEXT           "0",IDC_NUMTHREADS,260,19,25,10,SS_SUNKEN
     CONTROL         "Scan ports",IDC_SCAN_PORTS,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,1,34,50,10
-    LTEXT           "<PORTS>",IDC_WHATPORTS,130,35,189,8
+    LTEXT           "N/A",IDC_WHATPORTS,130,35,189,8
     PUSHBUTTON      "Select ports to scan...",IDC_SELECT_PORTS,51,33,76,11
     CONTROL         "",IDC_BUTTON_TO_ADVANCED,"Button",BS_AUTOCHECKBOX | 
                     BS_BITMAP | BS_PUSHLIKE | WS_TABSTOP,293,1,12,28

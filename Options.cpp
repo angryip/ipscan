@@ -18,15 +18,163 @@ static char THIS_FILE[]=__FILE__;
 
 COptions::COptions()
 {
-
+	m_aParsedPorts = 0;
 }
 
 COptions::~COptions()
 {
-
+	if (m_aParsedPorts != NULL)
+		delete m_aParsedPorts;
 }
 
 void COptions::setPortString(LPCSTR szPortString)
 {
 	m_szPorts = szPortString;
+	parsePortString();
 }
+
+BOOL COptions::parsePortString()
+{
+	
+	if (m_aParsedPorts != NULL)
+		delete m_aParsedPorts;
+
+	// Pre-process
+	int nCommas = 0;
+	m_szPorts += ',';
+	LPCSTR szPorts = m_szPorts;
+	for (int i=0; szPorts[i] != 0; i++)
+	{
+		if (szPorts[i] == ',') nCommas++;
+	}
+
+	m_aParsedPorts = new tPortRange[nCommas + 10];
+	memset(m_aParsedPorts, 0, (nCommas + 10) * sizeof(tPortRange));
+
+	// Process!!!
+	char szCurPort[6];
+	int nCurPortLen = 0;
+	int nCurPortIndex = 0;
+	
+	for (i=0; szPorts[i] != 0; i++)
+	{
+		if (szPorts[i] >= '0' && szPorts[i] <= '9')
+		{			
+			if (nCurPortLen >= 5)
+			{			
+				AfxMessageBox("A port number cannot be greater than 65535", MB_ICONHAND | MB_OK, 0);
+				return FALSE;
+			}
+
+			szCurPort[nCurPortLen] = szPorts[i];
+			nCurPortLen++;
+		}
+		else
+		if (szPorts[i] == '-')
+		{
+			if (m_aParsedPorts[nCurPortIndex].nStartPort != 0)
+			{
+				AfxMessageBox("Unexpected \"-\" in the port string", MB_ICONHAND | MB_OK, 0);
+				return FALSE;
+			}
+
+			m_aParsedPorts[nCurPortIndex].nStartPort = (u_short) atoi(szCurPort);
+		}
+		else
+		if (szPorts[i] == ',')
+		{
+			if (szPorts[i+1] != 0 && szCurPort[0] == 0)
+			{
+				AfxMessageBox("Port cannot be 0 or unexpected comma in the port string", MB_ICONHAND | MB_OK, 0);
+				return FALSE;
+			}
+
+			u_short nCurPort = (u_short) atoi(szCurPort);
+
+			if (m_aParsedPorts[nCurPortIndex].nStartPort == 0)
+			{
+				m_aParsedPorts[nCurPortIndex].nStartPort = nCurPort;
+			}
+			
+			m_aParsedPorts[nCurPortIndex].nEndPort = nCurPort;
+
+			nCurPortIndex++;
+			nCurPortLen = 0;
+		}
+	}
+
+	// Delete the comma added above
+	m_szPorts.Delete(m_szPorts.GetLength()-1);
+
+	return TRUE;	
+}
+
+
+void COptions::save()
+{
+	CWinApp *app = AfxGetApp();
+
+	CString szURL; szURL.LoadString(IDS_HOMEPAGE);
+	app->WriteProfileString("", "URL", szURL);	
+	app->WriteProfileInt("","Delay",m_nTimerDelay);
+	app->WriteProfileInt("","MaxThreads",m_nMaxThreads);
+	app->WriteProfileInt("","Timeout",m_nPingTimeout);	
+	app->WriteProfileInt("","DisplayOptions",m_neDisplayOptions);	
+	app->WriteProfileString("", "PortString", m_szPorts);
+	app->WriteProfileInt("", "ScanHostIfDead", m_bScanHostIfDead);
+	
+	RECT rc;
+	app->GetMainWnd()->GetWindowRect(&rc);
+	app->WriteProfileInt("","Left",rc.left);
+	app->WriteProfileInt("","Top",rc.top);
+	app->WriteProfileInt("","Bottom",rc.bottom);
+	app->WriteProfileInt("","Right",rc.right);
+	
+	/*CString str; TODO! save columns here
+	for (int i=0; i < C_COLUMNS; i++) {
+		str.Format("Col%d",i);
+		app->WriteProfileInt("",str,d->m_list.GetColumnWidth(i));
+	}*/
+}
+
+void COptions::load()
+{
+	CWinApp *app = AfxGetApp();
+	
+	m_nTimerDelay = app->GetProfileInt("","Delay",20);
+	m_nMaxThreads = app->GetProfileInt("","MaxThreads",100);	 			
+	m_nPingTimeout = app->GetProfileInt("","Timeout",5000);
+	m_neDisplayOptions = app->GetProfileInt("","DisplayOptions",0);
+	m_bScanHostIfDead = app->GetProfileInt("", "ScanHostIfDead", FALSE);
+	
+	setPortString(app->GetProfileString("", "PortString", ""));	// also parses it
+	
+}
+
+
+void COptions::setWindowPos()
+{
+	CWinApp *app = AfxGetApp();
+
+	RECT rc;
+
+	rc.left = app->GetProfileInt("","Left",0);
+	rc.top = app->GetProfileInt("","Top",0);
+	rc.bottom = app->GetProfileInt("","Bottom",0);
+	rc.right = app->GetProfileInt("","Right",0);
+
+	CWnd *d = app->GetMainWnd();
+
+    if (rc.right!=0) 
+	{
+		d->SetWindowPos(NULL,rc.left,rc.top,rc.right-rc.left,rc.bottom-rc.top,SWP_NOZORDER);
+	} 
+	else 
+	{
+		d->SetWindowPos(NULL,0,0,502,350,SWP_NOMOVE | SWP_NOZORDER);
+	}
+
+
+	// TODO: set widths of columns here
+}
+

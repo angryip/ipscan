@@ -16,27 +16,17 @@
 class COptionsDlg : public CDialog
 {
 // Construction
-public:
-	static void loadOptions(CIpscanDlg *d);
-	static void saveOptions(CIpscanDlg *d);
+public:	
 	COptionsDlg(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(COptionsDlg)
 	enum { IDD = IDD_OPTIONS };
-	CButton	m_ondeadctl;
-	CButton	m_resolvectl;
-	CButton	m_scanportctl;
-	CEdit	m_portctl;
-	UINT	m_port;
-	int		m_delay;
-	BOOL	m_resolve;
-	BOOL	m_scanport;
-	BOOL	m_retrifdead;
-	UINT	m_maxthreads;
-	UINT	m_timeout;
-	BOOL	m_portondead;
-	int		m_display;
+	int		m_nTimerDelay;
+	UINT	m_nMaxThreads;
+	UINT	m_nPingTimeout;
+	int		m_nDisplayOptions;
+	BOOL	m_bScanHostIfDead;
 	//}}AFX_DATA
 
 
@@ -54,12 +44,9 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(COptionsDlg)
-	virtual void OnOK();
-	afx_msg void OnCheck2();
-	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
-	afx_msg void OnCheck1();
-	afx_msg void OnHelpbtn();
-	afx_msg void OnChangeEdit1();
+	virtual void OnOK();			
+	afx_msg void OnHelpbtn();	
+	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

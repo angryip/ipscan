@@ -33,9 +33,8 @@ class CIpscanDlg : public CDialog
 // Construction
 public:
 	CBitmap m_bmpShowAdvanced;
-	int m_nOptions;
-	CString *m_szDefaultFileName;
-	int m_display;
+	int m_nCmdLineOptions;
+	CString *m_szDefaultFileName;	
 	CBitmap killbmp;
 	CString m_search;
 	void ErrorNotSelected();
@@ -45,9 +44,7 @@ public:
 	CBitmap stopbmp;
 	CBitmap startbmp;
 	CBitmap pastebmp;
-	CBitmap m_bmpuparrow;
-	UINT m_maxthreads;
-	BOOL m_retrifdead;
+	CBitmap m_bmpuparrow;		
 	int m_menucuritem;
 	CMenu * ctx_item;
 	CMenu * ctx_noitem;
@@ -56,11 +53,7 @@ public:
 	unsigned long m_endip;
 	unsigned long m_startip;
 	unsigned long m_curip;
-	int m_scanning;
-	int m_delay;
-	UINT m_port;
-	BOOL m_scanport;
-	BOOL m_resolve;
+	int m_scanning;		
 	CImageList m_imglist;
 	CIpscanDlg(CWnd* pParent = NULL);	// standard constructor
 

@@ -214,9 +214,9 @@ BOOL CIpscanDlg::OnInitDialog()
 	d = (CIpscanDlg*)app->m_pMainWnd;
 	g_dlg = (CIpscanDlg*)app->m_pMainWnd;
 
-	COptionsDlg::loadOptions(d);
-
 	g_options = new COptions();
+	g_options->load();
+	g_options->setWindowPos();	
 
 	// Add image list to the listbox
 	m_imglist.Create(IDB_IMAGELIST,16,2,0xFFFFFF);
@@ -255,17 +255,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	m_bAdvancedMode = true;	// OnButtonToAdvanced() will change this to false
 	g_nListOffset += g_nAdvancedOffset; // OnButtonToAdvanced() will substract this
 	OnButtonToAdvanced(); // Hide advanced controls by default
-	OnScanPortsClicked();
-
-	rc.left = app->GetProfileInt("","Left",0);
-	rc.top = app->GetProfileInt("","Top",0);
-	rc.bottom = app->GetProfileInt("","Bottom",0);
-	rc.right = app->GetProfileInt("","Right",0);
-    if (rc.right!=0) {
-		SetWindowPos(NULL,rc.left,rc.top,rc.right-rc.left,rc.bottom-rc.top,SWP_NOZORDER);
-	} else {
-		SetWindowPos(NULL,0,0,502,350,SWP_NOMOVE | SWP_NOZORDER);
-	}
+	OnScanPortsClicked();	
 	
 	status("Ready");
 
@@ -298,14 +288,14 @@ BOOL CIpscanDlg::OnInitDialog()
 		m_ip2.SetWindowText(cCmdLine->m_szEndIP);
 		m_ip2_virgin = FALSE;
 
-		m_nOptions = cCmdLine->m_nOptions;
+		m_nCmdLineOptions = cCmdLine->m_nOptions;
 
-		if (m_nOptions & CMDO_SAVE_TO_FILE)
+		if (m_nCmdLineOptions & CMDO_SAVE_TO_FILE)
 		{
 			m_szDefaultFileName = new CString(cCmdLine->m_szFilename);
 		}
 		
-		if (m_nOptions & CMDO_START_SCAN)
+		if (m_nCmdLineOptions & CMDO_START_SCAN)
 		{
 			CIpscanDlg::OnButton1();
 		}
@@ -424,7 +414,7 @@ void CIpscanDlg::OnButton1()
 		status("Initializing...");
 		g_scanner->initScanning();
 
-		SetTimer(1,m_delay,NULL);
+		SetTimer(1, g_options->m_nTimerDelay, NULL);
 
 	} 
 	else 
@@ -477,9 +467,9 @@ finish_all:
 			{
 				// Program was invoked via command-line, so save data to file & exit
 
-				CSaveToFile tmp(d, FALSE, m_szDefaultFileName->GetBuffer(255), m_nOptions & CMDO_SAVE_CSV, m_nOptions & CMDO_APPEND_FILE);
+				CSaveToFile tmp(d, FALSE, m_szDefaultFileName->GetBuffer(255), m_nCmdLineOptions & CMDO_SAVE_CSV, m_nCmdLineOptions & CMDO_APPEND_FILE);
 				
-				if (!(m_nOptions & CMDO_NOT_EXIT))
+				if (!(m_nCmdLineOptions & CMDO_NOT_EXIT))
 					ExitProcess(0);
 			}
 			else
@@ -513,25 +503,7 @@ void CIpscanDlg::OnHelpAbout()
 void CIpscanDlg::OnOptionsOptions() 
 {	
 	COptionsDlg dlgOpt;
-	dlgOpt.m_delay=m_delay;
-	dlgOpt.m_port=m_port;
-	dlgOpt.m_resolve=m_resolve;
-	dlgOpt.m_scanport=m_scanport;
-	dlgOpt.m_retrifdead=m_retrifdead;
-	dlgOpt.m_portondead=m_portondead;
-	dlgOpt.m_maxthreads=m_maxthreads;
-	dlgOpt.m_timeout=m_timeout;
-	dlgOpt.m_display=m_display;
-	dlgOpt.DoModal();
-	m_delay=dlgOpt.m_delay;
-	m_port=dlgOpt.m_port;
-	m_resolve=dlgOpt.m_resolve;
-	m_scanport=dlgOpt.m_scanport;
-	m_retrifdead=dlgOpt.m_retrifdead;
-	m_portondead=dlgOpt.m_portondead;
-	m_maxthreads=dlgOpt.m_maxthreads;
-	m_timeout=dlgOpt.m_timeout;
-	m_display=dlgOpt.m_display;
+	dlgOpt.DoModal();	// It will get and put options using g_options
 }
 
 void CIpscanDlg::OnButtonipup() 
@@ -561,7 +533,7 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 	
 	if (m_curip<m_endip) 
 	{
-		if (g_nThreadCount >= m_maxthreads - 1) return;
+		if (g_nThreadCount >= g_options->m_nMaxThreads - 1) return;
 		in_addr in;
 		char *ipa;
 		in.S_un.S_addr = htonl(m_curip);
@@ -732,7 +704,7 @@ void CIpscanDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 
 void CIpscanDlg::OnOptionsSaveoptions() 
 {	
-	COptionsDlg::saveOptions(d);
+	g_options->save();	
 }
 
 void CIpscanDlg::OnFieldchangedIpaddress1(NMHDR* pNMHDR, LRESULT* pResult) 
@@ -1175,7 +1147,7 @@ void CIpscanDlg::OnButtonToAdvanced()
 	}
 	else
 	{
-		// Hide advanced controls
+		// Show advanced controls
 		m_ctScanPorts.ShowWindow(SW_SHOW);
 		m_ctWhatPorts.ShowWindow(SW_SHOW);
 		GetDlgItem(IDC_SELECT_PORTS)->ShowWindow(SW_SHOW);
@@ -1184,6 +1156,12 @@ void CIpscanDlg::OnButtonToAdvanced()
 		
 		// Change button image		
 		((CButton*)GetDlgItem(IDC_BUTTON_TO_ADVANCED))->SetBitmap((HBITMAP)m_bmpHideAdvanced.m_hObject);
+
+		// Display port string
+		if (g_options->m_aParsedPorts[0].nStartPort != 0)
+		{
+			m_ctWhatPorts.SetWindowText(g_options->m_szPorts);
+		}
 	}
 	m_bAdvancedMode = !m_bAdvancedMode;
 	RECT rc;
@@ -1203,7 +1181,16 @@ void CIpscanDlg::HandleResizing(int cx, int cy)
 
 void CIpscanDlg::OnScanPortsClicked() 
 {
-	if (m_ctScanPorts.GetCheck())
+	BOOL bChecked = m_ctScanPorts.GetCheck();
+
+	if (bChecked && g_options->m_aParsedPorts[0].nStartPort == 0)
+	{
+		AfxMessageBox("No ports selected", MB_ICONHAND | MB_OK, 0);
+		m_ctScanPorts.SetCheck(FALSE);
+		return;
+	}
+
+	if (bChecked)
 		m_list.SetShowPorts(TRUE);
 	else
 		m_list.SetShowPorts(FALSE);
@@ -1213,4 +1200,20 @@ void CIpscanDlg::OnSelectPortsClicked()
 {
 	CPortDlg dlg;
 	dlg.DoModal();
+
+	LPCSTR szPortString = g_options->m_szPorts;
+
+	if (szPortString[0] == 0)
+	{
+		m_ctWhatPorts.SetWindowText("N/A");
+		m_ctScanPorts.SetCheck(FALSE);
+	}
+	else
+	{
+		m_ctWhatPorts.SetWindowText(g_options->m_szPorts);
+		m_ctScanPorts.SetCheck(TRUE);
+	}
+
+	// To update properties
+	OnScanPortsClicked();
 }
