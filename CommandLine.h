@@ -35,8 +35,7 @@ public:
 	int m_nFileFormat;
 	int m_nOptions;
 	CString m_szFilename;
-	CString m_szEndIP;
-	CString m_szStartIP;
+	CString m_szIPFeedParams;
 	static void displayHelp();
 	BOOL process();
 	CCommandLine();

@@ -54,6 +54,12 @@ BOOL CRandomIPFeedDlg::unserialize(const CString& szSettings)
 	return FALSE;
 }
 
+BOOL CRandomIPFeedDlg::processCommandLine(CString& szCommandLine)
+{
+	
+	return FALSE;
+}
+
 // Creates an IP feed object
 CAbstractIPFeed * CRandomIPFeedDlg::createIPFeed()
 {

@@ -388,10 +388,13 @@ BOOL CIpscanDlg::OnInitDialog()
 	// Process command-line
 	CCommandLine cCmdLine;
 	if (cCmdLine.process())
-	{		
-		/*m_dlgIPFeed->m_ctIPStart.SetWindowText(cCmdLine.m_szStartIP);
-		m_dlgIPFeed->m_ctIPEnd.SetWindowText(cCmdLine.m_szEndIP);
-		m_dlgIPFeed->m_bIp2Virgin = FALSE;
+	{	
+		AfxMessageBox("Note: command-line support is currently unstable", 0, 0);
+
+		// TODO: we must somehow get to know, which dlgIPFeed user wants
+
+		if (!m_dlgIPFeed->processCommandLine(cCmdLine.m_szFilename))
+			AfxMessageBox("Failed to interpret command-line parameters", 0, 0);
 
 		m_nCmdLineOptions = cCmdLine.m_nOptions;
 		m_nCmdLineFileFormat = cCmdLine.m_nFileFormat;
@@ -404,8 +407,7 @@ BOOL CIpscanDlg::OnInitDialog()
 		if (m_nCmdLineOptions & CMDO_START_SCAN)
 		{
 			CIpscanDlg::OnButtonScan();
-		}*/
-		AfxMessageBox("Command-line support is not yet rewritten, sorry", 0, 0);
+		}		
 	}
 	else
 	{

@@ -48,6 +48,8 @@ public:
 	
 	virtual BOOL unserialize(const CString& szSettings);
 
+	virtual BOOL processCommandLine(CString& szCommandLine);
+
 	CAbstractIPFeed * createIPFeed();
 
 };

@@ -57,6 +57,9 @@ public:
 	// Imports previously serialized data and restores it's state
 	virtual BOOL unserialize(const CString& szSettings) = 0;
 
+	// Imports command-line options, to initialize options from command-line
+	virtual BOOL processCommandLine(CString& szCommandLine) = 0;
+
 };
 
 //{{AFX_INSERT_LOCATION}}

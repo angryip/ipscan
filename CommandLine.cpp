@@ -44,7 +44,7 @@ BOOL CCommandLine::process()
 	{
 	
 		// too few or too many parameters
-		if (__argc<3) 
+		if (__argc < 3) 
 		{
 			displayHelp();
 			exit(1);
@@ -107,15 +107,26 @@ BOOL CCommandLine::process()
 			{
 				// this is a parameter
 				nParameter++;
-				
-				switch (nParameter)
-				{
-					case 1: m_szStartIP = (CString)__targv[i]; break;
-					case 2: m_szEndIP = (CString)__targv[i]; break;
-					case 3: m_szFilename = (CString)__targv[i]; break;
-				}
+
+				m_szIPFeedParams += __targv[i];
+				m_szIPFeedParams += "|";
 			}
 		}		
+
+		// Now get filename out of m_szIPFeedParams (it should be the last one)
+		if (nParameter > 1)
+		{
+			// Delate trailing pipe
+			m_szIPFeedParams.Delete(m_szIPFeedParams.GetLength() - 1);
+			
+			// Find the last pipe
+			int nLastPipe = m_szIPFeedParams.ReverseFind('|');
+			
+			// Remember filename
+			m_szFilename = m_szIPFeedParams.Mid(nLastPipe + 1);
+			m_szIPFeedParams.Delete(nLastPipe, m_szIPFeedParams.GetLength() - nLastPipe);
+		}
+
 		
 		if (m_szFilename.GetLength() > 0) 
 		{			
@@ -140,7 +151,7 @@ BOOL CCommandLine::process()
 void CCommandLine::displayHelp()
 {
 	MessageBox(0, "Command-line parameters:\n\n"
-				"<start_ip> <end_ip> [filename]\n"
+				/*"<start_ip> <end_ip> [filename]\n"
 				"\tstart_ip\t- starting IP address\n"
 				"\tend_ip\t- ending IP address\n"
 				"\tfilename\t- filename to save listing to (optional)\n\n"
@@ -152,6 +163,6 @@ void CCommandLine::displayHelp()
 				"\t-a\tappend to the file, do not overwrite\n"
 				"\t-h\tHide main window while scanning. Be careful with this!\n"
 				"\t  \tRun only from batch files with this option.\n"
-				"\t-f:X\tFile format. X can be 'csv', 'html', 'txt', 'xml' or 'lst'.\n"
+				"\t-f:X\tFile format. X can be 'csv', 'html', 'txt', 'xml' or 'lst'.\n"*/
 			   ,"Angry IP Scanner Help",MB_OK | MB_ICONINFORMATION);
 }

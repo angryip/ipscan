@@ -256,3 +256,10 @@ BOOL CIPRangeDlg::unserialize(const CString& szSettings)
 
 	return TRUE;
 }
+
+BOOL CIPRangeDlg::processCommandLine(CString& szCommandLine)
+{
+	// For now, the same code can be used :-)
+	return unserialize(szCommandLine);
+}
+

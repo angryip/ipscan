@@ -26,9 +26,7 @@
 class CIPRangeDlg : public CAbstractIPFeedDlg
 {
 // Construction
-public:
-	CAbstractIPFeed * createIPFeed();
-
+public:	
 	CIPRangeDlg(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
@@ -74,6 +72,10 @@ public:
 	virtual CString serialize();
 	
 	virtual BOOL unserialize(const CString& szSettings);
+
+	virtual BOOL processCommandLine(CString& szCommandLine);
+
+	CAbstractIPFeed * createIPFeed();
 
 };
 
