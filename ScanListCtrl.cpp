@@ -34,17 +34,28 @@ static char THIS_FILE[] = __FILE__;
 CScanListCtrl::CScanListCtrl()
 {
 	m_bShowPorts = TRUE;
+
+	// Create image list for the listbox
+	m_imglist.Create(IDB_IMAGELIST, 16, 2, 0xFFFFFF);		
 }
 
 CScanListCtrl::~CScanListCtrl()
 {
+	
 }
 
+// This method is called in the OnInitDialog of the main window
+void CScanListCtrl::InitPostCreateStuff()
+{
+	// Add image list to the listbox (in case is not added yet)
+	SetImageList(&m_imglist, LVSIL_SMALL);	
+}
 
 BEGIN_MESSAGE_MAP(CScanListCtrl, CListCtrl)
 	//{{AFX_MSG_MAP(CScanListCtrl)	
 	ON_WM_LBUTTONDBLCLK()
 	ON_WM_PAINT()
+	ON_WM_SHOWWINDOW()
 	//}}AFX_MSG_MAP
 	ON_MESSAGE(WM_MEASUREITEM, MeasureItem)
 	ON_WM_MEASUREITEM_REFLECT()
@@ -53,6 +64,18 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CScanListCtrl message handlers
 
+void CScanListCtrl::PreSubclassWindow() 
+{
+	// the list control must have the report style.
+	ASSERT(GetStyle() & LVS_REPORT);
+
+	CListCtrl::PreSubclassWindow();
+	VERIFY(m_ctlHeader.SubclassWindow(GetHeaderCtrl()->GetSafeHwnd()));
+	
+	CListCtrl::PreSubclassWindow();
+}
+
+// This method draws a single item in the list
 void CScanListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {	
 	CDC* pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
@@ -349,6 +372,9 @@ void CScanListCtrl::SetShowPortsBelow(BOOL bShow)
 
 BOOL CScanListCtrl::DeleteAllItems()
 {		
+	// Reset sorting arrows
+	m_ctlHeader.SetSortArrow(-1, TRUE);
+	// Clear items
 	return CListCtrl::DeleteAllItems();
 }
 
@@ -683,7 +709,7 @@ DWORD CScanListCtrl::GetNumericIP(int nItemIndex)
 
 int CScanListCtrl::GetColumnCount()
 {
-	return GetHeaderCtrl()->GetItemCount();	
+	return m_ctlHeader.GetItemCount();
 }
 
 int CScanListCtrl::DeleteAllDeadHosts()
@@ -822,11 +848,11 @@ void CScanListCtrl::DeleteSelectedItems()
 
 
 void CScanListCtrl::OnPaint() 
-{
-	//CPaintDC dc(this); // device context for painting
-	
+{	
+	// Call the default painter	
 	Default();
 
+	// Draw the notification in case the list is empty
 	if (GetItemCount() <= 0)
 	{
 		COLORREF clrText = ::GetSysColor(COLOR_WINDOWTEXT);
@@ -842,24 +868,17 @@ void CScanListCtrl::OnPaint()
 		GetWindowRect(&rc);
 		ScreenToClient(&rc);
 
-		CHeaderCtrl* pHC;
-		pHC = GetHeaderCtrl();		
-
 		int nAllItemsWidth = 0;		// The combined width of all the items will be stored here
 
-		if (pHC != NULL)
-		{			
-			CRect rcH;
+		CRect rcH;
 
-			for (int i = 0; i < pHC->GetItemCount(); i++)
-			{
-				pHC->GetItemRect(i, &rcH);
-				nAllItemsWidth += rcH.Width();
-			}
-
-			rc.top += rcH.bottom;
+		for (int i = 0; i < m_ctlHeader.GetItemCount(); i++)
+		{
+			m_ctlHeader.GetItemRect(i, &rcH);
+			nAllItemsWidth += rcH.Width();
 		}
-		rc.top += 10;		
+
+		rc.top += rcH.bottom + 10;		
 
 		pDC->SetTextColor(clrText);
 		pDC->SetBkColor(clrTextBk);
@@ -881,4 +900,10 @@ void CScanListCtrl::OnPaint()
 	}
 	
 	// Do not call CListCtrl::OnPaint() for painting messages
+}
+
+// Redefine this method to add owner draw capability to header items
+int CScanListCtrl::InsertColumn(int nCol, LPCTSTR lpszColumnHeading, int nFormat, int nWidth, int nSubItem)
+{
+	return CListCtrl::InsertColumn(nCol, lpszColumnHeading, nFormat | HDF_OWNERDRAW, nWidth, nSubItem);
 }

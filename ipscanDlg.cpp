@@ -242,24 +242,9 @@ BOOL CIpscanDlg::OnInitDialog()
 	#ifdef DEBUG_MESSAGES
 		AfxMessageBox("OnInitDialog(): custom init dialog", 0, 0);
 	#endif
-	
-	// Add "About..." menu item to system menu.
-
-	// IDM_ABOUTBOX must be in the system command range.
-	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
-	ASSERT(IDM_ABOUTBOX < 0xF000);
-
-	CMenu* pSysMenu = GetSystemMenu(FALSE);
-	if (pSysMenu != NULL)
-	{
-		CString strAboutMenu;
-		strAboutMenu.LoadString(IDS_ABOUTBOX);
-		if (!strAboutMenu.IsEmpty())
-		{
-			pSysMenu->AppendMenu(MF_SEPARATOR);
-			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
-		}
-	}	
+			
+	// Internal initializations
+	m_list.InitPostCreateStuff();
 
 	m_bSysCommand = FALSE;
 
@@ -282,14 +267,6 @@ BOOL CIpscanDlg::OnInitDialog()
 
 	#ifdef DEBUG_MESSAGES
 		AfxMessageBox("OnInitDialog(): COptions created ", 0, 0);
-	#endif
-
-	// Add image list to the listbox
-	m_imglist.Create(IDB_IMAGELIST,16,2,0xFFFFFF);
-	m_list.SetImageList(&m_imglist,LVSIL_SMALL);
-
-	#ifdef DEBUG_MESSAGES
-		AfxMessageBox("OnInitDialog(): image list created ", 0, 0);
 	#endif
 
 	// Create the scanner object

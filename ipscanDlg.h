@@ -56,7 +56,6 @@ public:
 	CMenu * m_menuContext;
 	unsigned long m_tickcount;	
 	int m_nScanMode;
-	CImageList m_imglist;
 	CIpscanDlg(CWnd* pParent = NULL);	// standard constructor
 
 	void status(LPCSTR str);

@@ -18,6 +18,8 @@
 // ScanListCtrl.h : header file
 //
 
+#include "ScanListHeaderCtrl.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // CScanListCtrl window
 
@@ -36,10 +38,13 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CScanListCtrl)
+	protected:
+	virtual void PreSubclassWindow();
 	//}}AFX_VIRTUAL
 
 // Implementation
 public:
+	void InitPostCreateStuff();
 	void PrepareForScanning();
 	void DeleteSelectedItems();
 	int DeleteAllOpenPortsHosts();
@@ -66,9 +71,13 @@ public:
 	void SetOpenPorts(int nItemIndex, LPCSTR pNewStr, BOOL bSomeOpen);
 	void SetShowPortsBelow(BOOL bShow);
 	BOOL DeleteAllItems();
+	int InsertColumn(int nCol, LPCTSTR lpszColumnHeading, int nFormat = LVCFMT_LEFT, int nWidth = -1, int nSubItem = -1);
 	virtual ~CScanListCtrl();
 
 protected:
+	BOOL m_bSearchCaseSensitive;
+	CScanListHeaderCtrl m_ctlHeader;
+	CImageList m_imglist;
 	BOOL m_bShowPorts;		
 	void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	void RepaintSelectedItems();	
@@ -76,7 +85,6 @@ protected:
 
 	// Generated message map functions
 protected:
-	BOOL m_bSearchCaseSensitive;
 	void ShowErrorNothingSelected();
 	//{{AFX_MSG(CScanListCtrl)	
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
