@@ -97,5 +97,7 @@ int CIpscanApp::Run()
 		AfxMessageBox("Run()", 0, 0);
 	#endif
 	
-	return CWinApp::Run();
+	int nReturn = CWinApp::Run();	
+
+	return nReturn;
 }

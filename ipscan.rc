@@ -173,15 +173,16 @@ BEGIN
                     NOT WS_VISIBLE | WS_TABSTOP,138,65,50,10
     LISTBOX         IDC_PLUGIN_LIST,6,101,86,93,LBS_NOINTEGRALHEIGHT | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Options...",IDC_COLUMN_OPTIONS_BUTTON,116,137,50,14,
-                    WS_DISABLED
     PUSHBUTTON      "Info...",IDC_COLUMN_ABOUT_BUTTON,116,119,50,14,
+                    WS_DISABLED
+    PUSHBUTTON      "Options...",IDC_COLUMN_OPTIONS_BUTTON,116,137,50,14,
                     WS_DISABLED
     PUSHBUTTON      "Select scanned columns...",IDC_SELECT_COLUMNS_BTN,98,
                     179,91,14
-    DEFPUSHBUTTON   "&OK",IDOK,38,201,52,14
-    PUSHBUTTON      "&Cancel",IDCANCEL,102,201,52,14
-    PUSHBUTTON      "?",IDC_HELPBTN,175,201,14,14
+    DEFPUSHBUTTON   "&OK",IDOK,9,202,46,14
+    PUSHBUTTON      "OK && &Save",IDSAVE,63,202,48,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,119,202,49,14
+    PUSHBUTTON      "?",IDC_HELPBTN,176,202,14,14
     LTEXT           "Timer delay:",IDC_STATIC,7,14,39,8
     LTEXT           "ms",IDC_STATIC,93,13,10,8
     LTEXT           "Max threads:",IDC_STATIC,7,27,42,8

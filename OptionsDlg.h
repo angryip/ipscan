@@ -62,6 +62,7 @@ protected:
 	afx_msg void OnSelectColumnsBtn();
 	afx_msg void OnColumnAboutButton();
 	afx_msg void OnColumnOptionsButton();
+	afx_msg void OnSave();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

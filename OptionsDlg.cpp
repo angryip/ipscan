@@ -68,6 +68,7 @@ BEGIN_MESSAGE_MAP(COptionsDlg, CDialog)
 	ON_BN_CLICKED(IDC_SELECT_COLUMNS_BTN, OnSelectColumnsBtn)
 	ON_BN_CLICKED(IDC_COLUMN_ABOUT_BUTTON, OnColumnAboutButton)
 	ON_BN_CLICKED(IDC_COLUMN_OPTIONS_BUTTON, OnColumnOptionsButton)
+	ON_BN_CLICKED(IDSAVE, OnSave)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -165,10 +166,12 @@ BOOL COptionsDlg::OnInitDialog()
 void COptionsDlg::OnSelectColumnsBtn() 
 {
 	CSelectColumnsDlg cDlg;
-	cDlg.DoModal();	
-
-	// To update "Scanned" status
-	OnSelchangePluginList();
+	
+	if (cDlg.DoModal() == IDOK && m_ctPluginList.GetCurSel() >= 0)
+	{
+		// To update "Scanned" status
+		OnSelchangePluginList();
+	}
 }
 
 void COptionsDlg::OnSelchangePluginList() 
@@ -243,4 +246,10 @@ void COptionsDlg::OnColumnOptionsButton()
 		return;
 		
 	g_scanner->m_AllColumns[m_nCurrentlySelectedColumn].pSetupFunction(m_hWnd);
+}
+
+void COptionsDlg::OnSave() 
+{
+	OnOK();
+	g_options->save();
 }

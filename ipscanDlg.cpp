@@ -1117,6 +1117,10 @@ void CIpscanDlg::OnDestroy()
 	delete(g_scanner);
 	delete(m_szDefaultFileName);
 	delete(m_pToolTips);
+
+	// Kill all threads of this process	
+	// This will terminate the process for sure after closing the main window		
+	ExitProcess(0);
 }
 
 void CIpscanDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct) 
