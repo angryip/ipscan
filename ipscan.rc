@@ -172,10 +172,10 @@ BEGIN
     LTEXT           "Ping timeout:",IDC_STATIC,7,40,42,8
     LTEXT           "ms",IDC_STATIC,93,40,10,8
     GROUPBOX        "Display",IDC_STATIC,117,7,71,44
-    LISTBOX         IDC_PLUGIN_LIST,6,101,86,101,LBS_NOINTEGRALHEIGHT | 
+    LISTBOX         IDC_PLUGIN_LIST,6,101,86,99,LBS_NOINTEGRALHEIGHT | 
                     WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Select a plugin:",IDC_STATIC,7,91,50,8
-    GROUPBOX        "None selected",IDC_PLUGIN_OPTIONS_GROUP,98,92,91,111
+    LTEXT           "Select a column:",IDC_STATIC,7,91,54,8
+    GROUPBOX        "None selected",IDC_PLUGIN_OPTIONS_GROUP,98,92,91,83
     CONTROL         "Continue scanning dead hosts",IDC_SCAN_HOST_IF_DEAD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,78,111,10
     LTEXT           "Port timeout:",IDC_STATIC,7,65,40,8
@@ -187,6 +187,13 @@ BEGIN
                     NOT WS_VISIBLE | WS_TABSTOP,138,65,50,10
     LTEXT           "Ping count:",IDC_STATIC,7,53,37,8
     EDITTEXT        IDC_PINGCOUNT,51,50,40,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Options...",IDC_COLUMN_OPTIONS_BUTTON,116,123,50,14,
+                    WS_DISABLED
+    LTEXT           "Type:",IDC_STATIC,115,107,19,8
+    RTEXT           "N/A",IDC_COLUMN_TYPE,137,107,28,8
+    PUSHBUTTON      "About...",IDC_COLUMN_ABOUT_BUTTON,116,144,50,14,
+                    WS_DISABLED
+    PUSHBUTTON      "Select columns...",IDC_SELECT_COLUMNS_BTN,98,186,90,14
 END
 
 

@@ -22,6 +22,9 @@ public:
 // Dialog Data
 	//{{AFX_DATA(COptionsDlg)
 	enum { IDD = IDD_OPTIONS };
+	CStatic	m_statColumnType;
+	CButton	m_btnOptionsColumn;
+	CButton	m_btnAboutColumn;
 	CButton	m_ctPluginOptionsGroup;
 	CListBox	m_ctPluginList;
 	int		m_nTimerDelay;
@@ -54,6 +57,7 @@ protected:
 	afx_msg void OnHelpbtn();	
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSelchangePluginList();
+	afx_msg void OnSelectColumnsBtn();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "ipscan.h"
 #include "OptionsDlg.h"
+#include "SelectColumnsDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -36,6 +37,9 @@ void COptionsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(COptionsDlg)
+	DDX_Control(pDX, IDC_COLUMN_TYPE, m_statColumnType);
+	DDX_Control(pDX, IDC_COLUMN_OPTIONS_BUTTON, m_btnOptionsColumn);
+	DDX_Control(pDX, IDC_COLUMN_ABOUT_BUTTON, m_btnAboutColumn);
 	DDX_Control(pDX, IDC_PLUGIN_OPTIONS_GROUP, m_ctPluginOptionsGroup);
 	DDX_Control(pDX, IDC_PLUGIN_LIST, m_ctPluginList);
 	DDX_Text(pDX, IDC_EDIT2, m_nTimerDelay);
@@ -60,6 +64,7 @@ BEGIN_MESSAGE_MAP(COptionsDlg, CDialog)
 	//{{AFX_MSG_MAP(COptionsDlg)	
 	ON_BN_CLICKED(IDC_HELPBTN, OnHelpbtn)	
 	ON_LBN_SELCHANGE(IDC_PLUGIN_LIST, OnSelchangePluginList)
+	ON_BN_CLICKED(IDC_SELECT_COLUMNS_BTN, OnSelectColumnsBtn)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -138,12 +143,12 @@ BOOL COptionsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	int nColumnCount = g_scanner->getColumnCount();
+	int nColumnCount = g_scanner->getAllColumnsCount();
 	CString szPluginName;
 
 	for (int i=CL_STATIC_COUNT; i < nColumnCount; i++)
 	{
-		g_scanner->getColumnName(i, szPluginName);
+		g_scanner->getAllColumnName(i, szPluginName);
 		m_ctPluginList.AddString(szPluginName);
 		m_ctPluginList.SetItemData(i - CL_STATIC_COUNT, i);
 	}
@@ -156,11 +161,21 @@ void COptionsDlg::OnSelchangePluginList()
 	// Change group box caption
 	CString szPluginName;	
 	int nPluginIndex = m_ctPluginList.GetItemData(m_ctPluginList.GetCurSel());
-	g_scanner->getColumnName(nPluginIndex, szPluginName);
+	g_scanner->getAllColumnName(nPluginIndex, szPluginName);
 
 	m_ctPluginOptionsGroup.SetWindowText(szPluginName);
 
 	// Enable needed controls	
-	
-	
+	/*if (g_scanner->m_AllColumns[nPluginIndex].pInfoFunction != NULL)
+		m_btnAboutColumn.EnableWindow(TRUE);
+	else
+		m_btnAboutColumn.EnableWindow(FALSE);*/
+
+	m_statColumnType.SetWindowText("Built-in");	
+}
+
+void COptionsDlg::OnSelectColumnsBtn() 
+{
+	CSelectColumnsDlg cDlg;
+	cDlg.DoModal();	
 }
