@@ -42,7 +42,6 @@ public:
 	virtual ~CScanListHeaderCtrl();
 
 	void SetSortArrow( const int nColumn, const BOOL bAscending );
-	void OnItemClickListHeader(NMHDR* pNMHDR, LRESULT* pResult);
 
 	// Generated message map functions
 protected:		

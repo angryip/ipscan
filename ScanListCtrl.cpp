@@ -973,7 +973,10 @@ int CALLBACK SortCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 
 void CScanListCtrl::OnItemClickListHeader(NMHDR* pNMHDR, LRESULT* pResult) 
 {
-	NMLISTVIEW *phdn = (NMLISTVIEW *) pNMHDR;	 	
+	NMLISTVIEW *phdn = (NMLISTVIEW *) pNMHDR;	 		
+
+	if (g_nThreadCount != 0)
+		return;		// Do not show anything during scanning
 
 	// Get the current on-screen mouse position
 	POINT mousePos;
@@ -1004,7 +1007,7 @@ void CScanListCtrl::OnItemClickListHeader(NMHDR* pNMHDR, LRESULT* pResult)
 		}
 
 		return;	// Do not proceed with sorting stuff
-	}
+	}	
 
 	// Quit if sorting is not allowed
 	if (!m_bSortingAllowed)
