@@ -29,6 +29,7 @@ public:
 
 // Implementation
 public:
+	void DeleteSelectedItems();
 	int DeleteAllOpenPortsHosts();
 	int DeleteAllClosedPortsHosts();
 	int DeleteAllAliveHosts();

@@ -133,6 +133,7 @@ protected:
 	afx_msg void OnUtilsDeletefromlistAlivehosts();
 	afx_msg void OnUtilsDeletefromlistClosedports();
 	afx_msg void OnUtilsDeletefromlistOpenports();
+	afx_msg void OnCommandsDeleteIP();
 	//}}AFX_MSG
 	
 	afx_msg void OnExecuteShowMenu(UINT nID);

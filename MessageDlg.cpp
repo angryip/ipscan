@@ -33,6 +33,7 @@ void CMessageDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CMessageDlg, CDialog)
 	//{{AFX_MSG_MAP(CMessageDlg)
+	ON_WM_SHOWWINDOW()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -45,7 +46,7 @@ void CMessageDlg::setMessageText(LPCSTR szMessage)
 }
 
 int CMessageDlg::DoModal() 
-{	
+{		
 	return CDialog::DoModal();
 }
 
@@ -57,4 +58,16 @@ BOOL CMessageDlg::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+void CMessageDlg::OnShowWindow(BOOL bShow, UINT nStatus) 
+{
+	CDialog::OnShowWindow(bShow, nStatus);
+	
+	// The following 2 lines are the MFC(?) bug workaround
+	// If this window appears when user is dragging a scrollbar
+	// then it won't be in focus and won't capture keyboard/mouse events
+
+	SetCapture();
+	ReleaseCapture();
 }

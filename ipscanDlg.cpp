@@ -38,8 +38,14 @@ unsigned long g_nEndIP;
 unsigned long g_nStartIP;
 unsigned long g_nCurrentIP;
 
+unsigned long g_nStartItemIndex;
+unsigned long g_nEndItemIndex;
+unsigned long g_nCurrentItemIndex;
+
+BOOL g_bScanExistingItems = FALSE;
+
 #define INDEX_CONTEXT_MENU	2
-#define	INDEX_SHOW_MENU		2
+#define	INDEX_SHOW_MENU		4
 
 class CAboutDlg : public CDialog
 {
@@ -189,9 +195,11 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_UTILS_DELETEFROMLIST_DEADHOSTS, OnUtilsDeletefromlistDeadhosts)
 	ON_COMMAND(ID_UTILS_DELETEFROMLIST_ALIVEHOSTS, OnUtilsDeletefromlistAlivehosts)
 	ON_COMMAND(ID_UTILS_DELETEFROMLIST_CLOSEDPORTS, OnUtilsDeletefromlistClosedports)
+	ON_COMMAND(ID_UTILS_DELETEFROMLIST_OPENPORTS, OnUtilsDeletefromlistOpenports)
 	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_COMMAND(ID_OPTIONS_SELECT_COLUMNS, OnSelectColumns)
-	ON_COMMAND(ID_UTILS_DELETEFROMLIST_OPENPORTS, OnUtilsDeletefromlistOpenports)
+	ON_COMMAND(ID_OPTIONS_SELECTPORTS, OnSelectPortsClicked)
+	ON_COMMAND(ID_COMMANDS_DELETEIP, OnCommandsDeleteIP)
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_RANGE(ID_MENU_SHOW_CMD_001, ID_MENU_SHOW_CMD_099, OnExecuteShowMenu)
@@ -309,6 +317,10 @@ BOOL CIpscanDlg::OnInitDialog()
 	m_pToolTips->AddTool(GetDlgItem(IDC_SELECT_COLUMNS), "Select columns to be scanned");	
 	m_pToolTips->AddTool(GetDlgItem(IDC_SELECT_PORTS), "Select TCP ports to be scanned");	
 	m_pToolTips->Activate(TRUE);
+
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("OnInitDialog(): Tooltips added ", 0, 0);
+	#endif
 	
 	// Set window size
 	RECT rc;
@@ -324,10 +336,14 @@ BOOL CIpscanDlg::OnInitDialog()
 	
 	status(NULL);	// Ready
 
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("OnInitDialog(): Window resized", 0, 0);
+	#endif
+
 	// Init hostname
-	char hn[100];
-	gethostname((char *)&hn,100);
-	SetDlgItemText(IDC_HOSTNAME,hn);
+	char szHostname[256];
+	gethostname((char *)&szHostname, 100);
+	SetDlgItemText(IDC_HOSTNAME, szHostname);
 
 	m_nScanMode = SCAN_MODE_NOT_SCANNING;
 
@@ -337,6 +353,10 @@ BOOL CIpscanDlg::OnInitDialog()
 
 	hAccel = LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MENU1));
 
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("OnInitDialog(): Menu loaded", 0, 0);
+	#endif
+
 	// Set title
 	CString str;
 	str.LoadString(IDS_VERSION);
@@ -344,6 +364,10 @@ BOOL CIpscanDlg::OnInitDialog()
 
 	m_ip2_virgin = TRUE;
 	m_ip1.SetWindowText("0.0.0.0");
+
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("OnInitDialog(): Processing command-line", 0, 0);
+	#endif
 
 	// Process command-line
 	CCommandLine *cCmdLine = new CCommandLine();
@@ -366,6 +390,10 @@ BOOL CIpscanDlg::OnInitDialog()
 		}
 	}
 	delete cCmdLine;
+
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("OnInitDialog(): Finished", 0, 0);
+	#endif
 	
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -462,27 +490,36 @@ void CIpscanDlg::OnButtonScan()
 			return;
 		}
 
-		char str[16];
-		m_ip1.GetWindowText((char *)&str,16);
-		g_nStartIP = ntohl(inet_addr((char*)&str));
-		m_ip2.GetWindowText((char *)&str,16);
-		g_nEndIP = ntohl(inet_addr((char*)&str));	
-		
-		// Minor Bug workaround ;-)
-		if (g_nEndIP == 0xFFFFFFFF)
+		if (!g_bScanExistingItems)
 		{
-			g_nEndIP--;	// Scan to 255.255.255.254
-		}
+			char str[16];
+			m_ip1.GetWindowText((char *)&str,16);
+			g_nStartIP = ntohl(inet_addr((char*)&str));
+			m_ip2.GetWindowText((char *)&str,16);
+			g_nEndIP = ntohl(inet_addr((char*)&str));	
 		
-		g_nEndIP++;
+			// Minor Bug workaround ;-)
+			if (g_nEndIP == 0xFFFFFFFF)
+			{
+				g_nEndIP--;	// Scan to 255.255.255.254
+			}
+			
+			g_nEndIP++;
 
-		if (g_nEndIP < g_nStartIP) 
+			if (g_nEndIP < g_nStartIP) 
+			{
+				MessageBox("Ending IP address is lower than starting.",NULL,MB_OK | MB_ICONHAND);
+				return;
+			}
+
+			g_nCurrentIP = g_nStartIP;
+		}
+		else
 		{
-			MessageBox("Ending IP address is lower than starting.",NULL,MB_OK | MB_ICONHAND);
-			return;
+			// g_nStartItemIndex is set outside before calling this method
+			g_nCurrentItemIndex = g_nStartItemIndex;
 		}
 
-		g_nCurrentIP = g_nStartIP;
 		m_progress.SetRange(0,100);
 		m_progress.SetPos(0);
 		m_tickcount = GetTickCount()/1000;
@@ -491,7 +528,10 @@ void CIpscanDlg::OnButtonScan()
 		
 		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStop.m_hObject); // stop scanning button
 
-		m_list.DeleteAllItems();		
+		if (!g_bScanExistingItems)
+		{
+			m_list.DeleteAllItems();		
+		}
 
 		g_nThreadCount = 0;
 
@@ -530,7 +570,16 @@ void CIpscanDlg::OnButtonScan()
 			}
 			else // SCAN_MODE_SCANNING
 			{
-				g_nEndIP = g_nCurrentIP;
+				// Stop scanning (but wait for existing threads)
+
+				if (g_bScanExistingItems)
+				{
+					g_nEndItemIndex = g_nCurrentItemIndex;
+				}
+				else
+				{
+					g_nEndIP = g_nCurrentIP;
+				}
 				m_progress.SetPos(100);
 				m_nScanMode = SCAN_MODE_FINISHING;
 			}
@@ -542,14 +591,15 @@ void CIpscanDlg::OnButtonScan()
 			m_nScanMode = SCAN_MODE_NOT_SCANNING;
 
 			status("Finalizing...");
-			g_scanner->finalizeScanning();
+			g_scanner->finalizeScanning();			
 			
-			((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStart.m_hObject); // start scan bitmap
-			status(NULL);	// Ready
+			((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStart.m_hObject); // start scan bitmap			
 			
 			EnableMenuItems(TRUE);			
 
 			m_progress.SetPos(0);
+
+			status(NULL);	// Ready
 
 			if (m_szDefaultFileName)
 			{
@@ -564,25 +614,30 @@ void CIpscanDlg::OnButtonScan()
 			{
 				// Display final message box with statistics
 
-				char str[140],ipa[16],ipa2[16],*ipp;
-				in_addr in;
-				in.S_un.S_addr = htonl(g_nStartIP);
-				ipp = inet_ntoa(in);
-				strcpy((char*)&ipa,ipp);
-				in.S_un.S_addr = htonl(g_nEndIP);
-				ipp = inet_ntoa(in);
-				strcpy((char*)&ipa2,ipp);
-				sprintf((char*)&str,
-					"Scan complete\r\n\r\n%s - %s\r\n%u second(s)\r\n\r\n"
-					"IPs scanned:\t%u\r\n"
-					"Alive hosts:\t%u\r\n"
-					"With open ports:\t%u",
-					&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1, g_nEndIP-g_nStartIP+1, g_scanner->m_nAliveHosts, g_scanner->m_nOpenPorts);
+				if (!g_bScanExistingItems)
+				{
+					char str[140],ipa[16],ipa2[16],*ipp;
+					in_addr in;
+					in.S_un.S_addr = htonl(g_nStartIP);
+					ipp = inet_ntoa(in);
+					strcpy((char*)&ipa,ipp);
+					in.S_un.S_addr = htonl(g_nEndIP);
+					ipp = inet_ntoa(in);
+					strcpy((char*)&ipa2,ipp);
+					sprintf((char*)&str,
+						"Scan complete\r\n\r\n%s - %s\r\n%u second(s)\r\n\r\n"
+						"IPs scanned:\t%u\r\n"
+						"Alive hosts:\t%u\r\n"
+						"With open ports:\t%u",
+						&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1, g_nEndIP-g_nStartIP+1, g_scanner->m_nAliveHosts, g_scanner->m_nOpenPorts);
 
-				CMessageDlg cMsgDlg;
-				cMsgDlg.setMessageText((char*)&str);
-				cMsgDlg.DoModal();
+					CMessageDlg cMsgDlg;
+					cMsgDlg.setMessageText((char*)&str);
+					cMsgDlg.DoModal();
+				}
 			}
+
+			g_bScanExistingItems = FALSE;	// Reset this stuff
 		}
 	}
 }
@@ -626,8 +681,15 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 {	
 	 	
 	int nItemIndex = 0;
+
+	BOOL bCurrentLessThanEnd;
+
+	if (g_bScanExistingItems)	
+		bCurrentLessThanEnd = g_nCurrentItemIndex < g_nEndItemIndex;
+	else
+		bCurrentLessThanEnd = g_nCurrentIP < g_nEndIP;
 	
-	if (g_nCurrentIP < g_nEndIP) 
+	if (bCurrentLessThanEnd) 
 	{
 		if ((int) g_nThreadCount >= g_options->m_nMaxThreads - 1) 
 			return;
@@ -638,28 +700,44 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 		szIP = inet_ntoa(in);
 		status(szIP);
 		
-		if (g_options->m_neDisplayOptions == DISPLAY_ALL)
+		if (!g_bScanExistingItems && g_options->m_neDisplayOptions == DISPLAY_ALL)
 		{
 			// Insert an item only if display options is set to display ALL IPs
 			// In other cases, it will be inserted later by CScanner::doScanIP
 			nItemIndex = m_list.InsertItem(m_list.GetItemCount(), szIP, 2);	// 2nd image - "?"
-		}
+		}		
 
-		CWinThread *pThread = AfxBeginThread(ThreadProcCallback, (LPVOID) g_nCurrentIP);	// Pass IP in Host byte order
-		
-		g_nCurrentIP++;
-		
-		if (g_nEndIP != g_nStartIP)	// To prevent division by 0 below
-		{			
-			m_progress.SetPos((g_nCurrentIP - g_nStartIP) * 100 / (g_nEndIP - g_nStartIP));
+		if (g_bScanExistingItems)
+		{
+			AfxBeginThread(ThreadProcCallbackRescan, (LPVOID) g_nCurrentItemIndex);	
+			g_nCurrentItemIndex++;
+
+			if (g_nEndItemIndex != g_nStartItemIndex)	// To prevent division by 0 below
+			{			
+				m_progress.SetPos((g_nCurrentItemIndex - g_nStartItemIndex) * 100 / (g_nEndItemIndex - g_nStartItemIndex));
+			}
 		}
+		else
+		{
+			AfxBeginThread(ThreadProcCallback, (LPVOID) g_nCurrentIP);	// Pass IP in Host byte order
+			g_nCurrentIP++;
+
+			if (g_nEndIP != g_nStartIP)	// To prevent division by 0 below
+			{			
+				m_progress.SetPos((g_nCurrentIP - g_nStartIP) * 100 / (g_nEndIP - g_nStartIP));
+			}
+		}			
+		
 	} 
 	else 
 	{
-	
 		if (g_nThreadCount == 0) 
 		{
-			g_nEndIP--;
+			if (g_bScanExistingItems)
+				g_nEndItemIndex--;
+			else
+				g_nEndIP--;
+
 			OnButtonScan();
 			
 			return;
@@ -809,43 +887,6 @@ void CIpscanDlg::OnHelpAngryzibersoftware()
 void CIpscanDlg::OnHelpForum() 
 {
 	CLink::goToHomepageForum();	
-}
-
-void CIpscanDlg::OnRescanIP() 
-{
-	m_menucuritem = m_list.GetCurrentSelectedItem();
-	
-	if (m_menucuritem == -1)
-		return;
-		
-	if (m_nScanMode == SCAN_MODE_NOT_SCANNING) 
-	{
-		char str[16];
-		m_list.GetItemText(m_menucuritem,CL_IP,(char*)&str,16);
-		g_nCurrentIP = ntohl(inet_addr((char*)&str));
-		
-		m_nScanMode = SCAN_MODE_SCANNING;
-
-		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStop.m_hObject);
-		
-		g_nThreadCount = 0;
-		
-		status((char*)&str);
-
-		m_list.ZeroResultsForItem(m_menucuritem);		
-		
-		g_scanner->initScanning();
-		
-		ScanningThread(m_menucuritem, INDEX_IS_GIVEN);
-
-		g_scanner->finalizeScanning();
-		
-		m_nScanMode = SCAN_MODE_NOT_SCANNING;
-
-		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStart.m_hObject);
-		
-		status(NULL);	// Ready
-	}
 }
 
 void CIpscanDlg::OnGotoNextalive() 
@@ -1232,6 +1273,7 @@ void CIpscanDlg::EnableMenuItems(BOOL bEnable)
 	tmpMnu->EnableMenuItem(ID_OPTIONS_INSTALL_PROGRAM, nEnable);
 	
 	tmpMnu->EnableMenuItem(ID_COMMANDS_RESCANIP, nEnable);	
+	tmpMnu->EnableMenuItem(ID_COMMANDS_DELETEIP, nEnable);	
 
 	tmpMnu->EnableMenuItem(ID_SHOWNETBIOSINFO, nEnable);
 	
@@ -1296,4 +1338,59 @@ void CIpscanDlg::OnUtilsDeletefromlistOpenports()
 	szMessage.Format("%d items were deleted.", m_list.DeleteAllOpenPortsHosts());
 	MessageBox(szMessage, NULL, MB_OK | MB_ICONINFORMATION);		
 	status(NULL);	// Ready	
+}
+
+void CIpscanDlg::OnRescanIP() 
+{
+	if (m_nScanMode != SCAN_MODE_NOT_SCANNING)
+	{
+		return;
+	}
+
+	if (m_list.GetCurrentSelectedItem() == -1)
+	{
+		MessageBox("No items selected", NULL, MB_OK | MB_ICONHAND);
+		return;
+	}
+
+	POSITION pos = m_list.GetFirstSelectedItemPosition();
+	int nItemIndex;	
+
+	g_bScanExistingItems = TRUE;
+	g_nStartItemIndex = 0;
+	g_nEndItemIndex = 1;	// We will process items manually
+	
+	OnButtonScan();
+
+	g_nEndItemIndex = g_nStartItemIndex;	// Timer will wait for completion only
+
+	while ((nItemIndex = m_list.GetNextSelectedItem(pos)) >= 0)
+	{				
+		CString szIP = m_list.GetItemText(nItemIndex, CL_IP);
+		status(szIP);
+
+		m_list.ZeroResultsForItem(nItemIndex);
+						
+		AfxBeginThread(ThreadProcCallbackRescan, (LPVOID) nItemIndex);
+
+		Sleep(g_options->m_nTimerDelay);
+	}		
+}
+
+
+void CIpscanDlg::OnCommandsDeleteIP() 
+{
+	if (m_nScanMode != SCAN_MODE_NOT_SCANNING)
+	{
+		MessageBox("Cannot delete while scanning", NULL, MB_OK | MB_ICONHAND);
+		return;
+	}
+
+	if (m_list.GetCurrentSelectedItem() == -1)
+	{
+		MessageBox("No items selected", NULL, MB_OK | MB_ICONHAND);
+		return;
+	}
+
+	m_list.DeleteSelectedItems();
 }

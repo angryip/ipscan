@@ -86,6 +86,7 @@ protected:
 
 // ordinary function
 UINT ThreadProcCallback(LPVOID nParam);
+UINT ThreadProcCallbackRescan(LPVOID nParam);
 UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP);
 
 #include "Options.h"

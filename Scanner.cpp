@@ -524,9 +524,14 @@ void CScanner::runScanFunction(DWORD nIP, int nIndex, char *szBuffer, int nBuffe
 ////////////////////////////////////////////////////////////////////////
 
 
-UINT ThreadProcCallback(LPVOID nParam)
+UINT ThreadProcCallback(LPVOID nIP)
 {	
-	return ScanningThread((DWORD)nParam, IP_IS_GIVEN);
+	return ScanningThread((DWORD)nIP, IP_IS_GIVEN);
+}
+
+UINT ThreadProcCallbackRescan(LPVOID nItemIndex)
+{	
+	return ScanningThread((DWORD)nItemIndex, INDEX_IS_GIVEN);
 }
 
 UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)

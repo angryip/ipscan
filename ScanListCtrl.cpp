@@ -737,3 +737,25 @@ int CScanListCtrl::DeleteAllOpenPortsHosts()
 	}
 	return nDeleted;
 }
+
+void CScanListCtrl::DeleteSelectedItems()
+{		
+	int nItemIndex, nFirstItemIndex;
+	POSITION pos;
+
+	pos = GetFirstSelectedItemPosition();
+	nFirstItemIndex = GetNextSelectedItem(pos);
+	
+	do 
+	{
+		pos = GetFirstSelectedItemPosition();
+		nItemIndex = GetNextSelectedItem(pos);
+		DeleteItem(nItemIndex);		
+	}
+	while (nItemIndex >= 0);
+
+	SetSelectedItem(nFirstItemIndex);
+
+	Invalidate();
+	UpdateWindow();
+}
