@@ -91,9 +91,47 @@ BOOL CIPRangeDlg::OnInitDialog()
 
 	// Process change event
 	OnFieldchangedIpaddress1(NULL, NULL);
+
+	// Initialize tooltips
+	m_pToolTips = new CToolTipCtrl;
+	m_pToolTips->Create(this);
+	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTONIPUP), "Use the IP address of the specified hostname");
+	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTONPASTE), "Paste the IP address from clipboard");
+	m_pToolTips->AddTool(GetDlgItem(IDC_CLASS_D), "Make a class B range from the above IP addresses");
+	m_pToolTips->AddTool(GetDlgItem(IDC_CLASS_C), "Make a class C range from the above IP addresses");
+	m_pToolTips->Activate(TRUE);
 	
 	return TRUE;  
 }
+
+void CIPRangeDlg::OnDestroy() 
+{
+	CDialog::OnDestroy();	
+	
+	if (g_pIPFeed != NULL)
+		delete(g_pIPFeed);
+}
+
+BOOL CIPRangeDlg::PreTranslateMessage(MSG* pMsg) 
+{
+	if (m_pToolTips != NULL)
+		m_pToolTips->RelayEvent(pMsg);
+
+	// Check for Enter key presses
+	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN)
+	{
+		// If this is a hostname edit control
+		if (pMsg->hwnd == GetDlgItem(IDC_HOSTNAME)->m_hWnd)
+		{
+			m_btnIPUp.SetFocus();
+			OnButtonipup();
+			return TRUE;
+		}
+	}
+
+	return CDialog::PreTranslateMessage(pMsg);
+}
+
 
 void CIPRangeDlg::OnButtonipup() 
 {

@@ -292,16 +292,11 @@ BOOL CIpscanDlg::OnInitDialog()
 	m_pToolTips = new CToolTipCtrl;
 	m_pToolTips->Create(this);
 	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTON1), "Start/Stop Scanning");
-	/*
-	TODO !!!!
-	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTONIPUP), "Use the IP address of the specified hostname");
-	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTONPASTE), "Paste the IP address from clipboard");
-	m_pToolTips->AddTool(GetDlgItem(IDC_CLASS_D), "Make a class B range from the above IP addresses");
-	m_pToolTips->AddTool(GetDlgItem(IDC_CLASS_C), "Make a class C range from the above IP addresses");
-	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTON_TO_ADVANCED), "Show/Hide additional controls");
+	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTON_TO_ADVANCED), "Show/Hide additional controls (incl. port selection)");
 	m_pToolTips->AddTool(GetDlgItem(IDC_SELECT_COLUMNS), "Select columns to be scanned");	
 	m_pToolTips->AddTool(GetDlgItem(IDC_SELECT_PORTS), "Select TCP ports to be scanned");	
-	*/
+	m_pToolTips->AddTool(GetDlgItem(IDC_NUMTHREADS), "Number of active scanning threads");	
+	m_pToolTips->AddTool(GetDlgItem(IDC_IPFEED), "Change the way you want to choose scanned IP addresses");	
 	m_pToolTips->Activate(TRUE);
 
 	#ifdef DEBUG_MESSAGES
@@ -1006,6 +1001,9 @@ void CIpscanDlg::OnDestroy()
 	delete(g_scanner);
 	delete(m_szDefaultFileName);
 	delete(m_pToolTips);	
+
+	if (g_pIPFeed != NULL)
+		delete(g_pIPFeed);
 
 	// Delete the critical section object
 	// removed because caused problems on Win9X: DeleteCriticalSection(&g_criticalSection);	

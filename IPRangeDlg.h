@@ -47,14 +47,18 @@ public:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	public:
 	virtual CWnd * SetFocus();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
+	CToolTipCtrl * m_pToolTips;
+
 	// Generated message map functions
 	//{{AFX_MSG(CIPRangeDlg)
-	virtual BOOL OnInitDialog();	
+	virtual BOOL OnInitDialog();
+	afx_msg void OnDestroy();
 	afx_msg void OnButtonipup();
 	afx_msg void OnFieldchangedIpaddress1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnFieldchangedIpaddress2(NMHDR* pNMHDR, LRESULT* pResult);
