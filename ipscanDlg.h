@@ -8,13 +8,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#define C_COLUMNS		6
 #define CL_IP			0
-#define CL_STATE		1
-#define CL_HOSTNAME		2
-#define CL_PORT			3
-#define CL_PINGTIME		4
-#define CL_ERROR		5
+#define CL_PING			1
 
 // Diplay Options
 #define DO_ALL		0
@@ -102,8 +97,7 @@ protected:
 	afx_msg void OnScanSavetotxt();
 	afx_msg void OnRclickList(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnOpencomputerinexplorer();	
-	afx_msg void OnWindozesucksIpclipboard();
-	afx_msg void OnWindozesucksHostnameclipboard();
+	afx_msg void OnWindozesucksIpclipboard();	
 	afx_msg void OnScanSaveselection();
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	afx_msg void OnOptionsSaveoptions();

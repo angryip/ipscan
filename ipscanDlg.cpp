@@ -138,8 +138,7 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_SCAN_SAVETOTXT, OnScanSavetotxt)
 	ON_NOTIFY(NM_RCLICK, IDC_LIST, OnRclickList)
 	ON_COMMAND(ID__OPENCOMPUTERINEXPLORER, OnOpencomputerinexplorer)	
-	ON_COMMAND(ID_WINDOZESUCKS_IPCLIPBOARD, OnWindozesucksIpclipboard)
-	ON_COMMAND(ID_WINDOZESUCKS_HOSTNAMECLIPBOARD, OnWindozesucksHostnameclipboard)
+	ON_COMMAND(ID_WINDOZESUCKS_IPCLIPBOARD, OnWindozesucksIpclipboard)	
 	ON_COMMAND(ID_SCAN_SAVESELECTION, OnScanSaveselection)
 	ON_WM_SHOWWINDOW()
 	ON_COMMAND(ID_OPTIONS_SAVEOPTIONS, OnOptionsSaveoptions)
@@ -622,11 +621,6 @@ void CAboutDlg::OnHttpForum()
 	CLink::goToHomepageForum();
 }
 
-void CIpscanDlg::OnWindozesucksHostnameclipboard() 
-{
-	MessageBox("NOP");
-}
-
 BOOL CAboutDlg::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
@@ -779,6 +773,8 @@ int CALLBACK SortCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort) 
    CString    strItem1 = d->m_list.GetItemText(lParam1, nSortedCol);
    CString    strItem2 = d->m_list.GetItemText(lParam2, nSortedCol);
 
+   MessageBox(0, "FIX ME!!!", "", 0);	// TODO
+
    int ret,ip1,ip2;
    
    switch (nSortedCol) {
@@ -787,7 +783,7 @@ int CALLBACK SortCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort) 
 		ip2 = ntohl(inet_addr(strItem2));
 		if (ip1>ip2) ret=1; else if (ip1<ip2) ret=-1; else ret=0;
 		break;
-	case CL_PINGTIME:
+	/*case CL_PINGTIME:
 		if (strItem1 == "N/A") ip1 = 0; else sscanf(strItem1,"%d",&ip1);
 		if (strItem2 == "N/A") ip2 = 0; else sscanf(strItem2,"%d",&ip2);
 		if (ip1>ip2) ret=1; else if (ip1<ip2) ret=-1; else ret=0;
@@ -797,7 +793,7 @@ int CALLBACK SortCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort) 
 	case CL_PORT:
 	case CL_ERROR:
 		ret = strcmp(strItem1, strItem2);
-		break;
+		break;*/
    }
    
    //MessageBoxA(0,strItem1+" "+strItem2,NULL,MB_OK);

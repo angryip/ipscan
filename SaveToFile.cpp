@@ -91,14 +91,14 @@ void CSaveToFile::saveToTXT()
 			  "Visit " + szHomepage + " for the latest version\n\n");
 	
 	int i,j;
-	int ws[C_COLUMNS];
+	int ws[100];
 
 	CString tmp;
 	LV_ITEM it;
 
 	// Output column names
 	
-	for (i=0; i < C_COLUMNS; i++) 
+	for (i=0; i < g_scanner->getColumnCount(); i++) 
 	{
 		ws[i] = m_dlg->m_list.GetColumnWidth(i) / 8 + 10;
 		
@@ -126,7 +126,7 @@ void CSaveToFile::saveToTXT()
 			m_dlg->m_list.GetItem(&it); 
 			if (it.state != LVIS_SELECTED) continue;
 
-			for (j=0; j<C_COLUMNS; j++) 
+			for (j=0; j < g_scanner->getColumnCount(); j++) 
 			{
 				fprintf(f, "%-*s",ws[j], m_dlg->m_list.GetItemText(i,j));
 			}
@@ -137,7 +137,7 @@ void CSaveToFile::saveToTXT()
 	{
 		for (i=0; i < m_dlg->m_list.GetItemCount(); i++) 
 		{					
-			for (j=0; j<C_COLUMNS; j++) 
+			for (j=0; j < g_scanner->getColumnCount(); j++) 
 			{
 				fprintf(f, "%-*s",ws[j], m_dlg->m_list.GetItemText(i,j));
 			}
@@ -180,10 +180,10 @@ void CSaveToFile::saveToCSV()
 			m_dlg->m_list.GetItem(&it); 
 			if (it.state != LVIS_SELECTED) continue;
 
-			for (j=0; j < C_COLUMNS; j++) 
+			for (j=0; j < g_scanner->getColumnCount(); j++) 
 			{
 				fprintf(f, "%s", m_dlg->m_list.GetItemText(i,j));
-				if (j < C_COLUMNS-1) fputs(",", f);
+				if (j < g_scanner->getColumnCount() -1) fputs(",", f);
 			}
 			fputs("\n", f);
 		}
@@ -192,10 +192,10 @@ void CSaveToFile::saveToCSV()
 	{		
 		for (i=0; i < m_dlg->m_list.GetItemCount(); i++) 
 		{
-			for (j=0; j < C_COLUMNS; j++) 
+			for (j=0; j < g_scanner->getColumnCount(); j++) 
 			{
 				fprintf(f, "%s", m_dlg->m_list.GetItemText(i,j));
-				if (j < C_COLUMNS-1) fputs(",", f);
+				if (j < g_scanner->getColumnCount() - 1) fputs(",", f);
 			}
 			fputs("\n", f);
 		}

@@ -73,8 +73,6 @@ BEGIN
         END
         MENUITEM SEPARATOR
         MENUITEM "IP -> Clipboard\tCtrl+C",     ID_WINDOZESUCKS_IPCLIPBOARD
-        MENUITEM "Hostname -> Clipboard",       ID_WINDOZESUCKS_HOSTNAMECLIPBOARD
-
     END
     POPUP "&Options"
     BEGIN
@@ -298,7 +296,7 @@ IDD_DETAILS_DLG DIALOGEX 0, 0, 248, 127
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_TOOLWINDOW
 CAPTION "Details"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     LTEXT           "Scanned info:",IDC_STATIC,7,3,45,8
     LTEXT           "Open ports:",IDC_STATIC,192,3,38,8
