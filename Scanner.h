@@ -55,6 +55,9 @@ typedef struct
 class CScanner  
 {
 public:	
+	void saveSelectedColumns();
+	void loadSelectedColumns();
+	void loadAllPossibleColumns();
 	int getColumnReference(int nItemIndex);
 	BOOL getAllColumnName(int nIndex, CString &szColumnHeader);
 	int getAllColumnsCount();

@@ -129,6 +129,8 @@ void COptions::save()
 	app->WriteProfileInt("", "ScanHostIfDead", m_bScanHostIfDead);
 	app->WriteProfileInt("", "ScanPorts", m_bScanPorts);
 	app->WriteProfileInt("", "ShowPortsBelow", m_bShowPortsBelow);
+
+	g_scanner->saveSelectedColumns();
 }
 
 void COptions::saveDimensions()

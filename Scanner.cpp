@@ -26,6 +26,8 @@ COptions *g_options;
 // Built-in plugins (scanner columns)
 //////////////////////////////////////////////////////////////////////
 
+#define DEFAULT_LOADED_COLUMN_COUNT	3
+
 TScannerColumn g_BuiltInScannerColumns[] = 
 {
 	// IP is always 0!!
@@ -88,6 +90,14 @@ CScanner::CScanner()
 {
 	m_app = AfxGetApp();
 
+	loadAllPossibleColumns();	
+
+	loadSelectedColumns();		
+
+}
+
+void CScanner::loadAllPossibleColumns()
+{
 	m_nAllColumns = sizeof(g_BuiltInScannerColumns) / sizeof(TScannerColumn);	
 	
 	m_AllColumns.SetSize(m_nAllColumns + 10, 10);	
@@ -97,7 +107,9 @@ CScanner::CScanner()
 	{
 		m_AllColumns[i] = g_BuiltInScannerColumns[i];		
 	}
-		
+
+	// TODO: plugin loading should be here somewhere
+
 	TInfoStruct infoStruct;
 
 	m_AllColumns[0].pszColumnName = new CString("IP");
@@ -108,16 +120,78 @@ CScanner::CScanner()
 		
 		m_AllColumns[i].pszColumnName = new CString(infoStruct.szColumnName);		
 	}
+}
 
-	// Create working columns
+void CScanner::loadSelectedColumns()
+{
+	// Load selected columns from Registry
+	CString szColumns = m_app->GetProfileString("", "Columns", "");
+
+	// Add the following columns - they always present
 	m_nColumns = 0;	
 
-	for (i=0; i < m_nAllColumns; i++)
+	for (int i=0; i < CL_STATIC_COUNT; i++)
 	{
 		m_Columns[m_nColumns] = i;
 		m_nColumns++;
 	}
 
+	// Parse the string	
+	szColumns += " ";	// add a non-digit to the end to make parsing easier
+	char szCurCol[6];
+	int nCurColLen = 0;	
+	
+	for (i=0; i < szColumns.GetLength(); i++)
+	{
+		char chCur = szColumns.GetAt(i);
+		
+		if (chCur >= '0' && chCur <= '9')
+		{			
+			szCurCol[nCurColLen] = chCur;
+			nCurColLen++;
+		}
+		else
+		{
+			if (nCurColLen == 0)
+				continue;	// skip illegal character
+
+			szCurCol[nCurColLen] = 0;			
+			nCurColLen = 0;
+
+			int nCurColumn = atoi(szCurCol);
+
+			if (nCurColumn < m_nAllColumns && nCurColumn >= CL_STATIC_COUNT) // Add only if there is a column with this index
+			{			
+				m_Columns[m_nColumns] = nCurColumn;
+				m_nColumns++;
+			}
+		}
+	}
+
+	if (m_nColumns <= CL_STATIC_COUNT)	// if no columns were loaded
+	{
+		m_nColumns = CL_STATIC_COUNT;	
+
+		for (int i=CL_STATIC_COUNT; i < DEFAULT_LOADED_COLUMN_COUNT; i++)
+		{
+			m_Columns[m_nColumns] = i;
+			m_nColumns++;
+		}
+	}
+}
+
+void CScanner::saveSelectedColumns()
+{
+	// Save selected columns to registry
+	CString szColumns, szTmp;
+
+	for (int i=CL_STATIC_COUNT; i < m_nColumns; i++)
+	{
+		szTmp.Format("%d ", m_Columns[i]);
+		szColumns += szTmp;
+	}
+
+	m_app->WriteProfileString("", "Columns", szColumns);
 }
 
 CScanner::~CScanner()
@@ -435,5 +509,6 @@ UINT ScanningThread(LPVOID nItemIndex)
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////// THREAD ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
+
 
 
