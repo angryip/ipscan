@@ -44,8 +44,7 @@ public:
 	void doScanPorts(DWORD nIP, CString &szResults);
 	BOOL finalizeScanning();
 	BOOL initScanning();
-	void initListColumns(CListCtrl *cListCtrl);
-	void loadSettings();
+	void initListColumns(CListCtrl *cListCtrl);	
 	int getColumnWidth(int nIndex);
 	BOOL getColumnName(int nIndex, CString &szColumnHeader);
 	int getColumnCount();
@@ -63,9 +62,12 @@ protected:
 // ordinary function
 UINT ScanningThread(LPVOID nItemIndex);
 
+#include "Options.h"
+
 extern UINT g_nThreadCount;
 extern HANDLE g_hThreads[10000];
 extern CDialog * g_dlg;
 extern CScanner * g_scanner;
+extern COptions * g_options;
 
 #endif // !defined(AFX_SCANNER_H__F6305E28_F29C_45F5_8073_26591A6C68D1__INCLUDED_)

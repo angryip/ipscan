@@ -20,6 +20,7 @@ HANDLE g_hThreads[10000];
 CDialog *g_dlg;
 CIpscanDlg *g_d; 
 CScanner *g_scanner;
+COptions *g_options;
 
 //////////////////////////////////////////////////////////////////////
 // Built-in plugins (scanner columns)
@@ -133,12 +134,6 @@ int CScanner::getColumnWidth(int nIndex)
 
 	return nWidth;
 }
-
-void CScanner::loadSettings()
-{
-
-
-}	
 
 void CScanner::initListColumns(CListCtrl *pListCtrl)
 {

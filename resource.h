@@ -76,6 +76,7 @@
 #define IDC_FROM_PORT                   1068
 #define IDC_TO_PORT                     1069
 #define IDC_BUTTON_ADD_PORT_RANGE       1070
+#define IDC_BUTTON_TIP                  1071
 #define ID_BUTTONABOUT                  32771
 #define IDS_FIRSTCOLUMN                 32772
 #define IDS_STRING32773                 32773
@@ -136,7 +137,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        154
 #define _APS_NEXT_COMMAND_VALUE         32812
-#define _APS_NEXT_CONTROL_VALUE         1068
+#define _APS_NEXT_CONTROL_VALUE         1072
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

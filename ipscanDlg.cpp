@@ -216,13 +216,14 @@ BOOL CIpscanDlg::OnInitDialog()
 
 	COptionsDlg::loadOptions(d);
 
+	g_options = new COptions();
+
 	// Add image list to the listbox
 	m_imglist.Create(IDB_IMAGELIST,16,2,0xFFFFFF);
 	m_list.SetImageList(&m_imglist,LVSIL_SMALL);
 
 	// Create the scanner object
 	g_scanner = new CScanner();
-	g_scanner->loadSettings();
 	
 	// Add columns to the listbox
 	g_scanner->initListColumns(&m_list);

@@ -19,6 +19,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CPortDlg)
 	enum { IDD = IDD_PORT_DLG };
+	CComboBox	m_ctPortListBox;
 	CEdit	m_ctPortString;
 	//}}AFX_DATA
 
@@ -36,7 +37,12 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(CPortDlg)
 	afx_msg void OnChangePortString();
-	afx_msg void OnUpdatePortString();
+	afx_msg void OnButtonAddSinglePort();
+	afx_msg void OnButtonAddPortRange();
+	afx_msg void OnButtonTip();
+	virtual BOOL OnInitDialog();
+	afx_msg void OnSelchangePortListbox();
+	virtual void OnOK();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
