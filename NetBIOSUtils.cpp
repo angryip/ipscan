@@ -179,7 +179,7 @@ BOOL CNetBIOSUtils::GetNames(CString &szUserName, CString &szComputerName, CStri
 	szUserName.Delete(szUserName.Find("$"));
 
 	// get mac address
-   	szMacAddress.Format(_T("%02X %02X %02X %02X %02X %02X"),
+   	szMacAddress.Format(_T("%02X-%02X-%02X-%02X-%02X-%02X"),
 		pStatus->adapter_address[0],
 		pStatus->adapter_address[1],
 		pStatus->adapter_address[2],
