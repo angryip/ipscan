@@ -15,7 +15,7 @@ static char THIS_FILE[]=__FILE__;
 #endif
 
 
-int g_nThreadCount = 0;
+UINT g_nThreadCount = 0;
 HANDLE g_hThreads[10000];
 CDialog *g_dlg;
 CIpscanDlg *g_d; 
@@ -29,16 +29,25 @@ CScanner *g_scanner;
 CScanner::CScanner()
 {
 	m_app = AfxGetApp();
-	m_nColumnCount = 5;
+	m_nColumnCount = 3;
 
 	TInfoStruct infoStruct;
 
-	for (int i=0; i < m_nColumnCount; i++)
-	{
-		m_pScanFunctions[i] = &ScanIntDoPing;
-		m_pInitFunctions[i] = &ScanIntInitPing;	
-		m_pInfoFunctions[i] = &ScanIntInfoPing;
+	m_pInfoFunctions[0] = &ScanIntInfoDummy;
+	m_pInitFunctions[0] = &ScanIntInitDummy;
+	m_pScanFunctions[0] = &ScanIntDoDummy;
+	m_pszColumnNames[0] = new CString("IP");
 
+	m_pScanFunctions[1] = &ScanIntDoPing;
+	m_pInitFunctions[1] = &ScanIntInitPing;	
+	m_pInfoFunctions[1] = &ScanIntInfoPing;
+
+	m_pScanFunctions[2] = &ScanIntDoHostname;
+	m_pInitFunctions[2] = NULL;
+	m_pInfoFunctions[2] = &ScanIntInfoHostname;
+
+	for (int i=1; i < m_nColumnCount; i++)
+	{
 		m_pInfoFunctions[i](&infoStruct);
 		
 		m_pszColumnNames[i] = new CString(infoStruct.szColumnName);
@@ -90,7 +99,7 @@ void CScanner::initListColumns(CListCtrl *pListCtrl)
 	for (nCol=0; nCol < pListCtrl->GetHeaderCtrl()->GetItemCount(); nCol++)
 	{
 		pListCtrl->DeleteColumn(nCol);
-	}
+	}	
 	
 	for (nCol=0; nCol < m_nColumnCount; nCol++) 
 	{					
@@ -104,7 +113,7 @@ BOOL CScanner::initScanning()
 {
 	for (int i=0; i < m_nColumnCount; i++)
 	{
-		if (m_pInitFunctions != NULL)
+		if (m_pInitFunctions[i] != NULL)
 			m_pInitFunctions[i]();
 	}
 	return TRUE;
@@ -120,7 +129,21 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 
 	char szTmp[512];
 
-	for (int i=0; i < m_nColumnCount; i++)
+	// Ping it!
+	BOOL bAlive = m_pScanFunctions[1](nIP, (char*) &szTmp, sizeof(szTmp));
+	g_d->m_list.SetItemText(nItemIndex, 1, (char*) &szTmp);
+	
+	if (bAlive)
+	{
+		g_d->m_list.SetItem(nItemIndex, 0, LVIF_IMAGE, NULL, 0, 0, 0, 0);
+	}
+	else
+	{
+		g_d->m_list.SetItem(nItemIndex, 0, LVIF_IMAGE, NULL, 1, 0, 0, 0);
+	}
+
+	// Run other scans
+	for (int i=2; i < m_nColumnCount; i++)
 	{
 		if (m_pInfoFunctions[i] != NULL)
 		{

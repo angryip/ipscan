@@ -25,8 +25,6 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog used for App About
 
-UINT numthreads;
-
 UINT listofs,statusheight;
 CIpscanDlg* d;
 CWinApp *app;
@@ -396,17 +394,15 @@ void CIpscanDlg::OnButton1()
 		m_scanning=TRUE;
 		
 		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)stopbmp.m_hObject); // stop scanning button
-		//m_list.SetRedraw(FALSE);
+
 		m_list.DeleteAllItems();		
-		//m_list.SetRedraw(TRUE);
 
 		CMenu *tmp = GetMenu();
 		tmp->GetSubMenu(3)->EnableMenuItem(ID_OPTIONS_OPTIONS,MF_GRAYED);
 		tmp->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVETOTXT,MF_GRAYED);
 		tmp->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVESELECTION,MF_GRAYED);
 
-		
-		numthreads = 0;
+		g_nThreadCount = 0;
 		//memset(&threads,0,sizeof(threads));
 /*		numalive = 0;
 		numopen = 0;*/
@@ -419,24 +415,24 @@ void CIpscanDlg::OnButton1()
 	} 
 	else 
 	{
-		if (numthreads!=0) 
+		if (g_nThreadCount!=0) 
 		{
 			
 			if (m_scanning==2) 
 			{
 				if (MessageBox("Are you sure you want to interrupt scanning by killing all the threads?\nScanning results will be in'.",NULL,MB_YESNO | MB_ICONQUESTION)==IDNO) return;
 			
-				/*for (UINT i=0; i<=10000; i++) 
+				for (UINT i=0; i<=10000; i++) 
 				{
-					if (threads[i]!=0) 
+					if (g_hThreads[i]!=0) 
 					{
-						TerminateThread(threads[i],0);
-						CloseHandle(threads[i]);
-						threads[i]=0;
+						TerminateThread(g_hThreads[i],0);
+						CloseHandle(g_hThreads[i]);
+						g_hThreads[i]=0;
 					}
-				}*/
+				}
 				m_numthreads.SetWindowText("0");
-				numthreads=0;
+				g_nThreadCount = 0;
 				goto finish_all;
 			}
 
@@ -548,7 +544,7 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 	
 	if (m_curip<m_endip) 
 	{
-		if (numthreads>=m_maxthreads-1) return;
+		if (g_nThreadCount >= m_maxthreads - 1) return;
 		in_addr in;
 		char *ipa;
 		in.S_un.S_addr = htonl(m_curip);
@@ -569,7 +565,7 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 	else 
 	{
 	
-		if (numthreads==0) 
+		if (g_nThreadCount == 0) 
 		{
 			m_endip--;
 			OnButton1();
@@ -824,7 +820,7 @@ void CIpscanDlg::OnWindozesucksRescanip()
 		m_scanning=TRUE;
 		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)stopbmp.m_hObject);
 		
-		numthreads = 0;
+		g_nThreadCount = 0;
 		
 		status((char*)&str);
 		

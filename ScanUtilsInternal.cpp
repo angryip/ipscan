@@ -36,6 +36,11 @@ char aPingDataBuf[32];
 
 int nNumAlive = 0;
 
+
+//////////////////////////////////////////////////////////////////////////////////
+// PING
+//////////////////////////////////////////////////////////////////////////////////
+
 BOOL ScanIntInitPing()
 {
 	HMODULE hICMP = LoadLibrary("ICMP.DLL");
@@ -110,5 +115,52 @@ BOOL ScanIntInfoPing(TInfoStruct *pInfoStruct)
 {
 	strcpy((char*)&pInfoStruct->szColumnName, "Ping");
 	strcpy((char*)&pInfoStruct->szPluginName, "Ping");
+	return TRUE;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////
+// DUMMY
+/////////////////////////////////////////////////////////////////////////////////
+
+BOOL ScanIntDoDummy(DWORD nIP, LPSTR szReturn, int nBufferLen)
+{
+	szReturn[0] = 0;
+	return TRUE;
+}
+
+BOOL ScanIntInitDummy()
+{
+	return TRUE;
+}
+
+BOOL ScanIntInfoDummy(TInfoStruct *pInfoStruct)
+{
+	memset(pInfoStruct, 0, sizeof(TInfoStruct));
+	return TRUE;
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+// HOSTNAME
+//////////////////////////////////////////////////////////////////////////////////
+
+BOOL ScanIntDoHostname(DWORD nIP, LPSTR szReturn, int nBufferLen)
+{
+	hostent *he = gethostbyaddr((char*)&nIP, 4, 0);
+	if (he) 
+	{
+		memcpy(szReturn, he->h_name, nBufferLen);
+	} 
+	else
+	{
+		strcpy(szReturn, "N/A");
+	}
+	return TRUE;
+}
+
+BOOL ScanIntInfoHostname(TInfoStruct *pInfoStruct)
+{
+	strcpy(pInfoStruct->szColumnName, "Hostname");
+	strcpy(pInfoStruct->szPluginName, "Resolve hostname");
 	return TRUE;
 }

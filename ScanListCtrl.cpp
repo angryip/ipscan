@@ -78,16 +78,14 @@ void CScanListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	int offset = pDC->GetTextExtent(_T(" "), 1 ).cx*2;
 
 	CRect rcHighlight;
-	CRect rcWnd;
-	int nExt;
+	CRect rcWnd;	
 	
 	rcHighlight = rcBounds;
 	rcHighlight.left = rcLabel.left;
 	
 	// Draw the background color
 	if( bHighlight )
-	{
-		pDC->SetTextColor(::GetSysColor(COLOR_HIGHLIGHTTEXT));
+	{		
 		pDC->SetBkColor(::GetSysColor(COLOR_HIGHLIGHT));
 
 		pDC->FillRect(rcHighlight, &CBrush(::GetSysColor(COLOR_HIGHLIGHT)));
@@ -109,10 +107,20 @@ void CScanListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	// Draw port scan results
 	if (m_bShowPorts)
 	{
+		pDC->SetTextColor(::GetSysColor(COLOR_GRAYTEXT));
 		rcCol = rcHighlight;
 		rcCol.bottom -= 2;	rcCol.left = rcLabel.right;
-		pDC->DrawText("Open ports: ", -1, rcCol, DT_LEFT | DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP 
+		pDC->DrawText("  Open ports: 25, 80, 443, 9870", -1, rcCol, DT_LEFT | DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP 
 					| DT_BOTTOM | DT_END_ELLIPSIS);
+	}
+
+	if (bHighlight)
+	{
+		pDC->SetTextColor(::GetSysColor(COLOR_HIGHLIGHTTEXT));
+	}
+	else
+	{
+		pDC->SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
 	}
 	
 	// Set clip region
@@ -247,7 +255,7 @@ void CScanListCtrl::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 	if (m_bShowPorts)
 	{
 		GetFont()->GetLogFont( &lf );
-		lf.lfHeight *= 2.5;
+		lf.lfHeight = lf.lfHeight * 28 / 10;
 
 		if( lf.lfHeight < 0 )
 			lpMeasureItemStruct->itemHeight = -lf.lfHeight; 

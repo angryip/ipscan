@@ -50,7 +50,7 @@ protected:
 // ordinary function
 UINT ScanningThread(LPVOID nItemIndex);
 
-extern int g_nThreadCount;
+extern UINT g_nThreadCount;
 extern HANDLE g_hThreads[10000];
 extern CDialog * g_dlg;
 extern CScanner * g_scanner;
