@@ -126,7 +126,6 @@ CIpscanDlg::CIpscanDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CIpscanDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CIpscanDlg)
-	m_hostname = _T("");
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
 
@@ -143,17 +142,14 @@ void CIpscanDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CIpscanDlg)
+	DDX_Control(pDX, IDC_IPFEED, m_ctIPFeed);
+	DDX_Control(pDX, IDC_BUTTON_TO_ADVANCED, m_btnAdvancedMode);
 	DDX_Control(pDX, IDC_SCAN_PORTS, m_ctScanPorts);
 	DDX_Control(pDX, IDC_WHATPORTS, m_ctWhatPorts);
 	DDX_Control(pDX, IDC_LIST, m_list);
-	DDX_Control(pDX, IDC_BUTTONIPUP, m_ipup);
 	DDX_Control(pDX, IDC_NUMTHREADS, m_numthreads);
 	DDX_Control(pDX, IDC_PROGRESS, m_progress);
-	DDX_Control(pDX, IDC_IPADDRESS2, m_ip2);
-	DDX_Control(pDX, IDC_IPADDRESS1, m_ip1);
 	DDX_Control(pDX, IDC_STATUS, m_statusctl);
-	DDX_Text(pDX, IDC_HOSTNAME, m_hostname);
-	DDV_MaxChars(pDX, m_hostname, 100);
 	//}}AFX_DATA_MAP
 }
 
@@ -213,9 +209,10 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_CONFIGURE, OnCommandsOpencomputerConfigure)
 	ON_COMMAND(ID_HELP_DONATIONPAGE, OnHelpDonationPage)
 	ON_COMMAND(ID_HELP_CHECKFORNEWERVERSION, OnHelpCheckForNewerVersion)
+	ON_COMMAND(ID_HELP_DOWNLOADPLUGINS, OnHelpDownloadplugins)
 	ON_COMMAND(ID_OPTIONS_SELECT_COLUMNS, OnSelectColumns)
 	ON_COMMAND(ID_OPTIONS_SELECTPORTS, OnSelectPortsClicked)
-	ON_COMMAND(ID_HELP_DOWNLOADPLUGINS, OnHelpDownloadplugins)
+	ON_CBN_SELCHANGE(IDC_IPFEED, UpdateCurrentIPFeedDialog)
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_RANGE(ID_MENU_SHOW_CMD_001, ID_MENU_SHOW_CMD_099, OnExecuteShowMenu)
@@ -242,7 +239,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	#endif
 			
 	// Internal initializations
-	m_list.InitPostCreateStuff();
+	m_list.InitPostCreateStuff();	
 
 	m_bSysCommand = FALSE;
 
@@ -281,19 +278,11 @@ BOOL CIpscanDlg::OnInitDialog()
 		AfxMessageBox("OnInitDialog(): list columns initialized ", 0, 0);
 	#endif
 
-	// Set button's bitmaps
-	m_bmpUpArrow.LoadMappedBitmap(IDB_UPARROW);
-	((CButton*)GetDlgItem(IDC_BUTTONIPUP))->SetBitmap((HBITMAP)m_bmpUpArrow.m_hObject);
-	m_bmpPaste.LoadMappedBitmap(IDB_PASTE);
-	((CButton*)GetDlgItem(IDC_BUTTONPASTE))->SetBitmap((HBITMAP)m_bmpPaste.m_hObject);
+	// Set button's bitmaps	
 	m_bmpStart.LoadMappedBitmap(IDB_BMPSTART);
 	m_bmpStop.LoadMappedBitmap(IDB_BMPSTOP);
 	m_bmpKill.LoadMappedBitmap(IDB_BMPKILL);
-	((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStart.m_hObject);
-	CBitmap *tmpbmp = new CBitmap; tmpbmp->LoadMappedBitmap(IDB_CLASS_C_PIC);
-	((CButton*)GetDlgItem(IDC_CLASS_C))->SetBitmap((HBITMAP)tmpbmp->m_hObject);
-	tmpbmp = new CBitmap; tmpbmp->LoadMappedBitmap(IDB_CLASS_D_PIC);
-	((CButton*)GetDlgItem(IDC_CLASS_D))->SetBitmap((HBITMAP)tmpbmp->m_hObject);
+	((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStart.m_hObject);	
 	// Load bitmaps for advanced mode button
 	m_bmpHideAdvanced.LoadMappedBitmap(IDB_HIDE_ADVANCED);
 	m_bmpShowAdvanced.LoadMappedBitmap(IDB_SHOW_ADVANCED);
@@ -308,6 +297,8 @@ BOOL CIpscanDlg::OnInitDialog()
 	m_pToolTips = new CToolTipCtrl;
 	m_pToolTips->Create(this);
 	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTON1), "Start/Stop Scanning");
+	/*
+	TODO !!!!
 	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTONIPUP), "Use the IP address of the specified hostname");
 	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTONPASTE), "Paste the IP address from clipboard");
 	m_pToolTips->AddTool(GetDlgItem(IDC_CLASS_D), "Make a class B range from the above IP addresses");
@@ -315,6 +306,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	m_pToolTips->AddTool(GetDlgItem(IDC_BUTTON_TO_ADVANCED), "Show/Hide additional controls");
 	m_pToolTips->AddTool(GetDlgItem(IDC_SELECT_COLUMNS), "Select columns to be scanned");	
 	m_pToolTips->AddTool(GetDlgItem(IDC_SELECT_PORTS), "Select TCP ports to be scanned");	
+	*/
 	m_pToolTips->Activate(TRUE);
 
 	#ifdef DEBUG_MESSAGES
@@ -323,9 +315,9 @@ BOOL CIpscanDlg::OnInitDialog()
 	
 	// Set window size
 	RECT rc;
-	m_ipup.GetWindowRect(&rc); g_nListOffset = rc.bottom;
+	m_btnAdvancedMode.GetWindowRect(&rc); g_nListOffset = rc.bottom;
 	m_ctScanPorts.GetWindowRect(&rc); g_nAdvancedOffset = rc.bottom - g_nListOffset + 1;
-	m_ip1.GetWindowRect(&rc); g_nListOffset -= (rc.top-5);
+	m_ctIPFeed.GetWindowRect(&rc); g_nListOffset -= (rc.top-5); 
 	m_progress.GetWindowRect(&rc); g_nStatusHeight = rc.bottom-rc.top-2;		
 	
 	if (g_options->m_bScanPorts)
@@ -343,6 +335,19 @@ BOOL CIpscanDlg::OnInitDialog()
 		g_nListOffset += g_nAdvancedOffset; // OnButtonToAdvanced() will subtract this
 	}
 
+	// Create IP feed dialogs
+	VERIFY(m_dlgIPRange.Create(CIPRange::IDD, this));
+	
+	// Add items to the listbox
+	CString szText;
+	m_dlgIPRange.GetWindowText(szText);
+	VERIFY(m_ctIPFeed.AddString(szText) == 0);
+
+	// Update currently selected feeder
+	m_ctIPFeed.SetCurSel(0);
+	UpdateCurrentIPFeedDialog();
+
+
 	OnButtonToAdvanced(); // Show/Hide advanced controls
 	
 	OnScanPortsClicked();	
@@ -351,12 +356,7 @@ BOOL CIpscanDlg::OnInitDialog()
 
 	#ifdef DEBUG_MESSAGES
 		AfxMessageBox("OnInitDialog(): Window resized", 0, 0);
-	#endif
-
-	// Init hostname
-	char szHostname[256];
-	gethostname((char *)&szHostname, 100);
-	SetDlgItemText(IDC_HOSTNAME, szHostname);
+	#endif	
 
 	m_nScanMode = SCAN_MODE_NOT_SCANNING;
 
@@ -380,10 +380,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	// Set title
 	CString str;
 	str.LoadString(IDS_VERSION);
-	SetWindowText("Angry IP Scanner "+str);
-
-	m_ip2_virgin = TRUE;
-	m_ip1.SetWindowText("0.0.0.0");
+	SetWindowText("Angry IP Scanner "+str);	
 
 	#ifdef DEBUG_MESSAGES
 		AfxMessageBox("OnInitDialog(): Processing command-line", 0, 0);
@@ -393,9 +390,9 @@ BOOL CIpscanDlg::OnInitDialog()
 	CCommandLine cCmdLine;
 	if (cCmdLine.process())
 	{		
-		m_ip1.SetWindowText(cCmdLine.m_szStartIP);
-		m_ip2.SetWindowText(cCmdLine.m_szEndIP);
-		m_ip2_virgin = FALSE;
+		/*m_dlgIPRange.m_ctIPStart.SetWindowText(cCmdLine.m_szStartIP);
+		m_dlgIPRange.m_ctIPEnd.SetWindowText(cCmdLine.m_szEndIP);
+		m_dlgIPRange.m_bIp2Virgin = FALSE;
 
 		m_nCmdLineOptions = cCmdLine.m_nOptions;
 		m_nCmdLineFileFormat = cCmdLine.m_nFileFormat;
@@ -408,7 +405,8 @@ BOOL CIpscanDlg::OnInitDialog()
 		if (m_nCmdLineOptions & CMDO_START_SCAN)
 		{
 			CIpscanDlg::OnButtonScan();
-		}
+		}*/
+		AfxMessageBox("Command-line support is not yet rewritten, sorry", 0, 0);
 	}
 	else
 	{
@@ -417,7 +415,7 @@ BOOL CIpscanDlg::OnInitDialog()
 
 	#ifdef DEBUG_MESSAGES
 		AfxMessageBox("OnInitDialog(): Finished", 0, 0);
-	#endif	
+	#endif		
 	
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -507,6 +505,16 @@ void CIpscanDlg::OnIpExit()
 	SendMessage(WM_CLOSE,0,0);	
 }
 
+void CIpscanDlg::UpdateCurrentIPFeedDialog()
+{
+	int nCurrentFeed = m_ctIPFeed.GetCurSel();
+
+	// TODO: add more feeders here
+	m_dlgIPRange.ShowWindow(nCurrentFeed == 0 ? SW_SHOW : SW_HIDE);	
+	if (nCurrentFeed == 0)
+		m_dlgIPRange.SetFocus();
+}
+
 void CIpscanDlg::OnButtonScan() 
 {	
 	if (m_nScanMode == SCAN_MODE_NOT_SCANNING) 
@@ -531,9 +539,9 @@ void CIpscanDlg::OnButtonScan()
 			m_list.DeleteAllItems();		
 		
 			char str[16];
-			m_ip1.GetWindowText((char *)&str,16);
+			m_dlgIPRange.m_ctIPStart.GetWindowText((char *)&str,16);
 			g_nStartIP = ntohl(inet_addr((char*)&str));
-			m_ip2.GetWindowText((char *)&str,16);
+			m_dlgIPRange.m_ctIPEnd.GetWindowText((char *)&str,16);
 			g_nEndIP = ntohl(inet_addr((char*)&str));	
 		
 			// Minor Bug workaround ;-)
@@ -735,9 +743,9 @@ void CIpscanDlg::OnButtonipup()
 	}
 	memcpy(&in.S_un.S_addr,*he->h_addr_list,sizeof(long));
 	addr = inet_ntoa(in);
-	m_ip1.SetWindowText(addr);
-	m_ip2.SetWindowText(addr);
-	m_ip2_virgin = TRUE;	
+	m_dlgIPRange.m_ctIPStart.SetWindowText(addr);
+	m_dlgIPRange.m_ctIPEnd.SetWindowText(addr);
+	m_dlgIPRange.m_bIp2Virgin = TRUE;	
 }
 
 
@@ -892,17 +900,17 @@ void CIpscanDlg::OnOptionsSavedimensions()
 void CIpscanDlg::OnFieldchangedIpaddress1(NMHDR* pNMHDR, LRESULT* pResult) 
 {
 	char str[16];
-	m_ip2.GetWindowText((char*)&str,sizeof(str));
-	if (m_ip2_virgin) {
-		m_ip1.GetWindowText((char*)&str,sizeof(str));
-		m_ip2.SetWindowText((char*)&str);
+	m_dlgIPRange.m_ctIPEnd.GetWindowText((char*)&str,sizeof(str));
+	if (m_dlgIPRange.m_bIp2Virgin) {
+		m_dlgIPRange.m_ctIPStart.GetWindowText((char*)&str,sizeof(str));
+		m_dlgIPRange.m_ctIPEnd.SetWindowText((char*)&str);
 	}
 	*pResult = 0;
 }
 
 void CIpscanDlg::OnFieldchangedIpaddress2(NMHDR* pNMHDR, LRESULT* pResult) 
 {
-	m_ip2_virgin = FALSE;	
+	m_dlgIPRange.m_bIp2Virgin = FALSE;	
 	*pResult = 0;
 }
 
@@ -910,18 +918,18 @@ void CIpscanDlg::OnClassC()
 {
 	DWORD ip;
 	char *ipc = (char*)&ip;
-	m_ip1.GetAddress(ip); ipc[0] = (char) 1; m_ip1.SetAddress(ip);
-	m_ip2.GetAddress(ip); ipc[0] = (char) 255; m_ip2.SetAddress(ip);
-	m_ip2_virgin=FALSE;
+	m_dlgIPRange.m_ctIPStart.GetAddress(ip); ipc[0] = (char) 1; m_dlgIPRange.m_ctIPStart.SetAddress(ip);
+	m_dlgIPRange.m_ctIPEnd.GetAddress(ip); ipc[0] = (char) 255; m_dlgIPRange.m_ctIPEnd.SetAddress(ip);
+	m_dlgIPRange.m_bIp2Virgin=FALSE;
 }
 
 void CIpscanDlg::OnClassD() 
 {
 	DWORD ip;
 	char *ipc = (char*)&ip;
-	m_ip1.GetAddress(ip); ipc[0] = (char) 1; ipc[1] = (char) 0; m_ip1.SetAddress(ip);
-	m_ip2.GetAddress(ip); ipc[0] = (char) 255; ipc[1] = (char) 255; m_ip2.SetAddress(ip);
-	m_ip2_virgin=FALSE;
+	m_dlgIPRange.m_ctIPStart.GetAddress(ip); ipc[0] = (char) 1; ipc[1] = (char) 0; m_dlgIPRange.m_ctIPStart.SetAddress(ip);
+	m_dlgIPRange.m_ctIPEnd.GetAddress(ip); ipc[0] = (char) 255; ipc[1] = (char) 255; m_dlgIPRange.m_ctIPEnd.SetAddress(ip);
+	m_dlgIPRange.m_bIp2Virgin=FALSE;
 }
 
 void CIpscanDlg::OnShowNetBIOSInfo() 
@@ -1001,13 +1009,13 @@ BOOL CIpscanDlg::PreTranslateMessage(MSG* pMsg)
 	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN)
 	{
 		// If this is a hostname edit control
-		if (pMsg->hwnd == GetDlgItem(IDC_HOSTNAME)->m_hWnd)
+		/* TODO!!! if (pMsg->hwnd == GetDlgItem(IDC_HOSTNAME)->m_hWnd)
 		{
 			m_ipup.SetFocus();
 			OnButtonipup();
 			return TRUE;
 		}
-		else
+		else*/
 		// If this is a list control
 		if (pMsg->hwnd == m_list.m_hWnd)
 		{
@@ -1036,9 +1044,9 @@ void CIpscanDlg::OnButtonpaste()
 	LPTSTR lp;
 	lp = (char*)GlobalLock(hglbCopy);	
 	
-	m_ip1.SetWindowText(lp);
-	m_ip2.SetWindowText(lp);
-	m_ip2_virgin = TRUE;
+	m_dlgIPRange.m_ctIPStart.SetWindowText(lp);
+	m_dlgIPRange.m_ctIPEnd.SetWindowText(lp);
+	m_dlgIPRange.m_bIp2Virgin = TRUE;
 
 	GlobalUnlock(lp);	
 }
@@ -1115,8 +1123,8 @@ void CIpscanDlg::OnButtonToAdvanced()
 	RECT rc;
 	GetClientRect(&rc);
 	HandleResizing(rc.right-rc.left, rc.bottom-rc.top);
-	
-	m_ip1.SetFocus();
+		
+	m_dlgIPRange.SetFocus();	
 }
 
 void CIpscanDlg::HandleResizing(int cx, int cy)
@@ -1553,13 +1561,13 @@ void CIpscanDlg::OnExecuteFavouritesMenu(UINT nID)
 	
 	inaddr.S_un.S_addr = g_options->m_aFavourites[nFavouriteIndex].nIP1;
 	szIP = inet_ntoa(inaddr);	
-	m_ip1.SetWindowText(szIP);
+	m_dlgIPRange.m_ctIPStart.SetWindowText(szIP);
 	
 	inaddr.S_un.S_addr = g_options->m_aFavourites[nFavouriteIndex].nIP2;
 	szIP = inet_ntoa(inaddr);	
-	m_ip2.SetWindowText(szIP);
+	m_dlgIPRange.m_ctIPEnd.SetWindowText(szIP);
 
-	m_ip2_virgin = FALSE;
+	m_dlgIPRange.m_bIp2Virgin = FALSE;
 }
 
 void CIpscanDlg::OnFavouritesDeleteFavourite() 

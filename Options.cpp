@@ -481,11 +481,12 @@ void COptions::addFavourite()
 
 	CString szTmp;	
 
+	/* TODO !!!!
 	pDlg->m_ip1.GetWindowText(szTmp);
 	dlg.m_szDefaultUserText = szTmp + " - ";
 	pDlg->m_ip2.GetWindowText(szTmp);
 	dlg.m_szDefaultUserText += szTmp;
-
+*/
 	szTmp = dlg.doQuery();
 	
 	if (szTmp.GetLength() == 0)
@@ -498,11 +499,14 @@ void COptions::addFavourite()
 		{
 			m_aFavourites[i].szName = szTmp;
 			
+			/*
+			TODO !!!
 			pDlg->m_ip1.GetWindowText(szTmp);			
 			m_aFavourites[i].nIP1 = inet_addr(szTmp);
 
 			pDlg->m_ip2.GetWindowText(szTmp);			
 			m_aFavourites[i].nIP2 = inet_addr(szTmp);
+			*/
 
 			break;
 		}

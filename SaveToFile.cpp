@@ -434,7 +434,7 @@ void CSaveToFile::saveToIPPortList(FILE *fileHandle)
 		return;
 	}
 
-	int i,j;	
+	int i;	
 	CString szIP;	
 	CString szPorts;
 	LV_ITEM it;

@@ -8,7 +8,7 @@ NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "ipscan.h"
 LastPage=0
 
-ClassCount=13
+ClassCount=14
 Class1=CInstallDlg
 Class2=CIpscanApp
 Class3=CAboutDlg
@@ -25,9 +25,9 @@ Resource1=IDD_MESSAGE_DIALOG
 Resource2=IDD_NETBIOS_OPTIONS
 Resource3=IDD_IPSCAN_DIALOG (English (U.S.))
 Resource4=IDD_ABOUTBOX (English (U.S.))
-Resource5=IDD_IP_FEED_IP_RANGE
+Resource5=IDD_SEARCH
 Resource6=IDD_DETAILS_DLG
-Resource7=IDD_MESSAGE_DIALOG (Russian)
+Resource7=IDD_INSTALL_DLG (Russian)
 Resource8=IDD_INSTALL_DLG
 Resource9=IDD_SELECT_COLUMNS_DLG
 Resource10=IDD_QUERY_DLG
@@ -38,19 +38,20 @@ Resource13=IDD_PORT_DLG
 Class12=CFavouriteDeleteDlg
 Resource14=IDD_EDIT_OPENERS_DLG
 Class13=CEditOpenersDlg
-Resource15=IDD_INSTALL_DLG (Russian)
-Resource16=IDD_OPTIONS (Neutral (Default))
-Resource17=IDD_IPSCAN_DIALOG
-Resource18=IDD_FAVOURITE_DELETE (Russian)
-Resource19=IDD_PORT_DLG (Russian)
-Resource20=IDD_SELECT_COLUMNS_DLG (Russian)
-Resource21=IDD_SEARCH
-Resource22=IDR_MENU1 (Neutral)
-Resource23=IDD_EDIT_OPENERS_DLG (Russian)
-Resource24=IDD_ABOUTBOX
-Resource25=IDD_DETAILS_DLG (Russian)
-Resource26=IDD_QUERY_DLG (Russian)
-Resource27=IDR_MENU1 (Neutral (Default))
+Resource15=IDD_OPTIONS (Neutral (Default))
+Resource16=IDR_MENU1 (Neutral)
+Resource17=IDD_ABOUTBOX
+Resource18=IDD_QUERY_DLG (Russian)
+Resource19=IDD_MESSAGE_DIALOG (Russian)
+Resource20=IDD_FAVOURITE_DELETE (Russian)
+Resource21=IDR_MENU1 (Neutral (Default))
+Resource22=IDD_IPSCAN_DIALOG
+Resource23=IDD_DETAILS_DLG (Russian)
+Resource24=IDD_EDIT_OPENERS_DLG (Russian)
+Resource25=IDD_PORT_DLG (Russian)
+Resource26=IDD_SELECT_COLUMNS_DLG (Russian)
+Class14=CIPRange
+Resource27=IDD_IP_FEED_IP_RANGE
 
 [CLS:CInstallDlg]
 Type=0
@@ -77,7 +78,7 @@ Type=0
 BaseClass=CDialog
 HeaderFile=ipscanDlg.h
 ImplementationFile=ipscanDlg.cpp
-LastObject=CIpscanDlg
+LastObject=IDC_IPFEED
 Filter=D
 VirtualFilter=dWC
 
@@ -157,29 +158,19 @@ Control12=IDC_HTTP_FORUM,static,1342308608
 [DLG:IDD_IPSCAN_DIALOG]
 Type=1
 Class=CIpscanDlg
-ControlCount=22
-Control1=IDC_IPADDRESS1,SysIPAddress32,1342242816
-Control2=IDC_IPADDRESS2,SysIPAddress32,1342242816
-Control3=IDC_BUTTON1,button,1342242945
-Control4=IDC_HOSTNAME,edit,1350631552
-Control5=IDC_BUTTONIPUP,button,1342242944
-Control6=IDC_BUTTONPASTE,button,1342242944
-Control7=IDC_CLASS_D,button,1342242944
-Control8=IDC_CLASS_C,button,1342242944
-Control9=IDC_LIST,SysListView32,1350632457
-Control10=IDC_BUTTON_TO_ADVANCED,button,1342247043
-Control11=IDC_SELECT_COLUMNS,button,1342242944
-Control12=IDC_SCAN_PORTS,button,1342242819
-Control13=IDC_SELECT_PORTS,button,1342242816
-Control14=IDC_PROGRESS,msctls_progress32,1350565888
-Control15=IDC_STATUS,static,1342182144
-Control16=IDC_STATIC,static,1342308352
-Control17=IDC_STATIC,static,1342308352
-Control18=IDC_STATIC,static,1342308352
-Control19=IDC_STATIC,static,1342308352
-Control20=IDC_NUMTHREADS,static,1342312449
-Control21=IDC_WHATPORTS,static,1342308364
-Control22=IDC_IPFEED,combobox,1344339971
+ControlCount=12
+Control1=IDC_IPFEED,combobox,1344339971
+Control2=IDC_BUTTON1,button,1342242945
+Control3=IDC_BUTTON_TO_ADVANCED,button,1342247043
+Control4=IDC_SELECT_COLUMNS,button,1342242944
+Control5=IDC_SCAN_PORTS,button,1342242819
+Control6=IDC_SELECT_PORTS,button,1342242816
+Control7=IDC_LIST,SysListView32,1350632457
+Control8=IDC_PROGRESS,msctls_progress32,1350565888
+Control9=IDC_STATUS,static,1342182144
+Control10=IDC_STATIC,static,1342308352
+Control11=IDC_NUMTHREADS,static,1342312449
+Control12=IDC_WHATPORTS,static,1342308364
 
 [DLG:IDD_MESSAGE_DIALOG]
 Type=1
@@ -312,7 +303,7 @@ CommandCount=36
 
 [DLG:IDD_ABOUTBOX (English (U.S.))]
 Type=1
-Class=?
+Class=CAboutDlg
 ControlCount=12
 Control1=IDC_STATIC,static,1342177283
 Control2=IDC_STATIC,static,1342308480
@@ -355,7 +346,7 @@ Control21=IDC_WHATPORTS,static,1342308364
 
 [DLG:IDD_SEARCH (English (U.S.))]
 Type=1
-Class=?
+Class=CSearchDlg
 ControlCount=6
 Control1=IDC_SEARCHEDIT,edit,1350631552
 Control2=IDC_CASESENSITIVE,button,1342242819
@@ -502,7 +493,7 @@ LastObject=CEditOpenersDlg
 
 [DLG:IDD_INSTALL_DLG (Russian)]
 Type=1
-Class=?
+Class=CInstallDlg
 ControlCount=6
 Control1=IDOK,button,1342242817
 Control2=IDCANCEL,button,1342242816
@@ -513,7 +504,7 @@ Control6=IDC_COPY_PROGRAM,button,1342242819
 
 [DLG:IDD_MESSAGE_DIALOG (Russian)]
 Type=1
-Class=?
+Class=CMessageDlg
 ControlCount=3
 Control1=IDOK,button,1342242817
 Control2=IDC_STATIC,static,1342177283
@@ -521,7 +512,7 @@ Control3=IDC_MESSAGE_TEXT,edit,1342244932
 
 [DLG:IDD_PORT_DLG (Russian)]
 Type=1
-Class=?
+Class=CPortDlg
 ControlCount=18
 Control1=IDC_PORT_STRING,edit,1350631552
 Control2=IDC_SINGLE_PORT,edit,1350639744
@@ -572,7 +563,7 @@ Control14=IDC_SELECT_COLUMN_INFO,button,1342242816
 
 [DLG:IDD_QUERY_DLG (Russian)]
 Type=1
-Class=?
+Class=CQueryDlg
 ControlCount=4
 Control1=IDC_USER_TEXT,edit,1350631552
 Control2=IDOK,button,1342242817
@@ -581,7 +572,7 @@ Control4=IDC_QUERY_TEXT,static,1342308352
 
 [DLG:IDD_FAVOURITE_DELETE (Russian)]
 Type=1
-Class=?
+Class=CFavouriteDeleteDlg
 ControlCount=4
 Control1=IDOK,button,1342242817
 Control2=IDCANCEL,button,1342242816
@@ -590,7 +581,7 @@ Control4=IDC_FAV_LIST,combobox,1344339971
 
 [DLG:IDD_EDIT_OPENERS_DLG (Russian)]
 Type=1
-Class=?
+Class=CEditOpenersDlg
 ControlCount=18
 Control1=IDC_OPENER_LIST,listbox,1352728833
 Control2=IDC_BTN_UP,button,1342242816
@@ -613,7 +604,7 @@ Control18=IDC_COMMANDLINE,button,1342242819
 
 [DLG:IDD_IP_FEED_IP_RANGE]
 Type=1
-Class=?
+Class=CIPRange
 ControlCount=10
 Control1=IDC_IPADDRESS1,SysIPAddress32,1342242816
 Control2=IDC_IPADDRESS2,SysIPAddress32,1342242816
@@ -625,4 +616,13 @@ Control7=IDC_CLASS_C,button,1342242944
 Control8=IDC_STATIC,static,1342308352
 Control9=IDC_STATIC,static,1342308352
 Control10=IDC_STATIC,static,1342308352
+
+[CLS:CIPRange]
+Type=0
+HeaderFile=IPRange.h
+ImplementationFile=IPRange.cpp
+BaseClass=CDialog
+Filter=D
+LastObject=CIPRange
+VirtualFilter=dWC
 

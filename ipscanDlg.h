@@ -22,6 +22,7 @@
 #include "resource.h"
 #include "Scanner.h"
 #include "ScanListCtrl.h"
+#include "IpRange.h"
 
 #define SCAN_MODE_NOT_SCANNING	0
 #define SCAN_MODE_SCANNING		1
@@ -45,18 +46,17 @@ public:
 	CBitmap m_bmpShowAdvanced;
 	int m_nCmdLineOptions;
 	CString *m_szDefaultFileName;			
-	BOOL m_portondead;
-	BOOL m_ip2_virgin;
+	BOOL m_portondead;	
 	UINT m_timeout;
 	CBitmap m_bmpStop;
 	CBitmap m_bmpStart;
-	CBitmap m_bmpPaste;
-	CBitmap m_bmpUpArrow;		
 	CBitmap m_bmpKill;
 	int m_menucuritem;
 	CMenu * m_menuContext;
 	unsigned long m_tickcount;	
 	int m_nScanMode;
+	CIPRange m_dlgIPRange;
+	
 	CIpscanDlg(CWnd* pParent = NULL);	// standard constructor
 
 	void status(LPCSTR str);
@@ -64,16 +64,14 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CIpscanDlg)
 	enum { IDD = IDD_IPSCAN_DIALOG };
+	CComboBox	m_ctIPFeed;
+	CButton	m_btnAdvancedMode;
 	CButton	m_ctScanPorts;
 	CStatic	m_ctWhatPorts;
 	CScanListCtrl	m_list;
-	CButton	m_ipup;
 	CStatic m_numthreads;
 	CProgressCtrl	m_progress;
-	CIPAddressCtrl	m_ip2;
-	CIPAddressCtrl	m_ip1;
 	CStatic	m_statusctl;
-	CString	m_hostname;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
@@ -91,7 +89,7 @@ protected:
 	CBitmap m_bmpSelectColumns;
 	BOOL m_bSysCommand;
 	CBitmap m_bmpHideAdvanced;
-	void HandleResizing(int cx, int cy);
+	void HandleResizing(int cx, int cy);	
 	bool m_bAdvancedMode;
 	HACCEL hAccel;
 	HICON m_hIcon;
@@ -154,6 +152,7 @@ protected:
 	afx_msg void OnHelpDonationPage();
 	afx_msg void OnHelpCheckForNewerVersion();
 	afx_msg void OnHelpDownloadplugins();
+	afx_msg void UpdateCurrentIPFeedDialog();
 	//}}AFX_MSG
 	
 	afx_msg void OnExecuteShowMenu(UINT nID);
