@@ -121,6 +121,11 @@ protected:
 	afx_msg void OnGotoNextclosedport();
 	afx_msg void OnGotoHostname();
 	afx_msg void OnItemclickListHeader(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnCommandsOpencomputerAsftp();
+	afx_msg void OnCommandsOpencomputerAswebsite();
+	afx_msg void OnCommandsOpencomputerTelnet();
+	afx_msg void OnCommandsOpencomputerTelnettospecifiedport();
+	afx_msg void OnCommandsOpencomputerHint();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

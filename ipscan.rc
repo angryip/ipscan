@@ -48,11 +48,25 @@ BEGIN
     POPUP "&Commands"
     BEGIN
         MENUITEM "&Show error description\tCtrl+E", ID__SHOWERRORDESCRIPTION
-        MENUITEM "&Open computer in explorer\tCtrl+R", 
-                                                ID__OPENCOMPUTERINEXPLORER
         MENUITEM "Show &NetBIOS info\tCtrl+N",  ID_WINDOZESUCKS_SHOWNETBIOSINFO
 
         MENUITEM "Rescan &IP\tCtrl+I",          ID_WINDOZESUCKS_RESCANIP
+        POPUP "Open computer"
+        BEGIN
+            MENUITEM "<HINT>",                      ID_COMMANDS_OPENCOMPUTER_HINT
+
+            MENUITEM SEPARATOR
+            MENUITEM "In explorer\tCtrl+R",         ID__OPENCOMPUTERINEXPLORER
+
+            MENUITEM "FTP",                         ID_COMMANDS_OPENCOMPUTER_ASFTP
+
+            MENUITEM "Web site (HTTP)",             ID_COMMANDS_OPENCOMPUTER_ASWEBSITE
+
+            MENUITEM "Telnet",                      ID_COMMANDS_OPENCOMPUTER_TELNET
+
+            MENUITEM "Telnet to specified port",    ID_COMMANDS_OPENCOMPUTER_TELNETTOSPECIFIEDPORT
+
+        END
         MENUITEM SEPARATOR
         MENUITEM "IP -> Clipboard\tCtrl+C",     ID_WINDOZESUCKS_IPCLIPBOARD
         MENUITEM "Hostname -> Clipboard",       ID_WINDOZESUCKS_HOSTNAMECLIPBOARD
@@ -287,7 +301,7 @@ BEGIN
     IDS_STRING32789         "1"
     IDS_STRING32790         "1"
     IDS_STRING32791         "1"
-    IDS_VERSION             "1.81"
+    IDS_VERSION             "1.82"
 END
 
 #endif    // Russian resources

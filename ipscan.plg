@@ -7,7 +7,7 @@
 </h3>
 <h3>Command Lines</h3>
 Creating command line "rc.exe /l 0x409 /fo"Release/ipscan.res" /d "NDEBUG" "C:\programm.ing\My_progs\ipscan\ipscan.rc"" 
-Creating temporary file "C:\WINDOZA\TEMP\RSPB062.TMP" with contents
+Creating temporary file "C:\WINDOZA\TEMP\RSP1213.TMP" with contents
 [
 /nologo /MT /W3 /Gi /GX /O1 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"Release/ipscan.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
 "C:\programm.ing\My_progs\ipscan\ipscan.cpp"
@@ -15,14 +15,14 @@ Creating temporary file "C:\WINDOZA\TEMP\RSPB062.TMP" with contents
 "C:\programm.ing\My_progs\ipscan\OptionsDlg.cpp"
 "C:\programm.ing\My_progs\ipscan\SearchDlg.cpp"
 ]
-Creating command line "cl.exe @C:\WINDOZA\TEMP\RSPB062.TMP" 
-Creating temporary file "C:\WINDOZA\TEMP\RSPB063.TMP" with contents
+Creating command line "cl.exe @C:\WINDOZA\TEMP\RSP1213.TMP" 
+Creating temporary file "C:\WINDOZA\TEMP\RSP1214.TMP" with contents
 [
 /nologo /MT /W3 /Gi /GX /O1 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"Release/ipscan.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
 "C:\programm.ing\My_progs\ipscan\StdAfx.cpp"
 ]
-Creating command line "cl.exe @C:\WINDOZA\TEMP\RSPB063.TMP" 
-Creating temporary file "C:\WINDOZA\TEMP\RSPB064.TMP" with contents
+Creating command line "cl.exe @C:\WINDOZA\TEMP\RSP1214.TMP" 
+Creating temporary file "C:\WINDOZA\TEMP\RSP1215.TMP" with contents
 [
 /nologo /subsystem:windows /incremental:no /pdb:"Release/ipscan.pdb" /machine:I386 /out:"Release/ipscan.exe" 
 .\Release\ipscan.obj
@@ -32,7 +32,7 @@ Creating temporary file "C:\WINDOZA\TEMP\RSPB064.TMP" with contents
 .\Release\StdAfx.obj
 .\Release\ipscan.res
 ]
-Creating command line "link.exe @C:\WINDOZA\TEMP\RSPB064.TMP"
+Creating command line "link.exe @C:\WINDOZA\TEMP\RSP1215.TMP"
 <h3>Output Window</h3>
 Compiling resources...
 Compiling...
@@ -40,12 +40,12 @@ StdAfx.cpp
 Compiling...
 ipscan.cpp
 ipscanDlg.cpp
-C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1051) : warning C4305: '=' : truncation from 'const int' to 'char'
-C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1051) : warning C4309: '=' : truncation of constant value
-C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1060) : warning C4305: '=' : truncation from 'const int' to 'char'
-C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1060) : warning C4309: '=' : truncation of constant value
-C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1060) : warning C4305: '=' : truncation from 'const int' to 'char'
-C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1060) : warning C4309: '=' : truncation of constant value
+C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1043) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1043) : warning C4309: '=' : truncation of constant value
+C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1052) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1052) : warning C4309: '=' : truncation of constant value
+C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1052) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1052) : warning C4309: '=' : truncation of constant value
 OptionsDlg.cpp
 SearchDlg.cpp
 Generating Code...
