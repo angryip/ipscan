@@ -19,6 +19,7 @@ typedef struct {u_short nStartPort; u_short nEndPort; } tPortRange;
 class COptions  
 {
 public:
+	int m_nLanaNumber;
 	CString getCurrentDate();
 	int m_nPingCount;
 	void saveDimensions();

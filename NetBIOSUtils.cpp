@@ -146,6 +146,9 @@ void CNetBIOSUtils::GetLanaNumber()
 
 	pNetBiosFunc((NCB*) &ncb);
 
+	if (lan_num.length > 1) TODO: // TODO: call options here to let the user choose the network adapter
+		MessageBox(0, "Warning! You have several network adapters. NetBIOS info scanning can be very long when trying to enumerate all of them, so first of them is used", "", MB_OK | MB_ICONINFORMATION);
+
 	m_nLana = lan_num.lana[0];
 }
 
