@@ -80,3 +80,14 @@ void CDetailsDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 	
 }
 
+BOOL CDetailsDlg::PreTranslateMessage(MSG* pMsg) 
+{
+	// Check for Enter key presses
+	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN)
+	{
+		EndDialog(IDOK);	// Close window on ENTER
+		return TRUE;
+	}
+
+	return CDialog::PreTranslateMessage(pMsg);
+}
