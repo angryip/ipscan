@@ -683,7 +683,7 @@ void CIpscanDlg::OnButtonScan()
 				ipp = inet_ntoa(in);
 				strcpy((char*)&ipa2,ipp);					
 
-				int nHostCount = g_nEndIP-g_nStartIP+1;
+				int nHostCount = g_nEndIP-g_nStartIP+1;	// TODO! make a counter for this
 
 				int nTotalTime = GetTickCount() / 1000 - m_tickcount + 1;
 				float fTimeForOneIP = (float) nTotalTime / nHostCount;

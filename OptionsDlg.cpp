@@ -158,10 +158,13 @@ void COptionsDlg::OnHelpbtn()
 		"Ports on 2nd row:\n"
 		"\tIf enabled (and port scanning also enabled), then scanned ports will\n"
 		"\tbe displayed below each IP address in the list\n"
-		"Continue scanning...:\n"
+		"Continue scanning dead hosts:\n"
 		"\tSome hosts don't respond to ICMP queries, so host is\n"
 		"\t illegally considered \"dead\". This option will scan it anyway\n"
 		"\t(and all other dead hosts)\n"
+		"Skip broadcast IPs:\n"
+		"\tThis currently skips all X.X.X.0 and X.X.X.255 IP addresses, because\n"
+		"\tthey are broadcast in the most cases."
 		,NULL,
 		MB_OK | MB_ICONINFORMATION
 	);

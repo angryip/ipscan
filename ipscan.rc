@@ -165,7 +165,7 @@ BEGIN
     EDITTEXT        IDC_PINGCOUNT,51,50,40,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_PORTTIMEOUT,51,63,40,12,ES_AUTOHSCROLL
     CONTROL         "Continue scanning dead hosts",IDC_SCAN_HOST_IF_DEAD,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,78,111,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,77,111,10
     CONTROL         "All hosts",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP,123,16,42,10
     CONTROL         "Only alive",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,123,
@@ -209,7 +209,7 @@ BEGIN
     LTEXT           "Scanned:",IDC_STATIC,115,167,32,8
     RTEXT           "N/A",IDC_COLUMN_SELECTED,151,167,14,8
     CONTROL         "Skip broadcast IPs",IDC_SKIP_BROADCAST,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,88,75,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,89,75,10
 END
 
 
