@@ -24,6 +24,7 @@
 #include "ScanListCtrl.h"
 #include "AbstractIPFeedDlg.h"
 #include "AbstractIPFeed.h"
+#include "IPFeedDlgFactory.h"
 
 #define SCAN_MODE_NOT_SCANNING	0
 #define SCAN_MODE_SCANNING		1
@@ -58,6 +59,8 @@ public:
 	CMenu * m_menuContext;
 	unsigned long m_tickcount;	
 	int m_nScanMode;
+	
+	CIPFeedDlgFactory *m_pIPFeedFactory;
 	CAbstractIPFeedDlg *m_dlgIPFeed;
 	
 	CIpscanDlg(CWnd* pParent = NULL);	// standard constructor

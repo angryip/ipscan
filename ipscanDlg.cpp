@@ -16,6 +16,7 @@
 #include "stdafx.h"
 #include "ipscan.h"
 #include "ipscanDlg.h"
+#include "IPFeedDlgFactory.h"
 #include "OptionsDlg.h"
 #include "SearchDlg.h"
 #include "InstallDlg.h"
@@ -32,6 +33,7 @@
 #include "QueryDlg.h"
 #include "EditOpenersDlg.h"
 #include "IPRangeDlg.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -325,9 +327,10 @@ BOOL CIpscanDlg::OnInitDialog()
 		g_nListOffset += g_nAdvancedOffset; // OnButtonToAdvanced() will subtract this
 	}
 
-	// Create IP feed dialogs
-	m_dlgIPFeed = new CIPRangeDlg();
-	ASSERT(m_dlgIPFeed->Create(CIPRangeDlg::IDD, this));
+	// Create IP feed factory
+	m_pIPFeedFactory = new CIPFeedDlgFactory;
+	m_dlgIPFeed = m_pIPFeedFactory->m_paIPFeeds[0];	
+	// TODO: make normal initialization here!!!
 	
 	// Add items to the listbox
 	CString szText;
@@ -972,7 +975,7 @@ void CIpscanDlg::OnDestroy()
 	delete(g_scanner);
 	delete(m_szDefaultFileName);
 	delete(m_pToolTips);	
-	delete(m_dlgIPFeed);
+	delete(m_pIPFeedFactory);
 
 	if (g_pIPFeed != NULL)
 		delete(g_pIPFeed);
@@ -1446,7 +1449,8 @@ void CIpscanDlg::OnFavouritesAddcurrentrange()
 	// Add only if it was created without errors
 	if (g_pIPFeed)
 	{
-		g_options->addFavourite();	
+		// Pass serialized IP Feed to the adder routine
+		g_options->addFavourite(m_dlgIPFeed->serialize());
 	
 		RefreshFavouritesMenu();
 	}
@@ -1469,21 +1473,12 @@ void CIpscanDlg::OnExecuteFavouritesMenu(UINT nID)
 
 	int nFavouriteIndex = nID - ID_MENU_FAVOURITES_001;
 	
-	/*
-	TODO: fix favorites!
+	// Feed the serialized content to the feeder dialog
+	m_dlgIPFeed->unserialize(g_options->m_aFavourites[nFavouriteIndex].szContent);	
 
-	char *szIP;
-	in_addr inaddr;
-		
-	inaddr.S_un.S_addr = g_options->m_aFavourites[nFavouriteIndex].nIP1;
-	szIP = inet_ntoa(inaddr);	
-	m_dlgIPFeed->m_ctIPStart.SetWindowText(szIP);
-	
-	inaddr.S_un.S_addr = g_options->m_aFavourites[nFavouriteIndex].nIP2;
-	szIP = inet_ntoa(inaddr);	
-	m_dlgIPFeed->m_ctIPEnd.SetWindowText(szIP);
-
-	m_dlgIPFeed->m_bIp2Virgin = FALSE;*/
+	//
+	// TODO: add support for different feeders
+	//
 }
 
 void CIpscanDlg::OnFavouritesDeleteFavourite() 

@@ -252,11 +252,27 @@ void COptions::loadFavourites()
 		if (m_aFavourites[i].szName.GetLength() == 0)
 			break;
 
-		
-		szKey.Format("FavouriteIP1_%d", i);
-		m_aFavourites[i].nIP1 = app->GetProfileInt("", szKey, 0);
-		szKey.Format("FavouriteIP2_%d", i);
-		m_aFavourites[i].nIP2 = app->GetProfileInt("", szKey, 0);
+		// Try to load the new-style favourite first
+		szKey.Format("FavouriteContent_%d", i);
+		m_aFavourites[i].szContent = app->GetProfileString("", szKey);
+
+		if (m_aFavourites[i].szContent.GetLength() == 0)
+		{
+			// TODO: remove this code after a few releases from 2.50
+			// Let's make an attempt to load old-style favourite (backward compatibility)
+			szKey.Format("FavouriteIP1_%d", i);
+			IPAddress nIP1 = app->GetProfileInt("", szKey, 0);
+			szKey.Format("FavouriteIP2_%d", i);
+			IPAddress nIP2 = app->GetProfileInt("", szKey, 0);
+
+			// Convert to a new style 
+			in_addr inaddr;		
+			inaddr.S_un.S_addr = nIP1;
+			m_aFavourites[i].szContent = inet_ntoa(inaddr);	
+			m_aFavourites[i].szContent += "|";
+			inaddr.S_un.S_addr = nIP2;
+			m_aFavourites[i].szContent += inet_ntoa(inaddr);	
+		}
 	}
 
 }
@@ -270,16 +286,14 @@ void COptions::saveFavourites()
 	for (int i=0; i < 99; i++)
 	{
 		szKey.Format("FavouriteName_%d", i);
-		app->WriteProfileString("", szKey, m_aFavourites[i].szName);
+		app->WriteProfileString("", szKey, m_aFavourites[i].szName);		
 
+		// This check should be here, because empty last string should be written above
 		if (m_aFavourites[i].szName.GetLength() == 0)
 			break;
 
-		szKey.Format("FavouriteIP1_%d", i);
-		app->WriteProfileInt("", szKey, m_aFavourites[i].nIP1);
-
-		szKey.Format("FavouriteIP2_%d", i);
-		app->WriteProfileInt("", szKey, m_aFavourites[i].nIP2);	
+		szKey.Format("FavouriteContent_%d", i);
+		app->WriteProfileString("", szKey, m_aFavourites[i].szContent);
 	}
 }
 
@@ -470,11 +484,9 @@ void COptions::initOpenersMenu(CMenu *pMenu)
 }
 
 
-void COptions::addFavourite()
+void COptions::addFavourite(const CString& szSerializedIPFeed)
 {
-	CIpscanDlg *pDlg = (CIpscanDlg *) AfxGetApp()->GetMainWnd();
-
-	CQueryDlg dlg(pDlg);
+	CQueryDlg dlg(AfxGetApp()->GetMainWnd());
 
 	dlg.m_szCaption = "Add Favorite";
 	dlg.m_szQueryText = "Enter the name of current favorite:";	
@@ -494,16 +506,8 @@ void COptions::addFavourite()
 		if (m_aFavourites[i].szName.GetLength() == 0)
 		{
 			m_aFavourites[i].szName = szTmp;
+			m_aFavourites[i].szContent = szSerializedIPFeed;
 			
-			/*
-			TODO !!!
-			pDlg->m_ip1.GetWindowText(szTmp);			
-			m_aFavourites[i].nIP1 = inet_addr(szTmp);
-
-			pDlg->m_ip2.GetWindowText(szTmp);			
-			m_aFavourites[i].nIP2 = inet_addr(szTmp);
-			*/
-
 			break;
 		}
 	}

@@ -68,6 +68,13 @@ protected:
 	afx_msg void OnClassD();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+
+public:
+
+	virtual CString serialize();
+	
+	virtual BOOL unserialize(const CString& szSettings);
+
 };
 
 //{{AFX_INSERT_LOCATION}}

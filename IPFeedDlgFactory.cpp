@@ -9,15 +9,15 @@
  * You may not rename the program and distribute it.                 *
  *********************************************************************/
 
-
-// IPRangeIPFeed.cpp: implementation of the CIPRangeIPFeed class.
+// IPFeedDlgFactory.cpp: implementation of the CIPFeedDlgFactory class.
 //
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "ipscan.h"
-#include "AbstractIPFeed.h"
-#include "IPRangeIPFeed.h"
+#include "IPFeedDlgFactory.h"
+#include "IPRangeDlg.h"
+#include "RandomIPFeedDlg.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -29,63 +29,25 @@ static char THIS_FILE[]=__FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CIPRangeIPFeed::CIPRangeIPFeed(IPAddress nStartIP, IPAddress nEndIP)
+CIPFeedDlgFactory::CIPFeedDlgFactory()
 {
-	m_nStartIP = nStartIP;
-	m_nEndIP = nEndIP;	
-}
-
-CIPRangeIPFeed::~CIPRangeIPFeed()
-{
-
-}
-
-void CIPRangeIPFeed::startFeeding()
-{
-	// Initialize current IP
-	m_nCurrentIP = m_nStartIP;
-}
-
-void CIPRangeIPFeed::finishFeeding()
-{
-	// no finishing necessary
-}
-
-BOOL CIPRangeIPFeed::isNextIPAvailable()
-{
-	return m_nCurrentIP <= m_nEndIP;
-}
-
-int CIPRangeIPFeed::getPercentComplete()
-{	
-	return (m_nCurrentIP - m_nStartIP) * 100L / (m_nEndIP - m_nStartIP + 1);
-}
-
-IPAddress CIPRangeIPFeed::getNextIP()
-{
-	// Return current IP and then increase it
-	m_nCurrentIP++;
-	return m_nCurrentIP-1;
-}
-
-CString CIPRangeIPFeed::getScanSummary()
-{
-	CString szResult;
-
-	// Convert IPs to strings
-	char *ipp;
-
-	in_addr in;
-	in.S_un.S_addr = htonl(m_nStartIP);
-	ipp = inet_ntoa(in);
-	szResult += ipp;
-		
-	szResult += " - ";
+	// Specify number of feeders
+	m_nIPFeeds = 2;
 	
-	in.S_un.S_addr = htonl(m_nEndIP);
-	ipp = inet_ntoa(in);
-	szResult += ipp;
+	// Create all possible feeders (currently they are all built-in)
+	m_paIPFeeds[0] = new CIPRangeDlg;
+	ASSERT(m_paIPFeeds[0]->Create(CIPRangeDlg::IDD));
+	m_szIPFeedNames[0] = "IP Range";
 
-	return szResult;
+	m_paIPFeeds[1] = new CRandomIPFeedDlg;
+	ASSERT(m_paIPFeeds[1]->Create(CRandomIPFeedDlg::IDD));
+	m_szIPFeedNames[1] = "Random IPs";
 }
 
+CIPFeedDlgFactory::~CIPFeedDlgFactory()
+{
+	for (int i = 0; i < m_nIPFeeds; i++)
+	{
+		delete m_paIPFeeds[i];
+	}
+}

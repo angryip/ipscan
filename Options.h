@@ -27,7 +27,7 @@ typedef int teDisplayOptions;
 
 typedef struct {u_short nStartPort; u_short nEndPort; } tPortRange;
 
-typedef	struct {CString szName; u_long nIP1; u_long nIP2; } tFavourite;
+typedef	struct {CString szName; CString szContent; } tFavourite;
 
 typedef	struct {CString szName; CString szExecute; CString szWorkDir; BOOL bCommandLine; } tOpener;
 
@@ -40,7 +40,7 @@ public:
 	void saveFavourites();
 	void saveOpeners();
 	void deleteFavourite();
-	void addFavourite();
+	void addFavourite(const CString& szSerializedIPFeed);
 	int m_nPortCount;
 	BOOL m_bOptimizePorts;
 	int m_nLanaNumber;

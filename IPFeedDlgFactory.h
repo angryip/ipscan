@@ -9,45 +9,30 @@
  * You may not rename the program and distribute it.                 *
  *********************************************************************/
 
-
-// IPRangeIPFeed.h: interface for the CIPRangeIPFeed class.
+// IPFeedDlgFactory.h: interface for the CIPFeedDlgFactory class.
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_IPRANGEIPFEED_H__407A3998_D78B_412C_9BB3_CC54DEE737CD__INCLUDED_)
-#define AFX_IPRANGEIPFEED_H__407A3998_D78B_412C_9BB3_CC54DEE737CD__INCLUDED_
+#if !defined(AFX_IPFEEDDLGFACTORY_H__08CA8002_A70F_43E2_B871_3177FAFAF9A1__INCLUDED_)
+#define AFX_IPFEEDDLGFACTORY_H__08CA8002_A70F_43E2_B871_3177FAFAF9A1__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "AbstractIPFeed.h"
+#include "AbstractIPFeedDlg.h"
 
-class CIPRangeIPFeed : public CAbstractIPFeed  
+class CIPFeedDlgFactory  
 {
-public:
-	// Constructor and destructor
-	CIPRangeIPFeed(IPAddress nStartIP, IPAddress nEndIP);
-	virtual ~CIPRangeIPFeed();
-
 protected:
-	IPAddress m_nEndIP;
-	IPAddress m_nStartIP;
-	IPAddress m_nCurrentIP;
+	CAbstractIPFeedDlg * m_paIPFeeds[10];
+	CString m_szIPFeedNames[10];
+	int m_nIPFeeds;
 
-public:	
-	virtual void startFeeding();
-
-	virtual void finishFeeding();
-
-	virtual BOOL isNextIPAvailable();
-
-	virtual int getPercentComplete();
-
-	virtual IPAddress getNextIP();
-
-	virtual CString getScanSummary();
+public:
+	CIPFeedDlgFactory();
+	virtual ~CIPFeedDlgFactory();
 
 };
 
-#endif // !defined(AFX_IPRANGEIPFEED_H__407A3998_D78B_412C_9BB3_CC54DEE737CD__INCLUDED_)
+#endif // !defined(AFX_IPFEEDDLGFACTORY_H__08CA8002_A70F_43E2_B871_3177FAFAF9A1__INCLUDED_)

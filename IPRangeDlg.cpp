@@ -226,7 +226,33 @@ CAbstractIPFeed * CIPRangeDlg::createIPFeed()
 	return new CIPRangeIPFeed(nStartIP, nEndIP);
 }
 
-/*This should be implemented in the base class CWnd * CIPRangeDlg::SetFocus()
+CString CIPRangeDlg::serialize()
 {
-	return m_ctIPStart.SetFocus();
-}*/
+	CString szResult;
+
+	char szIP1[16], szIP2[16];
+	m_ctIPStart.GetWindowText((char *)&szIP1,16);
+	m_ctIPEnd.GetWindowText((char *)&szIP2,16);
+
+	szResult.Format("%s|%s", szIP1, szIP2);
+
+	return szResult;
+}
+	
+BOOL CIPRangeDlg::unserialize(const CString& szSettings)
+{
+	int nDelimeterPos = szSettings.Find(_T('|'));
+	
+	if (nDelimeterPos < 0)
+		return FALSE;
+
+	CString szIP = szSettings.Left(nDelimeterPos);
+	m_ctIPStart.SetWindowText(szIP);
+
+	szIP = szSettings.Mid(nDelimeterPos + 1);
+	m_ctIPEnd.SetWindowText(szIP);
+
+	m_bIp2Virgin = FALSE;
+
+	return TRUE;
+}

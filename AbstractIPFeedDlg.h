@@ -49,6 +49,14 @@ protected:
 	afx_msg void OnDestroy();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+
+public:
+	// Returns serialized settings as a string (for implementing Favorites)
+	virtual CString serialize() = 0;
+
+	// Imports previously serialized data and restores it's state
+	virtual BOOL unserialize(const CString& szSettings) = 0;
+
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -2,13 +2,13 @@
 
 [General Info]
 Version=1
-LastClass=CInstallDlg
+LastClass=CRandomIPFeedDlg
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "ipscan.h"
 LastPage=0
 
-ClassCount=14
+ClassCount=15
 Class1=CInstallDlg
 Class2=CIpscanApp
 Class3=CAboutDlg
@@ -20,38 +20,32 @@ Class8=CPortDlg
 Class9=CScanListCtrl
 Class10=CSearchDlg
 
-ResourceCount=27
-Resource1=IDD_MESSAGE_DIALOG
+ResourceCount=20
+Resource1=IDD_FAVOURITE_DELETE
 Resource2=IDD_NETBIOS_OPTIONS
 Resource3=IDD_IPSCAN_DIALOG (English (U.S.))
 Resource4=IDD_ABOUTBOX (English (U.S.))
-Resource5=IDD_ABOUTBOX
-Resource6=IDD_DETAILS_DLG
-Resource7=IDR_MENU1 (Neutral (Default))
+Resource5=IDD_PORT_DLG
+Resource6=IDD_ABOUTBOX
+Resource7=IDR_MENU1 (Neutral)
 Resource8=IDD_INSTALL_DLG
 Resource9=IDD_SELECT_COLUMNS_DLG
-Resource10=IDD_QUERY_DLG
-Resource11=IDD_FAVOURITE_DELETE
+Resource10=IDD_IPSCAN_DIALOG
+Resource11=IDD_SEARCH
 Resource12=IDD_SEARCH (English (U.S.))
 Class11=CQueryDlg
-Resource13=IDD_PORT_DLG
+Resource13=IDD_EDIT_OPENERS_DLG
 Class12=CFavouriteDeleteDlg
-Resource14=IDD_EDIT_OPENERS_DLG
+Resource14=IDD_QUERY_DLG
 Class13=CEditOpenersDlg
-Resource15=IDD_FAVOURITE_DELETE (Neutral (Default))
-Resource16=IDD_QUERY_DLG (Neutral (Default))
-Resource17=IDD_SELECT_COLUMNS_DLG (Neutral (Default))
-Resource18=IDD_PORT_DLG (Neutral (Default))
-Resource19=IDD_SEARCH
-Resource20=IDD_INSTALL_DLG (Neutral (Default))
-Resource21=IDD_MESSAGE_DIALOG (Neutral (Default))
-Resource22=IDR_MENU1 (Neutral)
-Resource23=IDD_DETAILS_DLG (Neutral (Default))
-Resource24=IDD_IPSCAN_DIALOG
-Resource25=IDD_OPTIONS (Neutral (Default))
-Resource26=IDD_EDIT_OPENERS_DLG (Neutral (Default))
+Resource15=IDD_MESSAGE_DIALOG
+Resource16=IDD_DETAILS_DLG
+Resource17=IDD_OPTIONS
+Resource18=IDD_IP_FEED_IP_RANGE
+Resource19=IDD_IP_FEED_RANDOM
 Class14=CIPRange
-Resource27=IDD_IP_FEED_IP_RANGE
+Class15=CRandomIPFeedDlg
+Resource20=IDR_MENU1 (Neutral (Default))
 
 [CLS:CInstallDlg]
 Type=0
@@ -183,44 +177,6 @@ Control3=IDC_MESSAGE_TEXT,edit,1342244932
 [DLG:IDD_OPTIONS]
 Type=1
 Class=COptionsDlg
-
-[DLG:IDD_PORT_DLG]
-Type=1
-Class=CPortDlg
-ControlCount=18
-Control1=IDC_PORT_STRING,edit,1350631552
-Control2=IDC_SINGLE_PORT,edit,1350639744
-Control3=IDC_PORT_LISTBOX,combobox,1344340227
-Control4=IDC_BUTTON_ADD_PORT,button,1342242816
-Control5=IDC_FROM_PORT,edit,1350639744
-Control6=IDC_TO_PORT,edit,1350639744
-Control7=IDC_BUTTON_ADD_PORT_RANGE,button,1342242816
-Control8=IDOK,button,1342242817
-Control9=IDCANCEL,button,1342242816
-Control10=IDC_STATIC,static,1342308352
-Control11=IDC_STATIC,button,1342177287
-Control12=IDC_STATIC,static,1342308352
-Control13=IDC_STATIC,static,1342308352
-Control14=IDC_STATIC,button,1342177287
-Control15=IDC_STATIC,static,1342308352
-Control16=IDC_STATIC,static,1342308352
-Control17=IDC_BUTTON_TIP,button,1342242816
-Control18=IDC_STATIC,static,1342308352
-
-[DLG:IDD_SEARCH]
-Type=1
-Class=CSearchDlg
-ControlCount=6
-Control1=IDC_SEARCHEDIT,edit,1350631552
-Control2=IDC_CASESENSITIVE,button,1342242819
-Control3=IDOK,button,1342242817
-Control4=IDCANCEL,button,1342242816
-Control5=IDC_STATIC,static,1342308352
-Control6=IDC_CHECK1,button,1342242819
-
-[DLG:IDD_OPTIONS (Neutral (Default))]
-Type=1
-Class=COptionsDlg
 ControlCount=37
 Control1=IDC_EDIT2,edit,1350639744
 Control2=IDC_THREADS,edit,1350639744
@@ -259,6 +215,40 @@ Control34=IDC_COLUMN_TYPE,static,1342308354
 Control35=IDC_STATIC,static,1342308352
 Control36=IDC_COLUMN_SELECTED,static,1342308354
 Control37=IDC_SKIP_BROADCAST,button,1342242819
+
+[DLG:IDD_PORT_DLG]
+Type=1
+Class=CPortDlg
+ControlCount=18
+Control1=IDC_PORT_STRING,edit,1350631552
+Control2=IDC_SINGLE_PORT,edit,1350639744
+Control3=IDC_PORT_LISTBOX,combobox,1344340227
+Control4=IDC_BUTTON_ADD_PORT,button,1342242816
+Control5=IDC_FROM_PORT,edit,1350639744
+Control6=IDC_TO_PORT,edit,1350639744
+Control7=IDC_BUTTON_ADD_PORT_RANGE,button,1342242816
+Control8=IDOK,button,1342242817
+Control9=IDCANCEL,button,1342242816
+Control10=IDC_STATIC,static,1342308352
+Control11=IDC_STATIC,button,1342177287
+Control12=IDC_STATIC,static,1342308352
+Control13=IDC_STATIC,static,1342308352
+Control14=IDC_STATIC,button,1342177287
+Control15=IDC_STATIC,static,1342308352
+Control16=IDC_STATIC,static,1342308352
+Control17=IDC_BUTTON_TIP,button,1342242816
+Control18=IDC_STATIC,static,1342308352
+
+[DLG:IDD_SEARCH]
+Type=1
+Class=CSearchDlg
+ControlCount=6
+Control1=IDC_SEARCHEDIT,edit,1350631552
+Control2=IDC_CASESENSITIVE,button,1342242819
+Control3=IDOK,button,1342242817
+Control4=IDCANCEL,button,1342242816
+Control5=IDC_STATIC,static,1342308352
+Control6=IDC_CHECK1,button,1342242819
 
 [MNU:IDR_MENU1 (Neutral)]
 Type=1
@@ -515,114 +505,21 @@ Filter=D
 LastObject=CIPRange
 VirtualFilter=dWC
 
-[DLG:IDD_DETAILS_DLG (Neutral (Default))]
+[DLG:IDD_IP_FEED_RANDOM]
 Type=1
-Class=?
-ControlCount=4
+Class=CRandomIPFeedDlg
+ControlCount=5
 Control1=IDC_STATIC,static,1342308352
-Control2=IDC_STATIC,static,1342308352
-Control3=IDC_SCANNED_INFO,edit,1352728772
-Control4=IDC_PORT_LIST,edit,1352728644
+Control2=IDC_IPADDRESS1,SysIPAddress32,1342242816
+Control3=IDC_RANDOM_IP_COUNT,edit,1350631552
+Control4=IDC_STATIC,static,1342308352
+Control5=IDC_STATIC,static,1342308353
 
-[DLG:IDD_EDIT_OPENERS_DLG (Neutral (Default))]
-Type=1
-Class=CEditOpenersDlg
-ControlCount=18
-Control1=IDC_OPENER_LIST,listbox,1352728833
-Control2=IDC_BTN_UP,button,1342242816
-Control3=IDC_BTN_DOWN,button,1342242816
-Control4=IDC_BTN_EDIT,button,1342242816
-Control5=IDC_BTN_DELETE,button,1342242816
-Control6=IDC_OPENER_TITLE,edit,1350631552
-Control7=IDC_EXECUTION_STRING,edit,1350631552
-Control8=IDC_WORKING_DIRECTORY,edit,1350631552
-Control9=IDC_BTN_CHANGE,button,1342242816
-Control10=IDC_BTN_INSERT,button,1342242816
-Control11=IDOK,button,1342242817
-Control12=IDC_STATIC,static,1342308352
-Control13=IDC_STATIC,button,1342177287
-Control14=IDC_STATIC,static,1342308352
-Control15=IDC_STATIC,static,1342308352
-Control16=IDC_STATIC,static,1342308352
-Control17=IDC_STATIC,static,1342308352
-Control18=IDC_COMMANDLINE,button,1342242819
-
-[DLG:IDD_FAVOURITE_DELETE (Neutral (Default))]
-Type=1
-Class=CFavouriteDeleteDlg
-ControlCount=4
-Control1=IDOK,button,1342242817
-Control2=IDCANCEL,button,1342242816
-Control3=IDC_STATIC,static,1342308352
-Control4=IDC_FAV_LIST,combobox,1344339971
-
-[DLG:IDD_INSTALL_DLG (Neutral (Default))]
-Type=1
-Class=CInstallDlg
-ControlCount=6
-Control1=IDOK,button,1342242817
-Control2=IDCANCEL,button,1342242816
-Control3=IDC_CREATE_GROUP,button,1342242819
-Control4=IDC_CREATE_DESKTOP_SHORTCUT,button,1342242819
-Control5=IDC_INSTALL_PATH,edit,1350631552
-Control6=IDC_COPY_PROGRAM,button,1342242819
-
-[DLG:IDD_MESSAGE_DIALOG (Neutral (Default))]
-Type=1
-Class=CMessageDlg
-ControlCount=3
-Control1=IDOK,button,1342242817
-Control2=IDC_STATIC,static,1342177283
-Control3=IDC_MESSAGE_TEXT,edit,1342244932
-
-[DLG:IDD_PORT_DLG (Neutral (Default))]
-Type=1
-Class=CPortDlg
-ControlCount=18
-Control1=IDC_PORT_STRING,edit,1350631552
-Control2=IDC_SINGLE_PORT,edit,1350639744
-Control3=IDC_PORT_LISTBOX,combobox,1344340227
-Control4=IDC_BUTTON_ADD_PORT,button,1342242816
-Control5=IDC_FROM_PORT,edit,1350639744
-Control6=IDC_TO_PORT,edit,1350639744
-Control7=IDC_BUTTON_ADD_PORT_RANGE,button,1342242816
-Control8=IDOK,button,1342242817
-Control9=IDCANCEL,button,1342242816
-Control10=IDC_STATIC,static,1342308352
-Control11=IDC_STATIC,button,1342177287
-Control12=IDC_STATIC,static,1342308352
-Control13=IDC_STATIC,static,1342308352
-Control14=IDC_STATIC,button,1342177287
-Control15=IDC_STATIC,static,1342308352
-Control16=IDC_STATIC,static,1342308352
-Control17=IDC_BUTTON_TIP,button,1342242816
-Control18=IDC_STATIC,static,1342308352
-
-[DLG:IDD_QUERY_DLG (Neutral (Default))]
-Type=1
-Class=CQueryDlg
-ControlCount=4
-Control1=IDC_USER_TEXT,edit,1350631552
-Control2=IDOK,button,1342242817
-Control3=IDCANCEL,button,1342242816
-Control4=IDC_QUERY_TEXT,static,1342308352
-
-[DLG:IDD_SELECT_COLUMNS_DLG (Neutral (Default))]
-Type=1
-Class=?
-ControlCount=14
-Control1=IDC_ALL_COLUMNS,listbox,1352730881
-Control2=IDC_SELECT_ALL,button,1342242816
-Control3=IDC_DESELECT_ALL,button,1342242816
-Control4=IDC_SELECT,button,1342242816
-Control5=IDC_DESELECT,button,1342242816
-Control6=IDC_SELECTED_COLUMNS,listbox,1352730881
-Control7=IDOK,button,1342242817
-Control8=IDCANCEL,button,1342242816
-Control9=IDC_STATIC,static,1342308352
-Control10=IDC_STATIC,static,1342308352
-Control11=IDC_MOVE_UP,button,1342242816
-Control12=IDC_MOVE_DOWN,button,1342242816
-Control13=IDC_SELECT_APPEND,button,1342242816
-Control14=IDC_SELECT_COLUMN_INFO,button,1342242816
+[CLS:CRandomIPFeedDlg]
+Type=0
+HeaderFile=RandomIPFeedDlg.h
+ImplementationFile=RandomIPFeedDlg.cpp
+BaseClass=CDialog
+Filter=D
+LastObject=CRandomIPFeedDlg
 

@@ -36,6 +36,7 @@
 #define IDD_EDIT_OPENERS_DLG            162
 #define IDC_CURSOR1                     163
 #define IDD_IP_FEED_IP_RANGE            165
+#define IDD_IP_FEED_RANDOM              166
 #define IDC_LIST                        1002
 #define IDC_STATUS                      1005
 #define IDC_IPADDRESS1                  1007
@@ -132,6 +133,7 @@
 #define IDC_BTN_DELETE                  1103
 #define IDC_COMMANDLINE                 1104
 #define IDC_IPFEED                      1105
+#define IDC_RANDOM_IP_COUNT             1108
 #define ID_BUTTONABOUT                  32771
 #define IDS_FIRSTCOLUMN                 32772
 #define IDS_STRING32773                 32773
@@ -658,9 +660,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        166
+#define _APS_NEXT_RESOURCE_VALUE        167
 #define _APS_NEXT_COMMAND_VALUE         32834
-#define _APS_NEXT_CONTROL_VALUE         1106
+#define _APS_NEXT_CONTROL_VALUE         1109
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

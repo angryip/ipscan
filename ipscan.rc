@@ -256,6 +256,54 @@ IDB_BMPKILL             BITMAP  DISCARDABLE     "res\\bmpkill.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// Accelerator
+//
+
+IDR_MENU1 ACCELERATORS DISCARDABLE 
+BEGIN
+    "A",            ID_GOTO_NEXTALIVE,      VIRTKEY, CONTROL, NOINVERT
+    "B",            ID_FAVOURITES_ADDCURRENTRANGE, VIRTKEY, CONTROL, 
+                                                    NOINVERT
+    "C",            ID_COMMANDS_IPCLIPBOARD, VIRTKEY, CONTROL, NOINVERT
+    "D",            ID_GOTO_NEXTDEAD,       VIRTKEY, CONTROL, NOINVERT
+    "F",            ID_GOTO_HOSTNAME,       VIRTKEY, CONTROL, NOINVERT
+    "I",            ID_COMMANDS_RESCANIP,   VIRTKEY, CONTROL, NOINVERT
+    "L",            ID_GOTO_NEXTCLOSEDPORT, VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_SHOWNETBIOSINFO,     VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_OPTIONS_OPTIONS,     VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_GOTO_NEXTOPENPORT,   VIRTKEY, CONTROL, NOINVERT
+    "R",            ID__OPENCOMPUTERINEXPLORER, VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_COMMANDS_DELETEIP,   VIRTKEY, NOINVERT
+    VK_F12,         ID_HELP_ABOUT,          VIRTKEY, NOINVERT
+    VK_INSERT,      ID_COMMANDS_IPCLIPBOARD, VIRTKEY, CONTROL, NOINVERT
+    "X",            ID_IP_EXIT,             VIRTKEY, CONTROL, NOINVERT
+    "0",            ID_MENU_OPEN_CMD_001,   VIRTKEY, CONTROL, NOINVERT
+    "1",            ID_MENU_OPEN_CMD_002,   VIRTKEY, CONTROL, NOINVERT
+    "2",            ID_MENU_OPEN_CMD_003,   VIRTKEY, CONTROL, NOINVERT
+    "3",            ID_MENU_OPEN_CMD_004,   VIRTKEY, CONTROL, NOINVERT
+    "4",            ID_MENU_OPEN_CMD_005,   VIRTKEY, CONTROL, NOINVERT
+    "5",            ID_MENU_OPEN_CMD_006,   VIRTKEY, CONTROL, NOINVERT
+    "6",            ID_MENU_OPEN_CMD_007,   VIRTKEY, CONTROL, NOINVERT
+    "7",            ID_MENU_OPEN_CMD_008,   VIRTKEY, CONTROL, NOINVERT
+    "8",            ID_MENU_OPEN_CMD_009,   VIRTKEY, CONTROL, NOINVERT
+    "9",            ID_MENU_OPEN_CMD_010,   VIRTKEY, CONTROL, NOINVERT
+END
+
+#endif    // Neutral (Default) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // Dialog
 //
 
@@ -462,220 +510,6 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,107,127,10
 END
 
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
-BEGIN
-    IDD_OPTIONS, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 188
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 237
-    END
-
-    IDD_INSTALL_DLG, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 179
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 85
-    END
-
-    IDD_MESSAGE_DIALOG, DIALOG
-    BEGIN
-        LEFTMARGIN, 2
-        RIGHTMARGIN, 174
-        TOPMARGIN, 2
-        BOTTOMMARGIN, 114
-    END
-
-    IDD_PORT_DLG, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 180
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 138
-    END
-
-    IDD_DETAILS_DLG, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 241
-        TOPMARGIN, 3
-        BOTTOMMARGIN, 124
-    END
-
-    IDD_SELECT_COLUMNS_DLG, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 205
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 128
-    END
-
-    IDD_QUERY_DLG, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 179
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 51
-    END
-
-    IDD_FAVOURITE_DELETE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 179
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 56
-    END
-
-    IDD_EDIT_OPENERS_DLG, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 261
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 157
-    END
-END
-#endif    // APSTUDIO_INVOKED
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Accelerator
-//
-
-IDR_MENU1 ACCELERATORS DISCARDABLE 
-BEGIN
-    "A",            ID_GOTO_NEXTALIVE,      VIRTKEY, CONTROL, NOINVERT
-    "B",            ID_FAVOURITES_ADDCURRENTRANGE, VIRTKEY, CONTROL, 
-                                                    NOINVERT
-    "C",            ID_COMMANDS_IPCLIPBOARD, VIRTKEY, CONTROL, NOINVERT
-    "D",            ID_GOTO_NEXTDEAD,       VIRTKEY, CONTROL, NOINVERT
-    "F",            ID_GOTO_HOSTNAME,       VIRTKEY, CONTROL, NOINVERT
-    "I",            ID_COMMANDS_RESCANIP,   VIRTKEY, CONTROL, NOINVERT
-    "L",            ID_GOTO_NEXTCLOSEDPORT, VIRTKEY, CONTROL, NOINVERT
-    "N",            ID_SHOWNETBIOSINFO,     VIRTKEY, CONTROL, NOINVERT
-    "O",            ID_OPTIONS_OPTIONS,     VIRTKEY, CONTROL, NOINVERT
-    "P",            ID_GOTO_NEXTOPENPORT,   VIRTKEY, CONTROL, NOINVERT
-    "R",            ID__OPENCOMPUTERINEXPLORER, VIRTKEY, CONTROL, NOINVERT
-    VK_DELETE,      ID_COMMANDS_DELETEIP,   VIRTKEY, NOINVERT
-    VK_F12,         ID_HELP_ABOUT,          VIRTKEY, NOINVERT
-    VK_INSERT,      ID_COMMANDS_IPCLIPBOARD, VIRTKEY, CONTROL, NOINVERT
-    "X",            ID_IP_EXIT,             VIRTKEY, CONTROL, NOINVERT
-    "0",            ID_MENU_OPEN_CMD_001,   VIRTKEY, CONTROL, NOINVERT
-    "1",            ID_MENU_OPEN_CMD_002,   VIRTKEY, CONTROL, NOINVERT
-    "2",            ID_MENU_OPEN_CMD_003,   VIRTKEY, CONTROL, NOINVERT
-    "3",            ID_MENU_OPEN_CMD_004,   VIRTKEY, CONTROL, NOINVERT
-    "4",            ID_MENU_OPEN_CMD_005,   VIRTKEY, CONTROL, NOINVERT
-    "5",            ID_MENU_OPEN_CMD_006,   VIRTKEY, CONTROL, NOINVERT
-    "6",            ID_MENU_OPEN_CMD_007,   VIRTKEY, CONTROL, NOINVERT
-    "7",            ID_MENU_OPEN_CMD_008,   VIRTKEY, CONTROL, NOINVERT
-    "8",            ID_MENU_OPEN_CMD_009,   VIRTKEY, CONTROL, NOINVERT
-    "9",            ID_MENU_OPEN_CMD_010,   VIRTKEY, CONTROL, NOINVERT
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Dialog Info
-//
-
-IDD_PORT_DLG DLGINIT
-BEGIN
-    IDC_PORT_LISTBOX, 0x403, 5, 0
-0x6365, 0x6f68, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 8, 0
-0x6164, 0x7479, 0x6d69, 0x0065, 
-    IDC_PORT_LISTBOX, 0x403, 5, 0
-0x6f71, 0x6474, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 4, 0
-0x7466, 0x0070, 
-    IDC_PORT_LISTBOX, 0x403, 4, 0
-0x7373, 0x0068, 
-    IDC_PORT_LISTBOX, 0x403, 7, 0
-0x6574, 0x6e6c, 0x7465, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 5, 0
-0x6d73, 0x7074, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 5, 0
-0x6974, 0x656d, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 11, 0
-0x616e, 0x656d, 0x6573, 0x7672, 0x7265, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 7, 0
-0x6f67, 0x6870, 0x7265, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 7, 0
-0x6966, 0x676e, 0x7265, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 5, 0
-0x7468, 0x7074, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 5, 0
-0x6f70, 0x3270, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 5, 0
-0x6f70, 0x3370, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 11, 0
-0x656e, 0x6274, 0x6f69, 0x2d73, 0x736e, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 12, 0
-0x656e, 0x6274, 0x6f69, 0x2d73, 0x7373, 0x006e, 
-    IDC_PORT_LISTBOX, 0x403, 5, 0
-0x6d69, 0x7061, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 4, 0
-0x7269, 0x0063, 
-    IDC_PORT_LISTBOX, 0x403, 6, 0
-0x7468, 0x7074, 0x0073, 
-    IDC_PORT_LISTBOX, 0x403, 5, 0
-0x6174, 0x6b6c, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 4, 0
-0x666e, 0x0073, 
-    IDC_PORT_LISTBOX, 0x403, 4, 0
-0x3372, 0x0063, 
-    IDC_PORT_LISTBOX, 0x403, 7, 0
-0x656e, 0x6274, 0x7375, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 6, 0
-0x796d, 0x7173, 0x006c, 
-    IDC_PORT_LISTBOX, 0x403, 7, 0
-0x726f, 0x6361, 0x656c, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 6, 0
-0x6f6c, 0x6967, 0x006e, 
-    IDC_PORT_LISTBOX, 0x403, 5, 0
-0x7865, 0x6365, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 11, 0
-0x7468, 0x7074, 0x702d, 0x6f72, 0x7978, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 4, 0
-0x7663, 0x0073, 
-    IDC_PORT_LISTBOX, 0x403, 5, 0
-0x7070, 0x7074, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 5, 0
-0x7561, 0x6874, "\000" 
-    IDC_PORT_LISTBOX, 0x403, 4, 0
-0x3178, 0x0031, 
-    IDC_PORT_LISTBOX, 0x403, 6, 0
-0x7173, 0x6975, 0x0064, 
-    0
-END
-
-#endif    // Neutral (Default) resources
-/////////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
-LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
-#pragma code_page(1252)
-#endif //_WIN32
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Dialog
-//
-
 IDD_ABOUTBOX DIALOGEX 0, 0, 239, 82
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About"
@@ -763,6 +597,20 @@ BEGIN
     LTEXT           "Hostname:",IDC_STATIC,1,17,35,8
 END
 
+IDD_IP_FEED_RANDOM DIALOGEX 0, 0, 226, 30
+STYLE DS_CONTROL | WS_CHILD | WS_CAPTION
+CAPTION "Random IPs"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Random IPs:",IDC_STATIC,1,3,42,8
+    CONTROL         "IPAddress1",IDC_IPADDRESS1,"SysIPAddress32",WS_TABSTOP,
+                    45,14,83,12
+    EDITTEXT        IDC_RANDOM_IP_COUNT,45,1,50,12,ES_AUTOHSCROLL
+    LTEXT           "Base IP:",IDC_STATIC,1,17,28,8
+    CTEXT           "Zeros in the base IP will be changed randomly",
+                    IDC_STATIC,138,5,84,19,0,WS_EX_STATICEDGE
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -772,6 +620,78 @@ END
 #ifdef APSTUDIO_INVOKED
 GUIDELINES DESIGNINFO DISCARDABLE 
 BEGIN
+    IDD_OPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 188
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 237
+    END
+
+    IDD_INSTALL_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 85
+    END
+
+    IDD_MESSAGE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 2
+        RIGHTMARGIN, 174
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 114
+    END
+
+    IDD_PORT_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 138
+    END
+
+    IDD_DETAILS_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 241
+        TOPMARGIN, 3
+        BOTTOMMARGIN, 124
+    END
+
+    IDD_SELECT_COLUMNS_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 205
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 128
+    END
+
+    IDD_QUERY_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 51
+    END
+
+    IDD_FAVOURITE_DELETE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 56
+    END
+
+    IDD_EDIT_OPENERS_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 261
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 157
+    END
+
     IDD_ABOUTBOX, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -798,8 +718,91 @@ BEGIN
         RIGHTMARGIN, 222
         BOTTOMMARGIN, 27
     END
+
+    IDD_IP_FEED_RANDOM, DIALOG
+    BEGIN
+        RIGHTMARGIN, 222
+        BOTTOMMARGIN, 27
+    END
 END
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_PORT_DLG DLGINIT
+BEGIN
+    IDC_PORT_LISTBOX, 0x403, 5, 0
+0x6365, 0x6f68, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 8, 0
+0x6164, 0x7479, 0x6d69, 0x0065, 
+    IDC_PORT_LISTBOX, 0x403, 5, 0
+0x6f71, 0x6474, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 4, 0
+0x7466, 0x0070, 
+    IDC_PORT_LISTBOX, 0x403, 4, 0
+0x7373, 0x0068, 
+    IDC_PORT_LISTBOX, 0x403, 7, 0
+0x6574, 0x6e6c, 0x7465, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 5, 0
+0x6d73, 0x7074, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 5, 0
+0x6974, 0x656d, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 11, 0
+0x616e, 0x656d, 0x6573, 0x7672, 0x7265, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 7, 0
+0x6f67, 0x6870, 0x7265, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 7, 0
+0x6966, 0x676e, 0x7265, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 5, 0
+0x7468, 0x7074, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 5, 0
+0x6f70, 0x3270, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 5, 0
+0x6f70, 0x3370, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 11, 0
+0x656e, 0x6274, 0x6f69, 0x2d73, 0x736e, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 12, 0
+0x656e, 0x6274, 0x6f69, 0x2d73, 0x7373, 0x006e, 
+    IDC_PORT_LISTBOX, 0x403, 5, 0
+0x6d69, 0x7061, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 4, 0
+0x7269, 0x0063, 
+    IDC_PORT_LISTBOX, 0x403, 6, 0
+0x7468, 0x7074, 0x0073, 
+    IDC_PORT_LISTBOX, 0x403, 5, 0
+0x6174, 0x6b6c, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 4, 0
+0x666e, 0x0073, 
+    IDC_PORT_LISTBOX, 0x403, 4, 0
+0x3372, 0x0063, 
+    IDC_PORT_LISTBOX, 0x403, 7, 0
+0x656e, 0x6274, 0x7375, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 6, 0
+0x796d, 0x7173, 0x006c, 
+    IDC_PORT_LISTBOX, 0x403, 7, 0
+0x726f, 0x6361, 0x656c, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 6, 0
+0x6f6c, 0x6967, 0x006e, 
+    IDC_PORT_LISTBOX, 0x403, 5, 0
+0x7865, 0x6365, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 11, 0
+0x7468, 0x7074, 0x702d, 0x6f72, 0x7978, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 4, 0
+0x7663, 0x0073, 
+    IDC_PORT_LISTBOX, 0x403, 5, 0
+0x7070, 0x7074, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 5, 0
+0x7561, 0x6874, "\000" 
+    IDC_PORT_LISTBOX, 0x403, 4, 0
+0x3178, 0x0031, 
+    IDC_PORT_LISTBOX, 0x403, 6, 0
+0x7173, 0x6975, 0x0064, 
+    0
+END
 
 
 /////////////////////////////////////////////////////////////////////////////

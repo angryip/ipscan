@@ -47,12 +47,6 @@ public:
 	// Returns the IP feed settings short human-readable summary
 	virtual CString getScanSummary() = 0;
 
-	// Returns serialized settings as a string (for implementing Favorites)
-	virtual CString serialize() = 0;
-
-	// Imports previously serialized data and restores it's state
-	virtual BOOL unserialize(CString& szSettings) = 0;
-
 };
 
 //
@@ -62,7 +56,7 @@ public:
 //
 //
 //
-//stuff about favorites, command line should also be here!!!
+//stuff command line should also be here!!!
 //
 //
 //
