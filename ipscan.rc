@@ -308,7 +308,7 @@ BEGIN
     IDS_STRING32789         "1"
     IDS_STRING32790         "1"
     IDS_STRING32791         "1"
-    IDS_VERSION             "1.84"
+    IDS_VERSION             "1.85"
 END
 
 #endif    // Russian resources
@@ -329,7 +329,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Dialog
 //
 
-IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 73
+IDD_ABOUTBOX DIALOGEX 0, 0, 235, 73
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About"
 FONT 8, "MS Sans Serif"
@@ -341,13 +341,13 @@ BEGIN
     LTEXT           "VER",IDC_VERSION,108,10,16,8
     LTEXT           "angryziber@mail.com",IDC_EMAIL,106,40,69,8,SS_NOTIFY
     LTEXT           "Check for the latest version at",IDC_STATIC,8,55,95,8
-    LTEXT           "http://www.angryipscanner.com/",IDC_HTTP,105,55,106,8,
+    LTEXT           "http://angryziber.com/ipscan/",IDC_HTTP,106,55,96,8,
                     SS_NOTIFY
     LTEXT           "This program is",IDC_STATIC,39,22,48,8
     CONTROL         137,IDC_GOEMAIL,"Static",SS_BITMAP | SS_NOTIFY,214,38,13,
-                    11
+                    11,WS_EX_TRANSPARENT
     CONTROL         137,IDC_GOHTTP,"Static",SS_BITMAP | SS_NOTIFY,214,53,13,
-                    11
+                    11,WS_EX_TRANSPARENT
     LTEXT           "free",IDC_TXTFREE,89,22,60,8
 END
 

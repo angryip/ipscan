@@ -7,7 +7,7 @@
 </h3>
 <h3>Command Lines</h3>
 Creating command line "rc.exe /l 0x409 /fo"Release/ipscan.res" /d "NDEBUG" "C:\ipscan\ipscan.rc"" 
-Creating temporary file "C:\DOCUME~1\anton\LOCALS~1\Temp\RSPA3.tmp" with contents
+Creating temporary file "C:\DOCUME~1\anton\LOCALS~1\Temp\RSP66.tmp" with contents
 [
 /nologo /subsystem:windows /incremental:no /pdb:"Release/ipscan.pdb" /machine:I386 /out:"Release/ipscan.exe" 
 .\Release\ipscan.obj
@@ -17,7 +17,7 @@ Creating temporary file "C:\DOCUME~1\anton\LOCALS~1\Temp\RSPA3.tmp" with content
 .\Release\StdAfx.obj
 .\Release\ipscan.res
 ]
-Creating command line "link.exe @C:\DOCUME~1\anton\LOCALS~1\Temp\RSPA3.tmp"
+Creating command line "link.exe @C:\DOCUME~1\anton\LOCALS~1\Temp\RSP66.tmp"
 <h3>Output Window</h3>
 Compiling resources...
 Linking...
