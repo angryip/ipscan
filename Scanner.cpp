@@ -662,7 +662,7 @@ UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)
 
 	g_nThreadCount++;
 
-	for (nIndex=0; nIndex<=10000; nIndex++) 
+	for (nIndex=0; nIndex < sizeof(g_hThreads)/sizeof(g_hThreads[0]); nIndex++) 
 	{
 		if (g_hThreads[nIndex]==0) 
 		{ 			

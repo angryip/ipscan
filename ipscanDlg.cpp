@@ -1497,7 +1497,7 @@ void CIpscanDlg::KillAllRunningThreads()
 {	
 	EnterCriticalSection(&g_criticalSection);
 
-	for (UINT i=0; i<=10000; i++) 
+	for (UINT i=0; i < sizeof(g_hThreads)/sizeof(g_hThreads[0]); i++) 
 	{
 		if (g_hThreads[i]!=0) 
 		{
