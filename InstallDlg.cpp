@@ -50,7 +50,7 @@ BOOL CInstallDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	
-	m_ctlInstallPath.SetWindowText("C:\\Program Files\\Angry IP Scanner");	
+	m_ctlInstallPath.SetWindowText(AfxGetApp()->GetProfileString("", "Path", "C:\\Program Files\\Angry IP Scanner"));	
 	m_ctlCopyProgram.SetCheck(TRUE);
 	m_ctlCreateDesktopShortcut.SetCheck(TRUE);
 	m_ctlCreateGroup.SetCheck(TRUE);
@@ -110,16 +110,24 @@ bool CreateShortCut(LPCSTR lpszSourceFile, LPCSTR lpszDestination, LPCSTR lpszDe
 void CInstallDlg::OnInstall() 
 {
 	CString szPath;	
+	CString szAngryDirectory;
+
 	if (m_ctlCopyProgram.GetCheck())
 	{
 		m_ctlInstallPath.GetWindowText(szPath);
-		CreateDirectory(szPath, NULL);
+		CreateDirectory(szPath, NULL);		
+
+		szAngryDirectory = szPath;
+
 		szPath += "\\ipscan.exe";
 		CopyFile(__targv[0], szPath, FALSE);
 	}
 	else
 	{
 		szPath = __targv[0];
+		
+		szAngryDirectory = szPath;
+		szAngryDirectory.Delete(szAngryDirectory.Find("\\ipscan.exe"), 11);
 	}
 	// szPath now has a full path to the executable
 	
@@ -139,7 +147,10 @@ void CInstallDlg::OnInstall()
 		CreateDirectory((char*) &szFolderPath, NULL);
 		strcat((char*) &szFolderPath, "\\Angry IP Scanner.lnk");
 		CreateShortCut(szPath, szFolderPath, "");
-	}
+	}	
+
+	// Save new path to registry
+	AfxGetApp()->WriteProfileString("", "Path", szAngryDirectory);
 
 	if (m_ctlCopyProgram.GetCheck() && MessageBox("Do you want to run program from the new location? (Recommended)", NULL, MB_ICONQUESTION | MB_YESNO) == IDYES)
 	{
@@ -148,7 +159,7 @@ void CInstallDlg::OnInstall()
 		
 		// Terminate this instance
 		exit(0);
-	}
+	}	
 
 	CDialog::OnOK();
 }
