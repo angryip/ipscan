@@ -39,6 +39,7 @@ class CIpscanDlg : public CDialog
 {
 // Construction
 public:	
+	void SelectIPFeedByType(const CString& szType);
 	void RefreshFavouritesMenu();
 	void RefreshOpenersMenu();
 	void KillAllRunningThreads();

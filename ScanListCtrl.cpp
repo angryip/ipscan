@@ -904,7 +904,7 @@ void CScanListCtrl::OnPaint()
 			rc.right = rc.left + nAllItemsWidth;
 		}
 
-		pDC->DrawText("The list is empty. Set the IP range and click Start to start scanning.", 
+		pDC->DrawText("The list is empty. Set scanning parameters and click Start to start scanning.", 
 			-1, rc, DT_CENTER | DT_WORDBREAK | DT_NOPREFIX | DT_NOCLIP);
 
 		// Restore dc

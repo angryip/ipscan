@@ -66,15 +66,19 @@ BOOL CCommandLine::process()
 						case 's': 
 							m_nOptions |= CMDO_START_SCAN; 
 							break;						
+
 						case 'e': 
 							m_nOptions |= CMDO_NOT_EXIT; 
 							break;
+
 						case 'a': 
 							m_nOptions |= CMDO_APPEND_FILE; 
 							break;
+
 						case 'h':
 							m_nOptions |= CMDO_HIDE_WINDOW;
 							break;
+
 						case 'f': 
 							if (j == 1)	// Accept "f" only as a first character
 							{
@@ -94,6 +98,17 @@ BOOL CCommandLine::process()
 								__targv[i][j+1] = 0;	// To exit from for loop
 							}							
 							break;
+
+						case 't':
+							if (j == 1)	// Accept "t" only as a first character in group
+							{
+								// Copy IP feed identificator (type)
+								strncpy(m_szIPFeedType.GetBuffer(64), &__targv[i][j+2], 64);
+								m_szIPFeedType.ReleaseBuffer();
+								__targv[i][j+1] = 0;	// To proceed with next parameter
+							}
+							break;
+
 						default:
 							CString err = "Unknown option: ";
 							err += __targv[i][j];
@@ -113,12 +128,12 @@ BOOL CCommandLine::process()
 			}
 		}		
 
+		// Delete trailing pipe
+		m_szIPFeedParams.Delete(m_szIPFeedParams.GetLength() - 1);
+
 		// Now get filename out of m_szIPFeedParams (it should be the last one)
-		if (nParameter > 1)
-		{
-			// Delate trailing pipe
-			m_szIPFeedParams.Delete(m_szIPFeedParams.GetLength() - 1);
-			
+		if (nParameter > 2)
+		{				
 			// Find the last pipe
 			int nLastPipe = m_szIPFeedParams.ReverseFind('|');
 			
@@ -141,6 +156,10 @@ BOOL CCommandLine::process()
 			}
 		}
 
+		// Select IP range by default
+		if (m_szIPFeedType.GetLength() == 0)
+			m_szIPFeedType = "range";	
+
 		return TRUE;
 	}
 	
@@ -151,18 +170,23 @@ BOOL CCommandLine::process()
 void CCommandLine::displayHelp()
 {
 	MessageBox(0, "Command-line parameters:\n\n"
-				/*"<start_ip> <end_ip> [filename]\n"
-				"\tstart_ip\t- starting IP address\n"
-				"\tend_ip\t- ending IP address\n"
-				"\tfilename\t- filename to save listing to (optional)\n\n"
-				"Note: if 3rd parameter is given, then the program will\n"
-				"close after saving data to a file\n\n"
-				"Additional options:\n"
+				"[OPTIONS] [-t:IPFEED] [IPFEED_PARAMETERS] [FILENAME]\n\n"
+				"IPFEED:\n"
+				"\tThe way you want to choose IP addresses for scanning, look below for values.\n"
+				"IPFEED_PARAMETERS:\n"
+				"\trange:\n"
+				"\t\t<START_IP> <END_IP>\t- starting and ending IPs of a range\n"
+				"\trandom:\n"
+				"\t\t<IP_COUNT> <BASE_IP>\t- number of IPs and the base IP for randomization\n"
+				"FILENAME:\n"
+				"\tfilename to save listing to. If it is given, then program will close\n"
+				"\tafter saving data to a file\n"
+				"OPTIONS:\n"
 				"\t-s\tautomatically start scanning (if filename is not given)\n"				
 				"\t-e\tdo not exit after saving data\n"
 				"\t-a\tappend to the file, do not overwrite\n"
-				"\t-h\tHide main window while scanning. Be careful with this!\n"
-				"\t  \tRun only from batch files with this option.\n"
-				"\t-f:X\tFile format. X can be 'csv', 'html', 'txt', 'xml' or 'lst'.\n"*/
-			   ,"Angry IP Scanner Help",MB_OK | MB_ICONINFORMATION);
+				"\t-h\thide main window while scanning; be careful with this!\n"
+				"\t  \trun only from batch files with this option.\n"
+				"\t-f:X\tfile format. X can be 'csv', 'html', 'txt', 'xml' or 'lst'.\n"
+			   ,"Angry IP Scanner Command-line",MB_OK | MB_ICONINFORMATION);
 }

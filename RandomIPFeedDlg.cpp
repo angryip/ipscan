@@ -42,30 +42,6 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CRandomIPFeedDlg message handlers
 
-CString CRandomIPFeedDlg::serialize()
-{
-	CString szResult = "N/A";
-
-	return szResult;
-}
-	
-BOOL CRandomIPFeedDlg::unserialize(const CString& szSettings)
-{
-	return FALSE;
-}
-
-BOOL CRandomIPFeedDlg::processCommandLine(CString& szCommandLine)
-{
-	
-	return FALSE;
-}
-
-// Creates an IP feed object
-CAbstractIPFeed * CRandomIPFeedDlg::createIPFeed()
-{
-	return NULL;
-}
-
 BOOL CRandomIPFeedDlg::OnInitDialog() 
 {
 	CAbstractIPFeedDlg::OnInitDialog(); 
@@ -80,4 +56,28 @@ BOOL CRandomIPFeedDlg::OnInitDialog()
 	m_pToolTips->Activate(TRUE);
 	
 	return FALSE;
+}
+
+CString CRandomIPFeedDlg::serialize()
+{
+	CString szResult = "N/A";
+
+	return szResult;
+}
+	
+BOOL CRandomIPFeedDlg::unserialize(const CString& szSettings)
+{
+	return FALSE;
+}
+
+BOOL CRandomIPFeedDlg::processCommandLine(const CString& szCommandLine)
+{
+	
+	return FALSE;
+}
+
+// Creates an IP feed object
+CAbstractIPFeed * CRandomIPFeedDlg::createIPFeed()
+{
+	return NULL;
 }

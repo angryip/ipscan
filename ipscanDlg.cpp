@@ -390,11 +390,15 @@ BOOL CIpscanDlg::OnInitDialog()
 	if (cCmdLine.process())
 	{	
 		AfxMessageBox("Note: command-line support is currently unstable", 0, 0);
+		
+		// Select appropriate IP Feed
+		SelectIPFeedByType(cCmdLine.m_szIPFeedType);
 
-		// TODO: we must somehow get to know, which dlgIPFeed user wants
-
-		if (!m_dlgIPFeed->processCommandLine(cCmdLine.m_szFilename))
+		if (!m_dlgIPFeed->processCommandLine(cCmdLine.m_szIPFeedParams))
+		{
 			AfxMessageBox("Failed to interpret command-line parameters", 0, 0);
+
+		}
 
 		m_nCmdLineOptions = cCmdLine.m_nOptions;
 		m_nCmdLineFileFormat = cCmdLine.m_nFileFormat;
@@ -517,6 +521,19 @@ void CIpscanDlg::UpdateCurrentIPFeedDialog()
 	m_dlgIPFeed = m_pIPFeedFactory->getIPFeed(nCurrentFeed);
 	m_dlgIPFeed->ShowWindow(SW_SHOW);
 	m_dlgIPFeed->SetFocus();
+}
+
+void CIpscanDlg::SelectIPFeedByType(const CString &szType)
+{
+	int nIndex = m_pIPFeedFactory->getIndexByType(szType);
+
+	if (nIndex < 0)
+		AfxMessageBox("Unknown IP Feed Type: " + szType);
+	else
+	{
+		m_ctIPFeed.SetCurSel(nIndex);
+		UpdateCurrentIPFeedDialog();
+	}
 }
 
 void CIpscanDlg::RecreateIPFeed()
@@ -1510,4 +1527,6 @@ void CIpscanDlg::OnHelpCheckForNewerVersion()
 {
 	CIpscanApp::CheckForNewerVersion();
 }
+
+
 

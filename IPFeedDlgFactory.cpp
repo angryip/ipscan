@@ -38,10 +38,12 @@ CIPFeedDlgFactory::CIPFeedDlgFactory()
 	m_paIPFeeds[0] = new CIPRangeDlg;
 	ASSERT(m_paIPFeeds[0]->Create(CIPRangeDlg::IDD));
 	m_szIPFeedNames[0] = "IP Range";
+	m_szIPFeedTypes[0] = "range";
 
 	m_paIPFeeds[1] = new CRandomIPFeedDlg;
 	ASSERT(m_paIPFeeds[1]->Create(CRandomIPFeedDlg::IDD));
 	m_szIPFeedNames[1] = "Random IPs";
+	m_szIPFeedTypes[1] = "random";
 }
 
 CIPFeedDlgFactory::~CIPFeedDlgFactory()
@@ -66,4 +68,16 @@ CString & CIPFeedDlgFactory::getIPFeedName(int nIndex)
 {
 	return m_szIPFeedNames[nIndex];
 }
+
+int CIPFeedDlgFactory::getIndexByType(const CString & szType)
+{
+	for (int i = 0; i < m_nIPFeeds; i++)
+	{
+		if (szType == m_szIPFeedTypes[i])
+			return i;
+	}
+
+	return -1;
+}
+
 

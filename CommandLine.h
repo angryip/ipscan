@@ -35,6 +35,7 @@ public:
 	int m_nFileFormat;
 	int m_nOptions;
 	CString m_szFilename;
+	CString m_szIPFeedType;
 	CString m_szIPFeedParams;
 	static void displayHelp();
 	BOOL process();

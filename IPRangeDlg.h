@@ -73,7 +73,7 @@ public:
 	
 	virtual BOOL unserialize(const CString& szSettings);
 
-	virtual BOOL processCommandLine(CString& szCommandLine);
+	virtual BOOL processCommandLine(const CString& szCommandLine);
 
 	CAbstractIPFeed * createIPFeed();
 
