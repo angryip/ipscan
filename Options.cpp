@@ -115,13 +115,12 @@ BOOL COptions::parsePortString()
 				
 				m_aParsedPorts[nCurPortIndex].nEndPort = nCurPort;
 
+				m_nPortCount += m_aParsedPorts[nCurPortIndex].nEndPort - m_aParsedPorts[nCurPortIndex].nStartPort + 1;
+
 				nCurPortIndex++;				
 			}
 		}
-	}
-
-	// Remember the number of ports
-	m_nPortCount = nCurPortIndex;
+	}	
 
 	// Delete the comma added above
 	m_szPorts.Delete(m_szPorts.GetLength()-1);
