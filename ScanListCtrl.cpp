@@ -560,7 +560,8 @@ void CScanListCtrl::GoToNextOpenPortIP()
 	
 	for (i++; i < GetItemCount(); i++) 
 	{
-		if (GetItemText(i, m_nPortsColumn).GetAt(0) != 'N')		// "N/A" or "N/S"
+		CString szPorts = GetItemText(i, m_nPortsColumn);
+		if (szPorts.GetLength() == 0 || szPorts.GetAt(0) != 'N')		// "N/A" or "N/S"
 		{
 			SetSelectedItem(i);
 			break;
@@ -583,10 +584,14 @@ void CScanListCtrl::GoToNextClosedPortIP()
 	
 	for (i++; i < GetItemCount(); i++) 
 	{
-		if (!(GetItemText(i, CL_PING) == "Dead") && GetItemText(i, m_nPortsColumn).GetAt(0) == 'N')		// Alive but closed port ("N/A" or "N/S")
+		if (!(GetItemText(i, CL_PING) == "Dead"))
 		{
-			SetSelectedItem(i);
-			break;
+			CString szPorts = GetItemText(i, m_nPortsColumn);
+			if (szPorts.GetLength() == 0 || szPorts.GetAt(0) == 'N')		// Alive but closed port ("N/A" or "N/S")
+			{
+				SetSelectedItem(i);
+				break;
+			}
 		}
 	}
 }
