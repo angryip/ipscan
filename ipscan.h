@@ -30,6 +30,7 @@ public:
 	//{{AFX_VIRTUAL(CIpscanApp)
 	public:
 	virtual BOOL InitInstance();
+	virtual int Run();
 	//}}AFX_VIRTUAL
 
 // Implementation

@@ -193,9 +193,8 @@ int botot;
 
 BOOL CIpscanDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	CDialog::OnInitDialog();	
 	
-
 	// Add "About..." menu item to system menu.
 
 	// IDM_ABOUTBOX must be in the system command range.
@@ -320,6 +319,27 @@ BOOL CIpscanDlg::OnInitDialog()
 
 	hAccel = LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MENU1));
 	//m_menucuritem = -1;
+
+	if (__argc!=1) {
+	
+		if (__argc<3 || __argc>4 || strlen(__targv[1])<7 || strlen(__targv[2])<7) {
+	
+			MessageBox("Command-line usage:\n"
+			   "ipscan.exe <start_ip> <end_ip> [filename]\n"
+			   "\tstart_ip\t- starting IP address\n"
+			   "\tend_ip\t- ending IP address\n"
+			   "\tfilename\t- filename to save listing to (optional)\n"
+			   "Note: if 3rd parameter is given, then the program will\n"
+			   "close after saving data to a file",
+			   "Angry IP Scanner Help",MB_OK | MB_ICONINFORMATION);
+			d->CloseWindow();
+		}
+		
+
+		MessageBox("Scanning "+(CString)__targv[1]+" to "+(CString)__targv[2],"",0);
+	}
+	
+	
 	
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -1449,11 +1469,14 @@ void CIpscanDlg::OnCommandsOpencomputerHint()
 
 void CIpscanDlg::OnButtonpaste() 
 {
-	HGLOBAL hglbCopy = GlobalAlloc(GMEM_DDESHARE, 16+1); 
-	
 	OpenClipboard();
-	hglbCopy = GetClipboardData(CF_TEXT);
+	HGLOBAL hglbCopy = GetClipboardData(CF_TEXT);
 	CloseClipboard();	
+
+	if (hglbCopy==NULL) {
+		MessageBox("Clipboard is empty","Error",MB_OK | MB_ICONHAND);
+		return;
+	}
 
 	LPTSTR lp;
 	lp = (char*)GlobalLock(hglbCopy);	
@@ -1462,6 +1485,5 @@ void CIpscanDlg::OnButtonpaste()
 	m_ip2.SetWindowText(lp);
 	m_ip2_virgin = TRUE;
 
-	GlobalUnlock(lp);
-	GlobalFree(hglbCopy);
+	GlobalUnlock(lp);	
 }

@@ -61,7 +61,7 @@ BOOL CIpscanApp::InitInstance()
 	CIpscanDlg dlg;
 	m_pMainWnd = &dlg;
 
-	theApp.SetRegistryKey("Angryziber");
+	theApp.SetRegistryKey("Angryziber");	
 
 	int nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
@@ -78,4 +78,10 @@ BOOL CIpscanApp::InitInstance()
 	// Since the dialog has been closed, return FALSE so that we exit the
 	//  application, rather than start the application's message pump.
 	return FALSE;
+}
+
+int CIpscanApp::Run() 
+{
+	
+	return CWinApp::Run();
 }
