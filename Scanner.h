@@ -54,6 +54,8 @@ typedef struct
 class CScanner  
 {
 public:	
+	void runFinalizeFunction(int nIndex, BOOL bAllFunctions = FALSE);
+	void runInitFunction(int nIndex, BOOL bAllFunctions = FALSE);
 	void saveSelectedColumns();
 	void loadSelectedColumns();
 	void loadAllPossibleColumns();

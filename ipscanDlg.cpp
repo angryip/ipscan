@@ -1222,7 +1222,9 @@ void CIpscanDlg::OnExecuteShowMenu(UINT nID)
 
 	status(szIP);
 
+	g_scanner->runInitFunction(nFunctionIndex, TRUE);
 	g_scanner->runScanFunction(m_list.GetNumericIP(m_menucuritem), nFunctionIndex, (char*) &szBuffer, sizeof(szBuffer), TRUE);
+	g_scanner->runFinalizeFunction(nFunctionIndex, TRUE);
 
 	status(NULL);
 

@@ -266,12 +266,29 @@ void CScanner::initMenuWithColumns(CMenu *pMenu)
 	}
 }
 
+void CScanner::runInitFunction(int nIndex, BOOL bAllFunctions)
+{
+	if (!bAllFunctions)
+		nIndex = m_Columns[nIndex];
+
+	if (m_AllColumns[nIndex].pInitFunction != NULL)
+			m_AllColumns[nIndex].pInitFunction();
+}
+
+void CScanner::runFinalizeFunction(int nIndex, BOOL bAllFunctions)
+{
+	if (!bAllFunctions)
+		nIndex = m_Columns[nIndex];
+
+	if (m_AllColumns[nIndex].pFinalizeFunction != NULL)
+			m_AllColumns[nIndex].pFinalizeFunction();
+}
+
 BOOL CScanner::initScanning()
 {
 	for (int i=0; i < m_nColumns; i++)
 	{
-		if (m_AllColumns[m_Columns[i]].pInitFunction != NULL)
-			m_AllColumns[m_Columns[i]].pInitFunction();
+		runInitFunction(i);
 	}
 
 	m_nAliveHosts = 0;
@@ -282,11 +299,10 @@ BOOL CScanner::initScanning()
 
 BOOL CScanner::finalizeScanning()
 {	
-#ifdef _DEBUG
+#ifndef _DEBUG
 	for (int i=0; i < m_nColumns; i++)
 	{
-		if (m_AllColumns[m_Columns[i]].pFinalizeFunction != NULL)
-			m_AllColumns[m_Columns[i]].pFinalizeFunction();
+		runFinalizeFunction(i);
 	}
 #endif	// _DEBUG
 
@@ -595,6 +611,4 @@ UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////// THREAD ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
-
-
 
