@@ -41,10 +41,10 @@ COptions::~COptions()
 		delete m_aParsedPorts;
 }
 
-void COptions::setPortString(LPCSTR szPortString)
+BOOL COptions::setPortString(LPCSTR szPortString)
 {
 	m_szPorts = szPortString;
-	parsePortString();
+	return parsePortString();
 }
 
 BOOL COptions::parsePortString()
@@ -70,7 +70,7 @@ BOOL COptions::parsePortString()
 	// Process!!!
 	char szCurPort[6];
 	int nCurPortLen = 0;
-	int nCurPortIndex = 0;
+	int nCurPortIndex = 0;	
 	
 	for (i=0; szPorts[i] != 0; i++)
 	{
@@ -79,6 +79,12 @@ BOOL COptions::parsePortString()
 			if (nCurPortLen >= 5)
 			{			
 				AfxMessageBox("A port number cannot be greater than 65535", MB_ICONHAND | MB_OK, 0);
+				return FALSE;
+			}
+			else
+			if (nCurPortLen == 0 && szPorts[i] == '0')
+			{
+				AfxMessageBox("A port number cannot start with 0", MB_ICONHAND | MB_OK, 0);
 				return FALSE;
 			}
 
@@ -119,7 +125,7 @@ BOOL COptions::parsePortString()
 
 				m_nPortCount += m_aParsedPorts[nCurPortIndex].nEndPort - m_aParsedPorts[nCurPortIndex].nStartPort + 1;
 
-				nCurPortIndex++;				
+				nCurPortIndex++;								
 			}
 		}
 	}	

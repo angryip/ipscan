@@ -60,7 +60,7 @@ public:
 	tPortRange *m_aParsedPorts;	// Array
 	tFavourite m_aFavourites[250];
 	tOpener m_aOpeners[100];
-	void setPortString(LPCSTR szPortString);
+	BOOL setPortString(LPCSTR szPortString);
 	CString m_szPorts;
 	COptions();
 	virtual ~COptions();

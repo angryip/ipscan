@@ -212,14 +212,14 @@ void CPortDlg::OnOK()
 	m_ctPortString.GetWindowText(szPortString);
 
 	szOldPortString = g_options->m_szPorts;
-	g_options->setPortString(szPortString);
 	
-	if (g_options->parsePortString())
+	if (g_options->setPortString(szPortString))
 	{
 		CDialog::OnOK();
 	}
 	else
 	{
+		// Restore the old port string
 		g_options->setPortString(szOldPortString);
 	}
 }
