@@ -275,9 +275,8 @@ void CSaveToFile::saveToHTML(FILE *fileHandle)
 		
 		if (g_options->m_bScanPorts)
 		{
-			CString szPorts;
-			m_dlg->m_list.GetOpenPorts(i, szPorts);
-			fprintf(fileHandle, "<td>%s</td>", szPorts);
+			m_dlg->m_list.GetOpenPorts(i, szValue);
+			fprintf(fileHandle, "<td>%s</td>", szValue);
 		}			
 	}
 
@@ -369,9 +368,8 @@ void CSaveToFile::saveToXML(FILE *fileHandle)
 		
 		if (g_options->m_bScanPorts)
 		{
-			CString szPorts;
-			m_dlg->m_list.GetOpenPorts(i, szPorts);
-			fprintf(fileHandle, "\t\t\t<open_ports>%s</open_ports>\n", szPorts);
+			m_dlg->m_list.GetOpenPorts(i, szValue);
+			fprintf(fileHandle, "\t\t\t<open_ports>%s</open_ports>\n", szValue);
 		}			
 
 		fputs("\t\t</ip>\n", fileHandle);
@@ -389,6 +387,7 @@ void CSaveToFile::saveToCSV(FILE *fileHandle)
 	int i,j;	
 
 	CString tmp;	
+	CString szValue;
 	LV_ITEM it;
 
 	// Output data
@@ -405,15 +404,17 @@ void CSaveToFile::saveToCSV(FILE *fileHandle)
 
 		for (j=0; j < g_scanner->getColumnCount(); j++) 
 		{
-			fprintf(fileHandle, "%s", m_dlg->m_list.GetItemText(i,j));
+			szValue = m_dlg->m_list.GetItemText(i,j);
+			szValue.Replace(',', ';');		// No extra commas for CSV format :-)
+			fprintf(fileHandle, "%s", szValue);
 			if (j < g_scanner->getColumnCount() -1) fputs(",", fileHandle);
 		}
 
 		if (g_options->m_bScanPorts)
 		{
-			CString szPorts;
-			m_dlg->m_list.GetOpenPorts(i, szPorts);
-			fprintf(fileHandle, ",%s", szPorts);
+			m_dlg->m_list.GetOpenPorts(i, szValue);
+			szValue.Replace(",", "; ");	// No commas!!!
+			fprintf(fileHandle, ",%s", szValue);
 		}
 
 		fputs("\n", fileHandle);
