@@ -88,23 +88,55 @@ bool CreateShortCut(LPCSTR lpszSourceFile, LPCSTR lpszDestination, LPCSTR lpszDe
  
 		if (SUCCEEDED(hResult)) 
 		{ 
-	WORD wszWideString[MAX_PATH]; 
-	
-	// Ensure that the string is ANSI. 
-				MultiByteToWideChar(CP_ACP, 0, lpszDestination, -1,
-						wszWideString, MAX_PATH); 
+			WORD wszWideString[MAX_PATH]; 
+			
+			// Ensure that the string is ANSI. 
+			MultiByteToWideChar(CP_ACP, 0, lpszDestination, -1,
+					wszWideString, MAX_PATH); 
 
-				hResult = ppf->Save(wszWideString, TRUE); 
-				// Save the link by calling IPersistFile::Save. 
-						
-	ppf->Release(); 
-	rc = true;
+			hResult = ppf->Save(wszWideString, TRUE); 
+			// Save the link by calling IPersistFile::Save. 
+								
+			ppf->Release(); 
+			rc = true;
 		} 
 		pShellLink->Release(); 
 		CoUninitialize();
 		// Clean up
 	} 
 	return rc; 
+}
+
+BOOL SHGetSpecialFolderPathWin95Compatible(HWND hWndOwner, LPTSTR pszPath, int nFolder)
+{
+	LPITEMIDLIST pIDL = NULL;
+	LPMALLOC pMalloc = NULL;
+	BOOL bOk = FALSE;
+
+	__try
+	{
+		// Get the Shell memory allocator object
+		// It's required to free memory allocated by the shell
+		if (FAILED(SHGetMalloc(&pMalloc)))
+			__leave;
+
+	    // Get the PIDL to be used as the starting point in the browse dialog
+		if (FAILED(SHGetSpecialFolderLocation(hWndOwner, nFolder, &pIDL)))
+			__leave;
+
+		bOk = SHGetPathFromIDList(pIDL, pszPath);
+	} 
+	__finally
+	{
+		if( pMalloc )
+		{
+			if (pIDL)
+				pMalloc->Free(pIDL);
+			pMalloc->Release();
+		}
+	}
+
+	return bOk;
 }
 
 void CInstallDlg::OnInstall() 
@@ -131,18 +163,18 @@ void CInstallDlg::OnInstall()
 	}
 	// szPath now has a full path to the executable
 	
-	char szFolderPath[MAX_PATH];
+	char szFolderPath[MAX_PATH];	
 	
 	if (m_ctlCreateDesktopShortcut.GetCheck())
 	{
-		SHGetSpecialFolderPath(this->m_hWnd, (char*) &szFolderPath, CSIDL_DESKTOPDIRECTORY, FALSE);				
+		SHGetSpecialFolderPathWin95Compatible(this->m_hWnd, (char*) &szFolderPath, CSIDL_DESKTOPDIRECTORY);
 		strcat((char*) &szFolderPath, "\\Angry IP Scanner.lnk");
 		CreateShortCut(szPath, szFolderPath, "");
 	}
 
 	if (m_ctlCreateGroup.GetCheck())
 	{
-		SHGetSpecialFolderPath(this->m_hWnd, (char*) &szFolderPath, CSIDL_PROGRAMS, FALSE);		
+		SHGetSpecialFolderPathWin95Compatible(this->m_hWnd, (char*) &szFolderPath, CSIDL_PROGRAMS);		
 		strcat((char*) &szFolderPath, "\\Angryziber");
 		CreateDirectory((char*) &szFolderPath, NULL);
 		strcat((char*) &szFolderPath, "\\Angry IP Scanner.lnk");
