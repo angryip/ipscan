@@ -393,7 +393,7 @@ void CScanner::runInitFunction(int nIndex, BOOL bAllFunctions)
 		nIndex = m_Columns[nIndex];
 
 	if (m_AllColumns[nIndex].pInitFunction != NULL)
-			m_AllColumns[nIndex].pInitFunction();
+			m_AllColumns[nIndex].pInitFunction(0 /* TODO: index should be here! */);
 }
 
 void CScanner::runFinalizeFunction(int nIndex, BOOL bAllFunctions)

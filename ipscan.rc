@@ -653,7 +653,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_VERSION             "2.16"
+    IDS_VERSION             "2.17"
     IDS_SCAN_HOMEPAGE       "http://www.angryziber.com/ipscan/"
     IDS_HOMEPAGE            "http://www.angryziber.com/"
     IDS_MAIL                "angryziber@angryziber.com"

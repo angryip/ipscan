@@ -50,7 +50,7 @@ char aPingDataBuf[32];
 // PING
 //////////////////////////////////////////////////////////////////////////////////
 
-BOOL ScanIntInitPing()
+BOOL ScanIntInitPing(int nIndex)
 {
 	if (!lpfnIcmpCloseHandle) // if not already done
 	{
@@ -155,7 +155,7 @@ BOOL ScanIntDoDummy(DWORD nIP, LPSTR szReturn, int nBufferLen)
 	return TRUE;
 }
 
-BOOL ScanIntInitDummy()
+BOOL ScanIntInitDummy(int nIndex)
 {
 	return TRUE;
 }
