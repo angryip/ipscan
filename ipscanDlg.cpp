@@ -25,7 +25,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog used for App About
 
-UINT listofs,statusheight;
+UINT g_nListOffset,g_nStatusHeight;
 CIpscanDlg* d;
 CWinApp *app;
 
@@ -165,8 +165,9 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_HELP_FORUM, OnHelpForum)
 	ON_COMMAND(ID_OPTIONS_INSTALL_PROGRAM, OnOptionsInstallProgram)
 	ON_WM_DESTROY()
-	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_WM_DRAWITEM()
+	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
+	ON_BN_CLICKED(IDC_BUTTON_TO_ADVANCED, OnButtonToAdvanced)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -237,9 +238,9 @@ BOOL CIpscanDlg::OnInitDialog()
 	
 	// Set window size
 	RECT rc;
-	m_ipup.GetWindowRect(&rc); listofs = rc.bottom;
-	m_ip1.GetWindowRect(&rc); listofs -= (rc.top-5);
-	m_progress.GetWindowRect(&rc); statusheight = rc.bottom-rc.top-2;
+	m_ipup.GetWindowRect(&rc); g_nListOffset = rc.bottom;
+	m_ip1.GetWindowRect(&rc); g_nListOffset -= (rc.top-5);
+	m_progress.GetWindowRect(&rc); g_nStatusHeight = rc.bottom-rc.top-2;
 
 	rc.left = app->GetProfileInt("","Left",0);
 	rc.top = app->GetProfileInt("","Top",0);
@@ -250,6 +251,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	} else {
 		SetWindowPos(NULL,0,0,502,350,SWP_NOMOVE | SWP_NOZORDER);
 	}
+	m_bAdvancedMode = false;
 	status("Ready");
 
 	// Init hostname
@@ -359,9 +361,7 @@ void CIpscanDlg::OnSize(UINT nType, int cx, int cy)
 	CDialog::OnSize(nType, cx, cy);
 		
 	if (m_list.m_hWnd!=NULL) {
-		m_list.MoveWindow(0, listofs, cx, cy-listofs-(statusheight+2), TRUE);
-		m_statusctl.MoveWindow(0, cy-statusheight/*18*/, cx/2, /*18*/statusheight, TRUE);
-		m_progress.MoveWindow(cx/2+1,cy-statusheight,cx/2-1,statusheight,TRUE);
+		HandleResizing(cx, cy);
 	}
 }
 
@@ -1140,7 +1140,31 @@ void CIpscanDlg::OnDestroy()
 
 void CIpscanDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct) 
 {
-	// TODO: Add your message handler code here and/or call default
 	
 	CDialog::OnDrawItem(nIDCtl, lpDrawItemStruct);
+}
+
+void CIpscanDlg::OnButtonToAdvanced() 
+{
+	if (m_bAdvancedMode)
+	{
+		g_nListOffset -= 40;
+	}
+	else
+	{
+		g_nListOffset += 40;
+	}
+	m_bAdvancedMode = !m_bAdvancedMode;
+	RECT rc;
+	GetClientRect(&rc);
+	HandleResizing(rc.right-rc.left, rc.bottom-rc.top);
+	
+}
+
+void CIpscanDlg::HandleResizing(int cx, int cy)
+{
+	// Resize window and reposition controls
+	m_list.MoveWindow(0, g_nListOffset, cx, cy-g_nListOffset-(g_nStatusHeight+2), TRUE);
+	m_statusctl.MoveWindow(0, cy-g_nStatusHeight/*18*/, cx/2, /*18*/g_nStatusHeight, TRUE);
+	m_progress.MoveWindow(cx/2+1,cy-g_nStatusHeight,cx/2-1,g_nStatusHeight,TRUE);
 }

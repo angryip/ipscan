@@ -88,6 +88,8 @@ public:
 
 // Implementation
 protected:	
+	void HandleResizing(int cx, int cy);
+	bool m_bAdvancedMode;
 	HACCEL hAccel;
 	HICON m_hIcon;
 
@@ -138,6 +140,7 @@ protected:
 	afx_msg void OnOptionsInstallProgram();
 	afx_msg void OnDestroy();
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
+	afx_msg void OnButtonToAdvanced();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
