@@ -115,7 +115,7 @@ void CInstallDlg::OnInstall()
 		m_ctlInstallPath.GetWindowText(szPath);
 		CreateDirectory(szPath, NULL);
 		szPath += "\\ipscan.exe";
-		CopyFile(__targv[0], szPath, TRUE);
+		CopyFile(__targv[0], szPath, FALSE);
 	}
 	else
 	{
@@ -141,7 +141,14 @@ void CInstallDlg::OnInstall()
 		CreateShortCut(szPath, szFolderPath, "");
 	}
 
-	// TODO: Run program from new location
+	if (m_ctlCopyProgram.GetCheck() && MessageBox("Do you want to run program from the new location? (Recommended)", NULL, MB_ICONQUESTION | MB_YESNO) == IDYES)
+	{
+		// Run program from new location
+		WinExec(szPath, 0);
+		
+		// Terminate this instance
+		exit(0);
+	}
 
 	CDialog::OnOK();
 }
