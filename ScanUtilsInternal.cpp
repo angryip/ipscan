@@ -8,6 +8,7 @@
 #include "Scanner.h"
 #include "ms_icmp.h"
 #include "NetBIOSUtils.h"
+#include "NetBIOSOptions.h"
 
 
 #ifdef _DEBUG
@@ -211,7 +212,8 @@ BOOL ScanIntFinalizeNetBIOS()
 
 BOOL ScanIntSetupNetBIOS(HWND hwndParent)
 {
-	MessageBox(hwndParent, "Here you must configure LANA number", "NetBIOS", MB_OK);
+	CNetBIOSOptions cDlg;
+	cDlg.DoModal();	
 	return TRUE;
 }
 

@@ -29,6 +29,7 @@
 #define IDD_DETAILS_DLG                 155
 #define IDB_SELECT_COLUMNS              157
 #define IDD_SELECT_COLUMNS_DLG          158
+#define IDD_NETBIOS_OPTIONS             159
 #define IDC_LIST                        1002
 #define IDC_STATUS                      1005
 #define IDC_IPADDRESS1                  1007
@@ -105,6 +106,7 @@
 #define IDC_COLUMN_ABOUT_BUTTON         1088
 #define IDC_SELECT_COLUMNS_BTN          1089
 #define IDC_COLUMN_SELECTED             1090
+#define IDC_LANA                        1091
 #define ID_BUTTONABOUT                  32771
 #define IDS_FIRSTCOLUMN                 32772
 #define IDS_STRING32773                 32773
@@ -275,9 +277,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        159
+#define _APS_NEXT_RESOURCE_VALUE        160
 #define _APS_NEXT_COMMAND_VALUE         32827
-#define _APS_NEXT_CONTROL_VALUE         1091
+#define _APS_NEXT_CONTROL_VALUE         1092
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "NetBIOSUtils.h"
+#include "NetBIOSOptions.h"
 #include <nb30.h>
 
 #ifdef _DEBUG
@@ -20,7 +21,7 @@ static char THIS_FILE[]=__FILE__;
 
 tNetBiosFunc pNetBiosFunc;
 
-CNetBIOSUtils::CNetBIOSUtils()
+CNetBIOSUtils::CNetBIOSUtils(BOOL bInitLana /*= TRUE*/)
 {	
 	HMODULE hDll = LoadLibrary("netapi32.dll");	
 
@@ -32,9 +33,12 @@ CNetBIOSUtils::CNetBIOSUtils()
 		exit(1);
 	}
 
-	GetLanaNumber();
-	Reset(m_nLana, 20, 30);
-	AddName(m_nLana, CONST_OWN_NETBIOS_NAME);
+	if (bInitLana)
+	{
+		GetLanaNumber();
+		Reset(m_nLana, 20, 30);
+		AddName(m_nLana, CONST_OWN_NETBIOS_NAME);
+	}
 }
 
 CNetBIOSUtils::~CNetBIOSUtils()
@@ -136,21 +140,58 @@ BOOL CNetBIOSUtils::DeleteName(int nLana, LPCSTR szName)
 
 void CNetBIOSUtils::GetLanaNumber()
 {
-	LANA_ENUM lan_num;
+	int nLana = AfxGetApp()->GetProfileInt("", "LanaNumber", -1);
+
+	if (nLana < 0)
+	{
+		// Get Lana by hand
+
+		LANA_ENUM lanaEnum;
+
+		GetLanaNumbers(&lanaEnum);
+
+		if (lanaEnum.length > 1) 
+		{
+			if (MessageBox(AfxGetApp()->GetMainWnd()->m_hWnd, 
+				"Warning! You have several network adapters. NetBIOS info scanning can be very long\n"
+				"when trying to enumerate all of them.\n\n"
+				"Press Yes to select LANA number yourself (you can do this later with menu Options->Options)\n"
+				"Press No to select the first number in the list", "", MB_YESNO | MB_ICONQUESTION) == IDYES)
+			{
+				// User selected YES
+				CNetBIOSOptions cDlg;
+				cDlg.DoModal();
+
+				// Call itself again to update the info (user pressed Save)
+				GetLanaNumber();
+				return;
+			}
+		}
+
+		// Take the first one
+		nLana = lanaEnum.lana[0];
+	}
+	
+	m_nLana = nLana;
+}
+
+void CNetBIOSUtils::SetLanaNumber(int nLana)
+{
+	AfxGetApp()->WriteProfileInt("", "LanaNumber", nLana);
+}
+
+void CNetBIOSUtils::GetLanaNumbers(LANA_ENUM *pEnum)
+{
 	NCB ncb;
 
 	memset(&ncb, 0, sizeof(ncb));
 	ncb.ncb_command =  NCBENUM;
-	ncb.ncb_buffer = (unsigned char *) &lan_num; 
-	ncb.ncb_length = sizeof(lan_num);
+	ncb.ncb_buffer = (unsigned char *) pEnum; 
+	ncb.ncb_length = sizeof(LANA_ENUM);
 
-	pNetBiosFunc((NCB*) &ncb);
-
-	if (lan_num.length > 1) TODO: // TODO: call options here to let the user choose the network adapter
-		MessageBox(0, "Warning! You have several network adapters. NetBIOS info scanning can be very long when trying to enumerate all of them, so first of them is used", "", MB_OK | MB_ICONINFORMATION);
-
-	m_nLana = lan_num.lana[0];
+	pNetBiosFunc((NCB*) &ncb);	
 }
+
 
 BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CString *szGroupName, CString *szMacAddress)
 {	
@@ -240,4 +281,3 @@ BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CStri
     return TRUE;
 
 }
-

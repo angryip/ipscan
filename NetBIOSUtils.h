@@ -33,7 +33,9 @@ protected:
 	
 
 public:			
-	CNetBIOSUtils();
+	void SetLanaNumber(int nLana);
+	void GetLanaNumbers(LANA_ENUM *pEnum);
+	CNetBIOSUtils(BOOL bInitLana = TRUE);
 	virtual ~CNetBIOSUtils();
 	void setIP(LPCSTR szIP);
 	void setIP(DWORD nIP);
