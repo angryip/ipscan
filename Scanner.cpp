@@ -335,17 +335,21 @@ BOOL CScanner::initScanning()
 	// Prepare the list for scanning
 	g_d->m_list.PrepareForScanning();
 
+	// Initialize the critical section (used for synchronization of threads)
+	InitializeCriticalSection(&g_criticalSection);	
+
 	return TRUE;
 }
 
 BOOL CScanner::finalizeScanning()
 {	
-#ifndef _DEBUG
 	for (int i=0; i < m_nColumns; i++)
 	{
 		runFinalizeFunction(i);
 	}
-#endif	// _DEBUG
+
+	// Delete the critical section (used for synchronization of threads)
+	DeleteCriticalSection(&g_criticalSection);	
 
 	return TRUE;
 }
@@ -660,7 +664,7 @@ UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)
 
 	EnterCriticalSection(&g_criticalSection);	//////// BEGIN SYNCRONIZATION ////////////////////
 
-	g_nThreadCount++;
+	//g_nThreadCount++; This is incremented right before calling the thread
 
 	for (nIndex=0; nIndex < sizeof(g_hThreads)/sizeof(g_hThreads[0]); nIndex++) 
 	{

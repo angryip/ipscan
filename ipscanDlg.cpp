@@ -410,10 +410,7 @@ BOOL CIpscanDlg::OnInitDialog()
 
 	#ifdef DEBUG_MESSAGES
 		AfxMessageBox("OnInitDialog(): Finished", 0, 0);
-	#endif
-
-	// Initialize the critical section (used for synchronization of threads)
-	InitializeCriticalSection(&g_criticalSection);	
+	#endif	
 	
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -580,12 +577,12 @@ void CIpscanDlg::OnButtonScan()
 			
 			if (m_nScanMode == SCAN_MODE_FINISHING) 
 			{
-				EnterCriticalSection(&g_criticalSection);
 				if (MessageBox("Are you sure you want to interrupt scanning by killing all the threads?\nScanning results will be incomplete.",NULL,MB_YESNO | MB_ICONQUESTION)==IDNO) return;
-				LeaveCriticalSection(&g_criticalSection);
 			
 				// Kill threads
+				status("Killing threads...");
 				KillAllRunningThreads();	
+				status(NULL);
 			}
 			else // SCAN_MODE_SCANNING
 			{
@@ -738,6 +735,8 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 		in.S_un.S_addr = htonl(g_nCurrentIP);
 		szIP = inet_ntoa(in);
 		status(szIP);		
+
+		g_nThreadCount++;	// This is decremented by each thread on exit
 
 		if (g_bScanExistingItems)
 		{
@@ -1002,9 +1001,17 @@ int CALLBACK SortCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 			if (n1 > n2) nRet = 1; else if (n1 < n2) nRet = -1; else nRet = 0;
 			break;
 		case CL_PING:
-			n1 = atoi(strItem1);
-			n2 = atoi(strItem2);
-			if (n1 > n2) nRet = 1; else if (n1 < n2) nRet = -1; else nRet = 0;
+			if (strItem1.GetAt(0) == 'D')	// Dead
+				nRet = 1;
+			else 
+			if (strItem2.GetAt(0) == 'D') // Dead
+				nRet = -1;
+			else
+			{
+				n1 = atoi(strItem1);
+				n2 = atoi(strItem2);
+				if (n1 > n2) nRet = 1; else if (n1 < n2) nRet = -1; else nRet = 0;
+			}
 			break;
 		default:
 
@@ -1455,6 +1462,7 @@ void CIpscanDlg::OnRescanIP()
 
 		m_list.ZeroResultsForItem(nItemIndex);
 						
+		g_nThreadCount++;	// This is decremented by threads on exit
 		AfxBeginThread(ThreadProcCallbackRescan, (LPVOID) nItemIndex);
 
 		Sleep(g_options->m_nTimerDelay);
@@ -1495,15 +1503,30 @@ void CIpscanDlg::ShowCompleteInformation()
 
 void CIpscanDlg::KillAllRunningThreads()
 {	
-	EnterCriticalSection(&g_criticalSection);
+	// Synchronization has been removed from here to prevent the risk of
+	// freezing due to killing a thread before leaving the critical section	
+	// EnterCriticalSection(&g_criticalSection);			
+
+	DeleteCriticalSection(&g_criticalSection);
 
 	for (UINT i=0; i < sizeof(g_hThreads)/sizeof(g_hThreads[0]); i++) 
 	{
 		if (g_hThreads[i]!=0) 
 		{
-			TerminateThread(g_hThreads[i],0);
-			CloseHandle(g_hThreads[i]);
-			g_hThreads[i]=0;
+			__try
+			{
+				if (TerminateThread(g_hThreads[i], 0) == 0)
+				{
+					GetLastError();
+				}
+				CloseHandle(g_hThreads[i]);
+			}
+			__except (EXCEPTION_EXECUTE_HANDLER)
+			{
+				// Do nothing
+			}
+			
+			g_hThreads[i] = 0;			
 		}
 	}
 
@@ -1511,7 +1534,7 @@ void CIpscanDlg::KillAllRunningThreads()
 	m_numthreads.SetWindowText("0");
 	g_nThreadCount = 0;
 
-	LeaveCriticalSection(&g_criticalSection);
+	// LeaveCriticalSection(&g_criticalSection);
 }
 
 void CIpscanDlg::OnClose() 
