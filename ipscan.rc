@@ -77,7 +77,10 @@ BEGIN
     END
     POPUP "&Favourites"
     BEGIN
-        MENUITEM "&Add current range",          ID_FAVOURITES_ADDCURRENTRANGE
+        MENUITEM "&Add current range...\tCtrl+B", 
+                                                ID_FAVOURITES_ADDCURRENTRANGE
+
+        MENUITEM "Delete favourite...",         ID_FAVOURITES_DELETEFAVOURITE
 
         MENUITEM SEPARATOR
     END
@@ -236,6 +239,8 @@ END
 IDR_MENU1 ACCELERATORS DISCARDABLE 
 BEGIN
     "A",            ID_GOTO_NEXTALIVE,      VIRTKEY, CONTROL, NOINVERT
+    "B",            ID_FAVOURITES_ADDCURRENTRANGE, VIRTKEY, CONTROL, 
+                                                    NOINVERT
     "C",            ID_COMMANDS_IPCLIPBOARD, VIRTKEY, CONTROL, NOINVERT
     "D",            ID_GOTO_NEXTDEAD,       VIRTKEY, CONTROL, NOINVERT
     "F",            ID_GOTO_HOSTNAME,       VIRTKEY, CONTROL, NOINVERT
@@ -397,6 +402,19 @@ BEGIN
     LTEXT           "",IDC_QUERY_TEXT,7,7,163,8
 END
 
+IDD_FAVOURITE_DELETE DIALOG DISCARDABLE  0, 0, 186, 63
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Delete Favourite"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Delete",IDOK,33,42,50,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,103,42,50,14
+    LTEXT           "Select the favourite from the list to delete it:",
+                    IDC_STATIC,7,7,136,8
+    COMBOBOX        IDC_FAV_LIST,7,21,172,95,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -460,6 +478,14 @@ BEGIN
         RIGHTMARGIN, 179
         TOPMARGIN, 7
         BOTTOMMARGIN, 51
+    END
+
+    IDD_FAVOURITE_DELETE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 56
     END
 END
 #endif    // APSTUDIO_INVOKED

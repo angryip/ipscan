@@ -50,6 +50,7 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(CQueryDlg)
 	virtual BOOL OnInitDialog();
+	virtual void OnOK();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

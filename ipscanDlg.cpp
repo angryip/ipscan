@@ -213,13 +213,15 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_COMMANDS_DELETEIP, OnCommandsDeleteIP)
 	ON_COMMAND(ID_OPTIONS_SHOWLASTSCANINFO, ShowCompleteInformation)
 	ON_WM_CLOSE()
+	ON_COMMAND(ID_FAVOURITES_ADDCURRENTRANGE, OnFavouritesAddcurrentrange)
 	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_COMMAND(ID_OPTIONS_SELECT_COLUMNS, OnSelectColumns)
 	ON_COMMAND(ID_OPTIONS_SELECTPORTS, OnSelectPortsClicked)
-	ON_COMMAND(ID_FAVOURITES_ADDCURRENTRANGE, OnFavouritesAddcurrentrange)
+	ON_COMMAND(ID_FAVOURITES_DELETEFAVOURITE, OnFavouritesDeleteFavourite)
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_RANGE(ID_MENU_SHOW_CMD_001, ID_MENU_SHOW_CMD_099, OnExecuteShowMenu)
+	ON_COMMAND_RANGE(ID_MENU_FAVOURITES_001, ID_MENU_FAVOURITES_099, OnExecuteFavouritesMenu)
 
 END_MESSAGE_MAP()
 
@@ -369,7 +371,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	m_menuContext = GetMenu()->GetSubMenu(INDEX_CONTEXT_MENU);	// TODO: Should not be stored!
 
 	// Init favourites menu
-	g_options->initFavouritesMenu(GetMenu()->GetSubMenu(INDEX_FAVOURITES_MENU));
+	RefreshFavouritesMenu();
 
 	hAccel = LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MENU1));
 
@@ -1561,5 +1563,36 @@ void CIpscanDlg::OnClose()
 
 void CIpscanDlg::OnFavouritesAddcurrentrange() 
 {
-	g_options->addFavourite();		
+	g_options->addFavourite();	
+	
+	RefreshFavouritesMenu();
+}
+
+void CIpscanDlg::RefreshFavouritesMenu()
+{
+	g_options->initFavouritesMenu(GetMenu()->GetSubMenu(INDEX_FAVOURITES_MENU));
+}
+
+void CIpscanDlg::OnExecuteFavouritesMenu(UINT nID)
+{	
+	if (m_nScanMode != SCAN_MODE_NOT_SCANNING)
+		return;
+
+	int nFavouriteIndex = nID - ID_MENU_FAVOURITES_001;
+	
+	char *szIP;
+	in_addr inaddr;
+	
+	inaddr.S_un.S_addr = g_options->m_aFavourites[nFavouriteIndex].nIP1;
+	szIP = inet_ntoa(inaddr);	
+	m_ip1.SetWindowText(szIP);
+	
+	inaddr.S_un.S_addr = g_options->m_aFavourites[nFavouriteIndex].nIP2;
+	szIP = inet_ntoa(inaddr);	
+	m_ip2.SetWindowText(szIP);
+}
+
+void CIpscanDlg::OnFavouritesDeleteFavourite() 
+{
+	g_options->deleteFavourite();	
 }

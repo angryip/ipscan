@@ -18,7 +18,7 @@
 #include "Options.h"
 #include "IpscanDlg.h"
 #include "QueryDlg.h"
-#include "MessageDlg.h"
+#include "FavouriteDeleteDlg.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -266,13 +266,21 @@ CString COptions::getCurrentDate()
 }
 
 void COptions::initFavouritesMenu(CMenu *pMenu)
-{
+{	
+	// Delete items first
 	for (int i=0; i < 99; i++) 
-	{							
+	{
+		if (!pMenu->DeleteMenu(3, MF_BYPOSITION))
+			break;
+	}
+
+	// Add menu items for favourites
+	for (i=0; i < 99; i++) 
+	{
 		if (m_aFavourites[i].szName.GetLength() == 0)
 			break;
 
-		pMenu->InsertMenu(i+2, MF_BYPOSITION, ID_MENU_FAVOURITES_001 + i, m_aFavourites[i].szName);				
+		pMenu->InsertMenu(i+3, MF_BYPOSITION, ID_MENU_FAVOURITES_001 + i, m_aFavourites[i].szName);				
 	}
 }
 
@@ -283,7 +291,7 @@ void COptions::addFavourite()
 	CQueryDlg dlg(pDlg);
 
 	dlg.m_szCaption = "Add Favourite";
-	dlg.m_szQueryText = "Enter name of current favourite";	
+	dlg.m_szQueryText = "Enter the name of current favourite:";	
 
 	CString szTmp;	
 
@@ -310,7 +318,20 @@ void COptions::addFavourite()
 			pDlg->m_ip2.GetWindowText(szTmp);			
 			m_aFavourites[i].nIP2 = inet_addr(szTmp);
 
-			
+			break;
+		}
+	}
+}
+
+void COptions::deleteFavourite()
+{
+	CFavouriteDeleteDlg dlg;
+	
+	if (dlg.DoModal() == IDOK)
+	{
+		for (int i = dlg.m_nFavouriteIndex; i < 99; i++)
+		{
+			m_a
 		}
 	}
 }

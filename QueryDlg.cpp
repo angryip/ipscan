@@ -62,9 +62,7 @@ CString CQueryDlg::doQuery()
 	CString szReturn;
 
 	if (DoModal() == IDOK)
-	{
-		m_ctrlUserText.GetWindowText(szReturn);		
-	}
+		szReturn = m_szDefaultUserText;
 
 	return szReturn;
 }
@@ -84,3 +82,10 @@ BOOL CQueryDlg::OnInitDialog()
 }
 
 
+
+void CQueryDlg::OnOK() 
+{
+	m_ctrlUserText.GetWindowText(m_szDefaultUserText);
+	
+	CDialog::OnOK();
+}

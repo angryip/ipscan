@@ -32,6 +32,7 @@ typedef	struct {CString szName; u_long nIP1; u_long nIP2; } tFavourite;
 class COptions  
 {
 public:
+	void deleteFavourite();
 	void addFavourite();
 	int m_nPortCount;
 	BOOL m_bOptimizePorts;

@@ -102,6 +102,10 @@ SOURCE=.\DetailsDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\FavouriteDeleteDlg.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\InstallDlg.cpp
 # End Source File
 # Begin Source File
@@ -192,6 +196,10 @@ SOURCE=.\CommandLine.h
 # Begin Source File
 
 SOURCE=.\DetailsDlg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\FavouriteDeleteDlg.h
 # End Source File
 # Begin Source File
 

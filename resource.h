@@ -32,6 +32,7 @@
 #define IDD_SELECT_COLUMNS_DLG          158
 #define IDD_NETBIOS_OPTIONS             159
 #define IDD_QUERY_DLG                   160
+#define IDD_FAVOURITE_DELETE            161
 #define IDC_LIST                        1002
 #define IDC_STATUS                      1005
 #define IDC_IPADDRESS1                  1007
@@ -112,6 +113,7 @@
 #define IDC_LANA                        1091
 #define IDC_OPTIMIZE_PORTS              1092
 #define IDC_QUERY_TEXT                  1093
+#define IDC_FAV_LIST                    1094
 #define ID_BUTTONABOUT                  32771
 #define IDS_FIRSTCOLUMN                 32772
 #define IDS_STRING32773                 32773
@@ -179,6 +181,7 @@
 #define ID_COMMANDS_DELETEIP            32825
 #define ID_OPTIONS_SHOWLASTSCANINFO     32826
 #define ID_FAVOURITES_ADDCURRENTRANGE   32827
+#define ID_FAVOURITES_DELETEFAVOURITE   32828
 #define ID_MENU_SHOW_CMD_001            32901
 #define ID_MENU_SHOW_CMD_002            32902
 #define ID_MENU_SHOW_CMD_003            32903
@@ -382,9 +385,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        161
-#define _APS_NEXT_COMMAND_VALUE         32828
-#define _APS_NEXT_CONTROL_VALUE         1094
+#define _APS_NEXT_RESOURCE_VALUE        162
+#define _APS_NEXT_COMMAND_VALUE         32829
+#define _APS_NEXT_CONTROL_VALUE         1095
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -35,6 +35,7 @@ class CIpscanDlg : public CDialog
 {
 // Construction
 public:	
+	void RefreshFavouritesMenu();
 	void KillAllRunningThreads();
 	CString m_szCompleteInformation;
 	int m_nCmdLineFileFormat;
@@ -152,9 +153,11 @@ protected:
 	afx_msg void ShowCompleteInformation();
 	afx_msg void OnClose();
 	afx_msg void OnFavouritesAddcurrentrange();
+	afx_msg void OnFavouritesDeleteFavourite();
 	//}}AFX_MSG
 	
 	afx_msg void OnExecuteShowMenu(UINT nID);
+	afx_msg void OnExecuteFavouritesMenu(UINT nID);
 
 	DECLARE_MESSAGE_MAP()
 };
