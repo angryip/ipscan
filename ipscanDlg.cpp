@@ -1223,8 +1223,18 @@ void CIpscanDlg::OnExecuteShowMenu(UINT nID)
 
 }
 
-void CIpscanDlg::OnExecuteOpenMenu(UINT nID)
+// Helper function to substitute column values 
+void substituteColumnValues(CString &str)
 {	
+	//for (int i = 0; i < str.GetLength(); i++)
+	//{
+	//
+	//}
+	// TODO: write the real replacer, which works with all columns		
+}
+
+void CIpscanDlg::OnExecuteOpenMenu(UINT nID)
+{		
 	int nOpenerIndex = nID - ID_MENU_OPEN_CMD_001;
 	
 	if (g_options->m_aOpeners[nOpenerIndex].szName.GetLength() == 0)
@@ -1243,8 +1253,10 @@ void CIpscanDlg::OnExecuteOpenMenu(UINT nID)
 	CString szParameters;
 	CString szWorkDir;
 	CString szBatFilename;
-
+	
 	szExecute.Format(g_options->m_aOpeners[nOpenerIndex].szExecute, szIP);
+	substituteColumnValues(szExecute);
+
 	szWorkDir = g_options->m_aOpeners[nOpenerIndex].szWorkDir;
 
 	// If this is a command-line program
