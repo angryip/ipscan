@@ -166,6 +166,10 @@ SOURCE=.\SearchDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\SelectColumnsDlg.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\StdAfx.cpp
 # ADD CPP /Yc"stdafx.h"
 # End Source File
@@ -244,6 +248,10 @@ SOURCE=.\ScanUtilsPlugin.h
 # Begin Source File
 
 SOURCE=.\SearchDlg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\SelectColumnsDlg.h
 # End Source File
 # Begin Source File
 

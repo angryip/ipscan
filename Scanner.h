@@ -55,6 +55,8 @@ typedef struct
 class CScanner  
 {
 public:	
+	BOOL getAllColumnName(int nIndex, CString &szColumnHeader);
+	int getAllColumnsCount();
 	void runScanFunction(DWORD nIP, int nIndex, char *szBuffer, int nBufferLength, BOOL bGlobal=FALSE);
 	void initMenuWithColumns(CMenu *pMenu);
 	int m_nAliveHosts;

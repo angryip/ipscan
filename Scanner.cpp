@@ -134,9 +134,20 @@ int CScanner::getColumnCount()
 	return m_nColumns;
 }
 
+int CScanner::getAllColumnsCount()
+{
+	return m_nAllColumns;
+}
+
 BOOL CScanner::getColumnName(int nIndex, CString &szColumnHeader)
 {
 	szColumnHeader = *m_Columns[nIndex].pszColumnName;
+	return TRUE;
+}
+
+BOOL CScanner::getAllColumnName(int nIndex, CString &szColumnHeader)
+{
+	szColumnHeader = *m_AllColumns[nIndex].pszColumnName;
 	return TRUE;
 }
 
@@ -419,11 +430,4 @@ UINT ScanningThread(LPVOID nItemIndex)
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////// THREAD ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
 

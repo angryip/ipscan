@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "ipscan.h"
 #include "SelectColumnsDlg.h"
+#include "Scanner.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -36,9 +37,25 @@ void CSelectColumnsDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CSelectColumnsDlg, CDialog)
 	//{{AFX_MSG_MAP(CSelectColumnsDlg)
-		// NOTE: the ClassWizard will add message map macros here
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CSelectColumnsDlg message handlers
+
+BOOL CSelectColumnsDlg::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+
+	CString szTmp;
+	
+	// Init list boxes
+	//m_ctAllColumns.Clear();
+	for (int i=0; i < g_scanner->getAllColumnsCount(); i++)
+	{
+		g_scanner->getAllColumnName(i, szTmp);
+		m_ctAllColumns.AddString(szTmp);
+	}
+	
+	return TRUE;  
+}
