@@ -58,6 +58,14 @@ BOOL CCommandLine::process()
 							m_nOptions |= CMDO_SAVE_CSV; break;
 						case 'e': 
 							m_nOptions |= CMDO_NOT_EXIT; break;
+						case 'a': 
+							m_nOptions |= CMDO_APPEND_FILE; break;
+						default:
+							CString err = "Unknown option: ";
+							err += __targv[i][j];
+							+ __targv[i][j];
+							MessageBox(0, err, NULL, MB_OK | MB_ICONHAND);
+							break;
 					}
 				}
 			}
@@ -100,6 +108,7 @@ void CCommandLine::displayHelp()
 				"Additional options:\n"
 				"\t-s\tautomatically start scanning (if filename is not given)\n"
 				"\t-c\tfile format is CSV, not TXT\n"
-				"\t-e\tdo not exit after after saving data"
+				"\t-e\tdo not exit after after saving data\n"
+				"\t-a\tappend to the file, do not overwrite\n"
 			   ,"Angry IP Scanner Help",MB_OK | MB_ICONINFORMATION);
 }

@@ -498,8 +498,10 @@ finish_all:
 			{
 				// Program was invoked via command-line, so save data to file & exit
 
-				CSaveToFile tmp(d, FALSE, m_szDefaultFileName->GetBuffer(255), m_nOptions & CMDO_SAVE_CSV);
-				ExitProcess(0);
+				CSaveToFile tmp(d, FALSE, m_szDefaultFileName->GetBuffer(255), m_nOptions & CMDO_SAVE_CSV, m_nOptions & CMDO_APPEND_FILE);
+				
+				if (!(m_nOptions & CMDO_NOT_EXIT))
+					ExitProcess(0);
 			}
 			else
 			{

@@ -18,6 +18,7 @@
 class CSaveToFile  
 {
 public:
+	BOOL m_bAppend;
 	BOOL m_saveselection;
 	CString m_filename;
 	int m_filetype;	
@@ -27,7 +28,7 @@ public:
 	void saveToTXT();
 	BOOL queryFilename();
 
-	CSaveToFile(CIpscanDlg *dlg, BOOL bSaveSelection = FALSE, LPSTR szFileName = NULL, BOOL bCSV = FALSE);
+	CSaveToFile(CIpscanDlg *dlg, BOOL bSaveSelection = FALSE, LPSTR szFileName = NULL, BOOL bCSV = FALSE, BOOL bAppend = FALSE);
 	virtual ~CSaveToFile();
 
 };
