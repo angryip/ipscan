@@ -52,9 +52,8 @@ typedef struct _node_status_resp
 } NS_RESP;
 #pragma pack(pop)
 
-#define NF_MASK_UG 128
-#define NF_PATT_U  0
-#define NF_PATT_G  128
+#define GROUP_NAME_FLAG		128
+#define NAME_TYPE_DOMAIN	0x00
 
 
 CNetBIOSUtils::CNetBIOSUtils()
@@ -153,14 +152,16 @@ BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CStri
 	}
 
 	// get group name
-	/*if (szGroupName != NULL)
+	if (szGroupName != NULL)
 	{
+		// TODO!!!: find all names in a single loop (this loop)
+		// Computer name can be not the first in the list!!!!!!!!!!!!!!!!!!!!!!!!!
 		*szGroupName = "";
-		for (i = 0; i < pStatus->name_count; i++)
-		{
-			if ((pNames[i].name_flags & GROUP_NAME) == GROUP_NAME)
+		for (int i = 0; i < data->num_names; i++)
+		{			
+			if ((data->name_array[i].name_flags & GROUP_NAME_FLAG) && data->name_array[i].nb_name[15] == NAME_TYPE_DOMAIN)
 			{
-				memcpy(&szName, pNames[i].name, 15); szName[15] = 0;
+				memcpy(&szName, data->name_array[i].nb_name, 15); szName[15] = 0;
 				*szGroupName = szName;
 				break;
 			}		
@@ -168,7 +169,7 @@ BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CStri
 		szGroupName->TrimRight(' ');
 	}
 
-	// get user name
+	/*// get user name
 	if (szUserName != NULL)
 	{
 		*szUserName = "";
