@@ -10,6 +10,7 @@
 #endif // _MSC_VER > 1000
 
 #include "ScanListCtrl.h"
+#include <afxtempl.h>	// For CArray
 
 // Function type definitions
 
@@ -58,9 +59,11 @@ public:
 	virtual ~CScanner();
 
 protected:
-	TScannerColumn m_Columns[100];
-	int m_nColumnCount;
-
+	CArray<TScannerColumn, TScannerColumn&> m_Columns;
+	CArray<TScannerColumn, TScannerColumn&> m_AllColumns;		
+	UINT m_nColumns;
+	UINT m_nAllColumns;
+	
 	CWinApp * m_app;
 };
 

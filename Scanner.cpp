@@ -87,26 +87,43 @@ TScannerColumn g_BuiltInScannerColumns[] =
 CScanner::CScanner()
 {
 	m_app = AfxGetApp();
-	m_nColumnCount = sizeof(g_BuiltInScannerColumns) / sizeof(TScannerColumn);
 
-	TInfoStruct infoStruct;
+	m_nAllColumns = sizeof(g_BuiltInScannerColumns) / sizeof(TScannerColumn);	
 	
-	memcpy(&m_Columns, &g_BuiltInScannerColumns, sizeof(g_BuiltInScannerColumns));
-
-	m_Columns[0].pszColumnName = new CString("IP");
-	
-	for (int i=1; i < m_nColumnCount; i++)
-	{
-		m_Columns[i].pInfoFunction(&infoStruct);		
+	m_AllColumns.SetSize(m_nAllColumns + 10, 10);
+	m_Columns.SetSize(m_nAllColumns + 10, 10);
 		
-		m_Columns[i].pszColumnName = new CString(infoStruct.szColumnName);		
+	// Load all possible columns
+	for (int i=0; i < m_nAllColumns; i++)
+	{
+		m_AllColumns[i] = g_BuiltInScannerColumns[i];		
+	}
+		
+	TInfoStruct infoStruct;
+
+	m_AllColumns[0].pszColumnName = new CString("IP");
+	
+	for (i=1; i < m_nAllColumns; i++)
+	{
+		m_AllColumns[i].pInfoFunction(&infoStruct);		
+		
+		m_AllColumns[i].pszColumnName = new CString(infoStruct.szColumnName);		
+	}
+
+	// Create working columns
+	m_nColumns = 0;	
+
+	for (i=0; i < m_nAllColumns; i++)
+	{
+		m_Columns[i] = m_AllColumns[i];
+		m_nColumns++;
 	}
 
 }
 
 CScanner::~CScanner()
 {
-	for (int i = 0; i < m_nColumnCount; i++)
+	for (int i = 0; i < m_nColumns; i++)
 	{
 		delete m_Columns[i].pszColumnName;
 	}
@@ -114,7 +131,7 @@ CScanner::~CScanner()
 
 int CScanner::getColumnCount()
 {
-	return m_nColumnCount;
+	return m_nColumns;
 }
 
 BOOL CScanner::getColumnName(int nIndex, CString &szColumnHeader)
@@ -145,7 +162,7 @@ void CScanner::initListColumns(CListCtrl *pListCtrl)
 		pListCtrl->DeleteColumn(nCol);
 	}	
 	
-	for (nCol=0; nCol < m_nColumnCount; nCol++) 
+	for (nCol=0; nCol < m_nColumns; nCol++) 
 	{					
 		nWidth = getColumnWidth(nCol);
 		pListCtrl->InsertColumn(nCol, *m_Columns[nCol].pszColumnName, LVCFMT_LEFT, nWidth, nCol);
@@ -155,16 +172,16 @@ void CScanner::initListColumns(CListCtrl *pListCtrl)
 
 void CScanner::initMenuWithColumns(CMenu *pMenu)
 {
-	for (int nCol=2; nCol < m_nColumnCount; nCol++) 
+	for (int nCol=2; nCol < m_nAllColumns; nCol++) 
 	{							
-		pMenu->InsertMenu(nCol-2, MF_BYPOSITION, ID_MENU_SHOW_CMD_001 + nCol-2, *m_Columns[nCol].pszColumnName);		
+		pMenu->InsertMenu(nCol-2, MF_BYPOSITION, ID_MENU_SHOW_CMD_001 + nCol-2, *m_AllColumns[nCol].pszColumnName);		
 		pMenu->EnableMenuItem(nCol-2, MF_BYPOSITION | MF_ENABLED);
 	}
 }
 
 BOOL CScanner::initScanning()
 {
-	for (int i=0; i < m_nColumnCount; i++)
+	for (int i=0; i < m_nColumns; i++)
 	{
 		if (m_Columns[i].pInitFunction != NULL)
 			m_Columns[i].pInitFunction();
@@ -219,7 +236,7 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 	bool bScan = g_options->m_bScanHostIfDead || bAlive;
 
 	// Run other scans
-	for (int i=2; i < m_nColumnCount; i++)
+	for (int i=2; i < m_nColumns; i++)
 	{
 		if (bScan)
 		{
