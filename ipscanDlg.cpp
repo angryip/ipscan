@@ -560,10 +560,12 @@ void CIpscanDlg::OnButtonScan()
 			
 			if (m_nScanMode == SCAN_MODE_FINISHING) 
 			{
+				EnterCriticalSection(&g_criticalSection);
 				if (MessageBox("Are you sure you want to interrupt scanning by killing all the threads?\nScanning results will be incomplete.",NULL,MB_YESNO | MB_ICONQUESTION)==IDNO) return;
+				LeaveCriticalSection(&g_criticalSection);
 			
 				// Kill threads
-				KillAllRunningThreads();
+				KillAllRunningThreads();	
 			}
 			else // SCAN_MODE_SCANNING
 			{
@@ -625,9 +627,15 @@ void CIpscanDlg::OnButtonScan()
 					m_szCompleteInformation.Format(
 						"Scan complete\r\n\r\n%s - %s\r\n%u second(s)\r\n\r\n"
 						"IPs scanned:\t%u\r\n"
-						"Alive hosts:\t%u\r\n"
-						"With open ports:\t%u",
-						&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1, g_nEndIP-g_nStartIP+1, g_scanner->m_nAliveHosts, g_scanner->m_nOpenPorts);
+						"Alive hosts:\t%u\r\n",
+						&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1, g_nEndIP-g_nStartIP+1, g_scanner->m_nAliveHosts);
+
+					if (g_options->m_bScanPorts)
+					{
+						CString szPortInfo;
+						szPortInfo.Format("With open ports:\t%u", g_scanner->m_nOpenPorts);
+						m_szCompleteInformation += szPortInfo;
+					}
 
 					ShowCompleteInformation();					
 				}
@@ -1443,6 +1451,8 @@ void CIpscanDlg::ShowCompleteInformation()
 
 void CIpscanDlg::KillAllRunningThreads()
 {	
+	EnterCriticalSection(&g_criticalSection);
+
 	for (UINT i=0; i<=10000; i++) 
 	{
 		if (g_hThreads[i]!=0) 
@@ -1456,6 +1466,8 @@ void CIpscanDlg::KillAllRunningThreads()
 	// All threads are dead now
 	m_numthreads.SetWindowText("0");
 	g_nThreadCount = 0;
+
+	LeaveCriticalSection(&g_criticalSection);
 }
 
 void CIpscanDlg::OnClose() 

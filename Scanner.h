@@ -107,4 +107,6 @@ extern unsigned long g_nEndIP;
 extern unsigned long g_nStartIP;
 extern unsigned long g_nCurrentIP;
 
+extern CRITICAL_SECTION g_criticalSection;
+
 #endif // !defined(AFX_SCANNER_H__F6305E28_F29C_45F5_8073_26591A6C68D1__INCLUDED_)

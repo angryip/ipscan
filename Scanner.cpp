@@ -21,6 +21,7 @@ CDialog *g_dlg;
 CIpscanDlg *g_d; 
 CScanner *g_scanner;
 COptions *g_options;
+CRITICAL_SECTION g_criticalSection;
 
 //////////////////////////////////////////////////////////////////////
 // Built-in plugins (scanner columns)
@@ -308,6 +309,7 @@ void CScanner::runFinalizeFunction(int nIndex, BOOL bAllFunctions)
 
 BOOL CScanner::initScanning()
 {
+	// Initialize all scanners
 	for (int i=0; i < m_nColumns; i++)
 	{
 		runInitFunction(i);
@@ -315,6 +317,9 @@ BOOL CScanner::initScanning()
 
 	m_nAliveHosts = 0;
 	m_nOpenPorts = 0;
+
+	// Initialize the critical section
+	InitializeCriticalSection(&g_criticalSection);
 
 	return TRUE;
 }
@@ -621,14 +626,16 @@ UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)
 	// Initialize thread //////////////////////////////////////////////////////	
 
 	CString szTmp;	
-	
-	g_nThreadCount++;
-	
+		
 	// Put thread's handle into global array (and find it's index)
 	HANDLE hTmp;
 	DuplicateHandle(GetCurrentProcess(),GetCurrentThread(),GetCurrentProcess(),&hTmp,0,FALSE,DUPLICATE_SAME_ACCESS);
 
 	int nIndex;
+
+	EnterCriticalSection(&g_criticalSection);	//////// BEGIN SYNCRONIZATION ////////////////////
+
+	g_nThreadCount++;
 
 	for (nIndex=0; nIndex<=10000; nIndex++) 
 	{
@@ -645,14 +652,20 @@ UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)
 	szTmp.Format("%d", g_nThreadCount);
 	g_d->m_numthreads.SetWindowText(szTmp);
 
+	LeaveCriticalSection(&g_criticalSection);	//////// END SYNCRONIZATION ////////////////////
+
+	/////////////////////////////////////////////////////////////////////////////
 	// Process scan /////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////
 
 	g_scanner->doScanIP(nParam, bParameterIsIP);
 	
 	/////////////////////////////////////////////////////////////////////////////
-	// Shutdown thread //////////////////////////////////////////////////////////	
+	// Shutdown thread //////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
 
+	EnterCriticalSection(&g_criticalSection);	//////// BEGIN SYNCRONIZATION ////////////////////
+	
 	// Remove thread's handle	
 	if (g_nThreadCount >=0) 
 	{
@@ -669,6 +682,8 @@ UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)
 	// Display current number of threads
 	szTmp.Format("%d", g_nThreadCount);
 	g_d->m_numthreads.SetWindowText(szTmp);
+
+	LeaveCriticalSection(&g_criticalSection);	//////// END SYNCRONIZATION ////////////////////
 	
 	return 0;
 
