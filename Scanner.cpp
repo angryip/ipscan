@@ -258,34 +258,43 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult)
 	// Scan port
 	tPortRange *aPorts = g_options->m_aParsedPorts;
 
-	SOCKET hSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_IP);
+	SOCKET hSocket; 
 	
-	sockaddr_in sin;
-	sin.sin_addr.S_un.S_addr = nIP;
-	sin.sin_family = PF_INET;
 	CString szPort;
 
 	// Set socket to Non-Blocking mode
-	u_long nNonBlocking = 1;
-	ioctlsocket(hSocket, FIONBIO, &nNonBlocking);
+	u_long nNonBlocking = 1;	
+	fd_set fd_socket;
 	
+	timeval timeout;
+	timeout.tv_sec = 1000;
 	
 	for (int nCurPortIndex = 0; aPorts[nCurPortIndex].nStartPort != 0; nCurPortIndex++)
 	{		
 		for (int nPort = aPorts[nCurPortIndex].nStartPort; nPort <= aPorts[nCurPortIndex].nEndPort; nPort++)
-		{						
+		{			
+			hSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_IP);
+			sockaddr_in sin;
+			sin.sin_addr.S_un.S_addr = nIP;
+			sin.sin_family = PF_INET;
+			ioctlsocket(hSocket, FIONBIO, &nNonBlocking);
+
 			sin.sin_port = htons(nPort);
-			int se = connect(hSocket, (sockaddr*)&sin, sizeof(sin));
-			if (se==0) 
+			connect(hSocket, (sockaddr*)&sin, sizeof(sin));
+
+			fd_socket.fd_array[0] = hSocket; fd_socket.fd_count = 1;			
+			if (select(0, 0, &fd_socket, 0, &timeout) > 0) 
 			{
 				// Connection successfull
 				szPort.Format("%d", nPort);
 				szResult += szPort + ",";				
 			}
+			
+			closesocket(hSocket);
 		}
 	}
 	
-	closesocket(hSocket);
+	
 
 	BOOL bResult = szResult.GetLength() > 0;	// TRUE if any ports were open
 	if (bResult)
