@@ -22,6 +22,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(COptionsDlg)
 	enum { IDD = IDD_OPTIONS };
+	CStatic	m_statColumnSelected;
 	CStatic	m_statColumnType;
 	CButton	m_btnOptionsColumn;
 	CButton	m_btnAboutColumn;
@@ -50,6 +51,7 @@ public:
 
 // Implementation
 protected:
+	int m_nCurrentlySelectedColumn;
 
 	// Generated message map functions
 	//{{AFX_MSG(COptionsDlg)
@@ -58,6 +60,8 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSelchangePluginList();
 	afx_msg void OnSelectColumnsBtn();
+	afx_msg void OnColumnAboutButton();
+	afx_msg void OnColumnOptionsButton();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

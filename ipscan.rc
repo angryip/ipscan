@@ -149,51 +149,54 @@ IDB_BMPKILL             BITMAP  DISCARDABLE     "res\\bmpkill.bmp"
 // Dialog
 //
 
-IDD_OPTIONS DIALOG DISCARDABLE  0, 0, 197, 226
+IDD_OPTIONS DIALOG DISCARDABLE  0, 0, 197, 221
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Options"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "&OK",IDOK,38,207,52,14
-    PUSHBUTTON      "&Cancel",IDCANCEL,102,207,52,14
-    PUSHBUTTON      "?",IDC_HELPBTN,175,207,14,14
     EDITTEXT        IDC_EDIT2,51,11,40,12,ES_AUTOHSCROLL | ES_NUMBER
     EDITTEXT        IDC_THREADS,51,24,40,12,ES_AUTOHSCROLL | ES_NUMBER
     EDITTEXT        IDC_TIMEOUT,51,37,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PINGCOUNT,51,50,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PORTTIMEOUT,51,63,40,12,ES_AUTOHSCROLL
+    CONTROL         "Continue scanning dead hosts",IDC_SCAN_HOST_IF_DEAD,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,78,111,10
     CONTROL         "All hosts",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP,123,16,42,10
     CONTROL         "Only alive",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,123,
                     27,47,10
     CONTROL         "Only open ports",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,
                     123,38,63,10
+    CONTROL         "Ports on 2nd row",IDC_SHOW_PORTS_BELOW,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,117,54,69,10
+    CONTROL         "Scan ports",IDC_SCAN_PORTS,"Button",BS_AUTOCHECKBOX | 
+                    NOT WS_VISIBLE | WS_TABSTOP,138,65,50,10
+    LISTBOX         IDC_PLUGIN_LIST,6,101,86,93,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Options...",IDC_COLUMN_OPTIONS_BUTTON,116,137,50,14,
+                    WS_DISABLED
+    PUSHBUTTON      "Info...",IDC_COLUMN_ABOUT_BUTTON,116,119,50,14,
+                    WS_DISABLED
+    PUSHBUTTON      "Select scanned columns...",IDC_SELECT_COLUMNS_BTN,98,
+                    179,91,14
+    DEFPUSHBUTTON   "&OK",IDOK,38,201,52,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,102,201,52,14
+    PUSHBUTTON      "?",IDC_HELPBTN,175,201,14,14
     LTEXT           "Timer delay:",IDC_STATIC,7,14,39,8
     LTEXT           "ms",IDC_STATIC,93,13,10,8
     LTEXT           "Max threads:",IDC_STATIC,7,27,42,8
     LTEXT           "Ping timeout:",IDC_STATIC,7,40,42,8
     LTEXT           "ms",IDC_STATIC,93,40,10,8
     GROUPBOX        "Display",IDC_STATIC,117,7,71,44
-    LISTBOX         IDC_PLUGIN_LIST,6,101,86,99,LBS_NOINTEGRALHEIGHT | 
-                    WS_VSCROLL | WS_TABSTOP
     LTEXT           "Select a column:",IDC_STATIC,7,91,54,8
     GROUPBOX        "None selected",IDC_PLUGIN_OPTIONS_GROUP,98,92,91,83
-    CONTROL         "Continue scanning dead hosts",IDC_SCAN_HOST_IF_DEAD,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,78,111,10
     LTEXT           "Port timeout:",IDC_STATIC,7,65,40,8
-    EDITTEXT        IDC_PORTTIMEOUT,51,63,40,12,ES_AUTOHSCROLL
     LTEXT           "ms",IDC_STATIC,93,66,10,8
-    CONTROL         "Ports on 2nd row",IDC_SHOW_PORTS_BELOW,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,117,54,69,10
-    CONTROL         "Scan ports",IDC_SCAN_PORTS,"Button",BS_AUTOCHECKBOX | 
-                    NOT WS_VISIBLE | WS_TABSTOP,138,65,50,10
     LTEXT           "Ping count:",IDC_STATIC,7,53,37,8
-    EDITTEXT        IDC_PINGCOUNT,51,50,40,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "Options...",IDC_COLUMN_OPTIONS_BUTTON,116,123,50,14,
-                    WS_DISABLED
     LTEXT           "Type:",IDC_STATIC,115,107,19,8
     RTEXT           "N/A",IDC_COLUMN_TYPE,137,107,28,8
-    PUSHBUTTON      "About...",IDC_COLUMN_ABOUT_BUTTON,116,144,50,14,
-                    WS_DISABLED
-    PUSHBUTTON      "Select columns...",IDC_SELECT_COLUMNS_BTN,98,186,90,14
+    LTEXT           "Scanned:",IDC_STATIC,115,157,32,8
+    RTEXT           "N/A",IDC_COLUMN_SELECTED,151,157,14,8
 END
 
 
@@ -210,7 +213,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 188
         TOPMARGIN, 7
-        BOTTOMMARGIN, 221
+        BOTTOMMARGIN, 216
     END
 END
 #endif    // APSTUDIO_INVOKED

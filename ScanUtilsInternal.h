@@ -26,6 +26,7 @@ TInfoFunction ScanIntInfoHostname;
 
 TInitFunction ScanIntInitNetBIOS;
 TFinalizeFunction ScanIntFinalizeNetBIOS;
+TSetupFunction ScanIntSetupNetBIOS;
 
 TScanFunction ScanIntDoNetBIOSComputerName;
 TInfoFunction ScanIntInfoNetBIOSComputerName;

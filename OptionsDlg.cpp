@@ -37,6 +37,7 @@ void COptionsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(COptionsDlg)
+	DDX_Control(pDX, IDC_COLUMN_SELECTED, m_statColumnSelected);
 	DDX_Control(pDX, IDC_COLUMN_TYPE, m_statColumnType);
 	DDX_Control(pDX, IDC_COLUMN_OPTIONS_BUTTON, m_btnOptionsColumn);
 	DDX_Control(pDX, IDC_COLUMN_ABOUT_BUTTON, m_btnAboutColumn);
@@ -65,6 +66,8 @@ BEGIN_MESSAGE_MAP(COptionsDlg, CDialog)
 	ON_BN_CLICKED(IDC_HELPBTN, OnHelpbtn)	
 	ON_LBN_SELCHANGE(IDC_PLUGIN_LIST, OnSelchangePluginList)
 	ON_BN_CLICKED(IDC_SELECT_COLUMNS_BTN, OnSelectColumnsBtn)
+	ON_BN_CLICKED(IDC_COLUMN_ABOUT_BUTTON, OnColumnAboutButton)
+	ON_BN_CLICKED(IDC_COLUMN_OPTIONS_BUTTON, OnColumnOptionsButton)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -152,12 +155,24 @@ BOOL COptionsDlg::OnInitDialog()
 		m_ctPluginList.AddString(szPluginName);
 		m_ctPluginList.SetItemData(i - CL_STATIC_COUNT, i);
 	}
+
+	// No column is currently selected
+	m_nCurrentlySelectedColumn = -1;
 	
 	return TRUE;  
 }
 
-void COptionsDlg::OnSelchangePluginList() 
+void COptionsDlg::OnSelectColumnsBtn() 
 {
+	CSelectColumnsDlg cDlg;
+	cDlg.DoModal();	
+
+	// To update "Scanned" status
+	OnSelchangePluginList();
+}
+
+void COptionsDlg::OnSelchangePluginList() 
+{	
 	// Change group box caption
 	CString szPluginName;	
 	int nPluginIndex = m_ctPluginList.GetItemData(m_ctPluginList.GetCurSel());
@@ -165,17 +180,67 @@ void COptionsDlg::OnSelchangePluginList()
 
 	m_ctPluginOptionsGroup.SetWindowText(szPluginName);
 
-	// Enable needed controls	
-	/*if (g_scanner->m_AllColumns[nPluginIndex].pInfoFunction != NULL)
+	TScannerColumn *pColumn = &(g_scanner->m_AllColumns[nPluginIndex]);
+
+	// Enable/Disable Info button
+	if (pColumn->pInfoFunction != NULL)
 		m_btnAboutColumn.EnableWindow(TRUE);
 	else
-		m_btnAboutColumn.EnableWindow(FALSE);*/
+		m_btnAboutColumn.EnableWindow(FALSE);
 
-	m_statColumnType.SetWindowText("Built-in");	
+	// Enable/Disable Setup button
+	if (pColumn->pSetupFunction != NULL)
+		m_btnOptionsColumn.EnableWindow(TRUE);
+	else
+		m_btnOptionsColumn.EnableWindow(FALSE);
+
+	// Built-in/Plugin
+	if (pColumn->bBuiltinColumn)
+		m_statColumnType.SetWindowText("Built-in");	
+	else
+		m_statColumnType.SetWindowText("Plugin");	
+
+	// Scanned: Yes/No
+	BOOL bScanned = FALSE;
+	for (int i=0; i < g_scanner->getColumnCount(); i++)
+	{
+		if (g_scanner->m_Columns[i] == nPluginIndex)
+		{
+			bScanned = TRUE;
+			break;
+		}
+	}
+	if (bScanned)
+		m_statColumnSelected.SetWindowText("Yes");
+	else
+		m_statColumnSelected.SetWindowText("No");
+
+	// Remember the index
+	m_nCurrentlySelectedColumn = nPluginIndex;
 }
 
-void COptionsDlg::OnSelectColumnsBtn() 
+void COptionsDlg::OnColumnAboutButton() 
 {
-	CSelectColumnsDlg cDlg;
-	cDlg.DoModal();	
+	if (m_nCurrentlySelectedColumn < 0)
+		return;
+
+	if (g_scanner->m_AllColumns[m_nCurrentlySelectedColumn].pInfoFunction == NULL)
+		return;
+
+	TInfoStruct infoStruct;
+	
+	g_scanner->m_AllColumns[m_nCurrentlySelectedColumn].pInfoFunction(&infoStruct);
+
+	MessageBox(infoStruct.szDescription, infoStruct.szColumnName, MB_OK | MB_ICONINFORMATION);
+}
+
+void COptionsDlg::OnColumnOptionsButton() 
+{
+	if (m_nCurrentlySelectedColumn < 0)
+		return;
+
+	if (g_scanner->m_AllColumns[m_nCurrentlySelectedColumn].pSetupFunction == NULL)
+		return;
+		
+	g_scanner->m_AllColumns[m_nCurrentlySelectedColumn].pSetupFunction(m_hWnd);
 }

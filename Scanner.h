@@ -25,17 +25,18 @@
 // Function type definitions
 
 typedef struct
-{
-	char szPluginName[96];	
-	char szColumnName[32];	
-} TInfoStruct;
+{	
+	char szColumnName[32];
+	char szDescription[1024];
+} 
+TInfoStruct;
 
 typedef BOOL (__cdecl TScanFunction)(DWORD nIP, LPSTR szReturn, int nBufferLen);
+typedef BOOL (__cdecl TInfoFunction)(TInfoStruct *pInfoStruct);
+typedef BOOL (__cdecl TSetupFunction)(HWND hwndParent);
 
 typedef BOOL (__cdecl TInitFunction)();
 typedef BOOL (__cdecl TFinalizeFunction)();
-
-typedef BOOL (__cdecl TInfoFunction)(TInfoStruct *pInfoStruct);
 
 // Structure to hold all functions of a service (plugin)
 
@@ -43,12 +44,16 @@ typedef struct
 {
 	TScanFunction *pScanFunction;
 	TInfoFunction *pInfoFunction;
+	TSetupFunction *pSetupFunction;
 	
 	TInitFunction *pInitFunction;
 	TFinalizeFunction *pFinalizeFunction;
 
-	CString *pszColumnName;	
-} TScannerColumn;
+	BOOL bBuiltinColumn;
+
+	CString *pszColumnName;		
+} 
+TScannerColumn;
 
 
 class CScanner  
@@ -79,9 +84,9 @@ public:
 
 	int m_Columns[256];		// It is updated by Select columns dialog box
 	int m_nColumns;
-protected:	
 	CArray<TScannerColumn, TScannerColumn&> m_AllColumns;			
 	int m_nAllColumns;
+protected:		
 	
 	CWinApp * m_app;
 };

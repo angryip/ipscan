@@ -34,50 +34,64 @@ TScannerColumn g_BuiltInScannerColumns[] =
 	{
 		/*pScanFunction*/ &ScanIntDoDummy,
 		/*pInfoFunction*/ &ScanIntInfoDummy,
+		/*pSetuFunction*/ NULL,
 		/*pInitFunction*/ NULL,
-		/*pFinaFunction*/ NULL
+		/*pFinaFunction*/ NULL,
+		/*bBuiltinColum*/ TRUE
 	},
 	// Ping is always 1!!
 	{
 		/*pScanFunction*/ &ScanIntDoPing, 
 		/*pInfoFunction*/ &ScanIntInfoPing,
+		/*pSetuFunction*/ NULL,
 		/*pInitFunction*/ &ScanIntInitPing,
-		/*pFinaFunction*/ NULL
+		/*pFinaFunction*/ NULL,
+		/*bBuiltinColum*/ TRUE
 	},
 	// Hostname
 	{
 		/*pScanFunction*/ &ScanIntDoHostname,
 		/*pInfoFunction*/ &ScanIntInfoHostname,
+		/*pSetuFunction*/ NULL,
 		/*pInitFunction*/ NULL,
-		/*pFinaFunction*/ NULL
+		/*pFinaFunction*/ NULL,
+		/*bBuiltinColum*/ TRUE
 	},
 	// NetBIOS Computer Name
 	{
 		/*pScanFunction*/ &ScanIntDoNetBIOSComputerName,
 		/*pInfoFunction*/ &ScanIntInfoNetBIOSComputerName,
+		/*pSetuFunction*/ &ScanIntSetupNetBIOS,
 		/*pInitFunction*/ &ScanIntInitNetBIOS,
-		/*pFinaFunction*/ &ScanIntFinalizeNetBIOS
+		/*pFinaFunction*/ &ScanIntFinalizeNetBIOS,
+		/*bBuiltinColum*/ TRUE
 	},
 	// NetBIOS Group Name
 	{
 		/*pScanFunction*/ &ScanIntDoNetBIOSGroupName,
 		/*pInfoFunction*/ &ScanIntInfoNetBIOSGroupName,
+		/*pSetuFunction*/ &ScanIntSetupNetBIOS,
 		/*pInitFunction*/ &ScanIntInitNetBIOS,
-		/*pFinaFunction*/ &ScanIntFinalizeNetBIOS
+		/*pFinaFunction*/ &ScanIntFinalizeNetBIOS,
+		/*bBuiltinColum*/ TRUE
 	},
 	// NetBIOS User Name
 	{
 		/*pScanFunction*/ &ScanIntDoNetBIOSUserName,
 		/*pInfoFunction*/ &ScanIntInfoNetBIOSUserName,
+		/*pSetuFunction*/ &ScanIntSetupNetBIOS,
 		/*pInitFunction*/ &ScanIntInitNetBIOS,
-		/*pFinaFunction*/ &ScanIntFinalizeNetBIOS
+		/*pFinaFunction*/ &ScanIntFinalizeNetBIOS,
+		/*bBuiltinColum*/ TRUE
 	},
 	// Mac Address
 	{
 		/*pScanFunction*/ &ScanIntDoNetBIOSMacAddress,
 		/*pInfoFunction*/ &ScanIntInfoNetBIOSMacAddress,
+		/*pSetuFunction*/ &ScanIntSetupNetBIOS,
 		/*pInitFunction*/ &ScanIntInitNetBIOS,
-		/*pFinaFunction*/ &ScanIntFinalizeNetBIOS
+		/*pFinaFunction*/ &ScanIntFinalizeNetBIOS,
+		/*bBuiltinColum*/ TRUE
 	}
 };
 
@@ -114,9 +128,10 @@ void CScanner::loadAllPossibleColumns()
 
 	m_AllColumns[0].pszColumnName = new CString("IP");
 	
+	// Get names of all plugins/columns
 	for (i=1; i < m_nAllColumns; i++)
 	{
-		m_AllColumns[i].pInfoFunction(&infoStruct);		
+		m_AllColumns[i].pInfoFunction(&infoStruct);
 		
 		m_AllColumns[i].pszColumnName = new CString(infoStruct.szColumnName);		
 	}
