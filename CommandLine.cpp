@@ -56,7 +56,7 @@ BOOL CCommandLine::process()
 		// parse parameters
 		for (int i=1; i < __argc; i++)
 		{
-			if (__targv[i][0] == '-')
+			if (__targv[i][0] == '-' || __targv[i][0] == '/')
 			{
 				// this is an option
 				for (int j=1; __targv[i][j] != 0; j++)
