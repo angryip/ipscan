@@ -170,8 +170,8 @@ void COptions::load()
 	
 	m_nTimerDelay = app->GetProfileInt("","Delay",20);
 	m_nMaxThreads = app->GetProfileInt("","MaxThreads",100);	 			
-	m_nPingTimeout = app->GetProfileInt("","Timeout",3000);
-	m_nPingCount = app->GetProfileInt("","PingCount",1);
+	m_nPingTimeout = app->GetProfileInt("","Timeout",2000);
+	m_nPingCount = app->GetProfileInt("","PingCount",2);
 	m_nPortTimeout = app->GetProfileInt("","PortTimeout",3000);
 	m_neDisplayOptions = app->GetProfileInt("","DisplayOptions",0);
 	m_bScanHostIfDead = app->GetProfileInt("", "ScanHostIfDead", FALSE);
