@@ -216,9 +216,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	// Set the icon for this dialog.  The framework does this automatically
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
-	SetIcon(m_hIcon, FALSE);		// Set small icon
-	
-	// TODO: Add extra initialization here
+	SetIcon(m_hIcon, FALSE);		// Set small icon	
 
 	// Load default options
 
@@ -392,8 +390,7 @@ void CIpscanDlg::status(LPCSTR str)
 void CIpscanDlg::OnSize(UINT nType, int cx, int cy) 
 {
 	CDialog::OnSize(nType, cx, cy);
-	
-	// TODO: Add your message handler code here
+		
 	if (m_list.m_hWnd!=NULL) {
 		m_list.MoveWindow(0, listofs, cx, cy-listofs-(statusheight+2), TRUE);
 		m_statusctl.MoveWindow(0, cy-statusheight/*18*/, cx/2, /*18*/statusheight, TRUE);
@@ -402,10 +399,8 @@ void CIpscanDlg::OnSize(UINT nType, int cx, int cy)
 }
 
 void CIpscanDlg::OnIpExit() 
-{
-	// TODO: Add your command handler code here
-	SendMessage(WM_CLOSE,0,0);
-	
+{	
+	SendMessage(WM_CLOSE,0,0);	
 }
 
 void CIpscanDlg::OnButton1() 
@@ -500,15 +495,13 @@ finish_all:
 }
 
 void CIpscanDlg::OnHelpAbout() 
-{
-	// TODO: Add your command handler code here
+{	
 	CAboutDlg dlgAbout;
 	dlgAbout.DoModal();
 }
 
 void CIpscanDlg::OnOptionsOptions() 
-{
-	// TODO: Add your command handler code here
+{	
 	COptionsDlg dlgOpt;
 	dlgOpt.m_delay=m_delay;
 	dlgOpt.m_port=m_port;
@@ -533,7 +526,6 @@ void CIpscanDlg::OnOptionsOptions()
 
 void CIpscanDlg::OnButtonipup() 
 {
-	// TODO: Add your control notification handler code here
 	hostent *he;
 	char str[100];
 	char *addr;
@@ -737,8 +729,6 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 
 void CIpscanDlg::OnScanSavetotxt() 
 {
-	// TODO: Add your command handler code here
-	
 	if (m_list.GetItemCount()==0) {
 		MessageBox("Nothing to save!",NULL,MB_OK | MB_ICONHAND);
 		return;
@@ -913,7 +903,6 @@ BOOL CAboutDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	
-	// TODO: Add extra initialization here
 	CString ver;
 	ver.LoadString(IDS_VERSION);
 	SetDlgItemText(IDC_VERSION,ver);	
@@ -1017,7 +1006,6 @@ void CIpscanDlg::OnOptionsSaveoptions()
 
 void CIpscanDlg::OnFieldchangedIpaddress1(NMHDR* pNMHDR, LRESULT* pResult) 
 {
-	// TODO: Add your control notification handler code here
 	char str[16];
 	m_ip2.GetWindowText((char*)&str,sizeof(str));
 	if (m_ip2_virgin) {
@@ -1029,7 +1017,6 @@ void CIpscanDlg::OnFieldchangedIpaddress1(NMHDR* pNMHDR, LRESULT* pResult)
 
 void CIpscanDlg::OnFieldchangedIpaddress2(NMHDR* pNMHDR, LRESULT* pResult) 
 {
-	// TODO: Add your control notification handler code here
 	m_ip2_virgin = FALSE;	
 	*pResult = 0;
 }
@@ -1135,29 +1122,19 @@ exit_func:
 }
 
 void CAboutDlg::OnMouseMove(UINT nFlags, CPoint point) 
-{
-	// TODO: Add your message handler code here and/or call default
-	/*if (point.x>=m_go1x-10 && point.x<=m_go1x+20) {
-		if (point.y>=m_go1y && point.y<=m_go1y+20) {
-			SetCursor(NULL);
-		} else
-		if (point.y>=m_go2y && point.y<=m_go2y+20) {
-			SetCursor(NULL);
-		}
-	}*/
+{	
 	CDialog::OnMouseMove(nFlags, point);
 }
 
 void CIpscanDlg::OnHelpAngryipscannerwebpage() 
-{
-	// TODO: Add your command handler code here
+{	
 	ShellExecute(0,NULL,"http://www.angryziber.com/ipscan/",NULL,NULL,SW_SHOWNORMAL);
 	
 }
 
 void CIpscanDlg::OnHelpAngryzibersoftware() 
 {
-	// TODO: Add your command handler code here
+	
 	ShellExecute(0,NULL,"http://www.angryziber.com/",NULL,NULL,SW_SHOWNORMAL);
 	
 }
