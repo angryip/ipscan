@@ -14,6 +14,14 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
+
+int g_nThreadCount = 0;
+HANDLE g_hThreads[10000];
+CDialog *g_dlg;
+CIpscanDlg *g_d; 
+CScanner *g_scanner;
+
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -22,23 +30,19 @@ CScanner::CScanner()
 {
 	m_app = AfxGetApp();
 	m_nColumnCount = 5;
-	m_pszColumnNames[0] = new CString("Test0");
-	m_pszColumnNames[1] = new CString("Test1");
-	m_pszColumnNames[2] = new CString("Test2");
-	m_pszColumnNames[3] = new CString("Test3");
-	m_pszColumnNames[4] = new CString("Test4");
 
-	m_pInitFunctions[0] = &ScanIntInitPing;
-	m_pInitFunctions[1] = &ScanIntInitPing;
-	m_pInitFunctions[2] = &ScanIntInitPing;
-	m_pInitFunctions[3] = &ScanIntInitPing;
-	m_pInitFunctions[4] = &ScanIntInitPing;
+	TInfoStruct infoStruct;
 
-	m_pScanFunctions[0] = &ScanIntDoPing;
-	m_pScanFunctions[1] = &ScanIntDoPing;
-	m_pScanFunctions[2] = &ScanIntDoPing;
-	m_pScanFunctions[3] = &ScanIntDoPing;
-	m_pScanFunctions[4] = &ScanIntDoPing;
+	for (int i=0; i < m_nColumnCount; i++)
+	{
+		m_pScanFunctions[i] = &ScanIntDoPing;
+		m_pInitFunctions[i] = &ScanIntInitPing;	
+		m_pInfoFunctions[i] = &ScanIntInfoPing;
+
+		m_pInfoFunctions[i](&infoStruct);
+		
+		m_pszColumnNames[i] = new CString(infoStruct.szColumnName);
+	}
 }
 
 CScanner::~CScanner()
@@ -93,19 +97,51 @@ void CScanner::initListColumns(CListCtrl *pListCtrl)
 		nWidth = getColumnWidth(nCol);
 		pListCtrl->InsertColumn(nCol, *m_pszColumnNames[nCol], LVCFMT_LEFT, nWidth, nCol);
 	}
+	
+}
 
-	pListCtrl->SetExtendedStyle(LVS_EX_FULLROWSELECT);
+BOOL CScanner::initScanning()
+{
+	for (int i=0; i < m_nColumnCount; i++)
+	{
+		if (m_pInitFunctions != NULL)
+			m_pInitFunctions[i]();
+	}
+	return TRUE;
+}
+
+BOOL CScanner::doScanIP(DWORD nItemIndex)
+{
+	// get IP address
+	int nIP;
+	char szIP[16];
+	g_d->m_list.GetItemText(nItemIndex, 0, (char*) &szIP, sizeof(szIP));
+	nIP = inet_addr((char*)&szIP);
+
+	char szTmp[512];
+
+	for (int i=0; i < m_nColumnCount; i++)
+	{
+		if (m_pInfoFunctions[i] != NULL)
+		{
+			m_pScanFunctions[i](nIP, (char*) &szTmp, sizeof(szTmp));
+		}
+		else
+		{
+			strcpy((char*)&szTmp, "ERR!");
+		}
+		g_d->m_list.SetItemText(nItemIndex, i, (char*) &szTmp);
+	}	
+
+	return TRUE;
 }
 
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////// THREAD ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
-int g_nThreadCount = 0;
-HANDLE g_hThreads[10000];
-CDialog *g_dlg;
 
-UINT ScanningThread(LPVOID cur_ip)
+UINT ScanningThread(LPVOID nItemIndex)
 {
 	// Initialize thread //////////////////////////////////////////////////////
 
@@ -126,39 +162,43 @@ UINT ScanningThread(LPVOID cur_ip)
 		}
 	}
 
-	CIpscanDlg *d = (CIpscanDlg *) g_dlg;
+	g_d = (CIpscanDlg *) g_dlg;	
 
+	// Display current number of threads
+	szTmp.Format("%d", g_nThreadCount);
+	g_d->m_numthreads.SetWindowText(szTmp);
 
+	// Process scan /////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
+
+	g_scanner->doScanIP((DWORD)nItemIndex);
+	
+	/////////////////////////////////////////////////////////////////////////////
 	// Shutdown thread //////////////////////////////////////////////////////////
+	
 	g_nThreadCount--;
 
 	// Remove thread's handle	
 	if (g_nThreadCount >=0) 
 	{
 		szTmp.Format("%d",g_nThreadCount);		
-		d->m_numthreads.SetWindowText(szTmp);
+		g_d->m_numthreads.SetWindowText(szTmp);
 	}
 
 	CloseHandle(g_hThreads[nIndex]);
 
 	g_hThreads[nIndex]=0;
 
-	MessageBox(0, "test", "", 0);
+	// Display current number of threads
+	szTmp.Format("%d", g_nThreadCount);
+	g_d->m_numthreads.SetWindowText(szTmp);
+	
 	return 0;
 
 
 	/*
 	
-	char err[20];
-	sprintf((char*)&err,"%d",numthreads);
-	d->m_numthreads.SetWindowText((char*)&err);
-	
-	char *ipa;
-	in_addr in;
-	in.S_un.S_addr = htonl((UINT)cur_ip);
-	ipa = inet_ntoa(in);
-	
-	if (ThreadProcRescanThisIP >= 0) 
+		if (ThreadProcRescanThisIP >= 0) 
 	{
 		n = ThreadProcRescanThisIP; 
 	} 
@@ -291,4 +331,5 @@ exit_thread:
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////// THREAD ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
+
 

@@ -22,6 +22,7 @@
 #define DO_OPENPORT	2
 
 #include "Scanner.h"
+#include "ScanListCtrl.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -67,13 +68,13 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CIpscanDlg)
 	enum { IDD = IDD_IPSCAN_DIALOG };
+	CScanListCtrl	m_list;
 	CButton	m_ipup;
 	CStatic m_numthreads;
 	CProgressCtrl	m_progress;
 	CIPAddressCtrl	m_ip2;
 	CIPAddressCtrl	m_ip1;
 	CStatic	m_statusctl;
-	CListCtrl	m_list;
 	CString	m_hostname;
 	//}}AFX_DATA
 
@@ -86,8 +87,7 @@ public:
 	//}}AFX_VIRTUAL
 
 // Implementation
-protected:
-	CScanner *m_scanner;
+protected:	
 	HACCEL hAccel;
 	HICON m_hIcon;
 

@@ -11,35 +11,48 @@
 
 // Function type definitions
 
+typedef struct
+{
+	char szPluginName[96];	
+	char szColumnName[32];	
+} TInfoStruct;
+
 typedef BOOL (__cdecl TScanFunction)(DWORD nIP, LPSTR szReturn, int nBufferLen);
 
 typedef BOOL (__cdecl TInitFunction)();
 
+typedef BOOL (__cdecl TInfoFunction)(TInfoStruct *pInfoStruct);
+
 
 class CScanner  
 {
-public:
+public:	
+	BOOL initScanning();
 	void initListColumns(CListCtrl *cListCtrl);
 	void loadSettings();
 	int getColumnWidth(int nIndex);
 	BOOL getColumnName(int nIndex, CString &szColumnHeader);
 	int getColumnCount();
+	BOOL doScanIP(DWORD nItemIndex);
 	CScanner();
 	virtual ~CScanner();
 
 protected:
 	TInitFunction * m_pInitFunctions[100];
-	TScanFunction * m_pScanFunctions[100];
+	TScanFunction * m_pScanFunctions[100];	
+	TInfoFunction * m_pInfoFunctions[100];
+
 	CWinApp * m_app;
 	CString * m_pszColumnNames[100];
 	int m_nColumnCount;
 };
 
 // ordinary function
-UINT ScanningThread(LPVOID cur_ip);
+UINT ScanningThread(LPVOID nItemIndex);
 
 extern int g_nThreadCount;
 extern HANDLE g_hThreads[10000];
 extern CDialog * g_dlg;
+extern CScanner * g_scanner;
 
 #endif // !defined(AFX_SCANNER_H__F6305E28_F29C_45F5_8073_26591A6C68D1__INCLUDED_)

@@ -31,6 +31,7 @@ typedef DWORD (FAR WINAPI *TIcmpSendEcho)(
     DWORD Timeout 	/* time in milliseconds to wait for reply */
 );
 TIcmpSendEcho lpfnIcmpSendEcho;
+
 char aPingDataBuf[32];
 
 int nNumAlive = 0;
@@ -73,7 +74,7 @@ BOOL ScanIntDoPing(DWORD nIP, LPSTR szReturn, int nBufferLen)
     IPInfo.OptionsSize = 0;
     IPInfo.OptionsData = NULL;
 	DWORD ReplyCount;
-	ReplyCount = lpfnIcmpSendEcho(hICMP, nIP, aPingDataBuf, 32, 
+	ReplyCount = lpfnIcmpSendEcho(hICMP, nIP, &aPingDataBuf, sizeof(aPingDataBuf), 
 		&IPInfo, RepData, sizeof(RepData), 1000/*TODO!!! Timeout*/);
 
 	lpfnIcmpCloseHandle(hICMP);
@@ -103,4 +104,11 @@ BOOL ScanIntDoPing(DWORD nIP, LPSTR szReturn, int nBufferLen)
 
 	return bAlive;
 
+}
+
+BOOL ScanIntInfoPing(TInfoStruct *pInfoStruct)
+{
+	strcpy((char*)&pInfoStruct->szColumnName, "Ping");
+	strcpy((char*)&pInfoStruct->szPluginName, "Ping");
+	return TRUE;
 }

@@ -29,13 +29,20 @@ public:
 
 // Implementation
 public:
+	BOOL m_bShowPorts;
 	virtual ~CScanListCtrl();
+
+protected:
+	void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
+	void RepaintSelectedItems();	
+	BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
 	// Generated message map functions
 protected:
 	//{{AFX_MSG(CScanListCtrl)
 		// NOTE - the ClassWizard will add and remove member functions here.
 	//}}AFX_MSG
+	afx_msg void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
 	DECLARE_MESSAGE_MAP()
 };

@@ -34,9 +34,6 @@ CWinApp *app;
 int bSortAscending = 1;
 int nSortedCol = -1;
 
-int ThreadProcRescanThisIP = -1;
-
-
 class CAboutDlg : public CDialog
 {
 public:	
@@ -113,13 +110,13 @@ void CIpscanDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CIpscanDlg)
+	DDX_Control(pDX, IDC_LIST, m_list);
 	DDX_Control(pDX, IDC_BUTTONIPUP, m_ipup);
 	DDX_Control(pDX, IDC_NUMTHREADS, m_numthreads);
 	DDX_Control(pDX, IDC_PROGRESS, m_progress);
 	DDX_Control(pDX, IDC_IPADDRESS2, m_ip2);
 	DDX_Control(pDX, IDC_IPADDRESS1, m_ip1);
 	DDX_Control(pDX, IDC_STATUS, m_statusctl);
-	DDX_Control(pDX, IDC_LIST, m_list);
 	DDX_Text(pDX, IDC_HOSTNAME, m_hostname);
 	DDV_MaxChars(pDX, m_hostname, 100);
 	//}}AFX_DATA_MAP
@@ -214,18 +211,16 @@ BOOL CIpscanDlg::OnInitDialog()
 
 	COptionsDlg::loadOptions(d);
 
-	ThreadProcRescanThisIP = -1;
-	
 	// Add image list to the listbox
 	m_imglist.Create(IDB_IMAGELIST,16,2,0xFFFFFF);
 	m_list.SetImageList(&m_imglist,LVSIL_SMALL);
 
 	// Create the scanner object
-	m_scanner = new CScanner();
-	m_scanner->loadSettings();
+	g_scanner = new CScanner();
+	g_scanner->loadSettings();
 	
 	// Add columns to the listbox
-	m_scanner->initListColumns(&m_list);
+	g_scanner->initListColumns(&m_list);
 
 	// Set button's bitmaps
 	m_bmpuparrow.LoadMappedBitmap(IDB_UPARROW);
@@ -416,6 +411,8 @@ void CIpscanDlg::OnButton1()
 /*		numalive = 0;
 		numopen = 0;*/
 		
+		// Initialize scanning engine
+		g_scanner->initScanning();
 
 		SetTimer(1,m_delay,NULL);
 
@@ -547,7 +544,7 @@ void CIpscanDlg::OnButtonipup()
 void CIpscanDlg::OnTimer(UINT nIDEvent) 
 {	
 	 	
-	int i;
+	int nIndex;
 	
 	if (m_curip<m_endip) 
 	{
@@ -557,12 +554,12 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 		in.S_un.S_addr = htonl(m_curip);
 		ipa = inet_ntoa(in);
 		status(ipa);
-		if (m_display==DO_ALL) 
-		{
-			i = m_list.InsertItem(m_list.GetItemCount(),ipa,2);
+		/*if (m_display==DO_ALL) 
+		{*/
+			nIndex = m_list.InsertItem(m_list.GetItemCount(),ipa,2);
 			//m_list.SetItemData(i, i);
-		}
-		CWinThread *thr = AfxBeginThread(ScanningThread,(void*)m_curip);
+		//}
+		CWinThread *thr = AfxBeginThread(ScanningThread,(void*)nIndex);
 		if (m_startip < m_endip) 
 		{
 			m_curip++;
@@ -840,9 +837,8 @@ void CIpscanDlg::OnWindozesucksRescanip()
 		m_list.SetItem(m_menucuritem,CL_HOSTNAME,LVIF_TEXT,"",0,0,0,0);
 		m_list.SetItem(m_menucuritem,CL_PINGTIME,LVIF_TEXT,"",0,0,0,0);
 		RedrawWindow();
-		ThreadProcRescanThisIP = m_menucuritem;
-		ScanningThread((void*)m_curip);
-		ThreadProcRescanThisIP = -1;
+		
+		ScanningThread((void*)m_menucuritem);
 		
 		m_scanning=FALSE;
 		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)startbmp.m_hObject);
@@ -1139,6 +1135,6 @@ void CIpscanDlg::OnDestroy()
 {
 	CDialog::OnDestroy();
 	
-	delete(m_scanner);
+	delete(g_scanner);
 	delete(m_szDefaultFileName);
 }
