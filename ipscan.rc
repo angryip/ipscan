@@ -113,6 +113,8 @@ BEGIN
         MENUITEM "Angry IP Scanner &Forum",     ID_HELP_FORUM
         MENUITEM "Angryziber &Software",        ID_HELP_ANGRYZIBERSOFTWARE
         MENUITEM SEPARATOR
+        MENUITEM "&Donation",                   ID_HELP_DONATIONPAGE
+        MENUITEM SEPARATOR
         MENUITEM "&Command-line Usage",         ID_HELP_COMMANDLINE
         MENUITEM SEPARATOR
         MENUITEM "&About...\tF12",              ID_HELP_ABOUT
@@ -656,6 +658,7 @@ BEGIN
     IDS_HOMEPAGE            "http://www.angryziber.com/"
     IDS_MAIL                "angryziber@angryziber.com"
     IDS_HOMEPAGE_FORUM      "http://www.angryziber.com/forum/"
+    IDS_DONATION_PAGE       "http://www.angryziber.com/ipscan/donate.php"
 END
 
 #endif    // Russian resources

@@ -165,3 +165,10 @@ void CLink::goToHomepageForum()
 	szURL.LoadString(IDS_HOMEPAGE_FORUM);
 	ShellExecute(0, NULL, szURL, NULL, NULL, SW_SHOWNORMAL);
 }
+
+void CLink::goToDonationPage()
+{
+	CString szURL;
+	szURL.LoadString(IDS_DONATION_PAGE);
+	ShellExecute(0, NULL, szURL, NULL, NULL, SW_SHOWNORMAL);
+}

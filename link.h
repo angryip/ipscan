@@ -48,6 +48,7 @@ public:
 
 // Implementation
 public:	
+	static void goToDonationPage();
 	BOOL m_bTrackLeave;
 	static void goToWriteMail();
 	static void goToHomepage();

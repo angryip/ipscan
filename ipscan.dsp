@@ -162,6 +162,10 @@ SOURCE=.\ScanListCtrl.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ScanListHeaderCtrl.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Scanner.cpp
 # End Source File
 # Begin Source File
@@ -256,6 +260,10 @@ SOURCE=.\SaveToFile.h
 # Begin Source File
 
 SOURCE=.\ScanListCtrl.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ScanListHeaderCtrl.h
 # End Source File
 # Begin Source File
 
