@@ -15,9 +15,9 @@
 
 // Possible plugin types (specify these in nPluginType field of TInfoStruct)
 
-#define PLUGIN_TYPE_COLUMN			0		// New List Column (for scanning)
-#define PLUGIN_TYPE_OUTPUT			1		// New output format (currently not supported)
-#define PLUGIN_TYPE_IP_RANGE		2		// New possibility to specify IPs for scanning (currently not supported)
+#define PLUGIN_TYPE_COLUMN       0		// New List Column (for scanning)
+#define PLUGIN_TYPE_OUTPUT       1		// New output format (currently not supported)
+#define PLUGIN_TYPE_IP_RANGE     2		// New possibility to specify IPs for scanning (currently not supported)
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Structure that is filled by Info plugin function
@@ -25,16 +25,16 @@
 
 typedef struct
 {	
-	int	 nStructSize;				// Size of this structure in bytes, this is preset by Angry IP Scanner
-	int	 nAngryIPScannerVersion;	// Known supported version of Angry IP Scanner, eg 217 (instead of 2.17)
-	int	 nPluginType;				// Type of the plugin, see PLUGIN_TYPE_* constants
-	char szPluginName[32];			// Column name in the list (plugin idenificator)
-	char szDescription[1024];		// Description of plugin
-	char szAuthorName[32];			// Author's name
-	char szPluginWebsite[96];		// URL of plugin on the web
-	char szAuthorEmail[64];			// Author's email
-	char bMultipleScanningSupported;// Specifies whether this plugin can be used as multiple columns in the list, 1 or 0.
-	char szReserved[128];			// Reserved bytes for future additions. Do not change them.
+	int nStructSize;                        // Size of this structure in bytes, this is preset by Angry IP Scanner
+	int nAngryIPScannerVersion;             // Known supported version of Angry IP Scanner, eg 217 (instead of 2.17)
+	int nPluginType;                        // Type of the plugin, see PLUGIN_TYPE_* constants
+	char szPluginName[32];                  // Column name in the list (plugin idenificator)
+	char szDescription[1024];               // Description of plugin
+	char szAuthorName[32];                  // Author's name
+	char szPluginWebsite[96];               // URL of plugin on the web
+	char szAuthorEmail[64];                 // Author's email
+	char bMultipleScanningSupported;        // Specifies whether this plugin can be used as multiple columns in the list, 1 or 0.
+	char szReserved[128];                   // Reserved bytes for future additions. Do not change them.
 } 
 TInfoStruct;
 
