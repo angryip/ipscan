@@ -35,8 +35,6 @@ TIcmpSendEcho lpfnIcmpSendEcho;
 
 char aPingDataBuf[32];
 
-int nNumAlive = 0;
-
 // For NetBIOS
 
 CNetBIOSUtils *g_NetBIOSUtils = NULL;
@@ -66,54 +64,66 @@ BOOL ScanIntInitPing()
 
 		// Fill data buffer for pinging
 		for (int i=0; i < sizeof(aPingDataBuf); i++) aPingDataBuf[i]=i+65;
-	}
-
-	nNumAlive = 0;
+	}	
 
 	return TRUE;
 }
 
 BOOL ScanIntDoPing(DWORD nIP, LPSTR szReturn, int nBufferLen)
 {
-	BOOL bAlive = false;
+	BOOL bAlive = FALSE;
+
+	int nPingTime = 1000000; // A kind of infinity
 
 	HANDLE hICMP = (HANDLE) lpfnIcmpCreateFile();
 
 	unsigned char RepData[sizeof(ICMPECHO)+100];
-	IPINFO IPInfo;
-	IPInfo.Ttl = 64;
-    IPInfo.Tos = 0;
-    IPInfo.Flags = 0;
-    IPInfo.OptionsSize = 0;
-    IPInfo.OptionsData = NULL;
-	DWORD ReplyCount;
-	ReplyCount = lpfnIcmpSendEcho(hICMP, nIP, &aPingDataBuf, sizeof(aPingDataBuf), 
-		&IPInfo, RepData, sizeof(RepData), g_options->m_nPingTimeout);
 
-	lpfnIcmpCloseHandle(hICMP);
-
-	if (ReplyCount) 	
+	// Ping a few times
+	for (int nPingCount = 1; nPingCount <= g_options->m_nPingCount; nPingCount++)
 	{
-		ReplyCount = RepData[4]+RepData[5]*256+RepData[6]*65536+RepData[7]*256*65536;
-		if (ReplyCount <= 0) 
+		IPINFO IPInfo;
+		IPInfo.Ttl = 64;
+		IPInfo.Tos = 0;
+		IPInfo.Flags = 0;
+		IPInfo.OptionsSize = 0;
+		IPInfo.OptionsData = NULL;
+		DWORD ReplyCount;
+		ReplyCount = lpfnIcmpSendEcho(hICMP, nIP, &aPingDataBuf, sizeof(aPingDataBuf), 
+			&IPInfo, RepData, sizeof(RepData), g_options->m_nPingTimeout);	
+
+		if (ReplyCount) 	
 		{
-			bAlive = true;
-			nNumAlive++;
+			ReplyCount = RepData[4]+RepData[5]*256+RepData[6]*65536+RepData[7]*256*65536;
+			if (ReplyCount <= 0) 
+			{
+				bAlive = TRUE;
+				
+				if (nPingTime < 1000000)	// 1000 secs, a kind of infinity
+				{
+					nPingTime = (nPingTime + *(u_long *) &(RepData[8])) / 2;	// Arithmetics average					
+				}
+				else
+				{
+					nPingTime = *(u_long *) &(RepData[8]);
+				}
+			}
 		}
 	}
 
-	if (nBufferLen > 10)
+	if (nBufferLen > 10)	// Check to not overflow the string buffer
 	{
 		if (bAlive)
 		{
-			sprintf(szReturn,"%d ms",*(u_long *) &(RepData[8]));
-			bAlive = TRUE;
+			sprintf(szReturn,"%d ms", nPingTime);
 		}
 		else
 		{
 			strcpy(szReturn, "Dead");
 		}
 	}
+
+	lpfnIcmpCloseHandle(hICMP);
 
 	return bAlive;
 

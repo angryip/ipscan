@@ -32,6 +32,7 @@ public:
 	int		m_nPortTimeout;
 	BOOL	m_bShowPortsBelow;
 	BOOL	m_bScanPorts;
+	int		m_nPingCount;
 	//}}AFX_DATA
 
 

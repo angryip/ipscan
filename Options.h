@@ -19,6 +19,7 @@ typedef struct {u_short nStartPort; u_short nEndPort; } tPortRange;
 class COptions  
 {
 public:
+	int m_nPingCount;
 	void saveDimensions();
 	BOOL m_bShowPortsBelow;
 	CString m_szExecutablePath;

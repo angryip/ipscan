@@ -27,6 +27,7 @@ COptionsDlg::COptionsDlg(CWnd* pParent /*=NULL*/)
 	m_nPortTimeout = 0;
 	m_bShowPortsBelow = FALSE;
 	m_bScanPorts = FALSE;
+	m_nPingCount = 0;
 	//}}AFX_DATA_INIT
 }
 
@@ -49,6 +50,8 @@ void COptionsDlg::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxInt(pDX, m_nPortTimeout, 500, 60000);
 	DDX_Check(pDX, IDC_SHOW_PORTS_BELOW, m_bShowPortsBelow);
 	DDX_Check(pDX, IDC_SCAN_PORTS, m_bScanPorts);
+	DDX_Text(pDX, IDC_PINGCOUNT, m_nPingCount);
+	DDV_MinMaxInt(pDX, m_nPingCount, 1, 10);
 	//}}AFX_DATA_MAP
 }
 
@@ -69,6 +72,7 @@ void COptionsDlg::OnOK()
 
 	g_options->m_nMaxThreads = m_nMaxThreads;
 	g_options->m_nPingTimeout = m_nPingTimeout;
+	g_options->m_nPingCount = m_nPingCount;
 	g_options->m_nPortTimeout = m_nPortTimeout;
 	g_options->m_nTimerDelay = m_nTimerDelay;
 	g_options->m_neDisplayOptions = m_nDisplayOptions;
@@ -82,6 +86,7 @@ int COptionsDlg::DoModal()
 {
 	m_nMaxThreads = g_options->m_nMaxThreads;
 	m_nPingTimeout = g_options->m_nPingTimeout;
+	m_nPingCount = g_options->m_nPingCount;
 	m_nPortTimeout = g_options->m_nPortTimeout;
 	m_nTimerDelay = g_options->m_nTimerDelay;
 	m_nDisplayOptions = g_options->m_neDisplayOptions;
@@ -106,6 +111,12 @@ void COptionsDlg::OnHelpbtn()
 		"Ping timeout:\n"
 		"\tIf this timeout is elapsed and host is not sent any\n"
 		"\tdata back, it is considered \"dead\"\n"
+		"Ping count:\n"
+		"\tHost is pinged this number of times and results are averaged.\n"		
+		"\tNote that maximum pinging time will be Ping timeout * Ping count\n"
+		"Port timeout:\n"
+		"\tIf this timeout has elapsed and connection is not yet estabilished,\n"		
+		"\tthen the port is considered \"closed\"\n"
 		"Display options:\n"
 		"\tSelect what addresses you want to be displayed in the window:\n"
 		"\tAll IPs, only alive IPs or only those with the open port.\n"		
@@ -113,7 +124,7 @@ void COptionsDlg::OnHelpbtn()
 		"\tIf enabled (and port scanning also enabled), then scanned ports will\n"
 		"\tbe displayed below each IP address in the list\n"
 		"Continue scanning...:\n"
-		"\tSome firewalls don't respond to ICMP queries, so host is\n"
+		"\tSome hosts don't respond to ICMP queries, so host is\n"
 		"\t illegally considered \"dead\". This option will scan it anyway\n"
 		"\t(and all other dead hosts)\n"
 		,NULL,
