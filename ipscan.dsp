@@ -114,7 +114,7 @@ SOURCE=.\InstallDlg.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\IPRange.cpp
+SOURCE=.\IPRangeDlg.cpp
 # End Source File
 # Begin Source File
 
@@ -219,7 +219,7 @@ SOURCE=.\InstallDlg.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\IPRange.h
+SOURCE=.\IPRangeDlg.h
 # End Source File
 # Begin Source File
 

@@ -78,7 +78,7 @@ Type=0
 BaseClass=CDialog
 HeaderFile=ipscanDlg.h
 ImplementationFile=ipscanDlg.cpp
-LastObject=IDC_IPFEED
+LastObject=CIpscanDlg
 Filter=D
 VirtualFilter=dWC
 

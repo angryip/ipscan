@@ -86,6 +86,9 @@ BOOL CIPRangeDlg::OnInitDialog()
 
 	tmpbmp = new CBitmap; tmpbmp->LoadMappedBitmap(IDB_CLASS_D_PIC);
 	((CButton*)GetDlgItem(IDC_CLASS_D))->SetBitmap((HBITMAP) tmpbmp->m_hObject);
+
+	// Process change event
+	OnFieldchangedIpaddress1(NULL, NULL);
 	
 	return TRUE;  
 }
@@ -103,7 +106,8 @@ void CIPRangeDlg::OnButtonipup()
 
 	((CIpscanDlg*)g_dlg)->status(NULL);
 
-	if (!he) {
+	if (!he) 
+	{
 		MessageBox("No DNS entry",NULL,MB_OK | MB_ICONHAND);
 		return;
 	}
@@ -115,20 +119,24 @@ void CIPRangeDlg::OnButtonipup()
 }
 
 void CIPRangeDlg::OnFieldchangedIpaddress1(NMHDR* pNMHDR, LRESULT* pResult) 
-{
-	char str[16];
-	m_ctIPEnd.GetWindowText((char*)&str,sizeof(str));
-	if (m_bIp2Virgin) {
+{	
+	if (m_bIp2Virgin) 
+	{
+		char str[16];	
 		m_ctIPStart.GetWindowText((char*)&str,sizeof(str));
 		m_ctIPEnd.SetWindowText((char*)&str);
 	}
-	*pResult = 0;
+	
+	if (pResult)
+		*pResult = 0;
 }
 
 void CIPRangeDlg::OnFieldchangedIpaddress2(NMHDR* pNMHDR, LRESULT* pResult) 
 {
-	m_bIp2Virgin = FALSE;	
-	*pResult = 0;
+	m_bIp2Virgin = FALSE;
+	
+	if (pResult)
+		*pResult = 0;
 }
 
 void CIPRangeDlg::OnClassC() 
