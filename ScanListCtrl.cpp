@@ -518,7 +518,9 @@ void CScanListCtrl::ShowIPDetails()
 	for (int i=0; i < nColumns; i++)
 	{
 		g_scanner->getColumnName(i, szInfoLine);
-		szInfoLine += ":\t";
+		szInfoLine += ":";
+		if (szInfoLine.GetLength() <= 8) szInfoLine += "\t";
+		if (szInfoLine.GetLength() <= 20) szInfoLine += "\t";
 		szInfoLine += GetItemText(nCurrentItem, i);
 
 		cDlg.addScannedInfo(szInfoLine);
