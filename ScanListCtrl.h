@@ -44,7 +44,7 @@ public:
 
 // Implementation
 public:
-	void SetSortingAllowed(BOOL bAllowed);
+	void SetHeaderClicksDisabled(BOOL bHeaderClicksDisabled);
 	void InitPostCreateStuff();
 	void PrepareForScanning();
 	void DeleteSelectedItems();
@@ -76,7 +76,7 @@ public:
 	virtual ~CScanListCtrl();
 
 protected:
-	BOOL m_bSortingAllowed;
+	BOOL m_bHeaderClicksDisabled;
 	BOOL m_bSearchCaseSensitive;
 	CScanListHeaderCtrl m_ctlHeader;
 	CImageList m_imglist;

@@ -34,7 +34,7 @@ static char THIS_FILE[] = __FILE__;
 CScanListCtrl::CScanListCtrl()
 {
 	m_bShowPorts = TRUE;
-	m_bSortingAllowed = FALSE;
+	m_bHeaderClicksDisabled = FALSE;
 }
 
 CScanListCtrl::~CScanListCtrl()
@@ -917,11 +917,11 @@ int CScanListCtrl::InsertColumn(int nCol, LPCTSTR lpszColumnHeading, int nFormat
 	return CListCtrl::InsertColumn(nCol, lpszColumnHeading, nFormat | HDF_OWNERDRAW, nWidth, nSubItem);
 }
 
-void CScanListCtrl::SetSortingAllowed(BOOL bAllowed)
+void CScanListCtrl::SetHeaderClicksDisabled(BOOL bHeaderClicksDisabled)
 {
-	m_bSortingAllowed = bAllowed;
+	m_bHeaderClicksDisabled = bHeaderClicksDisabled;
 
-	if (!m_bSortingAllowed)
+	if (!m_bHeaderClicksDisabled)
 		m_ctlHeader.SetSortArrow(-1, 0);	// Disable showing of sorting arrows
 }
 
@@ -975,7 +975,7 @@ void CScanListCtrl::OnItemClickListHeader(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NMLISTVIEW *phdn = (NMLISTVIEW *) pNMHDR;	 		
 
-	if (g_nThreadCount != 0)
+	if (m_bHeaderClicksDisabled)
 		return;		// Do not show anything during scanning
 
 	// Get the current on-screen mouse position
@@ -995,7 +995,7 @@ void CScanListCtrl::OnItemClickListHeader(NMHDR* pNMHDR, LRESULT* pResult)
 	{
 		// Icon area
 
-		if (rcWin.right - 13 > mousePos.x)
+		if (rcWin.right - 15 > mousePos.x)
 		{
 			// Options icon			
 			g_scanner->showColumnOptions(phdn->iSubItem);
@@ -1009,9 +1009,12 @@ void CScanListCtrl::OnItemClickListHeader(NMHDR* pNMHDR, LRESULT* pResult)
 		return;	// Do not proceed with sorting stuff
 	}	
 
-	// Quit if sorting is not allowed
-	if (!m_bSortingAllowed)
+	// Quit there is no items to sort
+	if (GetItemCount() <= 0)
+	{
+		m_ctlHeader.SetSortArrow(-1, 0);	// Ensure that this is switched off
 		return;
+	}
 
 	BOOL bSortAscending = m_ctlHeader.IsSortingAscending();
 	int nSortedColumn = m_ctlHeader.GetSortedColumn();

@@ -556,7 +556,7 @@ void CIpscanDlg::OnButtonScan()
 		m_tickcount = GetTickCount()/1000;
 
 		m_nScanMode = SCAN_MODE_SCANNING;
-		m_list.SetSortingAllowed(FALSE);
+		m_list.SetHeaderClicksDisabled(TRUE);
 		
 		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStop.m_hObject); // stop scanning button		
 
@@ -623,7 +623,7 @@ void CIpscanDlg::OnButtonScan()
 			BOOL bShowScanInfo = (m_nScanMode != SCAN_MODE_KILLING) && !g_bScanExistingItems;
 
 			m_nScanMode = SCAN_MODE_NOT_SCANNING;
-			m_list.SetSortingAllowed(TRUE);
+			m_list.SetHeaderClicksDisabled(FALSE);
 
 			status("Finalizing...");
 			g_scanner->finalizeScanning();			
