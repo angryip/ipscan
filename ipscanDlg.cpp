@@ -6,6 +6,7 @@
 #include "ipscanDlg.h"
 #include "OptionsDlg.h"
 #include "SearchDlg.h"
+#include "InstallDlg.h"
 #include "ms_icmp.h"
 #include "link.h"
 #include "CommandLine.h"
@@ -164,8 +165,9 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_HINT, OnCommandsOpencomputerHint)
 	ON_BN_CLICKED(IDC_BUTTONPASTE, OnButtonpaste)
 	ON_COMMAND(ID_HELP_COMMANDLINE, OnHelpCommandline)
-	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_COMMAND(ID_HELP_FORUM, OnHelpForum)
+	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
+	ON_COMMAND(ID_OPTIONS_INSTALL_PROGRAM, OnOptionsInstallProgram)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -1388,4 +1390,8 @@ void CIpscanDlg::OnHelpCommandline()
 	
 }
 
-
+void CIpscanDlg::OnOptionsInstallProgram() 
+{
+	CInstallDlg dlgInst;
+	dlgInst.DoModal();
+}

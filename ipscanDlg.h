@@ -132,6 +132,7 @@ protected:
 	afx_msg void OnButtonpaste();
 	afx_msg void OnHelpCommandline();
 	afx_msg void OnHelpForum();
+	afx_msg void OnOptionsInstallProgram();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
