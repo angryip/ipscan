@@ -65,6 +65,7 @@ extern "C" __declspec(dllexport) BOOL Finalize()
 }
 
 // The Scan function - the most important
+// It must be thread-safe!!! Be careful!
 extern "C" __declspec(dllexport) BOOL Scan(DWORD nIP, LPSTR szReturn, int nBufferLen)
 {
 	// This function does the actual scanning
