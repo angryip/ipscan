@@ -309,7 +309,7 @@ BEGIN
     IDS_STRING32789         "1"
     IDS_STRING32790         "1"
     IDS_STRING32791         "1"
-    IDS_VERSION             "1.86"
+    IDS_VERSION             "1.87"
     IDS_SCAN_HOMEPAGE       "http://www.angryziber.com/ipscan/"
     IDS_HOMEPAGE            "http://www.angryziber.com/"
     IDS_MAIL                "angryziber@mail.com"
