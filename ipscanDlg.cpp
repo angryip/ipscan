@@ -1184,14 +1184,14 @@ void CIpscanDlg::OnOptionsInstallProgram()
 
 void CIpscanDlg::OnDestroy() 
 {
-	CDialog::OnDestroy();
+	CDialog::OnDestroy();	
 	
 	delete(g_scanner);
 	delete(m_szDefaultFileName);
-	delete(m_pToolTips);
+	delete(m_pToolTips);	
 
 	// Delete the critical section object
-	DeleteCriticalSection(&g_criticalSection);
+	// removed because caused problems on Win9X: DeleteCriticalSection(&g_criticalSection);	
 
 	// Kill all threads of this process	
 	// This will terminate the process for sure after closing the main window		
@@ -1545,9 +1545,9 @@ void CIpscanDlg::OnClose()
 {
 	// Terminate all threads
 	if (m_nScanMode == SCAN_MODE_SCANNING)
-		KillTimer(1);	// For safety
+		KillTimer(1);	// For safety	
 
-	KillAllRunningThreads();	
+	KillAllRunningThreads();		
 
-	CDialog::OnClose();
+	CDialog::OnClose();	
 }
