@@ -397,6 +397,9 @@ BOOL CIpscanDlg::OnInitDialog()
 	#ifdef DEBUG_MESSAGES
 		AfxMessageBox("OnInitDialog(): Finished", 0, 0);
 	#endif
+
+	// Initialize the critical section (used for synchronization of threads)
+	InitializeCriticalSection(&g_criticalSection);
 	
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -1125,6 +1128,9 @@ void CIpscanDlg::OnDestroy()
 	delete(g_scanner);
 	delete(m_szDefaultFileName);
 	delete(m_pToolTips);
+
+	// Delete the critical section object
+	DeleteCriticalSection(&g_criticalSection);
 
 	// Kill all threads of this process	
 	// This will terminate the process for sure after closing the main window		

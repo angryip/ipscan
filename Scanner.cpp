@@ -316,10 +316,7 @@ BOOL CScanner::initScanning()
 	}
 
 	m_nAliveHosts = 0;
-	m_nOpenPorts = 0;
-
-	// Initialize the critical section
-	InitializeCriticalSection(&g_criticalSection);
+	m_nOpenPorts = 0;	
 
 	return TRUE;
 }
