@@ -64,7 +64,7 @@ public:
 	int getColumnReference(int nItemIndex);
 	BOOL getAllColumnName(int nIndex, CString &szColumnHeader);
 	int getAllColumnsCount();
-	void runScanFunction(DWORD nIP, int nIndex, char *szBuffer, int nBufferLength, BOOL bGlobal=FALSE);
+	BOOL runScanFunction(DWORD nIP, int nIndex, char *szBuffer, int nBufferLength, BOOL bGlobal=FALSE);
 	void initMenuWithColumns(CMenu *pMenu);
 	int m_nAliveHosts;
 	int m_nOpenPorts;

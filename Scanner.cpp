@@ -513,7 +513,7 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP, int nThreadIndex)
 			if (m_AllColumns[m_Columns[i]].pInfoFunction != NULL)
 			{
 				szTmp[0] = 0;
-				runScanFunction(nIP, i, (char*) &szTmp, sizeof(szTmp));								
+				runScanFunction(nIP, i, (char*) &szTmp, sizeof(szTmp));
 				
 				// Returned an empty string
 				if (szTmp[0] == 0)
@@ -674,12 +674,16 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 	return bResult;
 }
 
-void CScanner::runScanFunction(DWORD nIP, int nIndex, char *szBuffer, int nBufferLength, BOOL bGlobal /*=FALSE*/)
+BOOL CScanner::runScanFunction(DWORD nIP, int nIndex, char *szBuffer, int nBufferLength, BOOL bGlobal /*=FALSE*/)
 {
+	TScanFunction *pScanFunction;
+
 	if (bGlobal)
-		m_AllColumns[nIndex].pScanFunction(nIP, szBuffer, nBufferLength);
+		pScanFunction = m_AllColumns[nIndex].pScanFunction;
 	else
-		m_AllColumns[m_Columns[nIndex]].pScanFunction(nIP, szBuffer, nBufferLength);
+		pScanFunction = m_AllColumns[m_Columns[nIndex]].pScanFunction;
+
+	return pScanFunction(nIP, szBuffer, nBufferLength);
 }
 
 
