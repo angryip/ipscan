@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=CEditOpenersDlg
+LastClass=CScanListCtrl
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "ipscan.h"
@@ -21,22 +21,22 @@ Class9=CScanListCtrl
 Class10=CSearchDlg
 
 ResourceCount=15
-Resource1=IDD_ABOUTBOX (English (U.S.))
+Resource1=IDD_PORT_DLG
 Resource2=IDD_NETBIOS_OPTIONS
-Resource3=IDD_EDIT_OPENERS_DLG
-Resource4=IDR_MENU1 (Neutral)
-Resource5=IDD_MESSAGE_DIALOG
+Resource3=IDD_MESSAGE_DIALOG
+Resource4=IDD_QUERY_DLG
+Resource5=IDD_ABOUTBOX (English (U.S.))
 Resource6=IDD_SELECT_COLUMNS_DLG
-Resource7=IDD_PORT_DLG
-Resource8=IDD_OPTIONS (Neutral (Default))
-Resource9=IDD_DETAILS_DLG
-Resource10=IDD_QUERY_DLG
-Resource11=IDD_INSTALL_DLG
-Resource12=IDD_IPSCAN_DIALOG (English (U.S.))
+Resource7=IDD_IPSCAN_DIALOG (English (U.S.))
+Resource8=IDD_FAVOURITE_DELETE
+Resource9=IDD_SEARCH (English (U.S.))
+Resource10=IDD_OPTIONS (Neutral (Default))
+Resource11=IDD_EDIT_OPENERS_DLG
+Resource12=IDD_DETAILS_DLG
 Class11=CQueryDlg
-Resource13=IDD_SEARCH (English (U.S.))
+Resource13=IDD_INSTALL_DLG
 Class12=CFavouriteDeleteDlg
-Resource14=IDD_FAVOURITE_DELETE
+Resource14=IDR_MENU1 (Neutral)
 Class13=CEditOpenersDlg
 Resource15=IDR_MENU1 (Neutral (Default))
 
@@ -97,6 +97,7 @@ Type=0
 BaseClass=CDialog
 HeaderFile=PortDlg.h
 ImplementationFile=PortDlg.cpp
+LastObject=CPortDlg
 
 [CLS:CScanListCtrl]
 Type=0
@@ -104,6 +105,8 @@ BaseClass=CListCtrl
 HeaderFile=ScanListCtrl.h
 ImplementationFile=ScanListCtrl.cpp
 LastObject=CScanListCtrl
+Filter=W
+VirtualFilter=FWC
 
 [CLS:CSearchDlg]
 Type=0

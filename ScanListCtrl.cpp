@@ -44,6 +44,7 @@ CScanListCtrl::~CScanListCtrl()
 BEGIN_MESSAGE_MAP(CScanListCtrl, CListCtrl)
 	//{{AFX_MSG_MAP(CScanListCtrl)	
 	ON_WM_LBUTTONDBLCLK()
+	ON_WM_PAINT()
 	//}}AFX_MSG_MAP
 	ON_MESSAGE(WM_MEASUREITEM, MeasureItem)
 	ON_WM_MEASUREITEM_REFLECT()
@@ -819,3 +820,65 @@ void CScanListCtrl::DeleteSelectedItems()
 	UpdateWindow();
 }
 
+
+void CScanListCtrl::OnPaint() 
+{
+	//CPaintDC dc(this); // device context for painting
+	
+	Default();
+
+	if (GetItemCount() <= 0)
+	{
+		COLORREF clrText = ::GetSysColor(COLOR_WINDOWTEXT);
+		COLORREF clrTextBk = ::GetSysColor(COLOR_WINDOW);
+
+		clrText = (clrText + clrTextBk) / 2;
+
+		CDC* pDC = GetDC();
+		// Save dc state
+		int nSavedDC = pDC->SaveDC();
+
+		CRect rc;
+		GetWindowRect(&rc);
+		ScreenToClient(&rc);
+
+		CHeaderCtrl* pHC;
+		pHC = GetHeaderCtrl();		
+
+		int nAllItemsWidth = 0;		// The combined width of all the items will be stored here
+
+		if (pHC != NULL)
+		{			
+			CRect rcH;
+
+			for (int i = 0; i < pHC->GetItemCount(); i++)
+			{
+				pHC->GetItemRect(i, &rcH);
+				nAllItemsWidth += rcH.Width();
+			}
+
+			rc.top += rcH.bottom;
+		}
+		rc.top += 10;		
+
+		pDC->SetTextColor(clrText);
+		pDC->SetBkColor(clrTextBk);
+		pDC->FillRect(rc, &CBrush(clrTextBk));
+		pDC->SelectStockObject(ANSI_VAR_FONT);
+
+		// Let the text will be centered by headers, not the window
+		if (nAllItemsWidth > 0)
+		{
+			rc.right = rc.left + nAllItemsWidth;
+		}
+
+		pDC->DrawText("The list is empty. Set the IP range and click Start to start scanning.", 
+			-1, rc, DT_CENTER | DT_WORDBREAK | DT_NOPREFIX | DT_NOCLIP);
+
+		// Restore dc
+		pDC->RestoreDC(nSavedDC);
+		ReleaseDC(pDC);
+	}
+	
+	// Do not call CListCtrl::OnPaint() for painting messages
+}

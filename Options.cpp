@@ -164,13 +164,19 @@ void COptions::saveDimensions()
 {
 	CWinApp *app = AfxGetApp();
 
-	// Save window pos
-	RECT rc;
-	app->GetMainWnd()->GetWindowRect(&rc);
-	app->WriteProfileInt("","Left",rc.left);
-	app->WriteProfileInt("","Top",rc.top);
-	app->WriteProfileInt("","Bottom",rc.bottom);
-	app->WriteProfileInt("","Right",rc.right);
+	BOOL bMaximized = app->GetMainWnd()->IsZoomed();
+	app->WriteProfileInt("", "Maximized", bMaximized);
+
+	// Save window pos only if window is not maximized
+	if (!bMaximized)
+	{
+		RECT rc;
+		app->GetMainWnd()->GetWindowRect(&rc);
+		app->WriteProfileInt("","Left",rc.left);
+		app->WriteProfileInt("","Top",rc.top);
+		app->WriteProfileInt("","Bottom",rc.bottom);
+		app->WriteProfileInt("","Right",rc.right);
+	}
 	
 	// Save column widths
 	CString szTmp;
@@ -181,6 +187,7 @@ void COptions::saveDimensions()
 		szTmp = "Col_" + szTmp;
 		app->WriteProfileInt("", szTmp, cDlg->m_list.GetColumnWidth(i));
 	}
+
 	if (m_bScanPorts)
 	{
 		// Save extra column width (Open ports)
@@ -342,7 +349,7 @@ void COptions::setWindowPos()
 	rc.left = app->GetProfileInt("","Left",0);
 	rc.top = app->GetProfileInt("","Top",0);
 	rc.bottom = app->GetProfileInt("","Bottom",0);
-	rc.right = app->GetProfileInt("","Right",0);
+	rc.right = app->GetProfileInt("","Right",0);	
 
 	// Fix restoring from saved maximized state
 
@@ -368,6 +375,9 @@ void COptions::setWindowPos()
 	{
 		d->SetWindowPos(NULL,0,0,502,350,SWP_NOMOVE | SWP_NOZORDER);
 	}
+
+	if (app->GetProfileInt("", "Maximized", FALSE))
+		d->ShowWindow(SW_SHOWMAXIMIZED);
 
 	// Column widths are restored in CScanner::initListColumns()
 }

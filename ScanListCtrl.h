@@ -80,6 +80,7 @@ protected:
 	void ShowErrorNothingSelected();
 	//{{AFX_MSG(CScanListCtrl)	
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	afx_msg void OnPaint();
 	//}}AFX_MSG
 	afx_msg void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
