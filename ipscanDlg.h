@@ -22,7 +22,7 @@
 #include "resource.h"
 #include "Scanner.h"
 #include "ScanListCtrl.h"
-#include "IpRange.h"
+#include "IpRangeDlg.h"
 
 #define SCAN_MODE_NOT_SCANNING	0
 #define SCAN_MODE_SCANNING		1
@@ -55,7 +55,7 @@ public:
 	CMenu * m_menuContext;
 	unsigned long m_tickcount;	
 	int m_nScanMode;
-	CIPRange m_dlgIPRange;
+	CIPRangeDlg m_dlgIPRange;
 	
 	CIpscanDlg(CWnd* pParent = NULL);	// standard constructor
 
@@ -105,7 +105,6 @@ protected:
 	afx_msg void OnButtonScan();
 	afx_msg void OnHelpAbout();
 	afx_msg void OnOptionsOptions();
-	afx_msg void OnButtonipup();
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnScanSavetotxt();
 	afx_msg void OnRclickList(NMHDR* pNMHDR, LRESULT* pResult);
@@ -113,10 +112,6 @@ protected:
 	afx_msg void OnScanSaveselection();
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	afx_msg void OnOptionsSaveoptions();
-	afx_msg void OnFieldchangedIpaddress1(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnFieldchangedIpaddress2(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnClassC();
-	afx_msg void OnClassD();
 	afx_msg void OnShowNetBIOSInfo();
 	afx_msg void OnHelpAngryipscannerwebpage();
 	afx_msg void OnHelpAngryzibersoftware();

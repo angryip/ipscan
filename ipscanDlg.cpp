@@ -162,19 +162,14 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_IP_EXIT, OnIpExit)
 	ON_BN_CLICKED(IDC_BUTTON1, OnButtonScan)
 	ON_COMMAND(ID_HELP_ABOUT, OnHelpAbout)
-	ON_COMMAND(ID_OPTIONS_OPTIONS, OnOptionsOptions)
-	ON_BN_CLICKED(IDC_BUTTONIPUP, OnButtonipup)
+	ON_COMMAND(ID_OPTIONS_OPTIONS, OnOptionsOptions)	
 	ON_WM_TIMER()
 	ON_COMMAND(ID_SCAN_SAVETOTXT, OnScanSavetotxt)
 	ON_NOTIFY(NM_RCLICK, IDC_LIST, OnRclickList)
 	ON_COMMAND(ID_COMMANDS_IPCLIPBOARD, OnIPToClipboard)	
 	ON_COMMAND(ID_SCAN_SAVESELECTION, OnScanSaveselection)
 	ON_WM_SHOWWINDOW()
-	ON_COMMAND(ID_OPTIONS_SAVEOPTIONS, OnOptionsSaveoptions)
-	ON_NOTIFY(IPN_FIELDCHANGED, IDC_IPADDRESS1, OnFieldchangedIpaddress1)
-	ON_NOTIFY(IPN_FIELDCHANGED, IDC_IPADDRESS2, OnFieldchangedIpaddress2)
-	ON_BN_CLICKED(IDC_CLASS_C, OnClassC)
-	ON_BN_CLICKED(IDC_CLASS_D, OnClassD)
+	ON_COMMAND(ID_OPTIONS_SAVEOPTIONS, OnOptionsSaveoptions)	
 	ON_COMMAND(ID_SHOWNETBIOSINFO, OnShowNetBIOSInfo)
 	ON_COMMAND(ID_HELP_ANGRYIPSCANNERWEBPAGE, OnHelpAngryipscannerwebpage)
 	ON_COMMAND(ID_HELP_ANGRYZIBERSOFTWARE, OnHelpAngryzibersoftware)
@@ -336,7 +331,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	}
 
 	// Create IP feed dialogs
-	VERIFY(m_dlgIPRange.Create(CIPRange::IDD, this));
+	VERIFY(m_dlgIPRange.Create(CIPRangeDlg::IDD, this));
 	
 	// Add items to the listbox
 	CString szText;
@@ -724,31 +719,6 @@ void CIpscanDlg::OnOptionsOptions()
 	m_list.SetScanPorts();
 }
 
-void CIpscanDlg::OnButtonipup() 
-{
-	status("Getting IP...");
-
-	hostent *he;
-	char str[100];
-	char *addr;
-	in_addr in;
-	GetDlgItemText(IDC_HOSTNAME,str,100);
-	he = gethostbyname(str);
-
-	status(NULL);
-
-	if (!he) {
-		MessageBox("No DNS entry",NULL,MB_OK | MB_ICONHAND);
-		return;
-	}
-	memcpy(&in.S_un.S_addr,*he->h_addr_list,sizeof(long));
-	addr = inet_ntoa(in);
-	m_dlgIPRange.m_ctIPStart.SetWindowText(addr);
-	m_dlgIPRange.m_ctIPEnd.SetWindowText(addr);
-	m_dlgIPRange.m_bIp2Virgin = TRUE;	
-}
-
-
 void CIpscanDlg::OnTimer(UINT nIDEvent) 
 {	 	
 	int nItemIndex = 0;
@@ -895,41 +865,6 @@ void CIpscanDlg::OnOptionsSavedimensions()
 	g_options->saveDimensions();
 
 	MessageBox("Window size, position and widths of currently selected columns are successfully saved.", NULL, MB_OK | MB_ICONINFORMATION);
-}
-
-void CIpscanDlg::OnFieldchangedIpaddress1(NMHDR* pNMHDR, LRESULT* pResult) 
-{
-	char str[16];
-	m_dlgIPRange.m_ctIPEnd.GetWindowText((char*)&str,sizeof(str));
-	if (m_dlgIPRange.m_bIp2Virgin) {
-		m_dlgIPRange.m_ctIPStart.GetWindowText((char*)&str,sizeof(str));
-		m_dlgIPRange.m_ctIPEnd.SetWindowText((char*)&str);
-	}
-	*pResult = 0;
-}
-
-void CIpscanDlg::OnFieldchangedIpaddress2(NMHDR* pNMHDR, LRESULT* pResult) 
-{
-	m_dlgIPRange.m_bIp2Virgin = FALSE;	
-	*pResult = 0;
-}
-
-void CIpscanDlg::OnClassC() 
-{
-	DWORD ip;
-	char *ipc = (char*)&ip;
-	m_dlgIPRange.m_ctIPStart.GetAddress(ip); ipc[0] = (char) 1; m_dlgIPRange.m_ctIPStart.SetAddress(ip);
-	m_dlgIPRange.m_ctIPEnd.GetAddress(ip); ipc[0] = (char) 255; m_dlgIPRange.m_ctIPEnd.SetAddress(ip);
-	m_dlgIPRange.m_bIp2Virgin=FALSE;
-}
-
-void CIpscanDlg::OnClassD() 
-{
-	DWORD ip;
-	char *ipc = (char*)&ip;
-	m_dlgIPRange.m_ctIPStart.GetAddress(ip); ipc[0] = (char) 1; ipc[1] = (char) 0; m_dlgIPRange.m_ctIPStart.SetAddress(ip);
-	m_dlgIPRange.m_ctIPEnd.GetAddress(ip); ipc[0] = (char) 255; ipc[1] = (char) 255; m_dlgIPRange.m_ctIPEnd.SetAddress(ip);
-	m_dlgIPRange.m_bIp2Virgin=FALSE;
 }
 
 void CIpscanDlg::OnShowNetBIOSInfo() 

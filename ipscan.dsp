@@ -114,6 +114,10 @@ SOURCE=.\InstallDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\IPRange.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ipscan.cpp
 # End Source File
 # Begin Source File
@@ -212,6 +216,10 @@ SOURCE=.\FavouriteDeleteDlg.h
 # Begin Source File
 
 SOURCE=.\InstallDlg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IPRange.h
 # End Source File
 # Begin Source File
 
