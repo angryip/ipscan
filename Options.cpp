@@ -481,12 +481,8 @@ void COptions::addFavourite()
 
 	CString szTmp;	
 
-	/* TODO !!!!
-	pDlg->m_ip1.GetWindowText(szTmp);
-	dlg.m_szDefaultUserText = szTmp + " - ";
-	pDlg->m_ip2.GetWindowText(szTmp);
-	dlg.m_szDefaultUserText += szTmp;
-*/
+	dlg.m_szDefaultUserText = g_pIPFeed->getScanSummary();
+
 	szTmp = dlg.doQuery();
 	
 	if (szTmp.GetLength() == 0)

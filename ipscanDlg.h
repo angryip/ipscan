@@ -44,6 +44,7 @@ public:
 	CString m_szCompleteInformation;
 	int m_nCmdLineFileFormat;
 	void EnableMenuItems(BOOL bEnable);
+	void RecreateIPFeed();
 	CBitmap m_bmpShowAdvanced;
 	int m_nCmdLineOptions;
 	CString *m_szDefaultFileName;			

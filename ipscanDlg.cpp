@@ -508,6 +508,19 @@ void CIpscanDlg::UpdateCurrentIPFeedDialog()
 		m_dlgIPRange.SetFocus();
 }
 
+void CIpscanDlg::RecreateIPFeed()
+{
+	// Destroy the previous IP feed object
+	if (g_pIPFeed)
+	{
+		delete g_pIPFeed;
+		g_pIPFeed = NULL;
+	}
+
+	// Create new IP feed object	
+	g_pIPFeed = m_dlgIPRange.createIPFeed();
+}
+
 void CIpscanDlg::OnButtonScan() 
 {	
 	if (m_nScanMode == SCAN_MODE_NOT_SCANNING) 
@@ -516,14 +529,7 @@ void CIpscanDlg::OnButtonScan()
 		{
 			MessageBox("Conflicting options: Display only open ports selected, but port scanning is not enabled!", NULL, MB_OK | MB_ICONHAND);
 			return;
-		}
-
-		// Destroy the previous IP feed object
-		if (g_pIPFeed)
-		{
-			delete g_pIPFeed;
-			g_pIPFeed = NULL;
-		}
+		}		
 
 		if (!g_bScanExistingItems)
 		{
@@ -538,9 +544,9 @@ void CIpscanDlg::OnButtonScan()
 
 			// Delete old results
 			m_list.DeleteAllItems();
-
-			// Create IP Feed object (it is destroyed above)
-			g_pIPFeed = m_dlgIPRange.createIPFeed();
+			
+			// Rercreate IP Feed object
+			RecreateIPFeed();
 
 			if (!g_pIPFeed)
 				return;	// An error occured - do nothing further
@@ -1468,9 +1474,16 @@ void CIpscanDlg::OnClose()
 
 void CIpscanDlg::OnFavouritesAddcurrentrange() 
 {
-	g_options->addFavourite();	
+	// Rercreate IP Feed object (in case it is old or doesn't exist)
+	RecreateIPFeed();
+
+	// Add only if it was created without errors
+	if (g_pIPFeed)
+	{
+		g_options->addFavourite();	
 	
-	RefreshFavouritesMenu();
+		RefreshFavouritesMenu();
+	}
 }
 
 void CIpscanDlg::RefreshFavouritesMenu()
