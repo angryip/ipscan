@@ -163,7 +163,7 @@ int CScanner::getColumnWidth(int nIndex)
 	return nWidth;
 }
 
-void CScanner::initListColumns(CListCtrl *pListCtrl)
+void CScanner::initListColumns(CScanListCtrl *pListCtrl)
 {
 	int nCol, nWidth;	
 
@@ -178,7 +178,8 @@ void CScanner::initListColumns(CListCtrl *pListCtrl)
 		nWidth = getColumnWidth(nCol);
 		pListCtrl->InsertColumn(nCol, *m_Columns[nCol].pszColumnName, LVCFMT_LEFT, nWidth, nCol);
 	}
-	
+
+	pListCtrl->SetScanPorts();	// Add / remove last column with port scanning
 }
 
 void CScanner::initMenuWithColumns(CMenu *pMenu)
@@ -206,11 +207,11 @@ BOOL CScanner::initScanning()
 
 BOOL CScanner::finalizeScanning()
 {	
-	/*for (int i=0; i < m_nColumnCount; i++)
+	for (int i=0; i < m_nColumns; i++)
 	{
 		if (m_Columns[i].pFinalizeFunction != NULL)
 			m_Columns[i].pFinalizeFunction();
-	}*/
+	}
 
 	return TRUE;
 }
@@ -274,28 +275,26 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 	{		
 		// Scan ports
 		CString szOpenPorts;
-		int nOpenPorts = doScanPorts(nIP, szOpenPorts);
-		if (nOpenPorts == OPEN_PORTS_STATUS_OPEN)
+
+		BOOL bSomeOpen = doScanPorts(nIP, szOpenPorts);
+		
+		if (bSomeOpen)
 		{
 			// Increment open ports
 			m_nOpenPorts++;
-
-			g_d->m_list.SetOpenPorts(nItemIndex, szOpenPorts);			
 		}
-		else
-		{
-			g_d->m_list.SetOpenPorts(nItemIndex, (LPCSTR) nOpenPorts);
-		}
+		
+		g_d->m_list.SetOpenPorts(nItemIndex, szOpenPorts, bSomeOpen);
 	}
 	else
 	{
-		g_d->m_list.SetOpenPorts(nItemIndex, (LPCSTR) OPEN_PORTS_STATUS_NOT_SCANNED);
+		g_d->m_list.SetOpenPorts(nItemIndex, "N/S", FALSE);
 	}
 
 	return TRUE;
 }
 
-int CScanner::doScanPorts(DWORD nIP, CString &szResult)
+BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult)
 {
 	szResult = "";
 
@@ -342,19 +341,22 @@ int CScanner::doScanPorts(DWORD nIP, CString &szResult)
 			closesocket(hSocket);
 		}
 	}
-	
-	
-	int nResult = OPEN_PORTS_STATUS_NONE;
 
+	BOOL bResult;
+		
 	if (szResult.GetLength() > 0)	// TRUE if any ports were open
 	{
-		nResult = OPEN_PORTS_STATUS_OPEN;
-
 		// Strip comma from the end
 		szResult.Delete(szResult.GetLength()-1);
+		bResult = TRUE;
+	}
+	else
+	{
+		szResult = "N/A";
+		bResult = FALSE;
 	}
 
-	return nResult;
+	return bResult;
 }
 
 void CScanner::runScanFunction(DWORD nIP, int nIndex, char *szBuffer, int nBufferLength, BOOL bGlobal /*=FALSE*/)

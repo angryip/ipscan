@@ -30,6 +30,8 @@ public:
 	int		m_nDisplayOptions;
 	BOOL	m_bScanHostIfDead;
 	int		m_nPortTimeout;
+	BOOL	m_bShowPortsBelow;
+	BOOL	m_bScanPorts;
 	//}}AFX_DATA
 
 

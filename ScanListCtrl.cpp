@@ -22,7 +22,7 @@ static char THIS_FILE[] = __FILE__;
 
 CScanListCtrl::CScanListCtrl()
 {
-	m_bShowPorts = TRUE;	
+	m_bShowPorts = TRUE;
 }
 
 CScanListCtrl::~CScanListCtrl()
@@ -109,7 +109,7 @@ void CScanListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		}
 	}
 
-	// Draw port scan results
+	// Draw port scan results below other results for each item
 	if (m_bShowPorts)
 	{
 		pDC->SetTextColor(::GetSysColor(COLOR_GRAYTEXT));
@@ -294,8 +294,23 @@ BOOL CScanListCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 	return CListCtrl::OnNotify(wParam, lParam, pResult);
 }
 
+void CScanListCtrl::SetScanPorts()
+{
+	if (g_options->m_bScanPorts)
+	{
+		if (GetColumnCount() == g_scanner->getColumnCount())
+			InsertColumn(g_scanner->getColumnCount(), "Open ports");
+	}
+	else
+	{
+		if (GetColumnCount() > g_scanner->getColumnCount())
+			DeleteColumn(g_scanner->getColumnCount());
+	}
+	
+	SetShowPortsBelow(g_options->m_bShowPortsBelow && g_options->m_bScanPorts);	// Update this status
+}
 
-void CScanListCtrl::SetShowPorts(BOOL bShow)
+void CScanListCtrl::SetShowPortsBelow(BOOL bShow)
 {
 	m_bShowPorts = bShow;
 
@@ -311,58 +326,41 @@ void CScanListCtrl::SetShowPorts(BOOL bShow)
 }
 
 BOOL CScanListCtrl::DeleteAllItems()
-{
-	for (int i=0; i < GetItemCount(); i++)
-	{
-		DeleteOpenPorts(i);
-	}
+{	
+	// This is called before each scanning
+	// So we may use this method for initialization
+
+	if (g_options->m_bScanPorts)
+		m_nPortsColumn = g_scanner->getColumnCount();	// the last column
+	else
+		m_nPortsColumn = -1;
 
 	return CListCtrl::DeleteAllItems();
 }
 
-void CScanListCtrl::SetOpenPorts(int nItemIndex, LPCSTR pNewStr)
+void CScanListCtrl::SetOpenPorts(int nItemIndex, LPCSTR pNewStr, BOOL bSomeOpen)
 {
-	DeleteOpenPorts(nItemIndex);
+	if (!g_options->m_bScanPorts)
+		return;	
 
-	if ((DWORD)pNewStr < 10)
+	CString *pStr = new CString(pNewStr);
+
+	// Set ports string				
+	SetItem(nItemIndex, m_nPortsColumn, LVIF_TEXT, pNewStr, 0, 0, 0, 0);			
+
+	if (bSomeOpen)
 	{
-		// Some numeric statuc indication
-		SetItemData(nItemIndex, (DWORD) pNewStr);
-	}
-	else
-	{
-		CString *pStr = new CString(pNewStr);
-
-		// Set ports string
-		SetItemData(nItemIndex, (DWORD) pStr);
-
 		// Set image to green
 		SetItem(nItemIndex,0,LVIF_IMAGE,NULL,3,0,0,0);	
 	}
+
+	Update(nItemIndex);
 }
 
 void CScanListCtrl::GetOpenPorts(int nItemIndex, CString &szOpenPorts)
-{
-	CString *pOpenPorts = (CString *) GetItemData(nItemIndex);
-
-	if ((DWORD) pOpenPorts == OPEN_PORTS_STATUS_SCANNING)
-		szOpenPorts = "?";
-	else
-	if  ((DWORD) pOpenPorts == OPEN_PORTS_STATUS_NONE)
-		szOpenPorts = "N/A";
-	else
-	if  ((DWORD) pOpenPorts == OPEN_PORTS_STATUS_NOT_SCANNED)
-		szOpenPorts = "N/S";
-	else		
-		szOpenPorts = *pOpenPorts;
-}
-
-void CScanListCtrl::DeleteOpenPorts(int nItemIndex)
-{
-	CString *pStr = (CString*) GetItemData(nItemIndex);
-	
-	if ((DWORD)pStr > 10)
-		delete pStr;
+{	
+	if (g_options->m_bScanPorts)
+		szOpenPorts = GetItemText(nItemIndex, m_nPortsColumn);
 }
 
 void CScanListCtrl::OnLButtonDblClk(UINT nFlags, CPoint point) 
@@ -456,7 +454,7 @@ void CScanListCtrl::ShowIPDetails()
 	CDetailsDlg cDlg(this);
 
 	// Set columns
-	int nColumns = g_scanner->getColumnCount();
+	int nColumns = GetColumnCount();
 	CString szInfoLine;
 
 	for (int i=0; i < nColumns; i++)
@@ -468,15 +466,14 @@ void CScanListCtrl::ShowIPDetails()
 		cDlg.addScannedInfo(szInfoLine);
 	}
 
-	CString * szPorts = (CString*) GetItemData(nCurrentItem);
-	if ((DWORD) szPorts > 10)
+	if (g_options->m_bScanPorts)
 	{
-		// Set ports
-		cDlg.setPorts(*szPorts);
+		CString szOpenPorts;
+		GetOpenPorts(nCurrentItem, szOpenPorts);
 
 		// Add ports to the main window as well
 		szInfoLine = "Open ports:\t";
-		szInfoLine += *szPorts;
+		szInfoLine += szOpenPorts;
 	}
 	
 	cDlg.DoModal();
@@ -507,7 +504,6 @@ void CScanListCtrl::GoToNextAliveIP()
 }
 
 
-
 void CScanListCtrl::GoToNextDeadIP()
 {
 	SetFocus();	
@@ -534,7 +530,7 @@ void CScanListCtrl::GoToNextOpenPortIP()
 	
 	for (; i < GetItemCount(); i++) 
 	{
-		if (GetItemData(i) > 10) 
+		if (GetItemText(i, m_nPortsColumn).GetAt(0) != 'N')		// "N/A" or "N/S"
 		{
 			SetSelectedItem(i);
 			break;
@@ -551,7 +547,7 @@ void CScanListCtrl::GoToNextClosedPortIP()
 	
 	for (; i < GetItemCount(); i++) 
 	{
-		if (GetItemData(i) < 10) 
+		if (GetItemText(i, m_nPortsColumn).GetAt(0) == 'N')		// "N/A" or "N/S"
 		{
 			SetSelectedItem(i);
 			break;
@@ -587,7 +583,7 @@ void CScanListCtrl::GoToNextSearchIP()
 	{
 		for (; i < GetItemCount(); i++) 
 		{
-			for (int nCol = 0; nCol < g_scanner->getColumnCount(); nCol++)
+			for (int nCol = 0; nCol < GetColumnCount(); nCol++)
 			{
 				if (GetItemText(i, nCol).Find(m_szSearchFor) != -1) 
 				{
@@ -605,7 +601,7 @@ void CScanListCtrl::GoToNextSearchIP()
 		CString szTmp;		
 		for (; i < GetItemCount(); i++) 
 		{
-			for (int nCol = 0; nCol < g_scanner->getColumnCount(); nCol++)
+			for (int nCol = 0; nCol < GetColumnCount(); nCol++)
 			{
 				szTmp = GetItemText(i, nCol);
 				szTmp.MakeLower();
@@ -623,13 +619,12 @@ void CScanListCtrl::GoToNextSearchIP()
 
 void CScanListCtrl::ZeroResultsForItem(int nItemIndex)
 {
-	for (int i=CL_PING; i < g_scanner->getColumnCount(); i++)
+	for (int i=CL_PING; i < GetColumnCount(); i++)
 	{
 		SetItem(nItemIndex, i, LVIF_TEXT, "", 0, 0, 0, 0);
 	}
 
-	SetItem(nItemIndex, CL_IP, LVIF_IMAGE, NULL, 2, 0, 0, 0);
-	SetItemData(nItemIndex, 0);
+	SetItem(nItemIndex, CL_IP, LVIF_IMAGE, NULL, 2, 0, 0, 0);	
 
 	RedrawWindow();
 }
@@ -642,3 +637,7 @@ DWORD CScanListCtrl::GetNumericIP(int nItemIndex)
 }
 
 
+int CScanListCtrl::GetColumnCount()
+{
+	return GetHeaderCtrl()->GetItemCount();
+}

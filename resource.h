@@ -97,6 +97,7 @@
 #define IDC_SELECT_ALL                  1082
 #define IDC_MOVE_UP                     1083
 #define IDC_MOVE_DOWN                   1084
+#define IDC_SHOW_PORTS_BELOW            1085
 #define ID_BUTTONABOUT                  32771
 #define IDS_FIRSTCOLUMN                 32772
 #define IDS_STRING32773                 32773
@@ -265,7 +266,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        159
 #define _APS_NEXT_COMMAND_VALUE         32823
-#define _APS_NEXT_CONTROL_VALUE         1085
+#define _APS_NEXT_CONTROL_VALUE         1086
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

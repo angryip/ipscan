@@ -177,6 +177,10 @@ BEGIN
     LTEXT           "Port timeout:",IDC_STATIC,7,56,40,8
     EDITTEXT        IDC_PORTTIMEOUT,51,52,40,12,ES_AUTOHSCROLL
     LTEXT           "ms",IDC_STATIC,94,55,10,8
+    CONTROL         "Ports on 2nd row",IDC_SHOW_PORTS_BELOW,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,117,54,69,10
+    CONTROL         "Scan ports",IDC_SCAN_PORTS,"Button",BS_AUTOCHECKBOX | 
+                    NOT WS_VISIBLE | WS_TABSTOP,138,65,50,10
 END
 
 

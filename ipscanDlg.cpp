@@ -580,6 +580,9 @@ void CIpscanDlg::OnOptionsOptions()
 {	
 	COptionsDlg dlgOpt;
 	dlgOpt.DoModal();	// It will get and put options using g_options
+
+	// Update the main list
+	m_list.SetScanPorts();
 }
 
 void CIpscanDlg::OnButtonipup() 
@@ -1121,10 +1124,9 @@ void CIpscanDlg::OnScanPortsClicked()
 		return;
 	}
 
-	
-	m_list.SetShowPorts(bChecked);
-	
 	g_options->m_bScanPorts = bChecked;
+
+	m_list.SetScanPorts();	
 }
 
 void CIpscanDlg::OnSelectPortsClicked() 

@@ -61,10 +61,10 @@ public:
 	void initMenuWithColumns(CMenu *pMenu);
 	int m_nAliveHosts;
 	int m_nOpenPorts;
-	int doScanPorts(DWORD nIP, CString &szResults);
+	BOOL doScanPorts(DWORD nIP, CString &szResults);
 	BOOL finalizeScanning();
 	BOOL initScanning();
-	void initListColumns(CListCtrl *cListCtrl);	
+	void initListColumns(CScanListCtrl *cListCtrl);	
 	int getColumnWidth(int nIndex);
 	BOOL getColumnName(int nIndex, CString &szColumnHeader);
 	int getColumnCount();

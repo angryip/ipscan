@@ -25,6 +25,8 @@ COptionsDlg::COptionsDlg(CWnd* pParent /*=NULL*/)
 	m_nDisplayOptions = 0;
 	m_bScanHostIfDead = FALSE;
 	m_nPortTimeout = 0;
+	m_bShowPortsBelow = FALSE;
+	m_bScanPorts = FALSE;
 	//}}AFX_DATA_INIT
 }
 
@@ -45,6 +47,8 @@ void COptionsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_SCAN_HOST_IF_DEAD, m_bScanHostIfDead);
 	DDX_Text(pDX, IDC_PORTTIMEOUT, m_nPortTimeout);
 	DDV_MinMaxInt(pDX, m_nPortTimeout, 500, 60000);
+	DDX_Check(pDX, IDC_SHOW_PORTS_BELOW, m_bShowPortsBelow);
+	DDX_Check(pDX, IDC_SCAN_PORTS, m_bScanPorts);
 	//}}AFX_DATA_MAP
 }
 
@@ -69,6 +73,8 @@ void COptionsDlg::OnOK()
 	g_options->m_nTimerDelay = m_nTimerDelay;
 	g_options->m_neDisplayOptions = m_nDisplayOptions;
 	g_options->m_bScanHostIfDead = m_bScanHostIfDead;
+	g_options->m_bShowPortsBelow = m_bShowPortsBelow;
+	g_options->m_bScanPorts = m_bScanPorts;	
 }
 
 
@@ -80,6 +86,8 @@ int COptionsDlg::DoModal()
 	m_nTimerDelay = g_options->m_nTimerDelay;
 	m_nDisplayOptions = g_options->m_neDisplayOptions;
 	m_bScanHostIfDead = g_options->m_bScanHostIfDead;
+	m_bShowPortsBelow = g_options->m_bShowPortsBelow;
+	m_bScanPorts = g_options->m_bScanPorts;
 
 	return CDialog::DoModal();
 }
@@ -101,6 +109,9 @@ void COptionsDlg::OnHelpbtn()
 		"Display options:\n"
 		"\tSelect what addresses you want to be displayed in the window:\n"
 		"\tAll IPs, only alive IPs or only those with the open port.\n"		
+		"Show ports below:\n"
+		"\tIf enabled (and port scanning also enabled), then scanned ports will\n"
+		"\tbe displayed below each IP address in the list\n"
 		"Continue scanning...:\n"
 		"\tSome firewalls don't respond to ICMP queries, so host is\n"
 		"\t illegally considered \"dead\". This option will scan it anyway\n"

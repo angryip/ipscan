@@ -7,12 +7,6 @@
 // ScanListCtrl.h : header file
 //
 
-#define OPEN_PORTS_STATUS_SCANNING		0
-#define OPEN_PORTS_STATUS_NONE			1
-#define OPEN_PORTS_STATUS_NOT_SCANNED	2
-#define OPEN_PORTS_STATUS_OPEN			5
-
-
 /////////////////////////////////////////////////////////////////////////////
 // CScanListCtrl window
 
@@ -35,6 +29,9 @@ public:
 
 // Implementation
 public:
+	int GetColumnCount();
+	void SetScanPorts();
+	int m_nPortsColumn;
 	void GetOpenPorts(int nItemIndex, CString &szOpenPorts);
 	DWORD GetNumericIP(int nItemIndex);
 	void ZeroResultsForItem(int nItemIndex);
@@ -48,15 +45,14 @@ public:
 	void ShowNetBIOSInfo();
 	void CopyIPToClipboard();
 	int GetCurrentSelectedItem(BOOL bShowError = TRUE);
-	void ShowIPDetails();
-	void DeleteOpenPorts(int nItemIndex);
-	void SetOpenPorts(int nItemIndex, LPCSTR pNewStr);
-	void SetShowPorts(BOOL bShow);
+	void ShowIPDetails();	
+	void SetOpenPorts(int nItemIndex, LPCSTR pNewStr, BOOL bSomeOpen);
+	void SetShowPortsBelow(BOOL bShow);
 	BOOL DeleteAllItems();
 	virtual ~CScanListCtrl();
 
 protected:
-	BOOL m_bShowPorts;	
+	BOOL m_bShowPorts;		
 	void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	void RepaintSelectedItems();	
 	BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);

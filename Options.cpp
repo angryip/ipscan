@@ -126,6 +126,8 @@ void COptions::save()
 	app->WriteProfileInt("","DisplayOptions",m_neDisplayOptions);	
 	app->WriteProfileString("", "PortString", m_szPorts);
 	app->WriteProfileInt("", "ScanHostIfDead", m_bScanHostIfDead);
+	app->WriteProfileInt("", "ScanPorts", m_bScanPorts);
+	app->WriteProfileInt("", "ShowPortsBelow", m_bShowPortsBelow);
 	
 	RECT rc;
 	app->GetMainWnd()->GetWindowRect(&rc);
@@ -151,6 +153,8 @@ void COptions::load()
 	m_nPortTimeout = app->GetProfileInt("","PortTimeout",3000);
 	m_neDisplayOptions = app->GetProfileInt("","DisplayOptions",0);
 	m_bScanHostIfDead = app->GetProfileInt("", "ScanHostIfDead", FALSE);
+	m_bScanPorts = app->GetProfileInt("", "ScanPorts", FALSE);
+	m_bShowPortsBelow = app->GetProfileInt("", "ShowPortsBelow", TRUE);
 	
 	setPortString(app->GetProfileString("", "PortString", ""));	// also parses it
 
