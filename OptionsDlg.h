@@ -29,6 +29,7 @@ public:
 	UINT	m_nPingTimeout;
 	int		m_nDisplayOptions;
 	BOOL	m_bScanHostIfDead;
+	int		m_nPortTimeout;
 	//}}AFX_DATA
 
 

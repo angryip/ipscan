@@ -34,6 +34,7 @@
 #define IDC_CHECK1                      1010
 #define IDC_CHECK2                      1011
 #define IDC_EDIT1                       1012
+#define IDC_PORTTIMEOUT                 1012
 #define IDC_BUTTONIPUP                  1013
 #define IDC_BUTTONPASTE                 1014
 #define IDC_HOSTNAME                    1016

@@ -24,6 +24,7 @@ COptionsDlg::COptionsDlg(CWnd* pParent /*=NULL*/)
 	m_nPingTimeout = 0;
 	m_nDisplayOptions = 0;
 	m_bScanHostIfDead = FALSE;
+	m_nPortTimeout = 0;
 	//}}AFX_DATA_INIT
 }
 
@@ -42,6 +43,8 @@ void COptionsDlg::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxUInt(pDX, m_nPingTimeout, 500, 60000);
 	DDX_Radio(pDX, IDC_RADIO1, m_nDisplayOptions);
 	DDX_Check(pDX, IDC_SCAN_HOST_IF_DEAD, m_bScanHostIfDead);
+	DDX_Text(pDX, IDC_PORTTIMEOUT, m_nPortTimeout);
+	DDV_MinMaxInt(pDX, m_nPortTimeout, 500, 60000);
 	//}}AFX_DATA_MAP
 }
 
@@ -62,6 +65,7 @@ void COptionsDlg::OnOK()
 
 	g_options->m_nMaxThreads = m_nMaxThreads;
 	g_options->m_nPingTimeout = m_nPingTimeout;
+	g_options->m_nPortTimeout = m_nPortTimeout;
 	g_options->m_nTimerDelay = m_nTimerDelay;
 	g_options->m_neDisplayOptions = m_nDisplayOptions;
 	g_options->m_bScanHostIfDead = m_bScanHostIfDead;
@@ -72,6 +76,7 @@ int COptionsDlg::DoModal()
 {
 	m_nMaxThreads = g_options->m_nMaxThreads;
 	m_nPingTimeout = g_options->m_nPingTimeout;
+	m_nPortTimeout = g_options->m_nPortTimeout;
 	m_nTimerDelay = g_options->m_nTimerDelay;
 	m_nDisplayOptions = g_options->m_neDisplayOptions;
 	m_bScanHostIfDead = g_options->m_bScanHostIfDead;

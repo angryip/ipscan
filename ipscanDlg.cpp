@@ -1174,9 +1174,12 @@ void CIpscanDlg::OnButtonToAdvanced()
 void CIpscanDlg::HandleResizing(int cx, int cy)
 {
 	// Resize window and reposition controls
-	m_list.MoveWindow(0, g_nListOffset, cx, cy-g_nListOffset-(g_nStatusHeight+2), TRUE);
-	m_statusctl.MoveWindow(0, cy-g_nStatusHeight/*18*/, cx/2, /*18*/g_nStatusHeight, TRUE);
-	m_progress.MoveWindow(cx/2+1,cy-g_nStatusHeight,cx/2-1,g_nStatusHeight,TRUE);
+	if (g_nStatusHeight > 0)
+	{
+		m_list.MoveWindow(0, g_nListOffset, cx, cy-g_nListOffset-(g_nStatusHeight+2), TRUE);
+		m_statusctl.MoveWindow(0, cy-g_nStatusHeight/*18*/, cx/2, /*18*/g_nStatusHeight, TRUE);
+		m_progress.MoveWindow(cx/2+1,cy-g_nStatusHeight,cx/2-1,g_nStatusHeight,TRUE);
+	}
 }
 
 void CIpscanDlg::OnScanPortsClicked() 

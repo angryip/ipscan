@@ -9,6 +9,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include "ScanListCtrl.h"
+
 // Function type definitions
 
 typedef struct
@@ -43,7 +45,7 @@ class CScanner
 public:	
 	int m_nAliveHosts;
 	int m_nOpenPorts;
-	BOOL doScanPorts(DWORD nIP, CString &szResults);
+	int doScanPorts(DWORD nIP, CString &szResults);
 	BOOL finalizeScanning();
 	BOOL initScanning();
 	void initListColumns(CListCtrl *cListCtrl);	

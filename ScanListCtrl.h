@@ -7,7 +7,11 @@
 // ScanListCtrl.h : header file
 //
 
-#include <map>
+#define OPEN_PORTS_STATUS_SCANNING		0
+#define OPEN_PORTS_STATUS_NONE			1
+#define OPEN_PORTS_STATUS_NOT_SCANNED	2
+#define OPEN_PORTS_STATUS_OPEN			5
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CScanListCtrl window

@@ -70,36 +70,39 @@ BOOL COptions::parsePortString()
 			nCurPortLen++;
 		}
 		else
-		if (szPorts[i] == '-')
 		{
-			if (m_aParsedPorts[nCurPortIndex].nStartPort != 0)
-			{
-				AfxMessageBox("Unexpected \"-\" in the port string", MB_ICONHAND | MB_OK, 0);
-				return FALSE;
-			}
-
-			m_aParsedPorts[nCurPortIndex].nStartPort = (u_short) atoi(szCurPort);
-		}
-		else
-		if (szPorts[i] == ',')
-		{
-			if (szPorts[i+1] != 0 && szCurPort[0] == 0)
-			{
-				AfxMessageBox("Port cannot be 0 or unexpected comma in the port string", MB_ICONHAND | MB_OK, 0);
-				return FALSE;
-			}
-
+			szCurPort[nCurPortLen] = 0;
 			u_short nCurPort = (u_short) atoi(szCurPort);
+			nCurPortLen = 0;
 
-			if (m_aParsedPorts[nCurPortIndex].nStartPort == 0)
+			if (szPorts[i] == '-')
 			{
+				if (m_aParsedPorts[nCurPortIndex].nStartPort != 0)
+				{
+					AfxMessageBox("Unexpected \"-\" in the port string", MB_ICONHAND | MB_OK, 0);
+					return FALSE;
+				}
+
 				m_aParsedPorts[nCurPortIndex].nStartPort = nCurPort;
 			}
-			
-			m_aParsedPorts[nCurPortIndex].nEndPort = nCurPort;
+			else
+			if (szPorts[i] == ',')
+			{
+				if (szPorts[i+1] != 0 && szCurPort[0] == 0)
+				{
+					AfxMessageBox("Port cannot be 0 or unexpected comma in the port string", MB_ICONHAND | MB_OK, 0);
+					return FALSE;
+				}							
 
-			nCurPortIndex++;
-			nCurPortLen = 0;
+				if (m_aParsedPorts[nCurPortIndex].nStartPort == 0)
+				{
+					m_aParsedPorts[nCurPortIndex].nStartPort = nCurPort;
+				}
+				
+				m_aParsedPorts[nCurPortIndex].nEndPort = nCurPort;
+
+				nCurPortIndex++;				
+			}
 		}
 	}
 
@@ -119,6 +122,7 @@ void COptions::save()
 	app->WriteProfileInt("","Delay",m_nTimerDelay);
 	app->WriteProfileInt("","MaxThreads",m_nMaxThreads);
 	app->WriteProfileInt("","Timeout",m_nPingTimeout);	
+	app->WriteProfileInt("","PortTimeout",m_nPortTimeout);	
 	app->WriteProfileInt("","DisplayOptions",m_neDisplayOptions);	
 	app->WriteProfileString("", "PortString", m_szPorts);
 	app->WriteProfileInt("", "ScanHostIfDead", m_bScanHostIfDead);
@@ -143,7 +147,8 @@ void COptions::load()
 	
 	m_nTimerDelay = app->GetProfileInt("","Delay",20);
 	m_nMaxThreads = app->GetProfileInt("","MaxThreads",100);	 			
-	m_nPingTimeout = app->GetProfileInt("","Timeout",5000);
+	m_nPingTimeout = app->GetProfileInt("","Timeout",3000);
+	m_nPortTimeout = app->GetProfileInt("","PortTimeout",3000);
 	m_neDisplayOptions = app->GetProfileInt("","DisplayOptions",0);
 	m_bScanHostIfDead = app->GetProfileInt("", "ScanHostIfDead", FALSE);
 	

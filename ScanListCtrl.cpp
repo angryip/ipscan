@@ -110,13 +110,20 @@ void CScanListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		rcCol = rcHighlight;
 		rcCol.bottom -= 2;	rcCol.left = rcLabel.right;
 		
+		CString szOpenPorts = "Open ports: ";
+
 		CString *pOpenPorts = (CString *) GetItemData(nItem);
 
-		CString szOpenPorts = "Open ports: ";
-		if (pOpenPorts != NULL)
-			szOpenPorts += *pOpenPorts;
+		if ((DWORD) pOpenPorts == OPEN_PORTS_STATUS_SCANNING)
+			szOpenPorts += "?";
 		else
+		if  ((DWORD) pOpenPorts == OPEN_PORTS_STATUS_NONE)
 			szOpenPorts += "N/A";
+		else
+		if  ((DWORD) pOpenPorts == OPEN_PORTS_STATUS_NOT_SCANNED)
+			szOpenPorts += "N/S";
+		else		
+			szOpenPorts += *pOpenPorts;		
 
 		pDC->DrawText(szOpenPorts, -1, rcCol, DT_LEFT | DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP 
 					| DT_BOTTOM | DT_END_ELLIPSIS);
@@ -320,19 +327,27 @@ void CScanListCtrl::SetOpenPorts(int nItemIndex, LPCSTR pNewStr)
 {
 	DeleteOpenPorts(nItemIndex);
 
-	CString *pStr = new CString(pNewStr);
+	if ((DWORD)pNewStr < 10)
+	{
+		// Some numeric statuc indication
+		SetItemData(nItemIndex, (DWORD) pNewStr);
+	}
+	else
+	{
+		CString *pStr = new CString(pNewStr);
 
-	// Set ports string
-	SetItemData(nItemIndex, (DWORD) pStr);
+		// Set ports string
+		SetItemData(nItemIndex, (DWORD) pStr);
 
-	// Set image to green
-	SetItem(nItemIndex,0,LVIF_IMAGE,NULL,3,0,0,0);	
+		// Set image to green
+		SetItem(nItemIndex,0,LVIF_IMAGE,NULL,3,0,0,0);	
+	}
 }
 
 void CScanListCtrl::DeleteOpenPorts(int nItemIndex)
 {
 	CString *pStr = (CString*) GetItemData(nItemIndex);
 	
-	if (pStr != NULL)
+	if ((DWORD)pStr > 10)
 		delete pStr;
 }

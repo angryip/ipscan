@@ -169,11 +169,12 @@ BOOL CScanner::initScanning()
 
 BOOL CScanner::finalizeScanning()
 {	
-	for (int i=0; i < m_nColumnCount; i++)
+	/*for (int i=0; i < m_nColumnCount; i++)
 	{
 		if (m_Columns[i].pFinalizeFunction != NULL)
 			m_Columns[i].pFinalizeFunction();
-	}
+	}*/
+
 	return TRUE;
 }
 
@@ -239,19 +240,28 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 	{		
 		// Scan ports
 		CString szOpenPorts;
-		if (doScanPorts(nIP, szOpenPorts))
+		int nOpenPorts = doScanPorts(nIP, szOpenPorts);
+		if (nOpenPorts == OPEN_PORTS_STATUS_OPEN)
 		{
 			// Increment open ports
 			m_nOpenPorts++;
 
 			g_d->m_list.SetOpenPorts(nItemIndex, szOpenPorts);			
 		}
+		else
+		{
+			g_d->m_list.SetOpenPorts(nItemIndex, (LPCSTR) nOpenPorts);
+		}
+	}
+	else
+	{
+		g_d->m_list.SetOpenPorts(nItemIndex, (LPCSTR) OPEN_PORTS_STATUS_NOT_SCANNED);
 	}
 
 	return TRUE;
 }
 
-BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult)
+int CScanner::doScanPorts(DWORD nIP, CString &szResult)
 {
 	szResult = "";
 
@@ -264,16 +274,17 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult)
 
 	// Set socket to Non-Blocking mode
 	u_long nNonBlocking = 1;	
-	fd_set fd_socket;
+	fd_set fd_write, fd_error;
 	
 	timeval timeout;
-	timeout.tv_sec = 1000;
+	timeout.tv_sec = 0; timeout.tv_usec = g_options->m_nPortTimeout * 1000;
 	
 	for (int nCurPortIndex = 0; aPorts[nCurPortIndex].nStartPort != 0; nCurPortIndex++)
 	{		
 		for (int nPort = aPorts[nCurPortIndex].nStartPort; nPort <= aPorts[nCurPortIndex].nEndPort; nPort++)
 		{			
 			hSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_IP);
+			// TODO: maximum number of sockets in the system
 			sockaddr_in sin;
 			sin.sin_addr.S_un.S_addr = nIP;
 			sin.sin_family = PF_INET;
@@ -282,12 +293,16 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult)
 			sin.sin_port = htons(nPort);
 			connect(hSocket, (sockaddr*)&sin, sizeof(sin));
 
-			fd_socket.fd_array[0] = hSocket; fd_socket.fd_count = 1;			
-			if (select(0, 0, &fd_socket, 0, &timeout) > 0) 
+			fd_write.fd_array[0] = hSocket; fd_write.fd_count = 1;			
+			fd_error.fd_array[0] = hSocket; fd_error.fd_count = 1;
+			if (select(0, 0, &fd_write, &fd_error, &timeout) > 0) 
 			{
-				// Connection successfull
-				szPort.Format("%d", nPort);
-				szResult += szPort + ",";				
+				if (fd_write.fd_count == 1)
+				{
+					// Connection successfull
+					szPort.Format("%d", nPort);
+					szResult += szPort + ",";				
+				}
 			}
 			
 			closesocket(hSocket);
@@ -295,15 +310,17 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult)
 	}
 	
 	
+	int nResult = OPEN_PORTS_STATUS_NONE;
 
-	BOOL bResult = szResult.GetLength() > 0;	// TRUE if any ports were open
-	if (bResult)
+	if (szResult.GetLength() > 0)	// TRUE if any ports were open
 	{
+		nResult = OPEN_PORTS_STATUS_OPEN;
+
 		// Strip comma from the end
 		szResult.Delete(szResult.GetLength()-1);
 	}
 
-	return bResult;
+	return nResult;
 }
 
 
