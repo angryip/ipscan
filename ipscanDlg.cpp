@@ -568,8 +568,10 @@ UINT ThreadProc(LPVOID cur_ip)
 	int index;
 	int n;
 
-	for (index=0; index<=10000; index++) {
-		if (threads[index]==0) { 
+	for (index=0; index<=10000; index++) 
+	{
+		if (threads[index]==0) 
+		{ 
 			HANDLE tmp;
 			DuplicateHandle(GetCurrentProcess(),GetCurrentThread(),GetCurrentProcess(),&tmp,NULL,TRUE,DUPLICATE_SAME_ACCESS);
 			threads[index] = tmp;  
@@ -585,11 +587,14 @@ UINT ThreadProc(LPVOID cur_ip)
 	in_addr in;
 	in.S_un.S_addr = htonl((UINT)cur_ip);
 	ipa = inet_ntoa(in);
-	//d->status(ipa);
-	if (ThreadProcRescanThisIP >= 0) {
+	
+	if (ThreadProcRescanThisIP >= 0) 
+	{
 		n = ThreadProcRescanThisIP; 
-	} else {
-		n = (UINT)cur_ip - d->m_startip;// - 1; //d->m_list.GetItemCount();
+	} 
+	else 
+	{
+		n = (UINT)cur_ip - d->m_startip;
 	}
 	
 	HANDLE hICMP = (HANDLE) lpfnIcmpCreateFile();
@@ -604,41 +609,58 @@ UINT ThreadProc(LPVOID cur_ip)
 	DWORD ReplyCount;
 	ReplyCount = lpfnIcmpSendEcho(hICMP, in.S_un.S_addr, DataBuf, 32, 
 		&IPInfo, RepData, sizeof(RepData), d->m_timeout);
-	if (!ReplyCount) {
+	
+	if (!ReplyCount) 
+	{
 		sprintf((char*)&err,"%u",WSAGetLastError());
 dead_host:
-		if (d->m_display!=DO_ALL) {
-			//d->m_list.DeleteItem(n);
+		if (d->m_display!=DO_ALL) 
+		{	
 			goto exit_thread;
 		} 
-		//d->m_list.InsertItem(n,ipa,1); 
+		
 		d->m_list.SetItem(n,0,LVIF_IMAGE,NULL,1,0,0,0);
 		d->m_list.SetItem(n,CL_STATE,LVIF_TEXT,"Dead",0,0,0,0);
-		if (d->m_retrifdead) {
+		
+		if (d->m_retrifdead) 
+		{
 			hostent *he = gethostbyaddr((char*)&in.S_un.S_addr,4,0);
-			if (he) {
+			if (he) 
+			{
 				d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,he->h_name,0,0,0,0); 
 				d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,"None",0,0,0,0);	
-			} else {
+			} 
+			else 
+			{
 				sprintf((char*)&err,"%u",WSAGetLastError());
 				d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,"N/A",0,0,0,0); 
 				d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,(char*)&err,0,0,0,0);	
 			}
-		} else {
+
+		} 
+		else 
+		{
 			d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,"N/A",0,0,0,0);
 			d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,(char*)&err,0,0,0,0);
 		}
+		
 		d->m_list.SetItem(n,CL_PORT,LVIF_TEXT,"N/A",0,0,0,0);
 		d->m_list.SetItem(n,CL_PINGTIME,LVIF_TEXT,"N/A",0,0,0,0);
 		if (d->m_portondead) goto scan_port;
-	} else {
+
+	} 
+	else 
+	{
 		// Alive
 		ReplyCount = RepData[4]+RepData[5]*256+RepData[6]*65536+RepData[7]*256*65536;
-		if (ReplyCount>0) {
+		if (ReplyCount>0) 
+		{
 			sprintf((char*)&err,"%u",ReplyCount);
 			goto dead_host;
 		}
-		if (d->m_display!=DO_ALL && ThreadProcRescanThisIP == -1) {
+
+		if (d->m_display!=DO_ALL && ThreadProcRescanThisIP == -1) 
+		{
 			n = d->m_list.InsertItem(n,ipa,0); 
 			//d->m_list.SetItemData(n, n);
 		}
@@ -647,22 +669,30 @@ dead_host:
 		d->m_list.SetItem(n,CL_STATE,LVIF_TEXT,"Alive",0,0,0,0);
 		sprintf((char*)&err,"%d ms",*(u_long *) &(RepData[8]));
 		d->m_list.SetItem(n,CL_PINGTIME,LVIF_TEXT,(char*)&err,0,0,0,0);
-		if (d->m_resolve) {
+		
+		if (d->m_resolve) 
+		{
 			hostent *he = gethostbyaddr((char*)&in.S_un.S_addr,4,0);
-			if (he) {
+			if (he) 
+			{
 				d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,he->h_name,0,0,0,0); 
 				d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,"None",0,0,0,0);	
-			} else {
+			} 
+			else 
+			{
 				sprintf((char*)&err,"%u",WSAGetLastError());
 				d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,"N/A",0,0,0,0); 
 				d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,(char*)&err,0,0,0,0);	
 			}
-		} else {
+		} 
+		else 
+		{
 			d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,"N/S",0,0,0,0); 
 			//d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,"None",0,0,0,0);	
 		}
 scan_port:
-		if (d->m_scanport) {
+		if (d->m_scanport) 
+		{
 			// Scan port
 			SOCKET skt = socket(PF_INET,SOCK_STREAM,IPPROTO_IP);
 			sockaddr_in sin;
@@ -670,12 +700,15 @@ scan_port:
 			sin.sin_family = PF_INET;
 			sin.sin_port = htons(d->m_port);
 			int se = connect(skt,(sockaddr*)&sin,sizeof(sin));
-			if (se!=0) {
+			if (se!=0) 
+			{
 				sprintf((char*)&err,"%u",WSAGetLastError());
 				d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,(char*)&err,0,0,0,0);
 				sprintf((char*)&err,"%u: closed",d->m_port);
 				d->m_list.SetItem(n,CL_PORT,LVIF_TEXT,(char*)&err,0,0,0,0);
-			} else {
+			} 
+			else 
+			{
 				numopen++;
 				sprintf((char*)&err,"%u: open",d->m_port);
 				d->m_list.SetItem(n,CL_PORT,LVIF_TEXT,(char*)&err,0,0,0,0);
@@ -683,7 +716,8 @@ scan_port:
 			}
 			closesocket(skt);
 
-		} else d->m_list.SetItem(n,CL_PORT,LVIF_TEXT,"N/S",0,0,0,0);
+		} 
+		else d->m_list.SetItem(n,CL_PORT,LVIF_TEXT,"N/S",0,0,0,0);
 	}
 
 exit_thread:
