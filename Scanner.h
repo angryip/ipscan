@@ -1,3 +1,14 @@
+/*********************************************************************
+ * This is a part of Angry IP Scanner source code                    *
+ * http://www.angryziber.com/ipscan/                                 *
+ *                                                                   *
+ * Written by Angryziber                                             *
+ *                                                                   *
+ * You may distribute this code as long as this message is not       *
+ * removed and it is clear who has written it.                       *
+ * You may not rename the program and distribute it.                 *
+ *********************************************************************/
+
 // Scanner.h: interface for the CScanner class.
 //
 //////////////////////////////////////////////////////////////////////
@@ -71,7 +82,7 @@ public:
 	void initMenuWithColumns(CMenu *pMenu);
 	int m_nAliveHosts;
 	int m_nOpenPorts;
-	BOOL doScanPorts(DWORD nIP, CString &szResults);
+	BOOL doScanPorts(DWORD nIP, CString &szResults, int nPingTime);
 	BOOL finalizeScanning();
 	BOOL initScanning();
 	void initListColumns(CScanListCtrl *cListCtrl);	

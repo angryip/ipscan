@@ -1,3 +1,14 @@
+/*********************************************************************
+ * This is a part of Angry IP Scanner source code                    *
+ * http://www.angryziber.com/ipscan/                                 *
+ *                                                                   *
+ * Written by Angryziber                                             *
+ *                                                                   *
+ * You may distribute this code as long as this message is not       *
+ * removed and it is clear who has written it.                       *
+ * You may not rename the program and distribute it.                 *
+ *********************************************************************/
+
 // Options.cpp: implementation of the COptions class.
 //
 //////////////////////////////////////////////////////////////////////
@@ -130,6 +141,7 @@ void COptions::save()
 	app->WriteProfileInt("", "ScanHostIfDead", m_bScanHostIfDead);
 	app->WriteProfileInt("", "ScanPorts", m_bScanPorts);
 	app->WriteProfileInt("", "ShowPortsBelow", m_bShowPortsBelow);
+	app->WriteProfileInt("", "OptimizePorts", m_bOptimizePorts);
 
 	g_scanner->saveSelectedColumns();
 }
@@ -177,6 +189,7 @@ void COptions::load()
 	m_bScanHostIfDead = app->GetProfileInt("", "ScanHostIfDead", FALSE);
 	m_bScanPorts = app->GetProfileInt("", "ScanPorts", FALSE);
 	m_bShowPortsBelow = app->GetProfileInt("", "ShowPortsBelow", TRUE);
+	m_bOptimizePorts = app->GetProfileInt("", "OptimizePorts", TRUE);
 	
 	setPortString(app->GetProfileString("", "PortString", ""));	// also parses it
 

@@ -1,3 +1,14 @@
+/*********************************************************************
+ * This is a part of Angry IP Scanner source code                    *
+ * http://www.angryziber.com/ipscan/                                 *
+ *                                                                   *
+ * Written by Angryziber                                             *
+ *                                                                   *
+ * You may distribute this code as long as this message is not       *
+ * removed and it is clear who has written it.                       *
+ * You may not rename the program and distribute it.                 *
+ *********************************************************************/
+
 // Options.h: interface for the COptions class.
 //
 //////////////////////////////////////////////////////////////////////
@@ -19,6 +30,7 @@ typedef struct {u_short nStartPort; u_short nEndPort; } tPortRange;
 class COptions  
 {
 public:
+	BOOL m_bOptimizePorts;
 	int m_nLanaNumber;
 	CString getCurrentDate();
 	int m_nPingCount;

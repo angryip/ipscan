@@ -1,3 +1,14 @@
+/*********************************************************************
+ * This is a part of Angry IP Scanner source code                    *
+ * http://www.angryziber.com/ipscan/                                 *
+ *                                                                   *
+ * Written by Angryziber                                             *
+ *                                                                   *
+ * You may distribute this code as long as this message is not       *
+ * removed and it is clear who has written it.                       *
+ * You may not rename the program and distribute it.                 *
+ *********************************************************************/
+
 // Scanner.cpp: implementation of the CScanner class.
 //
 //////////////////////////////////////////////////////////////////////
@@ -318,6 +329,12 @@ BOOL CScanner::initScanning()
 	m_nAliveHosts = 0;
 	m_nOpenPorts = 0;	
 
+	// Initialize the global dialog pointer
+	g_d = (CIpscanDlg *) g_dlg;	
+
+	// Prepare the list for scanning
+	g_d->m_list.PrepareForScanning();
+
 	return TRUE;
 }
 
@@ -379,7 +396,8 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 	char szTmp[512];	// Temporary string. Scanning functions will return data using it.
 
 	// Ping it! (column number 1), Check if it is alive
-	BOOL bAlive = m_AllColumns[CL_PING].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));	
+	 int nPingTime = m_AllColumns[CL_PING].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));	
+	 BOOL bAlive = nPingTime >= 0;	// Negative value means "Dead"
 
 #ifdef DEBUG_LOGS
 	fputs(bAlive? "Alive" : "Dead", fileHandle);
@@ -412,7 +430,7 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 	if (g_options->m_bScanPorts && g_options->m_neDisplayOptions == DISPLAY_OPEN)
 	{
 		// If display only open ports, then scan ports prior to scanning other columns
-		bSomePortsOpen = doScanPorts(nIP, szOpenPorts);
+		bSomePortsOpen = doScanPorts(nIP, szOpenPorts, nPingTime);
 
 		if (bSomePortsOpen)	// This IF is needed only to insert an item or finish scanning this IP, other processing will follow
 		{
@@ -502,7 +520,7 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 			// Scan ports if they weren't scanned above already above
 			if (g_options->m_neDisplayOptions != DISPLAY_OPEN)
 			{
-				bSomePortsOpen = doScanPorts(nIP, szOpenPorts);
+				bSomePortsOpen = doScanPorts(nIP, szOpenPorts, nPingTime);
 			}
 			
 			if (bSomePortsOpen)	// bSomePortsOpen may be set already above
@@ -529,7 +547,7 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 	return TRUE;
 }
 
-BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult)
+BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime)
 {
 	szResult = "";
 
@@ -545,7 +563,17 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult)
 	fd_set fd_write, fd_error;
 	
 	timeval timeout;
-	timeout.tv_sec = 0; timeout.tv_usec = g_options->m_nPortTimeout * 1000;
+	timeout.tv_sec = 0; 
+	
+	if (nPingTime >= 0 && g_options->m_bOptimizePorts)
+	{
+		if (nPingTime == 0)	nPingTime = 10;
+		timeout.tv_usec = nPingTime * 3 * 1000;		// Optimized port scanning prevents port filtering from making scanning slower
+	}
+	else
+	{
+		timeout.tv_usec = g_options->m_nPortTimeout * 1000;	// If host wasn't pinged or optimized scanning switched off, then use default timeout
+	}
 	
 	for (int nCurPortIndex = 0; aPorts[nCurPortIndex].nStartPort != 0; nCurPortIndex++)
 	{		
@@ -641,9 +669,7 @@ UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)
 			g_hThreads[nIndex] = hTmp;
 			break; 
 		}
-	}
-
-	g_d = (CIpscanDlg *) g_dlg;	
+	}	
 
 	// Display current number of threads
 	szTmp.Format("%d", g_nThreadCount);
