@@ -19,6 +19,7 @@ typedef struct {u_short nStartPort; u_short nEndPort; } tPortRange;
 class COptions  
 {
 public:
+	CString m_szExecutablePath;
 	int m_nPortTimeout;
 	BOOL m_bScanPorts;
 	BOOL m_bScanHostIfDead;

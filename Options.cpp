@@ -153,7 +153,11 @@ void COptions::load()
 	m_bScanHostIfDead = app->GetProfileInt("", "ScanHostIfDead", FALSE);
 	
 	setPortString(app->GetProfileString("", "PortString", ""));	// also parses it
-	
+
+	// Path, where the Angry IP Scanner resides
+	m_szExecutablePath = __targv[0];
+	int nTmp = m_szExecutablePath.ReverseFind('\\');
+	m_szExecutablePath.Delete(nTmp, m_szExecutablePath.GetLength() - nTmp);	
 }
 
 
