@@ -5,7 +5,9 @@
 #include "stdafx.h"
 #include "ipscan.h"
 #include "ScanUtilsInternal.h"
+#include "Scanner.h"
 #include "ms_icmp.h"
+
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -33,21 +35,7 @@ char aPingDataBuf[32];
 
 int nNumAlive = 0;
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
-CScanUtilsInternal::CScanUtilsInternal()
-{
-
-}
-
-CScanUtilsInternal::~CScanUtilsInternal()
-{
-
-}
-
-BOOL CScanUtilsInternal::initPing()
+BOOL ScanIntInitPing()
 {
 	HMODULE hICMP = LoadLibrary("ICMP.DLL");
 	if (!hICMP) {
@@ -71,7 +59,7 @@ BOOL CScanUtilsInternal::initPing()
 	return TRUE;
 }
 
-BOOL CScanUtilsInternal::doPing(u_long uIP, LPSTR szReturn, int nBufferLen)
+BOOL ScanIntDoPing(DWORD nIP, LPSTR szReturn, int nBufferLen)
 {
 	BOOL bAlive = false;
 
@@ -85,7 +73,7 @@ BOOL CScanUtilsInternal::doPing(u_long uIP, LPSTR szReturn, int nBufferLen)
     IPInfo.OptionsSize = 0;
     IPInfo.OptionsData = NULL;
 	DWORD ReplyCount;
-	ReplyCount = lpfnIcmpSendEcho(hICMP, uIP, aPingDataBuf, 32, 
+	ReplyCount = lpfnIcmpSendEcho(hICMP, nIP, aPingDataBuf, 32, 
 		&IPInfo, RepData, sizeof(RepData), 1000/*TODO!!! Timeout*/);
 
 	lpfnIcmpCloseHandle(hICMP);

@@ -26,8 +26,7 @@ static char THIS_FILE[] = __FILE__;
 // CAboutDlg dialog used for App About
 
 UINT numthreads;
-HANDLE threads[10000];
-UINT numalive,numopen;
+
 UINT listofs,statusheight;
 CIpscanDlg* d;
 CWinApp *app;
@@ -211,6 +210,7 @@ BOOL CIpscanDlg::OnInitDialog()
 
 	app = AfxGetApp();
 	d = (CIpscanDlg*)app->m_pMainWnd;
+	g_dlg = (CIpscanDlg*)app->m_pMainWnd;
 
 	COptionsDlg::loadOptions(d);
 
@@ -225,17 +225,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	m_scanner->loadSettings();
 	
 	// Add columns to the listbox
-	CString szColName;
-	int nCol, nWidth;	
-	for (nCol=0; nCol < m_scanner->getColumnCount(); nCol++) 
-	{	
-		// Get column name
-		m_scanner->getColumnName(nCol, szColName);	
-		// Get column width
-		nWidth = m_scanner->getColumnWidth(nCol);
-		m_list.InsertColumn(nCol, szColName, LVCFMT_LEFT, nWidth, nCol);
-	}
-	m_list.SetExtendedStyle(LVS_EX_FULLROWSELECT);
+	m_scanner->initListColumns(&m_list);
 
 	// Set button's bitmaps
 	m_bmpuparrow.LoadMappedBitmap(IDB_UPARROW);
@@ -274,7 +264,6 @@ BOOL CIpscanDlg::OnInitDialog()
 	SetDlgItemText(IDC_HOSTNAME,hn);
 
 	m_scanning=FALSE;
-	numthreads=0;
 
 	// Load menu
 	mnu.LoadMenu(IDR_MENU1);
@@ -421,10 +410,12 @@ void CIpscanDlg::OnButton1()
 		tmp->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVETOTXT,MF_GRAYED);
 		tmp->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVESELECTION,MF_GRAYED);
 
+		
 		numthreads = 0;
-		memset(&threads,0,sizeof(threads));
-		numalive = 0;
-		numopen = 0;
+		//memset(&threads,0,sizeof(threads));
+/*		numalive = 0;
+		numopen = 0;*/
+		
 
 		SetTimer(1,m_delay,NULL);
 
@@ -438,7 +429,7 @@ void CIpscanDlg::OnButton1()
 			{
 				if (MessageBox("Are you sure you want to interrupt scanning by killing all the threads?\nScanning results will be in'.",NULL,MB_YESNO | MB_ICONQUESTION)==IDNO) return;
 			
-				for (UINT i=0; i<=10000; i++) 
+				/*for (UINT i=0; i<=10000; i++) 
 				{
 					if (threads[i]!=0) 
 					{
@@ -446,7 +437,7 @@ void CIpscanDlg::OnButton1()
 						CloseHandle(threads[i]);
 						threads[i]=0;
 					}
-				}
+				}*/
 				m_numthreads.SetWindowText("0");
 				numthreads=0;
 				goto finish_all;
@@ -493,7 +484,7 @@ finish_all:
 				in.S_un.S_addr = htonl(m_endip);
 				ipp = inet_ntoa(in);
 				strcpy((char*)&ipa2,ipp);
-				sprintf((char*)&str,"Scan complete\r\n\r\n%s - %s\r\n%u second(s)\r\n\r\nIPs scanned: %u\r\nAlive hosts: %u\r\nOpen ports: %u",&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1,m_endip-m_startip+1,numalive,numopen);
+				sprintf((char*)&str,"Scan complete\r\n\r\n%s - %s\r\n%u second(s)\r\n\r\nIPs scanned: %u\r\nAlive hosts: %u\r\nOpen ports: %u",&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1,m_endip-m_startip+1,0,0);
 
 				CMessageDlg cMsgDlg;
 				cMsgDlg.setMessageText((char*)&str);
@@ -552,171 +543,6 @@ void CIpscanDlg::OnButtonipup()
 	m_ip2_virgin = TRUE;
 }
 
-////////////////////////////////////////////////////////////////////////
-//////////////////////////// THREAD ////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-
-UINT ThreadProc(LPVOID cur_ip)
-{
-	numthreads++;
-	int index;
-	int n;
-
-	for (index=0; index<=10000; index++) 
-	{
-		if (threads[index]==0) 
-		{ 
-			HANDLE tmp;
-			DuplicateHandle(GetCurrentProcess(),GetCurrentThread(),GetCurrentProcess(),&tmp,0,FALSE,DUPLICATE_SAME_ACCESS);
-			threads[index] = tmp;  
-			break; 
-		}
-	}
-	
-	char err[20];
-	sprintf((char*)&err,"%d",numthreads);
-	d->m_numthreads.SetWindowText((char*)&err);
-	
-	char *ipa;
-	in_addr in;
-	in.S_un.S_addr = htonl((UINT)cur_ip);
-	ipa = inet_ntoa(in);
-	
-	if (ThreadProcRescanThisIP >= 0) 
-	{
-		n = ThreadProcRescanThisIP; 
-	} 
-	else 
-	{
-		n = (UINT)cur_ip - d->m_startip;
-	}
-
-	// PING!!!
-	BOOL bAlive = CScanUtilsInternal::doPing(in.S_un.S_addr, NULL, 0);	
-	
-	if (!bAlive) 
-	{
-		sprintf((char*)&err,"%u",WSAGetLastError());
-
-		if (d->m_display!=DO_ALL) 
-		{	
-			goto exit_thread;
-		} 
-		
-		d->m_list.SetItem(n,0,LVIF_IMAGE,NULL,1,0,0,0);
-		d->m_list.SetItem(n,CL_STATE,LVIF_TEXT,"Dead",0,0,0,0);
-		
-		if (d->m_retrifdead) 
-		{
-			hostent *he = gethostbyaddr((char*)&in.S_un.S_addr,4,0);
-			if (he) 
-			{
-				d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,he->h_name,0,0,0,0); 
-				d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,"None",0,0,0,0);	
-			} 
-			else 
-			{
-				sprintf((char*)&err,"%u",WSAGetLastError());
-				d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,"N/A",0,0,0,0); 
-				d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,(char*)&err,0,0,0,0);	
-			}
-
-		} 
-		else 
-		{
-			d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,"N/A",0,0,0,0);
-			d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,(char*)&err,0,0,0,0);
-		}
-		
-		d->m_list.SetItem(n,CL_PORT,LVIF_TEXT,"N/A",0,0,0,0);
-		d->m_list.SetItem(n,CL_PINGTIME,LVIF_TEXT,"N/A",0,0,0,0);
-		if (d->m_portondead) goto scan_port;
-
-	} 
-	else 
-	{
-		// Alive
-		if (d->m_display!=DO_ALL && ThreadProcRescanThisIP == -1) 
-		{
-			n = d->m_list.InsertItem(n,ipa,0); 
-			//d->m_list.SetItemData(n, n);
-		}
-		numalive++;
-		d->m_list.SetItem(n,0,LVIF_IMAGE,NULL,0,0,0,0);
-		/*d->m_list.SetItem(n,CL_STATE,LVIF_TEXT,"Alive",0,0,0,0);
-		sprintf((char*)&err,"%d ms",*(u_long *) &(RepData[8]));*/
-		d->m_list.SetItem(n,CL_PINGTIME,LVIF_TEXT,(char*)&err,0,0,0,0);
-		
-		if (d->m_resolve) 
-		{
-			hostent *he = gethostbyaddr((char*)&in.S_un.S_addr,4,0);
-			if (he) 
-			{
-				d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,he->h_name,0,0,0,0); 
-				d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,"None",0,0,0,0);	
-			} 
-			else 
-			{
-				sprintf((char*)&err,"%u",WSAGetLastError());
-				d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,"N/A",0,0,0,0); 
-				d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,(char*)&err,0,0,0,0);	
-			}
-		} 
-		else 
-		{
-			d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,"N/S",0,0,0,0); 
-			//d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,"None",0,0,0,0);	
-		}
-scan_port:
-		if (d->m_scanport) 
-		{
-			// Scan port
-			SOCKET skt = socket(PF_INET,SOCK_STREAM,IPPROTO_IP);
-			sockaddr_in sin;
-			sin.sin_addr.S_un.S_addr = in.S_un.S_addr;
-			sin.sin_family = PF_INET;
-			sin.sin_port = htons(d->m_port);
-			int se = connect(skt,(sockaddr*)&sin,sizeof(sin));
-			if (se!=0) 
-			{
-				sprintf((char*)&err,"%u",WSAGetLastError());
-				d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,(char*)&err,0,0,0,0);
-				sprintf((char*)&err,"%u: closed",d->m_port);
-				d->m_list.SetItem(n,CL_PORT,LVIF_TEXT,(char*)&err,0,0,0,0);
-			} 
-			else 
-			{
-				numopen++;
-				sprintf((char*)&err,"%u: open",d->m_port);
-				d->m_list.SetItem(n,CL_PORT,LVIF_TEXT,(char*)&err,0,0,0,0);
-				d->m_list.SetItem(n,0,LVIF_IMAGE,NULL,3,0,0,0);				
-			}
-			closesocket(skt);
-
-		} 
-		else d->m_list.SetItem(n,CL_PORT,LVIF_TEXT,"N/S",0,0,0,0);
-	}
-
-exit_thread:
-
-	numthreads--;
-	if (numthreads>=0) 
-	{
-		sprintf((char*)&err,"%d",numthreads);
-		d->m_numthreads.SetWindowText((char*)&err);
-	}
-
-	CloseHandle(threads[index]);
-
-	threads[index]=0;
-
-	return 0;
-}
-
-////////////////////////////////////////////////////////////////////////
-//////////////////////////// THREAD ////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-
 
 void CIpscanDlg::OnTimer(UINT nIDEvent) 
 {	
@@ -736,7 +562,7 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 			i = m_list.InsertItem(m_list.GetItemCount(),ipa,2);
 			//m_list.SetItemData(i, i);
 		}
-		CWinThread *thr = AfxBeginThread(ThreadProc,(void*)m_curip);
+		CWinThread *thr = AfxBeginThread(ScanningThread,(void*)m_curip);
 		if (m_startip < m_endip) 
 		{
 			m_curip++;
@@ -920,8 +746,8 @@ void CIpscanDlg::OnClassC()
 {
 	DWORD ip;
 	char *ipc = (char*)&ip;
-	m_ip1.GetAddress(ip); ipc[0]=1; m_ip1.SetAddress(ip);
-	m_ip2.GetAddress(ip); ipc[0]=255; m_ip2.SetAddress(ip);
+	m_ip1.GetAddress(ip); ipc[0] = (char) 1; m_ip1.SetAddress(ip);
+	m_ip2.GetAddress(ip); ipc[0] = (char) 255; m_ip2.SetAddress(ip);
 	m_ip2_virgin=FALSE;
 }
 
@@ -929,8 +755,8 @@ void CIpscanDlg::OnClassD()
 {
 	DWORD ip;
 	char *ipc = (char*)&ip;
-	m_ip1.GetAddress(ip); ipc[0]=1; ipc[1]=0; m_ip1.SetAddress(ip);
-	m_ip2.GetAddress(ip); ipc[0]=255; ipc[1]=255; m_ip2.SetAddress(ip);
+	m_ip1.GetAddress(ip); ipc[0] = (char) 1; ipc[1] = (char) 0; m_ip1.SetAddress(ip);
+	m_ip2.GetAddress(ip); ipc[0] = (char) 255; ipc[1] = (char) 255; m_ip2.SetAddress(ip);
 	m_ip2_virgin=FALSE;
 }
 
@@ -1015,7 +841,7 @@ void CIpscanDlg::OnWindozesucksRescanip()
 		m_list.SetItem(m_menucuritem,CL_PINGTIME,LVIF_TEXT,"",0,0,0,0);
 		RedrawWindow();
 		ThreadProcRescanThisIP = m_menucuritem;
-		ThreadProc((void*)m_curip);
+		ScanningThread((void*)m_curip);
 		ThreadProcRescanThisIP = -1;
 		
 		m_scanning=FALSE;
