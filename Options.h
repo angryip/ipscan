@@ -30,6 +30,7 @@ typedef struct {u_short nStartPort; u_short nEndPort; } tPortRange;
 class COptions  
 {
 public:
+	int m_nPortCount;
 	BOOL m_bOptimizePorts;
 	int m_nLanaNumber;
 	CString getCurrentDate();

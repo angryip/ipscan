@@ -63,6 +63,8 @@ BOOL COptions::parsePortString()
 	m_aParsedPorts = new tPortRange[nCommas + 10];
 	memset(m_aParsedPorts, 0, (nCommas + 10) * sizeof(tPortRange));
 
+	m_nPortCount = 0;
+
 	// Process!!!
 	char szCurPort[6];
 	int nCurPortLen = 0;
@@ -117,6 +119,9 @@ BOOL COptions::parsePortString()
 			}
 		}
 	}
+
+	// Remember the number of ports
+	m_nPortCount = nCurPortIndex;
 
 	// Delete the comma added above
 	m_szPorts.Delete(m_szPorts.GetLength()-1);

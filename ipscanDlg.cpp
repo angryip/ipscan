@@ -638,18 +638,28 @@ void CIpscanDlg::OnButtonScan()
 					strcpy((char*)&ipa,ipp);
 					in.S_un.S_addr = htonl(g_nEndIP);
 					ipp = inet_ntoa(in);
-					strcpy((char*)&ipa2,ipp);
+					strcpy((char*)&ipa2,ipp);					
+
+					int nHostCount = g_nEndIP-g_nStartIP+1;
+
+					int nTotalTime = GetTickCount() / 1000 - m_tickcount + 1;
+					float nTimeForOneIP = (float) nTotalTime / nHostCount;
 
 					m_szCompleteInformation.Format(
-						"Scan complete\r\n\r\n%s - %s\r\n%u second(s)\r\n\r\n"
+						"Scan complete\r\n\r\n"
+						"%s - %s\r\n"
+						"%u sec,  %f sec/host\r\n\r\n"
 						"IPs scanned:\t%u\r\n"
 						"Alive hosts:\t%u\r\n",
-						&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1, g_nEndIP-g_nStartIP+1, g_scanner->m_nAliveHosts);
+						&ipa, (char*)&ipa2, nTotalTime, nTimeForOneIP, nHostCount, g_scanner->m_nAliveHosts);					
 
 					if (g_options->m_bScanPorts)
-					{
+					{						
 						CString szPortInfo;
-						szPortInfo.Format("With open ports:\t%u", g_scanner->m_nOpenPorts);
+						szPortInfo.Format("With open ports:\t%u\r\n\r\n", g_scanner->m_nOpenPorts);
+						m_szCompleteInformation += szPortInfo;
+
+						szPortInfo.Format("Ports scanned:\r\n%u / host,  %u total", g_options->m_nPortCount, g_options->m_nPortCount * g_scanner->m_nAliveHosts);
 						m_szCompleteInformation += szPortInfo;
 					}
 
