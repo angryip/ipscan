@@ -103,7 +103,15 @@ void CEditOpenersDlg::OnBtnChange()
 	int nSelectedOpener = m_ctrlList.GetCurSel();
 
 	CString szTmp;
-	m_ctrlTitle.GetWindowText(szTmp); g_options->m_aOpeners[nSelectedOpener].szName = szTmp;
+	m_ctrlTitle.GetWindowText(szTmp); 
+
+	if (szTmp.IsEmpty())
+	{
+		AfxMessageBox("Title shouldn't be empty!");
+		return;
+	}	
+
+	g_options->m_aOpeners[nSelectedOpener].szName = szTmp;
 	m_ctrlExecutionString.GetWindowText(szTmp); g_options->m_aOpeners[nSelectedOpener].szExecute = szTmp;
 	m_ctrlWorkingDirectory.GetWindowText(szTmp); g_options->m_aOpeners[nSelectedOpener].szWorkDir = szTmp;
 	g_options->m_aOpeners[nSelectedOpener].bCommandLine = m_ctrlCommandLine.GetCheck() == BST_CHECKED;
@@ -120,7 +128,15 @@ void CEditOpenersDlg::OnBtnInsert()
 	int nNewOpener = m_ctrlList.GetCount(); // This is the index of the last item + 1
 
 	CString szTmp;
-	m_ctrlTitle.GetWindowText(szTmp); g_options->m_aOpeners[nNewOpener].szName = szTmp;
+	m_ctrlTitle.GetWindowText(szTmp); 
+
+	if (szTmp.IsEmpty())
+	{
+		AfxMessageBox("Title shouldn't be empty!");
+		return;
+	}
+
+	g_options->m_aOpeners[nNewOpener].szName = szTmp;
 	m_ctrlExecutionString.GetWindowText(szTmp); g_options->m_aOpeners[nNewOpener].szExecute = szTmp;
 	m_ctrlWorkingDirectory.GetWindowText(szTmp); g_options->m_aOpeners[nNewOpener].szWorkDir = szTmp;
 	g_options->m_aOpeners[nNewOpener].bCommandLine = m_ctrlCommandLine.GetCheck() == BST_CHECKED;
