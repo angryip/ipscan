@@ -887,6 +887,10 @@ void CScanListCtrl::OnPaint()
 			nAllItemsWidth += rcH.Width();
 		}
 
+		// Don't allow it to be wider than window
+		if (nAllItemsWidth > rc.right - rc.left)
+			nAllItemsWidth = rc.right - rc.left;
+
 		rc.top += rcH.bottom + 10;		
 
 		pDC->SetTextColor(clrText);
