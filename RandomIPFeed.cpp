@@ -43,13 +43,13 @@ CRandomIPFeed::CRandomIPFeed(IPAddress nIPMask, int nIPs)
 	// Note: 32bit IPv4 is hardcoded here
 	for (DWORD nCurBitMask = 0xFF; nCurBitMask; nCurBitMask <<= 8)
 	{
-		if (m_nIPOriginalMask & nCurBitMask)
+		if ((m_nIPOriginalMask & nCurBitMask) == nCurBitMask)
 		{			
-			m_nIPBitAddition |= m_nIPOriginalMask & nCurBitMask;
+			m_nIPBitMask |= nCurBitMask;
 		}
 		else
 		{
-			m_nIPBitMask |= nCurBitMask;
+			m_nIPBitAddition |= m_nIPOriginalMask & nCurBitMask;			
 		}
 	}
 

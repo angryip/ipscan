@@ -46,13 +46,22 @@ END_MESSAGE_MAP()
 BOOL CRandomIPFeedDlg::OnInitDialog() 
 {
 	CAbstractIPFeedDlg::OnInitDialog(); 
+
+	// Retrieve current IP
+	hostent *he;	
+	char *addr;
+	in_addr in;	
+	he = gethostbyname("localhost");	// TODO: retrieve the real IP here
+	memcpy(&in.S_un.S_addr,*he->h_addr_list,sizeof(long));
+	in.S_un.S_addr |= 0xFF000000;		// Make lower term randomizable
+	addr = inet_ntoa(in);
 	
 	// Default values
-	m_ctBaseIP.SetWindowText("0.0.0.0");
+	m_ctBaseIP.SetWindowText(addr);
 	m_ctIPCount.SetWindowText("100");
 
 	// Initialize tooltips
-	m_pToolTips->AddTool(GetDlgItem(IDC_BASE_IPADDRESS), "Base IP address for generation of random IPs");
+	m_pToolTips->AddTool(GetDlgItem(IDC_BASE_IPADDRESS), "IP address mask for generation of random IPs");
 	m_pToolTips->AddTool(GetDlgItem(IDC_RANDOM_IP_COUNT), "Number of random IPs to generate.");
 	m_pToolTips->Activate(TRUE);
 	
