@@ -25,7 +25,12 @@
 
 typedef struct
 {	
-	int nStructSize;                        // Size of this structure in bytes, this is preset by Angry IP Scanner
+	// These are passed to the plugin
+	short int nStructSize;                  // Size of this structure in bytes, this is preset by Angry IP Scanner
+	char nUniqueIndex;			// Unique index of this instance of the plugin. See below for the description.
+	char cReserved;				// Reserved for now.
+
+	// These must be set by the plugin
 	int nAngryIPScannerVersion;             // Known supported version of Angry IP Scanner, eg 217 (instead of 2.17)
 	int nPluginType;                        // Type of the plugin, see PLUGIN_TYPE_* constants
 	char szPluginName[32];                  // Column name in the list (plugin idenificator)
@@ -37,6 +42,13 @@ typedef struct
 	char szReserved[128];                   // Reserved bytes for future additions. Do not change them.
 } 
 TInfoStruct;
+
+// nUniqueIndex - this is the unique index of this plugin. In Angry IP Scanner, any plugin
+//                can be selected multiple times to represent multiple columns in the list.
+//                Most likely these multiple columns of a single plugin will need different settings,
+//                so, these settings must be stored separately, eg this index can be added to the
+//                end of each key name in registry to make it unique: eg "PingTimeout2" instead 
+//                of plain "PingTimeout".
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // These functions may/must be exported from plugin DLLs.
@@ -75,13 +87,8 @@ typedef BOOL (__cdecl TOptionsFunction)(HWND hwndParent);
 // initializations, such as allocating of memory, loading of settings, etc.
 // If this function returns FALSE, then plugin won't be used
 // Parameters:
-//    nIndex - this is the unique index of this plugin. In Angry IP Scanner, plugins
-//             can be selected multiple times to represent multiple columns in the list.
-//             Most likely these multiple columns of a single plugin will need different settings,
-//             so, these settings must be stored separately, eg this index can be added to the
-//             end of each key name in registry to make it unique: "PingTimeout2" instead 
-//             of plain "PingTimeout".
-typedef BOOL (__cdecl TInitFunction)(int nIndex);
+//   None
+typedef BOOL (__cdecl TInitFunction)();
 
 // "Finalize" function.
 // This function is executed after the scanning process has been finished. It can be used
