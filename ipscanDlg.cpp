@@ -592,7 +592,7 @@ void CIpscanDlg::OnButtonScan()
 				status("Killing threads...");
 				KillAllRunningThreads();	
 
-				//Sleep(1000);	// sleep 1 second and give some threads a chanse to exit
+				//Sleep(1000);	// sleep 1 second and give some threads a chance to exit
 				//status(NULL);
 
 				m_nScanMode = SCAN_MODE_KILLING;				
