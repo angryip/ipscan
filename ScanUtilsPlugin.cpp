@@ -29,17 +29,15 @@ static char THIS_FILE[]=__FILE__;
 
 CScanUtilsPlugin::CScanUtilsPlugin()
 {
-
 }
 
 CScanUtilsPlugin::~CScanUtilsPlugin()
 {
-
 }
 
 void CScanUtilsPlugin::loadFromDir(CArray<TScannerColumn, TScannerColumn&> &columns, int &nColumnCount, CString &szDir)
 {
-	// This function loads plugins using from the specified directory
+	// This function loads plugins from the specified directory
 
 	WIN32_FIND_DATA fileData;
 	HANDLE hFind;
@@ -63,13 +61,18 @@ void CScanUtilsPlugin::loadFromDir(CArray<TScannerColumn, TScannerColumn&> &colu
 				
 				if (pInfoFunction == NULL)
 				{
-					MessageBox(0, "No \"Info\" function exported from plugin: " + szFileName, NULL, MB_ICONHAND | MB_OK);
+					MessageBox(0, "No \"Info\" function exported from plugin:\n" + szDir + "\\" + szFileName + "\nPlease move it to another directory if this is not a plugin for Angry IP Scanner.", NULL, MB_ICONHAND | MB_OK);
 					continue;
 				}
 				
 				pInfoFunction(&infoStruct);
 
-				// TODO: need to verify target Angry IP Scanner version here
+				// Verify target Angry IP Scanner versiion
+				if (infoStruct.nAngryIPScannerVersion > 217)	// TODO: 217 is hardcoded
+				{
+					MessageBox(0, "Plugin " + szFileName + " requires a newer version of Angry IP Scanner!", NULL, MB_ICONHAND | MB_OK);
+					continue;
+				}
 
 				if (infoStruct.nPluginType != PLUGIN_TYPE_COLUMN)
 					continue;	// Skip unknown types
