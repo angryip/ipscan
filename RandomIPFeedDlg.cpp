@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "ipscan.h"
 #include "RandomIPFeedDlg.h"
+#include "RandomIPFeed.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -79,5 +80,12 @@ BOOL CRandomIPFeedDlg::processCommandLine(const CString& szCommandLine)
 // Creates an IP feed object
 CAbstractIPFeed * CRandomIPFeedDlg::createIPFeed()
 {
-	return NULL;
+	char str[16];
+	
+	m_ctBaseIP.GetWindowText((char *)&str,16);
+	IPAddress nBaseIP = ntohl(inet_addr((char *)&str));	
+
+	m_ctIPCount.GetWindowText((char *)&str,16);
+
+	return new CRandomIPFeed(nBaseIP, atoi((char*)&str));
 }

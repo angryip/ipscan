@@ -54,7 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 netapi32.lib /nologo /subsystem:windows /machine:I386
+# ADD LINK32 netapi32.lib; Winmm.lib /nologo /subsystem:windows /machine:I386
 # SUBTRACT LINK32 /pdb:none /incremental:yes
 
 !ELSEIF  "$(CFG)" == "ipscan - Win32 Debug"
@@ -75,13 +75,13 @@ LINK32=link.exe
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x419 /d "_DEBUG" /d "_AFXDLL"
-# ADD RSC /l 0x419 /d "_DEBUG" /d "_AFXDLL"
+# ADD RSC /l 0x409 /d "_DEBUG" /d "_AFXDLL"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 Winmm.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
 
 !ENDIF 
 
@@ -95,6 +95,10 @@ LINK32=link.exe
 # Begin Source File
 
 SOURCE=.\AbstractIPFeed.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AbstractIPFeedDlg.cpp
 # End Source File
 # Begin Source File
 
@@ -115,6 +119,10 @@ SOURCE=.\FavouriteDeleteDlg.cpp
 # Begin Source File
 
 SOURCE=.\InstallDlg.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\IPFeedDlgFactory.cpp
 # End Source File
 # Begin Source File
 
@@ -166,6 +174,10 @@ SOURCE=.\QueryDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\RandomIPFeedDlg.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\SaveToFile.cpp
 # End Source File
 # Begin Source File
@@ -211,6 +223,10 @@ SOURCE=.\AbstractIPFeed.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\AbstractIPFeedDlg.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\CommandLine.h
 # End Source File
 # Begin Source File
@@ -228,6 +244,10 @@ SOURCE=.\FavouriteDeleteDlg.h
 # Begin Source File
 
 SOURCE=.\InstallDlg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IPFeedDlgFactory.h
 # End Source File
 # Begin Source File
 
@@ -272,6 +292,10 @@ SOURCE=.\PortDlg.h
 # Begin Source File
 
 SOURCE=.\QueryDlg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\RandomIPFeedDlg.h
 # End Source File
 # Begin Source File
 
