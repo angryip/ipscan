@@ -179,3 +179,8 @@ CAbstractIPFeed * CIPRangeDlg::createIPFeed()
 
 	return new CIPRangeIPFeed(nStartIP, nEndIP);
 }
+
+CWnd * CIPRangeDlg::SetFocus()
+{
+	return m_ctIPStart.SetFocus();
+}

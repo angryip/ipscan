@@ -377,6 +377,9 @@ BOOL CIpscanDlg::OnInitDialog()
 	str.LoadString(IDS_VERSION);
 	SetWindowText("Angry IP Scanner "+str);	
 
+	m_dlgIPRange.SetFocus();
+
+
 	#ifdef DEBUG_MESSAGES
 		AfxMessageBox("OnInitDialog(): Processing command-line", 0, 0);
 	#endif
@@ -412,7 +415,7 @@ BOOL CIpscanDlg::OnInitDialog()
 		AfxMessageBox("OnInitDialog(): Finished", 0, 0);
 	#endif		
 	
-	return TRUE;  // return TRUE  unless you set the focus to a control
+	return FALSE; // return TRUE  unless you set the focus to a control
 }
 
 void CIpscanDlg::OnSysCommand(UINT nID, LPARAM lParam)
