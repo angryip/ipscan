@@ -40,7 +40,7 @@ BEGIN
         MENUITEM "Next &alive host\tCtrl+A",    ID_GOTO_NEXTALIVE
         MENUITEM "Next &dead host\tCtrl+D",     ID_GOTO_NEXTDEAD
         MENUITEM SEPARATOR
-        MENUITEM "Next &open port\tCtrl+O",     ID_GOTO_NEXTOPENPORT
+        MENUITEM "Next o&pen port\tCtrl+P",     ID_GOTO_NEXTOPENPORT
         MENUITEM "Next &closed port\tCtrl+L",   ID_GOTO_NEXTCLOSEDPORT
         MENUITEM SEPARATOR
         MENUITEM "&Find...\tCtrl+F",            ID_GOTO_HOSTNAME
@@ -75,8 +75,10 @@ BEGIN
     END
     POPUP "&Options"
     BEGIN
-        MENUITEM "O&ptions...\tCtrl+P",         ID_OPTIONS_OPTIONS
+        MENUITEM "&Options...\tCtrl+O",         ID_OPTIONS_OPTIONS
         MENUITEM "&Save options",               ID_OPTIONS_SAVEOPTIONS
+        MENUITEM SEPARATOR
+        MENUITEM "Select &Columns...",          ID_OPTIONS_SELECT_COLUMNS
         MENUITEM SEPARATOR
         MENUITEM "&Install the program...",     ID_OPTIONS_INSTALL_PROGRAM
     END
@@ -199,8 +201,8 @@ BEGIN
     "L",            ID_GOTO_NEXTCLOSEDPORT, VIRTKEY, CONTROL, NOINVERT
     "N",            ID_WINDOZESUCKS_SHOWNETBIOSINFO, VIRTKEY, CONTROL, 
                                                     NOINVERT
-    "O",            ID_GOTO_NEXTOPENPORT,   VIRTKEY, CONTROL, NOINVERT
-    "P",            ID_OPTIONS_OPTIONS,     VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_OPTIONS_OPTIONS,     VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_GOTO_NEXTOPENPORT,   VIRTKEY, CONTROL, NOINVERT
     "R",            ID__OPENCOMPUTERINEXPLORER, VIRTKEY, CONTROL, NOINVERT
     VK_F12,         ID_HELP_ABOUT,          VIRTKEY, NOINVERT
     VK_INSERT,      ID_WINDOZESUCKS_IPCLIPBOARD, VIRTKEY, CONTROL, NOINVERT
@@ -230,6 +232,7 @@ IDB_BMPSTART            BITMAP  DISCARDABLE     "res\\bmp00003.bmp"
 IDB_BMPSTOP             BITMAP  DISCARDABLE     "res\\bmp00004.bmp"
 IDB_CLASS_C_PIC         BITMAP  DISCARDABLE     "res\\bmp00005.bmp"
 IDB_CLASS_D_PIC         BITMAP  DISCARDABLE     "res\\bmp00006.bmp"
+IDB_SELECT_COLUMNS      BITMAP  DISCARDABLE     "res\\select_c.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -533,13 +536,13 @@ BEGIN
                     111,8,SS_NOTIFY
 END
 
-IDD_IPSCAN_DIALOG DIALOGEX 0, 0, 320, 201
+IDD_IPSCAN_DIALOG DIALOGEX 0, 0, 495, 201
 STYLE WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
     WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "Angry IP Scanner"
 MENU IDR_MENU1
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     CONTROL         "IPAddress1",IDC_IPADDRESS1,"SysIPAddress32",WS_TABSTOP,
                     37,1,98,12
@@ -553,7 +556,7 @@ BEGIN
     PUSHBUTTON      "",IDC_CLASS_C,209,16,18,13,BS_BITMAP
     CONTROL         "List1",IDC_LIST,"SysListView32",LVS_REPORT | 
                     LVS_SHOWSELALWAYS | LVS_OWNERDRAWFIXED | WS_BORDER | 
-                    WS_TABSTOP,0,82,320,101
+                    WS_TABSTOP,0,82,495,101
     CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",WS_BORDER,
                     164,186,155,12
     LTEXT           "",IDC_STATUS,0,186,164,12,SS_NOTIFY | SS_CENTERIMAGE | 
@@ -564,11 +567,12 @@ BEGIN
     LTEXT           "Threads",IDC_STATIC,231,19,27,8
     CTEXT           "0",IDC_NUMTHREADS,260,19,25,10,SS_SUNKEN
     CONTROL         "Scan ports",IDC_SCAN_PORTS,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,1,34,50,10
-    LTEXT           "N/A",IDC_WHATPORTS,130,35,189,8
-    PUSHBUTTON      "Select ports to scan...",IDC_SELECT_PORTS,51,33,76,11
+                    WS_TABSTOP,40,32,48,10
+    LTEXT           "N/A",IDC_WHATPORTS,107,33,388,8
+    PUSHBUTTON      "...",IDC_SELECT_PORTS,89,31,15,11
     CONTROL         "",IDC_BUTTON_TO_ADVANCED,"Button",BS_AUTOCHECKBOX | 
                     BS_BITMAP | BS_PUSHLIKE | WS_TABSTOP,293,1,12,28
+    PUSHBUTTON      "",IDC_SELECT_COLUMNS,1,31,34,11,BS_BITMAP
 END
 
 IDD_SEARCH DIALOG DISCARDABLE  0, 0, 142, 85

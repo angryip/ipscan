@@ -249,6 +249,8 @@ BOOL CIpscanDlg::OnInitDialog()
 	// Load bitmaps for advanced mode button
 	m_bmpHideAdvanced.LoadMappedBitmap(IDB_HIDE_ADVANCED);
 	m_bmpShowAdvanced.LoadMappedBitmap(IDB_SHOW_ADVANCED);
+	m_bmpSelectColumns.LoadMappedBitmap(IDB_SELECT_COLUMNS);
+	((CButton*)GetDlgItem(IDC_SELECT_COLUMNS))->SetBitmap((HBITMAP)m_bmpSelectColumns.m_hObject);
 	
 	// Set window size
 	RECT rc;
@@ -986,6 +988,7 @@ void CIpscanDlg::OnButtonToAdvanced()
 		m_ctScanPorts.ShowWindow(SW_HIDE);
 		m_ctWhatPorts.ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_SELECT_PORTS)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_SELECT_COLUMNS)->ShowWindow(SW_HIDE);
 		
 		g_nListOffset -= g_nAdvancedOffset;
 
@@ -998,6 +1001,7 @@ void CIpscanDlg::OnButtonToAdvanced()
 		m_ctScanPorts.ShowWindow(SW_SHOW);
 		m_ctWhatPorts.ShowWindow(SW_SHOW);
 		GetDlgItem(IDC_SELECT_PORTS)->ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_SELECT_COLUMNS)->ShowWindow(SW_SHOW);
 
 		g_nListOffset += g_nAdvancedOffset;
 		

@@ -73,6 +73,7 @@ public:
 
 // Implementation
 protected:		
+	CBitmap m_bmpSelectColumns;
 	BOOL m_bSysCommand;
 	CBitmap m_bmpHideAdvanced;
 	void HandleResizing(int cx, int cy);

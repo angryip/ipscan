@@ -27,6 +27,7 @@
 #define IDB_HIDE_ADVANCED               152
 #define IDD_PORT_DLG                    153
 #define IDD_DETAILS_DLG                 155
+#define IDB_SELECT_COLUMNS              157
 #define IDC_LIST                        1002
 #define IDC_STATUS                      1005
 #define IDC_IPADDRESS1                  1007
@@ -86,6 +87,7 @@
 #define IDC_SCAN_HOST_IF_DEAD           1074
 #define IDC_HOTKEY1                     1077
 #define IDC_PORT_LIST                   1079
+#define IDC_SELECT_COLUMNS              1080
 #define ID_BUTTONABOUT                  32771
 #define IDS_FIRSTCOLUMN                 32772
 #define IDS_STRING32773                 32773
@@ -143,6 +145,7 @@
 #define ID_COMMANDS_RESCANIP            32814
 #define ID_SHOWNETBIOSINFO              32815
 #define ID_COMMANDS_IPCLIPBOARD         32816
+#define ID_OPTIONS_SELECT_COLUMNS       32817
 #define ID_MENU_SHOW_CMD_001            32901
 #define ID_MENU_SHOW_CMD_002            32902
 #define ID_MENU_SHOW_CMD_003            32903
@@ -247,9 +250,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        157
-#define _APS_NEXT_COMMAND_VALUE         32817
-#define _APS_NEXT_CONTROL_VALUE         1080
+#define _APS_NEXT_RESOURCE_VALUE        158
+#define _APS_NEXT_COMMAND_VALUE         32818
+#define _APS_NEXT_CONTROL_VALUE         1081
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
