@@ -81,6 +81,7 @@ BEGIN
     BEGIN
         MENUITEM "Angry IP Scanner &Webpage",   ID_HELP_ANGRYIPSCANNERWEBPAGE
 
+        MENUITEM "Angry IP Scanner &Forum",     ID_HELP_FORUM
         MENUITEM "Angryziber &Software",        ID_HELP_ANGRYZIBERSOFTWARE
         MENUITEM SEPARATOR
         MENUITEM "&Command-line Usage",         ID_HELP_COMMANDLINE
@@ -230,6 +231,47 @@ IDB_BMPSTOP             BITMAP  DISCARDABLE     "res\\bmp00004.bmp"
 IDB_CLASS_C_PIC         BITMAP  DISCARDABLE     "res\\bmp00005.bmp"
 IDB_CLASS_D_PIC         BITMAP  DISCARDABLE     "res\\bmp00006.bmp"
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_INSTALL_DLG DIALOG DISCARDABLE  0, 0, 186, 92
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Installation"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Install",IDOK,37,71,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,99,71,50,14
+    CONTROL         "Create group in Start Menu",IDC_CHECK1,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,40,101,10
+    CONTROL         "Create desktop shortcut",IDC_CHECK2,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,53,91,10
+    EDITTEXT        IDC_EDIT1,7,19,172,12,ES_AUTOHSCROLL
+    CONTROL         "Copy program to this location:",IDC_CHECK4,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,7,109,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_INSTALL_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 85
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -312,7 +354,7 @@ BEGIN
     IDS_VERSION             "1.88"
     IDS_SCAN_HOMEPAGE       "http://www.angryziber.com/ipscan/"
     IDS_HOMEPAGE            "http://www.angryziber.com/"
-    IDS_MAIL                "angryziber@mail.com"
+    IDS_MAIL                "angryziber@angryziber.com"
     IDS_HOMEPAGE_FORUM      "http://www.angryziber.com/forum/"
 END
 
@@ -493,6 +535,11 @@ STRINGTABLE DISCARDABLE
 BEGIN
     IDS_ABOUTBOX            "&About..."
     IDP_SOCKETS_INIT_FAILED "Windows sockets initialization failed."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "ipscan"
 END
 
 #endif    // English (U.S.) resources

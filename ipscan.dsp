@@ -98,6 +98,10 @@ SOURCE=.\CommandLine.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\InstallDlg.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ipscan.cpp
 # End Source File
 # Begin Source File
@@ -136,6 +140,10 @@ SOURCE=.\StdAfx.cpp
 # Begin Source File
 
 SOURCE=.\CommandLine.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\InstallDlg.h
 # End Source File
 # Begin Source File
 

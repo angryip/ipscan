@@ -131,6 +131,7 @@ protected:
 	afx_msg void OnCommandsOpencomputerHint();
 	afx_msg void OnButtonpaste();
 	afx_msg void OnHelpCommandline();
+	afx_msg void OnHelpForum();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

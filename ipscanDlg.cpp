@@ -163,8 +163,9 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_TELNETTOSPECIFIEDPORT, OnCommandsOpencomputerTelnettospecifiedport)
 	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_HINT, OnCommandsOpencomputerHint)
 	ON_BN_CLICKED(IDC_BUTTONPASTE, OnButtonpaste)
-	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_COMMAND(ID_HELP_COMMANDLINE, OnHelpCommandline)
+	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
+	ON_COMMAND(ID_HELP_FORUM, OnHelpForum)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -1068,6 +1069,11 @@ void CIpscanDlg::OnHelpAngryzibersoftware()
 	CLink::goToHomepage();
 }
 
+void CIpscanDlg::OnHelpForum() 
+{
+	CLink::goToHomepageForum();	
+}
+
 void CIpscanDlg::OnWindozesucksRescanip() 
 {
 	POSITION pos = m_list.GetFirstSelectedItemPosition();
@@ -1381,4 +1387,5 @@ void CIpscanDlg::OnHelpCommandline()
 	CCommandLine::displayHelp();
 	
 }
+
 

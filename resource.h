@@ -21,6 +21,7 @@
 #define IDD_SEARCH                      146
 #define IDB_BMPKILL                     147
 #define IDB_PASTE                       148
+#define IDD_INSTALL_DLG                 149
 #define IDC_LIST                        1002
 #define IDC_STATUS                      1005
 #define IDC_IPADDRESS1                  1007
@@ -55,6 +56,7 @@
 #define IDC_RADIO2                      1047
 #define IDC_RADIO3                      1048
 #define IDC_HTTP_FORUM                  1049
+#define IDC_CHECK4                      1050
 #define ID_BUTTONABOUT                  32771
 #define IDS_FIRSTCOLUMN                 32772
 #define IDS_STRING32773                 32773
@@ -106,14 +108,15 @@
 #define ID_COMMANDS_OPENCOMPUTER_TELNETTOSPECIFIEDPORT 32807
 #define ID_COMMANDS_OPENCOMPUTER_HINT   32808
 #define ID_HELP_COMMANDLINE             32809
+#define ID_HELP_FORUM                   32810
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        149
-#define _APS_NEXT_COMMAND_VALUE         32810
-#define _APS_NEXT_CONTROL_VALUE         1050
+#define _APS_NEXT_RESOURCE_VALUE        150
+#define _APS_NEXT_COMMAND_VALUE         32811
+#define _APS_NEXT_CONTROL_VALUE         1051
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
