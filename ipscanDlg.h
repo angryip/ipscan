@@ -37,9 +37,9 @@ public:
 	int m_menucuritem;
 	CMenu * m_menuContext;
 	unsigned long m_tickcount;
-	unsigned long m_endip;
-	unsigned long m_startip;
-	unsigned long m_curip;
+	unsigned long m_nEndIP;
+	unsigned long m_nStartIP;
+	unsigned long m_nCurrentIP;
 	int m_nScanMode;
 	CImageList m_imglist;
 	CIpscanDlg(CWnd* pParent = NULL);	// standard constructor

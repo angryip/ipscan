@@ -364,14 +364,15 @@ HCURSOR CIpscanDlg::OnQueryDragIcon()
 
 void CIpscanDlg::status(LPCSTR str) 
 {
-	SetDlgItemText(IDC_STATUS,str);
+	SetDlgItemText(IDC_STATUS, str);
 }
 
 void CIpscanDlg::OnSize(UINT nType, int cx, int cy) 
 {
 	CDialog::OnSize(nType, cx, cy);
 		
-	if (m_list.m_hWnd!=NULL) {
+	if (m_list.m_hWnd != NULL) 
+	{
 		HandleResizing(cx, cy);
 	}
 }
@@ -387,18 +388,25 @@ void CIpscanDlg::OnButtonScan()
 	{
 		char str[16];
 		m_ip1.GetWindowText((char *)&str,16);
-		m_startip = ntohl(inet_addr((char*)&str));
+		m_nStartIP = ntohl(inet_addr((char*)&str));
 		m_ip2.GetWindowText((char *)&str,16);
-		m_endip = ntohl(inet_addr((char*)&str));
-		m_endip++;
+		m_nEndIP = ntohl(inet_addr((char*)&str));	
+		
+		// Minor Bug workaround ;-)
+		if (m_nEndIP == 0xFFFFFFFF)
+		{
+			m_nEndIP--;	// Scan to 255.255.255.254
+		}
+		
+		m_nEndIP++;
 
-		if (m_endip<m_startip) 
+		if (m_nEndIP < m_nStartIP) 
 		{
 			MessageBox("Ending IP address is lower than starting.",NULL,MB_OK | MB_ICONHAND);
 			return;
 		}
 
-		m_curip = m_startip;
+		m_nCurrentIP = m_nStartIP;
 		m_progress.SetRange(0,100);
 		m_progress.SetPos(0);
 		m_tickcount = GetTickCount()/1000;
@@ -449,7 +457,7 @@ void CIpscanDlg::OnButtonScan()
 			}
 			else // SCAN_MODE_SCANNING
 			{
-				m_endip = m_curip;
+				m_nEndIP = m_nCurrentIP;
 				m_progress.SetPos(100);
 				m_nScanMode = SCAN_MODE_FINISHING;
 			}
@@ -488,10 +496,10 @@ void CIpscanDlg::OnButtonScan()
 
 				char str[140],ipa[16],ipa2[16],*ipp;
 				in_addr in;
-				in.S_un.S_addr = htonl(m_startip);
+				in.S_un.S_addr = htonl(m_nStartIP);
 				ipp = inet_ntoa(in);
 				strcpy((char*)&ipa,ipp);
-				in.S_un.S_addr = htonl(m_endip);
+				in.S_un.S_addr = htonl(m_nEndIP);
 				ipp = inet_ntoa(in);
 				strcpy((char*)&ipa2,ipp);
 				sprintf((char*)&str,
@@ -499,7 +507,7 @@ void CIpscanDlg::OnButtonScan()
 					"IPs scanned:\t%u\r\n"
 					"Alive hosts:\t%u\r\n"
 					"With open ports:\t%u",
-					&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1, m_endip-m_startip+1, g_scanner->m_nAliveHosts, g_scanner->m_nOpenPorts);
+					&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1, m_nEndIP-m_nStartIP+1, g_scanner->m_nAliveHosts, g_scanner->m_nOpenPorts);
 
 				CMessageDlg cMsgDlg;
 				cMsgDlg.setMessageText((char*)&str);
@@ -546,12 +554,12 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 	 	
 	int nIndex;
 	
-	if (m_curip<m_endip) 
+	if (m_nCurrentIP < m_nEndIP) 
 	{
 		if ((int) g_nThreadCount >= g_options->m_nMaxThreads - 1) return;
 		in_addr in;
 		char *ipa;
-		in.S_un.S_addr = htonl(m_curip);
+		in.S_un.S_addr = htonl(m_nCurrentIP);
 		ipa = inet_ntoa(in);
 		status(ipa);
 		/*if (m_display==DO_ALL) 
@@ -560,10 +568,10 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 			//m_list.SetItemData(i, i);
 		//}
 		CWinThread *thr = AfxBeginThread(ScanningThread,(void*)nIndex);
-		if (m_startip < m_endip) 
+		if (m_nStartIP < m_nEndIP) 
 		{
-			m_curip++;
-			m_progress.SetPos((m_curip-m_startip)*100/(m_endip-m_startip));
+			m_nCurrentIP++;
+			m_progress.SetPos((m_nCurrentIP-m_nStartIP)*100/(m_nEndIP-m_nStartIP));
 		}
 	} 
 	else 
@@ -571,7 +579,7 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 	
 		if (g_nThreadCount == 0) 
 		{
-			m_endip--;
+			m_nEndIP--;
 			OnButtonScan();
 			
 			return;
@@ -725,7 +733,7 @@ void CIpscanDlg::OnRescanIP()
 	{
 		char str[16];
 		m_list.GetItemText(m_menucuritem,CL_IP,(char*)&str,16);
-		m_curip = ntohl(inet_addr((char*)&str));
+		m_nCurrentIP = ntohl(inet_addr((char*)&str));
 		
 		m_nScanMode = SCAN_MODE_SCANNING;
 
