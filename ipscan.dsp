@@ -267,6 +267,10 @@ SOURCE=.\res\bmpkill.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\hide_adv.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\ipscan.ico
 # End Source File
 # Begin Source File
@@ -276,6 +280,10 @@ SOURCE=.\res\ipscan.rc2
 # Begin Source File
 
 SOURCE=.\res\paste.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\show_adv.bmp
 # End Source File
 # Begin Source File
 

@@ -29,10 +29,11 @@ public:
 
 // Implementation
 public:
-	BOOL m_bShowPorts;
+	void SetShowPorts(BOOL bShow);
 	virtual ~CScanListCtrl();
 
 protected:
+	BOOL m_bShowPorts;
 	void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	void RepaintSelectedItems();	
 	BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);

@@ -23,6 +23,8 @@
 #define IDB_PASTE                       148
 #define IDD_INSTALL_DLG                 149
 #define IDD_MESSAGE_DIALOG              150
+#define IDB_SHOW_ADVANCED               151
+#define IDB_HIDE_ADVANCED               152
 #define IDC_LIST                        1002
 #define IDC_STATUS                      1005
 #define IDC_IPADDRESS1                  1007
@@ -63,6 +65,9 @@
 #define IDC_CREATE_DESKTOP_SHORTCUT     1053
 #define IDC_MESSAGE_TEXT                1055
 #define IDC_BUTTON_TO_ADVANCED          1057
+#define IDC_SELECT_PORTS                1060
+#define IDC_WHATPORTS                   1061
+#define IDC_SCAN_PORTS                  1062
 #define ID_BUTTONABOUT                  32771
 #define IDS_FIRSTCOLUMN                 32772
 #define IDS_STRING32773                 32773
@@ -121,9 +126,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        151
+#define _APS_NEXT_RESOURCE_VALUE        153
 #define _APS_NEXT_COMMAND_VALUE         32812
-#define _APS_NEXT_CONTROL_VALUE         1058
+#define _APS_NEXT_CONTROL_VALUE         1063
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -32,6 +32,7 @@ class CIpscanDlg : public CDialog
 {
 // Construction
 public:
+	CBitmap m_bmpShowAdvanced;
 	int m_nOptions;
 	CString *m_szDefaultFileName;
 	int m_display;
@@ -68,6 +69,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CIpscanDlg)
 	enum { IDD = IDD_IPSCAN_DIALOG };
+	CButton	m_ctScanPorts;
+	CStatic	m_ctWhatPorts;
 	CScanListCtrl	m_list;
 	CButton	m_ipup;
 	CStatic m_numthreads;
@@ -88,6 +91,7 @@ public:
 
 // Implementation
 protected:	
+	CBitmap m_bmpHideAdvanced;
 	void HandleResizing(int cx, int cy);
 	bool m_bAdvancedMode;
 	HACCEL hAccel;
@@ -141,6 +145,7 @@ protected:
 	afx_msg void OnDestroy();
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	afx_msg void OnButtonToAdvanced();
+	afx_msg void OnScanPortsClicked();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

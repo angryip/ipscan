@@ -251,17 +251,18 @@ void CScanListCtrl::RepaintSelectedItems()
 void CScanListCtrl::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
 	LOGFONT lf;
-
+	
+	GetFont()->GetLogFont( &lf );
+	
 	if (m_bShowPorts)
-	{
-		GetFont()->GetLogFont( &lf );
 		lf.lfHeight = lf.lfHeight * 28 / 10;
+	else
+		lf.lfHeight = lf.lfHeight * 16 / 10;
 
-		if( lf.lfHeight < 0 )
-			lpMeasureItemStruct->itemHeight = -lf.lfHeight; 
-		else
-			lpMeasureItemStruct->itemHeight = lf.lfHeight; 
-	}
+	if( lf.lfHeight < 0 )
+		lpMeasureItemStruct->itemHeight = -lf.lfHeight; 
+	else
+		lpMeasureItemStruct->itemHeight = lf.lfHeight; 
 }
 
 BOOL CScanListCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
@@ -282,5 +283,17 @@ BOOL CScanListCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 }
 
 
+void CScanListCtrl::SetShowPorts(BOOL bShow)
+{
+	m_bShowPorts = bShow;
 
+	CRect rc;
+	GetWindowRect( &rc );
 
+	WINDOWPOS wp;
+	wp.hwnd = m_hWnd;
+	wp.cx = rc.Width();
+	wp.cy = rc.Height();
+	wp.flags = SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER;
+	SendMessage( WM_WINDOWPOSCHANGED, 0, (LPARAM)&wp );
+}

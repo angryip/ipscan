@@ -25,7 +25,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog used for App About
 
-UINT g_nListOffset,g_nStatusHeight;
+UINT g_nListOffset,g_nStatusHeight, g_nAdvancedOffset;
 CIpscanDlg* d;
 CWinApp *app;
 
@@ -108,6 +108,8 @@ void CIpscanDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CIpscanDlg)
+	DDX_Control(pDX, IDC_SCAN_PORTS, m_ctScanPorts);
+	DDX_Control(pDX, IDC_WHATPORTS, m_ctWhatPorts);
 	DDX_Control(pDX, IDC_LIST, m_list);
 	DDX_Control(pDX, IDC_BUTTONIPUP, m_ipup);
 	DDX_Control(pDX, IDC_NUMTHREADS, m_numthreads);
@@ -166,8 +168,9 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_OPTIONS_INSTALL_PROGRAM, OnOptionsInstallProgram)
 	ON_WM_DESTROY()
 	ON_WM_DRAWITEM()
-	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_BN_CLICKED(IDC_BUTTON_TO_ADVANCED, OnButtonToAdvanced)
+	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
+	ON_BN_CLICKED(IDC_SCAN_PORTS, OnScanPortsClicked)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -235,12 +238,21 @@ BOOL CIpscanDlg::OnInitDialog()
 	((CButton*)GetDlgItem(IDC_CLASS_C))->SetBitmap((HBITMAP)tmpbmp->m_hObject);
 	tmpbmp = new CBitmap; tmpbmp->LoadMappedBitmap(IDB_CLASS_D_PIC);
 	((CButton*)GetDlgItem(IDC_CLASS_D))->SetBitmap((HBITMAP)tmpbmp->m_hObject);
+	// Load bitmaps for advanced mode button
+	m_bmpHideAdvanced.LoadMappedBitmap(IDB_HIDE_ADVANCED);
+	m_bmpShowAdvanced.LoadMappedBitmap(IDB_SHOW_ADVANCED);
 	
 	// Set window size
 	RECT rc;
 	m_ipup.GetWindowRect(&rc); g_nListOffset = rc.bottom;
+	m_ctScanPorts.GetWindowRect(&rc); g_nAdvancedOffset = rc.bottom - g_nListOffset + 5;
 	m_ip1.GetWindowRect(&rc); g_nListOffset -= (rc.top-5);
-	m_progress.GetWindowRect(&rc); g_nStatusHeight = rc.bottom-rc.top-2;
+	m_progress.GetWindowRect(&rc); g_nStatusHeight = rc.bottom-rc.top-2;	
+	
+	m_bAdvancedMode = true;	// OnButtonToAdvanced() will change this to false
+	g_nListOffset += g_nAdvancedOffset; // OnButtonToAdvanced() will substract this
+	OnButtonToAdvanced(); // Hide advanced controls by default
+	OnScanPortsClicked();
 
 	rc.left = app->GetProfileInt("","Left",0);
 	rc.top = app->GetProfileInt("","Top",0);
@@ -251,7 +263,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	} else {
 		SetWindowPos(NULL,0,0,502,350,SWP_NOMOVE | SWP_NOZORDER);
 	}
-	m_bAdvancedMode = false;
+	
 	status("Ready");
 
 	// Init hostname
@@ -1148,17 +1160,34 @@ void CIpscanDlg::OnButtonToAdvanced()
 {
 	if (m_bAdvancedMode)
 	{
-		g_nListOffset -= 40;
+		// Hide advanced controls
+		m_ctScanPorts.ShowWindow(SW_HIDE);
+		m_ctWhatPorts.ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_SELECT_PORTS)->ShowWindow(SW_HIDE);
+		
+		g_nListOffset -= g_nAdvancedOffset;
+
+		// Change button image		
+		((CButton*)GetDlgItem(IDC_BUTTON_TO_ADVANCED))->SetBitmap((HBITMAP)m_bmpShowAdvanced.m_hObject);
 	}
 	else
 	{
-		g_nListOffset += 40;
+		// Hide advanced controls
+		m_ctScanPorts.ShowWindow(SW_SHOW);
+		m_ctWhatPorts.ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_SELECT_PORTS)->ShowWindow(SW_SHOW);
+
+		g_nListOffset += g_nAdvancedOffset;
+		
+		// Change button image		
+		((CButton*)GetDlgItem(IDC_BUTTON_TO_ADVANCED))->SetBitmap((HBITMAP)m_bmpHideAdvanced.m_hObject);
 	}
 	m_bAdvancedMode = !m_bAdvancedMode;
 	RECT rc;
 	GetClientRect(&rc);
 	HandleResizing(rc.right-rc.left, rc.bottom-rc.top);
 	
+	m_ip1.SetFocus();
 }
 
 void CIpscanDlg::HandleResizing(int cx, int cy)
@@ -1167,4 +1196,12 @@ void CIpscanDlg::HandleResizing(int cx, int cy)
 	m_list.MoveWindow(0, g_nListOffset, cx, cy-g_nListOffset-(g_nStatusHeight+2), TRUE);
 	m_statusctl.MoveWindow(0, cy-g_nStatusHeight/*18*/, cx/2, /*18*/g_nStatusHeight, TRUE);
 	m_progress.MoveWindow(cx/2+1,cy-g_nStatusHeight,cx/2-1,g_nStatusHeight,TRUE);
+}
+
+void CIpscanDlg::OnScanPortsClicked() 
+{
+	if (m_ctScanPorts.GetCheck())
+		m_list.SetShowPorts(TRUE);
+	else
+		m_list.SetShowPorts(FALSE);
 }

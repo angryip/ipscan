@@ -99,6 +99,8 @@ END
 //
 
 IDB_PASTE               BITMAP  DISCARDABLE     "res\\paste.bmp"
+IDB_SHOW_ADVANCED       BITMAP  DISCARDABLE     "res\\show_adv.bmp"
+IDB_HIDE_ADVANCED       BITMAP  DISCARDABLE     "res\\hide_adv.bmp"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -418,7 +420,7 @@ BEGIN
     PUSHBUTTON      "",IDC_CLASS_C,209,16,18,13,BS_BITMAP
     CONTROL         "List1",IDC_LIST,"SysListView32",LVS_REPORT | 
                     LVS_SHOWSELALWAYS | LVS_OWNERDRAWFIXED | WS_BORDER | 
-                    WS_TABSTOP,0,31,320,152
+                    WS_TABSTOP,0,82,320,101
     CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",WS_BORDER,
                     164,186,155,12
     LTEXT           "",IDC_STATUS,0,186,164,12,SS_NOTIFY | SS_CENTERIMAGE | 
@@ -428,7 +430,11 @@ BEGIN
     LTEXT           "Hostname:",IDC_STATIC,1,18,35,8
     LTEXT           "Threads",IDC_STATIC,231,19,27,8
     CTEXT           "0",IDC_NUMTHREADS,260,19,25,10,SS_SUNKEN
-    PUSHBUTTON      ">>>",IDC_BUTTON_TO_ADVANCED,292,8,25,17
+    PUSHBUTTON      "",IDC_BUTTON_TO_ADVANCED,292,1,13,28,BS_BITMAP
+    CONTROL         "Scan ports",IDC_SCAN_PORTS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,1,34,50,10
+    LTEXT           "<PORTS>",IDC_WHATPORTS,130,35,189,8
+    PUSHBUTTON      "Select ports to scan...",IDC_SELECT_PORTS,51,33,76,11
 END
 
 IDD_SEARCH DIALOG DISCARDABLE  0, 0, 142, 85
