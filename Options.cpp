@@ -224,8 +224,18 @@ void COptions::load()
 
 	// Path, where the Angry IP Scanner resides
 	m_szExecutablePath = __targv[0];
+	
 	int nTmp = m_szExecutablePath.ReverseFind('\\');
-	m_szExecutablePath.Delete(nTmp, m_szExecutablePath.GetLength() - nTmp);	
+	if (nTmp < 0)
+	{
+		char szCurDir[256];
+		::GetCurrentDirectory(sizeof(szCurDir), (char*) szCurDir);
+		m_szExecutablePath = szCurDir;	// The program is run from a current directory	
+	}
+	else
+	{	
+		m_szExecutablePath.Delete(nTmp, m_szExecutablePath.GetLength() - nTmp);			
+	}
 }
 
 void COptions::loadFavourites()

@@ -117,18 +117,33 @@ TScannerColumn g_BuiltInScannerColumns[] =
 
 CScanner::CScanner()
 {
-	m_app = AfxGetApp();
+	m_app = AfxGetApp();	
+
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("CScanner constructor: started ", 0, 0);
+	#endif
 
 	loadAllPossibleColumns();	
 
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("CScanner constructor: columns loaded ", 0, 0);
+	#endif
+
 	loadSelectedColumns();		
 
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("CScanner constructor: selected columns loaded ", 0, 0);
+	#endif
 }
 
 void CScanner::loadAllPossibleColumns()
 {
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("CScanner::loadAllPossibleColumns(): started ", 0, 0);
+	#endif
+
 	m_nAllColumns = sizeof(g_BuiltInScannerColumns) / sizeof(TScannerColumn);	
-	
+
 	m_AllColumns.SetSize(m_nAllColumns + 10, 10);
 		
 	// Load all possible columns

@@ -267,12 +267,16 @@ BOOL CIpscanDlg::OnInitDialog()
 
 	// Create the scanner object
 	g_scanner = new CScanner();	
+
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("OnInitDialog(): CScanner created ", 0, 0);
+	#endif
 	
 	// Add columns to the list control
 	g_scanner->initListColumns(&m_list);
 
 	#ifdef DEBUG_MESSAGES
-		AfxMessageBox("OnInitDialog(): CScanner created ", 0, 0);
+		AfxMessageBox("OnInitDialog(): list columns initialized ", 0, 0);
 	#endif
 
 	// Set button's bitmaps
