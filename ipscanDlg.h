@@ -137,6 +137,7 @@ protected:
 	afx_msg void OnHelpForum();
 	afx_msg void OnOptionsInstallProgram();
 	afx_msg void OnDestroy();
+	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

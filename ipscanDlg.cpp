@@ -164,8 +164,9 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_HELP_COMMANDLINE, OnHelpCommandline)
 	ON_COMMAND(ID_HELP_FORUM, OnHelpForum)
 	ON_COMMAND(ID_OPTIONS_INSTALL_PROGRAM, OnOptionsInstallProgram)
-	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_WM_DESTROY()
+	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
+	ON_WM_DRAWITEM()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -1135,4 +1136,11 @@ void CIpscanDlg::OnDestroy()
 	
 	delete(g_scanner);
 	delete(m_szDefaultFileName);
+}
+
+void CIpscanDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct) 
+{
+	// TODO: Add your message handler code here and/or call default
+	
+	CDialog::OnDrawItem(nIDCtl, lpDrawItemStruct);
 }

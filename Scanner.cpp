@@ -181,7 +181,7 @@ BOOL CScanner::finalizeScanning()
 BOOL CScanner::doScanIP(DWORD nItemIndex)
 {
 	// get IP address
-	int nIP;
+	DWORD nIP;
 	char szIP[16];
 	g_d->m_list.GetItemText(nItemIndex, 0, (char*) &szIP, sizeof(szIP));
 	nIP = inet_addr((char*)&szIP);
@@ -229,10 +229,19 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 			strcpy((char*) &szTmp, "<N/S>");
 		}
 		g_d->m_list.SetItemText(nItemIndex, i, (char*) &szTmp);
-	}	
+	}
+
+	/*if (FALSE) TODO!!!
+			doScanPorts();*/
 
 	return TRUE;
 }
+
+void CScanner::doScanPorts(DWORD nIP, CString &szResults)
+{
+	szResults = "N/A";
+}
+
 
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////// THREAD ////////////////////////////////////
@@ -429,6 +438,7 @@ exit_thread:
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////// THREAD ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
+
 
 
 

@@ -62,6 +62,7 @@
 #define IDC_CREATE_GROUP                1052
 #define IDC_CREATE_DESKTOP_SHORTCUT     1053
 #define IDC_MESSAGE_TEXT                1055
+#define IDC_BUTTON_TO_ADVANCED          1057
 #define ID_BUTTONABOUT                  32771
 #define IDS_FIRSTCOLUMN                 32772
 #define IDS_STRING32773                 32773
@@ -122,7 +123,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        151
 #define _APS_NEXT_COMMAND_VALUE         32812
-#define _APS_NEXT_CONTROL_VALUE         1056
+#define _APS_NEXT_CONTROL_VALUE         1058
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
