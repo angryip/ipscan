@@ -722,7 +722,21 @@ UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)
 	// Process scan /////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////
 
-	g_scanner->doScanIP(nParam, bParameterIsIP, nThreadIndex);
+	// check if this IP is not broadcasting IP 
+	// (just a guess right now, but in general, most X.X.X.0 and X.X.X.255 IPs are broadcasting)
+
+	BOOL bProceed = TRUE;
+
+	if (bParameterIsIP && g_options->m_bSkipBroadcast)
+	{
+		if (((nParam & 0xFF) == 0xFF) || ((nParam & 0xFF) == 0x00))
+		{
+			bProceed = FALSE;
+		}
+	}
+	
+	if (bProceed)
+		g_scanner->doScanIP(nParam, bParameterIsIP, nThreadIndex);
 	
 	/////////////////////////////////////////////////////////////////////////////
 	// Shutdown thread //////////////////////////////////////////////////////////

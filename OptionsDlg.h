@@ -50,6 +50,7 @@ public:
 	int		m_nPingCount;
 	BOOL	m_bOptimizePorts;
 	BOOL	m_bAutoSave;
+	BOOL	m_bSkipBroadcast;
 	//}}AFX_DATA
 
 

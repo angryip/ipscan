@@ -124,6 +124,7 @@
 #define IDC_OPENER_TITLE                1100
 #define IDC_BTN_CHANGE                  1101
 #define IDC_BTN_EDIT                    1102
+#define IDC_SKIP_BROADCAST              1102
 #define IDC_BTN_DELETE                  1103
 #define ID_BUTTONABOUT                  32771
 #define IDS_FIRSTCOLUMN                 32772
@@ -499,7 +500,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        163
 #define _APS_NEXT_COMMAND_VALUE         32831
-#define _APS_NEXT_CONTROL_VALUE         1102
+#define _APS_NEXT_CONTROL_VALUE         1103
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

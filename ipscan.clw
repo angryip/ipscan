@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=CIpscanDlg
+LastClass=COptionsDlg
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "ipscan.h"
@@ -21,22 +21,22 @@ Class9=CScanListCtrl
 Class10=CSearchDlg
 
 ResourceCount=15
-Resource1=IDD_OPTIONS (Neutral (Default))
+Resource1=IDD_QUERY_DLG
 Resource2=IDD_NETBIOS_OPTIONS
-Resource3=IDD_SELECT_COLUMNS_DLG
-Resource4=IDD_DETAILS_DLG
-Resource5=IDD_QUERY_DLG
-Resource6=IDD_ABOUTBOX (English (U.S.))
-Resource7=IDD_SEARCH (English (U.S.))
-Resource8=IDD_MESSAGE_DIALOG
-Resource9=IDD_EDIT_OPENERS_DLG
-Resource10=IDD_INSTALL_DLG
-Resource11=IDD_FAVOURITE_DELETE
-Resource12=IDD_IPSCAN_DIALOG (English (U.S.))
+Resource3=IDR_MENU1 (Neutral)
+Resource4=IDD_IPSCAN_DIALOG (English (U.S.))
+Resource5=IDD_SEARCH (English (U.S.))
+Resource6=IDD_INSTALL_DLG
+Resource7=IDD_DETAILS_DLG
+Resource8=IDD_EDIT_OPENERS_DLG
+Resource9=IDD_MESSAGE_DIALOG
+Resource10=IDD_FAVOURITE_DELETE
+Resource11=IDD_OPTIONS (Neutral (Default))
+Resource12=IDD_PORT_DLG
 Class11=CQueryDlg
-Resource13=IDR_MENU1 (Neutral)
+Resource13=IDD_SELECT_COLUMNS_DLG
 Class12=CFavouriteDeleteDlg
-Resource14=IDD_PORT_DLG
+Resource14=IDD_ABOUTBOX (English (U.S.))
 Class13=CEditOpenersDlg
 Resource15=IDR_MENU1 (Neutral (Default))
 
@@ -85,7 +85,7 @@ Type=0
 BaseClass=CDialog
 HeaderFile=OptionsDlg.h
 ImplementationFile=OptionsDlg.cpp
-LastObject=COptionsDlg
+LastObject=IDC_SKIP_BROADCAST
 Filter=D
 VirtualFilter=dWC
 
@@ -168,7 +168,7 @@ Class=CSearchDlg
 [DLG:IDD_OPTIONS (Neutral (Default))]
 Type=1
 Class=COptionsDlg
-ControlCount=36
+ControlCount=37
 Control1=IDC_EDIT2,edit,1350639744
 Control2=IDC_THREADS,edit,1350639744
 Control3=IDC_TIMEOUT,edit,1350631552
@@ -205,6 +205,7 @@ Control33=IDC_STATIC,static,1342308352
 Control34=IDC_COLUMN_TYPE,static,1342308354
 Control35=IDC_STATIC,static,1342308352
 Control36=IDC_COLUMN_SELECTED,static,1342308354
+Control37=IDC_SKIP_BROADCAST,button,1342242819
 
 [MNU:IDR_MENU1 (Neutral)]
 Type=1

@@ -42,6 +42,7 @@ COptionsDlg::COptionsDlg(CWnd* pParent /*=NULL*/)
 	m_nPingCount = 0;
 	m_bOptimizePorts = FALSE;
 	m_bAutoSave = FALSE;
+	m_bSkipBroadcast = FALSE;
 	//}}AFX_DATA_INIT
 }
 
@@ -72,6 +73,7 @@ void COptionsDlg::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxInt(pDX, m_nPingCount, 1, 10);
 	DDX_Check(pDX, IDC_OPTIMIZE_PORTS, m_bOptimizePorts);
 	DDX_Check(pDX, IDC_AUTO_SAVE, m_bAutoSave);
+	DDX_Check(pDX, IDC_SKIP_BROADCAST, m_bSkipBroadcast);
 	//}}AFX_DATA_MAP
 }
 
@@ -105,6 +107,7 @@ void COptionsDlg::OnOK()
 	g_options->m_bScanPorts = m_bScanPorts;	
 	g_options->m_bOptimizePorts = m_bOptimizePorts;
 	g_options->m_bAutoSave = m_bAutoSave;
+	g_options->m_bSkipBroadcast = m_bSkipBroadcast;
 }
 
 
@@ -121,6 +124,7 @@ int COptionsDlg::DoModal()
 	m_bScanPorts = g_options->m_bScanPorts;
 	m_bOptimizePorts = g_options->m_bOptimizePorts;
 	m_bAutoSave = g_options->m_bAutoSave;
+	m_bSkipBroadcast = g_options->m_bSkipBroadcast;
 
 	return CDialog::DoModal();
 }

@@ -149,6 +149,7 @@ void COptions::save()
 	app->WriteProfileInt("", "ShowPortsBelow", m_bShowPortsBelow);
 	app->WriteProfileInt("", "OptimizePorts", m_bOptimizePorts);
 	app->WriteProfileInt("", "AutoSave", m_bAutoSave);
+	app->WriteProfileInt("", "SkipBroadcast", m_bSkipBroadcast);
 
 	g_scanner->saveSelectedColumns();
 }
@@ -198,6 +199,7 @@ void COptions::load()
 	m_bShowPortsBelow = app->GetProfileInt("", "ShowPortsBelow", TRUE);
 	m_bOptimizePorts = app->GetProfileInt("", "OptimizePorts", TRUE);
 	m_bAutoSave = app->GetProfileInt("", "AutoSave", TRUE);
+	m_bSkipBroadcast = app->GetProfileInt("", "SkipBroadcast", TRUE);
 	
 	setPortString(app->GetProfileString("", "PortString", ""));	// also parses it
 

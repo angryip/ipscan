@@ -134,10 +134,6 @@ SOURCE=.\MessageDlg.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\NetBIOSOptions.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\NetBIOSUtils.cpp
 # End Source File
 # Begin Source File
@@ -228,10 +224,6 @@ SOURCE=.\Link.h
 # Begin Source File
 
 SOURCE=.\MessageDlg.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\NetBIOSOptions.h
 # End Source File
 # Begin Source File
 

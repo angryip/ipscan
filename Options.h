@@ -34,6 +34,7 @@ typedef	struct {CString szName; CString szExecute; } tOpener;
 class COptions  
 {
 public:
+	BOOL m_bSkipBroadcast;
 	BOOL m_bAutoSave;
 	void removeSettingsFromRegistry();
 	void saveFavourites();
