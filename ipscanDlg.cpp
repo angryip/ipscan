@@ -269,7 +269,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	// Set window size
 	RECT rc;
 	m_ipup.GetWindowRect(&rc); g_nListOffset = rc.bottom;
-	m_ctScanPorts.GetWindowRect(&rc); g_nAdvancedOffset = rc.bottom - g_nListOffset + 5;
+	m_ctScanPorts.GetWindowRect(&rc); g_nAdvancedOffset = rc.bottom - g_nListOffset + 1;
 	m_ip1.GetWindowRect(&rc); g_nListOffset -= (rc.top-5);
 	m_progress.GetWindowRect(&rc); g_nStatusHeight = rc.bottom-rc.top-2;	
 	

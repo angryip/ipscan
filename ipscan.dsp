@@ -307,6 +307,10 @@ SOURCE=.\res\paste.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\select_c.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\show_adv.bmp
 # End Source File
 # Begin Source File

@@ -103,8 +103,8 @@ void CSaveToFile::saveToTXT()
 		ws[i] = m_dlg->m_list.GetColumnWidth(i) / 8 + 10;
 		
 		if (!m_bAppend)
-		{
-			tmp.LoadString(IDS_FIRSTCOLUMN+i*2+1);
+		{			
+			g_scanner->getColumnName(i, tmp);
 			fprintf(f,"%-*s",ws[i],tmp);
 		}
 	}
