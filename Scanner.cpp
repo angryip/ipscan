@@ -298,7 +298,7 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 	DWORD nItemIndex;
 	DWORD nIP;
 
-	// get item index
+	// get item index or IP
 	if (bParameterIsIP)
 	{
 		nIP = nParam;
@@ -313,12 +313,20 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 
 	char szTmp[512];
 
-	// Ping it! (column number 1)
-	BOOL bAlive = m_AllColumns[1].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));
-	g_d->m_list.SetItemText(nItemIndex, CL_PING, (char*) &szTmp);
+	// Ping it! (column number 1), Check if it is alive
+	BOOL bAlive = m_AllColumns[1].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));	
 	
 	if (bAlive)
 	{
+		if (bParameterIsIP && g_options->m_neDisplayOptions == DISPLAY_ALIVE)
+		{
+			// Insert an item if it is not RescanIP() who called us and scanning mode is DISPLAY_ALIVE
+			in_addr structInAddr;
+			structInAddr.S_un.S_addr = nIP;
+			char *szIP = inet_ntoa(structInAddr);
+			nItemIndex = g_d->m_list.InsertItem(g_d->m_list.GetItemCount(), szIP, 2);	// 2nd image - "?"
+		}
+
 		// Change image to Alive
 		g_d->m_list.SetItem(nItemIndex, CL_IP, LVIF_IMAGE, NULL, 0, 0, 0, 0);
 		
@@ -327,9 +335,18 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 	}
 	else
 	{
+		if (g_options->m_neDisplayOptions == DISPLAY_ALIVE)
+		{
+			// If was chosen to display only alive IPs, then we shouldn't do anything further
+			return TRUE;
+		}
+
 		// Change image to Dead
 		g_d->m_list.SetItem(nItemIndex, CL_IP, LVIF_IMAGE, NULL, 1, 0, 0, 0);
 	}
+
+	// Set item text, alive it or not
+	g_d->m_list.SetItemText(nItemIndex, CL_PING, (char*) &szTmp);
 	
 	
 	bool bScan = g_options->m_bScanHostIfDead || bAlive;

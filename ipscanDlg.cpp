@@ -620,7 +620,7 @@ void CIpscanDlg::OnButtonipup()
 void CIpscanDlg::OnTimer(UINT nIDEvent) 
 {	
 	 	
-	int nIndex;
+	int nItemIndex = 0;
 	
 	if (g_nCurrentIP < g_nEndIP) 
 	{
@@ -633,7 +633,12 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 		szIP = inet_ntoa(in);
 		status(szIP);
 		
-		nIndex = m_list.InsertItem(m_list.GetItemCount(), szIP, 2);	// 2nd image - "?"
+		if (g_options->m_neDisplayOptions == DISPLAY_ALL)
+		{
+			// Insert an item only if display options is set to display ALL IPs
+			// In other cases, it will be inserted later by CScanner::doScanIP
+			nItemIndex = m_list.InsertItem(m_list.GetItemCount(), szIP, 2);	// 2nd image - "?"
+		}
 
 		CWinThread *pThread = AfxBeginThread(ThreadProcCallback, (LPVOID) g_nCurrentIP);	// Pass IP in Host byte order
 		
