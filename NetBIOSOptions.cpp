@@ -83,9 +83,9 @@ void CNetBIOSOptions::OnShowWindow(BOOL bShow, UINT nStatus)
 	CDialog::OnShowWindow(bShow, nStatus);
 	
 	// Load LANA numbers		
-	CNetBIOSUtils cNetBIOSUtils(FALSE);
+	CNetBIOSUtils cNetBIOSUtils();
 
-	LANA_ENUM lanaEnum;
+	/*LANA_ENUM lanaEnum;
 
 	int nCurrentLana = AfxGetApp()->GetProfileInt("", "LanaNumber", -1);
 
@@ -100,9 +100,9 @@ void CNetBIOSOptions::OnShowWindow(BOOL bShow, UINT nStatus)
 		
 		if (nCurrentLana == lanaEnum.lana[i])
 			m_ctlLanaList.SetCurSel(i);
-	}
+	}*/
 
-	if (nCurrentLana < 0)
+	//if (nCurrentLana < 0)
 		m_ctlLanaList.SetCurSel(0);
 	
 }

@@ -16,7 +16,7 @@
 #include "stdafx.h"
 #include "NetBIOSUtils.h"
 #include "NetBIOSOptions.h"
-#include <nb30.h>
+#include "Scanner.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -28,33 +28,43 @@ static char THIS_FILE[]=__FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-#define CONST_OWN_NETBIOS_NAME "ANGRYIPSCAN"
+#define NETBIOS_REQUEST "\xa2\x48\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x20\x43\x4b\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x00\x00\x21\x00\x01"
 
-tNetBiosFunc pNetBiosFunc;
+#pragma pack(push, 1)
+typedef struct _node_status_resp 
+{
+	unsigned short trn_id;
+	unsigned short flags1;
+	unsigned short flags2;
+	unsigned short flags3;
+	unsigned short flags4;
+	unsigned short flags5;
+	char rr_name[0x22];
+	unsigned short nbstat;  /* 0x0021 */
+	unsigned short in;  /* 0x0001 */
+	unsigned long zilch; /* 0 */
+	unsigned short rd_length;
+	unsigned char num_names;
+	struct {
+		unsigned char nb_name[16];
+		unsigned short name_flags;
+	} name_array[1];
+} NS_RESP;
+#pragma pack(pop)
 
-CNetBIOSUtils::CNetBIOSUtils(BOOL bInitLana /*= TRUE*/)
+#define NF_MASK_UG 128
+#define NF_PATT_U  0
+#define NF_PATT_G  128
+
+
+CNetBIOSUtils::CNetBIOSUtils()
 {	
-	HMODULE hDll = LoadLibrary("netapi32.dll");	
-
-	pNetBiosFunc = (tNetBiosFunc) GetProcAddress(hDll, "Netbios");
-	
-	if (!hDll || !pNetBiosFunc)
-	{
-		MessageBox(0, "NETAPI32.DLL cannot be loaded, so NetBIOS scanning is not functional.", "Fatal Error", MB_OK | MB_ICONHAND);
-		exit(1);
-	}
-
-	if (bInitLana)
-	{
-		GetLanaNumber();
-		Reset(m_nLana, 20, 30);
-		AddName(m_nLana, CONST_OWN_NETBIOS_NAME);
-	}
+	// Nothings here now
 }
 
 CNetBIOSUtils::~CNetBIOSUtils()
 {
-	DeleteName(m_nLana, CONST_OWN_NETBIOS_NAME);
+	// Nothing's here
 }
 
 void CNetBIOSUtils::setIP(LPCSTR szIP)
@@ -70,177 +80,80 @@ void CNetBIOSUtils::setIP(DWORD nIP)
 	m_szIP = ipa;
 }
 
-void CNetBIOSUtils::MakeName(char *achDest, LPCSTR szSrc)
-{
-	int cchSrc;
-
-    cchSrc = lstrlen (szSrc);
-    if (cchSrc > NCBNAMSZ)
-        cchSrc = NCBNAMSZ;
-
-    memset (achDest, ' ', NCBNAMSZ);
-    memcpy (achDest, szSrc, cchSrc);
-}
-
-BOOL CNetBIOSUtils::Reset(int nLana, int nSessions, int nNames)
-{
-	NCB ncb;
-
-    memset (&ncb, 0, sizeof (ncb));
-    ncb.ncb_command = NCBRESET;
-    ncb.ncb_lsn = 0;                // Allocate new lana_num resources 
-    ncb.ncb_lana_num = nLana;
-    ncb.ncb_callname[0] = nSessions;  // maximum sessions 
-    ncb.ncb_callname[2] = nNames;   // maximum names 
-
-    pNetBiosFunc(&ncb);    
-
-    return (NRC_GOODRET == ncb.ncb_retcode);
-	
-}
-
-BOOL CNetBIOSUtils::AddName(int nLana, LPCSTR szName)
-{
-
-    NCB ncb;
-
-    memset (&ncb, 0, sizeof (ncb));
-    ncb.ncb_command = NCBADDNAME;
-    ncb.ncb_lana_num = nLana;
-
-    MakeName ((char*)ncb.ncb_name, szName);
-
-    pNetBiosFunc (&ncb);    
-
-    return (NRC_GOODRET == ncb.ncb_retcode);
-}
-
-
-BOOL CNetBIOSUtils::AdapterStatus(int nLana, PVOID pBuffer, int cbBuffer, LPCSTR szName)
-{
-	NCB ncb;
-
-    memset (&ncb, 0, sizeof (ncb));
-    ncb.ncb_command = NCBASTAT;
-    ncb.ncb_lana_num = nLana;
-
-    ncb.ncb_buffer = (PUCHAR) pBuffer;
-    ncb.ncb_length = cbBuffer;
-
-    MakeName((char*)&ncb.ncb_callname, szName);
-
-    pNetBiosFunc(&ncb);    
-
-    return (NRC_GOODRET == ncb.ncb_retcode);
-}
-
-BOOL CNetBIOSUtils::DeleteName(int nLana, LPCSTR szName)
-{
-    NCB ncb;
-
-    memset (&ncb, 0, sizeof (ncb));
-    ncb.ncb_command = NCBDELNAME;
-    ncb.ncb_lana_num = nLana;
-
-    MakeName ((char*)ncb.ncb_name, szName);
-
-    pNetBiosFunc(&ncb);
-
-    return (NRC_GOODRET == ncb.ncb_retcode);
-}
-
-void CNetBIOSUtils::GetLanaNumber()
-{
-	int nLana = AfxGetApp()->GetProfileInt("", "LanaNumber", -1);
-
-	if (nLana < 0)
-	{
-		// Get Lana by hand
-
-		LANA_ENUM lanaEnum;
-
-		GetLanaNumbers(&lanaEnum);
-
-		if (lanaEnum.length > 1) 
-		{
-			if (MessageBox(AfxGetApp()->GetMainWnd()->m_hWnd, 
-				"Warning! You have several network adapters. NetBIOS info scanning can be very long\n"
-				"when trying to enumerate all of them.\n\n"
-				"Press Yes to select LANA number yourself (you can do this later with menu Options->Options)\n"
-				"Press No to select the first number in the list", "", MB_YESNO | MB_ICONQUESTION) == IDYES)
-			{
-				// User selected YES
-				CNetBIOSOptions cDlg;
-				cDlg.DoModal();
-
-				// Call itself again to update the info (user pressed Save)
-				GetLanaNumber();
-				return;
-			}
-		}
-
-		// Take the first one
-		nLana = lanaEnum.lana[0];
-	}
-	
-	m_nLana = nLana;
-}
-
-void CNetBIOSUtils::SetLanaNumber(int nLana)
-{
-	AfxGetApp()->WriteProfileInt("", "LanaNumber", nLana);
-}
-
-void CNetBIOSUtils::GetLanaNumbers(LANA_ENUM *pEnum)
-{
-	NCB ncb;
-
-	memset(&ncb, 0, sizeof(ncb));
-	ncb.ncb_command =  NCBENUM;
-	ncb.ncb_buffer = (unsigned char *) pEnum; 
-	ncb.ncb_length = sizeof(LANA_ENUM);
-
-	pNetBiosFunc((NCB*) &ncb);	
-}
-
-
 BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CString *szGroupName, CString *szMacAddress)
-{	
-    int cbBuffer;
-    ADAPTER_STATUS *pStatus;
-    NAME_BUFFER *pNames;
-    int i;
-    HANDLE hHeap;
+{	    
+	char buf[1000];    
 
-    hHeap = GetProcessHeap();
+	UINT nRetrievedLen = RetrieveData((char*) &buf, sizeof(buf));
 
-    // Allocate the largest buffer that might be needed. 
-    cbBuffer = sizeof (ADAPTER_STATUS) + 255 * sizeof (NAME_BUFFER);
-    pStatus = (ADAPTER_STATUS *) HeapAlloc (hHeap, 0, cbBuffer);
-    if (NULL == pStatus)
+	if (nRetrievedLen == 0)
+		return FALSE;
+
+	CString szTemp;
+
+    NS_RESP *data = (NS_RESP *) &buf;    
+
+    if (nRetrievedLen < sizeof(*data)) 
+	{
+		// response too small
         return FALSE;
-
-    if (!AdapterStatus (m_nLana, (PVOID) pStatus, cbBuffer, m_szIP))
-    {
-        HeapFree (hHeap, 0, pStatus);
+    }
+    
+    if (nRetrievedLen < (sizeof (*data) + (data->num_names - 1) * sizeof (data->name_array[0]))) 
+	{
+        // response too small for num_names
         return FALSE;
     }
 
-    // The list of names follows the adapter status structure.
-    pNames = (NAME_BUFFER *) (pStatus + 1);
+    
+	/*for (int i = 0; i < data->num_names; i++) 
+	{
+        szTemp.Format("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c<0x%02x> %s",
+                r->name_array[i].nb_name[0],
+                r->name_array[i].nb_name[1],
+                r->name_array[i].nb_name[2],
+                r->name_array[i].nb_name[3],
+                r->name_array[i].nb_name[4],
+                r->name_array[i].nb_name[5],
+                r->name_array[i].nb_name[6],
+                r->name_array[i].nb_name[7],
+                r->name_array[i].nb_name[8],
+                r->name_array[i].nb_name[9],
+                r->name_array[i].nb_name[10],
+                r->name_array[i].nb_name[11],
+                r->name_array[i].nb_name[12],
+                r->name_array[i].nb_name[13],
+                r->name_array[i].nb_name[14],
+                r->name_array[i].nb_name[15],
+                (r->name_array[i].name_flags & 128) ? "Group " : "Unique");
+		szOutput += szTemp;
+
+        for (j=0; j<NUM_SUFFIX; j++) {
+            if ((r->name_array[i].nb_name[15] == Suffixes[j].suff)
+                && ((r->name_array[i].name_flags & Suffixes[j].nf_mask)
+                    == Suffixes[j].nf_pattern)) {
+                szTemp.Format("  %s", Suffixes[j].usage);
+				szOutput += szTemp;
+                break;
+            }
+        }
+        szOutput += "\n";
+    }*/
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////    
 	char szName[16];
 
 	// get computer name
 	if (szComputerName != NULL)
 	{
 		*szComputerName = "";
-		memcpy(&szName, pNames[0].name, 15); szName[15] = 0;
+		memcpy(&szName, data->name_array[0].nb_name, 15); szName[15] = 0;
 		*szComputerName = szName;
 		szComputerName->TrimRight(' ');
 	}
 
 	// get group name
-	if (szGroupName != NULL)
+	/*if (szGroupName != NULL)
 	{
 		*szGroupName = "";
 		for (i = 0; i < pStatus->name_count; i++)
@@ -285,10 +198,73 @@ BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CStri
 			pStatus->adapter_address[3],
 			pStatus->adapter_address[4],
 			pStatus->adapter_address[5]);
-	}
+	}*/
 
-    HeapFree (hHeap, 0, pStatus);
 
     return TRUE;
 
+}
+
+int CNetBIOSUtils::RetrieveData(char *buf, int nBufSize)
+{	
+	struct sockaddr_in caddr;
+	SOCKET hSocket;    	
+
+	// Set socket to Non-Blocking mode
+	u_long nNonBlocking = 1;	
+	fd_set fd_read, fd_error;
+	timeval timeout;	
+
+	int nRetBufSize;
+
+    if ((hSocket = socket (AF_INET, SOCK_DGRAM, 0)) < 0) 
+	{
+		// TODO: retry should be made if no more sockets can be opened
+        return 0;
+    }
+
+	ioctlsocket(hSocket, FIONBIO, &nNonBlocking);	
+
+    memset((char *) &caddr, 0, sizeof(caddr));
+    caddr.sin_family = AF_INET;
+	caddr.sin_addr.S_un.S_addr = inet_addr(m_szIP);
+    caddr.sin_port = htons(137);
+
+	nRetBufSize = sizeof(NETBIOS_REQUEST) - 1;	
+	memcpy(buf, NETBIOS_REQUEST, nRetBufSize);
+   
+	int nSendToRet = 0;
+
+    if ((nSendToRet = sendto(hSocket, buf, nRetBufSize, 0, (sockaddr *) &caddr, sizeof(caddr))) < 0) 
+	{
+		closesocket(hSocket);
+        return 0;
+    }    
+
+	fd_read.fd_array[0] = hSocket; fd_read.fd_count = 1;
+	fd_error.fd_array[0] = hSocket; fd_error.fd_count = 1;
+	timeout.tv_sec = 0; 
+	timeout.tv_usec = g_options->m_nPingTimeout * 1000;	
+
+	if (select(0, &fd_read, 0, &fd_error, &timeout) > 0) 
+	{
+		if (fd_read.fd_count == 1)
+		{
+			nRetBufSize = recvfrom(hSocket, buf, nBufSize, 0, (struct sockaddr *) 0, (int *)0);
+
+			closesocket(hSocket);
+
+			if (nRetBufSize < 0) 
+			{				
+				return 0;
+			} 
+			else 
+			{
+				return nRetBufSize;
+			} 			
+		}
+	}	
+
+	closesocket(hSocket);
+	return 0;
 }
