@@ -11,6 +11,8 @@
 
 #include "stdafx.h"
 #include "ScanListHeaderCtrl.h"
+#include "globals.h"
+#include "IpscanDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -42,14 +44,6 @@ void CScanListHeaderCtrl::SetSortArrow(const int nSortColumn, const BOOL bSortAs
 {
 	m_nSortColumn = nSortColumn;
 	m_bSortAscending = bSortAscending;
-
-	// change the item to owner drawn.
-	/*HD_ITEM hditem;
-
-	hditem.mask = HDI_FORMAT;
-	VERIFY(GetItem(nSortColumn, &hditem));
-	hditem.fmt |= HDF_OWNERDRAW;
-	VERIFY(SetItem(nSortColumn, &hditem));*/
 
 	// invalidate the header control so it gets redrawn
 	Invalidate();
@@ -209,4 +203,12 @@ void CScanListHeaderCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	(void)dc.Detach();
 }
 
+BOOL CScanListHeaderCtrl::IsSortingAscending()
+{
+	return m_bSortAscending;
+}
 
+int CScanListHeaderCtrl::GetSortedColumn()
+{
+	return m_nSortColumn;
+}

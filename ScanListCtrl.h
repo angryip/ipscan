@@ -44,6 +44,7 @@ public:
 
 // Implementation
 public:
+	void SetSortingAllowed(BOOL bAllowed);
 	void InitPostCreateStuff();
 	void PrepareForScanning();
 	void DeleteSelectedItems();
@@ -75,6 +76,7 @@ public:
 	virtual ~CScanListCtrl();
 
 protected:
+	BOOL m_bSortingAllowed;
 	BOOL m_bSearchCaseSensitive;
 	CScanListHeaderCtrl m_ctlHeader;
 	CImageList m_imglist;
@@ -91,6 +93,7 @@ protected:
 	afx_msg void OnPaint();
 	//}}AFX_MSG
 	afx_msg void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
+	afx_msg void OnItemClickListHeader(NMHDR* pNMHDR, LRESULT* pResult);
 
 	DECLARE_MESSAGE_MAP()
 };

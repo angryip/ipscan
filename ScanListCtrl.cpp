@@ -34,9 +34,7 @@ static char THIS_FILE[] = __FILE__;
 CScanListCtrl::CScanListCtrl()
 {
 	m_bShowPorts = TRUE;
-
-	// Create image list for the listbox
-	m_imglist.Create(IDB_IMAGELIST, 16, 2, 0xFFFFFF);		
+	m_bSortingAllowed = FALSE;
 }
 
 CScanListCtrl::~CScanListCtrl()
@@ -47,6 +45,9 @@ CScanListCtrl::~CScanListCtrl()
 // This method is called in the OnInitDialog of the main window
 void CScanListCtrl::InitPostCreateStuff()
 {
+	// Create image list for the listbox
+	m_imglist.Create(IDB_IMAGELIST, 16, 2, 0xFFFFFF);		
+
 	// Add image list to the listbox (in case is not added yet)
 	SetImageList(&m_imglist, LVSIL_SMALL);	
 }
@@ -59,6 +60,7 @@ BEGIN_MESSAGE_MAP(CScanListCtrl, CListCtrl)
 	//}}AFX_MSG_MAP
 	ON_MESSAGE(WM_MEASUREITEM, MeasureItem)
 	ON_WM_MEASUREITEM_REFLECT()
+	ON_NOTIFY_REFLECT(LVN_COLUMNCLICK, OnItemClickListHeader)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -343,7 +345,7 @@ void CScanListCtrl::SetScanPorts()
 			InsertColumn(nCol, "Open ports");
 
 			// Set saved width for the column			
-			SetColumnWidth(nCol, AfxGetApp()->GetProfileInt("", "Col_!OP!", 10));
+			SetColumnWidth(nCol, AfxGetApp()->GetProfileInt("", "Col_!OP!", 8));
 		}
 	}
 	else
@@ -907,3 +909,91 @@ int CScanListCtrl::InsertColumn(int nCol, LPCTSTR lpszColumnHeading, int nFormat
 {
 	return CListCtrl::InsertColumn(nCol, lpszColumnHeading, nFormat | HDF_OWNERDRAW, nWidth, nSubItem);
 }
+
+void CScanListCtrl::SetSortingAllowed(BOOL bAllowed)
+{
+	m_bSortingAllowed = bAllowed;
+
+	if (!m_bSortingAllowed)
+		m_ctlHeader.SetSortArrow(-1, 0);	// Disable showing of sorting arrows
+}
+
+int CALLBACK SortCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort) 
+{
+	CScanListCtrl *pList = (CScanListCtrl*) lParamSort;
+	CScanListHeaderCtrl *pListHeader = (CScanListHeaderCtrl*) pList->GetHeaderCtrl();
+	int nSortedColumn = pListHeader->GetSortedColumn();
+
+	CString strItem1 = pList->GetItemText(lParam1, nSortedColumn);
+	CString strItem2 = pList->GetItemText(lParam2, nSortedColumn);   
+
+	int nRet, n1, n2;
+
+	switch (nSortedColumn) 
+	{
+		case CL_IP:
+			n1 = ntohl(inet_addr(strItem1));
+			n2 = ntohl(inet_addr(strItem2));
+			if (n1 > n2) nRet = 1; else if (n1 < n2) nRet = -1; else nRet = 0;
+			break;
+		case CL_PING:
+			if (strItem1.GetAt(0) == 'D')	// Dead
+				nRet = 1;
+			else 
+			if (strItem2.GetAt(0) == 'D') // Dead
+				nRet = -1;
+			else
+			{
+				n1 = atoi(strItem1);
+				n2 = atoi(strItem2);
+				if (n1 > n2) nRet = 1; else if (n1 < n2) nRet = -1; else nRet = 0;
+			}
+			break;
+		default:
+
+			if (strItem1 == "N/A" || strItem1 == "N/S")
+				strItem1 = "\xFF";	// Move it to the end
+
+			if (strItem2 == "N/A" || strItem2 == "N/S")
+				strItem2 = "\xFF";  // Move it to the end
+
+			nRet = strItem1.CompareNoCase(strItem2);
+			break;
+	}
+	
+	return nRet * (pListHeader->IsSortingAscending() ? 1 : -1);
+}
+
+void CScanListCtrl::OnItemClickListHeader(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
+
+	if (!m_bSortingAllowed)
+		return;
+
+	BOOL bSortAscending = m_ctlHeader.IsSortingAscending();
+	int nSortedColumn = m_ctlHeader.GetSortedColumn();
+	
+	if (phdn->iButton == 0)   // left button
+	{
+		if(phdn->iItem == nSortedColumn)
+	        bSortAscending = !bSortAscending;
+        else
+            bSortAscending = TRUE;
+
+        nSortedColumn = phdn->iItem;
+
+        for (int i=0;i < GetItemCount();i++) 
+		{
+			SetItemData(i, i);
+		}
+
+		m_ctlHeader.SetSortArrow(nSortedColumn, bSortAscending);
+
+		SortItems(&SortCompareFunc, (DWORD) this);
+	}
+		
+	*pResult = 0;
+}
+
+

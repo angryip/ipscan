@@ -45,9 +45,6 @@ UINT g_nListOffset,g_nStatusHeight, g_nAdvancedOffset;
 CIpscanDlg* d;
 CWinApp *app;
 
-int g_bSortAscending = 1;
-int g_nSortedCol = -1;
-
 unsigned long g_nEndIP;
 unsigned long g_nStartIP;
 unsigned long g_nCurrentIP;
@@ -190,8 +187,7 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_GOTO_NEXTDEAD, OnGotoNextdead)
 	ON_COMMAND(ID_GOTO_NEXTOPENPORT, OnGotoNextopenport)
 	ON_COMMAND(ID_GOTO_NEXTCLOSEDPORT, OnGotoNextclosedport)
-	ON_COMMAND(ID_GOTO_HOSTNAME, OnGotoHostname)
-	ON_NOTIFY(HDN_ITEMCLICKA, 0, OnItemclickListHeader)
+	ON_COMMAND(ID_GOTO_HOSTNAME, OnGotoHostname)	
 	ON_BN_CLICKED(IDC_BUTTONPASTE, OnButtonpaste)
 	ON_COMMAND(ID_HELP_COMMANDLINE, OnHelpCommandline)
 	ON_COMMAND(ID_HELP_FORUM, OnHelpForum)
@@ -213,8 +209,7 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_WM_CLOSE()
 	ON_COMMAND(ID_FAVOURITES_ADDCURRENTRANGE, OnFavouritesAddcurrentrange)
 	ON_COMMAND(ID_FAVOURITES_DELETEFAVOURITE, OnFavouritesDeleteFavourite)
-	ON_COMMAND(ID_UTILS_WIPETRACESREMOVESETTINGSFROMREGISTRY, OnUtilsRemoveSettingsFromRegistry)
-	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
+	ON_COMMAND(ID_UTILS_WIPETRACESREMOVESETTINGSFROMREGISTRY, OnUtilsRemoveSettingsFromRegistry)	
 	ON_COMMAND(ID_OPTIONS_SELECT_COLUMNS, OnSelectColumns)
 	ON_COMMAND(ID_OPTIONS_SELECTPORTS, OnSelectPortsClicked)
 	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_CONFIGURE, OnCommandsOpencomputerConfigure)
@@ -561,6 +556,7 @@ void CIpscanDlg::OnButtonScan()
 		m_tickcount = GetTickCount()/1000;
 
 		m_nScanMode = SCAN_MODE_SCANNING;
+		m_list.SetSortingAllowed(FALSE);
 		
 		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStop.m_hObject); // stop scanning button		
 
@@ -627,6 +623,7 @@ void CIpscanDlg::OnButtonScan()
 			BOOL bShowScanInfo = (m_nScanMode != SCAN_MODE_KILLING) && !g_bScanExistingItems;
 
 			m_nScanMode = SCAN_MODE_NOT_SCANNING;
+			m_list.SetSortingAllowed(TRUE);
 
 			status("Finalizing...");
 			g_scanner->finalizeScanning();			
@@ -1006,75 +1003,6 @@ BOOL CIpscanDlg::PreTranslateMessage(MSG* pMsg)
 	}
 
 	return CDialog::PreTranslateMessage(pMsg);
-}
-
-int CALLBACK SortCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort) 
-{
-	CString strItem1 = d->m_list.GetItemText(lParam1, g_nSortedCol);
-	CString strItem2 = d->m_list.GetItemText(lParam2, g_nSortedCol);   
-
-	int nRet, n1, n2;
-
-	switch (g_nSortedCol) 
-	{
-		case CL_IP:
-			n1 = ntohl(inet_addr(strItem1));
-			n2 = ntohl(inet_addr(strItem2));
-			if (n1 > n2) nRet = 1; else if (n1 < n2) nRet = -1; else nRet = 0;
-			break;
-		case CL_PING:
-			if (strItem1.GetAt(0) == 'D')	// Dead
-				nRet = 1;
-			else 
-			if (strItem2.GetAt(0) == 'D') // Dead
-				nRet = -1;
-			else
-			{
-				n1 = atoi(strItem1);
-				n2 = atoi(strItem2);
-				if (n1 > n2) nRet = 1; else if (n1 < n2) nRet = -1; else nRet = 0;
-			}
-			break;
-		default:
-
-			if (strItem1 == "N/A" || strItem1 == "N/S")
-				strItem1 = "\xFF";	// Move it to the end
-
-			if (strItem2 == "N/A" || strItem2 == "N/S")
-				strItem2 = "\xFF";  // Move it to the end
-
-			nRet = strItem1.CompareNoCase(strItem2);
-			break;
-	}
-	
-	return nRet * g_bSortAscending;
-}
-
-void CIpscanDlg::OnItemclickListHeader(NMHDR* pNMHDR, LRESULT* pResult) 
-{
-	HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
-	
-	if (m_nScanMode != SCAN_MODE_NOT_SCANNING) 
-		return;
-	
-	if (phdn->iButton == 0)   // left button
-	{
-		if( phdn->iItem == g_nSortedCol )
-	        g_bSortAscending = -g_bSortAscending;
-        else
-            g_bSortAscending = 1;
-
-        g_nSortedCol = phdn->iItem;
-
-        for (int i=0;i < m_list.GetItemCount();i++) 
-		{
-			m_list.SetItemData(i, i);
-		}
-
-		m_list.SortItems(&SortCompareFunc,0);
-	}
-		
-	*pResult = 0;
 }
 
 void CIpscanDlg::OnButtonpaste() 

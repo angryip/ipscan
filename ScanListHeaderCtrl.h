@@ -36,12 +36,16 @@ public:
 
 // Implementation
 public:
+	int GetSortedColumn();
+	BOOL IsSortingAscending();
+	void SetSortingAllowed(BOOL bAllowed);
 	virtual ~CScanListHeaderCtrl();
 
 	void SetSortArrow( const int nColumn, const BOOL bAscending );
+	void OnItemClickListHeader(NMHDR* pNMHDR, LRESULT* pResult);
 
 	// Generated message map functions
-protected:	
+protected:		
 	int m_nSortColumn;
 	BOOL m_bSortAscending;
 
@@ -51,7 +55,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-	virtual void DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct );
+	virtual void DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct );	
 };
 
 //{{AFX_INSERT_LOCATION}}
