@@ -169,6 +169,7 @@ BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CStri
 		*szComputerName = "";
 		memcpy(&szName, pNames[0].name, 15); szName[15] = 0;
 		*szComputerName = szName;
+		szComputerName->TrimRight(' ');
 	}
 
 	// get group name
@@ -182,8 +183,9 @@ BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CStri
 				memcpy(&szName, pNames[i].name, 15); szName[15] = 0;
 				*szGroupName = szName;
 				break;
-			}
+			}		
 		}
+		szGroupName->TrimRight(' ');
 	}
 
 	// get user name
@@ -202,6 +204,8 @@ BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CStri
 		int nDollarIndex = szUserName->Find('$'); 
 		if (nDollarIndex >= 0)
 			szUserName->Delete(nDollarIndex);
+
+		szUserName->TrimRight(' ');
 	}
 
 	// get mac address
