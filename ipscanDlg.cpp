@@ -31,8 +31,8 @@ UINT g_nListOffset,g_nStatusHeight, g_nAdvancedOffset;
 CIpscanDlg* d;
 CWinApp *app;
 
-int bSortAscending = 1;
-int nSortedCol = -1;
+int g_bSortAscending = 1;
+int g_nSortedCol = -1;
 
 #define INDEX_CONTEXT_MENU	2
 #define	INDEX_SHOW_MENU		2
@@ -844,56 +844,71 @@ BOOL CIpscanDlg::PreTranslateMessage(MSG* pMsg)
 	return CDialog::PreTranslateMessage(pMsg);
 }
 
-int CALLBACK SortCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort) {
-   CString    strItem1 = d->m_list.GetItemText(lParam1, nSortedCol);
-   CString    strItem2 = d->m_list.GetItemText(lParam2, nSortedCol);
+int CALLBACK SortCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort) 
+{
+	CString strItem1 = d->m_list.GetItemText(lParam1, g_nSortedCol);
+	CString strItem2 = d->m_list.GetItemText(lParam2, g_nSortedCol);   
 
-   MessageBox(0, "FIX ME!!!", "", 0);	// TODO
+	MessageBox(0, strItem1 + " " + strItem2, "", 0);
 
-   int ret,ip1,ip2;
-   
-   switch (nSortedCol) {
-	case CL_IP:
-		ip1 = ntohl(inet_addr(strItem1));
-		ip2 = ntohl(inet_addr(strItem2));
-		if (ip1>ip2) ret=1; else if (ip1<ip2) ret=-1; else ret=0;
-		break;
-	/*case CL_PINGTIME:
-		if (strItem1 == "N/A") ip1 = 0; else sscanf(strItem1,"%d",&ip1);
-		if (strItem2 == "N/A") ip2 = 0; else sscanf(strItem2,"%d",&ip2);
-		if (ip1>ip2) ret=1; else if (ip1<ip2) ret=-1; else ret=0;
-		break;
-	case CL_STATE:
-	case CL_HOSTNAME:
-	case CL_PORT:
-	case CL_ERROR:
-		ret = strcmp(strItem1, strItem2);
-		break;*/
-   }
-   
-   //MessageBoxA(0,strItem1+" "+strItem2,NULL,MB_OK);
-   return ret*bSortAscending;
+	int nRet, n1, n2;
+
+	switch (g_nSortedCol) 
+	{
+		case CL_IP:
+			n1 = ntohl(inet_addr(strItem1));
+			n2 = ntohl(inet_addr(strItem2));
+			if (n1 > n2) nRet = 1; else if (n1 < n2) nRet = -1; else nRet = 0;
+			break;
+		default:
+
+			if (strItem1 == "N/A" || strItem1 == "N/S")
+				strItem1 = "\xFF";	// Move it to the end
+
+			if (strItem2 == "N/A" || strItem2 == "N/S")
+				strItem2 = "\xFF";  // Move it to the end
+
+			nRet = strItem1.CompareNoCase(strItem2);
+			break;
+		/*case CL_PINGTIME:
+			if (strItem1 == "N/A") ip1 = 0; else sscanf(strItem1,"%d",&ip1);
+			if (strItem2 == "N/A") ip2 = 0; else sscanf(strItem2,"%d",&ip2);
+			if (ip1>ip2) ret=1; else if (ip1<ip2) ret=-1; else ret=0;
+			break;
+		case CL_STATE:
+		case CL_HOSTNAME:
+		case CL_PORT:
+		case CL_ERROR:
+			ret = strcmp(strItem1, strItem2);
+			break;*/
+	}
+
+	//MessageBoxA(0,strItem1+" "+strItem2,NULL,MB_OK);
+	return nRet * g_bSortAscending;
 
 }
 
-
-
 void CIpscanDlg::OnItemclickListHeader(NMHDR* pNMHDR, LRESULT* pResult) 
 {
+	MessageBox("FIX ME!");
+	return;
+
 	HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
 	
 	if (m_nScanMode != SCAN_MODE_NOT_SCANNING) 
 		return;
 	
-	if (phdn->iButton == 0) {  // left button
-		if( phdn->iItem == nSortedCol )
-	        bSortAscending = -bSortAscending;
+	if (phdn->iButton == 0)   // left button
+	{
+		if( phdn->iItem == g_nSortedCol )
+	        g_bSortAscending = -g_bSortAscending;
         else
-            bSortAscending = 1;
+            g_bSortAscending = 1;
 
-        nSortedCol = phdn->iItem;
+        g_nSortedCol = phdn->iItem;
 
-        for (int i=0;i < m_list.GetItemCount();i++) {
+        for (int i=0;i < m_list.GetItemCount();i++) 
+		{
 			m_list.SetItemData(i, i);
 		}
 

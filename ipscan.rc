@@ -82,6 +82,20 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Install the program...",     ID_OPTIONS_INSTALL_PROGRAM
     END
+    POPUP "&Utils"
+    BEGIN
+        POPUP "&Delete from list"
+        BEGIN
+            MENUITEM "&Dead hosts",                 ID_UTILS_DELETEFROMLIST_DEADHOSTS
+
+            MENUITEM "&Alive hosts",                ID_UTILS_DELETEFROMLIST_ALIVEHOSTS
+
+            MENUITEM "&Closed ports",               ID_UTILS_DELETEFROMLIST_CLOSEDPORTS
+
+            MENUITEM "&Open ports",                 ID_UTILS_DELETEFROMLIST_OPENPORTS
+
+        END
+    END
     POPUP "&Help"
     BEGIN
         MENUITEM "Angry IP Scanner &Webpage",   ID_HELP_ANGRYIPSCANNERWEBPAGE

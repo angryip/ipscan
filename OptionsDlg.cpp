@@ -86,8 +86,7 @@ int COptionsDlg::DoModal()
 
 
 void COptionsDlg::OnHelpbtn() 
-{
-	// TODO: Add your control notification handler code here
+{	
 	MessageBox(
 		"Options help:\n\n"
 		"Timer delay:\n"

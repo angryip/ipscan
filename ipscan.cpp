@@ -26,10 +26,7 @@ END_MESSAGE_MAP()
 // CIpscanApp construction
 
 CIpscanApp::CIpscanApp()
-{
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
-
+{	
 	#ifdef DEBUG_MESSAGES
 		AfxMessageBox("App constructor", 0, 0);
 	#endif
@@ -82,12 +79,10 @@ BOOL CIpscanApp::InitInstance()
 	int nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
 	{
-		// TODO: Place code here to handle when the dialog is
 		//  dismissed with OK
 	}
 	else if (nResponse == IDCANCEL)
 	{
-		// TODO: Place code here to handle when the dialog is
 		//  dismissed with Cancel
 	}
 
