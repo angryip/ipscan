@@ -107,6 +107,15 @@ TScannerColumn g_BuiltInScannerColumns[] =
 		/*pInitFunction*/ NULL,
 		/*pFinaFunction*/ NULL,
 		/*bBuiltinColum*/ TRUE
+	},
+	// TTL
+	{
+		/*pScanFunction*/ &ScanIntDoTTL, 
+		/*pInfoFunction*/ &ScanIntInfoTTL,
+		/*pSetuFunction*/ NULL,
+		/*pInitFunction*/ NULL,
+		/*pFinaFunction*/ NULL,
+		/*bBuiltinColum*/ TRUE
 	}
 };
 
@@ -759,7 +768,7 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 				DWORD nPortScanTime = GetTickCount() - nPortStartTime;
 
 				// If the port is not filtered
-				if (nPortScanTime * 1000 < timeout.tv_usec + 2000)
+				if (nPortScanTime * 1000 < (unsigned)timeout.tv_usec + 2000)
 				{
 					// Set the new timeout
 					timeout.tv_usec = (timeout.tv_usec + (nPortScanTime+5) * 1000) >> 1;	// make new timeout a mean

@@ -32,6 +32,9 @@ TScanFunction ScanIntDoPing;
 TInitFunction ScanIntInitPing;
 TInfoFunction ScanIntInfoPing;
 
+TScanFunction ScanIntDoTTL;	
+TInfoFunction ScanIntInfoTTL;
+
 TScanFunction ScanIntDoHostname;	
 TInfoFunction ScanIntInfoHostname;
 

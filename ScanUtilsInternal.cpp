@@ -93,7 +93,7 @@ int ScanIntDoPing(DWORD nIP, LPSTR szReturn, int nBufferLen)
 	for (int nPingCount = 1; nPingCount <= g_options->m_nPingCount; nPingCount++)
 	{
 		IPINFO IPInfo;
-		IPInfo.Ttl = 64;
+		IPInfo.Ttl = 128;
 		IPInfo.Tos = 0;
 		IPInfo.Flags = 0;
 		IPInfo.OptionsSize = 0;
@@ -142,6 +142,62 @@ BOOL ScanIntInfoPing(TInfoStruct *pInfoStruct)
 {
 	strcpy((char*)&pInfoStruct->szPluginName, "Ping");
 	strcpy((char*)&pInfoStruct->szDescription, "Shows the Ping time in milliseconds or \"Dead\" if host is not responding.");
+	return TRUE;
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+// Ping TTL
+//////////////////////////////////////////////////////////////////////////////////
+
+BOOL ScanIntDoTTL(DWORD nIP, LPSTR szReturn, int nBufferLen)
+{
+	// This is just a slightly modified copy of Ping function
+
+	BOOL bAlive = FALSE;
+
+	HANDLE hICMP = (HANDLE) lpfnIcmpCreateFile();
+
+	unsigned char RepData[sizeof(ICMPECHO)+100];
+
+	// Issue one additional ping
+	
+	IPINFO IPInfo;
+	IPInfo.Ttl = 128;
+	IPInfo.Tos = 0;
+	IPInfo.Flags = 0;
+	IPInfo.OptionsSize = 0;
+	IPInfo.OptionsData = NULL;
+	DWORD ReplyCount;
+	ReplyCount = lpfnIcmpSendEcho(hICMP, nIP, &aPingDataBuf, sizeof(aPingDataBuf), 
+		&IPInfo, RepData, sizeof(RepData), g_options->m_nPingTimeout);	
+
+	if (ReplyCount)
+	{
+		ReplyCount = RepData[4]+RepData[5]*256+RepData[6]*65536+RepData[7]*256*65536;
+		if (ReplyCount <= 0) 
+		{								
+			bAlive = (*(u_long *) &(RepData[8]) >= 0);
+		}
+	}
+
+	lpfnIcmpCloseHandle(hICMP);
+
+	if (nBufferLen > 10)	// Check to not overflow the string buffer
+	{
+		if (bAlive)
+		{
+			sprintf(szReturn,"%u", (unsigned)RepData[20]);
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
+BOOL ScanIntInfoTTL(TInfoStruct *pInfoStruct)
+{
+	strcpy((char*)&pInfoStruct->szPluginName, "TTL");
+	strcpy((char*)&pInfoStruct->szDescription, "Issues an additional \"ping\" and displays TTL value of the reply packet.");
 	return TRUE;
 }
 
