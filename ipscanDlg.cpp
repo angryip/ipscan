@@ -268,6 +268,9 @@ BOOL CIpscanDlg::OnInitDialog()
 
 	// Load menu
 	mnu.LoadMenu(IDR_MENU1);
+	//CMenu *showMenu = mnu.GetSubMenu(2);	// Show menu
+	
+
 	ctx_item = mnu.GetSubMenu(2);
 	ctx_noitem = mnu.GetSubMenu(1);	
 	hAccel = LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MENU1));
@@ -484,7 +487,12 @@ finish_all:
 				in.S_un.S_addr = htonl(m_endip);
 				ipp = inet_ntoa(in);
 				strcpy((char*)&ipa2,ipp);
-				sprintf((char*)&str,"Scan complete\r\n\r\n%s - %s\r\n%u second(s)\r\n\r\nIPs scanned: %u\r\nAlive hosts: %u\r\nWith open ports: %u",&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1, m_endip-m_startip+1, g_scanner->m_nAliveHosts, g_scanner->m_nOpenPorts);
+				sprintf((char*)&str,
+					"Scan complete\r\n\r\n%s - %s\r\n%u second(s)\r\n\r\n"
+					"IPs scanned:\t%u\r\n"
+					"Alive hosts:\t%u\r\n"
+					"With open ports:\t%u",
+					&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1, m_endip-m_startip+1, g_scanner->m_nAliveHosts, g_scanner->m_nOpenPorts);
 
 				CMessageDlg cMsgDlg;
 				cMsgDlg.setMessageText((char*)&str);

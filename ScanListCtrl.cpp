@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "ipscan.h"
 #include "ScanListCtrl.h"
+#include "DetailsDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -13,6 +14,7 @@ static char THIS_FILE[] = __FILE__;
 
 #include "MessageDlg.h"
 #include "NetBIOSUtils.h"
+#include "Scanner.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CScanListCtrl
@@ -355,17 +357,6 @@ void CScanListCtrl::DeleteOpenPorts(int nItemIndex)
 		delete pStr;
 }
 
-void CScanListCtrl::ShowIPDetails()
-{
-	int nCurrentItem = GetCurrentSelectedItem();
-
-	if (nCurrentItem < 0)
-		return;
-	
-	CString szIP = GetItemText(nCurrentItem, 0);
-	MessageBox(szIP);
-}
-
 void CScanListCtrl::OnLButtonDblClk(UINT nFlags, CPoint point) 
 {
 	ShowIPDetails();
@@ -429,7 +420,7 @@ void CScanListCtrl::ShowNetBIOSInfo()
 	cNetBIOS.setIP((char*)&ipstr);
 	if (!cNetBIOS.GetNames(&szUserName, &szComputerName, &szGroupName, &szMacAddress))
 	{
-		MessageBox("Cannot get NetBIOS information.","Error",MB_OK | MB_ICONERROR);
+		MessageBox("Cannot get NetBIOS information","Error",MB_OK | MB_ICONERROR);
 		return;
 	}
 	
@@ -445,4 +436,40 @@ void CScanListCtrl::ShowNetBIOSInfo()
 
 	cMessageDlg.setMessageText(szMessage);
 	cMessageDlg.DoModal();
+}
+
+void CScanListCtrl::ShowIPDetails()
+{
+	int nCurrentItem = GetCurrentSelectedItem();
+
+	if (nCurrentItem < 0)
+		return;
+	
+	CDetailsDlg cDlg(this);
+
+	// Set columns
+	int nColumns = g_scanner->getColumnCount();
+	CString szInfoLine;
+
+	for (int i=0; i < nColumns; i++)
+	{
+		g_scanner->getColumnName(i, szInfoLine);
+		szInfoLine += ":\t";
+		szInfoLine += GetItemText(nCurrentItem, i);
+
+		cDlg.addScannedInfo(szInfoLine);
+	}
+
+	CString * szPorts = (CString*) GetItemData(nCurrentItem);
+	if ((DWORD) szPorts > 10)
+	{
+		// Set ports
+		cDlg.setPorts(*szPorts);
+
+		// Add ports to the main window as well
+		szInfoLine = "Open ports:\t";
+		szInfoLine += *szPorts;
+	}
+	
+	cDlg.DoModal();
 }

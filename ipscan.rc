@@ -48,9 +48,13 @@ BEGIN
     POPUP "&Commands"
     BEGIN
         MENUITEM "Show details\tDbl-Click",     ID_COMMANDS_SHOWDETAILS
-        MENUITEM "Show &NetBIOS info\tCtrl+N",  ID_WINDOZESUCKS_SHOWNETBIOSINFO
-
         MENUITEM "Rescan &IP\tCtrl+I",          ID_WINDOZESUCKS_RESCANIP
+        POPUP "Show"
+        BEGIN
+            MENUITEM SEPARATOR
+            MENUITEM "Show &NetBIOS info\tCtrl+N",  ID_WINDOZESUCKS_SHOWNETBIOSINFO
+
+        END
         POPUP "Open computer"
         BEGIN
             MENUITEM "<HINT>",                      ID_COMMANDS_OPENCOMPUTER_HINT
@@ -257,7 +261,7 @@ CAPTION "Angry IP Scanner"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,63,98,50,14
-    ICON            IDR_MAINFRAME,IDC_STATIC,9,3,21,20
+    ICON            IDR_MAINFRAME,IDC_STATIC,9,3,20,20
     EDITTEXT        IDC_MESSAGE_TEXT,38,3,136,93,ES_MULTILINE | 
                     ES_AUTOVSCROLL | ES_READONLY | NOT WS_BORDER
 END
@@ -288,6 +292,20 @@ BEGIN
     PUSHBUTTON      "?",IDC_BUTTON_TIP,168,6,12,10
     LTEXT           "Note: please be patient when scanning ports. It may take long if you want to scan too many ports.",
                     IDC_STATIC,7,103,173,19
+END
+
+IDD_DETAILS_DLG DIALOGEX 0, 0, 248, 127
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Details"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Scanned info:",IDC_STATIC,7,3,45,8
+    LTEXT           "Open ports:",IDC_STATIC,192,3,38,8
+    EDITTEXT        IDC_SCANNED_INFO,7,13,181,108,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | WS_VSCROLL
+    EDITTEXT        IDC_PORT_LIST,192,13,49,108,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | WS_VSCROLL
 END
 
 
@@ -321,6 +339,14 @@ BEGIN
         RIGHTMARGIN, 180
         TOPMARGIN, 7
         BOTTOMMARGIN, 138
+    END
+
+    IDD_DETAILS_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 241
+        TOPMARGIN, 3
+        BOTTOMMARGIN, 120
     END
 END
 #endif    // APSTUDIO_INVOKED

@@ -26,6 +26,7 @@
 #define IDB_SHOW_ADVANCED               151
 #define IDB_HIDE_ADVANCED               152
 #define IDD_PORT_DLG                    153
+#define IDD_DETAILS_DLG                 155
 #define IDC_LIST                        1002
 #define IDC_STATUS                      1005
 #define IDC_IPADDRESS1                  1007
@@ -35,6 +36,7 @@
 #define IDC_CHECK2                      1011
 #define IDC_EDIT1                       1012
 #define IDC_PORTTIMEOUT                 1012
+#define IDC_SCANNED_INFO                1012
 #define IDC_BUTTONIPUP                  1013
 #define IDC_BUTTONPASTE                 1014
 #define IDC_HOSTNAME                    1016
@@ -83,6 +85,7 @@
 #define IDC_PLUGIN_OPTIONS_GROUP        1073
 #define IDC_SCAN_HOST_IF_DEAD           1074
 #define IDC_HOTKEY1                     1077
+#define IDC_PORT_LIST                   1079
 #define ID_BUTTONABOUT                  32771
 #define IDS_FIRSTCOLUMN                 32772
 #define IDS_STRING32773                 32773
@@ -142,9 +145,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        155
-#define _APS_NEXT_COMMAND_VALUE         32813
-#define _APS_NEXT_CONTROL_VALUE         1078
+#define _APS_NEXT_RESOURCE_VALUE        157
+#define _APS_NEXT_COMMAND_VALUE         32814
+#define _APS_NEXT_CONTROL_VALUE         1080
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
