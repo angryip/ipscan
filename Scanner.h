@@ -48,13 +48,14 @@ typedef struct
 	TInitFunction *pInitFunction;
 	TFinalizeFunction *pFinalizeFunction;
 
-	CString *pszColumnName;
+	CString *pszColumnName;	
 } TScannerColumn;
 
 
 class CScanner  
 {
 public:	
+	int getColumnReference(int nItemIndex);
 	BOOL getAllColumnName(int nIndex, CString &szColumnHeader);
 	int getAllColumnsCount();
 	void runScanFunction(DWORD nIP, int nIndex, char *szBuffer, int nBufferLength, BOOL bGlobal=FALSE);
@@ -73,7 +74,7 @@ public:
 	virtual ~CScanner();
 
 protected:
-	CArray<TScannerColumn, TScannerColumn&> m_Columns;
+	int m_Columns[256];
 	CArray<TScannerColumn, TScannerColumn&> m_AllColumns;		
 	int m_nColumns;
 	int m_nAllColumns;

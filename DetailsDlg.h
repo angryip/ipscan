@@ -34,7 +34,7 @@ public:
 	//}}AFX_VIRTUAL
 
 // Implementation
-protected:
+protected:	
 
 	// Generated message map functions
 	//{{AFX_MSG(CDetailsDlg)

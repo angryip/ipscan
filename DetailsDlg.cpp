@@ -79,3 +79,4 @@ void CDetailsDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 	pEdit->SetSel(0, 0);
 	
 }
+

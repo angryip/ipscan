@@ -33,10 +33,18 @@ public:
 
 // Implementation
 protected:
+	int m_nSelectedColumns;
+	void RepopulateSelectedColumns();
+	char m_naSelColumns[128];
 
 	// Generated message map functions
 	//{{AFX_MSG(CSelectColumnsDlg)
 	virtual BOOL OnInitDialog();
+	afx_msg void OnSelectAll();
+	afx_msg void OnDeselectAll();
+	afx_msg void OnMoveUp();
+	afx_msg void OnMoveDown();
+	afx_msg void OnDeselect();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

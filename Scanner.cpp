@@ -90,8 +90,7 @@ CScanner::CScanner()
 
 	m_nAllColumns = sizeof(g_BuiltInScannerColumns) / sizeof(TScannerColumn);	
 	
-	m_AllColumns.SetSize(m_nAllColumns + 10, 10);
-	m_Columns.SetSize(m_nAllColumns + 10, 10);
+	m_AllColumns.SetSize(m_nAllColumns + 10, 10);	
 		
 	// Load all possible columns
 	for (int i=0; i < m_nAllColumns; i++)
@@ -115,7 +114,7 @@ CScanner::CScanner()
 
 	for (i=0; i < m_nAllColumns; i++)
 	{
-		m_Columns[i] = m_AllColumns[i];
+		m_Columns[m_nColumns] = i;
 		m_nColumns++;
 	}
 
@@ -125,7 +124,7 @@ CScanner::~CScanner()
 {
 	for (int i = 0; i < m_nColumns; i++)
 	{
-		delete m_Columns[i].pszColumnName;
+		delete m_AllColumns[i].pszColumnName;
 	}
 }
 
@@ -141,7 +140,7 @@ int CScanner::getAllColumnsCount()
 
 BOOL CScanner::getColumnName(int nIndex, CString &szColumnHeader)
 {
-	szColumnHeader = *m_Columns[nIndex].pszColumnName;
+	szColumnHeader = *m_AllColumns[m_Columns[nIndex]].pszColumnName;
 	return TRUE;
 }
 
@@ -159,6 +158,12 @@ int CScanner::getColumnWidth(int nIndex)
 	return m_app->GetProfileInt("", szName, 100);
 }
 
+int CScanner::getColumnReference(int nItemIndex)
+{
+	return m_Columns[nItemIndex];
+}
+
+
 void CScanner::initListColumns(CScanListCtrl *pListCtrl)
 {
 	int nCol, nWidth;	
@@ -172,7 +177,7 @@ void CScanner::initListColumns(CScanListCtrl *pListCtrl)
 	for (nCol=0; nCol < m_nColumns; nCol++) 
 	{					
 		nWidth = getColumnWidth(nCol);
-		pListCtrl->InsertColumn(nCol, *m_Columns[nCol].pszColumnName, LVCFMT_LEFT, nWidth, nCol);
+		pListCtrl->InsertColumn(nCol, *m_AllColumns[m_Columns[nCol]].pszColumnName, LVCFMT_LEFT, nWidth, nCol);
 	}
 
 	pListCtrl->SetScanPorts();	// Add / remove last column with port scanning
@@ -191,8 +196,8 @@ BOOL CScanner::initScanning()
 {
 	for (int i=0; i < m_nColumns; i++)
 	{
-		if (m_Columns[i].pInitFunction != NULL)
-			m_Columns[i].pInitFunction();
+		if (m_AllColumns[m_Columns[i]].pInitFunction != NULL)
+			m_AllColumns[m_Columns[i]].pInitFunction();
 	}
 
 	m_nAliveHosts = 0;
@@ -206,8 +211,8 @@ BOOL CScanner::finalizeScanning()
 #ifdef _DEBUG
 	for (int i=0; i < m_nColumns; i++)
 	{
-		if (m_Columns[i].pFinalizeFunction != NULL)
-			m_Columns[i].pFinalizeFunction();
+		if (m_AllColumns[m_Columns[i]].pFinalizeFunction != NULL)
+			m_AllColumns[m_Columns[i]].pFinalizeFunction();
 	}
 #endif	// _DEBUG
 
@@ -222,7 +227,7 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 	char szTmp[512];
 
 	// Ping it! (column number 1)
-	BOOL bAlive = m_Columns[1].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));
+	BOOL bAlive = m_AllColumns[1].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));
 	g_d->m_list.SetItemText(nItemIndex, CL_PING, (char*) &szTmp);
 	
 	if (bAlive)
@@ -247,7 +252,7 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 	{
 		if (bScan)
 		{
-			if (m_Columns[i].pInfoFunction != NULL)
+			if (m_AllColumns[m_Columns[i]].pInfoFunction != NULL)
 			{
 				szTmp[0] = 0;
 				runScanFunction(nIP, i, (char*) &szTmp, sizeof(szTmp));				
@@ -362,7 +367,7 @@ void CScanner::runScanFunction(DWORD nIP, int nIndex, char *szBuffer, int nBuffe
 	if (bGlobal)
 		m_AllColumns[nIndex].pScanFunction(nIP, szBuffer, nBufferLength);
 	else
-		m_Columns[nIndex].pScanFunction(nIP, szBuffer, nBufferLength);
+		m_AllColumns[m_Columns[nIndex]].pScanFunction(nIP, szBuffer, nBufferLength);
 }
 
 
@@ -430,4 +435,5 @@ UINT ScanningThread(LPVOID nItemIndex)
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////// THREAD ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
+
 
