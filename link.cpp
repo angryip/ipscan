@@ -90,3 +90,25 @@ BOOL CLink::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	return CStatic::OnSetCursor(pWnd, nHitTest, message);
 }
 
+
+void CLink::goToScannerHomepage()
+{
+	CString szURL;
+	szURL.LoadString(IDS_SCAN_HOMEPAGE);
+	ShellExecute(0, NULL, szURL, NULL, NULL, SW_SHOWNORMAL);
+}
+
+void CLink::goToHomepage()
+{
+	CString szURL;
+	szURL.LoadString(IDS_HOMEPAGE);
+	ShellExecute(0, NULL, szURL, NULL, NULL, SW_SHOWNORMAL);
+}
+
+void CLink::goToWriteMail()
+{
+	CString szMail;
+	szMail.LoadString(IDS_MAIL);
+	szMail = "mailto:" + szMail;
+	ShellExecute(0, NULL, szMail, NULL, NULL, SW_SHOWNORMAL);	
+}

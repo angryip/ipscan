@@ -61,7 +61,7 @@ BOOL CIpscanApp::InitInstance()
 	CIpscanDlg dlg;
 	m_pMainWnd = &dlg;
 
-	theApp.SetRegistryKey("Angryziber");	
+	theApp.SetRegistryKey("Angryziber");
 
 	int nResponse = dlg.DoModal();
 	if (nResponse == IDOK)

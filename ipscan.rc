@@ -312,6 +312,7 @@ BEGIN
     IDS_VERSION             "1.86"
     IDS_SCAN_HOMEPAGE       "http://www.angryziber.com/ipscan/"
     IDS_HOMEPAGE            "http://www.angryziber.com/"
+    IDS_MAIL                "angryziber@mail.com"
 END
 
 #endif    // Russian resources

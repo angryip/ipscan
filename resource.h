@@ -95,6 +95,7 @@
 #define ID_GOTO_NEXTDEAD                32794
 #define IDS_HOMEPAGE                    32794
 #define ID_GOTO_NEXTOPENPORT            32795
+#define IDS_MAIL                        32795
 #define ID_GOTO_NEXTCLOSEDPORT          32796
 #define ID_GOTO_HOSTNAME                32797
 #define ID_COMMANDS_OPENCOMPUTER_ASFTP  32804

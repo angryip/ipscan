@@ -35,6 +35,9 @@ public:
 
 // Implementation
 public:
+	static void goToWriteMail();
+	static void goToHomepage();
+	static void goToScannerHomepage();
 	virtual ~CLink();
 
 	// Generated message map functions
