@@ -151,7 +151,7 @@ void COptionsDlg::OnHelpbtn()
 		"\tthen the port is considered \"closed\"\n"
 		"Faster port scans:\n"
 		"\tOptimized timeout selection for scanning ports. If selected then port\n"
-		"\ttimeout is pingtime * 4. This prevents port filtering to slow down scans.\n"
+		"\ttimeout is pingtime * 5. This prevents port filtering to slow down scans.\n"
 		"Display options:\n"
 		"\tSelect what addresses you want to be displayed in the window:\n"
 		"\tAll IPs, only alive IPs or only those with the open port.\n"		

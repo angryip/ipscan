@@ -30,6 +30,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CEditOpenersDlg)
 	enum { IDD = IDD_EDIT_OPENERS_DLG };
+	CEdit	m_ctrlWorkingDirectory;
 	CEdit	m_ctrlExecutionString;
 	CEdit	m_ctrlTitle;
 	CListBox	m_ctrlList;

@@ -221,7 +221,7 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 
 	ON_COMMAND_RANGE(ID_MENU_SHOW_CMD_001, ID_MENU_SHOW_CMD_099, OnExecuteShowMenu)
 	ON_COMMAND_RANGE(ID_MENU_OPEN_CMD_001, ID_MENU_OPEN_CMD_099, OnExecuteOpenMenu)
-	ON_COMMAND_RANGE(ID_MENU_FAVOURITES_001, ID_MENU_FAVOURITES_099, OnExecuteFavouritesMenu)
+	ON_COMMAND_RANGE(ID_MENU_FAVOURITES_001, ID_MENU_FAVOURITES_249, OnExecuteFavouritesMenu)
 
 END_MESSAGE_MAP()
 
@@ -1219,8 +1219,13 @@ void CIpscanDlg::OnScanPortsClicked()
 
 	if (bChecked && g_options->m_aParsedPorts[0].nStartPort == 0)
 	{
-		AfxMessageBox("No ports selected", MB_ICONHAND | MB_OK, 0);
 		m_ctScanPorts.SetCheck(FALSE);
+		
+		if (AfxMessageBox("No ports are currently selected for scanning.\nDo you want to select them?", MB_ICONWARNING | MB_YESNO, 0) == IDYES)
+		{
+			OnSelectPortsClicked();
+		}		
+
 		return;
 	}
 
@@ -1313,8 +1318,10 @@ void CIpscanDlg::OnExecuteOpenMenu(UINT nID)
 	
 	CString szExecute;
 	CString szParameters;
+	CString szWorkDir;
 
 	szExecute.Format(g_options->m_aOpeners[nOpenerIndex].szExecute, szIP);
+	szWorkDir = g_options->m_aOpeners[nOpenerIndex].szWorkDir;
 
 	int nSpacePos = szExecute.Find(TCHAR(' '));
 
@@ -1326,7 +1333,7 @@ void CIpscanDlg::OnExecuteOpenMenu(UINT nID)
 
 	}
 
-	if ((int)ShellExecute(0, NULL, szExecute, szParameters, NULL, SW_SHOWNORMAL) <= 32) 
+	if ((int)ShellExecute(0, NULL, szExecute, szParameters, (szWorkDir.GetLength() > 0) ? (LPCSTR) szWorkDir : NULL, SW_SHOWNORMAL) <= 32) 
 	{
 		MessageBox("This IP cannot be opened (ShellExecute \"" + szExecute + szParameters + "\" failed)", NULL, MB_OK | MB_ICONHAND);
 	}	

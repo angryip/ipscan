@@ -56,6 +56,7 @@ BEGIN_MESSAGE_MAP(CSelectColumnsDlg, CDialog)
 	ON_BN_CLICKED(IDC_DESELECT, OnDeselect)
 	ON_BN_CLICKED(IDC_SELECT, OnSelect)
 	ON_BN_CLICKED(IDC_SELECT_APPEND, OnSelectAppend)
+	ON_BN_CLICKED(IDC_SELECT_COLUMN_INFO, OnSelectColumnInfo)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -85,8 +86,8 @@ BOOL CSelectColumnsDlg::OnInitDialog()
 		m_naSelColumns[i] = g_scanner->getColumnReference(i);
 	}
 
-	RepopulateSelectedColumns();
-	
+	RepopulateSelectedColumns();	
+
 	return TRUE;  
 }
 
@@ -225,6 +226,31 @@ void CSelectColumnsDlg::OnSelectAppend()
 	}
 
 	RepopulateSelectedColumns();	
+}
+
+void CSelectColumnsDlg::OnSelectColumnInfo() 
+{
+	int nCurSel = m_ctAllColumns.GetCurSel();
+	
+	if (m_ctAllColumns.GetSelCount() <= 0)
+	{
+		AfxMessageBox("Nothing's selected in the left-hand listbox", MB_ICONHAND | MB_OK, 0);
+		return;
+	}
+
+	nCurSel += CL_STATIC_COUNT;
+
+	if (g_scanner->m_AllColumns[nCurSel].pInfoFunction == NULL)
+	{
+		AfxMessageBox("No info about this column", MB_ICONINFORMATION | MB_OK, 0);
+		return;
+	}
+
+	TInfoStruct infoStruct;
+	
+	g_scanner->m_AllColumns[nCurSel].pInfoFunction(&infoStruct);
+
+	MessageBox(infoStruct.szDescription, infoStruct.szColumnName, MB_OK | MB_ICONINFORMATION);
 }
 
 void CSelectColumnsDlg::OnDeselect() 

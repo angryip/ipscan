@@ -273,10 +273,12 @@ void COptions::loadOpeners()
 		
 		if (m_aOpeners[i].szName.GetLength() == 0)
 			break;
-
 		
 		szKey.Format("OpenerString_%d", i);
 		m_aOpeners[i].szExecute = app->GetProfileString("", szKey);
+
+		szKey.Format("OpenerDir_%d", i);
+		m_aOpeners[i].szWorkDir = app->GetProfileString("", szKey);
 	}
 
 	// Add default openers, if no openers were loaded
@@ -319,6 +321,9 @@ void COptions::saveOpeners()
 
 		szKey.Format("OpenerString_%d", i);
 		app->WriteProfileString("", szKey, m_aOpeners[i].szExecute);
+
+		szKey.Format("OpenerDir_%d", i);
+		app->WriteProfileString("", szKey, m_aOpeners[i].szWorkDir);
 	}
 }
 
@@ -380,14 +385,14 @@ CString COptions::getCurrentDate()
 void COptions::initFavouritesMenu(CMenu *pMenu)
 {	
 	// Delete items first
-	for (int i=0; i < 99; i++) 
+	for (int i=0; i < 250; i++) 
 	{
 		if (!pMenu->DeleteMenu(3, MF_BYPOSITION))
 			break;
 	}
 
 	// Add menu items for favourites
-	for (i=0; i < 99; i++) 
+	for (i=0; i < 250; i++) 
 	{
 		if (m_aFavourites[i].szName.GetLength() == 0)
 			break;
@@ -445,7 +450,7 @@ void COptions::addFavourite()
 		return;
 
 	// Find the empty slot and populate it
-	for (int i=0; i < 99; i++)
+	for (int i=0; i < 250; i++)
 	{
 		if (m_aFavourites[i].szName.GetLength() == 0)
 		{
@@ -470,7 +475,7 @@ void COptions::deleteFavourite()
 	
 	if (dlg.DoModal() == IDOK)
 	{
-		for (int i = dlg.m_nFavouriteIndex; i < 99; i++)
+		for (int i = dlg.m_nFavouriteIndex; i < 250; i++)
 		{			
 			m_aFavourites[i] = m_aFavourites[i+1];
 

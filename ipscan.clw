@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=CIpscanDlg
+LastClass=CEditOpenersDlg
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "ipscan.h"
@@ -21,22 +21,22 @@ Class9=CScanListCtrl
 Class10=CSearchDlg
 
 ResourceCount=15
-Resource1=IDD_SEARCH (English (U.S.))
+Resource1=IDD_FAVOURITE_DELETE
 Resource2=IDD_NETBIOS_OPTIONS
-Resource3=IDD_DETAILS_DLG
-Resource4=IDD_EDIT_OPENERS_DLG
-Resource5=IDD_QUERY_DLG
-Resource6=IDD_PORT_DLG
-Resource7=IDD_FAVOURITE_DELETE
-Resource8=IDD_ABOUTBOX (English (U.S.))
+Resource3=IDD_PORT_DLG
+Resource4=IDD_DETAILS_DLG
+Resource5=IDD_SELECT_COLUMNS_DLG
+Resource6=IDR_MENU1 (Neutral)
+Resource7=IDD_MESSAGE_DIALOG
+Resource8=IDD_EDIT_OPENERS_DLG
 Resource9=IDD_OPTIONS (Neutral (Default))
-Resource10=IDD_MESSAGE_DIALOG
-Resource11=IDD_IPSCAN_DIALOG (English (U.S.))
+Resource10=IDD_IPSCAN_DIALOG (English (U.S.))
+Resource11=IDD_ABOUTBOX (English (U.S.))
 Resource12=IDD_INSTALL_DLG
 Class11=CQueryDlg
-Resource13=IDD_SELECT_COLUMNS_DLG
+Resource13=IDD_QUERY_DLG
 Class12=CFavouriteDeleteDlg
-Resource14=IDR_MENU1 (Neutral)
+Resource14=IDD_SEARCH (English (U.S.))
 Class13=CEditOpenersDlg
 Resource15=IDR_MENU1 (Neutral (Default))
 
@@ -45,6 +45,7 @@ Type=0
 BaseClass=CDialog
 HeaderFile=InstallDlg.h
 ImplementationFile=InstallDlg.cpp
+LastObject=CInstallDlg
 
 [CLS:CIpscanApp]
 Type=0
@@ -64,7 +65,7 @@ Type=0
 BaseClass=CDialog
 HeaderFile=ipscanDlg.h
 ImplementationFile=ipscanDlg.cpp
-LastObject=ID_SCAN_SAVETOTXT
+LastObject=IDC_BUTTON_TO_ADVANCED
 Filter=D
 VirtualFilter=dWC
 
@@ -73,12 +74,14 @@ Type=0
 BaseClass=CStatic
 HeaderFile=link.h
 ImplementationFile=link.cpp
+LastObject=CLink
 
 [CLS:CMessageDlg]
 Type=0
 BaseClass=CDialog
 HeaderFile=MessageDlg.h
 ImplementationFile=MessageDlg.cpp
+LastObject=CMessageDlg
 
 [CLS:COptionsDlg]
 Type=0
@@ -100,6 +103,7 @@ Type=0
 BaseClass=CListCtrl
 HeaderFile=ScanListCtrl.h
 ImplementationFile=ScanListCtrl.cpp
+LastObject=CScanListCtrl
 
 [CLS:CSearchDlg]
 Type=0
@@ -341,7 +345,7 @@ Control4=IDC_PORT_LIST,edit,1352728644
 [DLG:IDD_SELECT_COLUMNS_DLG]
 Type=1
 Class=?
-ControlCount=13
+ControlCount=14
 Control1=IDC_ALL_COLUMNS,listbox,1352730881
 Control2=IDC_SELECT_ALL,button,1342242816
 Control3=IDC_DESELECT_ALL,button,1342242816
@@ -355,6 +359,7 @@ Control10=IDC_STATIC,static,1342308352
 Control11=IDC_MOVE_UP,button,1342242816
 Control12=IDC_MOVE_DOWN,button,1342242816
 Control13=IDC_SELECT_APPEND,button,1342242816
+Control14=IDC_SELECT_COLUMN_INFO,button,1342242816
 
 [DLG:IDD_NETBIOS_OPTIONS]
 Type=1
@@ -405,22 +410,24 @@ VirtualFilter=dWC
 [DLG:IDD_EDIT_OPENERS_DLG]
 Type=1
 Class=CEditOpenersDlg
-ControlCount=15
+ControlCount=17
 Control1=IDC_OPENER_LIST,listbox,1352728833
 Control2=IDC_BTN_UP,button,1342242816
 Control3=IDC_BTN_DOWN,button,1342242816
 Control4=IDC_BTN_EDIT,button,1342242816
-Control5=IDC_OPENER_TITLE,edit,1350631552
-Control6=IDC_EXECUTION_STRING,edit,1350631552
-Control7=IDC_BTN_CHANGE,button,1342242816
-Control8=IDC_BTN_INSERT,button,1342242816
-Control9=IDOK,button,1342242817
-Control10=IDC_STATIC,static,1342308352
-Control11=IDC_STATIC,button,1342177287
+Control5=IDC_BTN_DELETE,button,1342242816
+Control6=IDC_OPENER_TITLE,edit,1350631552
+Control7=IDC_EXECUTION_STRING,edit,1350631552
+Control8=IDC_WORKING_DIRECTORY,edit,1350631552
+Control9=IDC_BTN_CHANGE,button,1342242816
+Control10=IDC_BTN_INSERT,button,1342242816
+Control11=IDOK,button,1342242817
 Control12=IDC_STATIC,static,1342308352
-Control13=IDC_STATIC,static,1342308352
+Control13=IDC_STATIC,button,1342177287
 Control14=IDC_STATIC,static,1342308352
-Control15=IDC_BTN_DELETE,button,1342242816
+Control15=IDC_STATIC,static,1342308352
+Control16=IDC_STATIC,static,1342308352
+Control17=IDC_STATIC,static,1342308352
 
 [CLS:CEditOpenersDlg]
 Type=0
@@ -429,5 +436,5 @@ ImplementationFile=EditOpenersDlg.cpp
 BaseClass=CDialog
 Filter=D
 VirtualFilter=dWC
-LastObject=CEditOpenersDlg
+LastObject=IDC_WORKING_DIRECTORY
 

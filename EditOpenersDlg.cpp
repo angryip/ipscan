@@ -42,6 +42,7 @@ void CEditOpenersDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CEditOpenersDlg)
+	DDX_Control(pDX, IDC_WORKING_DIRECTORY, m_ctrlWorkingDirectory);
 	DDX_Control(pDX, IDC_EXECUTION_STRING, m_ctrlExecutionString);
 	DDX_Control(pDX, IDC_OPENER_TITLE, m_ctrlTitle);
 	DDX_Control(pDX, IDC_OPENER_LIST, m_ctrlList);
@@ -83,6 +84,7 @@ void CEditOpenersDlg::OnBtnEdit()
 	
 	m_ctrlTitle.SetWindowText(g_options->m_aOpeners[nSelectedOpener].szName);
 	m_ctrlExecutionString.SetWindowText(g_options->m_aOpeners[nSelectedOpener].szExecute);
+	m_ctrlWorkingDirectory.SetWindowText(g_options->m_aOpeners[nSelectedOpener].szWorkDir);
 }
 
 void CEditOpenersDlg::OnBtnChange() 
@@ -92,6 +94,7 @@ void CEditOpenersDlg::OnBtnChange()
 	CString szTmp;
 	m_ctrlTitle.GetWindowText(szTmp); g_options->m_aOpeners[nSelectedOpener].szName = szTmp;
 	m_ctrlExecutionString.GetWindowText(szTmp); g_options->m_aOpeners[nSelectedOpener].szExecute = szTmp;
+	m_ctrlWorkingDirectory.GetWindowText(szTmp); g_options->m_aOpeners[nSelectedOpener].szWorkDir = szTmp;
 
 	RefreshList();
 
@@ -105,6 +108,7 @@ void CEditOpenersDlg::OnBtnInsert()
 	CString szTmp;
 	m_ctrlTitle.GetWindowText(szTmp); g_options->m_aOpeners[nNewOpener].szName = szTmp;
 	m_ctrlExecutionString.GetWindowText(szTmp); g_options->m_aOpeners[nNewOpener].szExecute = szTmp;
+	m_ctrlWorkingDirectory.GetWindowText(szTmp); g_options->m_aOpeners[nNewOpener].szWorkDir = szTmp;
 
 	RefreshList();
 

@@ -589,8 +589,11 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 	
 	if (nPingTime >= 0 && g_options->m_bOptimizePorts)
 	{
-		if (nPingTime == 0)	nPingTime = 10;
-		timeout.tv_usec = nPingTime * 4 * 1000;		// Optimized port scanning prevents port filtering from making scanning slower
+		if (nPingTime == 0)	nPingTime = 30;
+		timeout.tv_usec = nPingTime * 5 * 1000;		// Optimized port scanning prevents port filtering from making scanning slower
+		
+		if (timeout.tv_usec > g_options->m_nPortTimeout * 1000)
+			timeout.tv_usec = g_options->m_nPortTimeout * 1000;
 	}
 	else
 	{
@@ -613,11 +616,11 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 				if (nError == WSAEMFILE) // No more socket handles
 				{
 					// TODO: we must do something here!!!
-					MessageBox(0, "No more sockets", "", 0);
+					MessageBox(0, "No more sockets, please contact author!", "", 0);
 				}
 				else
 				{
-					szResult.Format("ERROR: %d", nError);
+					szResult.Format("WINSOCK ERROR: %d", nError);
 					return FALSE;
 				}
 			}
@@ -638,7 +641,7 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 				{
 					// Connection successfull
 					szPort.Format("%d", nPort);
-					szResult += szPort + ",";					
+					szResult += szPort + ',';					
 				}
 			}			
 
@@ -747,8 +750,7 @@ UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)
 	// Remove thread's handle	
 	if (g_nThreadCount >=0) 
 	{
-		szTmp.Format("%d",g_nThreadCount);		
-		g_d->m_numthreads.SetWindowText(szTmp);
+		g_d->SetDlgItemInt(IDC_NUMTHREADS, g_nThreadCount, FALSE);
 	}	
 
 	g_threads[nThreadIndex] = THREAD_DEAD;	// Thread is dead now

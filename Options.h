@@ -29,7 +29,7 @@ typedef struct {u_short nStartPort; u_short nEndPort; } tPortRange;
 
 typedef	struct {CString szName; u_long nIP1; u_long nIP2; } tFavourite;
 
-typedef	struct {CString szName; CString szExecute; } tOpener;
+typedef	struct {CString szName; CString szExecute; CString szWorkDir; } tOpener;
 
 class COptions  
 {
@@ -58,7 +58,7 @@ public:
 	int m_nMaxThreads;
 	int m_nTimerDelay;
 	tPortRange *m_aParsedPorts;	// Array
-	tFavourite m_aFavourites[100];
+	tFavourite m_aFavourites[250];
 	tOpener m_aOpeners[100];
 	void setPortString(LPCSTR szPortString);
 	CString m_szPorts;
