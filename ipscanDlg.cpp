@@ -42,6 +42,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CAboutDlg)
 	enum { IDD = IDD_ABOUTBOX };
+	CLink	m_linkForum;
 	CLink	m_linkHomepage;
 	CLink	m_linkEmail;
 	CStatic	m_free;
@@ -60,6 +61,7 @@ protected:
 	afx_msg void OnGohttp();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnAboutOK();		
+	afx_msg void OnHttpForum();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
@@ -74,6 +76,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CAboutDlg)
+	DDX_Control(pDX, IDC_HTTP_FORUM, m_linkForum);
 	DDX_Control(pDX, IDC_HTTP, m_linkHomepage);
 	DDX_Control(pDX, IDC_EMAIL, m_linkEmail);
 	DDX_Control(pDX, IDC_TXTFREE, m_free);
@@ -82,9 +85,10 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 	//{{AFX_MSG_MAP(CAboutDlg)
-	ON_BN_CLICKED(IDOK, OnAboutOK)
 	ON_BN_CLICKED(IDC_EMAIL, OnGoemail)
 	ON_BN_CLICKED(IDC_HTTP, OnGohttp)
+	ON_BN_CLICKED(IDOK, OnAboutOK)
+	ON_BN_CLICKED(IDC_HTTP_FORUM, OnHttpForum)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -888,6 +892,11 @@ void CAboutDlg::OnGohttp()
 	CLink::goToScannerHomepage();
 }
 
+void CAboutDlg::OnHttpForum() 
+{
+	CLink::goToHomepageForum();
+}
+
 void CIpscanDlg::OnWindozesucksHostnameclipboard() 
 {
 	POSITION pos = m_list.GetFirstSelectedItemPosition();
@@ -1372,3 +1381,4 @@ void CIpscanDlg::OnHelpCommandline()
 	CCommandLine::displayHelp();
 	
 }
+

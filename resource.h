@@ -54,6 +54,7 @@
 #define IDC_RADIO1                      1046
 #define IDC_RADIO2                      1047
 #define IDC_RADIO3                      1048
+#define IDC_HTTP_FORUM                  1049
 #define ID_BUTTONABOUT                  32771
 #define IDS_FIRSTCOLUMN                 32772
 #define IDS_STRING32773                 32773
@@ -97,6 +98,7 @@
 #define ID_GOTO_NEXTOPENPORT            32795
 #define IDS_MAIL                        32795
 #define ID_GOTO_NEXTCLOSEDPORT          32796
+#define IDS_HOMEPAGE_FORUM              32796
 #define ID_GOTO_HOSTNAME                32797
 #define ID_COMMANDS_OPENCOMPUTER_ASFTP  32804
 #define ID_COMMANDS_OPENCOMPUTER_ASWEBSITE 32805
@@ -111,7 +113,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        149
 #define _APS_NEXT_COMMAND_VALUE         32810
-#define _APS_NEXT_CONTROL_VALUE         1049
+#define _APS_NEXT_CONTROL_VALUE         1050
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

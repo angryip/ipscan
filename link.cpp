@@ -147,3 +147,10 @@ void CLink::goToWriteMail()
 	ShellExecute(0, NULL, szMail, NULL, NULL, SW_SHOWNORMAL);	
 }
 
+
+void CLink::goToHomepageForum()
+{
+	CString szURL;
+	szURL.LoadString(IDS_HOMEPAGE_FORUM);
+	ShellExecute(0, NULL, szURL, NULL, NULL, SW_SHOWNORMAL);
+}

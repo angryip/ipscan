@@ -309,10 +309,11 @@ BEGIN
     IDS_STRING32789         "1"
     IDS_STRING32790         "1"
     IDS_STRING32791         "1"
-    IDS_VERSION             "1.87"
+    IDS_VERSION             "1.88"
     IDS_SCAN_HOMEPAGE       "http://www.angryziber.com/ipscan/"
     IDS_HOMEPAGE            "http://www.angryziber.com/"
     IDS_MAIL                "angryziber@mail.com"
+    IDS_HOMEPAGE_FORUM      "http://www.angryziber.com/forum/"
 END
 
 #endif    // Russian resources
@@ -333,22 +334,27 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Dialog
 //
 
-IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 73
+IDD_ABOUTBOX DIALOGEX 0, 0, 239, 82
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About"
 FONT 8, "MS Sans Serif"
 BEGIN
-    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,20,20
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,21,20
     LTEXT           "Angry IP scanner",IDC_STATIC,40,10,59,8,SS_NOPREFIX
     LTEXT           "Written by Angryziber",IDC_STATIC,36,40,69,8
-    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+    DEFPUSHBUTTON   "OK",IDOK,182,7,50,14,WS_GROUP
     LTEXT           "VER",IDC_VERSION,108,10,16,8
-    LTEXT           "angryziber@mail.com",IDC_EMAIL,106,40,69,8,SS_NOTIFY
-    LTEXT           "Check for the latest version at",IDC_STATIC,8,55,95,8
-    LTEXT           "http://www.angryziber.com/ipscan/",IDC_HTTP,106,55,114,
+    LTEXT           "angryziber@angryziber.com",IDC_EMAIL,109,40,89,8,
+                    SS_NOTIFY
+    LTEXT           "Check for the latest version at:",IDC_STATIC,8,53,97,8
+    LTEXT           "http://www.angryziber.com/ipscan/",IDC_HTTP,109,53,114,
                     8,SS_NOTIFY
     LTEXT           "This program is",IDC_STATIC,39,22,48,8
     LTEXT           "free",IDC_TXTFREE,89,22,60,8
+    LTEXT           "For support, please go here:",IDC_STATIC,14,66,89,8,0,
+                    WS_EX_RIGHT
+    LTEXT           "http://www.angryziber.com/forum/",IDC_HTTP_FORUM,109,66,
+                    111,8,SS_NOTIFY
 END
 
 IDD_IPSCAN_DIALOG DIALOGEX 0, 0, 320, 201
@@ -409,9 +415,9 @@ BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 228
+        RIGHTMARGIN, 232
         TOPMARGIN, 7
-        BOTTOMMARGIN, 66
+        BOTTOMMARGIN, 75
     END
 
     IDD_SEARCH, DIALOG

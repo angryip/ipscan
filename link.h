@@ -36,11 +36,12 @@ public:
 	//}}AFX_VIRTUAL
 
 // Implementation
-public:
+public:	
 	BOOL m_bTrackLeave;
 	static void goToWriteMail();
 	static void goToHomepage();
 	static void goToScannerHomepage();
+	static void goToHomepageForum();
 	virtual ~CLink();
 
 	// Generated message map functions
