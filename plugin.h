@@ -19,8 +19,8 @@
 #define PLUGIN_TYPE_OUTPUT       1		// New output format (currently not supported)
 #define PLUGIN_TYPE_IP_FEED      2		// New possibility to specify IPs for scanning (currently not supported)
 
-#define PLUGIN_DATA_DELIMETER	 '¤'	// Delimeter character (ASCII 253) of column names and data
-										// passed to OUTPUT plugin functions. See below.
+#define PLUGIN_DATA_DELIMETER	 '\0xFD'	// Delimeter character (ASCII 253) of column names and data
+											// passed to OUTPUT plugin functions. See below.
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Structure that is filled by Info plugin function
