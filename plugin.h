@@ -19,6 +19,9 @@
 #define PLUGIN_TYPE_OUTPUT       1		// New output format (currently not supported)
 #define PLUGIN_TYPE_IP_RANGE     2		// New possibility to specify IPs for scanning (currently not supported)
 
+#define PLUGIN_DATA_DELIMETER	 '¤'	// Delimeter character (ASCII 253) of column names and data
+										// passed to OUTPUT plugin functions. See below.
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Structure that is filled by Info plugin function
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -99,6 +102,7 @@ typedef BOOL (__cdecl TInitFunction)();
 //   None
 typedef BOOL (__cdecl TFinalizeFunction)();
 
+/////////////////////////////////////////////////////
 // Functions for PLUGIN_TYPE_COLUMN
 /////////////////////////////////////////////////////
 
@@ -115,5 +119,43 @@ typedef BOOL (__cdecl TFinalizeFunction)();
 //   nBufferLen - length of the passed buffer in bytes.
 typedef BOOL (__cdecl TScanFunction)(DWORD nIP, LPSTR szReturn, int nBufferLen);
 
+/////////////////////////////////////////////////////
+// Functions for PLUGIN_TYPE_OUTPUT
+/////////////////////////////////////////////////////
+
+// "SaveBegin" function.
+// This function will be called to initiate saving scan data to file.
+// This function must open the file for writing and setup all it's 
+// internal variables needed for saving.
+// Parameters:
+//    nIdentifier - random number, which will be unique and the same for this
+//                  saving session. It will be passed to all SaveXXX functions.
+//    szFilename - the filename (full path) to save to.
+//    bAppend - append flag (if user wants to append instead of overwriting).
+//              If append is not supported, return value should be FALSE.
+//    szColumns - the list of saved columns. It is a NULL-terminated string of
+//                '¤'-delimeted column names. Use PLUGIN_DATA_DELIMETER constant 
+//                for working with these characters.
+typedef BOOL (__cdecl TSaveBeginFunction)(char nIdentifier, LPCSTR szFilename, BOOL bAppend, LPCSTR szColumns);
+
+// "SaveRow" function.
+// This function will be called to save each row in the list.
+// It will be called multiple times after one successful call to
+// SaveBegin function.
+// Parameters:
+//    nIdentifier - the same number which was passed to SaveBegin function.
+//    szData - the list of values corresponding to the list of columns passed to
+//             SaveBegin function. It is a NULL-terminated string of
+//             '¤'-delimeted strings. Use PLUGIN_DATA_DELIMETER constant 
+//              for working with these characters.
+typedef BOOL (__cdecl TSaveRowFunction)(char nIdentifier, LPCSTR szData);
+
+// "SaveEnd" function.
+// This function will be called at the end of each saving session.
+// The purpose of this function is to close the file and finalize
+// the saving session.
+// Parameters:
+//    nIdentifier - the same number which was passed to SaveBegin and SaveRow functions.
+typedef BOOL (__cdecl TSaveEndFunction)(char nIdentifier);
 
 // The end!
