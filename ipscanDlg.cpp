@@ -573,7 +573,7 @@ UINT ThreadProc(LPVOID cur_ip)
 		if (threads[index]==0) 
 		{ 
 			HANDLE tmp;
-			DuplicateHandle(GetCurrentProcess(),GetCurrentThread(),GetCurrentProcess(),&tmp,NULL,TRUE,DUPLICATE_SAME_ACCESS);
+			DuplicateHandle(GetCurrentProcess(),GetCurrentThread(),GetCurrentProcess(),&tmp,0,FALSE,DUPLICATE_SAME_ACCESS);
 			threads[index] = tmp;  
 			break; 
 		}
@@ -723,10 +723,13 @@ scan_port:
 exit_thread:
 
 	numthreads--;
-	if (numthreads>=0) {
+	if (numthreads>=0) 
+	{
 		sprintf((char*)&err,"%d",numthreads);
 		d->m_numthreads.SetWindowText((char*)&err);
 	}
+
+	CloseHandle(threads[index]);
 
 	threads[index]=0;
 
