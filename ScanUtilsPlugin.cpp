@@ -65,10 +65,16 @@ void CScanUtilsPlugin::loadFromDir(CArray<TScannerColumn, TScannerColumn&> &colu
 					continue;
 				}
 				
+				// Initialize info structure
+				memset(&infoStruct, 0, sizeof(infoStruct));
+				infoStruct.nStructSize = sizeof(infoStruct);
+				infoStruct.nUniqueIndex = 0;	// TODO: a true index must be set here
+		
+				// Call plugin's info function
 				pInfoFunction(&infoStruct);
 
 				// Verify target Angry IP Scanner versiion
-				if (infoStruct.nAngryIPScannerVersion > 217)	// TODO: 217 is hardcoded
+				if (infoStruct.nAngryIPScannerVersion > 218)	// TODO: 218 is hardcoded
 				{
 					MessageBox(0, "Plugin " + szFileName + " requires a newer version of Angry IP Scanner!", NULL, MB_ICONHAND | MB_OK);
 					continue;

@@ -121,7 +121,7 @@ BOOL CNetBIOSUtils::GetNames(LPCSTR szIP, CString *szUserName, CString *szComput
 			if ((data->name_array[i].name_flags & GROUP_NAME_FLAG) && data->name_array[i].nb_name[15] == NAME_TYPE_DOMAIN)
 			{
 				memcpy(&szName, data->name_array[i].nb_name, 15); szName[15] = 0;
-				*szGroupName = szName;
+				*szGroupName = szName;				
 				break;
 			}		
 		}

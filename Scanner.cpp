@@ -163,6 +163,11 @@ void CScanner::loadAllPossibleColumns()
 	// Get names of all plugins/columns
 	for (i=1; i < m_nAllColumns; i++)
 	{
+		// Initialize infoStruct
+		memset(&infoStruct, 0, sizeof(infoStruct));
+		infoStruct.nStructSize = sizeof(infoStruct);
+		infoStruct.nUniqueIndex = 0;	// TODO: true index must be set here
+
 		m_AllColumns[i].pInfoFunction(&infoStruct);
 		
 		m_AllColumns[i].pszPluginName = new CString(infoStruct.szPluginName);		
@@ -311,6 +316,11 @@ void CScanner::showColumnInfo(int nColumn, BOOL bAllColumns/* = TRUE*/)
 	}
 	else
 	{		
+		// Initialize infoStruct
+		memset(&infoStruct, 0, sizeof(infoStruct));
+		infoStruct.nStructSize = sizeof(infoStruct);
+		infoStruct.nUniqueIndex = 0;	// TODO: a true index must be set here
+
 		m_AllColumns[nColumn].pInfoFunction(&infoStruct);
 
 		if (infoStruct.szDescription[0] == 0)
