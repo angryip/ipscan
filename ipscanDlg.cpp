@@ -1081,7 +1081,7 @@ void CIpscanDlg::OnWindozesucksShownetbiosinfo()
 	POSITION pos = m_list.GetFirstSelectedItemPosition();
 	m_menucuritem = m_list.GetNextSelectedItem(pos);
 	if (m_menucuritem<0) { ErrorNotSelected();return;}
-	char ipstr[16],str[600],comspec[120],tempdir[60];
+	char ipstr[16],str[600],comspec[600],tempdir[60];
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 	FILE *f;
@@ -1120,20 +1120,26 @@ void CIpscanDlg::OnWindozesucksShownetbiosinfo()
 			if
 		}
 	}*/
+
+	int charindex;
 	
 	while (!strstr((char*)&str,">  UNIQUE") && !feof(f)) fgets((char*)&str,sizeof(str),f);
 	if (feof(f)) { 
 		MessageBox("NetBIOS service is not running on the specified host or host is dead","Error",MB_OK | MB_ICONERROR);
 		goto exit_func;
 	}
-	str[15]=0; sprintf((char*)&comspec,"NetBIOS info for %s\n\nName:\t\t%s\nWorkgroup:\t",(char*)&ipstr,(char*)&str);
+	for (charindex = 0; str[charindex] != 0 && str[charindex] != '<'; charindex++);
+	str[charindex]=0; sprintf((char*)&comspec,"NetBIOS info for %s\n\nName:\t\t%s\nWorkgroup:\t",(char*)&ipstr,(char*)&str);
 	while (!strstr((char*)&str,">  GROUP")) fgets((char*)&str,sizeof(str),f);
-	str[15]=0; strcat((char*)&comspec,(char*)&str);
+	
+	str[charindex]=0; strcat((char*)&comspec,(char*)&str);
 	ipstr[0]=0;
 	for(;;) {
-		while (strstr((char*)&str,"<03>  UNIQUE")==0 && str[0]!=10) fgets((char*)&str,sizeof(str),f);
-		if (str[0]==10) break;
-		str[15]=0; strcpy((char*)&ipstr,(char*)&str);
+		while ((strstr((char*)&str,"<03>  UNIQUE")==0 && (str[0]!=10 && str[0]!=13)) || strchr((char*)&str,'$')!=0) {
+			fgets((char*)&str,sizeof(str),f);
+		}
+		if (str[0]==10 || str[0]==13) break;
+		str[charindex]=0; strcpy((char*)&ipstr,(char*)&str);
 	} 
 	strcat((char*)&comspec,"\nUsername:\t");
 	if (ipstr[0]==0) 
