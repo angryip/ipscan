@@ -5,6 +5,7 @@
 #include "ipscan.h"
 #include "SelectColumnsDlg.h"
 #include "Scanner.h"
+#include "IpscanDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -246,3 +247,20 @@ void CSelectColumnsDlg::OnDeselect()
 }
 
 
+
+void CSelectColumnsDlg::OnOK() 
+{
+	// Save all the stuff to global scanner
+	// Not a pretty nor object-oriented function :-(
+	
+	for (int i=CL_STATIC_COUNT; i < m_nSelectedColumns; i++)
+	{
+		g_scanner->m_Columns[i] = m_naSelColumns[i];
+	}
+
+	g_scanner->m_nColumns = m_nSelectedColumns;
+
+	g_scanner->initListColumns(&((CIpscanDlg*) AfxGetApp()->GetMainWnd())->m_list);
+	
+	CDialog::OnOK();
+}

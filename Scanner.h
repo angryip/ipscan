@@ -73,10 +73,10 @@ public:
 	CScanner();
 	virtual ~CScanner();
 
-protected:
-	int m_Columns[256];
-	CArray<TScannerColumn, TScannerColumn&> m_AllColumns;		
+	int m_Columns[256];		// It is updated by Select columns dialog box
 	int m_nColumns;
+protected:	
+	CArray<TScannerColumn, TScannerColumn&> m_AllColumns;			
 	int m_nAllColumns;
 	
 	CWinApp * m_app;

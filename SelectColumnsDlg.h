@@ -47,6 +47,7 @@ protected:
 	afx_msg void OnDeselect();
 	afx_msg void OnSelect();
 	afx_msg void OnSelectAppend();
+	virtual void OnOK();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

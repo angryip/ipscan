@@ -168,8 +168,10 @@ void CScanner::initListColumns(CScanListCtrl *pListCtrl)
 {
 	int nCol, nWidth;	
 
-	pListCtrl->DeleteAllItems();
-	for (nCol=0; nCol < pListCtrl->GetHeaderCtrl()->GetItemCount(); nCol++)
+	pListCtrl->DeleteAllItems();	
+
+	int nCurrentColumnCount = pListCtrl->GetColumnCount();
+	for (nCol=0; nCol < nCurrentColumnCount; nCol++)
 	{
 		pListCtrl->DeleteColumn(nCol);
 	}	
