@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "ipscan.h"
 #include "InstallDlg.h"
-#include <direct.h>
+#include <shlobj.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -59,13 +59,61 @@ BOOL CInstallDlg::OnInitDialog()
 	              
 }
 
+bool CreateShortCut(LPCSTR lpszSourceFile, LPCSTR lpszDestination, LPCSTR lpszDesc) 
+{ 
+	HRESULT     hResult    = NULL; 
+	IShellLink* pShellLink = NULL; 
+	bool	      rc	 = false;
+
+	hResult = CoInitialize(NULL);
+	// Initialize the IShellLink interface. 
+    
+	hResult = CoCreateInstance(CLSID_ShellLink, NULL, 
+			     CLSCTX_INPROC_SERVER, IID_IShellLink, 
+			     (void**) &pShellLink); 
+	// Get a pointer to the IShellLink Interface
+
+	if (SUCCEEDED(hResult)) 
+	{ 
+		IPersistFile* ppf = NULL; 
+		pShellLink->SetPath(lpszSourceFile); 
+		// Set the path to the shortcut target
+		
+		hResult = pShellLink->SetDescription(lpszDesc); 
+		// Add Description
+
+		hResult = pShellLink->QueryInterface(IID_IPersistFile, (void**) &ppf); 
+		// Query IShellLink for the IPersistFile interface for saving the
+		// shortcut in persistent storage. 
+ 
+		if (SUCCEEDED(hResult)) 
+		{ 
+	WORD wszWideString[MAX_PATH]; 
+	
+	// Ensure that the string is ANSI. 
+				MultiByteToWideChar(CP_ACP, 0, lpszDestination, -1,
+						wszWideString, MAX_PATH); 
+
+				hResult = ppf->Save(wszWideString, TRUE); 
+				// Save the link by calling IPersistFile::Save. 
+						
+	ppf->Release(); 
+	rc = true;
+		} 
+		pShellLink->Release(); 
+		CoUninitialize();
+		// Clean up
+	} 
+	return rc; 
+}
+
 void CInstallDlg::OnInstall() 
 {
 	CString szPath;	
 	if (m_ctlCopyProgram.GetCheck())
 	{
 		m_ctlInstallPath.GetWindowText(szPath);
-		_mkdir(szPath);
+		CreateDirectory(szPath, NULL);
 		szPath += "\\ipscan.exe";
 		CopyFile(__targv[0], szPath, TRUE);
 	}
@@ -75,11 +123,25 @@ void CInstallDlg::OnInstall()
 	}
 	// szPath now has a full path to the executable
 	
+	char szFolderPath[MAX_PATH];
+	
 	if (m_ctlCreateDesktopShortcut.GetCheck())
 	{
+		SHGetSpecialFolderPath(this->m_hWnd, (char*) &szFolderPath, CSIDL_DESKTOPDIRECTORY, FALSE);				
+		strcat((char*) &szFolderPath, "\\Angry IP Scanner.lnk");
+		CreateShortCut(szPath, szFolderPath, "");
 	}
 
 	if (m_ctlCreateGroup.GetCheck())
 	{
+		SHGetSpecialFolderPath(this->m_hWnd, (char*) &szFolderPath, CSIDL_PROGRAMS, FALSE);		
+		strcat((char*) &szFolderPath, "\\Angryziber");
+		CreateDirectory((char*) &szFolderPath, NULL);
+		strcat((char*) &szFolderPath, "\\Angry IP Scanner.lnk");
+		CreateShortCut(szPath, szFolderPath, "");
 	}
+
+	// TODO: Run program from new location
+
+	CDialog::OnOK();
 }
