@@ -728,7 +728,7 @@ void CIpscanDlg::OnOptionsSavedimensions()
 {
 	g_options->saveDimensions();
 
-	MessageBox("Window size, position and widths of columns are successfully saved.", NULL, MB_OK | MB_ICONINFORMATION);
+	MessageBox("Window size, position and widths of currently selected columns are successfully saved.", NULL, MB_OK | MB_ICONINFORMATION);
 }
 
 void CIpscanDlg::OnFieldchangedIpaddress1(NMHDR* pNMHDR, LRESULT* pResult) 
@@ -1225,14 +1225,21 @@ void CIpscanDlg::EnableMenuItems(BOOL bEnable)
 	UINT nEnable = bEnable ? MF_ENABLED : MF_GRAYED;
 
 	CMenu *tmpMnu = GetMenu();
-	
-	tmpMnu->GetSubMenu(3)->EnableMenuItem(ID_OPTIONS_OPTIONS, nEnable);
-	tmpMnu->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVETOTXT, nEnable);
-	tmpMnu->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVESELECTION, nEnable);
-	
-	tmpMnu->EnableMenuItem(ID_COMMANDS_RESCANIP, nEnable);
 
-	tmpMnu = tmpMnu->GetSubMenu(INDEX_SHOW_MENU);
+	tmpMnu->EnableMenuItem(ID_OPTIONS_OPTIONS, nEnable);
+	tmpMnu->EnableMenuItem(ID_OPTIONS_SELECT_COLUMNS, nEnable);
+
+	tmpMnu->EnableMenuItem(ID_SCAN_SAVETOTXT, nEnable);
+	tmpMnu->EnableMenuItem(ID_SCAN_SAVESELECTION, nEnable);
+
+	tmpMnu->EnableMenuItem(ID_UTILS_DELETEFROMLIST_DEADHOSTS, nEnable);
+	tmpMnu->EnableMenuItem(ID_UTILS_DELETEFROMLIST_ALIVEHOSTS, nEnable);
+	tmpMnu->EnableMenuItem(ID_UTILS_DELETEFROMLIST_CLOSEDPORTS, nEnable);
+	tmpMnu->EnableMenuItem(ID_UTILS_DELETEFROMLIST_OPENPORTS, nEnable);
+
+	tmpMnu->EnableMenuItem(ID_OPTIONS_INSTALL_PROGRAM, nEnable);
+	
+	tmpMnu->EnableMenuItem(ID_COMMANDS_RESCANIP, nEnable);	
 
 	tmpMnu->EnableMenuItem(ID_SHOWNETBIOSINFO, nEnable);
 	
@@ -1240,6 +1247,8 @@ void CIpscanDlg::EnableMenuItems(BOOL bEnable)
 	{
 		tmpMnu->EnableMenuItem(ID_MENU_SHOW_CMD_001 + i, nEnable);
 	}
+
+	GetDlgItem(IDC_SELECT_COLUMNS)->EnableWindow(bEnable);
 }
 
 void CIpscanDlg::OnSelectColumns() 

@@ -76,10 +76,10 @@ BEGIN
     POPUP "&Options"
     BEGIN
         MENUITEM "&Options...\tCtrl+O",         ID_OPTIONS_OPTIONS
+        MENUITEM "Select &Columns...",          ID_OPTIONS_SELECT_COLUMNS
+        MENUITEM SEPARATOR
         MENUITEM "&Save options",               ID_OPTIONS_SAVEOPTIONS
         MENUITEM "Save &dimensions",            ID_OPTIONS_SAVEDIMENSIONS
-        MENUITEM SEPARATOR
-        MENUITEM "Select &Columns...",          ID_OPTIONS_SELECT_COLUMNS
         MENUITEM SEPARATOR
         MENUITEM "&Install the program...",     ID_OPTIONS_INSTALL_PROGRAM
     END
