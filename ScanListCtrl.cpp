@@ -370,11 +370,11 @@ void CScanListCtrl::ShowErrorNothingSelected()
 	MessageBox("You must select an IP first","Error",MB_OK | MB_ICONERROR);
 }
 
-int CScanListCtrl::GetCurrentSelectedItem()
+int CScanListCtrl::GetCurrentSelectedItem(BOOL bShowError)
 {
 	POSITION pos = GetFirstSelectedItemPosition();
 	int nCurrentItem = GetNextSelectedItem(pos);
-	if (nCurrentItem < 0) 
+	if (nCurrentItem < 0 && bShowError) 
 	{ 
 		ShowErrorNothingSelected(); 		
 	}
@@ -441,7 +441,7 @@ void CScanListCtrl::ShowNetBIOSInfo()
 
 void CScanListCtrl::ShowIPDetails()
 {
-	int nCurrentItem = GetCurrentSelectedItem();
+	int nCurrentItem = GetCurrentSelectedItem(FALSE);
 
 	if (nCurrentItem < 0)
 		return;
@@ -555,36 +555,50 @@ void CScanListCtrl::GoToNextSearchIP()
 
 	m_szSearchFor = cSearchDlg.m_search;
 
+	int i;
+
 	if (cSearchDlg.m_beginning) 
-		SetSelectedItem(0);
+	{		
+		i = 0;
+	}
+	else
+	{
+		i = GetCurrentSelectedItem(FALSE) + 1;
+	}
 	
-	SetFocus();
-	
-	int i = GetCurrentSelectedItem();
+	SetFocus();	
 
 	if (cSearchDlg.m_case) 
 	{
 		for (; i < GetItemCount(); i++) 
 		{
-			if (GetItemText(i, 3 /*TODO*/).Find(m_szSearchFor) != -1) 
+			for (int nCol = 0; nCol < g_scanner->getColumnCount(); nCol++)
 			{
-				SetSelectedItem(i);
-				return;
+				if (GetItemText(i, nCol).Find(m_szSearchFor) != -1) 
+				{
+					SetSelectedItem(i);
+					return;
+				}
 			}
 		}
 	} 
 	else 
 	{
-		CString szTmp;
-		cSearchDlg.m_search.MakeUpper();
+		CString szLowerSearchFor(m_szSearchFor);
+		szLowerSearchFor.MakeLower();
+
+		CString szTmp;		
 		for (; i < GetItemCount(); i++) 
 		{
-			szTmp = GetItemText(i, 3 /*TODO*/);
-			szTmp.MakeUpper();
-			if (szTmp.Find(m_szSearchFor) != -1) 
+			for (int nCol = 0; nCol < g_scanner->getColumnCount(); nCol++)
 			{
-				SetSelectedItem(i);
-				return;
+				szTmp = GetItemText(i, nCol);
+				szTmp.MakeLower();
+				if (szTmp.Find(szLowerSearchFor) != -1) 
+				{
+					SetSelectedItem(i);
+					return;
+				}
 			}
 		}
 	}

@@ -44,7 +44,7 @@ public:
 	void GoToNextAliveIP();
 	void ShowNetBIOSInfo();
 	void CopyIPToClipboard();
-	int GetCurrentSelectedItem();
+	int GetCurrentSelectedItem(BOOL bShowError = TRUE);
 	void ShowIPDetails();
 	void DeleteOpenPorts(int nItemIndex);
 	void SetOpenPorts(int nItemIndex, LPCSTR pNewStr);

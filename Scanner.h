@@ -61,8 +61,8 @@ public:
 protected:
 	CArray<TScannerColumn, TScannerColumn&> m_Columns;
 	CArray<TScannerColumn, TScannerColumn&> m_AllColumns;		
-	UINT m_nColumns;
-	UINT m_nAllColumns;
+	int m_nColumns;
+	int m_nAllColumns;
 	
 	CWinApp * m_app;
 };
