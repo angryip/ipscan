@@ -693,10 +693,10 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 	timeval timeout;
 	timeout.tv_sec = 0; 
 	
-	if (nPingTime >= 0 && g_options->m_bOptimizePorts)
+	if (nPingTime >= 0)
 	{
-		if (nPingTime < 20) nPingTime = 20;
-		timeout.tv_usec = (nPingTime * 8) * 1000;		// Optimized port scanning prevents port filtering from making scanning slower		
+		// Optimize initial port scanning timeout in case ping timing is known
+		timeout.tv_usec = (nPingTime * 8) * 1000;		
 	}
 	else
 	{
@@ -706,17 +706,29 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 	if (g_threads[nThreadIndex] == THREAD_MUST_DIE)	// Program asked to die --------------------------------------------------------
 		return FALSE;
 
+	// Init some statistical variables
+	int nMinimalTimeout = nPingTime * 3 * 1000;
+	
+	// This is set this high to prevent eating 100% cpu when scanning many hosts for very many ports...
+	// This is probably a limitation of Winsock... I got this value experimentally.
+	#define MINIMAL_MINIMAL_TIMEOUT	30000	// 30 milliseconds
+	if (nMinimalTimeout < MINIMAL_MINIMAL_TIMEOUT)
+		nMinimalTimeout = MINIMAL_MINIMAL_TIMEOUT;
+
 	for (int nCurPortIndex = 0; aPorts[nCurPortIndex].nStartPort != 0; nCurPortIndex++)
 	{		
 		for (int nPort = aPorts[nCurPortIndex].nStartPort; nPort <= aPorts[nCurPortIndex].nEndPort; nPort++)
 		{									
+			// Check that current timeout isn't too short
+			if (timeout.tv_usec < nMinimalTimeout)
+				timeout.tv_usec = nMinimalTimeout;
+
 			// Check that current timeout isn't too long
 			if (timeout.tv_usec > g_options->m_nPortTimeout * 1000)
-				timeout.tv_usec = g_options->m_nPortTimeout * 1000;			
+				timeout.tv_usec = g_options->m_nPortTimeout * 1000;						
 
-			// Check that current timeout isn't too short
-			if (timeout.tv_usec < 10000)
-				timeout.tv_usec = 10000;
+			// Port open identificator
+			BOOL bPortOpen = FALSE;
 			
 			// Create a new socket each time because there is no a function to reuse a socket
 			hSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_IP);
@@ -757,8 +769,9 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 					// Connection successfull
 					szPort.Format("%d", nPort);
 					szResult += szPort + ',';					
+					bPortOpen = TRUE;
 				}
-			}			
+			}							
 
 			closesocket(hSocket);
 
@@ -766,19 +779,38 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 			{
 				// Time for this port
 				DWORD nPortScanTime = GetTickCount() - nPortStartTime;
+				
+				// Convert to microseconds
+				nPortScanTime *= 1000;
 
 				// If the port is not filtered
-				if (nPortScanTime * 1000 < (unsigned)timeout.tv_usec + 2000)
-				{
+				if (nPortScanTime < (unsigned)timeout.tv_usec)
+				{					
 					// Set the new timeout
-					timeout.tv_usec = (timeout.tv_usec + (nPortScanTime+5) * 1000) >> 1;	// make new timeout a mean
+					timeout.tv_usec = (timeout.tv_usec + nPortScanTime + 2000) >> 1;	// make new timeout a mean
+				}
+
+				if (bPortOpen)
+				{
+					// Dirty hint to make some scans more reliable...
+					if (nPortScanTime*2 >= (unsigned)nMinimalTimeout)
+					{
+						// Increase minimal timeout if port scans are less than 2 times faster
+						nMinimalTimeout += nMinimalTimeout >> 1; // Multiply by 1.5
+					}
+					else
+					if (nMinimalTimeout > MINIMAL_MINIMAL_TIMEOUT && (nPortScanTime+1000)*8 <= (unsigned)nMinimalTimeout)	// Plus 1 millisecond to compensate for 0
+					{
+						// Decrease minimal timeout if port scans are more than 8 times faster
+						nMinimalTimeout >>= 1; // Divide by 2
+					}
 				}
 			}
 
 			if (g_threads[nThreadIndex] == THREAD_MUST_DIE)	// Program asked to die ------------------------------------------------
 				return FALSE;
 		}
-	}	
+	}
 
 	BOOL bResult;
 		
