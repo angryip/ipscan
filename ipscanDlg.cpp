@@ -1,5 +1,5 @@
 // ipscanDlg.cpp : implementation file
-
+//
 
 #include "stdafx.h"
 #include "ipscan.h"

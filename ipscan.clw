@@ -104,10 +104,10 @@ Resource87=IDR_MENU1 (Neutral (Default))
 Resource88=IDR_MENU1 (Unknown language: 0x25
 Resource89=IDD_IPSCAN_DIALOG (English (U.S.))
 Resource90=IDR_MENU1 (Unknown language: 0x25
-Resource91=IDR_MENU1 (Neutral)
+Resource91=IDD_OPTIONS (Neutral (Default))
 Resource92=IDD_ABOUTBOX (English (U.S.))
 Class5=CSearchDlg
-Resource93=IDD_OPTIONS (Neutral (Default))
+Resource93=IDR_MENU1 (Neutral)
 
 [CLS:CIpscanApp]
 Type=0
