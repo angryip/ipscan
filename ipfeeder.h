@@ -1,5 +1,5 @@
 /*********************************************************************
- * This is a part of Angry IP IPFeeder source code                    *
+ * This is a part of Angry IP Scanner source code                    *
  * http://www.angryziber.com/ipscan/                                 *
  *                                                                   *
  * Written by Angryziber                                             *
@@ -21,8 +21,6 @@
 #endif // _MSC_VER > 1000
 
 #include <afxtempl.h>	// For CArray
-
-#include "plugin.h"		// Structures and defines for plugins
 
 class CIPFeeder  
 {

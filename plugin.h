@@ -17,7 +17,7 @@
 
 #define PLUGIN_TYPE_COLUMN       0		// New List Column (for scanning)
 #define PLUGIN_TYPE_OUTPUT       1		// New output format (currently not supported)
-#define PLUGIN_TYPE_IP_RANGE     2		// New possibility to specify IPs for scanning (currently not supported)
+#define PLUGIN_TYPE_IP_FEED      2		// New possibility to specify IPs for scanning (currently not supported)
 
 #define PLUGIN_DATA_DELIMETER	 '¤'	// Delimeter character (ASCII 253) of column names and data
 										// passed to OUTPUT plugin functions. See below.

@@ -13,271 +13,6 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Neutral resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
-#ifdef _WIN32
-LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
-#pragma code_page(1251)
-#endif //_WIN32
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Menu
-//
-
-IDR_MENU1 MENU DISCARDABLE 
-BEGIN
-    POPUP "&File"
-    BEGIN
-        MENUITEM "Export &all...",              ID_SCAN_SAVETOTXT
-        MENUITEM "Export &selection...",        ID_SCAN_SAVESELECTION
-        MENUITEM SEPARATOR
-        MENUITEM "E&xit\tAlt+F4",               ID_IP_EXIT
-    END
-    POPUP "&Go to"
-    BEGIN
-        MENUITEM "Next &alive host\tCtrl+A",    ID_GOTO_NEXTALIVE
-        MENUITEM "Next &dead host\tCtrl+D",     ID_GOTO_NEXTDEAD
-        MENUITEM SEPARATOR
-        MENUITEM "Next o&pen port\tCtrl+P",     ID_GOTO_NEXTOPENPORT
-        MENUITEM "Next &closed port\tCtrl+L",   ID_GOTO_NEXTCLOSEDPORT
-        MENUITEM SEPARATOR
-        MENUITEM "&Find...\tCtrl+F",            ID_GOTO_HOSTNAME
-    END
-    POPUP "&Commands"
-    BEGIN
-        MENUITEM "Show details\tDbl-Click",     ID_COMMANDS_SHOWDETAILS
-        MENUITEM "Rescan &IP(s)\tCtrl+I",       ID_COMMANDS_RESCANIP
-        MENUITEM "&Delete IP(s)\tDel",          ID_COMMANDS_DELETEIP
-        MENUITEM SEPARATOR
-        POPUP "Show"
-        BEGIN
-            MENUITEM SEPARATOR
-            MENUITEM "Show &NetBIOS info\tCtrl+N",  ID_SHOWNETBIOSINFO
-        END
-        POPUP "Open computer"
-        BEGIN
-            MENUITEM "Configure...",                ID_COMMANDS_OPENCOMPUTER_CONFIGURE
-
-            MENUITEM SEPARATOR
-        END
-        MENUITEM SEPARATOR
-        MENUITEM "IP -> Clipboard\tCtrl+C",     ID_COMMANDS_IPCLIPBOARD
-    END
-    POPUP "&Favorites"
-    BEGIN
-        MENUITEM "&Add current range...\tCtrl+B", 
-                                                ID_FAVOURITES_ADDCURRENTRANGE
-
-        MENUITEM "Delete favorite...",          ID_FAVOURITES_DELETEFAVOURITE
-
-        MENUITEM SEPARATOR
-    END
-    POPUP "&Options"
-    BEGIN
-        MENUITEM "&Options...\tCtrl+O",         ID_OPTIONS_OPTIONS
-        MENUITEM "Select &Columns...",          ID_OPTIONS_SELECT_COLUMNS
-        MENUITEM "Select &Ports...",            ID_OPTIONS_SELECTPORTS
-        MENUITEM SEPARATOR
-        MENUITEM "&Save options",               ID_OPTIONS_SAVEOPTIONS
-        MENUITEM "Save &dimensions",            ID_OPTIONS_SAVEDIMENSIONS
-    END
-    POPUP "&Utils"
-    BEGIN
-        POPUP "&Delete from list"
-        BEGIN
-            MENUITEM "&Dead hosts",                 ID_UTILS_DELETEFROMLIST_DEADHOSTS
-
-            MENUITEM "&Alive hosts",                ID_UTILS_DELETEFROMLIST_ALIVEHOSTS
-
-            MENUITEM "&Closed ports",               ID_UTILS_DELETEFROMLIST_CLOSEDPORTS
-
-            MENUITEM "&Open ports",                 ID_UTILS_DELETEFROMLIST_OPENPORTS
-
-        END
-        POPUP "Install / Uninstall"
-        BEGIN
-            MENUITEM "&Install the program...",     ID_OPTIONS_INSTALL_PROGRAM
-
-            MENUITEM "&Remove settings from registry", 
-                                                    ID_UTILS_WIPETRACESREMOVESETTINGSFROMREGISTRY
-
-        END
-        MENUITEM "Show &last scan info",        ID_OPTIONS_SHOWLASTSCANINFO
-    END
-    POPUP "&Help"
-    BEGIN
-        MENUITEM "Angry IP Scanner &Webpage",   ID_HELP_ANGRYIPSCANNERWEBPAGE
-
-        MENUITEM "Angry IP Scanner &Forum",     ID_HELP_FORUM
-        MENUITEM "Angryziber &Software",        ID_HELP_ANGRYZIBERSOFTWARE
-        MENUITEM SEPARATOR
-        MENUITEM "Download &Plugins",           ID_HELP_DOWNLOADPLUGINS
-        MENUITEM "&Donations",                  ID_HELP_DONATIONPAGE
-        MENUITEM SEPARATOR
-        MENUITEM "&Command-line Usage",         ID_HELP_COMMANDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "Check for newer version...",  ID_HELP_CHECKFORNEWERVERSION
-        MENUITEM SEPARATOR
-        MENUITEM "&About...\tF12",              ID_HELP_ABOUT
-    END
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
-
-IDB_PASTE               BITMAP  DISCARDABLE     "res\\paste.bmp"
-IDB_SHOW_ADVANCED       BITMAP  DISCARDABLE     "res\\show_adv.bmp"
-IDB_HIDE_ADVANCED       BITMAP  DISCARDABLE     "res\\hide_adv.bmp"
-#endif    // Neutral resources
-/////////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////////////////////////////////////////////////////////
-// Neutral (Default) resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEUD)
-#ifdef _WIN32
-LANGUAGE LANG_NEUTRAL, SUBLANG_DEFAULT
-#pragma code_page(1251)
-#endif //_WIN32
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
-
-IDB_IMAGELIST           BITMAP  DISCARDABLE     "res\\bitmap1.bmp"
-IDB_BMPKILL             BITMAP  DISCARDABLE     "res\\bmpkill.bmp"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Dialog
-//
-
-IDD_OPTIONS DIALOG DISCARDABLE  0, 0, 197, 242
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Options"
-FONT 8, "MS Sans Serif"
-BEGIN
-    EDITTEXT        IDC_EDIT2,51,11,40,12,ES_AUTOHSCROLL | ES_NUMBER
-    EDITTEXT        IDC_THREADS,51,24,40,12,ES_AUTOHSCROLL | ES_NUMBER
-    EDITTEXT        IDC_TIMEOUT,51,37,40,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_PINGCOUNT,51,50,40,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_PORTTIMEOUT,51,63,40,12,ES_AUTOHSCROLL
-    CONTROL         "Scan dead hosts (if no ping reply)",
-                    IDC_SCAN_HOST_IF_DEAD,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,7,77,121,10
-    CONTROL         "All hosts",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP,123,16,42,10
-    CONTROL         "Only alive",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,123,
-                    27,47,10
-    CONTROL         "Only open ports",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,
-                    123,38,63,10
-    CONTROL         "Ports on 2nd row",IDC_SHOW_PORTS_BELOW,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,117,54,69,10
-    CONTROL         "Faster port scans",IDC_OPTIMIZE_PORTS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,117,66,70,10
-    CONTROL         "Scan ports",IDC_SCAN_PORTS,"Button",BS_AUTOCHECKBOX | 
-                    NOT WS_VISIBLE | WS_TABSTOP,138,78,50,10
-    LISTBOX         IDC_PLUGIN_LIST,6,111,86,93,LBS_NOINTEGRALHEIGHT | 
-                    WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Info...",IDC_COLUMN_ABOUT_BUTTON,116,129,50,14,
-                    WS_DISABLED
-    PUSHBUTTON      "Options...",IDC_COLUMN_OPTIONS_BUTTON,116,147,50,14,
-                    WS_DISABLED
-    PUSHBUTTON      "Select scanned columns...",IDC_SELECT_COLUMNS_BTN,98,
-                    189,91,14
-    CONTROL         "Save options && dimensions automatically on exit",
-                    IDC_AUTO_SAVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,
-                    208,181,10
-    DEFPUSHBUTTON   "&OK",IDOK,9,223,46,14
-    PUSHBUTTON      "OK && &Save",IDSAVE,63,223,48,14
-    PUSHBUTTON      "&Cancel",IDCANCEL,120,223,49,14
-    PUSHBUTTON      "?",IDC_HELPBTN,176,223,14,14
-    LTEXT           "Timer delay:",IDC_STATIC,7,14,39,8
-    LTEXT           "ms",IDC_STATIC,93,13,10,8
-    LTEXT           "Max threads:",IDC_STATIC,7,27,42,8
-    LTEXT           "Ping timeout:",IDC_STATIC,7,40,42,8
-    LTEXT           "ms",IDC_STATIC,93,40,10,8
-    GROUPBOX        "Display",IDC_STATIC,117,7,71,44
-    LTEXT           "Select a column:",IDC_STATIC,7,101,54,8
-    GROUPBOX        "None selected",IDC_PLUGIN_OPTIONS_GROUP,98,102,91,83
-    LTEXT           "Port timeout:",IDC_STATIC,7,65,40,8
-    LTEXT           "ms",IDC_STATIC,93,66,10,8
-    LTEXT           "Ping count:",IDC_STATIC,7,53,37,8
-    LTEXT           "Type:",IDC_STATIC,115,117,19,8
-    RTEXT           "N/A",IDC_COLUMN_TYPE,137,117,28,8
-    LTEXT           "Scanned:",IDC_STATIC,115,167,32,8
-    RTEXT           "N/A",IDC_COLUMN_SELECTED,151,167,14,8
-    CONTROL         "Skip broadcast IPs",IDC_SKIP_BROADCAST,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,89,75,10
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
-BEGIN
-    IDD_OPTIONS, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 188
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 237
-    END
-END
-#endif    // APSTUDIO_INVOKED
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Accelerator
-//
-
-IDR_MENU1 ACCELERATORS DISCARDABLE 
-BEGIN
-    "A",            ID_GOTO_NEXTALIVE,      VIRTKEY, CONTROL, NOINVERT
-    "B",            ID_FAVOURITES_ADDCURRENTRANGE, VIRTKEY, CONTROL, 
-                                                    NOINVERT
-    "C",            ID_COMMANDS_IPCLIPBOARD, VIRTKEY, CONTROL, NOINVERT
-    "D",            ID_GOTO_NEXTDEAD,       VIRTKEY, CONTROL, NOINVERT
-    "F",            ID_GOTO_HOSTNAME,       VIRTKEY, CONTROL, NOINVERT
-    "I",            ID_COMMANDS_RESCANIP,   VIRTKEY, CONTROL, NOINVERT
-    "L",            ID_GOTO_NEXTCLOSEDPORT, VIRTKEY, CONTROL, NOINVERT
-    "N",            ID_SHOWNETBIOSINFO,     VIRTKEY, CONTROL, NOINVERT
-    "O",            ID_OPTIONS_OPTIONS,     VIRTKEY, CONTROL, NOINVERT
-    "P",            ID_GOTO_NEXTOPENPORT,   VIRTKEY, CONTROL, NOINVERT
-    "R",            ID__OPENCOMPUTERINEXPLORER, VIRTKEY, CONTROL, NOINVERT
-    VK_DELETE,      ID_COMMANDS_DELETEIP,   VIRTKEY, NOINVERT
-    VK_F12,         ID_HELP_ABOUT,          VIRTKEY, NOINVERT
-    VK_INSERT,      ID_COMMANDS_IPCLIPBOARD, VIRTKEY, CONTROL, NOINVERT
-    "X",            ID_IP_EXIT,             VIRTKEY, CONTROL, NOINVERT
-    "0",            ID_MENU_OPEN_CMD_001,   VIRTKEY, CONTROL, NOINVERT
-    "1",            ID_MENU_OPEN_CMD_002,   VIRTKEY, CONTROL, NOINVERT
-    "2",            ID_MENU_OPEN_CMD_003,   VIRTKEY, CONTROL, NOINVERT
-    "3",            ID_MENU_OPEN_CMD_004,   VIRTKEY, CONTROL, NOINVERT
-    "4",            ID_MENU_OPEN_CMD_005,   VIRTKEY, CONTROL, NOINVERT
-    "5",            ID_MENU_OPEN_CMD_006,   VIRTKEY, CONTROL, NOINVERT
-    "6",            ID_MENU_OPEN_CMD_007,   VIRTKEY, CONTROL, NOINVERT
-    "7",            ID_MENU_OPEN_CMD_008,   VIRTKEY, CONTROL, NOINVERT
-    "8",            ID_MENU_OPEN_CMD_009,   VIRTKEY, CONTROL, NOINVERT
-    "9",            ID_MENU_OPEN_CMD_010,   VIRTKEY, CONTROL, NOINVERT
-END
-
-#endif    // Neutral (Default) resources
-/////////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////////////////////////////////////////////////////////
 // Russian resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
@@ -666,7 +401,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_VERSION             "2.21"
+    IDS_VERSION             "2.50 alpha"
     IDS_SCAN_HOMEPAGE       "http://www.angryziber.com/ipscan/"
     IDS_HOMEPAGE            "http://www.angryziber.com/"
     IDS_MAIL                "angryziber@angryziber.com"
@@ -676,6 +411,271 @@ BEGIN
 END
 
 #endif    // Russian resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "Export &all...",              ID_SCAN_SAVETOTXT
+        MENUITEM "Export &selection...",        ID_SCAN_SAVESELECTION
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit\tAlt+F4",               ID_IP_EXIT
+    END
+    POPUP "&Go to"
+    BEGIN
+        MENUITEM "Next &alive host\tCtrl+A",    ID_GOTO_NEXTALIVE
+        MENUITEM "Next &dead host\tCtrl+D",     ID_GOTO_NEXTDEAD
+        MENUITEM SEPARATOR
+        MENUITEM "Next o&pen port\tCtrl+P",     ID_GOTO_NEXTOPENPORT
+        MENUITEM "Next &closed port\tCtrl+L",   ID_GOTO_NEXTCLOSEDPORT
+        MENUITEM SEPARATOR
+        MENUITEM "&Find...\tCtrl+F",            ID_GOTO_HOSTNAME
+    END
+    POPUP "&Commands"
+    BEGIN
+        MENUITEM "Show details\tDbl-Click",     ID_COMMANDS_SHOWDETAILS
+        MENUITEM "Rescan &IP(s)\tCtrl+I",       ID_COMMANDS_RESCANIP
+        MENUITEM "&Delete IP(s)\tDel",          ID_COMMANDS_DELETEIP
+        MENUITEM SEPARATOR
+        POPUP "Show"
+        BEGIN
+            MENUITEM SEPARATOR
+            MENUITEM "Show &NetBIOS info\tCtrl+N",  ID_SHOWNETBIOSINFO
+        END
+        POPUP "Open computer"
+        BEGIN
+            MENUITEM "Configure...",                ID_COMMANDS_OPENCOMPUTER_CONFIGURE
+
+            MENUITEM SEPARATOR
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "IP -> Clipboard\tCtrl+C",     ID_COMMANDS_IPCLIPBOARD
+    END
+    POPUP "&Favorites"
+    BEGIN
+        MENUITEM "&Add current range...\tCtrl+B", 
+                                                ID_FAVOURITES_ADDCURRENTRANGE
+
+        MENUITEM "Delete favorite...",          ID_FAVOURITES_DELETEFAVOURITE
+
+        MENUITEM SEPARATOR
+    END
+    POPUP "&Options"
+    BEGIN
+        MENUITEM "&Options...\tCtrl+O",         ID_OPTIONS_OPTIONS
+        MENUITEM "Select &Columns...",          ID_OPTIONS_SELECT_COLUMNS
+        MENUITEM "Select &Ports...",            ID_OPTIONS_SELECTPORTS
+        MENUITEM SEPARATOR
+        MENUITEM "&Save options",               ID_OPTIONS_SAVEOPTIONS
+        MENUITEM "Save &dimensions",            ID_OPTIONS_SAVEDIMENSIONS
+    END
+    POPUP "&Utils"
+    BEGIN
+        POPUP "&Delete from list"
+        BEGIN
+            MENUITEM "&Dead hosts",                 ID_UTILS_DELETEFROMLIST_DEADHOSTS
+
+            MENUITEM "&Alive hosts",                ID_UTILS_DELETEFROMLIST_ALIVEHOSTS
+
+            MENUITEM "&Closed ports",               ID_UTILS_DELETEFROMLIST_CLOSEDPORTS
+
+            MENUITEM "&Open ports",                 ID_UTILS_DELETEFROMLIST_OPENPORTS
+
+        END
+        POPUP "Install / Uninstall"
+        BEGIN
+            MENUITEM "&Install the program...",     ID_OPTIONS_INSTALL_PROGRAM
+
+            MENUITEM "&Remove settings from registry", 
+                                                    ID_UTILS_WIPETRACESREMOVESETTINGSFROMREGISTRY
+
+        END
+        MENUITEM "Show &last scan info",        ID_OPTIONS_SHOWLASTSCANINFO
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "Angry IP Scanner &Webpage",   ID_HELP_ANGRYIPSCANNERWEBPAGE
+
+        MENUITEM "Angry IP Scanner &Forum",     ID_HELP_FORUM
+        MENUITEM "Angryziber &Software",        ID_HELP_ANGRYZIBERSOFTWARE
+        MENUITEM SEPARATOR
+        MENUITEM "Download &Plugins",           ID_HELP_DOWNLOADPLUGINS
+        MENUITEM "&Donations",                  ID_HELP_DONATIONPAGE
+        MENUITEM SEPARATOR
+        MENUITEM "&Command-line Usage",         ID_HELP_COMMANDLINE
+        MENUITEM SEPARATOR
+        MENUITEM "Check for newer version...",  ID_HELP_CHECKFORNEWERVERSION
+        MENUITEM SEPARATOR
+        MENUITEM "&About...\tF12",              ID_HELP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_PASTE               BITMAP  DISCARDABLE     "res\\paste.bmp"
+IDB_SHOW_ADVANCED       BITMAP  DISCARDABLE     "res\\show_adv.bmp"
+IDB_HIDE_ADVANCED       BITMAP  DISCARDABLE     "res\\hide_adv.bmp"
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral (Default) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEUD)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_DEFAULT
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_IMAGELIST           BITMAP  DISCARDABLE     "res\\bitmap1.bmp"
+IDB_BMPKILL             BITMAP  DISCARDABLE     "res\\bmpkill.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_OPTIONS DIALOG DISCARDABLE  0, 0, 197, 242
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Options"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT2,51,11,40,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_THREADS,51,24,40,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_TIMEOUT,51,37,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PINGCOUNT,51,50,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PORTTIMEOUT,51,63,40,12,ES_AUTOHSCROLL
+    CONTROL         "Scan dead hosts (if no ping reply)",
+                    IDC_SCAN_HOST_IF_DEAD,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,77,121,10
+    CONTROL         "All hosts",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,123,16,42,10
+    CONTROL         "Only alive",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,123,
+                    27,47,10
+    CONTROL         "Only open ports",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,
+                    123,38,63,10
+    CONTROL         "Ports on 2nd row",IDC_SHOW_PORTS_BELOW,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,117,54,69,10
+    CONTROL         "Faster port scans",IDC_OPTIMIZE_PORTS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,117,66,70,10
+    CONTROL         "Scan ports",IDC_SCAN_PORTS,"Button",BS_AUTOCHECKBOX | 
+                    NOT WS_VISIBLE | WS_TABSTOP,138,78,50,10
+    LISTBOX         IDC_PLUGIN_LIST,6,111,86,93,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Info...",IDC_COLUMN_ABOUT_BUTTON,116,129,50,14,
+                    WS_DISABLED
+    PUSHBUTTON      "Options...",IDC_COLUMN_OPTIONS_BUTTON,116,147,50,14,
+                    WS_DISABLED
+    PUSHBUTTON      "Select scanned columns...",IDC_SELECT_COLUMNS_BTN,98,
+                    189,91,14
+    CONTROL         "Save options && dimensions automatically on exit",
+                    IDC_AUTO_SAVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,
+                    208,181,10
+    DEFPUSHBUTTON   "&OK",IDOK,9,223,46,14
+    PUSHBUTTON      "OK && &Save",IDSAVE,63,223,48,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,120,223,49,14
+    PUSHBUTTON      "?",IDC_HELPBTN,176,223,14,14
+    LTEXT           "Timer delay:",IDC_STATIC,7,14,39,8
+    LTEXT           "ms",IDC_STATIC,93,13,10,8
+    LTEXT           "Max threads:",IDC_STATIC,7,27,42,8
+    LTEXT           "Ping timeout:",IDC_STATIC,7,40,42,8
+    LTEXT           "ms",IDC_STATIC,93,40,10,8
+    GROUPBOX        "Display",IDC_STATIC,117,7,71,44
+    LTEXT           "Select a column:",IDC_STATIC,7,101,54,8
+    GROUPBOX        "None selected",IDC_PLUGIN_OPTIONS_GROUP,98,102,91,83
+    LTEXT           "Port timeout:",IDC_STATIC,7,65,40,8
+    LTEXT           "ms",IDC_STATIC,93,66,10,8
+    LTEXT           "Ping count:",IDC_STATIC,7,53,37,8
+    LTEXT           "Type:",IDC_STATIC,115,117,19,8
+    RTEXT           "N/A",IDC_COLUMN_TYPE,137,117,28,8
+    LTEXT           "Scanned:",IDC_STATIC,115,167,32,8
+    RTEXT           "N/A",IDC_COLUMN_SELECTED,151,167,14,8
+    CONTROL         "Skip broadcast IPs",IDC_SKIP_BROADCAST,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,89,75,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_OPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 188
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 237
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MENU1 ACCELERATORS DISCARDABLE 
+BEGIN
+    "A",            ID_GOTO_NEXTALIVE,      VIRTKEY, CONTROL, NOINVERT
+    "B",            ID_FAVOURITES_ADDCURRENTRANGE, VIRTKEY, CONTROL, 
+                                                    NOINVERT
+    "C",            ID_COMMANDS_IPCLIPBOARD, VIRTKEY, CONTROL, NOINVERT
+    "D",            ID_GOTO_NEXTDEAD,       VIRTKEY, CONTROL, NOINVERT
+    "F",            ID_GOTO_HOSTNAME,       VIRTKEY, CONTROL, NOINVERT
+    "I",            ID_COMMANDS_RESCANIP,   VIRTKEY, CONTROL, NOINVERT
+    "L",            ID_GOTO_NEXTCLOSEDPORT, VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_SHOWNETBIOSINFO,     VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_OPTIONS_OPTIONS,     VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_GOTO_NEXTOPENPORT,   VIRTKEY, CONTROL, NOINVERT
+    "R",            ID__OPENCOMPUTERINEXPLORER, VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_COMMANDS_DELETEIP,   VIRTKEY, NOINVERT
+    VK_F12,         ID_HELP_ABOUT,          VIRTKEY, NOINVERT
+    VK_INSERT,      ID_COMMANDS_IPCLIPBOARD, VIRTKEY, CONTROL, NOINVERT
+    "X",            ID_IP_EXIT,             VIRTKEY, CONTROL, NOINVERT
+    "0",            ID_MENU_OPEN_CMD_001,   VIRTKEY, CONTROL, NOINVERT
+    "1",            ID_MENU_OPEN_CMD_002,   VIRTKEY, CONTROL, NOINVERT
+    "2",            ID_MENU_OPEN_CMD_003,   VIRTKEY, CONTROL, NOINVERT
+    "3",            ID_MENU_OPEN_CMD_004,   VIRTKEY, CONTROL, NOINVERT
+    "4",            ID_MENU_OPEN_CMD_005,   VIRTKEY, CONTROL, NOINVERT
+    "5",            ID_MENU_OPEN_CMD_006,   VIRTKEY, CONTROL, NOINVERT
+    "6",            ID_MENU_OPEN_CMD_007,   VIRTKEY, CONTROL, NOINVERT
+    "7",            ID_MENU_OPEN_CMD_008,   VIRTKEY, CONTROL, NOINVERT
+    "8",            ID_MENU_OPEN_CMD_009,   VIRTKEY, CONTROL, NOINVERT
+    "9",            ID_MENU_OPEN_CMD_010,   VIRTKEY, CONTROL, NOINVERT
+END
+
+#endif    // Neutral (Default) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -696,7 +696,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 IDD_ABOUTBOX DIALOGEX 0, 0, 239, 82
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,7,7,20,20
     LTEXT           "Angry IP scanner",IDC_STATIC,40,10,59,8,SS_NOPREFIX
@@ -722,23 +722,23 @@ STYLE WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION |
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "Angry IP Scanner"
 MENU IDR_MENU1
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     CONTROL         "IPAddress1",IDC_IPADDRESS1,"SysIPAddress32",WS_TABSTOP,
-                    37,1,98,12
+                    36,1,83,12
     CONTROL         "IPAddress2",IDC_IPADDRESS2,"SysIPAddress32",WS_TABSTOP,
-                    151,1,100,12
-    DEFPUSHBUTTON   "",IDC_BUTTON1,256,1,32,13,BS_BITMAP
-    EDITTEXT        IDC_HOSTNAME,37,16,99,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "",IDC_BUTTONIPUP,139,16,21,13,BS_BITMAP
-    PUSHBUTTON      "",IDC_BUTTONPASTE,163,16,19,13,BS_BITMAP
-    PUSHBUTTON      "",IDC_CLASS_D,189,16,18,13,BS_BITMAP
-    PUSHBUTTON      "",IDC_CLASS_C,209,16,18,13,BS_BITMAP
+                    134,1,84,12
+    DEFPUSHBUTTON   "",IDC_BUTTON1,293,1,36,13,BS_BITMAP
+    EDITTEXT        IDC_HOSTNAME,36,16,93,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "",IDC_BUTTONIPUP,131,16,21,13,BS_BITMAP
+    PUSHBUTTON      "",IDC_BUTTONPASTE,155,16,19,13,BS_BITMAP
+    PUSHBUTTON      "",IDC_CLASS_D,180,16,18,13,BS_BITMAP
+    PUSHBUTTON      "",IDC_CLASS_C,200,16,18,13,BS_BITMAP
     CONTROL         "List1",IDC_LIST,"SysListView32",LVS_REPORT | 
                     LVS_SHOWSELALWAYS | LVS_OWNERDRAWFIXED | WS_BORDER | 
                     WS_TABSTOP,0,82,683,101
     CONTROL         "",IDC_BUTTON_TO_ADVANCED,"Button",BS_AUTOCHECKBOX | 
-                    BS_BITMAP | BS_PUSHLIKE | WS_TABSTOP,293,1,12,28
+                    BS_BITMAP | BS_PUSHLIKE | WS_TABSTOP,293,17,36,12
     PUSHBUTTON      "",IDC_SELECT_COLUMNS,1,31,34,11,BS_BITMAP
     CONTROL         "Scan ports",IDC_SCAN_PORTS,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,40,32,48,10
@@ -747,13 +747,15 @@ BEGIN
                     164,186,155,12
     LTEXT           "",IDC_STATUS,0,186,164,12,SS_NOTIFY | SS_CENTERIMAGE | 
                     SS_SUNKEN | NOT WS_GROUP
-    LTEXT           "IP range:",IDC_STATIC,2,3,30,8
-    LTEXT           "to",IDC_STATIC,140,4,8,8
-    LTEXT           "Hostname:",IDC_STATIC,1,18,35,8
-    LTEXT           "Threads",IDC_STATIC,231,19,27,8
-    CTEXT           "0",IDC_NUMTHREADS,260,19,25,10,SS_SUNKEN
+    LTEXT           "IP range:",IDC_STATIC,0,3,30,8
+    LTEXT           "to",IDC_STATIC,123,4,8,8
+    LTEXT           "Hostname:",IDC_STATIC,0,18,35,8
+    LTEXT           "Threads",IDC_STATIC,232,19,27,8
+    CTEXT           "0",IDC_NUMTHREADS,263,18,25,10,SS_SUNKEN
     CONTROL         "N/A",IDC_WHATPORTS,"Static",SS_LEFTNOWORDWRAP | 
                     WS_GROUP,106,33,577,8
+    COMBOBOX        IDC_IPFEED,231,1,60,57,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
 END
 
 IDD_SEARCH DIALOG DISCARDABLE  0, 0, 142, 85
@@ -769,6 +771,24 @@ BEGIN
     LTEXT           "Enter a string to search for:",IDC_STATIC,7,7,86,8
     CONTROL         "From the beginning",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,37,49,76,10
+END
+
+IDD_IP_FEED_IP_RANGE DIALOG DISCARDABLE  0, 0, 225, 32
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "IPAddress1",IDC_IPADDRESS1,"SysIPAddress32",WS_TABSTOP,
+                    36,1,83,12
+    CONTROL         "IPAddress2",IDC_IPADDRESS2,"SysIPAddress32",WS_TABSTOP,
+                    134,1,84,12
+    EDITTEXT        IDC_HOSTNAME,36,16,93,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "",IDC_BUTTONIPUP,131,16,21,13,BS_BITMAP
+    PUSHBUTTON      "",IDC_BUTTONPASTE,155,16,19,13,BS_BITMAP
+    PUSHBUTTON      "",IDC_CLASS_D,180,16,18,13,BS_BITMAP
+    PUSHBUTTON      "",IDC_CLASS_C,200,16,18,13,BS_BITMAP
+    LTEXT           "IP range:",IDC_STATIC,0,3,30,8
+    LTEXT           "to",IDC_STATIC,123,4,8,8
+    LTEXT           "Hostname:",IDC_STATIC,0,18,35,8
 END
 
 
@@ -800,9 +820,38 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 78
     END
+
+    IDD_IP_FEED_IP_RANGE, DIALOG
+    BEGIN
+        RIGHTMARGIN, 221
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_IPSCAN_DIALOG DLGINIT
+BEGIN
+    IDC_IPFEED, 0x403, 9, 0
+0x5049, 0x5220, 0x6e61, 0x6567, "\000" 
+    IDC_IPFEED, 0x403, 8, 0
+0x5049, 0x4c20, 0x7369, 0x0074, 
+    IDC_IPFEED, 0x403, 11, 0
+0x6152, 0x646e, 0x6d6f, 0x4920, 0x7350, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_HAND                CURSOR  DISCARDABLE     "arrow.cur"
 
 #ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
@@ -849,13 +898,6 @@ END
 
 #endif    // !_MAC
 
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Cursor
-//
-
-IDC_HAND                CURSOR  DISCARDABLE     "arrow.cur"
 
 /////////////////////////////////////////////////////////////////////////////
 //

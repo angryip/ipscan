@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=CEditOpenersDlg
+LastClass=CIpscanDlg
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "ipscan.h"
@@ -20,14 +20,14 @@ Class8=CPortDlg
 Class9=CScanListCtrl
 Class10=CSearchDlg
 
-ResourceCount=26
+ResourceCount=27
 Resource1=IDD_MESSAGE_DIALOG
 Resource2=IDD_NETBIOS_OPTIONS
 Resource3=IDD_IPSCAN_DIALOG (English (U.S.))
 Resource4=IDD_ABOUTBOX (English (U.S.))
-Resource5=IDD_QUERY_DLG (Russian)
+Resource5=IDD_IP_FEED_IP_RANGE
 Resource6=IDD_DETAILS_DLG
-Resource7=IDD_SELECT_COLUMNS_DLG (Russian)
+Resource7=IDD_MESSAGE_DIALOG (Russian)
 Resource8=IDD_INSTALL_DLG
 Resource9=IDD_SELECT_COLUMNS_DLG
 Resource10=IDD_QUERY_DLG
@@ -38,18 +38,19 @@ Resource13=IDD_PORT_DLG
 Class12=CFavouriteDeleteDlg
 Resource14=IDD_EDIT_OPENERS_DLG
 Class13=CEditOpenersDlg
-Resource15=IDD_FAVOURITE_DELETE (Russian)
-Resource16=IDD_EDIT_OPENERS_DLG (Russian)
-Resource17=IDD_ABOUTBOX
-Resource18=IDD_IPSCAN_DIALOG
-Resource19=IDD_SEARCH
-Resource20=IDR_MENU1 (Neutral)
-Resource21=IDD_OPTIONS (Neutral (Default))
-Resource22=IDD_INSTALL_DLG (Russian)
-Resource23=IDD_MESSAGE_DIALOG (Russian)
-Resource24=IDD_PORT_DLG (Russian)
+Resource15=IDD_INSTALL_DLG (Russian)
+Resource16=IDD_OPTIONS (Neutral (Default))
+Resource17=IDD_IPSCAN_DIALOG
+Resource18=IDD_FAVOURITE_DELETE (Russian)
+Resource19=IDD_PORT_DLG (Russian)
+Resource20=IDD_SELECT_COLUMNS_DLG (Russian)
+Resource21=IDD_SEARCH
+Resource22=IDR_MENU1 (Neutral)
+Resource23=IDD_EDIT_OPENERS_DLG (Russian)
+Resource24=IDD_ABOUTBOX
 Resource25=IDD_DETAILS_DLG (Russian)
-Resource26=IDR_MENU1 (Neutral (Default))
+Resource26=IDD_QUERY_DLG (Russian)
+Resource27=IDR_MENU1 (Neutral (Default))
 
 [CLS:CInstallDlg]
 Type=0
@@ -76,7 +77,7 @@ Type=0
 BaseClass=CDialog
 HeaderFile=ipscanDlg.h
 ImplementationFile=ipscanDlg.cpp
-LastObject=ID_HELP_DOWNLOADPLUGINS
+LastObject=CIpscanDlg
 Filter=D
 VirtualFilter=dWC
 
@@ -156,7 +157,7 @@ Control12=IDC_HTTP_FORUM,static,1342308608
 [DLG:IDD_IPSCAN_DIALOG]
 Type=1
 Class=CIpscanDlg
-ControlCount=21
+ControlCount=22
 Control1=IDC_IPADDRESS1,SysIPAddress32,1342242816
 Control2=IDC_IPADDRESS2,SysIPAddress32,1342242816
 Control3=IDC_BUTTON1,button,1342242945
@@ -178,6 +179,7 @@ Control18=IDC_STATIC,static,1342308352
 Control19=IDC_STATIC,static,1342308352
 Control20=IDC_NUMTHREADS,static,1342312449
 Control21=IDC_WHATPORTS,static,1342308364
+Control22=IDC_IPFEED,combobox,1344339971
 
 [DLG:IDD_MESSAGE_DIALOG]
 Type=1
@@ -608,4 +610,19 @@ Control15=IDC_STATIC,static,1342308352
 Control16=IDC_STATIC,static,1342308352
 Control17=IDC_STATIC,static,1342308352
 Control18=IDC_COMMANDLINE,button,1342242819
+
+[DLG:IDD_IP_FEED_IP_RANGE]
+Type=1
+Class=?
+ControlCount=10
+Control1=IDC_IPADDRESS1,SysIPAddress32,1342242816
+Control2=IDC_IPADDRESS2,SysIPAddress32,1342242816
+Control3=IDC_HOSTNAME,edit,1350631552
+Control4=IDC_BUTTONIPUP,button,1342242944
+Control5=IDC_BUTTONPASTE,button,1342242944
+Control6=IDC_CLASS_D,button,1342242944
+Control7=IDC_CLASS_C,button,1342242944
+Control8=IDC_STATIC,static,1342308352
+Control9=IDC_STATIC,static,1342308352
+Control10=IDC_STATIC,static,1342308352
 

@@ -1,5 +1,5 @@
 /*********************************************************************
- * This is a part of Angry IP IPFeeder source code                    *
+ * This is a part of Angry IP Scanner source code                    *
  * http://www.angryziber.com/ipscan/                                 *
  *                                                                   *
  * Written by Angryziber                                             *
