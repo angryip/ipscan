@@ -155,10 +155,10 @@ void CScanner::initListColumns(CListCtrl *pListCtrl)
 
 void CScanner::initMenuWithColumns(CMenu *pMenu)
 {
-	for (int nCol=0; nCol < m_nColumnCount; nCol++) 
+	for (int nCol=2; nCol < m_nColumnCount; nCol++) 
 	{							
-		pMenu->InsertMenu(nCol, MF_BYPOSITION, 1, *m_Columns[nCol].pszColumnName);		
-		pMenu->EnableMenuItem(nCol, MF_BYPOSITION | MF_ENABLED);
+		pMenu->InsertMenu(nCol-2, MF_BYPOSITION, 0 /*TODO MESSAGE*/, *m_Columns[nCol].pszColumnName);		
+		pMenu->EnableMenuItem(nCol-2, MF_BYPOSITION | MF_ENABLED);
 	}
 }
 

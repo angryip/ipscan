@@ -34,19 +34,17 @@ class CIpscanDlg : public CDialog
 public:
 	CBitmap m_bmpShowAdvanced;
 	int m_nCmdLineOptions;
-	CString *m_szDefaultFileName;	
-	CBitmap killbmp;
-	CString m_search;	
+	CString *m_szDefaultFileName;			
 	BOOL m_portondead;
 	BOOL m_ip2_virgin;
 	UINT m_timeout;
-	CBitmap stopbmp;
-	CBitmap startbmp;
-	CBitmap pastebmp;
-	CBitmap m_bmpuparrow;		
+	CBitmap m_bmpStop;
+	CBitmap m_bmpStart;
+	CBitmap m_bmpPaste;
+	CBitmap m_bmpUpArrow;		
+	CBitmap m_bmpKill;
 	int m_menucuritem;
-	CMenu * ctx_item;
-	CMenu mnu;
+	CMenu * m_menuContext;
 	unsigned long m_tickcount;
 	unsigned long m_endip;
 	unsigned long m_startip;

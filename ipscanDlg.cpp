@@ -207,13 +207,11 @@ BOOL CIpscanDlg::OnInitDialog()
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon	
-
-	// Load default options
-
+	
 	app = AfxGetApp();
-	d = (CIpscanDlg*)app->m_pMainWnd;
-	g_dlg = (CIpscanDlg*)app->m_pMainWnd;
-
+	g_dlg = d = (CIpscanDlg*)app->m_pMainWnd;
+	
+	// Load default options
 	g_options = new COptions();
 	g_options->load();
 	g_options->setWindowPos();	
@@ -229,14 +227,14 @@ BOOL CIpscanDlg::OnInitDialog()
 	g_scanner->initListColumns(&m_list);
 
 	// Set button's bitmaps
-	m_bmpuparrow.LoadMappedBitmap(IDB_UPARROW);
-	((CButton*)GetDlgItem(IDC_BUTTONIPUP))->SetBitmap((HBITMAP)m_bmpuparrow.m_hObject);
-	pastebmp.LoadMappedBitmap(IDB_PASTE);
-	((CButton*)GetDlgItem(IDC_BUTTONPASTE))->SetBitmap((HBITMAP)pastebmp.m_hObject);
-	startbmp.LoadMappedBitmap(IDB_BMPSTART);
-	stopbmp.LoadMappedBitmap(IDB_BMPSTOP);
-	killbmp.LoadMappedBitmap(IDB_BMPKILL);
-	((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)startbmp.m_hObject);
+	m_bmpUpArrow.LoadMappedBitmap(IDB_UPARROW);
+	((CButton*)GetDlgItem(IDC_BUTTONIPUP))->SetBitmap((HBITMAP)m_bmpUpArrow.m_hObject);
+	m_bmpPaste.LoadMappedBitmap(IDB_PASTE);
+	((CButton*)GetDlgItem(IDC_BUTTONPASTE))->SetBitmap((HBITMAP)m_bmpPaste.m_hObject);
+	m_bmpStart.LoadMappedBitmap(IDB_BMPSTART);
+	m_bmpStop.LoadMappedBitmap(IDB_BMPSTOP);
+	m_bmpKill.LoadMappedBitmap(IDB_BMPKILL);
+	((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStart.m_hObject);
 	CBitmap *tmpbmp = new CBitmap; tmpbmp->LoadMappedBitmap(IDB_CLASS_C_PIC);
 	((CButton*)GetDlgItem(IDC_CLASS_C))->SetBitmap((HBITMAP)tmpbmp->m_hObject);
 	tmpbmp = new CBitmap; tmpbmp->LoadMappedBitmap(IDB_CLASS_D_PIC);
@@ -266,12 +264,9 @@ BOOL CIpscanDlg::OnInitDialog()
 
 	m_scanning=FALSE;
 
-	// Load menu
-	mnu.LoadMenu(IDR_MENU1);	
-
-	ctx_item = mnu.GetSubMenu(2);	// Should not be stored!
-	
-	g_scanner->initMenuWithColumns(ctx_item->GetSubMenu(2));	// Show menu	
+	// Load menu		
+	g_scanner->initMenuWithColumns(GetMenu()->GetSubMenu(2)->GetSubMenu(2));	// Show menu	
+	m_menuContext = GetMenu()->GetSubMenu(2);	// TODO: Should not be stored!
 
 	hAccel = LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MENU1));
 
@@ -402,7 +397,7 @@ void CIpscanDlg::OnButton1()
 
 		m_scanning=TRUE;
 		
-		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)stopbmp.m_hObject); // stop scanning button
+		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStop.m_hObject); // stop scanning button
 
 		m_list.DeleteAllItems();		
 
@@ -456,7 +451,7 @@ finish_all:
 			status("Finalizing...");
 			g_scanner->finalizeScanning();
 			
-			((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)startbmp.m_hObject); // start scan bitmap
+			((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStart.m_hObject); // start scan bitmap
 			status("Ready");
 			
 			CMenu *tmpMenu = GetMenu();
@@ -541,7 +536,7 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 	
 	if (m_curip<m_endip) 
 	{
-		if (g_nThreadCount >= g_options->m_nMaxThreads - 1) return;
+		if ((int) g_nThreadCount >= g_options->m_nMaxThreads - 1) return;
 		in_addr in;
 		char *ipa;
 		in.S_un.S_addr = htonl(m_curip);
@@ -572,7 +567,7 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 		else 
 		{
 			status("Wait for all threads to terminate");
-			((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)killbmp.m_hObject);
+			((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpKill.m_hObject);
 			m_scanning = 2; // waiting can be interrupted
 		}
 	}
@@ -599,7 +594,7 @@ void CIpscanDlg::OnRclickList(NMHDR* pNMHDR, LRESULT* pResult)
 	m_menucuritem = lw->iItem;
 	if (m_menucuritem != 0xFFFFFFFF) 
 	{
-		TrackPopupMenu(ctx_item->m_hMenu,TPM_LEFTALIGN | TPM_RIGHTBUTTON,p.x,p.y,0,m_hWnd,NULL);
+		TrackPopupMenu(m_menuContext->m_hMenu,TPM_LEFTALIGN | TPM_RIGHTBUTTON,p.x,p.y,0,m_hWnd,NULL);
 	}	
 	*pResult = 0;
 }
@@ -722,7 +717,7 @@ void CIpscanDlg::OnWindozesucksRescanip()
 		m_curip = ntohl(inet_addr((char*)&str));
 		
 		m_scanning=TRUE;
-		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)stopbmp.m_hObject);
+		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStop.m_hObject);
 		
 		g_nThreadCount = 0;
 		
@@ -741,7 +736,7 @@ void CIpscanDlg::OnWindozesucksRescanip()
 		ScanningThread((void*)m_menucuritem);
 		
 		m_scanning=FALSE;
-		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)startbmp.m_hObject);
+		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStart.m_hObject);
 		
 		status("Ready");
 	}
