@@ -75,6 +75,12 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "IP -> Clipboard\tCtrl+C",     ID_COMMANDS_IPCLIPBOARD
     END
+    POPUP "&Favourites"
+    BEGIN
+        MENUITEM "&Add current range",          ID_FAVOURITES_ADDCURRENTRANGE
+
+        MENUITEM SEPARATOR
+    END
     POPUP "&Options"
     BEGIN
         MENUITEM "&Options...\tCtrl+O",         ID_OPTIONS_OPTIONS
@@ -380,6 +386,17 @@ BEGIN
                     IDC_STATIC,7,36,179,27
 END
 
+IDD_QUERY_DLG DIALOG DISCARDABLE  0, 0, 186, 58
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Angry IP Scanner"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_USER_TEXT,7,17,172,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,35,37,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,102,37,50,14
+    LTEXT           "",IDC_QUERY_TEXT,7,7,163,8
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -435,6 +452,14 @@ BEGIN
         RIGHTMARGIN, 186
         TOPMARGIN, 7
         BOTTOMMARGIN, 80
+    END
+
+    IDD_QUERY_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 51
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -576,7 +601,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_VERSION             "2.10"
+    IDS_VERSION             "2.11"
     IDS_SCAN_HOMEPAGE       "http://www.angryziber.com/ipscan/"
     IDS_HOMEPAGE            "http://www.angryziber.com/"
     IDS_MAIL                "angryziber@angryziber.com"

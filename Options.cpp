@@ -17,6 +17,8 @@
 #include "ipscan.h"
 #include "Options.h"
 #include "IpscanDlg.h"
+#include "QueryDlg.h"
+#include "MessageDlg.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -197,6 +199,24 @@ void COptions::load()
 	
 	setPortString(app->GetProfileString("", "PortString", ""));	// also parses it
 
+	// Load Favourites
+	CString szKey;
+
+	for (int i=0; i < 99; i++)
+	{
+		szKey.Format("FavouriteName_%d", i);
+		m_aFavourites[i].szName = app->GetProfileString("", szKey);
+		
+		if (m_aFavourites[i].szName.GetLength() == 0)
+			break;
+
+		
+		szKey.Format("FavouriteIP1_%d", i);
+		m_aFavourites[i].nIP1 = app->GetProfileInt("", szKey, 0);
+		szKey.Format("FavouriteIP2_%d", i);
+		m_aFavourites[i].nIP1 = app->GetProfileInt("", szKey, 0);
+	}
+
 	// Path, where the Angry IP Scanner resides
 	m_szExecutablePath = __targv[0];
 	int nTmp = m_szExecutablePath.ReverseFind('\\');
@@ -243,4 +263,54 @@ CString COptions::getCurrentDate()
 	szDateTime += szTime;	 
 	
 	return szDateTime;
+}
+
+void COptions::initFavouritesMenu(CMenu *pMenu)
+{
+	for (int i=0; i < 99; i++) 
+	{							
+		if (m_aFavourites[i].szName.GetLength() == 0)
+			break;
+
+		pMenu->InsertMenu(i+2, MF_BYPOSITION, ID_MENU_FAVOURITES_001 + i, m_aFavourites[i].szName);				
+	}
+}
+
+void COptions::addFavourite()
+{
+	CIpscanDlg *pDlg = (CIpscanDlg *) AfxGetApp()->GetMainWnd();
+
+	CQueryDlg dlg(pDlg);
+
+	dlg.m_szCaption = "Add Favourite";
+	dlg.m_szQueryText = "Enter name of current favourite";	
+
+	CString szTmp;	
+
+	pDlg->m_ip1.GetWindowText(szTmp);
+	dlg.m_szDefaultUserText = szTmp + " - ";
+	pDlg->m_ip2.GetWindowText(szTmp);
+	dlg.m_szDefaultUserText += szTmp;
+
+	szTmp = dlg.doQuery();
+	
+	if (szTmp.GetLength() == 0)
+		return;
+
+	// Find the empty slot and populate it
+	for (int i=0; i < 99; i++)
+	{
+		if (m_aFavourites[i].szName.GetLength() == 0)
+		{
+			m_aFavourites[i].szName = szTmp;
+			
+			pDlg->m_ip1.GetWindowText(szTmp);			
+			m_aFavourites[i].nIP1 = inet_addr(szTmp);
+
+			pDlg->m_ip2.GetWindowText(szTmp);			
+			m_aFavourites[i].nIP2 = inet_addr(szTmp);
+
+			
+		}
+	}
 }

@@ -146,6 +146,10 @@ SOURCE=.\PortDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\QueryDlg.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\SaveToFile.cpp
 # End Source File
 # Begin Source File
@@ -228,6 +232,10 @@ SOURCE=.\OptionsDlg.h
 # Begin Source File
 
 SOURCE=.\PortDlg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\QueryDlg.h
 # End Source File
 # Begin Source File
 

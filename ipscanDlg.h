@@ -151,6 +151,7 @@ protected:
 	afx_msg void OnCommandsDeleteIP();
 	afx_msg void ShowCompleteInformation();
 	afx_msg void OnClose();
+	afx_msg void OnFavouritesAddcurrentrange();
 	//}}AFX_MSG
 	
 	afx_msg void OnExecuteShowMenu(UINT nID);

@@ -27,9 +27,12 @@ typedef int teDisplayOptions;
 
 typedef struct {u_short nStartPort; u_short nEndPort; } tPortRange;
 
+typedef	struct {CString szName; u_long nIP1; u_long nIP2; } tFavourite;
+
 class COptions  
 {
 public:
+	void addFavourite();
 	int m_nPortCount;
 	BOOL m_bOptimizePorts;
 	int m_nLanaNumber;
@@ -47,6 +50,7 @@ public:
 	int m_nMaxThreads;
 	int m_nTimerDelay;
 	tPortRange *m_aParsedPorts;	// Array
+	tFavourite m_aFavourites[100];
 	void setPortString(LPCSTR szPortString);
 	CString m_szPorts;
 	COptions();
@@ -54,6 +58,7 @@ public:
 	void load();
 	void save();
 	BOOL parsePortString();
+	void initFavouritesMenu(CMenu *pMenu);
 	
 };
 

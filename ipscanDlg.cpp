@@ -28,6 +28,7 @@
 #include "Scanner.h"
 #include "PortDlg.h"
 #include "SelectColumnsDlg.h"
+#include "QueryDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -57,6 +58,8 @@ BOOL g_bScanExistingItems = FALSE;
 
 #define INDEX_CONTEXT_MENU	2
 #define	INDEX_SHOW_MENU		4
+
+#define INDEX_FAVOURITES_MENU	3
 
 class CAboutDlg : public CDialog
 {
@@ -209,10 +212,11 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_UTILS_DELETEFROMLIST_OPENPORTS, OnUtilsDeletefromlistOpenports)
 	ON_COMMAND(ID_COMMANDS_DELETEIP, OnCommandsDeleteIP)
 	ON_COMMAND(ID_OPTIONS_SHOWLASTSCANINFO, ShowCompleteInformation)
+	ON_WM_CLOSE()
 	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_COMMAND(ID_OPTIONS_SELECT_COLUMNS, OnSelectColumns)
 	ON_COMMAND(ID_OPTIONS_SELECTPORTS, OnSelectPortsClicked)
-	ON_WM_CLOSE()
+	ON_COMMAND(ID_FAVOURITES_ADDCURRENTRANGE, OnFavouritesAddcurrentrange)
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_RANGE(ID_MENU_SHOW_CMD_001, ID_MENU_SHOW_CMD_099, OnExecuteShowMenu)
@@ -363,6 +367,9 @@ BOOL CIpscanDlg::OnInitDialog()
 	// Load menu			
 	g_scanner->initMenuWithColumns(GetMenu()->GetSubMenu(INDEX_CONTEXT_MENU)->GetSubMenu(INDEX_SHOW_MENU));	// Show menu	
 	m_menuContext = GetMenu()->GetSubMenu(INDEX_CONTEXT_MENU);	// TODO: Should not be stored!
+
+	// Init favourites menu
+	g_options->initFavouritesMenu(GetMenu()->GetSubMenu(INDEX_FAVOURITES_MENU));
 
 	hAccel = LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MENU1));
 
@@ -1550,4 +1557,9 @@ void CIpscanDlg::OnClose()
 	KillAllRunningThreads();		
 
 	CDialog::OnClose();	
+}
+
+void CIpscanDlg::OnFavouritesAddcurrentrange() 
+{
+	g_options->addFavourite();		
 }
