@@ -22,6 +22,7 @@
 #define IDB_BMPKILL                     147
 #define IDB_PASTE                       148
 #define IDD_INSTALL_DLG                 149
+#define IDD_MESSAGE_DIALOG              150
 #define IDC_LIST                        1002
 #define IDC_STATUS                      1005
 #define IDC_IPADDRESS1                  1007
@@ -60,6 +61,7 @@
 #define IDC_INSTALL_PATH                1051
 #define IDC_CREATE_GROUP                1052
 #define IDC_CREATE_DESKTOP_SHORTCUT     1053
+#define IDC_MESSAGE_TEXT                1054
 #define ID_BUTTONABOUT                  32771
 #define IDS_FIRSTCOLUMN                 32772
 #define IDS_STRING32773                 32773
@@ -118,9 +120,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        150
+#define _APS_NEXT_RESOURCE_VALUE        151
 #define _APS_NEXT_COMMAND_VALUE         32812
-#define _APS_NEXT_CONTROL_VALUE         1054
+#define _APS_NEXT_CONTROL_VALUE         1055
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -118,6 +118,10 @@ SOURCE=.\Link.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\MessageDlg.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\OptionsDlg.cpp
 # End Source File
 # Begin Source File
@@ -156,6 +160,10 @@ SOURCE=.\ipscanDlg.h
 # Begin Source File
 
 SOURCE=.\Link.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\MessageDlg.h
 # End Source File
 # Begin Source File
 

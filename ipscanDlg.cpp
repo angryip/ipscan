@@ -12,6 +12,7 @@
 #include "CommandLine.h"
 #include "SaveToFile.h"
 #include <winbase.h>
+#include "MessageDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -465,7 +466,7 @@ void CIpscanDlg::OnButton1()
 			
 			if (m_scanning==2) 
 			{
-				if (MessageBox("Are you sure you want to interrupt scanning by killing all the threads?\nScanning results will be incomplete.",NULL,MB_YESNO | MB_ICONQUESTION)==IDNO) return;
+				if (MessageBox("Are you sure you want to interrupt scanning by killing all the threads?\nScanning results will be in'.",NULL,MB_YESNO | MB_ICONQUESTION)==IDNO) return;
 			
 				for (UINT i=0; i<=10000; i++) 
 				{
@@ -522,8 +523,11 @@ finish_all:
 				in.S_un.S_addr = htonl(m_endip);
 				ipp = inet_ntoa(in);
 				strcpy((char*)&ipa2,ipp);
-				sprintf((char*)&str,"Scan complete\t\t\n\n%s - %s\n%u second(s)\n\nIPs scanned: %u\nAlive hosts: %u\nOpen ports: %u",&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1,m_endip-m_startip+1,numalive,numopen);
-				MessageBox((char*)&str,"Info",MB_OK | MB_ICONINFORMATION);
+				sprintf((char*)&str,"Scan complete\r\n\r\n%s - %s\r\n%u second(s)\r\n\r\nIPs scanned: %u\r\nAlive hosts: %u\r\nOpen ports: %u",&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1,m_endip-m_startip+1,numalive,numopen);
+
+				CMessageDlg cMsgDlg;
+				cMsgDlg.setMessageText((char*)&str);
+				cMsgDlg.DoModal();
 			}
 		}
 	}
@@ -1355,12 +1359,14 @@ void CIpscanDlg::OnCommandsOpencomputerTelnettospecifiedport()
 
 void CIpscanDlg::OnCommandsOpencomputerHint() 
 {
-    MessageBox("Note: these commands are provided for your convenience only. They are not "
+	CMessageDlg cMsgDlg;
+	cMsgDlg.setMessageText("Note: these commands are provided for your convenience only. They are not "
 		       "guaranteed to work. They just try to execute specified commands using "
 			   "Windows Shell API to see if any other program is assotsiated with "
 			   "that action. Please don't mail me with questions, why these don't "
 			   "work. If you know what they should do, then you can setup your "
-			   "system yourself to handle URL requests.",NULL,MB_OK | MB_ICONWARNING);	
+			   "system yourself to handle URL requests.");	
+	cMsgDlg.DoModal();
 }
 
 void CIpscanDlg::OnButtonpaste() 
