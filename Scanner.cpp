@@ -157,7 +157,7 @@ void CScanner::initMenuWithColumns(CMenu *pMenu)
 {
 	for (int nCol=2; nCol < m_nColumnCount; nCol++) 
 	{							
-		pMenu->InsertMenu(nCol-2, MF_BYPOSITION, 0 /*TODO MESSAGE*/, *m_Columns[nCol].pszColumnName);		
+		pMenu->InsertMenu(nCol-2, MF_BYPOSITION, ID_MENU_SHOW_CMD_001 + nCol-2, *m_Columns[nCol].pszColumnName);		
 		pMenu->EnableMenuItem(nCol-2, MF_BYPOSITION | MF_ENABLED);
 	}
 }

@@ -88,7 +88,7 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 	ON_BN_CLICKED(IDC_HTTP, OnGohttp)
 	ON_BN_CLICKED(IDOK, OnAboutOK)
 	ON_BN_CLICKED(IDC_HTTP_FORUM, OnHttpForum)
-	//}}AFX_MSG_MAP
+	//}}AFX_MSG_MAP	
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -174,6 +174,9 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_COMMAND(ID_COMMANDS_SHOWDETAILS, OnCommandsShowIPdetails)
 	//}}AFX_MSG_MAP
+
+	ON_COMMAND_RANGE(ID_MENU_SHOW_CMD_001, ID_MENU_SHOW_CMD_099, OnExecuteShowMenu)
+
 END_MESSAGE_MAP()
 
 int botot;
@@ -251,7 +254,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	m_progress.GetWindowRect(&rc); g_nStatusHeight = rc.bottom-rc.top-2;	
 	
 	m_bAdvancedMode = true;	// OnButtonToAdvanced() will change this to false
-	g_nListOffset += g_nAdvancedOffset; // OnButtonToAdvanced() will substract this
+	g_nListOffset += g_nAdvancedOffset; // OnButtonToAdvanced() will subtract this
 	OnButtonToAdvanced(); // Hide advanced controls by default
 	OnScanPortsClicked();	
 	
@@ -1061,4 +1064,11 @@ void CIpscanDlg::OnSelectPortsClicked()
 void CIpscanDlg::OnCommandsShowIPdetails() 
 {	
 	m_list.ShowIPDetails();	
+}
+
+void CIpscanDlg::OnExecuteShowMenu(UINT nID)
+{
+	CString szTmp;
+	szTmp.Format("%d", nID - ID_MENU_SHOW_CMD_001 + 1);
+	MessageBox(szTmp);
 }

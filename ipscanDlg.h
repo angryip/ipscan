@@ -79,7 +79,7 @@ public:
 	//}}AFX_VIRTUAL
 
 // Implementation
-protected:	
+protected:		
 	CBitmap m_bmpHideAdvanced;
 	void HandleResizing(int cx, int cy);
 	bool m_bAdvancedMode;
@@ -137,6 +137,9 @@ protected:
 	afx_msg void OnSelectPortsClicked();
 	afx_msg void OnCommandsShowIPdetails();
 	//}}AFX_MSG
+	
+	afx_msg void OnExecuteShowMenu(UINT nID);
+
 	DECLARE_MESSAGE_MAP()
 };
 
