@@ -457,6 +457,12 @@ void CIpscanDlg::OnButtonScan()
 {	
 	if (m_nScanMode == SCAN_MODE_NOT_SCANNING) 
 	{
+		if ((!g_options->m_bScanPorts) && (g_options->m_neDisplayOptions == DISPLAY_OPEN))
+		{
+			MessageBox("Conflicting options: Display only open ports selected, but port scanning is not enabled!", NULL, MB_OK | MB_ICONHAND);
+			return;
+		}
+
 		char str[16];
 		m_ip1.GetWindowText((char *)&str,16);
 		g_nStartIP = ntohl(inet_addr((char*)&str));

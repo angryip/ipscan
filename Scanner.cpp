@@ -297,26 +297,30 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 {
 	DWORD nItemIndex;
 	DWORD nIP;
+	CString szOpenPorts;			// Open ports string will be saved here
+	BOOL bSomePortsOpen = FALSE;	// Will be TRUE if some ports are open
 
-	// get item index or IP
+	// Known callers:
+	// RescanIP() calls this function by item index, but
+	// Thread is called by the IP address
 	if (bParameterIsIP)
 	{
-		nIP = nParam;
-		nItemIndex = (DWORD)nIP - g_nStartIP;
-		nIP = htonl(nIP);	// Convert to Network Byte Order
+		nIP = nParam;							// IP is passed as parameter
+		nItemIndex = (DWORD)nIP - g_nStartIP;	// Item index is counted as sequential, but it may be updated further, if item is not yet inserted
+		nIP = htonl(nIP);						// Convert an IP to Network Byte Order
 	}
 	else
 	{
-		nItemIndex = nParam;
-		nIP = g_d->m_list.GetNumericIP(nItemIndex);	
+		nItemIndex = nParam;					// ItemIndex is passed as parameter
+		nIP = g_d->m_list.GetNumericIP(nItemIndex);		// IP address is obtained from the list (knowing the item index)
 	}
 
-	char szTmp[512];
+	char szTmp[512];	// Temporary string. Scanning functions will return data using it.
 
 	// Ping it! (column number 1), Check if it is alive
-	BOOL bAlive = m_AllColumns[1].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));	
+	BOOL bAlive = m_AllColumns[CL_PING].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));	
 	
-	if (bAlive)
+	if (bAlive)	// This If is needed to insert an item or finish scanning this IP, other processing will follow
 	{
 		if (bParameterIsIP && g_options->m_neDisplayOptions == DISPLAY_ALIVE)
 		{
@@ -326,32 +330,64 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 			char *szIP = inet_ntoa(structInAddr);
 			nItemIndex = g_d->m_list.InsertItem(g_d->m_list.GetItemCount(), szIP, 2);	// 2nd image - "?"
 		}
-
-		// Change image to Alive
-		g_d->m_list.SetItem(nItemIndex, CL_IP, LVIF_IMAGE, NULL, 0, 0, 0, 0);
-		
-		// Increment open hosts
+	
+		// Increment number of alive hosts
 		m_nAliveHosts++;
 	}
 	else
 	{
-		if (g_options->m_neDisplayOptions == DISPLAY_ALIVE)
+		if (g_options->m_neDisplayOptions != DISPLAY_ALL)
 		{
-			// If was chosen to display only alive IPs, then we shouldn't do anything further
+			// If was chosen to display only alive IPs or only open ports, then we shouldn't do anything further
 			return TRUE;
 		}
+	}
 
+	if (g_options->m_bScanPorts && g_options->m_neDisplayOptions == DISPLAY_OPEN)
+	{
+		// If display only open ports, then scan ports prior to scanning other columns
+		bSomePortsOpen = doScanPorts(nIP, szOpenPorts);
+
+		if (bSomePortsOpen)	// This IF is needed only to insert an item or finish scanning this IP, other processing will follow
+		{
+			if (bParameterIsIP)
+			{
+				// Insert an item if it is not RescanIP() who called us and scanning mode is DISPLAY_OPENPORT
+				in_addr structInAddr;
+				structInAddr.S_un.S_addr = nIP;
+				char *szIP = inet_ntoa(structInAddr);
+				nItemIndex = g_d->m_list.InsertItem(g_d->m_list.GetItemCount(), szIP, 2);	// 2nd image - "?"
+			}
+		}
+		else
+		{
+			// If was chosen to display only open ports, then we shouldn't do anything further
+			return TRUE;
+		}
+	}
+
+	// At this point, the item is inserted into the list in any case!!!
+	// So we can update the item in the list
+
+	if (bAlive)	// Update the item according to alive/dead status
+	{
+		// Change image to Alive
+		g_d->m_list.SetItem(nItemIndex, CL_IP, LVIF_IMAGE, NULL, 0, 0, 0, 0);
+	}
+	else
+	{
 		// Change image to Dead
 		g_d->m_list.SetItem(nItemIndex, CL_IP, LVIF_IMAGE, NULL, 1, 0, 0, 0);
 	}
 
-	// Set item text, alive it or not
+	// Set item text returned from pinging (Dead or X ms)
 	g_d->m_list.SetItemText(nItemIndex, CL_PING, (char*) &szTmp);
 	
 	
-	bool bScan = g_options->m_bScanHostIfDead || bAlive;
+	// Scan other columns if sscanning of dead hosts is enabled or host is Alive
+	bool bScan = g_options->m_bScanHostIfDead || bAlive; 
 
-	// Run other scans
+	// Run other scans (besides ping and port scanning)
 	for (int i=CL_STATIC_COUNT; i < m_nColumns; i++)
 	{
 		if (bScan)
@@ -361,7 +397,7 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 				szTmp[0] = 0;
 				runScanFunction(nIP, i, (char*) &szTmp, sizeof(szTmp));				
 				
-				// Returned empty string
+				// Returned an empty string
 				if (szTmp[0] == 0)
 					strcpy((char*)&szTmp, "N/A");
 			}
@@ -375,27 +411,35 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 			// Dead host, not scanned
 			strcpy((char*) &szTmp, "N/S");
 		}
+		
+		// Update the list with scanned info
 		g_d->m_list.SetItemText(nItemIndex, i, (char*) &szTmp);
 	}
 
-	if (bScan && g_options->m_bScanPorts)
-	{		
-		// Scan ports
-		CString szOpenPorts;
-
-		BOOL bSomeOpen = doScanPorts(nIP, szOpenPorts);
-		
-		if (bSomeOpen)
+	if (g_options->m_bScanPorts)
+	{	
+		if (bScan)
 		{
-			// Increment open ports
-			m_nOpenPorts++;
+			// Scan ports if they weren't scanned above already above
+			if (g_options->m_neDisplayOptions != DISPLAY_OPEN)
+			{
+				bSomePortsOpen = doScanPorts(nIP, szOpenPorts);
+			}
+			
+			if (bSomePortsOpen)	// bSomePortsOpen may be set already above
+			{
+				// Increment open ports
+				m_nOpenPorts++;
+			}
+			
+			// Update the list with open/closed ports
+			g_d->m_list.SetOpenPorts(nItemIndex, szOpenPorts, bSomePortsOpen);	// szOpenPorts may be initialized above already
 		}
-		
-		g_d->m_list.SetOpenPorts(nItemIndex, szOpenPorts, bSomeOpen);
-	}
-	else
-	{
-		g_d->m_list.SetOpenPorts(nItemIndex, "N/S", FALSE);
+		else
+		{
+			// Update the list and say that ports were not scanned
+			g_d->m_list.SetOpenPorts(nItemIndex, "N/S", FALSE);
+		}
 	}
 
 	return TRUE;

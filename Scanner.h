@@ -17,11 +17,6 @@
 #define CL_IP					0
 #define CL_PING					1
 
-// Diplay Options
-#define DO_ALL		0
-#define DO_ALIVE	1
-#define DO_OPENPORT	2
-
 // Second parameter to ThreadProc
 #define IP_IS_GIVEN		TRUE
 #define	INDEX_IS_GIVEN	FALSE
