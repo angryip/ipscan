@@ -23,6 +23,8 @@
 #include "ScanListCtrl.h"
 #include <afxtempl.h>	// For CArray
 
+#include "plugin.h"		// Structures and defines for plugins
+
 // Well-known columns
 #define CL_STATIC_COUNT			2
 #define CL_IP					0
@@ -32,22 +34,6 @@
 #define IP_IS_GIVEN		TRUE
 #define	INDEX_IS_GIVEN	FALSE
 
-
-// Function type definitions
-
-typedef struct
-{	
-	char szColumnName[32];
-	char szDescription[1024];
-} 
-TInfoStruct;
-
-typedef BOOL (__cdecl TScanFunction)(DWORD nIP, LPSTR szReturn, int nBufferLen);
-typedef BOOL (__cdecl TInfoFunction)(TInfoStruct *pInfoStruct);
-typedef BOOL (__cdecl TSetupFunction)(HWND hwndParent);
-
-typedef BOOL (__cdecl TInitFunction)();
-typedef BOOL (__cdecl TFinalizeFunction)();
 
 // Structure to hold all functions of a service (plugin)
 

@@ -189,7 +189,7 @@ void COptions::load()
 	CWinApp *app = AfxGetApp();
 	
 	m_nTimerDelay = app->GetProfileInt("","Delay",20);
-	m_nMaxThreads = app->GetProfileInt("","MaxThreads",150);
+	m_nMaxThreads = app->GetProfileInt("","MaxThreads",64);
 	m_nPingTimeout = app->GetProfileInt("","Timeout",3000);
 	m_nPingCount = app->GetProfileInt("","PingCount",3);
 	m_nPortTimeout = app->GetProfileInt("","PortTimeout",3000);
