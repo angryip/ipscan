@@ -128,6 +128,7 @@ protected:
 	afx_msg void OnCommandsOpencomputerTelnettospecifiedport();
 	afx_msg void OnCommandsOpencomputerHint();
 	afx_msg void OnButtonpaste();
+	afx_msg void OnHelpCommandline();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

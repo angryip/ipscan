@@ -12,7 +12,10 @@
 class CCommandLine 
 {
 public:
-	void process();
+	CString m_szEndIP;
+	CString m_szStartIP;
+	static void displayHelp();
+	BOOL process();
 	CCommandLine();
 	virtual ~CCommandLine();
 

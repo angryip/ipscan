@@ -100,11 +100,11 @@ Resource83=IDR_MENU1 (Unknown language: 0x25
 Resource84=IDR_MENU1 (Unknown language: 0x25
 Resource85=IDD_OPTIONS (Neutral (Default))
 Resource86=IDR_MENU1 (Unknown language: 0x25
-Resource87=IDD_IPSCAN_DIALOG (English (U.S.))
+Resource87=IDD_ABOUTBOX (English (U.S.))
 Resource88=IDR_MENU1 (Unknown language: 0x25
-Resource89=IDR_MENU1 (Neutral)
+Resource89=IDD_IPSCAN_DIALOG (English (U.S.))
 Resource90=IDR_MENU1 (Unknown language: 0x25
-Resource91=IDD_ABOUTBOX (English (U.S.))
+Resource91=IDR_MENU1 (Neutral)
 Resource92=IDD_SEARCH (English (U.S.))
 Class5=CSearchDlg
 Class6=CLink
@@ -124,7 +124,7 @@ Type=0
 HeaderFile=ipscanDlg.h
 ImplementationFile=ipscanDlg.cpp
 Filter=D
-LastObject=IDC_BUTTONIPUP
+LastObject=IDC_IPADDRESS1
 BaseClass=CDialog
 VirtualFilter=dWC
 
@@ -202,8 +202,9 @@ Command20=ID_OPTIONS_OPTIONS
 Command21=ID_OPTIONS_SAVEOPTIONS
 Command22=ID_HELP_ANGRYIPSCANNERWEBPAGE
 Command23=ID_HELP_ANGRYZIBERSOFTWARE
-Command24=ID_HELP_ABOUT
-CommandCount=24
+Command24=ID_HELP_COMMANDLINE
+Command25=ID_HELP_ABOUT
+CommandCount=25
 
 [TB:IDR_TOOLBAR (Neutral (Default))]
 Type=1
@@ -236,7 +237,7 @@ CommandCount=6
 [DLG:IDD_ABOUTBOX (English (U.S.))]
 Type=1
 Class=CAboutDlg
-ControlCount=12
+ControlCount=10
 Control1=IDC_STATIC,static,1342177283
 Control2=IDC_STATIC,static,1342308480
 Control3=IDC_STATIC,static,1342308352
@@ -246,9 +247,7 @@ Control6=IDC_EMAIL,static,1342308608
 Control7=IDC_STATIC,static,1342308352
 Control8=IDC_HTTP,static,1342308608
 Control9=IDC_STATIC,static,1342308352
-Control10=IDC_GOEMAIL,static,1342177550
-Control11=IDC_GOHTTP,static,1342177550
-Control12=IDC_TXTFREE,static,1342308352
+Control10=IDC_TXTFREE,static,1342308352
 
 [DLG:IDD_OPTIONS (Neutral (Default))]
 Type=1

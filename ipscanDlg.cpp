@@ -36,9 +36,6 @@ int ThreadProcRescanThisIP = -1;
 class CAboutDlg : public CDialog
 {
 public:
-	UINT m_go2y;
-	UINT m_go1y;
-	UINT m_go1x;
 	int nextfree;	
 	CAboutDlg();
 
@@ -48,7 +45,6 @@ public:
 	CLink	m_linkHomepage;
 	CLink	m_linkEmail;
 	CStatic	m_free;
-	CButton	m_goemail;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
@@ -83,14 +79,11 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_HTTP, m_linkHomepage);
 	DDX_Control(pDX, IDC_EMAIL, m_linkEmail);
 	DDX_Control(pDX, IDC_TXTFREE, m_free);
-	DDX_Control(pDX, IDC_GOEMAIL, m_goemail);
 	//}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 	//{{AFX_MSG_MAP(CAboutDlg)
-	ON_BN_CLICKED(IDC_GOEMAIL, OnGoemail)
-	ON_BN_CLICKED(IDC_GOHTTP, OnGohttp)
 	ON_BN_CLICKED(IDOK, OnAboutOK)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_EMAIL, OnGoemail)
@@ -168,8 +161,9 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_TELNET, OnCommandsOpencomputerTelnet)
 	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_TELNETTOSPECIFIEDPORT, OnCommandsOpencomputerTelnettospecifiedport)
 	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_HINT, OnCommandsOpencomputerHint)
-	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_BN_CLICKED(IDC_BUTTONPASTE, OnButtonpaste)
+	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
+	ON_COMMAND(ID_HELP_COMMANDLINE, OnHelpCommandline)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -327,7 +321,13 @@ BOOL CIpscanDlg::OnInitDialog()
 	//m_menucuritem = -1;
 
 	CCommandLine *cCmdLine = new CCommandLine();
-	cCmdLine->process();
+	if (cCmdLine->process())
+	{		
+		m_ip1.SetWindowText(cCmdLine->m_szStartIP);
+		m_ip2.SetWindowText(cCmdLine->m_szEndIP);
+		m_ip2_virgin = FALSE;
+		CIpscanDlg::OnButton1();
+	}
 	delete cCmdLine;
 	
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -916,17 +916,7 @@ BOOL CAboutDlg::OnInitDialog()
 	// TODO: Add extra initialization here
 	CString ver;
 	ver.LoadString(IDS_VERSION);
-	SetDlgItemText(IDC_VERSION,ver);
-
-	DWORD dbu = GetDialogBaseUnits();
-
-	CWnd *tmp = GetDlgItem(IDC_GOEMAIL);
-	RECT rc; tmp->GetWindowRect(&rc);
-	m_go1x = (rc.left*4)/LOWORD(dbu);
-	m_go1y = (rc.top*8)/HIWORD(dbu);
-	tmp = GetDlgItem(IDC_GOEMAIL);
-	tmp->GetWindowRect(&rc);
-	m_go2y = (rc.top*8)/HIWORD(dbu);
+	SetDlgItemText(IDC_VERSION,ver);	
 
 	SetTimer(0,15000,NULL);
 	
@@ -998,15 +988,10 @@ void CAboutDlg::OnTimer(UINT nIDEvent)
 void CIpscanDlg::OnShowWindow(BOOL bShow, UINT nStatus) 
 {
 	CDialog::OnShowWindow(bShow, nStatus);
-	
-	// TODO: Add your message handler code here
-	//CDialog::OnSize(0,0,0);
-	
 }
 
 void CIpscanDlg::OnOptionsSaveoptions() 
 {
-	// TODO: Add your command handler code here
 	app->WriteProfileString("","URL","http://www.angryziber.com/");
 	app->WriteProfileInt("","Delay",m_delay);
 	app->WriteProfileInt("","MaxThreads",m_maxthreads);
@@ -1483,4 +1468,10 @@ void CIpscanDlg::OnButtonpaste()
 	m_ip2_virgin = TRUE;
 
 	GlobalUnlock(lp);	
+}
+
+void CIpscanDlg::OnHelpCommandline() 
+{
+	CCommandLine::displayHelp();
+	
 }

@@ -26,7 +26,7 @@ CCommandLine::~CCommandLine()
 
 }
 
-void CCommandLine::process()
+BOOL CCommandLine::process()
 {
 	if (__argc!=1) 
 	{
@@ -34,7 +34,24 @@ void CCommandLine::process()
 		if (__argc<3 || __argc>4 || strlen(__targv[1])<7 || strlen(__targv[2])<7) 
 		{
 	
-			MessageBox(0, "Command-line usage:\n"
+			displayHelp();
+			exit(1);
+		}
+		
+
+		m_szStartIP = (CString)__targv[1];
+		m_szEndIP = (CString)__targv[2];
+		
+		return TRUE;
+	}
+	
+	return FALSE;
+
+}
+
+void CCommandLine::displayHelp()
+{
+	MessageBox(0, "Command-line usage:\n"
 			   "ipscan.exe <start_ip> <end_ip> [filename]\n"
 			   "\tstart_ip\t- starting IP address\n"
 			   "\tend_ip\t- ending IP address\n"
@@ -42,11 +59,4 @@ void CCommandLine::process()
 			   "Note: if 3rd parameter is given, then the program will\n"
 			   "close after saving data to a file",
 			   "Angry IP Scanner Help",MB_OK | MB_ICONINFORMATION);
-			exit(1);
-		}
-		
-
-		MessageBox(0, "Scanning "+(CString)__targv[1]+" to "+(CString)__targv[2],"",0);
-	}
-
 }
