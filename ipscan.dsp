@@ -105,6 +105,10 @@ SOURCE=.\ipscanDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Link.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\OptionsDlg.cpp
 # End Source File
 # Begin Source File
@@ -130,6 +134,10 @@ SOURCE=.\ipscanDlg.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Link.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\OptionsDlg.h
 # End Source File
 # Begin Source File
@@ -148,6 +156,10 @@ SOURCE=.\StdAfx.h
 # Begin Group "Resource Files"
 
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# Begin Source File
+
+SOURCE=.\arrow.cur
+# End Source File
 # Begin Source File
 
 SOURCE=.\res\bitmap1.bmp

@@ -2,12 +2,12 @@
 
 [General Info]
 Version=1
-LastClass=CIpscanApp
-LastTemplate=CDialog
+LastClass=CAboutDlg
+LastTemplate=CStatic
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "ipscan.h"
 
-ClassCount=5
+ClassCount=6
 Class1=CIpscanApp
 Class2=CIpscanDlg
 Class3=CAboutDlg
@@ -98,15 +98,16 @@ Resource81=IDR_MENU1 (Unknown language: 0x25
 Resource82=IDR_MENU1 (Unknown language: 0x25
 Resource83=IDR_MENU1 (Unknown language: 0x25
 Resource84=IDR_MENU1 (Unknown language: 0x25
-Resource85=IDD_OPTIONS (Neutral (Default))
+Resource85=IDD_IPSCAN_DIALOG (English (U.S.))
 Resource86=IDR_MENU1 (Unknown language: 0x25
-Resource87=IDD_IPSCAN_DIALOG (English (U.S.))
+Resource87=IDD_SEARCH (English (U.S.))
 Resource88=IDR_MENU1 (Unknown language: 0x25
-Resource89=IDD_ABOUTBOX (English (U.S.))
+Resource89=IDD_OPTIONS (Neutral (Default))
 Resource90=IDR_MENU1 (Unknown language: 0x25
-Resource91=IDD_SEARCH (English (U.S.))
-Resource92=IDR_MENU1 (Neutral)
+Resource91=IDR_MENU1 (Neutral)
+Resource92=IDD_ABOUTBOX (English (U.S.))
 Class5=CSearchDlg
+Class6=CLink
 Resource93=IDR_MENU1 (Neutral (Default))
 
 [CLS:CIpscanApp]
@@ -132,7 +133,7 @@ Type=0
 HeaderFile=ipscanDlg.h
 ImplementationFile=ipscanDlg.cpp
 Filter=D
-LastObject=CAboutDlg
+LastObject=IDC_HTTP
 BaseClass=CDialog
 VirtualFilter=dWC
 
@@ -321,4 +322,13 @@ BaseClass=CDialog
 Filter=D
 VirtualFilter=dWC
 LastObject=IDC_CHECK1
+
+[CLS:CLink]
+Type=0
+HeaderFile=Link.h
+ImplementationFile=Link.cpp
+BaseClass=CStatic
+Filter=W
+VirtualFilter=WC
+LastObject=CLink
 

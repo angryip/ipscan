@@ -7,6 +7,7 @@
 #include "OptionsDlg.h"
 #include "SearchDlg.h"
 #include "ms_icmp.h"
+#include "link.h"
 #include <winbase.h>
 
 #ifdef _DEBUG
@@ -43,6 +44,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CAboutDlg)
 	enum { IDD = IDD_ABOUTBOX };
+	CLink	m_linkHomepage;
+	CLink	m_linkEmail;
 	CStatic	m_free;
 	CButton	m_goemail;
 	//}}AFX_DATA
@@ -76,6 +79,8 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CAboutDlg)
+	DDX_Control(pDX, IDC_HTTP, m_linkHomepage);
+	DDX_Control(pDX, IDC_EMAIL, m_linkEmail);
 	DDX_Control(pDX, IDC_TXTFREE, m_free);
 	DDX_Control(pDX, IDC_GOEMAIL, m_goemail);
 	//}}AFX_DATA_MAP

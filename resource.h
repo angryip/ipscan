@@ -7,6 +7,7 @@
 #define IDS_ABOUTBOX                    101
 #define IDD_IPSCAN_DIALOG               102
 #define IDP_SOCKETS_INIT_FAILED         103
+#define IDC_HAND                        104
 #define IDR_MAINFRAME                   128
 #define IDB_IMAGELIST                   131
 #define IDR_MENU1                       132
