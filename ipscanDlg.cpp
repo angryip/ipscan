@@ -1022,7 +1022,7 @@ void CIpscanDlg::OnOpencomputerinexplorer()
 	szIP = "\\\\" + szIP;	
 	if ((int)ShellExecute(0, "open", szIP, NULL, NULL, SW_SHOWNORMAL) <= 32) 
 	{
-		MessageBox("Cannot ShellExecute " + szIP, NULL, MB_OK | MB_ICONHAND);
+		MessageBox("This host cannot be opened (ShellExecute " + szIP + " failed)\nIt may not have anything shared.", NULL, MB_OK | MB_ICONHAND);
 	}	
 	status(NULL);
 }
@@ -1039,7 +1039,7 @@ void CIpscanDlg::OnCommandsOpencomputerAsftp()
 	szIP = "ftp://" + szIP + "/";	
 	if ((int)ShellExecute(0, "open", szIP, NULL, NULL, SW_SHOWNORMAL) <= 32) 
 	{
-		MessageBox("Cannot ShellExecute " + szIP, NULL, MB_OK | MB_ICONHAND);
+		MessageBox("This host cannot be opened (ShellExecute " + szIP + " failed)", NULL, MB_OK | MB_ICONHAND);
 	}	
 	status(NULL);
 }
@@ -1055,7 +1055,7 @@ void CIpscanDlg::OnCommandsOpencomputerAswebsite()
 	szIP = "http://" + szIP + "/";	
 	if ((int)ShellExecute(0, "open", szIP, NULL, NULL, SW_SHOWNORMAL) <= 32) 
 	{
-		MessageBox("Cannot ShellExecute " + szIP, NULL, MB_OK | MB_ICONHAND);
+		MessageBox("This host cannot be opened (ShellExecute " + szIP + " failed)", NULL, MB_OK | MB_ICONHAND);
 	}	
 	status(NULL);
 }
@@ -1071,7 +1071,7 @@ void CIpscanDlg::OnCommandsOpencomputerTelnet()
 	szIP = "telnet://" + szIP + "/";	
 	if ((int)ShellExecute(0, "open", szIP, NULL, NULL, SW_SHOWNORMAL) <= 32) 
 	{
-		MessageBox("Cannot ShellExecute " + szIP, NULL, MB_OK | MB_ICONHAND);
+		MessageBox("This host cannot be opened (ShellExecute " + szIP + " failed)", NULL, MB_OK | MB_ICONHAND);
 	}	
 	status(NULL);
 }
