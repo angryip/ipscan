@@ -753,7 +753,8 @@ UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)
 
 	g_threads[nThreadIndex] = THREAD_DEAD;	// Thread is dead now
 
-	g_nThreadCount--;
+	if (g_nThreadCount > 0)	// For safety
+		g_nThreadCount--;
 
 	// Display current number of threads
 	szTmp.Format("%d", g_nThreadCount);

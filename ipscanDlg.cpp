@@ -599,7 +599,7 @@ void CIpscanDlg::OnButtonScan()
 	} 
 	else // m_nScanMode is SCAN_MODE_SCANNING or SCAN_MODE_FINISHING or SCAN_MODE_KILLING)
 	{
-		if (g_nThreadCount != 0) 
+		if (g_nThreadCount > 0) 
 		{
 			
 			if (m_nScanMode == SCAN_MODE_FINISHING) 
@@ -642,7 +642,7 @@ void CIpscanDlg::OnButtonScan()
 			}
 			
 		} 
-		else // g_nThreadCount == 0
+		else // g_nThreadCount <= 0
 		{
 			KillTimer(1);
 
@@ -807,7 +807,7 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 	} 
 	else 
 	{
-		if (g_nThreadCount == 0) 
+		if (g_nThreadCount <= 0) 
 		{
 			if (g_bScanExistingItems)
 				g_nEndItemIndex--;
