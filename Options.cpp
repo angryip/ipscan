@@ -198,7 +198,7 @@ void COptions::load()
 	m_bScanPorts = app->GetProfileInt("", "ScanPorts", FALSE);
 	m_bShowPortsBelow = app->GetProfileInt("", "ShowPortsBelow", TRUE);
 	m_bOptimizePorts = app->GetProfileInt("", "OptimizePorts", TRUE);
-	m_bAutoSave = app->GetProfileInt("", "AutoSave", TRUE);
+	m_bAutoSave = app->GetProfileInt("", "AutoSave", FALSE);
 	m_bSkipBroadcast = app->GetProfileInt("", "SkipBroadcast", TRUE);
 	
 	setPortString(app->GetProfileString("", "PortString", ""));	// also parses it
@@ -332,6 +332,20 @@ void COptions::setWindowPos()
 	rc.top = app->GetProfileInt("","Top",0);
 	rc.bottom = app->GetProfileInt("","Bottom",0);
 	rc.right = app->GetProfileInt("","Right",0);
+
+	// Fix restoring from saved maximized state
+
+	if (rc.left < 0)
+	{
+		rc.right += rc.left;
+		rc.left = 0;		
+	}
+
+	if (rc.top < 0)
+	{
+		rc.bottom += rc.top;
+		rc.top = 0;
+	}
 
 	CWnd *d = app->GetMainWnd();
 

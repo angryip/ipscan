@@ -420,11 +420,13 @@ BOOL CSaveToFile::queryFilename()
 		{
 			m_filetype = FILE_TYPE_CSV;
 		}
+		else
 		if (szFileExt.CompareNoCase("xml") == 0)
 		{
 			m_filetype = FILE_TYPE_XML;
 		}
-		else if (szFileExt.Mid(0, 3).CompareNoCase("htm") == 0)	// Allow both *.htm & *.html
+		else 
+		if (szFileExt.Mid(0, 3).CompareNoCase("htm") == 0)	// Allow both *.htm & *.html
 		{
 			m_filetype = FILE_TYPE_HTML;			
 		}
