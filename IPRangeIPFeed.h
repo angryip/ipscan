@@ -26,8 +26,27 @@
 class CIPRangeIPFeed : public CAbstractIPFeed  
 {
 public:
-	CIPRangeIPFeed();
+	// Constructor and destructor
+	CIPRangeIPFeed(IPAddress nStartIP, IPAddress nEndIP);
 	virtual ~CIPRangeIPFeed();
+
+protected:
+	IPAddress m_nEndIP;
+	IPAddress m_nStartIP;
+	IPAddress m_nCurrentIP;
+
+public:	
+	virtual void startFeeding();
+
+	virtual void finishFeeding();
+
+	virtual BOOL isNextIPAvailable();
+
+	virtual int getPercentComplete();
+
+	virtual IPAddress getNextIP();
+
+	virtual CString getScanSummary();
 
 };
 

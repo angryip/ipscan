@@ -25,6 +25,7 @@ class CIPRangeDlg : public CDialog
 {
 // Construction
 public:
+	CAbstractIPFeed * createIPFeed();
 	CIPRangeDlg(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data

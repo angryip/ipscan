@@ -23,6 +23,7 @@
 #include "Scanner.h"
 #include "ScanListCtrl.h"
 #include "IpRangeDlg.h"
+#include "AbstractIPFeed.h"
 
 #define SCAN_MODE_NOT_SCANNING	0
 #define SCAN_MODE_SCANNING		1
@@ -52,6 +53,7 @@ public:
 	CBitmap m_bmpStart;
 	CBitmap m_bmpKill;
 	int m_menucuritem;
+	BOOL m_bScanningAborted;
 	CMenu * m_menuContext;
 	unsigned long m_tickcount;	
 	int m_nScanMode;

@@ -15,6 +15,7 @@
 
 #include "Options.h"
 #include "Scanner.h"
+#include "AbstractIPFeed.h"
 
 // ordinary function
 UINT ThreadProcCallback(LPVOID nParam);
@@ -32,8 +33,7 @@ extern int g_threads[MAX_THREAD_COUNT + 1];	// +1 is for safety :-)
 extern CDialog * g_dlg;
 extern CScanner * g_scanner;
 extern COptions * g_options;
-extern unsigned long g_nEndIP;
-extern unsigned long g_nStartIP;
-extern unsigned long g_nCurrentIP;
+
+extern CAbstractIPFeed * g_pIPFeed;
 
 extern CRITICAL_SECTION g_criticalSection;

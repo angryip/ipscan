@@ -21,14 +21,39 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+typedef DWORD IPAddress;
+
 class CAbstractIPFeed  
 {
 public:
 	CAbstractIPFeed();
-	virtual ~CAbstractIPFeed();
+	virtual ~CAbstractIPFeed();	
+
+	virtual void startFeeding() = 0;
+
+	virtual void finishFeeding() = 0;
+
+	virtual BOOL isNextIPAvailable() = 0;
+
+	virtual int getPercentComplete() = 0;
+
+	virtual IPAddress getNextIP() = 0;
+
+	virtual CString getScanSummary() = 0;
 
 };
 
-stuff about favorites, command line and ip feeding should be here!!!
+//
+//
+//
+//
+//
+//
+//
+//stuff about favorites, command line should also be here!!!
+//
+//
+//
+//
 
 #endif // !defined(AFX_ABSTRACTIPFEED_H__244405A1_8724_41F4_BC26_89EE68A4DB22__INCLUDED_)

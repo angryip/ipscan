@@ -45,13 +45,13 @@ UINT g_nListOffset,g_nStatusHeight, g_nAdvancedOffset;
 CIpscanDlg* d;
 CWinApp *app;
 
-unsigned long g_nEndIP;
-unsigned long g_nStartIP;
-unsigned long g_nCurrentIP;
-
 unsigned long g_nStartItemIndex;
 unsigned long g_nEndItemIndex;
 unsigned long g_nCurrentItemIndex;
+
+unsigned long g_nIPsScanned;
+
+CAbstractIPFeed * g_pIPFeed;
 
 BOOL g_bScanExistingItems = FALSE;
 
@@ -520,6 +520,13 @@ void CIpscanDlg::OnButtonScan()
 			return;
 		}
 
+		// Destroy the previous IP feed object
+		if (g_pIPFeed)
+		{
+			delete g_pIPFeed;
+			g_pIPFeed = NULL;
+		}
+
 		if (!g_bScanExistingItems)
 		{
 			if (m_list.GetItemCount() > 0)
@@ -531,29 +538,18 @@ void CIpscanDlg::OnButtonScan()
 				}
 			}
 
-			m_list.DeleteAllItems();		
-		
-			char str[16];
-			m_dlgIPRange.m_ctIPStart.GetWindowText((char *)&str,16);
-			g_nStartIP = ntohl(inet_addr((char*)&str));
-			m_dlgIPRange.m_ctIPEnd.GetWindowText((char *)&str,16);
-			g_nEndIP = ntohl(inet_addr((char*)&str));	
-		
-			// Minor Bug workaround ;-)
-			if (g_nEndIP == 0xFFFFFFFF)
-			{
-				g_nEndIP--;	// Scan to 255.255.255.254
-			}
+			// Delete old results
+			m_list.DeleteAllItems();
+
+			// Create IP Feed object (it is destroyed above)
+			g_pIPFeed = m_dlgIPRange.createIPFeed();
+
+			if (!g_pIPFeed)
+				return;	// An error occured - do nothing further
+
+			// Start feeding of IPs
+			g_pIPFeed->startFeeding();
 			
-			g_nEndIP++;
-
-			if (g_nEndIP < g_nStartIP) 
-			{
-				MessageBox("Ending IP address is lower than starting.",NULL,MB_OK | MB_ICONHAND);
-				return;
-			}
-
-			g_nCurrentIP = g_nStartIP;
 		}
 		else
 		{
@@ -571,6 +567,8 @@ void CIpscanDlg::OnButtonScan()
 		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStop.m_hObject); // stop scanning button		
 
 		g_nThreadCount = 0;
+		g_nIPsScanned = 0;
+		m_bScanningAborted = FALSE;
 
 		EnableMenuItems(FALSE);
 		
@@ -609,14 +607,17 @@ void CIpscanDlg::OnButtonScan()
 			{
 				// Stop scanning (but wait for existing threads)
 
-				if (g_bScanExistingItems)
+				/*if (g_bScanExistingItems)
 				{
 					g_nEndItemIndex = g_nCurrentItemIndex;
 				}
 				else
 				{
 					g_nEndIP = g_nCurrentIP;
-				}
+				}*/
+
+				// TODO: this must be tested so that it works not worse, then the commented out code above
+				m_bScanningAborted = TRUE;
 				
 				m_progress.SetPos(100);				
 
@@ -626,9 +627,12 @@ void CIpscanDlg::OnButtonScan()
 			}
 			
 		} 
-		else // g_nThreadCount <= 0
+		else // g_nThreadCount = 0
 		{
 			KillTimer(1);
+
+			// Finalize IP feeder
+			g_pIPFeed->finishFeeding();
 
 			BOOL bShowScanInfo = (m_nScanMode != SCAN_MODE_KILLING) && !g_bScanExistingItems;
 
@@ -657,29 +661,20 @@ void CIpscanDlg::OnButtonScan()
 			}
 			else
 			{
-				// Display final message box with statistics
-
-				char ipa[16],ipa2[16],*ipp;
-				in_addr in;
-				in.S_un.S_addr = htonl(g_nStartIP);
-				ipp = inet_ntoa(in);
-				strcpy((char*)&ipa,ipp);
-				in.S_un.S_addr = htonl(g_nEndIP);
-				ipp = inet_ntoa(in);
-				strcpy((char*)&ipa2,ipp);					
-
-				int nHostCount = g_nEndIP-g_nStartIP+1;	// TODO! make a counter for this
+				// Display final message box with statistics				
 
 				int nTotalTime = GetTickCount() / 1000 - m_tickcount + 1;
-				float fTimeForOneIP = (float) nTotalTime / nHostCount;
+				float fTimeForOneIP = (float) nTotalTime / g_nIPsScanned;
+
+				CString szIPFeedInfo = g_pIPFeed->getScanSummary();
 
 				m_szCompleteInformation.Format(
 					"Scanning finished\r\n"
 					"%u sec,  %.3f sec/host\r\n\r\n"
-					"%s - %s\r\n\r\n"						
+					"%s\r\n\r\n"						
 					"IPs scanned:\t%u\r\n"
 					"Alive hosts:\t%u\r\n",
-					nTotalTime, fTimeForOneIP, &ipa, (char*)&ipa2, nHostCount, g_scanner->m_nAliveHosts);					
+					nTotalTime, fTimeForOneIP, szIPFeedInfo, g_nIPsScanned, g_scanner->m_nAliveHosts);
 
 				if (g_options->m_bScanPorts)
 				{						
@@ -687,7 +682,7 @@ void CIpscanDlg::OnButtonScan()
 					szPortInfo.Format("With open ports:\t%u\r\n\r\n", g_scanner->m_nOpenPorts);
 					m_szCompleteInformation += szPortInfo;
 
-					int nTotalPortsScanned = g_options->m_bScanHostIfDead ? g_options->m_nPortCount * nHostCount : g_options->m_nPortCount * g_scanner->m_nAliveHosts;
+					int nTotalPortsScanned = g_options->m_bScanHostIfDead ? g_options->m_nPortCount * g_nIPsScanned : g_options->m_nPortCount * g_scanner->m_nAliveHosts;
 
 					szPortInfo.Format("Ports scanned:\r\n%u / host,  %u total", g_options->m_nPortCount, nTotalPortsScanned);
 					m_szCompleteInformation += szPortInfo;
@@ -728,20 +723,29 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 	if (g_bScanExistingItems)	
 		bCurrentLessThanEnd = g_nCurrentItemIndex < g_nEndItemIndex;
 	else
-		bCurrentLessThanEnd = g_nCurrentIP < g_nEndIP;
+		bCurrentLessThanEnd = g_pIPFeed->isNextIPAvailable();
+
+	if (m_bScanningAborted)
+		bCurrentLessThanEnd = FALSE;	// Stop unfinished scanning
 	
 	if (bCurrentLessThanEnd) 
 	{
 		if ((int) g_nThreadCount >= g_options->m_nMaxThreads - 1) 
 			return;
 
+		IPAddress nCurrentIP = g_pIPFeed->getNextIP();
+		
 		in_addr in;
 		char *szIP;
-		in.S_un.S_addr = htonl(g_nCurrentIP);
+		in.S_un.S_addr = htonl(nCurrentIP);
 		szIP = inet_ntoa(in);
 		status(szIP);		
 
-		g_nThreadCount++;	// This is decremented by each thread on exit
+		// This is decremented by each thread on exit
+		g_nThreadCount++;	
+
+		// Increase counter
+		g_nIPsScanned++;
 
 		if (g_bScanExistingItems)
 		{
@@ -755,13 +759,9 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 		}
 		else
 		{
-			AfxBeginThread(ThreadProcCallback, (LPVOID) g_nCurrentIP);	// Pass IP in Host byte order
-			g_nCurrentIP++;
-
-			if (g_nEndIP != g_nStartIP)	// To prevent division by 0 below
-			{			
-				m_progress.SetPos((g_nCurrentIP - g_nStartIP) * 100 / (g_nEndIP - g_nStartIP));
-			}
+			AfxBeginThread(ThreadProcCallback, (LPVOID) nCurrentIP);	// Pass IP in Host byte order			
+			
+			m_progress.SetPos(g_pIPFeed->getPercentComplete());			
 		}			
 		
 	} 
@@ -771,8 +771,6 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 		{
 			if (g_bScanExistingItems)
 				g_nEndItemIndex--;
-			else
-				g_nEndIP--;			
 
 			OnButtonScan();	// Change current state (scan mode)
 		} 

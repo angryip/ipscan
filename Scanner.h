@@ -21,6 +21,8 @@
 #endif // _MSC_VER > 1000
 
 #include "ScanListCtrl.h"
+#include "AbstractIPFeed.h"
+
 #include <afxtempl.h>	// For CArray
 
 #include "plugin.h"		// Structures and defines for plugins

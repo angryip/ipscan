@@ -16,6 +16,8 @@
 #include "ipscan.h"
 #include "IPRangeDlg.h"
 #include "IpscanDlg.h"
+#include "AbstractIPFeed.h"
+#include "IPRangeIPFeed.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -158,3 +160,22 @@ void CIPRangeDlg::OnClassD()
 }
 
 
+// Creates an IP feed object
+CAbstractIPFeed * CIPRangeDlg::createIPFeed()
+{
+	char str[16];
+	
+	m_ctIPStart.GetWindowText((char *)&str,16);
+	IPAddress nStartIP = ntohl(inet_addr((char *)&str));
+
+	m_ctIPEnd.GetWindowText((char *)&str,16);
+	IPAddress nEndIP = ntohl(inet_addr((char *)&str));
+
+	if (nEndIP < nStartIP) 
+	{
+		MessageBox("Ending IP address is lower than starting.", NULL, MB_OK | MB_ICONHAND);
+		return NULL;
+	}
+
+	return new CIPRangeIPFeed(nStartIP, nEndIP);
+}

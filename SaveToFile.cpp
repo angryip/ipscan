@@ -130,9 +130,9 @@ void CSaveToFile::saveToTXT(FILE *fileHandle)
 
 	fputs("\nScanned ", fileHandle);
 	in_addr inAddr;	
-	inAddr.S_un.S_addr = htonl(g_nStartIP); fputs(inet_ntoa(inAddr), fileHandle);
+	inAddr.S_un.S_addr = htonl(0/* TODO: fix g_nStartIP*/); fputs(inet_ntoa(inAddr), fileHandle);
 	fputs(" - ", fileHandle);
-	inAddr.S_un.S_addr = htonl(g_nEndIP); fputs(inet_ntoa(inAddr), fileHandle);
+	inAddr.S_un.S_addr = htonl(0/* TODO: fix g_nEndIP*/); fputs(inet_ntoa(inAddr), fileHandle);
 	if (g_options->m_bScanPorts)
 	{
 		fputs(" (Ports: " + g_options->m_szPorts + ")", fileHandle);
@@ -222,9 +222,9 @@ void CSaveToFile::saveToHTML(FILE *fileHandle)
 	// beginning	
 	fputs("<h4>Scanned ", fileHandle);	
 	in_addr inAddr;	
-	inAddr.S_un.S_addr = htonl(g_nStartIP); fputs(inet_ntoa(inAddr), fileHandle);
+	inAddr.S_un.S_addr = htonl(0/* TODO: fix g_nStartIP*/); fputs(inet_ntoa(inAddr), fileHandle);
 	fputs(" - ", fileHandle);
-	inAddr.S_un.S_addr = htonl(g_nEndIP); fputs(inet_ntoa(inAddr), fileHandle);
+	inAddr.S_un.S_addr = htonl(0/* TODO: fix g_nEndIP*/); fputs(inet_ntoa(inAddr), fileHandle);
 	if (g_options->m_bScanPorts)
 	{
 		fputs(" (Ports: " + g_options->m_szPorts + ")", fileHandle);
@@ -308,9 +308,9 @@ void CSaveToFile::saveToXML(FILE *fileHandle)
 	// beginning	
 	fputs("\t<options>\n", fileHandle);	
 	in_addr inAddr;	
-	inAddr.S_un.S_addr = htonl(g_nStartIP); 
+	inAddr.S_un.S_addr = htonl(0/* TODO: fix g_nStartIP*/); 
 	fprintf(fileHandle, "\t\t<start_ip>%s</start_ip>\n", inet_ntoa(inAddr));	
-	inAddr.S_un.S_addr = htonl(g_nEndIP); 
+	inAddr.S_un.S_addr = htonl(0/* TODO: fix g_nEndIP*/); 
 	fprintf(fileHandle, "\t\t<end_ip>%s</end_ip>\n", inet_ntoa(inAddr));
 	if (g_options->m_bScanPorts)
 	{

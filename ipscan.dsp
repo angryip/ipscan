@@ -94,6 +94,10 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=.\AbstractIPFeed.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\CommandLine.cpp
 # End Source File
 # Begin Source File
@@ -115,6 +119,10 @@ SOURCE=.\InstallDlg.cpp
 # Begin Source File
 
 SOURCE=.\IPRangeDlg.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\IPRangeIPFeed.cpp
 # End Source File
 # Begin Source File
 
@@ -199,6 +207,10 @@ SOURCE=.\StdAfx.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
+SOURCE=.\AbstractIPFeed.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\CommandLine.h
 # End Source File
 # Begin Source File
@@ -220,6 +232,10 @@ SOURCE=.\InstallDlg.h
 # Begin Source File
 
 SOURCE=.\IPRangeDlg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IPRangeIPFeed.h
 # End Source File
 # Begin Source File
 

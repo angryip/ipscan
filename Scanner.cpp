@@ -478,9 +478,9 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP, int nThreadIndex)
 	// Thread is called by the IP address
 	if (bParameterIsIP)
 	{
-		nIP = nParam;							// IP is passed as parameter
-		nItemIndex = (DWORD)nIP - g_nStartIP;	// Item index is counted as sequential, but it may be updated further, if item is not yet inserted
-		nIP = htonl(nIP);						// Convert an IP to Network Byte Order
+		nIP = nParam;				// IP is passed as parameter
+		nItemIndex = 0;				// Item index will be updated later
+		nIP = htonl(nIP);			// Convert an IP to Network Byte Order
 	}
 	else
 	{
