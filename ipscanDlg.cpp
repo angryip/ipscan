@@ -1,3 +1,14 @@
+/*********************************************************************
+ * This is a part of Angry IP Scanner source code                    *
+ * http://www.angryziber.com/ipscan/                                 *
+ *                                                                   *
+ * Written by Angryziber                                             *
+ *                                                                   *
+ * You may distribute this code as long as this message is not       *
+ * removed and it is clear who has written it.                       *
+ * You may not rename the program and distribute it.                 *
+ *********************************************************************/
+
 // ipscanDlg.cpp : implementation file
 //
 
@@ -666,12 +677,17 @@ void CIpscanDlg::OnOptionsOptions()
 
 void CIpscanDlg::OnButtonipup() 
 {
+	status("Getting IP...");
+
 	hostent *he;
 	char str[100];
 	char *addr;
 	in_addr in;
 	GetDlgItemText(IDC_HOSTNAME,str,100);
 	he = gethostbyname(str);
+
+	status(NULL);
+
 	if (!he) {
 		MessageBox("No DNS entry",NULL,MB_OK | MB_ICONHAND);
 		return;
@@ -680,7 +696,7 @@ void CIpscanDlg::OnButtonipup()
 	addr = inet_ntoa(in);
 	m_ip1.SetWindowText(addr);
 	m_ip2.SetWindowText(addr);
-	m_ip2_virgin = TRUE;
+	m_ip2_virgin = TRUE;	
 }
 
 
@@ -1409,7 +1425,7 @@ void CIpscanDlg::OnRescanIP()
 	
 	OnButtonScan();
 
-	g_nEndItemIndex = g_nStartItemIndex;	// Timer will wait for completion only
+	g_nEndItemIndex = g_nStartItemIndex;	// Timer will wait for completion only	
 
 	while ((nItemIndex = m_list.GetNextSelectedItem(pos)) >= 0)
 	{				
@@ -1422,6 +1438,7 @@ void CIpscanDlg::OnRescanIP()
 
 		Sleep(g_options->m_nTimerDelay);
 	}		
+	
 }
 
 

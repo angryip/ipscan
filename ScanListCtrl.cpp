@@ -1,3 +1,14 @@
+/*********************************************************************
+ * This is a part of Angry IP Scanner source code                    *
+ * http://www.angryziber.com/ipscan/                                 *
+ *                                                                   *
+ * Written by Angryziber                                             *
+ *                                                                   *
+ * You may distribute this code as long as this message is not       *
+ * removed and it is clear who has written it.                       *
+ * You may not rename the program and distribute it.                 *
+ *********************************************************************/
+
 // ScanListCtrl.cpp : implementation file
 //
 
@@ -331,17 +342,20 @@ void CScanListCtrl::SetShowPortsBelow(BOOL bShow)
 }
 
 BOOL CScanListCtrl::DeleteAllItems()
-{	
-	// This is called before each scanning
-	// So we may use this method for initialization
+{		
+	return CListCtrl::DeleteAllItems();
+}
+
+void CScanListCtrl::PrepareForScanning()
+{
+	// Some initialization before scanning
 
 	if (g_options->m_bScanPorts)
 		m_nPortsColumn = g_scanner->getColumnCount();	// the last column
 	else
 		m_nPortsColumn = -1;
-
-	return CListCtrl::DeleteAllItems();
 }
+
 
 void CScanListCtrl::SetOpenPorts(int nItemIndex, LPCSTR pNewStr, BOOL bSomeOpen)
 {
@@ -796,3 +810,4 @@ void CScanListCtrl::DeleteSelectedItems()
 	Invalidate();
 	UpdateWindow();
 }
+

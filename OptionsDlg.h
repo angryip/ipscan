@@ -1,3 +1,14 @@
+/*********************************************************************
+ * This is a part of Angry IP Scanner source code                    *
+ * http://www.angryziber.com/ipscan/                                 *
+ *                                                                   *
+ * Written by Angryziber                                             *
+ *                                                                   *
+ * You may distribute this code as long as this message is not       *
+ * removed and it is clear who has written it.                       *
+ * You may not rename the program and distribute it.                 *
+ *********************************************************************/
+
 #if !defined(AFX_OPTIONSDLG_H__DD7FF820_D58E_11D3_83C7_A196C701772A__INCLUDED_)
 #define AFX_OPTIONSDLG_H__DD7FF820_D58E_11D3_83C7_A196C701772A__INCLUDED_
 
@@ -37,6 +48,7 @@ public:
 	BOOL	m_bShowPortsBelow;
 	BOOL	m_bScanPorts;
 	int		m_nPingCount;
+	BOOL	m_bOptimizePorts;
 	//}}AFX_DATA
 
 

@@ -1,3 +1,14 @@
+/*********************************************************************
+ * This is a part of Angry IP Scanner source code                    *
+ * http://www.angryziber.com/ipscan/                                 *
+ *                                                                   *
+ * Written by Angryziber                                             *
+ *                                                                   *
+ * You may distribute this code as long as this message is not       *
+ * removed and it is clear who has written it.                       *
+ * You may not rename the program and distribute it.                 *
+ *********************************************************************/
+
 #if !defined(AFX_SCANLISTCTRL_H__204B478B_DE3A_42DE_8A5B_F1665F484EAA__INCLUDED_)
 #define AFX_SCANLISTCTRL_H__204B478B_DE3A_42DE_8A5B_F1665F484EAA__INCLUDED_
 
@@ -29,6 +40,7 @@ public:
 
 // Implementation
 public:
+	void PrepareForScanning();
 	void DeleteSelectedItems();
 	int DeleteAllOpenPortsHosts();
 	int DeleteAllClosedPortsHosts();

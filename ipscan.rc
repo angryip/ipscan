@@ -170,7 +170,7 @@ BEGIN
     CONTROL         "Ports on 2nd row",IDC_SHOW_PORTS_BELOW,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,117,54,69,10
     CONTROL         "Scan ports",IDC_SCAN_PORTS,"Button",BS_AUTOCHECKBOX | 
-                    NOT WS_VISIBLE | WS_TABSTOP,138,65,50,10
+                    NOT WS_VISIBLE | WS_TABSTOP,138,78,50,10
     LISTBOX         IDC_PLUGIN_LIST,6,101,86,93,LBS_NOINTEGRALHEIGHT | 
                     WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "Info...",IDC_COLUMN_ABOUT_BUTTON,116,119,50,14,
@@ -198,6 +198,8 @@ BEGIN
     RTEXT           "N/A",IDC_COLUMN_TYPE,137,107,28,8
     LTEXT           "Scanned:",IDC_STATIC,115,157,32,8
     RTEXT           "N/A",IDC_COLUMN_SELECTED,151,157,14,8
+    CONTROL         "Faster port scans",IDC_OPTIMIZE_PORTS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,117,66,70,10
 END
 
 
@@ -574,7 +576,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_VERSION             "2.07"
+    IDS_VERSION             "2.08"
     IDS_SCAN_HOMEPAGE       "http://www.angryziber.com/ipscan/"
     IDS_HOMEPAGE            "http://www.angryziber.com/"
     IDS_MAIL                "angryziber@angryziber.com"

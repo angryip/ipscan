@@ -1,3 +1,14 @@
+/*********************************************************************
+ * This is a part of Angry IP Scanner source code                    *
+ * http://www.angryziber.com/ipscan/                                 *
+ *                                                                   *
+ * Written by Angryziber                                             *
+ *                                                                   *
+ * You may distribute this code as long as this message is not       *
+ * removed and it is clear who has written it.                       *
+ * You may not rename the program and distribute it.                 *
+ *********************************************************************/
+
 // ScanUtilsInternal.cpp: implementation of the CScanUtilsInternal class.
 //
 //////////////////////////////////////////////////////////////////////
@@ -70,9 +81,12 @@ BOOL ScanIntInitPing()
 	return TRUE;
 }
 
-BOOL ScanIntDoPing(DWORD nIP, LPSTR szReturn, int nBufferLen)
+// Return values:
+//  -1: dead
+// >=0: alive (ping time)
+int ScanIntDoPing(DWORD nIP, LPSTR szReturn, int nBufferLen)
 {
-	BOOL bAlive = FALSE;
+	int nAlive = -1;	// Dead
 
 	int nPingTime = 1000000; // A kind of infinity
 
@@ -97,9 +111,7 @@ BOOL ScanIntDoPing(DWORD nIP, LPSTR szReturn, int nBufferLen)
 		{
 			ReplyCount = RepData[4]+RepData[5]*256+RepData[6]*65536+RepData[7]*256*65536;
 			if (ReplyCount <= 0) 
-			{
-				bAlive = TRUE;
-				
+			{					
 				if (nPingTime < 1000000)	// 1000 secs, a kind of infinity
 				{
 					nPingTime = (nPingTime + *(u_long *) &(RepData[8])) / 2;	// Arithmetics average					
@@ -108,13 +120,15 @@ BOOL ScanIntDoPing(DWORD nIP, LPSTR szReturn, int nBufferLen)
 				{
 					nPingTime = *(u_long *) &(RepData[8]);
 				}
+				
+				nAlive = nPingTime;
 			}
 		}
 	}
 
 	if (nBufferLen > 10)	// Check to not overflow the string buffer
 	{
-		if (bAlive)
+		if (nAlive >= 0)
 		{
 			sprintf(szReturn,"%d ms", nPingTime);
 		}
@@ -126,8 +140,7 @@ BOOL ScanIntDoPing(DWORD nIP, LPSTR szReturn, int nBufferLen)
 
 	lpfnIcmpCloseHandle(hICMP);
 
-	return bAlive;
-
+	return nAlive;	// -1: dead, >=0: alive
 }
 
 BOOL ScanIntInfoPing(TInfoStruct *pInfoStruct)
@@ -273,7 +286,7 @@ BOOL ScanIntDoNetBIOSUserName(DWORD nIP, LPSTR szReturn, int nBufferLen)
 BOOL ScanIntInfoNetBIOSUserName(TInfoStruct *pInfoStruct)
 {
 	strcpy(pInfoStruct->szColumnName, "User Name");
-	strcpy(pInfoStruct->szDescription, "Gets NetBIOS User Name (works mostly in LANs)");
+	strcpy(pInfoStruct->szDescription, "Gets NetBIOS User Name (just a guess, works mostly in LANs)");
 	return TRUE;		
 }
 

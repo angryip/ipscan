@@ -1,3 +1,14 @@
+/*********************************************************************
+ * This is a part of Angry IP Scanner source code                    *
+ * http://www.angryziber.com/ipscan/                                 *
+ *                                                                   *
+ * Written by Angryziber                                             *
+ *                                                                   *
+ * You may distribute this code as long as this message is not       *
+ * removed and it is clear who has written it.                       *
+ * You may not rename the program and distribute it.                 *
+ *********************************************************************/
+
 // OptionsDlg.cpp : implementation file
 //
 
@@ -29,6 +40,7 @@ COptionsDlg::COptionsDlg(CWnd* pParent /*=NULL*/)
 	m_bShowPortsBelow = FALSE;
 	m_bScanPorts = FALSE;
 	m_nPingCount = 0;
+	m_bOptimizePorts = FALSE;
 	//}}AFX_DATA_INIT
 }
 
@@ -57,6 +69,7 @@ void COptionsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_SCAN_PORTS, m_bScanPorts);
 	DDX_Text(pDX, IDC_PINGCOUNT, m_nPingCount);
 	DDV_MinMaxInt(pDX, m_nPingCount, 1, 10);
+	DDX_Check(pDX, IDC_OPTIMIZE_PORTS, m_bOptimizePorts);
 	//}}AFX_DATA_MAP
 }
 
@@ -88,6 +101,7 @@ void COptionsDlg::OnOK()
 	g_options->m_bScanHostIfDead = m_bScanHostIfDead;
 	g_options->m_bShowPortsBelow = m_bShowPortsBelow;
 	g_options->m_bScanPorts = m_bScanPorts;	
+	g_options->m_bOptimizePorts = m_bOptimizePorts;
 }
 
 
@@ -102,6 +116,7 @@ int COptionsDlg::DoModal()
 	m_bScanHostIfDead = g_options->m_bScanHostIfDead;
 	m_bShowPortsBelow = g_options->m_bShowPortsBelow;
 	m_bScanPorts = g_options->m_bScanPorts;
+	m_bOptimizePorts = g_options->m_bOptimizePorts;
 
 	return CDialog::DoModal();
 }
@@ -126,6 +141,9 @@ void COptionsDlg::OnHelpbtn()
 		"Port timeout:\n"
 		"\tIf this timeout has elapsed and connection is not yet estabilished,\n"		
 		"\tthen the port is considered \"closed\"\n"
+		"Faster port scans:\n"
+		"\tOptimized timeout selection for scanning ports. If selected then port\n"
+		"\ttimeout is pingtime * 3. This prevents port filtering to slow down scans.\n"
 		"Display options:\n"
 		"\tSelect what addresses you want to be displayed in the window:\n"
 		"\tAll IPs, only alive IPs or only those with the open port.\n"		

@@ -1,3 +1,14 @@
+/*********************************************************************
+ * This is a part of Angry IP Scanner source code                    *
+ * http://www.angryziber.com/ipscan/                                 *
+ *                                                                   *
+ * Written by Angryziber                                             *
+ *                                                                   *
+ * You may distribute this code as long as this message is not       *
+ * removed and it is clear who has written it.                       *
+ * You may not rename the program and distribute it.                 *
+ *********************************************************************/
+
 #if !defined(AFX_SEARCHDLG_H__C433B5E2_5FF0_11D4_9CD8_00C0DFF58A53__INCLUDED_)
 #define AFX_SEARCHDLG_H__C433B5E2_5FF0_11D4_9CD8_00C0DFF58A53__INCLUDED_
 
