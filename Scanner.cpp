@@ -207,11 +207,13 @@ BOOL CScanner::initScanning()
 
 BOOL CScanner::finalizeScanning()
 {	
+#ifdef _DEBUG
 	for (int i=0; i < m_nColumns; i++)
 	{
 		if (m_Columns[i].pFinalizeFunction != NULL)
 			m_Columns[i].pFinalizeFunction();
 	}
+#endif	// _DEBUG
 
 	return TRUE;
 }

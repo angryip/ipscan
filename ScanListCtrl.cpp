@@ -301,6 +301,7 @@ void CScanListCtrl::SetScanPorts()
 		if (GetColumnCount() == g_scanner->getColumnCount())
 		{
 			int nCol = g_scanner->getColumnCount();	// Last column index
+			// Insert a special column
 			InsertColumn(nCol, "Open ports");
 
 			// Set saved width for the column			
@@ -310,7 +311,7 @@ void CScanListCtrl::SetScanPorts()
 	else
 	{
 		if (GetColumnCount() > g_scanner->getColumnCount())
-			DeleteColumn(g_scanner->getColumnCount());
+			DeleteColumn(g_scanner->getColumnCount());	// Delete the special column
 	}
 	
 	SetShowPortsBelow(g_options->m_bShowPortsBelow && g_options->m_bScanPorts);	// Update this status
@@ -460,7 +461,7 @@ void CScanListCtrl::ShowIPDetails()
 	CDetailsDlg cDlg(this);
 
 	// Set columns
-	int nColumns = GetColumnCount();
+	int nColumns = g_scanner->getColumnCount();
 	CString szInfoLine;
 
 	for (int i=0; i < nColumns; i++)
@@ -476,10 +477,12 @@ void CScanListCtrl::ShowIPDetails()
 	{
 		CString szOpenPorts;
 		GetOpenPorts(nCurrentItem, szOpenPorts);
+		cDlg.setPorts(szOpenPorts);
 
 		// Add ports to the main window as well
 		szInfoLine = "Open ports:\t";
 		szInfoLine += szOpenPorts;
+		cDlg.addScannedInfo(szInfoLine);
 	}
 	
 	cDlg.DoModal();
