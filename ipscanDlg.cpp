@@ -197,10 +197,11 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_UTILS_DELETEFROMLIST_CLOSEDPORTS, OnUtilsDeletefromlistClosedports)
 	ON_COMMAND(ID_UTILS_DELETEFROMLIST_OPENPORTS, OnUtilsDeletefromlistOpenports)
 	ON_COMMAND(ID_COMMANDS_DELETEIP, OnCommandsDeleteIP)
+	ON_COMMAND(ID_OPTIONS_SHOWLASTSCANINFO, ShowCompleteInformation)
 	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_COMMAND(ID_OPTIONS_SELECT_COLUMNS, OnSelectColumns)
 	ON_COMMAND(ID_OPTIONS_SELECTPORTS, OnSelectPortsClicked)
-	ON_COMMAND(ID_OPTIONS_SHOWLASTSCANINFO, ShowCompleteInformation)
+	ON_WM_CLOSE()
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_RANGE(ID_MENU_SHOW_CMD_001, ID_MENU_SHOW_CMD_099, OnExecuteShowMenu)
@@ -276,7 +277,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	// Create the scanner object
 	g_scanner = new CScanner();	
 	
-	// Add columns to the listbox
+	// Add columns to the list control
 	g_scanner->initListColumns(&m_list);
 
 	#ifdef DEBUG_MESSAGES
@@ -562,19 +563,7 @@ void CIpscanDlg::OnButtonScan()
 				if (MessageBox("Are you sure you want to interrupt scanning by killing all the threads?\nScanning results will be incomplete.",NULL,MB_YESNO | MB_ICONQUESTION)==IDNO) return;
 			
 				// Kill threads
-				for (UINT i=0; i<=10000; i++) 
-				{
-					if (g_hThreads[i]!=0) 
-					{
-						TerminateThread(g_hThreads[i],0);
-						CloseHandle(g_hThreads[i]);
-						g_hThreads[i]=0;
-					}
-				}
-
-				// All threads are dead now
-				m_numthreads.SetWindowText("0");
-				g_nThreadCount = 0;
+				KillAllRunningThreads();
 			}
 			else // SCAN_MODE_SCANNING
 			{
@@ -1447,3 +1436,31 @@ void CIpscanDlg::ShowCompleteInformation()
 	cMsgDlg.DoModal();
 }
 
+
+void CIpscanDlg::KillAllRunningThreads()
+{	
+	for (UINT i=0; i<=10000; i++) 
+	{
+		if (g_hThreads[i]!=0) 
+		{
+			TerminateThread(g_hThreads[i],0);
+			CloseHandle(g_hThreads[i]);
+			g_hThreads[i]=0;
+		}
+	}
+
+	// All threads are dead now
+	m_numthreads.SetWindowText("0");
+	g_nThreadCount = 0;
+}
+
+void CIpscanDlg::OnClose() 
+{
+	// Terminate all threads
+	if (m_nScanMode == SCAN_MODE_SCANNING)
+		KillTimer(1);	// For safety
+
+	KillAllRunningThreads();	
+
+	CDialog::OnClose();
+}
