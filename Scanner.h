@@ -22,6 +22,10 @@
 #define DO_ALIVE	1
 #define DO_OPENPORT	2
 
+// Second parameter to ThreadProc
+#define IP_IS_GIVEN		TRUE
+#define	INDEX_IS_GIVEN	FALSE
+
 
 // Function type definitions
 
@@ -72,7 +76,7 @@ public:
 	int getColumnWidth(int nIndex);
 	BOOL getColumnName(int nIndex, CString &szColumnHeader);
 	int getColumnCount();
-	BOOL doScanIP(DWORD nItemIndex);
+	BOOL doScanIP(DWORD nParam, BOOL bParameterIsIP);
 	CScanner();
 	virtual ~CScanner();
 
@@ -86,7 +90,8 @@ protected:
 };
 
 // ordinary function
-UINT ScanningThread(LPVOID nItemIndex);
+UINT ThreadProcCallback(LPVOID nParam);
+UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP);
 
 #include "Options.h"
 
@@ -95,5 +100,8 @@ extern HANDLE g_hThreads[10000];
 extern CDialog * g_dlg;
 extern CScanner * g_scanner;
 extern COptions * g_options;
+extern unsigned long g_nEndIP;
+extern unsigned long g_nStartIP;
+extern unsigned long g_nCurrentIP;
 
 #endif // !defined(AFX_SCANNER_H__F6305E28_F29C_45F5_8073_26591A6C68D1__INCLUDED_)

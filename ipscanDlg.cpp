@@ -34,6 +34,10 @@ CWinApp *app;
 int g_bSortAscending = 1;
 int g_nSortedCol = -1;
 
+unsigned long g_nEndIP;
+unsigned long g_nStartIP;
+unsigned long g_nCurrentIP;
+
 #define INDEX_CONTEXT_MENU	2
 #define	INDEX_SHOW_MENU		2
 
@@ -455,25 +459,25 @@ void CIpscanDlg::OnButtonScan()
 	{
 		char str[16];
 		m_ip1.GetWindowText((char *)&str,16);
-		m_nStartIP = ntohl(inet_addr((char*)&str));
+		g_nStartIP = ntohl(inet_addr((char*)&str));
 		m_ip2.GetWindowText((char *)&str,16);
-		m_nEndIP = ntohl(inet_addr((char*)&str));	
+		g_nEndIP = ntohl(inet_addr((char*)&str));	
 		
 		// Minor Bug workaround ;-)
-		if (m_nEndIP == 0xFFFFFFFF)
+		if (g_nEndIP == 0xFFFFFFFF)
 		{
-			m_nEndIP--;	// Scan to 255.255.255.254
+			g_nEndIP--;	// Scan to 255.255.255.254
 		}
 		
-		m_nEndIP++;
+		g_nEndIP++;
 
-		if (m_nEndIP < m_nStartIP) 
+		if (g_nEndIP < g_nStartIP) 
 		{
 			MessageBox("Ending IP address is lower than starting.",NULL,MB_OK | MB_ICONHAND);
 			return;
 		}
 
-		m_nCurrentIP = m_nStartIP;
+		g_nCurrentIP = g_nStartIP;
 		m_progress.SetRange(0,100);
 		m_progress.SetPos(0);
 		m_tickcount = GetTickCount()/1000;
@@ -521,7 +525,7 @@ void CIpscanDlg::OnButtonScan()
 			}
 			else // SCAN_MODE_SCANNING
 			{
-				m_nEndIP = m_nCurrentIP;
+				g_nEndIP = g_nCurrentIP;
 				m_progress.SetPos(100);
 				m_nScanMode = SCAN_MODE_FINISHING;
 			}
@@ -557,10 +561,10 @@ void CIpscanDlg::OnButtonScan()
 
 				char str[140],ipa[16],ipa2[16],*ipp;
 				in_addr in;
-				in.S_un.S_addr = htonl(m_nStartIP);
+				in.S_un.S_addr = htonl(g_nStartIP);
 				ipp = inet_ntoa(in);
 				strcpy((char*)&ipa,ipp);
-				in.S_un.S_addr = htonl(m_nEndIP);
+				in.S_un.S_addr = htonl(g_nEndIP);
 				ipp = inet_ntoa(in);
 				strcpy((char*)&ipa2,ipp);
 				sprintf((char*)&str,
@@ -568,7 +572,7 @@ void CIpscanDlg::OnButtonScan()
 					"IPs scanned:\t%u\r\n"
 					"Alive hosts:\t%u\r\n"
 					"With open ports:\t%u",
-					&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1, m_nEndIP-m_nStartIP+1, g_scanner->m_nAliveHosts, g_scanner->m_nOpenPorts);
+					&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1, g_nEndIP-g_nStartIP+1, g_scanner->m_nAliveHosts, g_scanner->m_nOpenPorts);
 
 				CMessageDlg cMsgDlg;
 				cMsgDlg.setMessageText((char*)&str);
@@ -618,24 +622,26 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 	 	
 	int nIndex;
 	
-	if (m_nCurrentIP < m_nEndIP) 
+	if (g_nCurrentIP < g_nEndIP) 
 	{
-		if ((int) g_nThreadCount >= g_options->m_nMaxThreads - 1) return;
+		if ((int) g_nThreadCount >= g_options->m_nMaxThreads - 1) 
+			return;
+
 		in_addr in;
-		char *ipa;
-		in.S_un.S_addr = htonl(m_nCurrentIP);
-		ipa = inet_ntoa(in);
-		status(ipa);
-		/*if (m_display==DO_ALL) 
-		{*/
-			nIndex = m_list.InsertItem(m_list.GetItemCount(),ipa,2);
-			//m_list.SetItemData(i, i);
-		//}
-		CWinThread *thr = AfxBeginThread(ScanningThread,(void*)nIndex);
-		if (m_nStartIP < m_nEndIP) 
-		{
-			m_nCurrentIP++;
-			m_progress.SetPos((m_nCurrentIP-m_nStartIP)*100/(m_nEndIP-m_nStartIP));
+		char *szIP;
+		in.S_un.S_addr = htonl(g_nCurrentIP);
+		szIP = inet_ntoa(in);
+		status(szIP);
+		
+		nIndex = m_list.InsertItem(m_list.GetItemCount(), szIP, 2);	// 2nd image - "?"
+
+		CWinThread *pThread = AfxBeginThread(ThreadProcCallback, (LPVOID) g_nCurrentIP);	// Pass IP in Host byte order
+		
+		g_nCurrentIP++;
+		
+		if (g_nEndIP != g_nStartIP)	// To prevent division by 0 below
+		{			
+			m_progress.SetPos((g_nCurrentIP - g_nStartIP) * 100 / (g_nEndIP - g_nStartIP));
 		}
 	} 
 	else 
@@ -643,14 +649,14 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 	
 		if (g_nThreadCount == 0) 
 		{
-			m_nEndIP--;
+			g_nEndIP--;
 			OnButtonScan();
 			
 			return;
 		} 
 		else 
 		{
-			status("Wait for all threads to terminate");
+			status("Wait for all threads to terminate...");
 			((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpKill.m_hObject);
 			m_nScanMode = SCAN_MODE_FINISHING; // waiting can be interrupted
 		}
@@ -806,7 +812,7 @@ void CIpscanDlg::OnRescanIP()
 	{
 		char str[16];
 		m_list.GetItemText(m_menucuritem,CL_IP,(char*)&str,16);
-		m_nCurrentIP = ntohl(inet_addr((char*)&str));
+		g_nCurrentIP = ntohl(inet_addr((char*)&str));
 		
 		m_nScanMode = SCAN_MODE_SCANNING;
 
@@ -820,7 +826,7 @@ void CIpscanDlg::OnRescanIP()
 		
 		g_scanner->initScanning();
 		
-		ScanningThread((void*)m_menucuritem);
+		ScanningThread(m_menucuritem, INDEX_IS_GIVEN);
 
 		g_scanner->finalizeScanning();
 		

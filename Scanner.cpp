@@ -293,10 +293,23 @@ BOOL CScanner::finalizeScanning()
 	return TRUE;
 }
 
-BOOL CScanner::doScanIP(DWORD nItemIndex)
+BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 {
-	// get IP address
-	DWORD nIP = g_d->m_list.GetNumericIP(nItemIndex);	
+	DWORD nItemIndex;
+	DWORD nIP;
+
+	// get item index
+	if (bParameterIsIP)
+	{
+		nIP = nParam;
+		nItemIndex = (DWORD)nIP - g_nStartIP;
+		nIP = htonl(nIP);	// Convert to Network Byte Order
+	}
+	else
+	{
+		nItemIndex = nParam;
+		nIP = g_d->m_list.GetNumericIP(nItemIndex);	
+	}
 
 	char szTmp[512];
 
@@ -450,22 +463,29 @@ void CScanner::runScanFunction(DWORD nIP, int nIndex, char *szBuffer, int nBuffe
 ////////////////////////////////////////////////////////////////////////
 
 
-UINT ScanningThread(LPVOID nItemIndex)
-{
-	// Initialize thread //////////////////////////////////////////////////////
+UINT ThreadProcCallback(LPVOID nParam)
+{	
+	return ScanningThread((DWORD)nParam, IP_IS_GIVEN);
+}
 
-	CString szTmp;
-	int nIndex;
+UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)
+{
+	// Initialize thread //////////////////////////////////////////////////////	
+
+	CString szTmp;	
 	
 	g_nThreadCount++;
 	
 	// Put thread's handle into global array (and find it's index)
+	HANDLE hTmp;
+	DuplicateHandle(GetCurrentProcess(),GetCurrentThread(),GetCurrentProcess(),&hTmp,0,FALSE,DUPLICATE_SAME_ACCESS);
+
+	int nIndex;
+
 	for (nIndex=0; nIndex<=10000; nIndex++) 
 	{
 		if (g_hThreads[nIndex]==0) 
-		{ 
-			HANDLE hTmp;
-			DuplicateHandle(GetCurrentProcess(),GetCurrentThread(),GetCurrentProcess(),&hTmp,0,FALSE,DUPLICATE_SAME_ACCESS);
+		{ 			
 			g_hThreads[nIndex] = hTmp;
 			break; 
 		}
@@ -480,7 +500,7 @@ UINT ScanningThread(LPVOID nItemIndex)
 	// Process scan /////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////
 
-	g_scanner->doScanIP((DWORD)nItemIndex);
+	g_scanner->doScanIP(nParam, bParameterIsIP);
 	
 	/////////////////////////////////////////////////////////////////////////////
 	// Shutdown thread //////////////////////////////////////////////////////////	
