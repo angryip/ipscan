@@ -45,6 +45,7 @@ void CEditOpenersDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CEditOpenersDlg)
+	DDX_Control(pDX, IDC_COMMANDLINE, m_ctrlCommandLine);
 	DDX_Control(pDX, IDC_WORKING_DIRECTORY, m_ctrlWorkingDirectory);
 	DDX_Control(pDX, IDC_EXECUTION_STRING, m_ctrlExecutionString);
 	DDX_Control(pDX, IDC_OPENER_TITLE, m_ctrlTitle);
@@ -62,10 +63,11 @@ BEGIN_MESSAGE_MAP(CEditOpenersDlg, CDialog)
 	ON_BN_CLICKED(IDC_BTN_DOWN, OnBtnDown)
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_BTN_DELETE, OnBtnDelete)
-	ON_LBN_DBLCLK(IDC_OPENER_LIST, OnBtnEdit)
 	ON_EN_CHANGE(IDC_WORKING_DIRECTORY, OnEditBoxChange)
+	ON_LBN_DBLCLK(IDC_OPENER_LIST, OnBtnEdit)
 	ON_EN_CHANGE(IDC_OPENER_TITLE, OnEditBoxChange)
 	ON_EN_CHANGE(IDC_EXECUTION_STRING, OnEditBoxChange)
+	ON_BN_CLICKED(IDC_COMMANDLINE, OnEditBoxChange)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -91,6 +93,7 @@ void CEditOpenersDlg::OnBtnEdit()
 	m_ctrlTitle.SetWindowText(g_options->m_aOpeners[nSelectedOpener].szName);
 	m_ctrlExecutionString.SetWindowText(g_options->m_aOpeners[nSelectedOpener].szExecute);
 	m_ctrlWorkingDirectory.SetWindowText(g_options->m_aOpeners[nSelectedOpener].szWorkDir);
+	m_ctrlCommandLine.SetCheck(g_options->m_aOpeners[nSelectedOpener].bCommandLine ? BST_CHECKED : BST_UNCHECKED);
 
 	m_bEdited = FALSE;
 }
@@ -103,6 +106,7 @@ void CEditOpenersDlg::OnBtnChange()
 	m_ctrlTitle.GetWindowText(szTmp); g_options->m_aOpeners[nSelectedOpener].szName = szTmp;
 	m_ctrlExecutionString.GetWindowText(szTmp); g_options->m_aOpeners[nSelectedOpener].szExecute = szTmp;
 	m_ctrlWorkingDirectory.GetWindowText(szTmp); g_options->m_aOpeners[nSelectedOpener].szWorkDir = szTmp;
+	g_options->m_aOpeners[nSelectedOpener].bCommandLine = m_ctrlCommandLine.GetCheck() == BST_CHECKED;
 
 	RefreshList();
 
@@ -119,6 +123,7 @@ void CEditOpenersDlg::OnBtnInsert()
 	m_ctrlTitle.GetWindowText(szTmp); g_options->m_aOpeners[nNewOpener].szName = szTmp;
 	m_ctrlExecutionString.GetWindowText(szTmp); g_options->m_aOpeners[nNewOpener].szExecute = szTmp;
 	m_ctrlWorkingDirectory.GetWindowText(szTmp); g_options->m_aOpeners[nNewOpener].szWorkDir = szTmp;
+	g_options->m_aOpeners[nNewOpener].bCommandLine = m_ctrlCommandLine.GetCheck() == BST_CHECKED;
 
 	RefreshList();
 

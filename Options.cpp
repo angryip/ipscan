@@ -302,6 +302,9 @@ void COptions::loadOpeners()
 
 		szKey.Format("OpenerDir_%d", i);
 		m_aOpeners[i].szWorkDir = app->GetProfileString("", szKey);
+
+		szKey.Format("OpenerCmdLine_%d", i);
+		m_aOpeners[i].bCommandLine = app->GetProfileInt("", szKey, 0);
 	}
 
 	// Add default openers, if no openers were loaded
@@ -309,21 +312,27 @@ void COptions::loadOpeners()
 	{
 		m_aOpeners[0].szName = "In explorer";
 		m_aOpeners[0].szExecute = "\\\\%s";
+		m_aOpeners[0].bCommandLine = FALSE;
 
 		m_aOpeners[1].szName = "Web Browser (HTTP)";
 		m_aOpeners[1].szExecute = "http://%s/";
+		m_aOpeners[0].bCommandLine = FALSE;
 
 		m_aOpeners[2].szName = "FTP";
 		m_aOpeners[2].szExecute = "ftp://%s/";
+		m_aOpeners[0].bCommandLine = FALSE;
 
 		m_aOpeners[3].szName = "Telnet";
 		m_aOpeners[3].szExecute = "telnet://%s/";
+		m_aOpeners[0].bCommandLine = FALSE;
 
 		m_aOpeners[4].szName = "Ping";
 		m_aOpeners[4].szExecute = "ping %s";
+		m_aOpeners[0].bCommandLine = TRUE;
 
 		m_aOpeners[4].szName = "Traceroute";
 		m_aOpeners[4].szExecute = "tracert %s";
+		m_aOpeners[0].bCommandLine = TRUE;
 	}
 
 }
@@ -347,6 +356,9 @@ void COptions::saveOpeners()
 
 		szKey.Format("OpenerDir_%d", i);
 		app->WriteProfileString("", szKey, m_aOpeners[i].szWorkDir);
+
+		szKey.Format("OpenerCmdLine_%d", i);
+		app->WriteProfileInt("", szKey, m_aOpeners[i].bCommandLine);
 	}
 }
 

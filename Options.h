@@ -29,7 +29,7 @@ typedef struct {u_short nStartPort; u_short nEndPort; } tPortRange;
 
 typedef	struct {CString szName; u_long nIP1; u_long nIP2; } tFavourite;
 
-typedef	struct {CString szName; CString szExecute; CString szWorkDir; } tOpener;
+typedef	struct {CString szName; CString szExecute; CString szWorkDir; BOOL bCommandLine; } tOpener;
 
 class COptions  
 {
