@@ -146,6 +146,7 @@ protected:
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	afx_msg void OnButtonToAdvanced();
 	afx_msg void OnScanPortsClicked();
+	afx_msg void OnSelectPortsClicked();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

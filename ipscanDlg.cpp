@@ -15,6 +15,7 @@
 #include "NetBIOSUtils.h"
 #include "ScanUtilsInternal.h"
 #include "Scanner.h"
+#include "PortDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -169,8 +170,9 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_WM_DESTROY()
 	ON_WM_DRAWITEM()
 	ON_BN_CLICKED(IDC_BUTTON_TO_ADVANCED, OnButtonToAdvanced)
-	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_BN_CLICKED(IDC_SCAN_PORTS, OnScanPortsClicked)
+	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
+	ON_BN_CLICKED(IDC_SELECT_PORTS, OnSelectPortsClicked)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -1204,4 +1206,10 @@ void CIpscanDlg::OnScanPortsClicked()
 		m_list.SetShowPorts(TRUE);
 	else
 		m_list.SetShowPorts(FALSE);
+}
+
+void CIpscanDlg::OnSelectPortsClicked() 
+{
+	CPortDlg dlg;
+	dlg.DoModal();
 }
