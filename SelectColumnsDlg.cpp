@@ -240,17 +240,7 @@ void CSelectColumnsDlg::OnSelectColumnInfo()
 
 	nCurSel += CL_STATIC_COUNT;
 
-	if (g_scanner->m_AllColumns[nCurSel].pInfoFunction == NULL)
-	{
-		AfxMessageBox("No info about this column", MB_ICONINFORMATION | MB_OK, 0);
-		return;
-	}
-
-	TInfoStruct infoStruct;
-	
-	g_scanner->m_AllColumns[nCurSel].pInfoFunction(&infoStruct);
-
-	MessageBox(infoStruct.szDescription, infoStruct.szPluginName, MB_OK | MB_ICONINFORMATION);
+	g_scanner->showColumnInfo(nCurSel);
 }
 
 void CSelectColumnsDlg::OnDeselect() 

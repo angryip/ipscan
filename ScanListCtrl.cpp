@@ -336,11 +336,12 @@ BOOL CScanListCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 
 void CScanListCtrl::SetScanPorts()
 {
+	int nCol = g_scanner->getColumnCount();	// Last column index
+
 	if (g_options->m_bScanPorts)
 	{
 		if (GetColumnCount() == g_scanner->getColumnCount())
 		{
-			int nCol = g_scanner->getColumnCount();	// Last column index
 			// Insert a special column
 			InsertColumn(nCol, "Open ports");
 
@@ -350,8 +351,14 @@ void CScanListCtrl::SetScanPorts()
 	}
 	else
 	{
-		if (GetColumnCount() > g_scanner->getColumnCount())
-			DeleteColumn(g_scanner->getColumnCount());	// Delete the special column
+		if (GetColumnCount() > nCol)
+		{
+			// Remember the width
+			AfxGetApp()->WriteProfileInt("", "Col_!OP!", GetColumnWidth(nCol));
+			
+			// Now remove
+			DeleteColumn(nCol);	// Delete the special column
+		}
 	}
 	
 	SetShowPortsBelow(g_options->m_bShowPortsBelow && g_options->m_bScanPorts);	// Update this status
@@ -966,32 +973,61 @@ int CALLBACK SortCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 
 void CScanListCtrl::OnItemClickListHeader(NMHDR* pNMHDR, LRESULT* pResult) 
 {
-	HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
+	NMLISTVIEW *phdn = (NMLISTVIEW *) pNMHDR;	 	
 
+	// Get the current on-screen mouse position
+	POINT mousePos;
+	GetCursorPos(&mousePos);
+
+	// Translate mouse pos to the header pos
+	RECT rcWin;
+	m_ctlHeader.GetWindowRect(&rcWin);
+	mousePos.x -= rcWin.left;	// Only horizontal coordinate is interesting for us
+
+	// Get the rect of clicked item
+	m_ctlHeader.GetItemRect(phdn->iSubItem, &rcWin);	
+
+	// Detect which icon was clicked
+	if (rcWin.right - 28 < mousePos.x)
+	{
+		// Icon area
+
+		if (rcWin.right - 13 > mousePos.x)
+		{
+			// Options icon			
+			g_scanner->showColumnOptions(phdn->iSubItem);
+		}
+		else
+		{
+			// Info icon
+			g_scanner->showColumnInfo(phdn->iSubItem);			
+		}
+
+		return;	// Do not proceed with sorting stuff
+	}
+
+	// Quit if sorting is not allowed
 	if (!m_bSortingAllowed)
 		return;
 
 	BOOL bSortAscending = m_ctlHeader.IsSortingAscending();
 	int nSortedColumn = m_ctlHeader.GetSortedColumn();
 	
-	if (phdn->iButton == 0)   // left button
+	if(phdn->iSubItem == nSortedColumn)
+	    bSortAscending = !bSortAscending;
+    else
+        bSortAscending = TRUE;
+
+    nSortedColumn = phdn->iSubItem;
+
+    for (int i=0;i < GetItemCount();i++) 
 	{
-		if(phdn->iItem == nSortedColumn)
-	        bSortAscending = !bSortAscending;
-        else
-            bSortAscending = TRUE;
+		SetItemData(i, i);
+	}		
 
-        nSortedColumn = phdn->iItem;
+	m_ctlHeader.SetSortArrow(nSortedColumn, bSortAscending);
 
-        for (int i=0;i < GetItemCount();i++) 
-		{
-			SetItemData(i, i);
-		}
-
-		m_ctlHeader.SetSortArrow(nSortedColumn, bSortAscending);
-
-		SortItems(&SortCompareFunc, (DWORD) this);
-	}
+	SortItems(&SortCompareFunc, (DWORD) this);
 		
 	*pResult = 0;
 }

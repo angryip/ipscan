@@ -128,7 +128,6 @@ protected:
 	afx_msg void OnGotoNextopenport();
 	afx_msg void OnGotoNextclosedport();
 	afx_msg void OnGotoHostname();
-	afx_msg void OnItemclickListHeader(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnButtonpaste();
 	afx_msg void OnHelpCommandline();
 	afx_msg void OnHelpForum();

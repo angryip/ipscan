@@ -274,6 +274,56 @@ int CScanner::getColumnReference(int nItemIndex)
 	return m_Columns[nItemIndex];
 }
 
+void CScanner::showColumnInfo(int nColumn)
+{
+	BOOL bNoInfo = FALSE;
+	TInfoStruct infoStruct;	
+
+	if (g_options->m_bScanPorts && nColumn == getColumnCount())
+	{
+		// This is a Open Ports special column
+		strcpy((char*)&infoStruct.szDescription, "Open ports (which were selected for scanning and appeared open)");
+		strcpy((char*)&infoStruct.szPluginName, "Open ports");
+	}
+	else
+	if (g_scanner->m_AllColumns[nColumn].pInfoFunction == NULL)
+	{
+		bNoInfo = TRUE;
+	}
+	else
+	{		
+		m_AllColumns[nColumn].pInfoFunction(&infoStruct);
+
+		if (infoStruct.szDescription[0] == 0)
+			bNoInfo = TRUE;
+	}
+
+	if (bNoInfo)
+	{
+		AfxMessageBox("No info about this column", MB_ICONINFORMATION | MB_OK, 0);
+	}
+	else
+	{
+		MessageBox(*AfxGetApp()->GetMainWnd() , infoStruct.szDescription, infoStruct.szPluginName, MB_OK | MB_ICONINFORMATION);
+	}
+}
+
+void CScanner::showColumnOptions(int nColumn)
+{
+	if (g_options->m_bScanPorts && nColumn == getColumnCount())
+	{
+		AfxMessageBox("See the main Options dialog box", MB_ICONINFORMATION | MB_OK, 0);
+		return;
+	}
+	else
+	if (m_AllColumns[nColumn].pOptionsFunction == NULL) 
+	{
+		AfxMessageBox("This column doesn't have any options.", MB_ICONINFORMATION | MB_OK, 0);
+		return;
+	}
+
+	g_scanner->m_AllColumns[nColumn].pOptionsFunction(*AfxGetApp()->GetMainWnd());
+}
 
 void CScanner::initListColumns(CScanListCtrl *pListCtrl)
 {
@@ -292,6 +342,14 @@ void CScanner::initListColumns(CScanListCtrl *pListCtrl)
 		nWidth = getColumnWidth(nCol);
 		pListCtrl->InsertColumn(nCol, *m_AllColumns[m_Columns[nCol]].pszPluginName, LVCFMT_LEFT, nWidth, nCol);
 	}
+
+	// MFC Bug workaround :-(
+	// Make first column ownder-drawn
+	HD_ITEM hditem;
+	hditem.mask = HDI_FORMAT;
+	VERIFY(pListCtrl->GetHeaderCtrl()->GetItem(0, &hditem));
+	hditem.fmt |= HDF_OWNERDRAW;
+	VERIFY(pListCtrl->GetHeaderCtrl()->SetItem(0, &hditem));
 
 	pListCtrl->SetScanPorts();	// Add / remove last column with port scanning
 }
@@ -780,4 +838,7 @@ UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////// THREAD ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
+
+
+
 

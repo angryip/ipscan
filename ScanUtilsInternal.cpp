@@ -141,7 +141,7 @@ int ScanIntDoPing(DWORD nIP, LPSTR szReturn, int nBufferLen)
 BOOL ScanIntInfoPing(TInfoStruct *pInfoStruct)
 {
 	strcpy((char*)&pInfoStruct->szPluginName, "Ping");
-	strcpy((char*)&pInfoStruct->szDescription, "Ping");
+	strcpy((char*)&pInfoStruct->szDescription, "Shows the Ping time in milliseconds or \"Dead\" if host is not responding.");
 	return TRUE;
 }
 

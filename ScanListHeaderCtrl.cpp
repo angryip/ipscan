@@ -121,11 +121,12 @@ void CScanListHeaderCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	UINT uIconTextFormat = DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP | DT_VCENTER | DT_RIGHT;
 	dc.SetBkMode(TRANSPARENT);
 
+	/* Enable this to make static icons go down on mouse click
 	if(lpDrawItemStruct->itemState == ODS_SELECTED)
 	{
 		rcStaticIcons.top += 2;
 		rcStaticIcons.right += 2;
-	}
+	}*/
 
 	// Draw info icon	
 	rcStaticIcons.right -= 5;
@@ -157,11 +158,12 @@ void CScanListHeaderCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	int nMoveClickX = 0;
 	int nMoveClickY = 0;
 
+	/* Enable this to make sort icon go down on mouse click
 	if(lpDrawItemStruct->itemState == ODS_SELECTED)
 	{
 		nMoveClickX = 2;
 		nMoveClickY = 1;
-	}
+	}*/
 
 	// draw the sort arrow.
 	if(lpDrawItemStruct->itemID == (UINT)m_nSortColumn)

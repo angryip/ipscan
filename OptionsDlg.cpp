@@ -259,11 +259,7 @@ void COptionsDlg::OnColumnAboutButton()
 	if (g_scanner->m_AllColumns[m_nCurrentlySelectedColumn].pInfoFunction == NULL)
 		return;
 
-	TInfoStruct infoStruct;
-	
-	g_scanner->m_AllColumns[m_nCurrentlySelectedColumn].pInfoFunction(&infoStruct);
-
-	MessageBox(infoStruct.szDescription, infoStruct.szPluginName, MB_OK | MB_ICONINFORMATION);
+	g_scanner->showColumnInfo(m_nCurrentlySelectedColumn);
 }
 
 void COptionsDlg::OnColumnOptionsButton() 
@@ -271,10 +267,7 @@ void COptionsDlg::OnColumnOptionsButton()
 	if (m_nCurrentlySelectedColumn < 0)
 		return;
 
-	if (g_scanner->m_AllColumns[m_nCurrentlySelectedColumn].pOptionsFunction == NULL)
-		return;
-		
-	g_scanner->m_AllColumns[m_nCurrentlySelectedColumn].pOptionsFunction(m_hWnd);
+	g_scanner->showColumnOptions(m_nCurrentlySelectedColumn);
 }
 
 void COptionsDlg::OnSave() 

@@ -56,6 +56,8 @@ TScannerColumn;
 class CScanner  
 {
 public:	
+	void showColumnOptions(int nColumn);
+	void showColumnInfo(int nColumn);
 	void runFinalizeFunction(int nIndex, BOOL bAllFunctions = FALSE);
 	void runInitFunction(int nIndex, BOOL bAllFunctions = FALSE);
 	void saveSelectedColumns();
