@@ -134,6 +134,7 @@
 #define IDC_COMMANDLINE                 1104
 #define IDC_IPFEED                      1105
 #define IDC_RANDOM_IP_COUNT             1108
+#define IDC_BASE_IPADDRESS              1109
 #define ID_BUTTONABOUT                  32771
 #define IDS_FIRSTCOLUMN                 32772
 #define IDS_STRING32773                 32773
@@ -662,7 +663,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        167
 #define _APS_NEXT_COMMAND_VALUE         32834
-#define _APS_NEXT_CONTROL_VALUE         1109
+#define _APS_NEXT_CONTROL_VALUE         1110
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -21,7 +21,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CRandomIPFeedDlg)
 	enum { IDD = IDD_IP_FEED_RANDOM };
-		// NOTE: the ClassWizard will add data members here
+	CEdit	m_ctIPCount;
+	CIPAddressCtrl	m_ctBaseIP;
 	//}}AFX_DATA
 
 
@@ -37,7 +38,7 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(CRandomIPFeedDlg)
-		// NOTE: the ClassWizard will add member functions here
+	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

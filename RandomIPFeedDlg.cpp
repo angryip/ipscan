@@ -28,14 +28,14 @@ void CRandomIPFeedDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CRandomIPFeedDlg)
-		// NOTE: the ClassWizard will add DDX and DDV calls here
+	DDX_Control(pDX, IDC_RANDOM_IP_COUNT, m_ctIPCount);
+	DDX_Control(pDX, IDC_BASE_IPADDRESS, m_ctBaseIP);
 	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CRandomIPFeedDlg, CDialog)
 	//{{AFX_MSG_MAP(CRandomIPFeedDlg)
-		// NOTE: the ClassWizard will add message map macros here
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -58,4 +58,20 @@ BOOL CRandomIPFeedDlg::unserialize(const CString& szSettings)
 CAbstractIPFeed * CRandomIPFeedDlg::createIPFeed()
 {
 	return NULL;
+}
+
+BOOL CRandomIPFeedDlg::OnInitDialog() 
+{
+	CAbstractIPFeedDlg::OnInitDialog(); 
+	
+	// Default values
+	m_ctBaseIP.SetWindowText("0.0.0.0");
+	m_ctIPCount.SetWindowText("100");
+
+	// Initialize tooltips
+	m_pToolTips->AddTool(GetDlgItem(IDC_BASE_IPADDRESS), "Base IP address for generation of random IPs");
+	m_pToolTips->AddTool(GetDlgItem(IDC_RANDOM_IP_COUNT), "Number of random IPs to generate.");
+	m_pToolTips->Activate(TRUE);
+	
+	return FALSE;
 }

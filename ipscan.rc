@@ -602,10 +602,10 @@ STYLE DS_CONTROL | WS_CHILD | WS_CAPTION
 CAPTION "Random IPs"
 FONT 8, "MS Sans Serif"
 BEGIN
-    LTEXT           "Random IPs:",IDC_STATIC,1,3,42,8
-    CONTROL         "IPAddress1",IDC_IPADDRESS1,"SysIPAddress32",WS_TABSTOP,
-                    45,14,83,12
     EDITTEXT        IDC_RANDOM_IP_COUNT,45,1,50,12,ES_AUTOHSCROLL
+    CONTROL         "IPAddress1",IDC_BASE_IPADDRESS,"SysIPAddress32",
+                    WS_TABSTOP,45,14,83,12
+    LTEXT           "Random IPs:",IDC_STATIC,1,3,42,8
     LTEXT           "Base IP:",IDC_STATIC,1,17,28,8
     CTEXT           "Zeros in the base IP will be changed randomly",
                     IDC_STATIC,138,5,84,19,0,WS_EX_STATICEDGE

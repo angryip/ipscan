@@ -329,13 +329,15 @@ BOOL CIpscanDlg::OnInitDialog()
 
 	// Create IP feed factory
 	m_pIPFeedFactory = new CIPFeedDlgFactory;
-	m_dlgIPFeed = m_pIPFeedFactory->m_paIPFeeds[0];	
-	// TODO: make normal initialization here!!!
+
+	// Take first IP feed as current
+	m_dlgIPFeed = m_pIPFeedFactory->getIPFeed(0);	
 	
-	// Add items to the listbox
-	CString szText;
-	m_dlgIPFeed->GetWindowText(szText);
-	ASSERT(m_ctIPFeed.AddString(szText) == 0);
+	// Populate IP Feed listbox	
+	for (int i = 0; i < m_pIPFeedFactory->getIPFeedCount(); i++)
+	{		
+		ASSERT(m_ctIPFeed.AddString(m_pIPFeedFactory->getIPFeedName(i)) >= 0);
+	}
 
 	// Update currently selected feeder
 	m_ctIPFeed.SetCurSel(0);
@@ -505,11 +507,14 @@ void CIpscanDlg::OnIpExit()
 void CIpscanDlg::UpdateCurrentIPFeedDialog()
 {
 	int nCurrentFeed = m_ctIPFeed.GetCurSel();
-
-	// TODO: add more feeders here
-	m_dlgIPFeed->ShowWindow(nCurrentFeed == 0 ? SW_SHOW : SW_HIDE);	
-	if (nCurrentFeed == 0)
-		m_dlgIPFeed->SetFocus();
+	
+	// Hide current dlg
+	m_dlgIPFeed->ShowWindow(SW_HIDE);	
+	
+	// Get and show new dlg
+	m_dlgIPFeed = m_pIPFeedFactory->getIPFeed(nCurrentFeed);
+	m_dlgIPFeed->ShowWindow(SW_SHOW);
+	m_dlgIPFeed->SetFocus();
 }
 
 void CIpscanDlg::RecreateIPFeed()

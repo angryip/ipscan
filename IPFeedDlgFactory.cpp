@@ -51,3 +51,19 @@ CIPFeedDlgFactory::~CIPFeedDlgFactory()
 		delete m_paIPFeeds[i];
 	}
 }
+
+int CIPFeedDlgFactory::getIPFeedCount()
+{
+	return m_nIPFeeds;
+}
+
+CAbstractIPFeedDlg * CIPFeedDlgFactory::getIPFeed(int nIndex)
+{
+	return m_paIPFeeds[nIndex];
+}
+
+CString & CIPFeedDlgFactory::getIPFeedName(int nIndex)
+{
+	return m_szIPFeedNames[nIndex];
+}
+

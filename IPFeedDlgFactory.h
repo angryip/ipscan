@@ -33,6 +33,9 @@ public:
 	CIPFeedDlgFactory();
 	virtual ~CIPFeedDlgFactory();
 
+	int getIPFeedCount();
+	CAbstractIPFeedDlg * getIPFeed(int nIndex);
+	CString & getIPFeedName(int nIndex);
 };
 
 #endif // !defined(AFX_IPFEEDDLGFACTORY_H__08CA8002_A70F_43E2_B871_3177FAFAF9A1__INCLUDED_)
