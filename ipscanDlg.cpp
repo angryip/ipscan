@@ -1001,6 +1001,11 @@ int CALLBACK SortCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 			n2 = ntohl(inet_addr(strItem2));
 			if (n1 > n2) nRet = 1; else if (n1 < n2) nRet = -1; else nRet = 0;
 			break;
+		case CL_PING:
+			n1 = atoi(strItem1);
+			n2 = atoi(strItem2);
+			if (n1 > n2) nRet = 1; else if (n1 < n2) nRet = -1; else nRet = 0;
+			break;
 		default:
 
 			if (strItem1 == "N/A" || strItem1 == "N/S")
