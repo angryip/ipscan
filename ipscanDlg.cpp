@@ -141,7 +141,7 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_SCAN_SAVETOTXT, OnScanSavetotxt)
 	ON_NOTIFY(NM_RCLICK, IDC_LIST, OnRclickList)
 	ON_COMMAND(ID__OPENCOMPUTERINEXPLORER, OnOpencomputerinexplorer)	
-	ON_COMMAND(ID_WINDOZESUCKS_IPCLIPBOARD, OnIPToClipboard)	
+	ON_COMMAND(ID_COMMANDS_IPCLIPBOARD, OnIPToClipboard)	
 	ON_COMMAND(ID_SCAN_SAVESELECTION, OnScanSaveselection)
 	ON_WM_SHOWWINDOW()
 	ON_COMMAND(ID_OPTIONS_SAVEOPTIONS, OnOptionsSaveoptions)
@@ -149,10 +149,10 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_NOTIFY(IPN_FIELDCHANGED, IDC_IPADDRESS2, OnFieldchangedIpaddress2)
 	ON_BN_CLICKED(IDC_CLASS_C, OnClassC)
 	ON_BN_CLICKED(IDC_CLASS_D, OnClassD)
-	ON_COMMAND(ID_WINDOZESUCKS_SHOWNETBIOSINFO, OnShowNetBIOSInfo)
+	ON_COMMAND(ID_SHOWNETBIOSINFO, OnShowNetBIOSInfo)
 	ON_COMMAND(ID_HELP_ANGRYIPSCANNERWEBPAGE, OnHelpAngryipscannerwebpage)
 	ON_COMMAND(ID_HELP_ANGRYZIBERSOFTWARE, OnHelpAngryzibersoftware)
-	ON_COMMAND(ID_WINDOZESUCKS_RESCANIP, OnRescanIP)
+	ON_COMMAND(ID_COMMANDS_RESCANIP, OnRescanIP)
 	ON_COMMAND(ID_GOTO_NEXTALIVE, OnGotoNextalive)
 	ON_COMMAND(ID_GOTO_NEXTDEAD, OnGotoNextdead)
 	ON_COMMAND(ID_GOTO_NEXTOPENPORT, OnGotoNextopenport)
@@ -417,12 +417,9 @@ void CIpscanDlg::OnButtonScan()
 
 		m_list.DeleteAllItems();		
 
-		CMenu *tmp = GetMenu();
-		tmp->GetSubMenu(3)->EnableMenuItem(ID_OPTIONS_OPTIONS,MF_GRAYED);
-		tmp->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVETOTXT,MF_GRAYED);
-		tmp->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVESELECTION,MF_GRAYED);
-
 		g_nThreadCount = 0;
+
+		EnableMenuItems(FALSE);
 		
 		// Initialize scanning engine
 		status("Initializing...");
@@ -474,10 +471,7 @@ void CIpscanDlg::OnButtonScan()
 			((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStart.m_hObject); // start scan bitmap
 			status("Ready");
 			
-			CMenu *tmpMenu = GetMenu();
-			tmpMenu->GetSubMenu(3)->EnableMenuItem(ID_OPTIONS_OPTIONS, MF_ENABLED);
-			tmpMenu->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVETOTXT, MF_ENABLED);
-			tmpMenu->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVESELECTION, MF_ENABLED);
+			EnableMenuItems(TRUE);			
 
 			m_progress.SetPos(0);
 
@@ -825,7 +819,7 @@ void CIpscanDlg::OnItemclickListHeader(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
 	
-	if (m_nScanMode == SCAN_MODE_SCANNING) 
+	if (m_nScanMode != SCAN_MODE_NOT_SCANNING) 
 		return;
 	
 	if (phdn->iButton == 0) {  // left button
@@ -1081,9 +1075,38 @@ void CIpscanDlg::OnCommandsShowIPdetails()
 
 void CIpscanDlg::OnExecuteShowMenu(UINT nID)
 {
-	CString szTmp;
-	szTmp.Format("%d", nID - ID_MENU_SHOW_CMD_001 + 1);
-	MessageBox(szTmp);
+	if (m_nScanMode != SCAN_MODE_NOT_SCANNING)
+		return;
+
+	m_menucuritem = m_list.GetCurrentSelectedItem();
+	
+	if (m_menucuritem == -1)
+		return;
+
+	int nFunctionIndex = nID - ID_MENU_SHOW_CMD_001 + CL_STATIC_COUNT;
+
+	char szBuffer[256];
+
+	CString szIP = m_list.GetItemText(m_menucuritem, CL_IP);
+
+	status(szIP);
+
+	g_scanner->runScanFunction(m_list.GetNumericIP(m_menucuritem), nFunctionIndex, (char*) &szBuffer, sizeof(szBuffer), TRUE);
+
+	status("Ready");
+
+	CString szResult;	
+	m_menuContext->GetSubMenu(INDEX_SHOW_MENU)->GetMenuString(nFunctionIndex - CL_STATIC_COUNT, szResult, MF_BYPOSITION);
+		
+	
+	szResult = "Result for a single value scan:\r\n\r\nIP: " + szIP + "\r\n\r\n" + szResult + ":\r\n";	
+	szResult += szBuffer;
+
+	CMessageDlg cMsgDlg;
+	cMsgDlg.setMessageText(szResult);
+
+	cMsgDlg.DoModal();
+
 }
 
 BOOL CIpscanDlg::OnCommand(WPARAM wParam, LPARAM lParam) 
@@ -1097,5 +1120,27 @@ BOOL CIpscanDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 	{
 		m_bSysCommand = FALSE;
 		return CDialog::OnCommand(wParam, lParam);
+	}
+}
+
+void CIpscanDlg::EnableMenuItems(BOOL bEnable)
+{
+	UINT nEnable = bEnable ? MF_ENABLED : MF_GRAYED;
+
+	CMenu *tmpMnu = GetMenu();
+	
+	tmpMnu->GetSubMenu(3)->EnableMenuItem(ID_OPTIONS_OPTIONS, nEnable);
+	tmpMnu->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVETOTXT, nEnable);
+	tmpMnu->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVESELECTION, nEnable);
+	
+	tmpMnu->EnableMenuItem(ID_COMMANDS_RESCANIP, nEnable);
+
+	tmpMnu = tmpMnu->GetSubMenu(INDEX_SHOW_MENU);
+
+	tmpMnu->EnableMenuItem(ID_SHOWNETBIOSINFO, nEnable);
+	
+	for (UINT i=0; i < tmpMnu->GetMenuItemCount(); i++)
+	{
+		tmpMnu->EnableMenuItem(ID_MENU_SHOW_CMD_001 + i, nEnable);
 	}
 }

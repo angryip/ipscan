@@ -48,12 +48,11 @@ BEGIN
     POPUP "&Commands"
     BEGIN
         MENUITEM "Show details\tDbl-Click",     ID_COMMANDS_SHOWDETAILS
-        MENUITEM "Rescan &IP\tCtrl+I",          ID_WINDOZESUCKS_RESCANIP
+        MENUITEM "Rescan &IP\tCtrl+I",          ID_COMMANDS_RESCANIP
         POPUP "Show"
         BEGIN
             MENUITEM SEPARATOR
-            MENUITEM "Show &NetBIOS info\tCtrl+N",  ID_WINDOZESUCKS_SHOWNETBIOSINFO
-
+            MENUITEM "Show &NetBIOS info\tCtrl+N",  ID_SHOWNETBIOSINFO
         END
         POPUP "Open computer"
         BEGIN
@@ -72,7 +71,7 @@ BEGIN
 
         END
         MENUITEM SEPARATOR
-        MENUITEM "IP -> Clipboard\tCtrl+C",     ID_WINDOZESUCKS_IPCLIPBOARD
+        MENUITEM "IP -> Clipboard\tCtrl+C",     ID_COMMANDS_IPCLIPBOARD
     END
     POPUP "&Options"
     BEGIN

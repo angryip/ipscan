@@ -88,7 +88,7 @@ BOOL ScanIntDoPing(DWORD nIP, LPSTR szReturn, int nBufferLen)
     IPInfo.OptionsData = NULL;
 	DWORD ReplyCount;
 	ReplyCount = lpfnIcmpSendEcho(hICMP, nIP, &aPingDataBuf, sizeof(aPingDataBuf), 
-		&IPInfo, RepData, sizeof(RepData), 1000/*TODO!!! Timeout*/);
+		&IPInfo, RepData, sizeof(RepData), g_options->m_nPingTimeout);
 
 	lpfnIcmpCloseHandle(hICMP);
 

@@ -22,7 +22,8 @@
 class CIpscanDlg : public CDialog
 {
 // Construction
-public:
+public:	
+	void EnableMenuItems(BOOL bEnable);
 	CBitmap m_bmpShowAdvanced;
 	int m_nCmdLineOptions;
 	CString *m_szDefaultFileName;			

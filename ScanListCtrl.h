@@ -35,6 +35,7 @@ public:
 
 // Implementation
 public:
+	DWORD GetNumericIP(int nItemIndex);
 	void ZeroResultsForItem(int nItemIndex);
 	CString m_szSearchFor;
 	void GoToNextSearchIP();

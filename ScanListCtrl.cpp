@@ -618,3 +618,10 @@ void CScanListCtrl::ZeroResultsForItem(int nItemIndex)
 
 	RedrawWindow();
 }
+
+DWORD CScanListCtrl::GetNumericIP(int nItemIndex)
+{
+	char szIP[16];
+	GetItemText(nItemIndex, CL_IP, (char*) &szIP, sizeof(szIP));
+	return inet_addr((char*)&szIP);
+}

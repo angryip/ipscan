@@ -147,7 +147,7 @@ int CScanner::getColumnWidth(int nIndex)
 	int nWidth = m_app->GetProfileInt("",str,-1);
 		
 	if (nWidth == -1) 
-		nWidth = 80;
+		nWidth = 100;
 
 	return nWidth;
 }
@@ -207,21 +207,18 @@ BOOL CScanner::finalizeScanning()
 BOOL CScanner::doScanIP(DWORD nItemIndex)
 {
 	// get IP address
-	DWORD nIP;
-	char szIP[16];
-	g_d->m_list.GetItemText(nItemIndex, CL_IP, (char*) &szIP, sizeof(szIP));
-	nIP = inet_addr((char*)&szIP);
+	DWORD nIP = g_d->m_list.GetNumericIP(nItemIndex);	
 
 	char szTmp[512];
 
 	// Ping it! (column number 1)
 	BOOL bAlive = m_Columns[1].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));
-	g_d->m_list.SetItemText(nItemIndex, 1, (char*) &szTmp);
+	g_d->m_list.SetItemText(nItemIndex, CL_PING, (char*) &szTmp);
 	
 	if (bAlive)
 	{
 		// Change image to Alive
-		g_d->m_list.SetItem(nItemIndex, 0, LVIF_IMAGE, NULL, 0, 0, 0, 0);
+		g_d->m_list.SetItem(nItemIndex, CL_IP, LVIF_IMAGE, NULL, 0, 0, 0, 0);
 		
 		// Increment open hosts
 		m_nAliveHosts++;
@@ -229,7 +226,7 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 	else
 	{
 		// Change image to Dead
-		g_d->m_list.SetItem(nItemIndex, 0, LVIF_IMAGE, NULL, 1, 0, 0, 0);
+		g_d->m_list.SetItem(nItemIndex, CL_IP, LVIF_IMAGE, NULL, 1, 0, 0, 0);
 	}
 	
 	
@@ -243,7 +240,7 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 			if (m_Columns[i].pInfoFunction != NULL)
 			{
 				szTmp[0] = 0;
-				m_Columns[i].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));
+				runScanFunction(nIP, i, (char*) &szTmp, sizeof(szTmp));				
 				
 				// Returned empty string
 				if (szTmp[0] == 0)
@@ -349,6 +346,14 @@ int CScanner::doScanPorts(DWORD nIP, CString &szResult)
 	return nResult;
 }
 
+void CScanner::runScanFunction(DWORD nIP, int nIndex, char *szBuffer, int nBufferLength, BOOL bGlobal /*=FALSE*/)
+{
+	if (bGlobal)
+		m_AllColumns[nIndex].pScanFunction(nIP, szBuffer, nBufferLength);
+	else
+		m_Columns[nIndex].pScanFunction(nIP, szBuffer, nBufferLength);
+}
+
 
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////// THREAD ////////////////////////////////////
@@ -409,142 +414,13 @@ UINT ScanningThread(LPVOID nItemIndex)
 	
 	return 0;
 
-
-	/*
-	
-		if (ThreadProcRescanThisIP >= 0) 
-	{
-		n = ThreadProcRescanThisIP; 
-	} 
-	else 
-	{
-		n = (UINT)cur_ip - d->m_startip;
-	}
-
-	// PING!!!
-	BOOL bAlive = ScanIntDoPing(in.S_un.S_addr, NULL, 0);	
-	
-	if (!bAlive) 
-	{
-		sprintf((char*)&err,"%u",WSAGetLastError());
-
-		if (d->m_display!=DO_ALL) 
-		{	
-			goto exit_thread;
-		} 
-		
-		d->m_list.SetItem(n,0,LVIF_IMAGE,NULL,1,0,0,0);
-		d->m_list.SetItem(n,CL_STATE,LVIF_TEXT,"Dead",0,0,0,0);
-		
-		if (d->m_retrifdead) 
-		{
-			hostent *he = gethostbyaddr((char*)&in.S_un.S_addr,4,0);
-			if (he) 
-			{
-				d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,he->h_name,0,0,0,0); 
-				d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,"None",0,0,0,0);	
-			} 
-			else 
-			{
-				sprintf((char*)&err,"%u",WSAGetLastError());
-				d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,"N/A",0,0,0,0); 
-				d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,(char*)&err,0,0,0,0);	
-			}
-
-		} 
-		else 
-		{
-			d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,"N/A",0,0,0,0);
-			d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,(char*)&err,0,0,0,0);
-		}
-		
-		d->m_list.SetItem(n,CL_PORT,LVIF_TEXT,"N/A",0,0,0,0);
-		d->m_list.SetItem(n,CL_PINGTIME,LVIF_TEXT,"N/A",0,0,0,0);
-		if (d->m_portondead) goto scan_port;
-
-	} 
-	else 
-	{
-		// Alive
-		if (d->m_display!=DO_ALL && ThreadProcRescanThisIP == -1) 
-		{
-			n = d->m_list.InsertItem(n,ipa,0); 
-			//d->m_list.SetItemData(n, n);
-		}
-		numalive++;
-		d->m_list.SetItem(n,0,LVIF_IMAGE,NULL,0,0,0,0);
-		
-		d->m_list.SetItem(n,CL_PINGTIME,LVIF_TEXT,(char*)&err,0,0,0,0);
-		
-		if (d->m_resolve) 
-		{
-			hostent *he = gethostbyaddr((char*)&in.S_un.S_addr,4,0);
-			if (he) 
-			{
-				d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,he->h_name,0,0,0,0); 
-				d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,"None",0,0,0,0);	
-			} 
-			else 
-			{
-				sprintf((char*)&err,"%u",WSAGetLastError());
-				d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,"N/A",0,0,0,0); 
-				d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,(char*)&err,0,0,0,0);	
-			}
-		} 
-		else 
-		{
-			d->m_list.SetItem(n,CL_HOSTNAME,LVIF_TEXT,"N/S",0,0,0,0); 
-			//d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,"None",0,0,0,0);	
-		}
-scan_port:
-		if (d->m_scanport) 
-		{
-			// Scan port
-			SOCKET skt = socket(PF_INET,SOCK_STREAM,IPPROTO_IP);
-			sockaddr_in sin;
-			sin.sin_addr.S_un.S_addr = in.S_un.S_addr;
-			sin.sin_family = PF_INET;
-			sin.sin_port = htons(d->m_port);
-			int se = connect(skt,(sockaddr*)&sin,sizeof(sin));
-			if (se!=0) 
-			{
-				sprintf((char*)&err,"%u",WSAGetLastError());
-				d->m_list.SetItem(n,CL_ERROR,LVIF_TEXT,(char*)&err,0,0,0,0);
-				sprintf((char*)&err,"%u: closed",d->m_port);
-				d->m_list.SetItem(n,CL_PORT,LVIF_TEXT,(char*)&err,0,0,0,0);
-			} 
-			else 
-			{
-				numopen++;
-				sprintf((char*)&err,"%u: open",d->m_port);
-				d->m_list.SetItem(n,CL_PORT,LVIF_TEXT,(char*)&err,0,0,0,0);
-				d->m_list.SetItem(n,0,LVIF_IMAGE,NULL,3,0,0,0);				
-			}
-			closesocket(skt);
-
-		} 
-		else d->m_list.SetItem(n,CL_PORT,LVIF_TEXT,"N/S",0,0,0,0);
-	}
-
-exit_thread:
-
-	numthreads--;
-	if (numthreads>=0) 
-	{
-		sprintf((char*)&err,"%d",numthreads);
-		d->m_numthreads.SetWindowText((char*)&err);
-	}
-
-	CloseHandle(threads[index]);
-
-	threads[index]=0;
-
-	return 0;*/
 }
 
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////// THREAD ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
+
+
 
 
 
