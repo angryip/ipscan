@@ -910,11 +910,33 @@ void CIpscanDlg::OnGotoHostname()
 
 BOOL CIpscanDlg::PreTranslateMessage(MSG* pMsg) 
 {
-	if (TranslateAccelerator(m_hWnd,hAccel,pMsg ) ) 
+	if (TranslateAccelerator(m_hWnd, hAccel, pMsg)) 
 		return TRUE;
 
 	if (m_pToolTips != NULL)
 		m_pToolTips->RelayEvent(pMsg);
+
+	// Check for Enter key presses
+	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN)
+	{
+		// If this is a hostname edit control
+		if (pMsg->hwnd == GetDlgItem(IDC_HOSTNAME)->m_hWnd)
+		{
+			m_ipup.SetFocus();
+			OnButtonipup();
+			return TRUE;
+		}
+		else
+		// If this is a list control
+		if (pMsg->hwnd == m_list.m_hWnd)
+		{
+			if (m_list.GetCurrentSelectedItem(FALSE) >= 0)
+			{
+				OnCommandsShowIPdetails();
+				return TRUE;
+			}
+		}
+	}
 
 	return CDialog::PreTranslateMessage(pMsg);
 }
