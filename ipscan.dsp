@@ -134,6 +134,10 @@ SOURCE=.\SaveToFile.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ScanListCtrl.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Scanner.cpp
 # End Source File
 # Begin Source File
@@ -196,6 +200,10 @@ SOURCE=.\Resource.h
 # Begin Source File
 
 SOURCE=.\SaveToFile.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ScanListCtrl.h
 # End Source File
 # Begin Source File
 

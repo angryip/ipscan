@@ -53,7 +53,7 @@ BOOL ScanIntInitPing()
     lpfnIcmpSendEcho    = (TIcmpSendEcho)GetProcAddress(hICMP,"IcmpSendEcho");
 
 	// Fill data buffer for pinging
-	for (int i=0; i<=32; i++) aPingDataBuf[i]=i+65;
+	for (int i=0; i < sizeof(aPingDataBuf); i++) aPingDataBuf[i]=i+65;
 
 	nNumAlive = 0;
 
@@ -94,11 +94,11 @@ BOOL ScanIntDoPing(DWORD nIP, LPSTR szReturn, int nBufferLen)
 		if (bAlive)
 		{
 			sprintf(szReturn,"%d ms",*(u_long *) &(RepData[8]));
-			szReturn = "Alive";
+			bAlive = TRUE;
 		}
 		else
 		{
-			szReturn = "Dead";
+			strcpy(szReturn, "Dead");
 		}
 	}
 
