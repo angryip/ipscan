@@ -129,7 +129,13 @@ void COptions::save()
 	app->WriteProfileInt("", "ScanHostIfDead", m_bScanHostIfDead);
 	app->WriteProfileInt("", "ScanPorts", m_bScanPorts);
 	app->WriteProfileInt("", "ShowPortsBelow", m_bShowPortsBelow);
-	
+}
+
+void COptions::saveDimensions()
+{
+	CWinApp *app = AfxGetApp();
+
+	// Save window pos
 	RECT rc;
 	app->GetMainWnd()->GetWindowRect(&rc);
 	app->WriteProfileInt("","Left",rc.left);
@@ -153,6 +159,7 @@ void COptions::save()
 		app->WriteProfileInt("", szTmp, cDlg->m_list.GetColumnWidth(cDlg->m_list.GetColumnCount()-1));		
 	}
 }
+
 
 void COptions::load()
 {
@@ -198,7 +205,7 @@ void COptions::setWindowPos()
 		d->SetWindowPos(NULL,0,0,502,350,SWP_NOMOVE | SWP_NOZORDER);
 	}
 
-
-	// TODO: set widths of columns here
+	// Column widths are restored in CScanner::initListColumns()
 }
+
 

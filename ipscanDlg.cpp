@@ -184,6 +184,7 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_BN_CLICKED(IDC_SELECT_COLUMNS, OnSelectColumns)
 	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_COMMAND(ID_OPTIONS_SELECT_COLUMNS, OnSelectColumns)
+	ON_COMMAND(ID_OPTIONS_SAVEDIMENSIONS, OnOptionsSavedimensions)
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_RANGE(ID_MENU_SHOW_CMD_001, ID_MENU_SHOW_CMD_099, OnExecuteShowMenu)
@@ -718,7 +719,16 @@ void CIpscanDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 
 void CIpscanDlg::OnOptionsSaveoptions() 
 {	
-	g_options->save();	
+	g_options->save();
+	
+	MessageBox("Options and selected columns are successfully saved.", NULL, MB_OK | MB_ICONINFORMATION);
+}
+
+void CIpscanDlg::OnOptionsSavedimensions() 
+{
+	g_options->saveDimensions();
+
+	MessageBox("Window size, position and widths of columns are successfully saved.", NULL, MB_OK | MB_ICONINFORMATION);
 }
 
 void CIpscanDlg::OnFieldchangedIpaddress1(NMHDR* pNMHDR, LRESULT* pResult) 
@@ -1237,3 +1247,4 @@ void CIpscanDlg::OnSelectColumns()
 	CSelectColumnsDlg cDlg;
 	cDlg.DoModal();
 }
+

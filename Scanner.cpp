@@ -153,14 +153,10 @@ BOOL CScanner::getAllColumnName(int nIndex, CString &szColumnHeader)
 
 int CScanner::getColumnWidth(int nIndex)
 {
-	CString str;
-	str.Format("Col %s Width", m_Columns[nIndex].pszColumnName);
-	int nWidth = m_app->GetProfileInt("",str,-1);
-		
-	if (nWidth == -1) 
-		nWidth = 100;
-
-	return nWidth;
+	CString szName;
+	getColumnName(nIndex, szName);
+	szName = "Col_" + szName;	
+	return m_app->GetProfileInt("", szName, 100);
 }
 
 void CScanner::initListColumns(CScanListCtrl *pListCtrl)

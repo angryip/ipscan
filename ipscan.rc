@@ -77,6 +77,7 @@ BEGIN
     BEGIN
         MENUITEM "&Options...\tCtrl+O",         ID_OPTIONS_OPTIONS
         MENUITEM "&Save options",               ID_OPTIONS_SAVEOPTIONS
+        MENUITEM "Save &dimensions",            ID_OPTIONS_SAVEDIMENSIONS
         MENUITEM SEPARATOR
         MENUITEM "Select &Columns...",          ID_OPTIONS_SELECT_COLUMNS
         MENUITEM SEPARATOR
