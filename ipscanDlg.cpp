@@ -23,7 +23,6 @@ static char THIS_FILE[] = __FILE__;
 
 UINT numthreads;
 HANDLE threads[10000];
-//HANDLE *threads[];
 UINT numalive,numopen;
 UINT listofs,statusheight;
 CIpscanDlg* d;
@@ -402,9 +401,9 @@ void CIpscanDlg::OnIpExit()
 }
 
 void CIpscanDlg::OnButton1() 
-{
-	//m_menucuritem = -1;
-	if (!m_scanning) {
+{	
+	if (!m_scanning) 
+	{
 		char str[16];
 		m_ip1.GetWindowText((char *)&str,16);
 		m_startip = ntohl(inet_addr((char*)&str));
@@ -424,12 +423,12 @@ void CIpscanDlg::OnButton1()
 		m_tickcount = GetTickCount()/1000;
 
 		m_scanning=TRUE;
-		//SetDlgItemText(IDC_BUTTON1,"Stop scan");
-		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)stopbmp.m_hObject);
+		
+		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)stopbmp.m_hObject); // stop scanning button
 		m_list.DeleteAllItems();
 
 		CMenu *tmp = GetMenu();
-		tmp->GetSubMenu(1)->EnableMenuItem(ID_OPTIONS_OPTIONS,MF_GRAYED);
+		tmp->GetSubMenu(3)->EnableMenuItem(ID_OPTIONS_OPTIONS,MF_GRAYED);
 		tmp->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVETOTXT,MF_GRAYED);
 		tmp->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVESELECTION,MF_GRAYED);
 
@@ -440,15 +439,20 @@ void CIpscanDlg::OnButton1()
 
 		SetTimer(1,m_delay,NULL);
 
-	} else {
-
-		if (numthreads!=0) {
+	} 
+	else 
+	{
+		if (numthreads!=0) 
+		{
 			
-			if (m_scanning==2) {
+			if (m_scanning==2) 
+			{
 				if (MessageBox("Are you sure you want to interrupt scanning by killing all the threads?\nScanning results will be incomplete.",NULL,MB_YESNO | MB_ICONQUESTION)==IDNO) return;
 			
-				for (UINT i=0; i<=10000; i++) {
-					if (threads[i]!=0) {
+				for (UINT i=0; i<=10000; i++) 
+				{
+					if (threads[i]!=0) 
+					{
 						TerminateThread(threads[i],0);
 						CloseHandle(threads[i]);
 						threads[i]=0;
@@ -462,32 +466,45 @@ void CIpscanDlg::OnButton1()
 			m_endip = m_curip;
 			m_progress.SetPos(100);
 			m_scanning = 2;
-		} else {
+		} 
+		else 
+		{
 finish_all:
 			KillTimer(1);
 			m_scanning=FALSE;
-			//SetDlgItemText(IDC_BUTTON1,"Start scan");
-			((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)startbmp.m_hObject);
+			
+			((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)startbmp.m_hObject); // start scan bitmap
 			status("Ready");
-			//GlobalFree(threads);
-
+			
 			CMenu *tmp = GetMenu();
-			tmp->GetSubMenu(1)->EnableMenuItem(ID_OPTIONS_OPTIONS,MF_ENABLED);
+			tmp->GetSubMenu(3)->EnableMenuItem(ID_OPTIONS_OPTIONS,MF_ENABLED);
 			tmp->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVETOTXT,MF_ENABLED);
 			tmp->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVESELECTION,MF_ENABLED);
 
 			m_progress.SetPos(0);
 
-			char str[140],ipa[16],ipa2[16],*ipp;
-			in_addr in;
-			in.S_un.S_addr = htonl(m_startip);
-			ipp = inet_ntoa(in);
-			strcpy((char*)&ipa,ipp);
-			in.S_un.S_addr = htonl(m_endip);
-			ipp = inet_ntoa(in);
-			strcpy((char*)&ipa2,ipp);
-			sprintf((char*)&str,"Scan complete\t\t\n\n%s - %s\n%u second(s)\n\nIPs scanned: %u\nAlive hosts: %u\nOpen ports: %u",&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1,m_endip-m_startip+1,numalive,numopen);
-			MessageBox((char*)&str,"Info",MB_OK | MB_ICONINFORMATION);
+			if (m_szDefaultFileName)
+			{
+				// Program was invoked via command-line, so save data to file & exit
+
+				CSaveToFile tmp(d, FALSE, m_szDefaultFileName->GetBuffer(255));
+				ExitProcess(0);
+			}
+			else
+			{
+				// Display final message box with statistics
+
+				char str[140],ipa[16],ipa2[16],*ipp;
+				in_addr in;
+				in.S_un.S_addr = htonl(m_startip);
+				ipp = inet_ntoa(in);
+				strcpy((char*)&ipa,ipp);
+				in.S_un.S_addr = htonl(m_endip);
+				ipp = inet_ntoa(in);
+				strcpy((char*)&ipa2,ipp);
+				sprintf((char*)&str,"Scan complete\t\t\n\n%s - %s\n%u second(s)\n\nIPs scanned: %u\nAlive hosts: %u\nOpen ports: %u",&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1,m_endip-m_startip+1,numalive,numopen);
+				MessageBox((char*)&str,"Info",MB_OK | MB_ICONINFORMATION);
+			}
 		}
 	}
 }
@@ -692,32 +709,41 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 	 	
 	int i;
 	
-	if (m_curip<m_endip) {
+	if (m_curip<m_endip) 
+	{
 		if (numthreads>=m_maxthreads-1) return;
 		in_addr in;
 		char *ipa;
 		in.S_un.S_addr = htonl(m_curip);
 		ipa = inet_ntoa(in);
 		status(ipa);
-		if (m_display==DO_ALL) {
+		if (m_display==DO_ALL) 
+		{
 			i = m_list.InsertItem(m_list.GetItemCount(),ipa,2);
 			//m_list.SetItemData(i, i);
 		}
 		CWinThread *thr = AfxBeginThread(ThreadProc,(void*)m_curip);
-		if (m_startip < m_endip) {
+		if (m_startip < m_endip) 
+		{
 			m_curip++;
 			m_progress.SetPos((m_curip-m_startip)*100/(m_endip-m_startip));
 		}
-	} else {
+	} 
+	else 
+	{
 	
-		if (numthreads==0) {
+		if (numthreads==0) 
+		{
 			m_endip--;
 			OnButton1();
 			
 			return;
-		} else {
+		} 
+		else 
+		{
 			status("Wait for all threads to terminate");
 			((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)killbmp.m_hObject);
+			m_scanning = 2; // waiting can be interrupted
 		}
 	}
 	

@@ -17,7 +17,7 @@ static char THIS_FILE[]=__FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CSaveToFile::CSaveToFile(CIpscanDlg *dlg, BOOL bSaveSelection)
+CSaveToFile::CSaveToFile(CIpscanDlg *dlg, BOOL bSaveSelection, LPSTR szFileName)
 {
 	m_dlg = dlg;
 	
@@ -34,7 +34,19 @@ CSaveToFile::CSaveToFile(CIpscanDlg *dlg, BOOL bSaveSelection)
 		return;
 	}
 	
-	if (queryFilename())
+	BOOL bResult;
+	
+	if (szFileName == NULL) 
+	{
+		bResult = queryFilename();
+	}
+	else
+	{
+		bResult = TRUE;
+		m_filename = szFileName;
+	}
+	
+	if (bResult)
 	{
 		if (m_filetype == FILE_TYPE_CSV)
 		{
