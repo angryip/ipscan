@@ -299,7 +299,13 @@ void CScanListCtrl::SetScanPorts()
 	if (g_options->m_bScanPorts)
 	{
 		if (GetColumnCount() == g_scanner->getColumnCount())
-			InsertColumn(g_scanner->getColumnCount(), "Open ports");
+		{
+			int nCol = g_scanner->getColumnCount();	// Last column index
+			InsertColumn(nCol, "Open ports");
+
+			// Set saved width for the column			
+			SetColumnWidth(nCol, AfxGetApp()->GetProfileInt("", "Col_!OP!", 10));
+		}
 	}
 	else
 	{
