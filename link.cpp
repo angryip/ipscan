@@ -172,3 +172,10 @@ void CLink::goToDonationPage()
 	szURL.LoadString(IDS_DONATION_PAGE);
 	ShellExecute(0, NULL, szURL, NULL, NULL, SW_SHOWNORMAL);
 }
+
+void CLink::goToPluginsPage()
+{
+	CString szURL;
+	szURL.LoadString(IDS_PLUGINS_PAGE);
+	ShellExecute(0, NULL, szURL, NULL, NULL, SW_SHOWNORMAL);
+}

@@ -34,6 +34,7 @@
 #define IDD_QUERY_DLG                   160
 #define IDD_FAVOURITE_DELETE            161
 #define IDD_EDIT_OPENERS_DLG            162
+#define IDC_CURSOR1                     163
 #define IDC_LIST                        1002
 #define IDC_STATUS                      1005
 #define IDC_IPADDRESS1                  1007
@@ -175,6 +176,7 @@
 #define IDS_HOMEPAGE_FORUM              32796
 #define ID_GOTO_HOSTNAME                32797
 #define IDS_DONATION_PAGE               32797
+#define IDS_PLUGINS_PAGE                32798
 #define ID_COMMANDS_OPENCOMPUTER_ASFTP  32804
 #define ID_COMMANDS_OPENCOMPUTER_ASWEBSITE 32805
 #define ID_COMMANDS_OPENCOMPUTER_TELNET 32806
@@ -202,6 +204,7 @@
 #define ID_COMMANDS_OPENCOMPUTER_CONFIGURE 32830
 #define ID_HELP_DONATIONPAGE            32831
 #define ID_HELP_CHECKFORNEWERVERSION    32832
+#define ID_HELP_DOWNLOADPLUGINS         32833
 #define ID_MENU_SHOW_CMD_001            32901
 #define ID_MENU_SHOW_CMD_002            32902
 #define ID_MENU_SHOW_CMD_003            32903
@@ -653,8 +656,8 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        163
-#define _APS_NEXT_COMMAND_VALUE         32833
+#define _APS_NEXT_RESOURCE_VALUE        164
+#define _APS_NEXT_COMMAND_VALUE         32834
 #define _APS_NEXT_CONTROL_VALUE         1105
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

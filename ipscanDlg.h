@@ -153,6 +153,7 @@ protected:
 	afx_msg void OnCommandsOpencomputerConfigure();
 	afx_msg void OnHelpDonationPage();
 	afx_msg void OnHelpCheckForNewerVersion();
+	afx_msg void OnHelpDownloadplugins();
 	//}}AFX_MSG
 	
 	afx_msg void OnExecuteShowMenu(UINT nID);
