@@ -29,6 +29,8 @@ public:
 	CScanUtilsPlugin();
 	virtual ~CScanUtilsPlugin();
 	void load(CArray<TScannerColumn, TScannerColumn&> &columns, int &nColumnCount);
+protected:
+	void loadFromDir(CArray<TScannerColumn, TScannerColumn&> &columns, int &nColumnCount, CString &szDir);
 };
 
 #endif // !defined(AFX_SCANUTILSPLUGIN_H__C22D204C_B1B9_4D78_A3AB_659A7A21EA9D__INCLUDED_)

@@ -37,14 +37,14 @@ CScanUtilsPlugin::~CScanUtilsPlugin()
 
 }
 
-void CScanUtilsPlugin::load(CArray<TScannerColumn, TScannerColumn&> &columns, int &nColumnCount)
+void CScanUtilsPlugin::loadFromDir(CArray<TScannerColumn, TScannerColumn&> &columns, int &nColumnCount, CString &szDir)
 {
-	// This function loads plugins from the HDD and initializes structures passed as parameters
+	// This function loads plugins using from the specified directory
 
 	WIN32_FIND_DATA fileData;
 	HANDLE hFind;
 
-	hFind = FindFirstFile(g_options->m_szExecutablePath + "\\*.dll", &fileData);
+	hFind = FindFirstFile(szDir + "\\*.dll", &fileData);
 	
 	if (hFind != INVALID_HANDLE_VALUE)
 	{
@@ -53,7 +53,7 @@ void CScanUtilsPlugin::load(CArray<TScannerColumn, TScannerColumn&> &columns, in
 			CString szFileName = fileData.cFileName;
 
 			// Load plugin
-			HMODULE hPlugin = LoadLibrary(g_options->m_szExecutablePath + "\\" + szFileName);
+			HMODULE hPlugin = LoadLibrary(szDir + "\\" + szFileName);
 			
 			if (hPlugin != INVALID_HANDLE_VALUE)
 			{
@@ -103,4 +103,15 @@ void CScanUtilsPlugin::load(CArray<TScannerColumn, TScannerColumn&> &columns, in
 	}
 
 	FindClose(hFind);
+}
+
+void CScanUtilsPlugin::load(CArray<TScannerColumn, TScannerColumn&> &columns, int &nColumnCount)
+{
+	// This function loads plugins from the HDD and initializes structures passed as parameters
+
+	// Load from default directory
+	loadFromDir(columns, nColumnCount, g_options->m_szExecutablePath);
+
+	// Load from dedicated directory
+	loadFromDir(columns, nColumnCount, g_options->m_szExecutablePath + "\\" + PLUGINS_DIR);
 }
