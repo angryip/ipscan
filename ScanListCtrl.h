@@ -35,6 +35,10 @@ public:
 
 // Implementation
 public:
+	void ShowNetBIOSInfo();
+	void CopyIPToClipboard();
+	int GetCurrentSelectedItem();
+	void ShowIPDetails();
 	void DeleteOpenPorts(int nItemIndex);
 	void SetOpenPorts(int nItemIndex, LPCSTR pNewStr);
 	void SetShowPorts(BOOL bShow);
@@ -49,8 +53,9 @@ protected:
 
 	// Generated message map functions
 protected:
-	//{{AFX_MSG(CScanListCtrl)
-		// NOTE - the ClassWizard will add and remove member functions here.
+	void ShowErrorNothingSelected();
+	//{{AFX_MSG(CScanListCtrl)	
+	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	//}}AFX_MSG
 	afx_msg void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 

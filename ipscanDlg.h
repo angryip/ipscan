@@ -36,8 +36,7 @@ public:
 	int m_nCmdLineOptions;
 	CString *m_szDefaultFileName;	
 	CBitmap killbmp;
-	CString m_search;
-	void ErrorNotSelected();
+	CString m_search;	
 	BOOL m_portondead;
 	BOOL m_ip2_virgin;
 	UINT m_timeout;
@@ -105,8 +104,7 @@ protected:
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnScanSavetotxt();
 	afx_msg void OnRclickList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnOpencomputerinexplorer();
-	afx_msg void OnShowerrordescription();
+	afx_msg void OnOpencomputerinexplorer();	
 	afx_msg void OnWindozesucksIpclipboard();
 	afx_msg void OnWindozesucksHostnameclipboard();
 	afx_msg void OnScanSaveselection();
@@ -140,6 +138,7 @@ protected:
 	afx_msg void OnButtonToAdvanced();
 	afx_msg void OnScanPortsClicked();
 	afx_msg void OnSelectPortsClicked();
+	afx_msg void OnCommandsShowIPdetails();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

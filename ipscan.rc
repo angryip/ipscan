@@ -47,7 +47,7 @@ BEGIN
     END
     POPUP "&Commands"
     BEGIN
-        MENUITEM "&Show error description\tCtrl+E", ID__SHOWERRORDESCRIPTION
+        MENUITEM "Show details\tDbl-Click",     ID_COMMANDS_SHOWDETAILS
         MENUITEM "Show &NetBIOS info\tCtrl+N",  ID_WINDOZESUCKS_SHOWNETBIOSINFO
 
         MENUITEM "Rescan &IP\tCtrl+I",          ID_WINDOZESUCKS_RESCANIP

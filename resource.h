@@ -136,13 +136,14 @@
 #define ID_HELP_COMMANDLINE             32809
 #define ID_HELP_FORUM                   32810
 #define ID_OPTIONS_INSTALL_PROGRAM      32811
+#define ID_COMMANDS_SHOWDETAILS         32812
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        155
-#define _APS_NEXT_COMMAND_VALUE         32812
+#define _APS_NEXT_COMMAND_VALUE         32813
 #define _APS_NEXT_CONTROL_VALUE         1078
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

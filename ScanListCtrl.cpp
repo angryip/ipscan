@@ -11,6 +11,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#include "MessageDlg.h"
+#include "NetBIOSUtils.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // CScanListCtrl
 
@@ -25,8 +28,8 @@ CScanListCtrl::~CScanListCtrl()
 
 
 BEGIN_MESSAGE_MAP(CScanListCtrl, CListCtrl)
-	//{{AFX_MSG_MAP(CScanListCtrl)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
+	//{{AFX_MSG_MAP(CScanListCtrl)	
+	ON_WM_LBUTTONDBLCLK()
 	//}}AFX_MSG_MAP
 	ON_MESSAGE(WM_MEASUREITEM, MeasureItem)
 	ON_WM_MEASUREITEM_REFLECT()
@@ -350,4 +353,96 @@ void CScanListCtrl::DeleteOpenPorts(int nItemIndex)
 	
 	if ((DWORD)pStr > 10)
 		delete pStr;
+}
+
+void CScanListCtrl::ShowIPDetails()
+{
+	int nCurrentItem = GetCurrentSelectedItem();
+
+	if (nCurrentItem < 0)
+		return;
+	
+	CString szIP = GetItemText(nCurrentItem, 0);
+	MessageBox(szIP);
+}
+
+void CScanListCtrl::OnLButtonDblClk(UINT nFlags, CPoint point) 
+{
+	ShowIPDetails();
+	
+	CListCtrl::OnLButtonDblClk(nFlags, point);
+}
+
+void CScanListCtrl::ShowErrorNothingSelected()
+{
+	MessageBox("You must select an IP first","Error",MB_OK | MB_ICONERROR);
+}
+
+int CScanListCtrl::GetCurrentSelectedItem()
+{
+	POSITION pos = GetFirstSelectedItemPosition();
+	int nCurrentItem = GetNextSelectedItem(pos);
+	if (nCurrentItem < 0) 
+	{ 
+		ShowErrorNothingSelected(); 		
+	}
+	
+	return nCurrentItem;
+}
+
+void CScanListCtrl::CopyIPToClipboard()
+{
+	int nCurrentItem = GetCurrentSelectedItem();
+	
+	if (nCurrentItem < 0)
+		return;
+	
+	CString szIP = GetItemText(nCurrentItem, 0);
+	
+	HGLOBAL hglbCopy = GlobalAlloc(GMEM_DDESHARE, szIP.GetLength() + 1); 
+	LPTSTR lp;
+	lp = (char*)GlobalLock(hglbCopy);	
+	memcpy(lp, szIP, szIP.GetLength() + 1);	
+	GlobalUnlock(lp);
+
+	OpenClipboard();
+	EmptyClipboard();
+	SetClipboardData(CF_TEXT,hglbCopy);
+	CloseClipboard();
+}
+
+void CScanListCtrl::ShowNetBIOSInfo()
+{
+	int nCurrentItem = GetCurrentSelectedItem();
+	
+	if (nCurrentItem < 0)
+		return;
+
+	CString szMessage;
+	char ipstr[16];	
+	CString szUserName, szComputerName, szGroupName, szMacAddress;
+	CMessageDlg cMessageDlg(this);	
+	
+	GetItemText(nCurrentItem, 0, (char*)&ipstr, 16);
+
+	CNetBIOSUtils cNetBIOS;
+	cNetBIOS.setIP((char*)&ipstr);
+	if (!cNetBIOS.GetNames(&szUserName, &szComputerName, &szGroupName, &szMacAddress))
+	{
+		MessageBox("Cannot get NetBIOS information.","Error",MB_OK | MB_ICONERROR);
+		return;
+	}
+	
+	szMessage.Format(
+		"NetBIOS information for %s\r\n\r\n"
+		"Computer Name:\t%s\r\n"
+		"Workgroup Name:\t%s\r\n"
+		"Username:\t%s\r\n"
+		"\r\n"
+		"MAC Address:\r\n%s",
+		(char*) &ipstr, szComputerName, szGroupName, szUserName, szMacAddress
+	);
+
+	cMessageDlg.setMessageText(szMessage);
+	cMessageDlg.DoModal();
 }

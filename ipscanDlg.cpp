@@ -137,8 +137,7 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_WM_TIMER()
 	ON_COMMAND(ID_SCAN_SAVETOTXT, OnScanSavetotxt)
 	ON_NOTIFY(NM_RCLICK, IDC_LIST, OnRclickList)
-	ON_COMMAND(ID__OPENCOMPUTERINEXPLORER, OnOpencomputerinexplorer)
-	ON_COMMAND(ID__SHOWERRORDESCRIPTION, OnShowerrordescription)
+	ON_COMMAND(ID__OPENCOMPUTERINEXPLORER, OnOpencomputerinexplorer)	
 	ON_COMMAND(ID_WINDOZESUCKS_IPCLIPBOARD, OnWindozesucksIpclipboard)
 	ON_COMMAND(ID_WINDOZESUCKS_HOSTNAMECLIPBOARD, OnWindozesucksHostnameclipboard)
 	ON_COMMAND(ID_SCAN_SAVESELECTION, OnScanSaveselection)
@@ -171,8 +170,9 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_WM_DRAWITEM()
 	ON_BN_CLICKED(IDC_BUTTON_TO_ADVANCED, OnButtonToAdvanced)
 	ON_BN_CLICKED(IDC_SCAN_PORTS, OnScanPortsClicked)
-	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_BN_CLICKED(IDC_SELECT_PORTS, OnSelectPortsClicked)
+	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
+	ON_COMMAND(ID_COMMANDS_SHOWDETAILS, OnCommandsShowIPdetails)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -597,55 +597,9 @@ void CIpscanDlg::OnRclickList(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-void CIpscanDlg::OnShowerrordescription() 
-{
-	POSITION pos = m_list.GetFirstSelectedItemPosition();
-	m_menucuritem = m_list.GetNextSelectedItem(pos);
-	if (m_menucuritem<0) { ErrorNotSelected(); return; }
-	CString err = m_list.GetItemText(m_menucuritem,CL_ERROR);
-	CString str;
-	int ern;
-	if (strcmp(err,"None")==0) str = "No error"; else {
-		ern = strtol(err,NULL,10);
-		switch (ern) {
-			case WSAENETDOWN: str = "Network is down"; break;
-			case WSAHOST_NOT_FOUND: str = "Authoritative Host not found"; break;
-// 11002		case WSATRY_AGAIN: str = "Non-Authoritative Host not found, or server failed"; break;
-			case WSANO_DATA: str = "No DNS record"; break;
-			case WSAEADDRNOTAVAIL: str = "Address is not available from this machine"; break;
-			case WSAECONNREFUSED: str = "Connection was refused"; break;
-			case WSAENETUNREACH: str = "The network cannot be reached"; break;
-			case WSAETIMEDOUT: str = "Connection request timed out"; break;
-			case 11002: str = "The network is unreachable"; break;
-			case 11003: str = "The Host is unreachable"; break;
-// WSANO_DATA		case 11004: str = "The protocol is unreachable"; break;
-			case 11005: str = "The port is unreachable"; break;
-			case 11010: str = "Request timed out"; break;
-			case 11018: str = "Bad destination"; break;
-			case 10055: str = "No buffer space.\nTry to reload the program or windows."; break;
-			default: str = "Unknown error.\nFor description you may look in WSA help file or send email to me (see About)"; break;
-		}
-	}
-	MessageBox(str,NULL,MB_OK | MB_ICONINFORMATION);
-}
-
 void CIpscanDlg::OnWindozesucksIpclipboard() 
 {
-	POSITION pos = m_list.GetFirstSelectedItemPosition();
-	m_menucuritem = m_list.GetNextSelectedItem(pos);
-	if (m_menucuritem<0) { ErrorNotSelected();return;	}
-	char str[16];
-	m_list.GetItemText(m_menucuritem,CL_IP,(char*)&str,16);
-	HGLOBAL hglbCopy = GlobalAlloc(GMEM_DDESHARE, strlen(str)+1); 
-	LPTSTR lp;
-	lp = (char*)GlobalLock(hglbCopy);
-	memcpy(lp,str,strlen(str)+1);
-	GlobalUnlock(lp);
-	OpenClipboard();
-	EmptyClipboard();
-	SetClipboardData(CF_TEXT,hglbCopy);
-	CloseClipboard();
-	
+	m_list.CopyIPToClipboard();
 }
 
 void CAboutDlg::OnGoemail() 
@@ -665,20 +619,7 @@ void CAboutDlg::OnHttpForum()
 
 void CIpscanDlg::OnWindozesucksHostnameclipboard() 
 {
-	POSITION pos = m_list.GetFirstSelectedItemPosition();
-	m_menucuritem = m_list.GetNextSelectedItem(pos);
-	if (m_menucuritem<0) { ErrorNotSelected();return;}
-	char str[100];
-	m_list.GetItemText(m_menucuritem,CL_HOSTNAME,(char*)&str,100);
-	HGLOBAL hglbCopy = GlobalAlloc(GMEM_DDESHARE, strlen(str)+1); 
-	LPTSTR lp;
-	lp = (char*)GlobalLock(hglbCopy);
-	memcpy(lp,str,strlen(str)+1);
-	GlobalUnlock(lp);
-	OpenClipboard();
-	EmptyClipboard();
-	SetClipboardData(CF_TEXT,hglbCopy);
-	CloseClipboard();
+	MessageBox("NOP");
 }
 
 BOOL CAboutDlg::OnInitDialog() 
@@ -744,41 +685,9 @@ void CIpscanDlg::OnClassD()
 
 void CIpscanDlg::OnWindozesucksShownetbiosinfo() 
 {
-	CString szMessage;
-	char ipstr[16];	
-	CString szUserName, szComputerName, szGroupName, szMacAddress;
-	CMessageDlg cMessageDlg(this);
-	
-	POSITION pos = m_list.GetFirstSelectedItemPosition();
-	m_menucuritem = m_list.GetNextSelectedItem(pos);
-	if (m_menucuritem<0) { ErrorNotSelected();return;}
-	
 	status("Getting info...");
-	m_list.GetItemText(m_menucuritem,CL_IP,(char*)&ipstr,16);
-
-	CNetBIOSUtils cNetBIOS;
-	cNetBIOS.setIP((char*)&ipstr);
-	if (!cNetBIOS.GetNames(&szUserName, &szComputerName, &szGroupName, &szMacAddress))
-	{
-		MessageBox("Cannot get NetBIOS information.","Error",MB_OK | MB_ICONERROR);
-		goto exit_func;
-	}
-	
-	szMessage.Format(
-		"NetBIOS information for %s\r\n\r\n"
-		"Computer Name:\t%s\r\n"
-		"Workgroup Name:\t%s\r\n"
-		"Username:\t%s\r\n"
-		"\r\n"
-		"MAC Address:\r\n%s",
-		(char*) &ipstr, szComputerName, szGroupName, szUserName, szMacAddress
-	);
-
-	cMessageDlg.setMessageText(szMessage);
-	cMessageDlg.DoModal();
-
-exit_func:
-	status("Ready");
+	m_list.ShowNetBIOSInfo();
+	status("Ready");	
 }
 
 void CIpscanDlg::OnHelpAngryipscannerwebpage() 
@@ -798,10 +707,8 @@ void CIpscanDlg::OnHelpForum()
 
 void CIpscanDlg::OnWindozesucksRescanip() 
 {
-	POSITION pos = m_list.GetFirstSelectedItemPosition();
-	m_menucuritem = m_list.GetNextSelectedItem(pos);
-	
-	if (m_menucuritem<0) { ErrorNotSelected();return;}
+	m_menucuritem = m_list.GetCurrentSelectedItem();
+		
 	if (!m_scanning) {
 		char str[16];
 		m_list.GetItemText(m_menucuritem,CL_IP,(char*)&str,16);
@@ -898,11 +805,6 @@ BOOL CIpscanDlg::PreTranslateMessage(MSG* pMsg)
 	if (TranslateAccelerator(m_hWnd,hAccel,pMsg ) ) return TRUE;
 
 	return CDialog::PreTranslateMessage(pMsg);
-}
-
-void CIpscanDlg::ErrorNotSelected()
-{
-	MessageBox("You must select an IP first","Error",MB_OK | MB_ICONERROR);
 }
 
 void CIpscanDlg::OnGotoHostname() 
@@ -1004,7 +906,7 @@ void CIpscanDlg::OnItemclickListHeader(NMHDR* pNMHDR, LRESULT* pResult)
 
 void CIpscanDlg::OnOpencomputerinexplorer() 
 {
-	POSITION pos = m_list.GetFirstSelectedItemPosition();
+	/*POSITION pos = m_list.GetFirstSelectedItemPosition();
 	m_menucuritem = m_list.GetNextSelectedItem(pos);
 	if (m_menucuritem<0) { ErrorNotSelected();return;}
 	char str[40],str2[16];
@@ -1012,12 +914,15 @@ void CIpscanDlg::OnOpencomputerinexplorer()
 	sprintf((char*)&str,"\\\\%s",(char*)&str2);
 	if ((int)ShellExecute(0,"open",(char*)&str,NULL,NULL,SW_SHOWNORMAL)<=32) {
 		MessageBox("Netbios is not accessible on this computer (no shares or port is closed) or probably you don't have windows networking installed.",NULL,MB_OK | MB_ICONHAND);
-	}
+	}*/
+	MessageBox("NOP");
 }
 
 
 void CIpscanDlg::OnCommandsOpencomputerAsftp() 
 {
+	MessageBox("NOP");
+	/*
 	POSITION pos = m_list.GetFirstSelectedItemPosition();
 	m_menucuritem = m_list.GetNextSelectedItem(pos);
 	if (m_menucuritem<0) { ErrorNotSelected();return;}
@@ -1026,12 +931,13 @@ void CIpscanDlg::OnCommandsOpencomputerAsftp()
 	sprintf((char*)&str,"ftp://%s/",(char*)&str2);
 	if ((int)ShellExecute(0,"open",(char*)&str,NULL,NULL,SW_SHOWNORMAL)<=32) {
 		MessageBox("No program is assotsiated to open FTP urls.",NULL,MB_OK | MB_ICONHAND);
-	}
+	}*/
 }
 
 void CIpscanDlg::OnCommandsOpencomputerAswebsite() 
 {
-	POSITION pos = m_list.GetFirstSelectedItemPosition();
+	MessageBox("NOP");
+	/*POSITION pos = m_list.GetFirstSelectedItemPosition();
 	m_menucuritem = m_list.GetNextSelectedItem(pos);
 	if (m_menucuritem<0) { ErrorNotSelected();return;}
 	char str[40],str2[16];
@@ -1039,11 +945,13 @@ void CIpscanDlg::OnCommandsOpencomputerAswebsite()
 	sprintf((char*)&str,"http://%s/",(char*)&str2);
 	if ((int)ShellExecute(0,"open",(char*)&str,NULL,NULL,SW_SHOWNORMAL)<=32) {
 		MessageBox("No program is assotsiated to open HTTP urls.",NULL,MB_OK | MB_ICONHAND);
-	}
+	}*/
 }
 
 void CIpscanDlg::OnCommandsOpencomputerTelnet() 
 {
+	MessageBox("NOP");
+	/*
 	POSITION pos = m_list.GetFirstSelectedItemPosition();
 	m_menucuritem = m_list.GetNextSelectedItem(pos);
 	if (m_menucuritem<0) { ErrorNotSelected();return;}
@@ -1052,11 +960,13 @@ void CIpscanDlg::OnCommandsOpencomputerTelnet()
 	sprintf((char*)&str,"telnet://%s/",(char*)&str2);
 	if ((int)ShellExecute(0,"open",(char*)&str,NULL,NULL,SW_SHOWNORMAL)<=32) {
 		MessageBox("No program is assotsiated to open TELNET urls.",NULL,MB_OK | MB_ICONHAND);
-	}
+	}*/
 }
 
 void CIpscanDlg::OnCommandsOpencomputerTelnettospecifiedport() 
 {
+	MessageBox("NOP");
+	/*
 	POSITION pos = m_list.GetFirstSelectedItemPosition();
 	m_menucuritem = m_list.GetNextSelectedItem(pos);
 	if (m_menucuritem<0) { ErrorNotSelected();return;}
@@ -1069,7 +979,7 @@ void CIpscanDlg::OnCommandsOpencomputerTelnettospecifiedport()
 	str.Format("%s %s",(char*)&str2,(char*)&portnum);		
 	if ((int)ShellExecute(0,NULL,"telnet.exe",str,NULL,SW_SHOWNORMAL)<=32) {
 		MessageBox("Error executing telnet program.",NULL,MB_OK | MB_ICONHAND);
-	}
+	}*/
 }
 
 void CIpscanDlg::OnCommandsOpencomputerHint() 
@@ -1219,4 +1129,9 @@ void CIpscanDlg::OnSelectPortsClicked()
 
 	// To update properties
 	OnScanPortsClicked();
+}
+
+void CIpscanDlg::OnCommandsShowIPdetails() 
+{	
+	m_list.ShowIPDetails();	
 }
