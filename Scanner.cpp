@@ -25,9 +25,9 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-
+int g_threads[10000];
 UINT g_nThreadCount = 0;
-HANDLE g_hThreads[10000];
+
 CDialog *g_dlg;
 CIpscanDlg *g_d; 
 CScanner *g_scanner;
@@ -360,7 +360,7 @@ BOOL CScanner::finalizeScanning()
 #define DEBUG_LOGS
 #undef DEBUG_LOGS
 
-BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
+BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP, int nThreadIndex)
 {
 	DWORD nItemIndex;
 	DWORD nIP;
@@ -382,6 +382,9 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 		nIP = g_d->m_list.GetNumericIP(nItemIndex);		// IP address is obtained from the list (knowing the item index)
 	}
 
+	if (g_threads[nThreadIndex] == THREAD_MUST_DIE)	// Program asked to die ------------------------------------------------
+		return FALSE;
+
 	// At this place, the nIP is known, so let's initialize some stuff for inserting items
 	in_addr structInAddr;
 	structInAddr.S_un.S_addr = nIP;
@@ -400,12 +403,15 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 	char szTmp[512];	// Temporary string. Scanning functions will return data using it.
 
 	// Ping it! (column number 1), Check if it is alive
-	 int nPingTime = m_AllColumns[CL_PING].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));	
-	 BOOL bAlive = nPingTime >= 0;	// Negative value means "Dead"
+	int nPingTime = m_AllColumns[CL_PING].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));	
+	BOOL bAlive = nPingTime >= 0;	// Negative value means "Dead"	 
 
 #ifdef DEBUG_LOGS
 	fputs(bAlive? "Alive" : "Dead", fileHandle);
 #endif
+
+	if (g_threads[nThreadIndex] == THREAD_MUST_DIE)	// Program asked to die -------------------------------------
+		return FALSE;
 	
 	if (bAlive)	// This If is needed to insert an item or finish scanning this IP, other processing will follow
 	{
@@ -434,7 +440,10 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 	if (g_options->m_bScanPorts && g_options->m_neDisplayOptions == DISPLAY_OPEN)
 	{
 		// If display only open ports, then scan ports prior to scanning other columns
-		bSomePortsOpen = doScanPorts(nIP, szOpenPorts, nPingTime);
+		bSomePortsOpen = doScanPorts(nIP, szOpenPorts, nPingTime, nThreadIndex);
+		
+		if (g_threads[nThreadIndex] == THREAD_MUST_DIE)	// Program asked to die -----------------------------------------
+			return FALSE;
 
 		if (bSomePortsOpen)	// This IF is needed only to insert an item or finish scanning this IP, other processing will follow
 		{
@@ -451,8 +460,11 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 		}
 	}
 
+	if (g_threads[nThreadIndex] == THREAD_MUST_DIE)	// Program asked to die ------------------------------------------------
+		return FALSE;
+
 	// At this point, the item is inserted into the list in any case!!!
-	// So we can update the item in the list
+	// So we can update the item in the list	
 
 	if (bAlive)	// Update the item according to alive/dead status
 	{
@@ -485,18 +497,18 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 	fputs(szTmp, fileHandle);
 #endif
 	
-	// Scan other columns if sscanning of dead hosts is enabled or host is Alive
+	// Scan other columns if scanning of dead hosts is enabled or host is Alive
 	bool bScan = g_options->m_bScanHostIfDead || bAlive; 
 
 	// Run other scans (besides ping and port scanning)
-	for (int i=CL_STATIC_COUNT; i < m_nColumns; i++)
+	for (int i = CL_STATIC_COUNT; i < m_nColumns; i++)
 	{
 		if (bScan)
 		{
 			if (m_AllColumns[m_Columns[i]].pInfoFunction != NULL)
 			{
 				szTmp[0] = 0;
-				runScanFunction(nIP, i, (char*) &szTmp, sizeof(szTmp));				
+				runScanFunction(nIP, i, (char*) &szTmp, sizeof(szTmp));								
 				
 				// Returned an empty string
 				if (szTmp[0] == 0)
@@ -512,6 +524,9 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 			// Dead host, not scanned
 			strcpy((char*) &szTmp, "N/S");
 		}
+
+		if (g_threads[nThreadIndex] == THREAD_MUST_DIE)	// Program asked to die ----------------------------------------------------
+			return FALSE;
 		
 		// Update the list with scanned info
 		g_d->m_list.SetItemText(nItemIndex, i, (char*) &szTmp);
@@ -521,10 +536,13 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 	{	
 		if (bScan)
 		{
-			// Scan ports if they weren't scanned above already above
+			// Scan ports if they weren't scanned already above
 			if (g_options->m_neDisplayOptions != DISPLAY_OPEN)
 			{
-				bSomePortsOpen = doScanPorts(nIP, szOpenPorts, nPingTime);
+				bSomePortsOpen = doScanPorts(nIP, szOpenPorts, nPingTime, nThreadIndex);
+
+				if (g_threads[nThreadIndex] == THREAD_MUST_DIE)	// Program asked to die -----------------------------------------------
+					return FALSE;
 			}
 			
 			if (bSomePortsOpen)	// bSomePortsOpen may be set already above
@@ -551,7 +569,7 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 	return TRUE;
 }
 
-BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime)
+BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThreadIndex)
 {
 	szResult = "";
 
@@ -578,6 +596,9 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime)
 	{
 		timeout.tv_usec = g_options->m_nPortTimeout * 1000;	// If host wasn't pinged or optimized scanning switched off, then use default timeout
 	}
+
+	if (g_threads[nThreadIndex] == THREAD_MUST_DIE)	// Program asked to die --------------------------------------------------------
+		return FALSE;
 	
 	for (int nCurPortIndex = 0; aPorts[nCurPortIndex].nStartPort != 0; nCurPortIndex++)
 	{		
@@ -593,7 +614,7 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime)
 			sin.sin_port = htons(nPort);
 			connect(hSocket, (sockaddr*)&sin, sizeof(sin));
 
-			fd_write.fd_array[0] = hSocket; fd_write.fd_count = 1;			
+			fd_write.fd_array[0] = hSocket; fd_write.fd_count = 1;
 			fd_error.fd_array[0] = hSocket; fd_error.fd_count = 1;
 			if (select(0, 0, &fd_write, &fd_error, &timeout) > 0) 
 			{
@@ -606,6 +627,9 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime)
 			}
 			
 			closesocket(hSocket);
+
+			if (g_threads[nThreadIndex] == THREAD_MUST_DIE)	// Program asked to die ------------------------------------------------
+				return FALSE;
 		}
 	}
 
@@ -656,21 +680,18 @@ UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)
 
 	CString szTmp;	
 		
-	// Put thread's handle into global array (and find it's index)
-	HANDLE hTmp;
-	DuplicateHandle(GetCurrentProcess(),GetCurrentThread(),GetCurrentProcess(),&hTmp,0,FALSE,DUPLICATE_SAME_ACCESS);
-
-	int nIndex;
+	// Put thread's activity flag into global array (and find it's index)	
+	int nThreadIndex;
 
 	EnterCriticalSection(&g_criticalSection);	//////// BEGIN SYNCRONIZATION ////////////////////
 
 	//g_nThreadCount++; This is incremented right before calling the thread
 
-	for (nIndex=0; nIndex < sizeof(g_hThreads)/sizeof(g_hThreads[0]); nIndex++) 
+	for (nThreadIndex=0; nThreadIndex < sizeof(g_threads)/sizeof(g_threads[0]); nThreadIndex++) 
 	{
-		if (g_hThreads[nIndex]==0) 
+		if (g_threads[nThreadIndex] == THREAD_DEAD) 
 		{ 			
-			g_hThreads[nIndex] = hTmp;
+			g_threads[nThreadIndex] = THREAD_ALIVE;	// Thread is running
 			break; 
 		}
 	}	
@@ -685,7 +706,7 @@ UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)
 	// Process scan /////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////
 
-	g_scanner->doScanIP(nParam, bParameterIsIP);
+	g_scanner->doScanIP(nParam, bParameterIsIP, nThreadIndex);
 	
 	/////////////////////////////////////////////////////////////////////////////
 	// Shutdown thread //////////////////////////////////////////////////////////
@@ -698,11 +719,9 @@ UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)
 	{
 		szTmp.Format("%d",g_nThreadCount);		
 		g_d->m_numthreads.SetWindowText(szTmp);
-	}
+	}	
 
-	CloseHandle(g_hThreads[nIndex]);
-
-	g_hThreads[nIndex]=0;
+	g_threads[nThreadIndex] = THREAD_DEAD;	// Thread is dead now
 
 	g_nThreadCount--;
 

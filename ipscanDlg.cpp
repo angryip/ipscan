@@ -570,19 +570,29 @@ void CIpscanDlg::OnButtonScan()
 		SetTimer(1, g_options->m_nTimerDelay, NULL);
 
 	} 
-	else // m_nScanMode is SCAN_MODE_SCANNING or SCAN_MODE_FINISHING)
+	else // m_nScanMode is SCAN_MODE_SCANNING or SCAN_MODE_FINISHING or SCAN_MODE_KILLING)
 	{
 		if (g_nThreadCount != 0) 
 		{
 			
 			if (m_nScanMode == SCAN_MODE_FINISHING) 
 			{
-				if (MessageBox("Are you sure you want to interrupt scanning by killing all the threads?\nScanning results will be incomplete.",NULL,MB_YESNO | MB_ICONQUESTION)==IDNO) return;
+				if (MessageBox("Are you sure you want to interrupt scanning by killing all the threads?\nScanning results will be incomplete.",NULL,MB_YESNO | MB_ICONQUESTION) == IDNO) 
+					return;
 			
 				// Kill threads
 				status("Killing threads...");
 				KillAllRunningThreads();	
-				status(NULL);
+
+				//Sleep(1000);	// sleep 1 second and give some threads a chanse to exit
+				//status(NULL);
+
+				m_nScanMode = SCAN_MODE_KILLING;				
+			}
+			else
+			if (m_nScanMode == SCAN_MODE_KILLING)
+			{
+				MessageBox("Please wait while killing active threads...", NULL, MB_OK | MB_ICONINFORMATION);
 			}
 			else // SCAN_MODE_SCANNING
 			{
@@ -596,21 +606,28 @@ void CIpscanDlg::OnButtonScan()
 				{
 					g_nEndIP = g_nCurrentIP;
 				}
-				m_progress.SetPos(100);
-				m_nScanMode = SCAN_MODE_FINISHING;
+				
+				m_progress.SetPos(100);				
+
+				status("Wait for all threads to terminate...");
+				((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpKill.m_hObject);
+				m_nScanMode = SCAN_MODE_FINISHING;  // waiting can be interrupted
 			}
 			
 		} 
 		else // g_nThreadCount == 0
 		{
 			KillTimer(1);
+
+			BOOL bShowScanInfo = (m_nScanMode != SCAN_MODE_KILLING) && !g_bScanExistingItems;
+
 			m_nScanMode = SCAN_MODE_NOT_SCANNING;
 
 			status("Finalizing...");
 			g_scanner->finalizeScanning();			
-			
+				
 			((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStart.m_hObject); // start scan bitmap			
-			
+				
 			EnableMenuItems(TRUE);			
 
 			m_progress.SetPos(0);
@@ -622,7 +639,7 @@ void CIpscanDlg::OnButtonScan()
 				// Program was invoked via command-line, so save data to file & exit
 
 				CSaveToFile tmp(d, FALSE, m_szDefaultFileName->GetBuffer(255), m_nCmdLineFileFormat, m_nCmdLineOptions & CMDO_APPEND_FILE);
-				
+					
 				if (!(m_nCmdLineOptions & CMDO_NOT_EXIT))
 					ExitProcess(0);
 			}
@@ -630,41 +647,43 @@ void CIpscanDlg::OnButtonScan()
 			{
 				// Display final message box with statistics
 
-				if (!g_bScanExistingItems)
+				char ipa[16],ipa2[16],*ipp;
+				in_addr in;
+				in.S_un.S_addr = htonl(g_nStartIP);
+				ipp = inet_ntoa(in);
+				strcpy((char*)&ipa,ipp);
+				in.S_un.S_addr = htonl(g_nEndIP);
+				ipp = inet_ntoa(in);
+				strcpy((char*)&ipa2,ipp);					
+
+				int nHostCount = g_nEndIP-g_nStartIP+1;
+
+				int nTotalTime = GetTickCount() / 1000 - m_tickcount + 1;
+				float nTimeForOneIP = (float) nTotalTime / nHostCount;
+
+				m_szCompleteInformation.Format(
+					"Scanning finished\r\n"
+					"%u sec,  %f sec/host\r\n\r\n"
+					"%s - %s\r\n\r\n"						
+					"IPs scanned:\t%u\r\n"
+					"Alive hosts:\t%u\r\n",
+					nTotalTime, nTimeForOneIP, &ipa, (char*)&ipa2, nHostCount, g_scanner->m_nAliveHosts);					
+
+				if (g_options->m_bScanPorts)
+				{						
+					CString szPortInfo;
+					szPortInfo.Format("With open ports:\t%u\r\n\r\n", g_scanner->m_nOpenPorts);
+					m_szCompleteInformation += szPortInfo;
+
+					int nTotalPortsScanned = g_options->m_bScanHostIfDead ? g_options->m_nPortCount * nHostCount : g_options->m_nPortCount * g_scanner->m_nAliveHosts;
+
+					szPortInfo.Format("Ports scanned:\r\n%u / host,  %u total", g_options->m_nPortCount, nTotalPortsScanned);
+					m_szCompleteInformation += szPortInfo;
+				}
+
+				if (bShowScanInfo)
 				{
-					char ipa[16],ipa2[16],*ipp;
-					in_addr in;
-					in.S_un.S_addr = htonl(g_nStartIP);
-					ipp = inet_ntoa(in);
-					strcpy((char*)&ipa,ipp);
-					in.S_un.S_addr = htonl(g_nEndIP);
-					ipp = inet_ntoa(in);
-					strcpy((char*)&ipa2,ipp);					
-
-					int nHostCount = g_nEndIP-g_nStartIP+1;
-
-					int nTotalTime = GetTickCount() / 1000 - m_tickcount + 1;
-					float nTimeForOneIP = (float) nTotalTime / nHostCount;
-
-					m_szCompleteInformation.Format(
-						"Scan complete\r\n"
-						"%u sec,  %f sec/host\r\n\r\n"
-						"%s - %s\r\n\r\n"						
-						"IPs scanned:\t%u\r\n"
-						"Alive hosts:\t%u\r\n",
-						nTotalTime, nTimeForOneIP, &ipa, (char*)&ipa2, nHostCount, g_scanner->m_nAliveHosts);					
-
-					if (g_options->m_bScanPorts)
-					{						
-						CString szPortInfo;
-						szPortInfo.Format("With open ports:\t%u\r\n\r\n", g_scanner->m_nOpenPorts);
-						m_szCompleteInformation += szPortInfo;
-
-						szPortInfo.Format("Ports scanned:\r\n%u / host,  %u total", g_options->m_nPortCount, g_options->m_nPortCount * g_scanner->m_nAliveHosts);
-						m_szCompleteInformation += szPortInfo;
-					}
-
-					ShowCompleteInformation();					
+					ShowCompleteInformation();
 				}
 			}
 
@@ -714,8 +733,7 @@ void CIpscanDlg::OnButtonipup()
 
 
 void CIpscanDlg::OnTimer(UINT nIDEvent) 
-{	
-	 	
+{	 	
 	int nItemIndex = 0;
 
 	BOOL bCurrentLessThanEnd;
@@ -767,17 +785,16 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 			if (g_bScanExistingItems)
 				g_nEndItemIndex--;
 			else
-				g_nEndIP--;
+				g_nEndIP--;			
 
-			OnButtonScan();
-			
-			return;
+			OnButtonScan();	// Change current state (scan mode)
 		} 
 		else 
 		{
-			status("Wait for all threads to terminate...");
-			((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpKill.m_hObject);
-			m_nScanMode = SCAN_MODE_FINISHING; // waiting can be interrupted
+			if (m_nScanMode == SCAN_MODE_SCANNING)
+			{
+				OnButtonScan();	// Change current state (scan mode)				
+			}
 		}
 	}
 	
@@ -1505,36 +1522,23 @@ void CIpscanDlg::KillAllRunningThreads()
 {	
 	// Synchronization has been removed from here to prevent the risk of
 	// freezing due to killing a thread before leaving the critical section	
-	// EnterCriticalSection(&g_criticalSection);			
+	
+	//EnterCriticalSection(&g_criticalSection);				
 
-	DeleteCriticalSection(&g_criticalSection);
-
-	for (UINT i=0; i < sizeof(g_hThreads)/sizeof(g_hThreads[0]); i++) 
+	for (UINT i=0; i < sizeof(g_threads)/sizeof(g_threads[0]); i++) 
 	{
-		if (g_hThreads[i]!=0) 
-		{
-			__try
-			{
-				if (TerminateThread(g_hThreads[i], 0) == 0)
-				{
-					GetLastError();
-				}
-				CloseHandle(g_hThreads[i]);
-			}
-			__except (EXCEPTION_EXECUTE_HANDLER)
-			{
-				// Do nothing
-			}
-			
-			g_hThreads[i] = 0;			
+		if (g_threads[i] != THREAD_DEAD) 
+		{			
+			// Old stuff used here:
+			//TerminateThread(g_hThreads[i], 0);
+			//CloseHandle(g_hThreads[i]);
+
+			// Tell the thread that it must commit a suicide
+			g_threads[i] = THREAD_MUST_DIE;
 		}
 	}
 
-	// All threads are dead now
-	m_numthreads.SetWindowText("0");
-	g_nThreadCount = 0;
-
-	// LeaveCriticalSection(&g_criticalSection);
+	//LeaveCriticalSection(&g_criticalSection);
 }
 
 void CIpscanDlg::OnClose() 

@@ -25,6 +25,7 @@
 #define SCAN_MODE_NOT_SCANNING	0
 #define SCAN_MODE_SCANNING		1
 #define SCAN_MODE_FINISHING		2
+#define SCAN_MODE_KILLING		3
 
 
 /////////////////////////////////////////////////////////////////////////////

@@ -82,14 +82,14 @@ public:
 	void initMenuWithColumns(CMenu *pMenu);
 	int m_nAliveHosts;
 	int m_nOpenPorts;
-	BOOL doScanPorts(DWORD nIP, CString &szResults, int nPingTime);
+	BOOL doScanPorts(DWORD nIP, CString &szResults, int nPingTime, int nThreadIndex);
 	BOOL finalizeScanning();
 	BOOL initScanning();
 	void initListColumns(CScanListCtrl *cListCtrl);	
 	int getColumnWidth(int nIndex);
 	BOOL getColumnName(int nIndex, CString &szColumnHeader);
 	int getColumnCount();
-	BOOL doScanIP(DWORD nParam, BOOL bParameterIsIP);
+	BOOL doScanIP(DWORD nParam, BOOL bParameterIsIP, int nThreadIndex);
 	CScanner();
 	virtual ~CScanner();
 
@@ -110,7 +110,12 @@ UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP);
 #include "Options.h"
 
 extern UINT g_nThreadCount;
-extern HANDLE g_hThreads[10000];
+extern int g_threads[10000];
+
+#define THREAD_DEAD			0		// constants to be used with g_threads array
+#define THREAD_MUST_DIE		1
+#define THREAD_ALIVE		2
+
 extern CDialog * g_dlg;
 extern CScanner * g_scanner;
 extern COptions * g_options;
