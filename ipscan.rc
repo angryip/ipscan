@@ -346,30 +346,10 @@ IDR_MAINFRAME           ICON    DISCARDABLE     "res\\ipscan.ico"
 STRINGTABLE DISCARDABLE 
 BEGIN
     ID_BUTTONABOUT          "Click Here!!!\nAbout"
-    IDS_FIRSTCOLUMN         "110"
-    IDS_STRING32773         "IP"
-    IDS_STRING32774         "40"
-    IDS_STRING32775         "State"
-    IDS_STRING32776         "140"
-    IDS_STRING32777         "Hostname"
-    IDS_STRING32778         "70"
-    IDS_STRING32779         "Port"
-    IDS_STRING32780         "60"
-    IDS_STRING32781         "Ping"
-    IDS_STRING32782         "50"
-    IDS_STRING32783         "Error"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_STRING32784         "1"
-    IDS_STRING32785         "1"
-    IDS_STRING32786         "1"
-    IDS_STRING32787         "1"
-    IDS_STRING32788         "1"
-    IDS_STRING32789         "1"
-    IDS_STRING32790         "1"
-    IDS_STRING32791         "1"
     IDS_VERSION             "1.89"
     IDS_SCAN_HOMEPAGE       "http://www.angryziber.com/ipscan/"
     IDS_HOMEPAGE            "http://www.angryziber.com/"

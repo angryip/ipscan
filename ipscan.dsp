@@ -134,6 +134,18 @@ SOURCE=.\SaveToFile.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Scanner.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ScanUtilsInternal.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ScanUtilsPlugin.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\SearchDlg.cpp
 # End Source File
 # Begin Source File
@@ -184,6 +196,18 @@ SOURCE=.\Resource.h
 # Begin Source File
 
 SOURCE=.\SaveToFile.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Scanner.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ScanUtilsInternal.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ScanUtilsPlugin.h
 # End Source File
 # Begin Source File
 

@@ -7,13 +7,14 @@
 #include "OptionsDlg.h"
 #include "SearchDlg.h"
 #include "InstallDlg.h"
-#include "ms_icmp.h"
 #include "link.h"
 #include "CommandLine.h"
 #include "SaveToFile.h"
 #include <winbase.h>
 #include "MessageDlg.h"
 #include "NetBIOSUtils.h"
+#include "ScanUtilsInternal.h"
+#include "Scanner.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -168,29 +169,11 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTONPASTE, OnButtonpaste)
 	ON_COMMAND(ID_HELP_COMMANDLINE, OnHelpCommandline)
 	ON_COMMAND(ID_HELP_FORUM, OnHelpForum)
-	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_COMMAND(ID_OPTIONS_INSTALL_PROGRAM, OnOptionsInstallProgram)
+	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
+	ON_WM_DESTROY()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
-
-FARPROC lpfnIcmpCreateFile;
-typedef BOOL (FAR WINAPI *TIcmpCloseHandle)(HANDLE IcmpHandle);
-TIcmpCloseHandle lpfnIcmpCloseHandle;
-typedef DWORD (FAR WINAPI *TIcmpSendEcho)(
-	HANDLE IcmpHandle, 	/* handle returned from IcmpCreateFile() */
-    u_long DestAddress, /* destination IP address (in network order) */
-    LPVOID RequestData, /* pointer to buffer to send */
-    WORD RequestSize,	/* length of data in buffer */
-    LPIPINFO RequestOptns,  /* see Note 2 */
-    LPVOID ReplyBuffer, /* see Note 1 */
-    DWORD ReplySize, 	/* length of reply (must allow at least 1 reply) */
-    DWORD Timeout 	/* time in milliseconds to wait for reply */
-);
-TIcmpSendEcho lpfnIcmpSendEcho;
-DWORD tmpproc;
-
-char DataBuf[32];
 
 int botot;
 
@@ -236,22 +219,22 @@ BOOL CIpscanDlg::OnInitDialog()
 	// Add image list to the listbox
 	m_imglist.Create(IDB_IMAGELIST,16,2,0xFFFFFF);
 	m_list.SetImageList(&m_imglist,LVSIL_SMALL);
+
+	// Create the scanner object
+	m_scanner = new CScanner();
+	m_scanner->loadSettings();
 	
 	// Add columns to the listbox
-	CString str;
-	int iCol;
-	long w;
-	for (iCol=0; iCol<C_COLUMNS; iCol++) {
-		str.Format("Col%d",iCol);
-		w = app->GetProfileInt("",str,-1);
-		if (w==-1) {
-			str.LoadString(IDS_FIRSTCOLUMN+iCol*2);
-			w = strtol(str,NULL,0);
-		}
-		str.LoadString(IDS_FIRSTCOLUMN+iCol*2+1);
-		m_list.InsertColumn(iCol,str,LVCFMT_LEFT,w,iCol);
+	CString szColName;
+	int nCol, nWidth;	
+	for (nCol=0; nCol < m_scanner->getColumnCount(); nCol++) 
+	{	
+		// Get column name
+		m_scanner->getColumnName(nCol, szColName);	
+		// Get column width
+		nWidth = m_scanner->getColumnWidth(nCol);
+		m_list.InsertColumn(nCol, szColName, LVCFMT_LEFT, nWidth, nCol);
 	}
-
 	m_list.SetExtendedStyle(LVS_EX_FULLROWSELECT);
 
 	// Set button's bitmaps
@@ -285,6 +268,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	}
 	status("Ready");
 
+	// Init hostname
 	char hn[100];
 	gethostname((char *)&hn,100);
 	SetDlgItemText(IDC_HOSTNAME,hn);
@@ -292,36 +276,21 @@ BOOL CIpscanDlg::OnInitDialog()
 	m_scanning=FALSE;
 	numthreads=0;
 
-	HMODULE hICMP = LoadLibrary("ICMP.DLL");
-	if (!hICMP) {
-		CString szTmp;
-		szTmp.LoadString(IDS_SCAN_HOMEPAGE);
-		szTmp = "ICMP.DLL is not found. Program will not work.\n"
-		    	"You can find this DLL on Angry IP Scanner homepage:" + szTmp;
-		MessageBox(szTmp,"Error",MB_OK | MB_ICONHAND);
-		exit(666);
-	}
-
-	lpfnIcmpCreateFile  = (FARPROC)GetProcAddress(hICMP,"IcmpCreateFile");
-    lpfnIcmpCloseHandle = (TIcmpCloseHandle)GetProcAddress(hICMP,"IcmpCloseHandle");
-    lpfnIcmpSendEcho    = (TIcmpSendEcho)GetProcAddress(hICMP,"IcmpSendEcho");
-	//tmpproc = (DWORD)lpfnIcmpSendEcho;
-
+	// Load menu
 	mnu.LoadMenu(IDR_MENU1);
 	ctx_item = mnu.GetSubMenu(2);
-	ctx_noitem = mnu.GetSubMenu(1);
-
-	for (int i=0; i<=32; i++) DataBuf[i]=i+65;
-
+	ctx_noitem = mnu.GetSubMenu(1);	
+	hAccel = LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MENU1));
+	
+	// Set title
+	CString str;
 	str.LoadString(IDS_VERSION);
 	SetWindowText("Angry IP Scanner "+str);
 
 	m_ip2_virgin = TRUE;
 	m_ip1.SetWindowText("0.0.0.0");
 
-	hAccel = LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MENU1));
-	//m_menucuritem = -1;
-
+	// Process command-line
 	CCommandLine *cCmdLine = new CCommandLine();
 	if (cCmdLine->process())
 	{		
@@ -621,26 +590,14 @@ UINT ThreadProc(LPVOID cur_ip)
 	{
 		n = (UINT)cur_ip - d->m_startip;
 	}
-	
-	HANDLE hICMP = (HANDLE) lpfnIcmpCreateFile();
 
-	unsigned char RepData[sizeof(ICMPECHO)+100];
-	IPINFO IPInfo;
-	IPInfo.Ttl = 64;
-    IPInfo.Tos = 0;
-    IPInfo.Flags = 0;
-    IPInfo.OptionsSize = 0;
-    IPInfo.OptionsData = NULL;
-	DWORD ReplyCount;
-	ReplyCount = lpfnIcmpSendEcho(hICMP, in.S_un.S_addr, DataBuf, 32, 
-		&IPInfo, RepData, sizeof(RepData), d->m_timeout);
-
-	lpfnIcmpCloseHandle(hICMP);
+	// PING!!!
+	BOOL bAlive = CScanUtilsInternal::doPing(in.S_un.S_addr, NULL, 0);	
 	
-	if (!ReplyCount) 
+	if (!bAlive) 
 	{
 		sprintf((char*)&err,"%u",WSAGetLastError());
-dead_host:
+
 		if (d->m_display!=DO_ALL) 
 		{	
 			goto exit_thread;
@@ -679,13 +636,6 @@ dead_host:
 	else 
 	{
 		// Alive
-		ReplyCount = RepData[4]+RepData[5]*256+RepData[6]*65536+RepData[7]*256*65536;
-		if (ReplyCount>0) 
-		{
-			sprintf((char*)&err,"%u",ReplyCount);
-			goto dead_host;
-		}
-
 		if (d->m_display!=DO_ALL && ThreadProcRescanThisIP == -1) 
 		{
 			n = d->m_list.InsertItem(n,ipa,0); 
@@ -693,8 +643,8 @@ dead_host:
 		}
 		numalive++;
 		d->m_list.SetItem(n,0,LVIF_IMAGE,NULL,0,0,0,0);
-		d->m_list.SetItem(n,CL_STATE,LVIF_TEXT,"Alive",0,0,0,0);
-		sprintf((char*)&err,"%d ms",*(u_long *) &(RepData[8]));
+		/*d->m_list.SetItem(n,CL_STATE,LVIF_TEXT,"Alive",0,0,0,0);
+		sprintf((char*)&err,"%d ms",*(u_long *) &(RepData[8]));*/
 		d->m_list.SetItem(n,CL_PINGTIME,LVIF_TEXT,(char*)&err,0,0,0,0);
 		
 		if (d->m_resolve) 
@@ -1357,4 +1307,12 @@ void CIpscanDlg::OnOptionsInstallProgram()
 {
 	CInstallDlg dlgInst;
 	dlgInst.DoModal();
+}
+
+void CIpscanDlg::OnDestroy() 
+{
+	CDialog::OnDestroy();
+	
+	delete(m_scanner);
+	delete(m_szDefaultFileName);
 }

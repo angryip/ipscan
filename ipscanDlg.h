@@ -21,6 +21,8 @@
 #define DO_ALIVE	1
 #define DO_OPENPORT	2
 
+#include "Scanner.h"
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CIpscanDlg dialog
@@ -85,6 +87,7 @@ public:
 
 // Implementation
 protected:
+	CScanner *m_scanner;
 	HACCEL hAccel;
 	HICON m_hIcon;
 
@@ -133,6 +136,7 @@ protected:
 	afx_msg void OnHelpCommandline();
 	afx_msg void OnHelpForum();
 	afx_msg void OnOptionsInstallProgram();
+	afx_msg void OnDestroy();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

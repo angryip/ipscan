@@ -12,6 +12,8 @@
 class CScanUtilsInternal  
 {
 public:
+	static BOOL doPing(u_long uIP, LPSTR szReturn, int nBufferLen);
+	static BOOL initPing();
 	CScanUtilsInternal();
 	virtual ~CScanUtilsInternal();
 
