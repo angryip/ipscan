@@ -23,6 +23,7 @@ class CIpscanDlg : public CDialog
 {
 // Construction
 public:	
+	CString m_szCompleteInformation;
 	int m_nCmdLineFileFormat;
 	void EnableMenuItems(BOOL bEnable);
 	CBitmap m_bmpShowAdvanced;
@@ -135,6 +136,7 @@ protected:
 	afx_msg void OnUtilsDeletefromlistClosedports();
 	afx_msg void OnUtilsDeletefromlistOpenports();
 	afx_msg void OnCommandsDeleteIP();
+	afx_msg void ShowCompleteInformation();
 	//}}AFX_MSG
 	
 	afx_msg void OnExecuteShowMenu(UINT nID);

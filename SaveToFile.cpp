@@ -25,14 +25,14 @@ CSaveToFile::CSaveToFile(CIpscanDlg *dlg, BOOL bSaveSelection, LPSTR szFileName,
 	
 	if (dlg->m_list.GetItemCount() == 0) 
 	{
-		dlg->MessageBox("Nothing to save!",NULL,MB_OK | MB_ICONHAND);
+		dlg->MessageBox("The list is empty!",NULL,MB_OK | MB_ICONHAND);
 		return;
 	}
 
 	m_saveselection = bSaveSelection;
 	if (bSaveSelection && dlg->m_list.GetSelectedCount()==0)
 	{		
-		dlg->MessageBox("You must select items first",NULL,MB_OK | MB_ICONHAND);
+		dlg->MessageBox("You must select some items first!",NULL,MB_OK | MB_ICONHAND);
 		return;
 	}
 	

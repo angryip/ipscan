@@ -196,10 +196,11 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_UTILS_DELETEFROMLIST_ALIVEHOSTS, OnUtilsDeletefromlistAlivehosts)
 	ON_COMMAND(ID_UTILS_DELETEFROMLIST_CLOSEDPORTS, OnUtilsDeletefromlistClosedports)
 	ON_COMMAND(ID_UTILS_DELETEFROMLIST_OPENPORTS, OnUtilsDeletefromlistOpenports)
+	ON_COMMAND(ID_COMMANDS_DELETEIP, OnCommandsDeleteIP)
 	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_COMMAND(ID_OPTIONS_SELECT_COLUMNS, OnSelectColumns)
 	ON_COMMAND(ID_OPTIONS_SELECTPORTS, OnSelectPortsClicked)
-	ON_COMMAND(ID_COMMANDS_DELETEIP, OnCommandsDeleteIP)
+	ON_COMMAND(ID_OPTIONS_SHOWLASTSCANINFO, ShowCompleteInformation)
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_RANGE(ID_MENU_SHOW_CMD_001, ID_MENU_SHOW_CMD_099, OnExecuteShowMenu)
@@ -493,6 +494,17 @@ void CIpscanDlg::OnButtonScan()
 
 		if (!g_bScanExistingItems)
 		{
+			if (m_list.GetItemCount() > 0)
+			{
+				if (MessageBox("Are you sure you want to erase all previous scanning results?", NULL, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDNO)
+				{
+					// If user is unsure, then cancel scanning
+					return;
+				}
+			}
+
+			m_list.DeleteAllItems();		
+		
 			char str[16];
 			m_ip1.GetWindowText((char *)&str,16);
 			g_nStartIP = ntohl(inet_addr((char*)&str));
@@ -527,12 +539,7 @@ void CIpscanDlg::OnButtonScan()
 
 		m_nScanMode = SCAN_MODE_SCANNING;
 		
-		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStop.m_hObject); // stop scanning button
-
-		if (!g_bScanExistingItems)
-		{
-			m_list.DeleteAllItems();		
-		}
+		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStop.m_hObject); // stop scanning button		
 
 		g_nThreadCount = 0;
 
@@ -617,7 +624,7 @@ void CIpscanDlg::OnButtonScan()
 
 				if (!g_bScanExistingItems)
 				{
-					char str[140],ipa[16],ipa2[16],*ipp;
+					char ipa[16],ipa2[16],*ipp;
 					in_addr in;
 					in.S_un.S_addr = htonl(g_nStartIP);
 					ipp = inet_ntoa(in);
@@ -625,16 +632,15 @@ void CIpscanDlg::OnButtonScan()
 					in.S_un.S_addr = htonl(g_nEndIP);
 					ipp = inet_ntoa(in);
 					strcpy((char*)&ipa2,ipp);
-					sprintf((char*)&str,
+
+					m_szCompleteInformation.Format(
 						"Scan complete\r\n\r\n%s - %s\r\n%u second(s)\r\n\r\n"
 						"IPs scanned:\t%u\r\n"
 						"Alive hosts:\t%u\r\n"
 						"With open ports:\t%u",
 						&ipa,(char*)&ipa2,GetTickCount()/1000-m_tickcount+1, g_nEndIP-g_nStartIP+1, g_scanner->m_nAliveHosts, g_scanner->m_nOpenPorts);
 
-					CMessageDlg cMsgDlg;
-					cMsgDlg.setMessageText((char*)&str);
-					cMsgDlg.DoModal();
+					ShowCompleteInformation();					
 				}
 			}
 
@@ -1413,3 +1419,15 @@ void CIpscanDlg::OnCommandsDeleteIP()
 
 	m_list.DeleteSelectedItems();
 }
+
+void CIpscanDlg::ShowCompleteInformation()
+{
+	// Show "Scanning complete" information box
+	if (m_szCompleteInformation.GetLength() == 0)
+		m_szCompleteInformation = "No last scan information yet.";
+
+	CMessageDlg cMsgDlg;
+	cMsgDlg.setMessageText(m_szCompleteInformation);
+	cMsgDlg.DoModal();
+}
+
