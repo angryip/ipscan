@@ -67,10 +67,12 @@ public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:		
+	BOOL m_bSysCommand;
 	CBitmap m_bmpHideAdvanced;
 	void HandleResizing(int cx, int cy);
 	bool m_bAdvancedMode;

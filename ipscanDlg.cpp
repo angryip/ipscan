@@ -188,7 +188,7 @@ int botot;
 
 BOOL CIpscanDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();	
+	CDialog::OnInitDialog();
 	
 	// Add "About..." menu item to system menu.
 
@@ -207,6 +207,8 @@ BOOL CIpscanDlg::OnInitDialog()
 			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
 		}
 	}
+
+	m_bSysCommand = FALSE;
 
 	// Set the icon for this dialog.  The framework does this automatically
 	//  when the application's main window is not a dialog
@@ -317,6 +319,7 @@ void CIpscanDlg::OnSysCommand(UINT nID, LPARAM lParam)
 	}
 	else
 	{
+		m_bSysCommand = TRUE;
 		CDialog::OnSysCommand(nID, lParam);
 	}
 }
@@ -1073,4 +1076,18 @@ void CIpscanDlg::OnExecuteShowMenu(UINT nID)
 	CString szTmp;
 	szTmp.Format("%d", nID - ID_MENU_SHOW_CMD_001 + 1);
 	MessageBox(szTmp);
+}
+
+BOOL CIpscanDlg::OnCommand(WPARAM wParam, LPARAM lParam) 
+{
+	// If ESC key was pressed, then do not exit!
+	if ((wParam == 2) && (!m_bSysCommand))
+	{
+		return FALSE;
+	}
+	else
+	{
+		m_bSysCommand = FALSE;
+		return CDialog::OnCommand(wParam, lParam);
+	}
 }
