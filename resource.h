@@ -20,6 +20,7 @@
 #define IDB_CLASS_D_PIC                 142
 #define IDD_SEARCH                      146
 #define IDB_BMPKILL                     147
+#define IDB_PASTE                       148
 #define IDC_LIST                        1002
 #define IDC_STATUS                      1005
 #define IDC_IPADDRESS1                  1007
@@ -29,6 +30,7 @@
 #define IDC_CHECK2                      1011
 #define IDC_EDIT1                       1012
 #define IDC_BUTTONIPUP                  1013
+#define IDC_BUTTONPASTE                 1014
 #define IDC_HOSTNAME                    1016
 #define IDC_EDIT2                       1017
 #define IDC_PROGRESS                    1018
@@ -103,7 +105,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        148
+#define _APS_NEXT_RESOURCE_VALUE        149
 #define _APS_NEXT_COMMAND_VALUE         32809
 #define _APS_NEXT_CONTROL_VALUE         1049
 #define _APS_NEXT_SYMED_VALUE           101

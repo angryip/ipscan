@@ -161,8 +161,9 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_ASWEBSITE, OnCommandsOpencomputerAswebsite)
 	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_TELNET, OnCommandsOpencomputerTelnet)
 	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_TELNETTOSPECIFIEDPORT, OnCommandsOpencomputerTelnettospecifiedport)
-	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_HINT, OnCommandsOpencomputerHint)
+	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
+	ON_BN_CLICKED(IDC_BUTTONPASTE, OnButtonpaste)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -259,6 +260,8 @@ BOOL CIpscanDlg::OnInitDialog()
 	// Set button's bitmaps
 	m_bmpuparrow.LoadBitmap(IDB_UPARROW);
 	((CButton*)GetDlgItem(IDC_BUTTONIPUP))->SetBitmap((HBITMAP)m_bmpuparrow.m_hObject);
+	pastebmp.LoadBitmap(IDB_PASTE);
+	((CButton*)GetDlgItem(IDC_BUTTONPASTE))->SetBitmap((HBITMAP)pastebmp.m_hObject);
 	startbmp.LoadBitmap(IDB_BMPSTART);
 	stopbmp.LoadBitmap(IDB_BMPSTOP);
 	killbmp.LoadBitmap(IDB_BMPKILL);
@@ -1442,4 +1445,23 @@ void CIpscanDlg::OnCommandsOpencomputerHint()
 			   "that action. Please don't mail me with questions, why these don't "
 			   "work. If you know what they should do, then you can setup your "
 			   "system yourself to handle URL requests.",NULL,MB_OK | MB_ICONWARNING);	
+}
+
+void CIpscanDlg::OnButtonpaste() 
+{
+	HGLOBAL hglbCopy = GlobalAlloc(GMEM_DDESHARE, 16+1); 
+	
+	OpenClipboard();
+	hglbCopy = GetClipboardData(CF_TEXT);
+	CloseClipboard();	
+
+	LPTSTR lp;
+	lp = (char*)GlobalLock(hglbCopy);	
+	
+	m_ip1.SetWindowText(lp);
+	m_ip2.SetWindowText(lp);
+	m_ip2_virgin = TRUE;
+
+	GlobalUnlock(lp);
+	GlobalFree(hglbCopy);
 }

@@ -190,6 +190,10 @@ SOURCE=.\res\ipscan.rc2
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\paste.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\toolbar1.bmp
 # End Source File
 # End Group

@@ -100,12 +100,12 @@ Resource83=IDR_MENU1 (Unknown language: 0x25
 Resource84=IDR_MENU1 (Unknown language: 0x25
 Resource85=IDD_OPTIONS (Neutral (Default))
 Resource86=IDR_MENU1 (Unknown language: 0x25
-Resource87=IDR_MENU1 (Neutral)
+Resource87=IDD_ABOUTBOX (English (U.S.))
 Resource88=IDR_MENU1 (Unknown language: 0x25
 Resource89=IDD_IPSCAN_DIALOG (English (U.S.))
 Resource90=IDR_MENU1 (Unknown language: 0x25
 Resource91=IDD_SEARCH (English (U.S.))
-Resource92=IDD_ABOUTBOX (English (U.S.))
+Resource92=IDR_MENU1 (Neutral)
 Class5=CSearchDlg
 Resource93=IDR_MENU1 (Neutral (Default))
 
@@ -121,7 +121,7 @@ Type=0
 HeaderFile=ipscanDlg.h
 ImplementationFile=ipscanDlg.cpp
 Filter=D
-LastObject=ID_COMMANDS_OPENCOMPUTER_HINT
+LastObject=IDC_BUTTONIPUP
 BaseClass=CDialog
 VirtualFilter=dWC
 
@@ -155,7 +155,7 @@ Class=CIpscanDlg
 [DLG:IDD_IPSCAN_DIALOG (English (U.S.))]
 Type=1
 Class=CIpscanDlg
-ControlCount=15
+ControlCount=16
 Control1=IDC_IPADDRESS1,SysIPAddress32,1342242816
 Control2=IDC_IPADDRESS2,SysIPAddress32,1342242816
 Control3=IDC_BUTTON1,button,1342242945
@@ -171,6 +171,7 @@ Control12=IDC_STATIC,static,1342308352
 Control13=IDC_STATIC,static,1342308352
 Control14=IDC_STATIC,static,1342308352
 Control15=IDC_NUMTHREADS,static,1342312449
+Control16=IDC_BUTTONPASTE,button,1342242944
 
 [MNU:IDR_MENU1 (Neutral)]
 Type=1

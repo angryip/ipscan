@@ -38,6 +38,7 @@ public:
 	UINT m_timeout;
 	CBitmap stopbmp;
 	CBitmap startbmp;
+	CBitmap pastebmp;
 	CBitmap m_bmpuparrow;
 	UINT m_maxthreads;
 	BOOL m_retrifdead;
@@ -126,6 +127,7 @@ protected:
 	afx_msg void OnCommandsOpencomputerTelnet();
 	afx_msg void OnCommandsOpencomputerTelnettospecifiedport();
 	afx_msg void OnCommandsOpencomputerHint();
+	afx_msg void OnButtonpaste();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
