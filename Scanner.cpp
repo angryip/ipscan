@@ -715,6 +715,10 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 	if (nMinimalTimeout < MINIMAL_MINIMAL_TIMEOUT)
 		nMinimalTimeout = MINIMAL_MINIMAL_TIMEOUT;
 
+#ifdef _DEBUG
+	FILE *tmpf = fopen("port_scan.log", "wt");
+#endif
+
 	for (int nCurPortIndex = 0; aPorts[nCurPortIndex].nStartPort != 0; nCurPortIndex++)
 	{		
 		for (int nPort = aPorts[nCurPortIndex].nStartPort; nPort <= aPorts[nCurPortIndex].nEndPort; nPort++)
@@ -779,6 +783,12 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 			{
 				// Time for this port
 				DWORD nPortScanTime = GetTickCount() - nPortStartTime;
+
+#ifdef _DEBUG
+	fprintf(tmpf, "MinTimeout: %u\n", nMinimalTimeout);
+	fprintf(tmpf, "Timeout:    %u\n", timeout.tv_usec / 1000);
+	fprintf(tmpf, "Time:       %u\n\n", nPortScanTime);
+#endif
 				
 				// Convert to microseconds
 				nPortScanTime *= 1000;
@@ -811,6 +821,10 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 				return FALSE;
 		}
 	}
+
+#ifdef _DEBUG
+	fclose(tmpf);
+#endif
 
 	BOOL bResult;
 		

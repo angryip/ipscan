@@ -58,7 +58,7 @@ END_MESSAGE_MAP()
 void CDetailsDlg::addScannedInfo(LPCSTR szInfo)
 {
 	m_szScannedInfo += szInfo;
-	m_szScannedInfo += "\r\n";
+	m_szScannedInfo += "\r\n————————————————————————————————————————\r\n";
 }
 
 void CDetailsDlg::setPorts(LPCSTR szPorts)
