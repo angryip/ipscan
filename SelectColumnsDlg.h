@@ -45,6 +45,8 @@ protected:
 	afx_msg void OnMoveUp();
 	afx_msg void OnMoveDown();
 	afx_msg void OnDeselect();
+	afx_msg void OnSelect();
+	afx_msg void OnSelectAppend();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

@@ -42,6 +42,8 @@ BEGIN_MESSAGE_MAP(CSelectColumnsDlg, CDialog)
 	ON_BN_CLICKED(IDC_MOVE_UP, OnMoveUp)
 	ON_BN_CLICKED(IDC_MOVE_DOWN, OnMoveDown)
 	ON_BN_CLICKED(IDC_DESELECT, OnDeselect)
+	ON_BN_CLICKED(IDC_SELECT, OnSelect)
+	ON_BN_CLICKED(IDC_SELECT_APPEND, OnSelectAppend)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -171,20 +173,76 @@ void CSelectColumnsDlg::OnMoveDown()
 	}
 }
 
+void CSelectColumnsDlg::OnSelect() 
+{
+	for (int i = CL_STATIC_COUNT; i < g_scanner->getAllColumnsCount(); i++)
+	{
+		if (m_ctAllColumns.GetSel(i - CL_STATIC_COUNT))
+		{
+			// check if it is already selected
+			BOOL bFound = FALSE;
+			for (int j = CL_STATIC_COUNT; j < m_nSelectedColumns; j++)
+			{
+				if (m_naSelColumns[j] == i)
+				{
+					bFound = TRUE;
+					break;
+				}
+			}
+
+			if (!bFound)
+			{
+				m_naSelColumns[m_nSelectedColumns] = i;
+				m_nSelectedColumns++;
+			}
+		}
+	}
+
+	RepopulateSelectedColumns();
+}
+
+void CSelectColumnsDlg::OnSelectAppend() 
+{
+	for (int i = CL_STATIC_COUNT; i < g_scanner->getAllColumnsCount(); i++)
+	{
+		if (m_ctAllColumns.GetSel(i - CL_STATIC_COUNT))
+		{
+			m_naSelColumns[m_nSelectedColumns] = i;
+			m_nSelectedColumns++;
+		}
+	}
+
+	RepopulateSelectedColumns();	
+}
+
 void CSelectColumnsDlg::OnDeselect() 
 {
+	int naSelected[128];	
+
+	for (int i = CL_STATIC_COUNT; i < m_nSelectedColumns; i++)
+	{
+		if (m_ctSelectedColumns.GetSel(i - CL_STATIC_COUNT))
+			naSelected[i] = TRUE;
+		else
+			naSelected[i] = FALSE;
+	}
+
 	for (int nItem = CL_STATIC_COUNT; nItem < m_nSelectedColumns; nItem++)
 	{
 		// If selected, then process it
-		if (m_ctSelectedColumns.GetSel(nItem - CL_STATIC_COUNT))
+		if (naSelected[nItem])
 		{			
-			for (int i = nItem; i <= m_nSelectedColumns; i++)
+			for (i = nItem; i < m_nSelectedColumns; i++)
 			{
 				m_naSelColumns[i] = m_naSelColumns[i+1];
+				naSelected[i] = naSelected[i+1];
 			}
 			m_nSelectedColumns--;
+			nItem--;
 		}		
 	}
 
 	RepopulateSelectedColumns();
 }
+
+
