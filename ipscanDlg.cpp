@@ -646,12 +646,12 @@ void CIpscanDlg::OnButtonScan()
 					float nTimeForOneIP = (float) nTotalTime / nHostCount;
 
 					m_szCompleteInformation.Format(
-						"Scan complete\r\n\r\n"
-						"%s - %s\r\n"
+						"Scan complete\r\n"
 						"%u sec,  %f sec/host\r\n\r\n"
+						"%s - %s\r\n\r\n"						
 						"IPs scanned:\t%u\r\n"
 						"Alive hosts:\t%u\r\n",
-						&ipa, (char*)&ipa2, nTotalTime, nTimeForOneIP, nHostCount, g_scanner->m_nAliveHosts);					
+						nTotalTime, nTimeForOneIP, &ipa, (char*)&ipa2, nHostCount, g_scanner->m_nAliveHosts);					
 
 					if (g_options->m_bScanPorts)
 					{						
