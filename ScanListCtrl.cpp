@@ -97,16 +97,14 @@ void CScanListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	}
 	else
 	{
-		if (nItem % 2 == 1)
+		DWORD nColor = ::GetSysColor(COLOR_WINDOW);
+
+		if (nItem % 2 == 1) // Even
 		{
-			// Even
-			pDC->FillRect(rcHighlight, &CBrush(::GetSysColor(COLOR_INFOBK)));			
-		}
-		else
-		{
-			// Odd
-			pDC->FillRect(rcHighlight, &CBrush(::GetSysColor(COLOR_WINDOW)));
-		}
+			nColor -= 0x100000;		// subtract 0x10 from Blue byte to make it more "yellow"
+		}		
+
+		pDC->FillRect(rcHighlight, &CBrush(nColor));			
 	}
 
 	// Draw port scan results below other results for each item
