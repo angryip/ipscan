@@ -599,13 +599,29 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 
 	if (g_threads[nThreadIndex] == THREAD_MUST_DIE)	// Program asked to die --------------------------------------------------------
 		return FALSE;
-	
+
 	for (int nCurPortIndex = 0; aPorts[nCurPortIndex].nStartPort != 0; nCurPortIndex++)
 	{		
 		for (int nPort = aPorts[nCurPortIndex].nStartPort; nPort <= aPorts[nCurPortIndex].nEndPort; nPort++)
-		{			
+		{									
 			hSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_IP);
-			// TODO: maximum number of sockets in the system
+
+			if (hSocket == INVALID_SOCKET)
+			{
+				int nError = WSAGetLastError();
+
+				if (nError == WSAEMFILE) // No more socket handles
+				{
+					// TODO: we must do something here!!!
+					MessageBox(0, "No more sockets", "", 0);
+				}
+				else
+				{
+					szResult.Format("ERROR: %d", nError);
+					return FALSE;
+				}
+			}
+
 			sockaddr_in sin;
 			sin.sin_addr.S_un.S_addr = nIP;
 			sin.sin_family = PF_INET;
@@ -622,16 +638,16 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 				{
 					// Connection successfull
 					szPort.Format("%d", nPort);
-					szResult += szPort + ",";				
+					szResult += szPort + ",";					
 				}
-			}
-			
+			}			
+
 			closesocket(hSocket);
 
 			if (g_threads[nThreadIndex] == THREAD_MUST_DIE)	// Program asked to die ------------------------------------------------
 				return FALSE;
 		}
-	}
+	}	
 
 	BOOL bResult;
 		

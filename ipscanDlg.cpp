@@ -1582,6 +1582,8 @@ void CIpscanDlg::OnExecuteFavouritesMenu(UINT nID)
 	inaddr.S_un.S_addr = g_options->m_aFavourites[nFavouriteIndex].nIP2;
 	szIP = inet_ntoa(inaddr);	
 	m_ip2.SetWindowText(szIP);
+
+	m_ip2_virgin = FALSE;
 }
 
 void CIpscanDlg::OnFavouritesDeleteFavourite() 
