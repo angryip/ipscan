@@ -32,6 +32,8 @@ void COptionsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(COptionsDlg)
+	DDX_Control(pDX, IDC_PLUGIN_OPTIONS_GROUP, m_ctPluginOptionsGroup);
+	DDX_Control(pDX, IDC_PLUGIN_LIST, m_ctPluginList);
 	DDX_Text(pDX, IDC_EDIT2, m_nTimerDelay);
 	DDV_MinMaxInt(pDX, m_nTimerDelay, 5, 10000);
 	DDX_Text(pDX, IDC_THREADS, m_nMaxThreads);
@@ -47,6 +49,7 @@ void COptionsDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(COptionsDlg, CDialog)
 	//{{AFX_MSG_MAP(COptionsDlg)	
 	ON_BN_CLICKED(IDC_HELPBTN, OnHelpbtn)	
+	ON_LBN_SELCHANGE(IDC_PLUGIN_LIST, OnSelchangePluginList)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -107,7 +110,31 @@ void COptionsDlg::OnHelpbtn()
 
 BOOL COptionsDlg::OnInitDialog() 
 {
-	CDialog::OnInitDialog();	
+	CDialog::OnInitDialog();
+
+	int nColumnCount = g_scanner->getColumnCount();
+	CString szPluginName;
+
+	for (int i=2; i < nColumnCount; i++)
+	{
+		g_scanner->getColumnName(i, szPluginName);
+		m_ctPluginList.AddString(szPluginName);
+		m_ctPluginList.SetItemData(i - 2, i);
+	}
 	
 	return TRUE;  
+}
+
+void COptionsDlg::OnSelchangePluginList() 
+{
+	// Change group box caption
+	CString szPluginName;	
+	int nPluginIndex = m_ctPluginList.GetItemData(m_ctPluginList.GetCurSel());
+	g_scanner->getColumnName(nPluginIndex, szPluginName);
+
+	m_ctPluginOptionsGroup.SetWindowText(szPluginName);
+
+	// Enable needed controls	
+	
+	
 }

@@ -156,7 +156,7 @@ BOOL ScanIntDoHostname(DWORD nIP, LPSTR szReturn, int nBufferLen)
 	hostent *he = gethostbyaddr((char*)&nIP, 4, 0);
 	if (he) 
 	{
-		if (nBufferLen > 0 && strlen(he->h_name) > nBufferLen)
+		if (nBufferLen > 0 && strlen(he->h_name) > (unsigned int) nBufferLen)
 			he->h_name[nBufferLen-1] = 0;
 
 		strcpy(szReturn, he->h_name);		

@@ -22,6 +22,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(COptionsDlg)
 	enum { IDD = IDD_OPTIONS };
+	CButton	m_ctPluginOptionsGroup;
+	CListBox	m_ctPluginList;
 	int		m_nTimerDelay;
 	UINT	m_nMaxThreads;
 	UINT	m_nPingTimeout;
@@ -47,6 +49,7 @@ protected:
 	virtual void OnOK();			
 	afx_msg void OnHelpbtn();	
 	virtual BOOL OnInitDialog();
+	afx_msg void OnSelchangePluginList();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
