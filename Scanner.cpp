@@ -676,8 +676,8 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 	
 	if (nPingTime >= 0 && g_options->m_bOptimizePorts)
 	{
-		if (nPingTime == 0)	nPingTime = 30;
-		timeout.tv_usec = (nPingTime * 16) * 1000;		// Optimized port scanning prevents port filtering from making scanning slower		
+		if (nPingTime < 50) nPingTime = 50;
+		timeout.tv_usec = (nPingTime * 8) * 1000;		// Optimized port scanning prevents port filtering from making scanning slower		
 	}
 	else
 	{
@@ -697,7 +697,6 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 
 			// Measure time between each port
 			DWORD nPortStartTime = GetTickCount();
-			BOOL  bCurrentOpen = FALSE;
 			
 			// Create a new socket each time because there is no a function to reuse a socket
 			hSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_IP);
@@ -709,7 +708,7 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 				if (nError == WSAEMFILE) // No more socket handles
 				{
 					// TODO: we must do something here!!!
-					MessageBox(0, "No more sockets left, please contact author!", "", 0);
+					MessageBox(0, "No more sockets left, please contact the author!", "", 0);
 				}
 				else
 				{
@@ -735,20 +734,22 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 					// Connection successfull
 					szPort.Format("%d", nPort);
 					szResult += szPort + ',';					
-					bCurrentOpen = TRUE;
 				}
 			}			
 
 			closesocket(hSocket);
 
-			if (bCurrentOpen && g_options->m_bOptimizePorts)
+			if (g_options->m_bOptimizePorts)
 			{
 				// Time for this port
-				int nPortScanTime = GetTickCount() - nPortStartTime;
+				DWORD nPortScanTime = GetTickCount() - nPortStartTime;
 
-				// Set the new timeout 3 times longer than was the previous
-				if ((nPortScanTime * 3) * 1000 < timeout.tv_usec)
-					timeout.tv_usec = (nPortScanTime * 3) * 1000;	// microseconds
+				// If the port is not filtered
+				if (abs(nPortScanTime * 1000 - timeout.tv_usec) > 500)
+				{
+					// Set the new timeout
+					timeout.tv_usec = (timeout.tv_usec + nPortScanTime * 1000) >> 1;	// make new timeout a mean
+				}
 			}
 
 			if (g_threads[nThreadIndex] == THREAD_MUST_DIE)	// Program asked to die ------------------------------------------------
