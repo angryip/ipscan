@@ -562,7 +562,7 @@ void CScanListCtrl::GoToNextClosedPortIP()
 	
 	for (i++; i < GetItemCount(); i++) 
 	{
-		if (GetItemText(i, m_nPortsColumn).GetAt(0) == 'N')		// "N/A" or "N/S"
+		if (!(GetItemText(i, CL_PING) == "Dead") && GetItemText(i, m_nPortsColumn).GetAt(0) == 'N')		// Alive but closed port ("N/A" or "N/S")
 		{
 			SetSelectedItem(i);
 			break;
