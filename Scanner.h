@@ -41,7 +41,9 @@ typedef struct
 class CScanner  
 {
 public:	
-	void doScanPorts(DWORD nIP, CString &szResults);
+	int m_nAliveHosts;
+	int m_nOpenPorts;
+	BOOL doScanPorts(DWORD nIP, CString &szResults);
 	BOOL finalizeScanning();
 	BOOL initScanning();
 	void initListColumns(CListCtrl *cListCtrl);	

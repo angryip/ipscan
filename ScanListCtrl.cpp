@@ -16,13 +16,12 @@ static char THIS_FILE[] = __FILE__;
 
 CScanListCtrl::CScanListCtrl()
 {
-	m_bShowPorts = TRUE;
+	m_bShowPorts = TRUE;	
 }
 
 CScanListCtrl::~CScanListCtrl()
 {
 }
-
 
 
 BEGIN_MESSAGE_MAP(CScanListCtrl, CListCtrl)
@@ -110,7 +109,16 @@ void CScanListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		pDC->SetTextColor(::GetSysColor(COLOR_GRAYTEXT));
 		rcCol = rcHighlight;
 		rcCol.bottom -= 2;	rcCol.left = rcLabel.right;
-		pDC->DrawText("  Open ports: 25, 80, 443, 9870", -1, rcCol, DT_LEFT | DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP 
+		
+		CString *pOpenPorts = (CString *) GetItemData(nItem);
+
+		CString szOpenPorts = "Open ports: ";
+		if (pOpenPorts != NULL)
+			szOpenPorts += *pOpenPorts;
+		else
+			szOpenPorts += "N/A";
+
+		pDC->DrawText(szOpenPorts, -1, rcCol, DT_LEFT | DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP 
 					| DT_BOTTOM | DT_END_ELLIPSIS);
 	}
 
@@ -296,4 +304,35 @@ void CScanListCtrl::SetShowPorts(BOOL bShow)
 	wp.cy = rc.Height();
 	wp.flags = SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER;
 	SendMessage( WM_WINDOWPOSCHANGED, 0, (LPARAM)&wp );
+}
+
+BOOL CScanListCtrl::DeleteAllItems()
+{
+	for (int i=0; i < GetItemCount(); i++)
+	{
+		DeleteOpenPorts(i);
+	}
+
+	return CListCtrl::DeleteAllItems();
+}
+
+void CScanListCtrl::SetOpenPorts(int nItemIndex, LPCSTR pNewStr)
+{
+	DeleteOpenPorts(nItemIndex);
+
+	CString *pStr = new CString(pNewStr);
+
+	// Set ports string
+	SetItemData(nItemIndex, (DWORD) pStr);
+
+	// Set image to green
+	SetItem(nItemIndex,0,LVIF_IMAGE,NULL,3,0,0,0);	
+}
+
+void CScanListCtrl::DeleteOpenPorts(int nItemIndex)
+{
+	CString *pStr = (CString*) GetItemData(nItemIndex);
+	
+	if (pStr != NULL)
+		delete pStr;
 }

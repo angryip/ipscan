@@ -160,6 +160,10 @@ BOOL CScanner::initScanning()
 		if (m_Columns[i].pInitFunction != NULL)
 			m_Columns[i].pInitFunction();
 	}
+
+	m_nAliveHosts = 0;
+	m_nOpenPorts = 0;
+
 	return TRUE;
 }
 
@@ -189,20 +193,25 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 	
 	if (bAlive)
 	{
+		// Change image to Alive
 		g_d->m_list.SetItem(nItemIndex, 0, LVIF_IMAGE, NULL, 0, 0, 0, 0);
+		
+		// Increment open hosts
+		m_nAliveHosts++;
 	}
 	else
 	{
+		// Change image to Dead
 		g_d->m_list.SetItem(nItemIndex, 0, LVIF_IMAGE, NULL, 1, 0, 0, 0);
 	}
-
-	// TODO!!
-	bool bScanIfDead = false;
+	
+	
+	bool bScan = g_options->m_bScanHostIfDead || bAlive;
 
 	// Run other scans
 	for (int i=2; i < m_nColumnCount; i++)
 	{
-		if (bScanIfDead || bAlive)
+		if (bScan)
 		{
 			if (m_Columns[i].pInfoFunction != NULL)
 			{
@@ -211,7 +220,7 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 				
 				// Returned empty string
 				if (szTmp[0] == 0)
-					strcpy((char*)&szTmp, "<N/A>");
+					strcpy((char*)&szTmp, "N/A");
 			}
 			else
 			{
@@ -220,21 +229,72 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 		}
 		else
 		{
-			// Dead host, not scanner
-			strcpy((char*) &szTmp, "<N/S>");
+			// Dead host, not scanned
+			strcpy((char*) &szTmp, "N/S");
 		}
 		g_d->m_list.SetItemText(nItemIndex, i, (char*) &szTmp);
 	}
 
-	/*if (FALSE) TODO!!!
-			doScanPorts();*/
+	if (bScan && g_options->m_bScanPorts)
+	{		
+		// Scan ports
+		CString szOpenPorts;
+		if (doScanPorts(nIP, szOpenPorts))
+		{
+			// Increment open ports
+			m_nOpenPorts++;
+
+			g_d->m_list.SetOpenPorts(nItemIndex, szOpenPorts);			
+		}
+	}
 
 	return TRUE;
 }
 
-void CScanner::doScanPorts(DWORD nIP, CString &szResults)
+BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult)
 {
-	szResults = "N/A";
+	szResult = "";
+
+	// Scan port
+	tPortRange *aPorts = g_options->m_aParsedPorts;
+
+	SOCKET hSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_IP);
+	
+	sockaddr_in sin;
+	sin.sin_addr.S_un.S_addr = nIP;
+	sin.sin_family = PF_INET;
+	CString szPort;
+
+	// Set socket to Non-Blocking mode
+	u_long nNonBlocking = 1;
+	ioctlsocket(hSocket, FIONBIO, &nNonBlocking);
+	
+	
+	for (int nCurPortIndex = 0; aPorts[nCurPortIndex].nStartPort != 0; nCurPortIndex++)
+	{		
+		for (int nPort = aPorts[nCurPortIndex].nStartPort; nPort <= aPorts[nCurPortIndex].nEndPort; nPort++)
+		{						
+			sin.sin_port = htons(nPort);
+			int se = connect(hSocket, (sockaddr*)&sin, sizeof(sin));
+			if (se==0) 
+			{
+				// Connection successfull
+				szPort.Format("%d", nPort);
+				szResult += szPort + ",";				
+			}
+		}
+	}
+	
+	closesocket(hSocket);
+
+	BOOL bResult = szResult.GetLength() > 0;	// TRUE if any ports were open
+	if (bResult)
+	{
+		// Strip comma from the end
+		szResult.Delete(szResult.GetLength()-1);
+	}
+
+	return bResult;
 }
 
 

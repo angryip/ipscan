@@ -19,6 +19,7 @@ typedef struct {u_short nStartPort; u_short nEndPort; } tPortRange;
 class COptions  
 {
 public:
+	BOOL m_bScanPorts;
 	BOOL m_bScanHostIfDead;
 	void setWindowPos();
 	teDisplayOptions m_neDisplayOptions;

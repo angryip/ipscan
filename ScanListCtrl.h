@@ -7,6 +7,8 @@
 // ScanListCtrl.h : header file
 //
 
+#include <map>
+
 /////////////////////////////////////////////////////////////////////////////
 // CScanListCtrl window
 
@@ -29,11 +31,14 @@ public:
 
 // Implementation
 public:
+	void DeleteOpenPorts(int nItemIndex);
+	void SetOpenPorts(int nItemIndex, LPCSTR pNewStr);
 	void SetShowPorts(BOOL bShow);
+	BOOL DeleteAllItems();
 	virtual ~CScanListCtrl();
 
 protected:
-	BOOL m_bShowPorts;
+	BOOL m_bShowPorts;	
 	void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	void RepaintSelectedItems();	
 	BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
