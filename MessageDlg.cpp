@@ -19,7 +19,6 @@ CMessageDlg::CMessageDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CMessageDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CMessageDlg)
-		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
@@ -28,7 +27,6 @@ void CMessageDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CMessageDlg)
-		// NOTE: the ClassWizard will add DDX and DDV calls here
 	//}}AFX_DATA_MAP
 }
 
@@ -54,7 +52,7 @@ int CMessageDlg::DoModal()
 BOOL CMessageDlg::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	
+
 	SetDlgItemText(IDC_MESSAGE_TEXT, m_szMessage);	
 
 	return TRUE;  // return TRUE unless you set the focus to a control

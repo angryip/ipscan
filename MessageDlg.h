@@ -20,7 +20,6 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CMessageDlg)
 	enum { IDD = IDD_MESSAGE_DIALOG };
-		// NOTE: the ClassWizard will add data members here
 	//}}AFX_DATA
 
 
@@ -34,7 +33,7 @@ public:
 	//}}AFX_VIRTUAL
 
 // Implementation
-protected:
+protected:	
 	CString m_szMessage;
 
 	// Generated message map functions
