@@ -12,6 +12,8 @@
 // ipscan.h : main header file for the IPSCAN application
 //
 
+#include "globals.h"
+
 //#/define DEBUG_MESSAGES
 
 #if !defined(AFX_IPSCAN_H__F45ACDE4_D4E4_11D3_83C7_9932CC7AF305__INCLUDED_)

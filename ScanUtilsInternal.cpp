@@ -140,7 +140,7 @@ int ScanIntDoPing(DWORD nIP, LPSTR szReturn, int nBufferLen)
 
 BOOL ScanIntInfoPing(TInfoStruct *pInfoStruct)
 {
-	strcpy((char*)&pInfoStruct->szColumnName, "Ping");
+	strcpy((char*)&pInfoStruct->szPluginName, "Ping");
 	strcpy((char*)&pInfoStruct->szDescription, "Ping");
 	return TRUE;
 }
@@ -189,7 +189,7 @@ BOOL ScanIntDoHostname(DWORD nIP, LPSTR szReturn, int nBufferLen)
 
 BOOL ScanIntInfoHostname(TInfoStruct *pInfoStruct)
 {
-	strcpy(pInfoStruct->szColumnName, "Hostname");
+	strcpy(pInfoStruct->szPluginName, "Hostname");
 	strcpy(pInfoStruct->szDescription, "It is resolving hostnames of IP addresses using the DNS reverse lookup");
 	return TRUE;
 }
@@ -215,7 +215,7 @@ BOOL ScanIntDoNetBIOSComputerName(DWORD nIP, LPSTR szReturn, int nBufferLen)
 
 BOOL ScanIntInfoNetBIOSComputerName(TInfoStruct *pInfoStruct)
 {
-	strcpy(pInfoStruct->szColumnName, "Comp. Name");
+	strcpy(pInfoStruct->szPluginName, "Comp. Name");
 	strcpy(pInfoStruct->szDescription, "Gets the NetBIOS Computer Name (works mostly in LANs)");
 	return TRUE;	
 }
@@ -234,7 +234,7 @@ BOOL ScanIntDoNetBIOSGroupName(DWORD nIP, LPSTR szReturn, int nBufferLen)
 
 BOOL ScanIntInfoNetBIOSGroupName(TInfoStruct *pInfoStruct)
 {
-	strcpy(pInfoStruct->szColumnName, "Group Name");
+	strcpy(pInfoStruct->szPluginName, "Group Name");
 	strcpy(pInfoStruct->szDescription, "Gets NetBIOS Group Name (works mostly in LANs)");
 	return TRUE;		
 }
@@ -253,7 +253,7 @@ BOOL ScanIntDoNetBIOSUserName(DWORD nIP, LPSTR szReturn, int nBufferLen)
 
 BOOL ScanIntInfoNetBIOSUserName(TInfoStruct *pInfoStruct)
 {
-	strcpy(pInfoStruct->szColumnName, "User Name");
+	strcpy(pInfoStruct->szPluginName, "User Name");
 	strcpy(pInfoStruct->szDescription, "Gets NetBIOS User Name (just a guess, works mostly in LANs)");
 	return TRUE;		
 }
@@ -272,7 +272,7 @@ BOOL ScanIntDoNetBIOSMacAddress(DWORD nIP, LPSTR szReturn, int nBufferLen)
 
 BOOL ScanIntInfoNetBIOSMacAddress(TInfoStruct *pInfoStruct)
 {
-	strcpy(pInfoStruct->szColumnName, "Mac Address");
+	strcpy(pInfoStruct->szPluginName, "MAC Address");
 	strcpy(pInfoStruct->szDescription, "Gets Mac Address (works through NetBIOS and mostly in LANs)");
 	return TRUE;		
 }

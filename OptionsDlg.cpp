@@ -60,7 +60,7 @@ void COptionsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT2, m_nTimerDelay);
 	DDV_MinMaxInt(pDX, m_nTimerDelay, 5, 10000);
 	DDX_Text(pDX, IDC_THREADS, m_nMaxThreads);
-	DDV_MinMaxUInt(pDX, m_nMaxThreads, 1, 1000);
+	DDV_MinMaxUInt(pDX, m_nMaxThreads, 1, MAX_THREAD_COUNT);
 	DDX_Text(pDX, IDC_TIMEOUT, m_nPingTimeout);
 	DDV_MinMaxUInt(pDX, m_nPingTimeout, 500, 60000);
 	DDX_Radio(pDX, IDC_RADIO1, m_nDisplayOptions);
@@ -164,7 +164,7 @@ void COptionsDlg::OnHelpbtn()
 		"\t(and all other dead hosts)\n"
 		"Skip broadcast IPs:\n"
 		"\tThis currently skips all X.X.X.0 and X.X.X.255 IP addresses, because\n"
-		"\tthey are broadcast in the most cases."
+		"\tthey are used for broadcasting in most cases."
 		,NULL,
 		MB_OK | MB_ICONINFORMATION
 	);
@@ -179,7 +179,7 @@ BOOL COptionsDlg::OnInitDialog()
 	int nColumnCount = g_scanner->getAllColumnsCount();
 	CString szPluginName;
 
-	for (int i=CL_STATIC_COUNT; i < nColumnCount; i++)
+	for (int i = CL_STATIC_COUNT; i < nColumnCount; i++)
 	{
 		g_scanner->getAllColumnName(i, szPluginName);
 		m_ctPluginList.AddString(szPluginName);
@@ -221,7 +221,7 @@ void COptionsDlg::OnSelchangePluginList()
 		m_btnAboutColumn.EnableWindow(FALSE);
 
 	// Enable/Disable Setup button
-	if (pColumn->pSetupFunction != NULL)
+	if (pColumn->pOptionsFunction != NULL)
 		m_btnOptionsColumn.EnableWindow(TRUE);
 	else
 		m_btnOptionsColumn.EnableWindow(FALSE);
@@ -263,7 +263,7 @@ void COptionsDlg::OnColumnAboutButton()
 	
 	g_scanner->m_AllColumns[m_nCurrentlySelectedColumn].pInfoFunction(&infoStruct);
 
-	MessageBox(infoStruct.szDescription, infoStruct.szColumnName, MB_OK | MB_ICONINFORMATION);
+	MessageBox(infoStruct.szDescription, infoStruct.szPluginName, MB_OK | MB_ICONINFORMATION);
 }
 
 void COptionsDlg::OnColumnOptionsButton() 
@@ -271,10 +271,10 @@ void COptionsDlg::OnColumnOptionsButton()
 	if (m_nCurrentlySelectedColumn < 0)
 		return;
 
-	if (g_scanner->m_AllColumns[m_nCurrentlySelectedColumn].pSetupFunction == NULL)
+	if (g_scanner->m_AllColumns[m_nCurrentlySelectedColumn].pOptionsFunction == NULL)
 		return;
 		
-	g_scanner->m_AllColumns[m_nCurrentlySelectedColumn].pSetupFunction(m_hWnd);
+	g_scanner->m_AllColumns[m_nCurrentlySelectedColumn].pOptionsFunction(m_hWnd);
 }
 
 void COptionsDlg::OnSave() 

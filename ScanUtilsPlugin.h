@@ -20,12 +20,15 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+// Directory, where to search for plugins
+#define PLUGINS_DIR		"plugins"
+
 class CScanUtilsPlugin  
 {
 public:
 	CScanUtilsPlugin();
 	virtual ~CScanUtilsPlugin();
-
+	void load(CArray<TScannerColumn, TScannerColumn&> &columns, int &nColumnCount);
 };
 
 #endif // !defined(AFX_SCANUTILSPLUGIN_H__C22D204C_B1B9_4D78_A3AB_659A7A21EA9D__INCLUDED_)

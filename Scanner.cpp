@@ -17,7 +17,9 @@
 #include "ipscan.h"
 #include "Scanner.h"
 #include "ScanUtilsInternal.h"
+#include "ScanUtilsPlugin.h"
 #include "IpscanDlg.h"
+#include "globals.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -25,7 +27,8 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-int g_threads[10000];
+// These are defined in globals.h
+int g_threads[MAX_THREAD_COUNT + 1];
 UINT g_nThreadCount = 0;
 
 CDialog *g_dlg;
@@ -134,18 +137,20 @@ void CScanner::loadAllPossibleColumns()
 		m_AllColumns[i] = g_BuiltInScannerColumns[i];
 	}
 
-	// TODO: plugin loading should be here somewhere
+	// Load plugins
+	CScanUtilsPlugin cPlugins;
+	cPlugins.load(m_AllColumns, m_nAllColumns);
 
 	TInfoStruct infoStruct;
 
-	m_AllColumns[0].pszColumnName = new CString("IP");
+	m_AllColumns[0].pszPluginName = new CString("IP");
 	
 	// Get names of all plugins/columns
 	for (i=1; i < m_nAllColumns; i++)
 	{
 		m_AllColumns[i].pInfoFunction(&infoStruct);
 		
-		m_AllColumns[i].pszColumnName = new CString(infoStruct.szColumnName);		
+		m_AllColumns[i].pszPluginName = new CString(infoStruct.szPluginName);		
 	}
 }
 
@@ -230,7 +235,7 @@ CScanner::~CScanner()
 {
 	for (int i = 0; i < m_nColumns; i++)
 	{
-		delete m_AllColumns[i].pszColumnName;
+		delete m_AllColumns[i].pszPluginName;
 	}
 }
 
@@ -246,13 +251,13 @@ int CScanner::getAllColumnsCount()
 
 BOOL CScanner::getColumnName(int nIndex, CString &szColumnHeader)
 {
-	szColumnHeader = *m_AllColumns[m_Columns[nIndex]].pszColumnName;
+	szColumnHeader = *m_AllColumns[m_Columns[nIndex]].pszPluginName;
 	return TRUE;
 }
 
 BOOL CScanner::getAllColumnName(int nIndex, CString &szColumnHeader)
 {
-	szColumnHeader = *m_AllColumns[nIndex].pszColumnName;
+	szColumnHeader = *m_AllColumns[nIndex].pszPluginName;
 	return TRUE;
 }
 
@@ -285,7 +290,7 @@ void CScanner::initListColumns(CScanListCtrl *pListCtrl)
 	for (nCol=0; nCol < m_nColumns; nCol++) 
 	{					
 		nWidth = getColumnWidth(nCol);
-		pListCtrl->InsertColumn(nCol, *m_AllColumns[m_Columns[nCol]].pszColumnName, LVCFMT_LEFT, nWidth, nCol);
+		pListCtrl->InsertColumn(nCol, *m_AllColumns[m_Columns[nCol]].pszPluginName, LVCFMT_LEFT, nWidth, nCol);
 	}
 
 	pListCtrl->SetScanPorts();	// Add / remove last column with port scanning
@@ -295,7 +300,7 @@ void CScanner::initMenuWithColumns(CMenu *pMenu)
 {
 	for (int nCol=CL_STATIC_COUNT; nCol < m_nAllColumns; nCol++) 
 	{							
-		pMenu->InsertMenu(nCol-CL_STATIC_COUNT, MF_BYPOSITION, ID_MENU_SHOW_CMD_001 + nCol-CL_STATIC_COUNT, *m_AllColumns[nCol].pszColumnName);		
+		pMenu->InsertMenu(nCol-CL_STATIC_COUNT, MF_BYPOSITION, ID_MENU_SHOW_CMD_001 + nCol-CL_STATIC_COUNT, *m_AllColumns[nCol].pszPluginName);		
 		pMenu->EnableMenuItem(nCol-CL_STATIC_COUNT, MF_BYPOSITION | MF_ENABLED);
 	}
 }
@@ -706,7 +711,7 @@ UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP)
 
 	//g_nThreadCount++; This is incremented right before calling the thread
 
-	for (nThreadIndex=0; nThreadIndex < sizeof(g_threads)/sizeof(g_threads[0]); nThreadIndex++) 
+	for (nThreadIndex=0; nThreadIndex < MAX_THREAD_COUNT; nThreadIndex++) 
 	{
 		if (g_threads[nThreadIndex] == THREAD_DEAD) 
 		{ 			

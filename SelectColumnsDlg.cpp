@@ -250,7 +250,7 @@ void CSelectColumnsDlg::OnSelectColumnInfo()
 	
 	g_scanner->m_AllColumns[nCurSel].pInfoFunction(&infoStruct);
 
-	MessageBox(infoStruct.szDescription, infoStruct.szColumnName, MB_OK | MB_ICONINFORMATION);
+	MessageBox(infoStruct.szDescription, infoStruct.szPluginName, MB_OK | MB_ICONINFORMATION);
 }
 
 void CSelectColumnsDlg::OnDeselect() 

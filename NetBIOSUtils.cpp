@@ -16,6 +16,7 @@
 #include "stdafx.h"
 #include "NetBIOSUtils.h"
 #include "Scanner.h"
+#include "ipscan.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

@@ -26,7 +26,7 @@ typedef struct
 	int	 nStructSize;				// Size of this structure in bytes, this is preset
 	int	 nAngryIPScannerVersion;	// ex 216 instead of 2.16
 	int	 nPluginType;				// Type of the plugin, see PLUGIN_TYPE_* constants
-	char szColumnName[32];			// Column name in the list (plugin idenificator)
+	char szPluginName[32];			// Column name in the list (plugin idenificator)
 	char szDescription[1024];		// Description of plugin
 	char szAuthorName[32];			// Author's name
 	char szPluginWebsite[64];		// URL of plugin on the web
@@ -44,7 +44,7 @@ typedef BOOL (__cdecl TInfoFunction)(TInfoStruct *pInfoStruct);
 
 // Optional functions (for all types of plugins)
 // If they exist, they will be called
-typedef BOOL (__cdecl TSetupFunction)(HWND hwndParent);
+typedef BOOL (__cdecl TOptionsFunction)(HWND hwndParent);
 typedef BOOL (__cdecl TInitFunction)();
 typedef BOOL (__cdecl TFinalizeFunction)();
 

@@ -41,14 +41,14 @@ typedef struct
 {
 	TScanFunction *pScanFunction;
 	TInfoFunction *pInfoFunction;
-	TSetupFunction *pSetupFunction;
+	TOptionsFunction *pOptionsFunction;
 	
 	TInitFunction *pInitFunction;
 	TFinalizeFunction *pFinalizeFunction;
 
 	BOOL bBuiltinColumn;
 
-	CString *pszColumnName;		
+	CString *pszPluginName;		
 } 
 TScannerColumn;
 
@@ -87,28 +87,5 @@ protected:
 	
 	CWinApp * m_app;
 };
-
-// ordinary function
-UINT ThreadProcCallback(LPVOID nParam);
-UINT ThreadProcCallbackRescan(LPVOID nParam);
-UINT ScanningThread(DWORD nParam, BOOL bParameterIsIP);
-
-#include "Options.h"
-
-extern UINT g_nThreadCount;
-extern int g_threads[10000];
-
-#define THREAD_DEAD			0		// constants to be used with g_threads array
-#define THREAD_MUST_DIE		1
-#define THREAD_ALIVE		2
-
-extern CDialog * g_dlg;
-extern CScanner * g_scanner;
-extern COptions * g_options;
-extern unsigned long g_nEndIP;
-extern unsigned long g_nStartIP;
-extern unsigned long g_nCurrentIP;
-
-extern CRITICAL_SECTION g_criticalSection;
 
 #endif // !defined(AFX_SCANNER_H__F6305E28_F29C_45F5_8073_26591A6C68D1__INCLUDED_)

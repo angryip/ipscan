@@ -12,6 +12,7 @@
 // ipscanDlg.cpp : implementation file
 //
 
+#include "globals.h"
 #include "stdafx.h"
 #include "ipscan.h"
 #include "ipscanDlg.h"

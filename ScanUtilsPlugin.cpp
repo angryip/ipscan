@@ -36,3 +36,9 @@ CScanUtilsPlugin::~CScanUtilsPlugin()
 {
 
 }
+
+void CScanUtilsPlugin::load(CArray<TScannerColumn, TScannerColumn&> &columns, int &nColumnCount)
+{
+	// This function loads plugins from the HDD and initializes structures passed as parameters
+
+}
