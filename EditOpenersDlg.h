@@ -46,6 +46,7 @@ public:
 
 // Implementation
 protected:
+	BOOL m_bEdited;
 	void RefreshList();
 
 	// Generated message map functions
@@ -57,8 +58,9 @@ protected:
 	virtual void OnOK();
 	afx_msg void OnBtnUp();
 	afx_msg void OnBtnDown();
-	afx_msg void OnClose();
+	afx_msg BOOL OnClose();
 	afx_msg void OnBtnDelete();
+	afx_msg void OnEditBoxChange();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

@@ -433,7 +433,8 @@ BEGIN
     LTEXT           "Openers:",IDC_STATIC,7,6,30,8
     GROUPBOX        "Opener configuration",IDC_STATIC,119,7,142,102
     LTEXT           "Execution string:",IDC_STATIC,126,43,53,8
-    LTEXT           "use %s for an IP address",IDC_STATIC,126,66,78,8
+    LTEXT           "use %s for an IP address, use quotes ("""")",IDC_STATIC,
+                    126,66,130,8
     LTEXT           "Menu item title:",IDC_STATIC,126,18,48,8
     LTEXT           "Working directory (optional):",IDC_STATIC,126,79,89,8
 END

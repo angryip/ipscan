@@ -35,6 +35,8 @@ CEditOpenersDlg::CEditOpenersDlg(CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CEditOpenersDlg)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
+
+	m_bEdited = FALSE;
 }
 
 
@@ -58,8 +60,11 @@ BEGIN_MESSAGE_MAP(CEditOpenersDlg, CDialog)
 	ON_BN_CLICKED(IDC_BTN_UP, OnBtnUp)
 	ON_BN_CLICKED(IDC_BTN_DOWN, OnBtnDown)
 	ON_WM_CLOSE()
-	ON_LBN_DBLCLK(IDC_OPENER_LIST, OnBtnEdit)
 	ON_BN_CLICKED(IDC_BTN_DELETE, OnBtnDelete)
+	ON_LBN_DBLCLK(IDC_OPENER_LIST, OnBtnEdit)
+	ON_EN_CHANGE(IDC_WORKING_DIRECTORY, OnEditBoxChange)
+	ON_EN_CHANGE(IDC_OPENER_TITLE, OnEditBoxChange)
+	ON_EN_CHANGE(IDC_EXECUTION_STRING, OnEditBoxChange)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -85,6 +90,8 @@ void CEditOpenersDlg::OnBtnEdit()
 	m_ctrlTitle.SetWindowText(g_options->m_aOpeners[nSelectedOpener].szName);
 	m_ctrlExecutionString.SetWindowText(g_options->m_aOpeners[nSelectedOpener].szExecute);
 	m_ctrlWorkingDirectory.SetWindowText(g_options->m_aOpeners[nSelectedOpener].szWorkDir);
+
+	m_bEdited = FALSE;
 }
 
 void CEditOpenersDlg::OnBtnChange() 
@@ -99,6 +106,8 @@ void CEditOpenersDlg::OnBtnChange()
 	RefreshList();
 
 	m_ctrlList.SetCurSel(nSelectedOpener);
+
+	m_bEdited = FALSE;
 }
 
 void CEditOpenersDlg::OnBtnInsert() 
@@ -113,6 +122,8 @@ void CEditOpenersDlg::OnBtnInsert()
 	RefreshList();
 
 	m_ctrlList.SetCurSel(nNewOpener);
+
+	m_bEdited = FALSE;
 }
 
 void CEditOpenersDlg::RefreshList()
@@ -132,9 +143,8 @@ void CEditOpenersDlg::RefreshList()
 
 void CEditOpenersDlg::OnOK() 
 {
-	OnClose();
-
-	CDialog::OnOK();
+	if (OnClose())
+		CDialog::OnOK();
 }
 
 
@@ -180,13 +190,21 @@ void CEditOpenersDlg::OnBtnDown()
 	m_ctrlList.SetCurSel(nSelectedOpener + 1);
 }
 
-void CEditOpenersDlg::OnClose() 
+BOOL CEditOpenersDlg::OnClose() 
 {
+	if (m_bEdited)
+	{
+		if (AfxMessageBox("Your changes were not saved.\nBe sure to use \"Change current\" or \"Insert new\" butons\nDiscard current changes?", MB_YESNO | MB_ICONWARNING, 0) == IDNO)
+			return FALSE;
+	}
+
 	g_options->saveOpeners();
 
 	((CIpscanDlg *)AfxGetApp()->GetMainWnd())->RefreshOpenersMenu();
 	
 	CDialog::OnClose();
+
+	return TRUE;
 }
 
 void CEditOpenersDlg::OnBtnDelete() 
@@ -208,4 +226,10 @@ void CEditOpenersDlg::OnBtnDelete()
 	RefreshList();
 
 	m_ctrlList.SetCurSel(nSelectedOpener == nLastOpener ? nLastOpener - 1 : nSelectedOpener);	
+}
+
+void CEditOpenersDlg::OnEditBoxChange() 
+{
+	// Set the edited flag
+	m_bEdited = TRUE;
 }
