@@ -14,7 +14,7 @@ class CMessageDlg : public CDialog
 {
 // Construction
 public:
-	void setMessageText(CString szMessage);
+	void setMessageText(LPCSTR szMessage);
 	CMessageDlg(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data

@@ -39,7 +39,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CMessageDlg message handlers
 
-void CMessageDlg::setMessageText(CString szMessage)
+void CMessageDlg::setMessageText(LPCSTR szMessage)
 {
 	m_szMessage = szMessage;
 }
