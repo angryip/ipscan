@@ -29,6 +29,10 @@ CIpscanApp::CIpscanApp()
 {
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
+
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("App constructor", 0, 0);
+	#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -47,6 +51,10 @@ BOOL CIpscanApp::InitInstance()
 		return FALSE;
 	}
 
+#ifdef DEBUG_MESSAGES
+	AfxMessageBox("InitInstance() start", 0, 0);
+#endif
+
 	// Standard initialization
 	// If you are not using these features and wish to reduce the size
 	//  of your final executable, you should remove from the following
@@ -58,10 +66,18 @@ BOOL CIpscanApp::InitInstance()
 	Enable3dControlsStatic();	// Call this when linking to MFC statically
 #endif
 
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("InitInstance(): 3D Controls enabled", 0, 0);
+	#endif
+
 	CIpscanDlg dlg;
 	m_pMainWnd = &dlg;
 
 	theApp.SetRegistryKey("Angryziber");	
+
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("InitInstance(): Before DoModal()", 0, 0);
+	#endif
 
 	int nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
@@ -82,6 +98,9 @@ BOOL CIpscanApp::InitInstance()
 
 int CIpscanApp::Run() 
 {
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("Run()", 0, 0);
+	#endif
 	
 	return CWinApp::Run();
 }

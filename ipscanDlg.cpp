@@ -105,6 +105,11 @@ CIpscanDlg::CIpscanDlg(CWnd* pParent /*=NULL*/)
 	m_hostname = _T("");
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
+
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("Dlg constructor()", 0, 0);
+	#endif
+
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	m_szDefaultFileName = NULL;
 	m_pToolTips = NULL;
@@ -192,7 +197,15 @@ int botot;
 
 BOOL CIpscanDlg::OnInitDialog()
 {
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("OnInitDialog() start", 0, 0);
+	#endif
+
 	CDialog::OnInitDialog();
+
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("OnInitDialog(): custom init dialog", 0, 0);
+	#endif
 	
 	// Add "About..." menu item to system menu.
 
@@ -210,7 +223,7 @@ BOOL CIpscanDlg::OnInitDialog()
 			pSysMenu->AppendMenu(MF_SEPARATOR);
 			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
 		}
-	}
+	}	
 
 	m_bSysCommand = FALSE;
 
@@ -218,6 +231,10 @@ BOOL CIpscanDlg::OnInitDialog()
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon	
+
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("OnInitDialog() set icon ", 0, 0);
+	#endif
 	
 	app = AfxGetApp();
 	g_dlg = d = (CIpscanDlg*)app->m_pMainWnd;
@@ -227,15 +244,27 @@ BOOL CIpscanDlg::OnInitDialog()
 	g_options->load();
 	g_options->setWindowPos();	
 
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("OnInitDialog(): COptions created ", 0, 0);
+	#endif
+
 	// Add image list to the listbox
 	m_imglist.Create(IDB_IMAGELIST,16,2,0xFFFFFF);
 	m_list.SetImageList(&m_imglist,LVSIL_SMALL);
 
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("OnInitDialog(): image list created ", 0, 0);
+	#endif
+
 	// Create the scanner object
-	g_scanner = new CScanner();
+	g_scanner = new CScanner();	
 	
 	// Add columns to the listbox
 	g_scanner->initListColumns(&m_list);
+
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("OnInitDialog(): CScanner created ", 0, 0);
+	#endif
 
 	// Set button's bitmaps
 	m_bmpUpArrow.LoadMappedBitmap(IDB_UPARROW);
@@ -255,6 +284,10 @@ BOOL CIpscanDlg::OnInitDialog()
 	m_bmpShowAdvanced.LoadMappedBitmap(IDB_SHOW_ADVANCED);
 	m_bmpSelectColumns.LoadMappedBitmap(IDB_SELECT_COLUMNS);
 	((CButton*)GetDlgItem(IDC_SELECT_COLUMNS))->SetBitmap((HBITMAP)m_bmpSelectColumns.m_hObject);
+
+	#ifdef DEBUG_MESSAGES
+		AfxMessageBox("OnInitDialog(): bitmaps loaded ", 0, 0);
+	#endif
 
 	// Add Tooltips
 	m_pToolTips = new CToolTipCtrl;
