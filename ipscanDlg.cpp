@@ -1323,7 +1323,20 @@ void CIpscanDlg::OnExecuteOpenMenu(UINT nID)
 	szExecute.Format(g_options->m_aOpeners[nOpenerIndex].szExecute, szIP);
 	szWorkDir = g_options->m_aOpeners[nOpenerIndex].szWorkDir;
 
-	int nSpacePos = szExecute.Find(TCHAR(' '));
+	// Parse execution string in order to distinguish parameters
+	
+	int nQuotePos = szExecute.Find(TCHAR('"'));
+	int nSpacePos;
+
+	if (nQuotePos >= 0)
+	{
+		nQuotePos = szExecute.Find(TCHAR('"'), nQuotePos + 1);
+		nSpacePos = szExecute.Find(TCHAR(' '), nQuotePos + 1);			
+	}
+	else
+	{
+		nSpacePos = szExecute.Find(TCHAR(' '), nQuotePos + 1);
+	}
 
 	// Extract parameters to a variable
 	if (nSpacePos >= 0)
