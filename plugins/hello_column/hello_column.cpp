@@ -12,7 +12,7 @@
 #define	PLUGIN_WEBSITE		"http://www.angryziber.com/ipscan/"
 
 // Info function
-__declspec(dllexport) BOOL Info(TInfoStruct *pInfoStruct)
+extern "C" __declspec(dllexport) BOOL Info(TInfoStruct *pInfoStruct)
 {	
 	// Check that the struct is not older than we are expecting
 	if (pInfoStruct->nStructSize < sizeof(pInfoStruct))
@@ -30,7 +30,7 @@ __declspec(dllexport) BOOL Info(TInfoStruct *pInfoStruct)
 }
 
 // Options function
-__declspec(dllexport) BOOL Options(HWND hwndParent)
+extern "C" __declspec(dllexport) BOOL Options(HWND hwndParent)
 {	
 	// This function must show a dialog box to user with
 	// some options. As we don't have any options in this plugin
@@ -43,7 +43,7 @@ __declspec(dllexport) BOOL Options(HWND hwndParent)
 }
 
 // Init function
-__declspec(dllexport) BOOL Init()
+extern "C" __declspec(dllexport) BOOL Init()
 {
 	// This is a initialization function
 	// It must be used to allocate internal memory
@@ -54,7 +54,7 @@ __declspec(dllexport) BOOL Init()
 }
 
 // Finalize function
-__declspec(dllexport) BOOL Finalize()
+extern "C" __declspec(dllexport) BOOL Finalize()
 {
 	// This is a finalize function
 	// It must be used to free any previously 
@@ -65,7 +65,7 @@ __declspec(dllexport) BOOL Finalize()
 }
 
 // The Scan function - the most important
-__declspec(dllexport) BOOL Scan(DWORD nIP, LPSTR szReturn, int nBufferLen)
+extern "C" __declspec(dllexport) BOOL Scan(DWORD nIP, LPSTR szReturn, int nBufferLen)
 {
 	// This function does the actual scanning
 	// In our case we just return a string greeting the IP address we should scan
