@@ -109,6 +109,11 @@ void CSaveToFile::saveToTXT()
 		}
 	}
 
+	if (g_options->m_bScanPorts)
+	{
+		fprintf(f,"%s","Open Ports");
+	}
+
 	if (!m_bAppend)
 		fputs("\n\n", f);
 	
@@ -130,6 +135,14 @@ void CSaveToFile::saveToTXT()
 			{
 				fprintf(f, "%-*s",ws[j], m_dlg->m_list.GetItemText(i,j));
 			}
+			
+			if (g_options->m_bScanPorts)
+			{
+				CString szPorts;
+				m_dlg->m_list.GetOpenPorts(i, szPorts);
+				fprintf(f, "%s", szPorts);
+			}
+
 			fputs("\n", f);
 		}
 	}
@@ -141,6 +154,14 @@ void CSaveToFile::saveToTXT()
 			{
 				fprintf(f, "%-*s",ws[j], m_dlg->m_list.GetItemText(i,j));
 			}
+
+			if (g_options->m_bScanPorts)
+			{
+				CString szPorts;
+				m_dlg->m_list.GetOpenPorts(i, szPorts);
+				fprintf(f, "%s", szPorts);
+			}
+
 			fputs("\n", f);
 		}
 	}
@@ -185,6 +206,14 @@ void CSaveToFile::saveToCSV()
 				fprintf(f, "%s", m_dlg->m_list.GetItemText(i,j));
 				if (j < g_scanner->getColumnCount() -1) fputs(",", f);
 			}
+
+			if (g_options->m_bScanPorts)
+			{
+				CString szPorts;
+				m_dlg->m_list.GetOpenPorts(i, szPorts);
+				fprintf(f, ",%s", szPorts);
+			}
+
 			fputs("\n", f);
 		}
 	}
@@ -197,6 +226,14 @@ void CSaveToFile::saveToCSV()
 				fprintf(f, "%s", m_dlg->m_list.GetItemText(i,j));
 				if (j < g_scanner->getColumnCount() - 1) fputs(",", f);
 			}
+
+			if (g_options->m_bScanPorts)
+			{
+				CString szPorts;
+				m_dlg->m_list.GetOpenPorts(i, szPorts);
+				fprintf(f, ",%s", szPorts);
+			}
+
 			fputs("\n", f);
 		}
 	}

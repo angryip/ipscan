@@ -35,6 +35,7 @@ public:
 
 // Implementation
 public:
+	void GetOpenPorts(int nItemIndex, CString &szOpenPorts);
 	DWORD GetNumericIP(int nItemIndex);
 	void ZeroResultsForItem(int nItemIndex);
 	CString m_szSearchFor;

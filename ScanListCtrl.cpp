@@ -116,20 +116,11 @@ void CScanListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		rcCol = rcHighlight;
 		rcCol.bottom -= 2;	rcCol.left = rcLabel.right;
 		
-		CString szOpenPorts = "Open ports: ";
+		CString szOpenPorts;
+		
+		GetOpenPorts(nItem, szOpenPorts);
 
-		CString *pOpenPorts = (CString *) GetItemData(nItem);
-
-		if ((DWORD) pOpenPorts == OPEN_PORTS_STATUS_SCANNING)
-			szOpenPorts += "?";
-		else
-		if  ((DWORD) pOpenPorts == OPEN_PORTS_STATUS_NONE)
-			szOpenPorts += "N/A";
-		else
-		if  ((DWORD) pOpenPorts == OPEN_PORTS_STATUS_NOT_SCANNED)
-			szOpenPorts += "N/S";
-		else		
-			szOpenPorts += *pOpenPorts;		
+		szOpenPorts = "Open ports: " + szOpenPorts;		
 
 		pDC->DrawText(szOpenPorts, -1, rcCol, DT_LEFT | DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP 
 					| DT_BOTTOM | DT_END_ELLIPSIS);
@@ -348,6 +339,22 @@ void CScanListCtrl::SetOpenPorts(int nItemIndex, LPCSTR pNewStr)
 		// Set image to green
 		SetItem(nItemIndex,0,LVIF_IMAGE,NULL,3,0,0,0);	
 	}
+}
+
+void CScanListCtrl::GetOpenPorts(int nItemIndex, CString &szOpenPorts)
+{
+	CString *pOpenPorts = (CString *) GetItemData(nItemIndex);
+
+	if ((DWORD) pOpenPorts == OPEN_PORTS_STATUS_SCANNING)
+		szOpenPorts = "?";
+	else
+	if  ((DWORD) pOpenPorts == OPEN_PORTS_STATUS_NONE)
+		szOpenPorts = "N/A";
+	else
+	if  ((DWORD) pOpenPorts == OPEN_PORTS_STATUS_NOT_SCANNED)
+		szOpenPorts = "N/S";
+	else		
+		szOpenPorts = *pOpenPorts;
 }
 
 void CScanListCtrl::DeleteOpenPorts(int nItemIndex)
@@ -633,3 +640,5 @@ DWORD CScanListCtrl::GetNumericIP(int nItemIndex)
 	GetItemText(nItemIndex, CL_IP, (char*) &szIP, sizeof(szIP));
 	return inet_addr((char*)&szIP);
 }
+
+
