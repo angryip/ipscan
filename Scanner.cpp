@@ -676,7 +676,7 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 	
 	if (nPingTime >= 0 && g_options->m_bOptimizePorts)
 	{
-		if (nPingTime < 50) nPingTime = 50;
+		if (nPingTime < 20) nPingTime = 20;
 		timeout.tv_usec = (nPingTime * 8) * 1000;		// Optimized port scanning prevents port filtering from making scanning slower		
 	}
 	else
@@ -693,10 +693,11 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 		{									
 			// Check that current timeout isn't too long
 			if (timeout.tv_usec > g_options->m_nPortTimeout * 1000)
-				timeout.tv_usec = g_options->m_nPortTimeout * 1000;
+				timeout.tv_usec = g_options->m_nPortTimeout * 1000;			
 
-			// Measure time between each port
-			DWORD nPortStartTime = GetTickCount();
+			// Check that current timeout isn't too short
+			if (timeout.tv_usec < 10000)
+				timeout.tv_usec = 10000;
 			
 			// Create a new socket each time because there is no a function to reuse a socket
 			hSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_IP);
@@ -716,6 +717,9 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 					return FALSE;
 				}
 			}
+
+			// Measure time between each port
+			DWORD nPortStartTime = GetTickCount();
 
 			sockaddr_in sin;
 			sin.sin_addr.S_un.S_addr = nIP;
@@ -745,10 +749,10 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 				DWORD nPortScanTime = GetTickCount() - nPortStartTime;
 
 				// If the port is not filtered
-				if (abs(nPortScanTime * 1000 - timeout.tv_usec) > 500)
+				if (nPortScanTime * 1000 < timeout.tv_usec + 2000)
 				{
 					// Set the new timeout
-					timeout.tv_usec = (timeout.tv_usec + nPortScanTime * 1000) >> 1;	// make new timeout a mean
+					timeout.tv_usec = (timeout.tv_usec + (nPortScanTime+5) * 1000) >> 1;	// make new timeout a mean
 				}
 			}
 
