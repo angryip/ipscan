@@ -296,6 +296,9 @@ void COptions::loadOpeners()
 
 		m_aOpeners[4].szName = "Ping";
 		m_aOpeners[4].szExecute = "ping %s";
+
+		m_aOpeners[4].szName = "Traceroute";
+		m_aOpeners[4].szExecute = "tracert %s";
 	}
 
 }
