@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "ipscan.h"
 #include "Options.h"
+#include "IpscanDlg.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -136,11 +137,21 @@ void COptions::save()
 	app->WriteProfileInt("","Bottom",rc.bottom);
 	app->WriteProfileInt("","Right",rc.right);
 	
-	/*CString str; TODO! save columns here
-	for (int i=0; i < C_COLUMNS; i++) {
-		str.Format("Col%d",i);
-		app->WriteProfileInt("",str,d->m_list.GetColumnWidth(i));
-	}*/
+	// Save column widths
+	CString szTmp;
+	CIpscanDlg *cDlg = (CIpscanDlg *) app->GetMainWnd();	
+	for (int i=0; i < g_scanner->getColumnCount(); i++) 
+	{
+		g_scanner->getColumnName(i, szTmp);
+		szTmp = "Col_" + szTmp;
+		app->WriteProfileInt("", szTmp, cDlg->m_list.GetColumnWidth(i));
+	}
+	if (m_bScanPorts)
+	{
+		// Save extra column width (Open ports)
+		szTmp = "Col_!OP!";
+		app->WriteProfileInt("", szTmp, cDlg->m_list.GetColumnWidth(cDlg->m_list.GetColumnCount()-1));		
+	}
 }
 
 void COptions::load()

@@ -639,5 +639,5 @@ DWORD CScanListCtrl::GetNumericIP(int nItemIndex)
 
 int CScanListCtrl::GetColumnCount()
 {
-	return GetHeaderCtrl()->GetItemCount();
+	return GetHeaderCtrl()->GetItemCount();	
 }
