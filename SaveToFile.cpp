@@ -414,21 +414,22 @@ BOOL CSaveToFile::queryFilename()
 
 	if (fd.DoModal() == IDOK)
 	{		
-		CString szFileExt = fd.GetFileExt();		
+		// Get filter index for determining the file format
+		int nFilterIndex = fd.m_ofn.nFilterIndex;
 
-		if (szFileExt.CompareNoCase("csv") == 0)
+		if (nFilterIndex == 2)
 		{
 			m_filetype = FILE_TYPE_CSV;
 		}
 		else
-		if (szFileExt.CompareNoCase("xml") == 0)
+		if (nFilterIndex == 3)
 		{
-			m_filetype = FILE_TYPE_XML;
+			m_filetype = FILE_TYPE_HTML;
 		}
 		else 
-		if (szFileExt.Mid(0, 3).CompareNoCase("htm") == 0)	// Allow both *.htm & *.html
+		if (nFilterIndex == 4)
 		{
-			m_filetype = FILE_TYPE_HTML;			
+			m_filetype = FILE_TYPE_XML;			
 		}
 		else
 		{
