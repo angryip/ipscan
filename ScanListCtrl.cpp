@@ -486,6 +486,8 @@ void CScanListCtrl::GoToNextAliveIP()
 {
 	SetFocus();	
 	int i = GetCurrentSelectedItem();
+	if (i == -1)
+		return;
 	
 	for (; i < GetItemCount(); i++) 
 	{
@@ -503,6 +505,8 @@ void CScanListCtrl::GoToNextDeadIP()
 {
 	SetFocus();	
 	int i = GetCurrentSelectedItem();
+	if (i == -1)
+		return;
 	
 	for (; i < GetItemCount(); i++) 
 	{
@@ -518,6 +522,8 @@ void CScanListCtrl::GoToNextOpenPortIP()
 {
 	SetFocus();	
 	int i = GetCurrentSelectedItem();
+	if (i == -1)
+		return;
 	
 	for (; i < GetItemCount(); i++) 
 	{
@@ -533,6 +539,8 @@ void CScanListCtrl::GoToNextClosedPortIP()
 {
 	SetFocus();	
 	int i = GetCurrentSelectedItem();
+	if (i == -1)
+		return;
 	
 	for (; i < GetItemCount(); i++) 
 	{
