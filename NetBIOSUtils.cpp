@@ -54,6 +54,7 @@ typedef struct _node_status_resp
 
 #define GROUP_NAME_FLAG		128
 #define NAME_TYPE_DOMAIN	0x00
+#define NAME_TYPE_MESSENGER	0x03
 
 
 CNetBIOSUtils::CNetBIOSUtils()
@@ -154,8 +155,6 @@ BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CStri
 	// get group name
 	if (szGroupName != NULL)
 	{
-		// TODO!!!: find all names in a single loop (this loop)
-		// Computer name can be not the first in the list!!!!!!!!!!!!!!!!!!!!!!!!!
 		*szGroupName = "";
 		for (int i = 0; i < data->num_names; i++)
 		{			
@@ -169,15 +168,15 @@ BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CStri
 		szGroupName->TrimRight(' ');
 	}
 
-	/*// get user name
+	// get user name
 	if (szUserName != NULL)
 	{
 		*szUserName = "";
-		for (i = pStatus->name_count-1; i >= 0; i--)
+		for (int i = data->num_names - 1; i >= 0; i--)
 		{
-			if (pNames[i].name[15] == 3)
+			if (data->name_array[i].nb_name[15] == NAME_TYPE_MESSENGER)
 			{
-				memcpy(&szName, pNames[i].name, 15); szName[15] = 0;
+				memcpy(&szName, data->name_array[i].nb_name, 15); szName[15] = 0;
 				*szUserName = szName;
 				break;
 			}
@@ -188,18 +187,18 @@ BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CStri
 
 		szUserName->TrimRight(' ');
 	}
-
+	
 	// get mac address
 	if (szMacAddress != NULL)
 	{
    		szMacAddress->Format(_T("%02X-%02X-%02X-%02X-%02X-%02X"),
-			pStatus->adapter_address[0],
-			pStatus->adapter_address[1],
-			pStatus->adapter_address[2],
-			pStatus->adapter_address[3],
-			pStatus->adapter_address[4],
-			pStatus->adapter_address[5]);
-	}*/
+			data->name_array[data->num_names].nb_name[0],
+			data->name_array[data->num_names].nb_name[1],
+			data->name_array[data->num_names].nb_name[2],
+			data->name_array[data->num_names].nb_name[3],
+			data->name_array[data->num_names].nb_name[4],
+			data->name_array[data->num_names].nb_name[5]);
+	}
 
 
     return TRUE;
