@@ -43,7 +43,7 @@ BEGIN
         MENUITEM "Next &open port\tCtrl+O",     ID_GOTO_NEXTOPENPORT
         MENUITEM "Next &closed port\tCtrl+L",   ID_GOTO_NEXTCLOSEDPORT
         MENUITEM SEPARATOR
-        MENUITEM "&Hostname...\tCtrl+F",        ID_GOTO_HOSTNAME
+        MENUITEM "&Find...\tCtrl+F",            ID_GOTO_HOSTNAME
     END
     POPUP "&Commands"
     BEGIN
@@ -576,7 +576,7 @@ END
 
 IDD_SEARCH DIALOG DISCARDABLE  0, 0, 142, 85
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Find hostname"
+CAPTION "Find"
 FONT 8, "MS Sans Serif"
 BEGIN
     EDITTEXT        IDC_SEARCHEDIT,7,19,128,14,ES_AUTOHSCROLL
@@ -584,7 +584,7 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,37,37,61,10
     DEFPUSHBUTTON   "Find &next",IDOK,13,64,50,14
     PUSHBUTTON      "&Cancel",IDCANCEL,78,64,50,14
-    LTEXT           "Enter hostname to search for:",IDC_STATIC,7,7,94,8
+    LTEXT           "Enter a string to search for:",IDC_STATIC,7,7,86,8
     CONTROL         "From the beginning",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,37,49,76,10
 END

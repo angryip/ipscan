@@ -5,6 +5,7 @@
 #include "ipscan.h"
 #include "ScanListCtrl.h"
 #include "DetailsDlg.h"
+#include "SearchDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -472,4 +473,121 @@ void CScanListCtrl::ShowIPDetails()
 	}
 	
 	cDlg.DoModal();
+}
+
+void CScanListCtrl::SetSelectedItem(int nItem)
+{
+	SetItemState(-1, 0, LVIS_SELECTED);
+	SetItemState(nItem, LVIS_SELECTED | LVIS_FOCUSED,LVIS_SELECTED | LVIS_FOCUSED);
+	EnsureVisible(nItem, FALSE);
+}
+
+void CScanListCtrl::GoToNextAliveIP()
+{
+	SetFocus();	
+	int i = GetCurrentSelectedItem();
+	
+	for (; i < GetItemCount(); i++) 
+	{
+		if (!(GetItemText(i, 1) == "Dead")) 
+		{
+			SetSelectedItem(i);
+			break;
+		}
+	}
+}
+
+
+
+void CScanListCtrl::GoToNextDeadIP()
+{
+	SetFocus();	
+	int i = GetCurrentSelectedItem();
+	
+	for (; i < GetItemCount(); i++) 
+	{
+		if (GetItemText(i, 1) == "Dead") 
+		{
+			SetSelectedItem(i);
+			break;
+		}
+	}
+}
+
+void CScanListCtrl::GoToNextOpenPortIP()
+{
+	SetFocus();	
+	int i = GetCurrentSelectedItem();
+	
+	for (; i < GetItemCount(); i++) 
+	{
+		if (GetItemData(i) > 10) 
+		{
+			SetSelectedItem(i);
+			break;
+		}
+	}
+}
+
+void CScanListCtrl::GoToNextClosedPortIP()
+{
+	SetFocus();	
+	int i = GetCurrentSelectedItem();
+	
+	for (; i < GetItemCount(); i++) 
+	{
+		if (GetItemData(i) < 10) 
+		{
+			SetSelectedItem(i);
+			break;
+		}
+	}
+}
+
+void CScanListCtrl::GoToNextSearchIP()
+{
+	CSearchDlg cSearchDlg;
+
+	cSearchDlg.m_search = m_szSearchFor;
+	
+	if (cSearchDlg.DoModal()==IDCANCEL) 
+		return;
+
+	m_szSearchFor = cSearchDlg.m_search;
+
+	if (cSearchDlg.m_beginning) 
+		SetSelectedItem(0);
+	
+	SetFocus();
+	
+	int i = GetCurrentSelectedItem();
+
+	if (cSearchDlg.m_case) 
+	{
+		for (; i < GetItemCount(); i++) 
+		{
+			if (GetItemText(i, 3 /*TODO*/).Find(m_szSearchFor) != -1) 
+			{
+				SetSelectedItem(i);
+				return;
+			}
+		}
+	} 
+	else 
+	{
+		CString szTmp;
+		cSearchDlg.m_search.MakeUpper();
+		for (; i < GetItemCount(); i++) 
+		{
+			szTmp = GetItemText(i, 3 /*TODO*/);
+			szTmp.MakeUpper();
+			if (szTmp.Find(m_szSearchFor) != -1) 
+			{
+				SetSelectedItem(i);
+				return;
+			}
+		}
+	}
+
+	AfxMessageBox("\"" + m_szSearchFor + "\" was not found", MB_OK | MB_ICONWARNING);
 }

@@ -750,62 +750,27 @@ void CIpscanDlg::OnWindozesucksRescanip()
 
 void CIpscanDlg::OnGotoNextalive() 
 {
-	m_list.SetFocus();
-	POSITION pos = m_list.GetFirstSelectedItemPosition();
-	int i = m_list.GetNextSelectedItem(pos)+1;
-	for (; i<m_list.GetItemCount(); i++) {
-		if (m_list.GetItemText(i,CL_STATE)=="Alive") {
-			m_list.SetItemState(-1,0,LVIS_SELECTED);
-			m_list.SetItemState(i,LVIS_SELECTED | LVIS_FOCUSED,LVIS_SELECTED | LVIS_FOCUSED);
-			m_list.EnsureVisible(i,FALSE);
-			return;
-		}
-	}
+	m_list.GoToNextAliveIP();
 }
 
 void CIpscanDlg::OnGotoNextdead() 
 {
-	m_list.SetFocus();
-	POSITION pos = m_list.GetFirstSelectedItemPosition();
-	int i = m_list.GetNextSelectedItem(pos)+1;
-	for (; i<m_list.GetItemCount(); i++) {
-		if (m_list.GetItemText(i,CL_STATE)=="Dead") {
-			m_list.SetItemState(-1,0,LVIS_SELECTED);
-			m_list.SetItemState(i,LVIS_SELECTED | LVIS_FOCUSED,LVIS_SELECTED | LVIS_FOCUSED);
-			m_list.EnsureVisible(i,FALSE);
-			return;
-		}
-	}
+	m_list.GoToNextDeadIP();
 }
 
 void CIpscanDlg::OnGotoNextopenport() 
 {
-	m_list.SetFocus();
-	POSITION pos = m_list.GetFirstSelectedItemPosition();
-	int i = m_list.GetNextSelectedItem(pos)+1;
-	for (; i<m_list.GetItemCount(); i++) {
-		if (m_list.GetItemText(i,CL_PORT).Right(1)=="n") {
-			m_list.SetItemState(-1,0,LVIS_SELECTED);
-			m_list.SetItemState(i,LVIS_SELECTED | LVIS_FOCUSED,LVIS_SELECTED | LVIS_FOCUSED);
-			m_list.EnsureVisible(i,FALSE);
-			return;
-		}
-	}
+	m_list.GoToNextOpenPortIP();
 }
 
 void CIpscanDlg::OnGotoNextclosedport() 
 {
-	m_list.SetFocus();
-	POSITION pos = m_list.GetFirstSelectedItemPosition();
-	int i = m_list.GetNextSelectedItem(pos)+1;
-	for (; i<m_list.GetItemCount(); i++) {
-		if (m_list.GetItemText(i,CL_PORT).Right(1)=="d") {
-			m_list.SetItemState(-1,0,LVIS_SELECTED);
-			m_list.SetItemState(i,LVIS_SELECTED | LVIS_FOCUSED,LVIS_SELECTED | LVIS_FOCUSED);
-			m_list.EnsureVisible(i,FALSE);
-			return;
-		}
-	}	
+	m_list.GoToNextClosedPortIP();
+}
+
+void CIpscanDlg::OnGotoHostname() 
+{
+	m_list.GoToNextSearchIP();
 }
 
 BOOL CIpscanDlg::PreTranslateMessage(MSG* pMsg) 
@@ -813,46 +778,6 @@ BOOL CIpscanDlg::PreTranslateMessage(MSG* pMsg)
 	if (TranslateAccelerator(m_hWnd,hAccel,pMsg ) ) return TRUE;
 
 	return CDialog::PreTranslateMessage(pMsg);
-}
-
-void CIpscanDlg::OnGotoHostname() 
-{
-	CSearchDlg sd;
-	sd.m_search = m_search;
-	if (sd.DoModal()==IDCANCEL) return;
-	m_search = sd.m_search;
-
-	if (sd.m_beginning) m_list.SetItemState(-1,0,LVIS_SELECTED);
-	
-	m_list.SetFocus();
-	POSITION pos = m_list.GetFirstSelectedItemPosition();
-	int i = m_list.GetNextSelectedItem(pos)+1;
-
-	if (sd.m_case) {
-		for (; i<m_list.GetItemCount(); i++) {
-			if (m_list.GetItemText(i,CL_HOSTNAME).Find(sd.m_search)!=-1) {
-				m_list.SetItemState(-1,0,LVIS_SELECTED);
-				m_list.SetItemState(i,LVIS_SELECTED | LVIS_FOCUSED,LVIS_SELECTED | LVIS_FOCUSED);
-				m_list.EnsureVisible(i,FALSE);
-				return;
-			}
-		}
-	} else {
-		CString tmp;
-		sd.m_search.MakeUpper();
-		for (; i<m_list.GetItemCount(); i++) {
-			tmp = m_list.GetItemText(i,CL_HOSTNAME);
-			tmp.MakeUpper();
-			if (tmp.Find(sd.m_search)!=-1) {
-				m_list.SetItemState(-1,0,LVIS_SELECTED);
-				m_list.SetItemState(i,LVIS_SELECTED | LVIS_FOCUSED,LVIS_SELECTED | LVIS_FOCUSED);
-				m_list.EnsureVisible(i,FALSE);
-				return;
-			}
-		}
-	}
-
-	AfxMessageBox("\""+m_search+"\" was not found",MB_OK | MB_ICONWARNING);
 }
 
 int CALLBACK SortCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort) {

@@ -35,6 +35,13 @@ public:
 
 // Implementation
 public:
+	CString m_szSearchFor;
+	void GoToNextSearchIP();
+	void GoToNextClosedPortIP();
+	void GoToNextOpenPortIP();
+	void GoToNextDeadIP();
+	void SetSelectedItem(int nItem);
+	void GoToNextAliveIP();
 	void ShowNetBIOSInfo();
 	void CopyIPToClipboard();
 	int GetCurrentSelectedItem();
