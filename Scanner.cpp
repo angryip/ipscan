@@ -166,15 +166,13 @@ int CScanner::getColumnReference(int nItemIndex)
 
 void CScanner::initListColumns(CScanListCtrl *pListCtrl)
 {
-	int nCol, nWidth;	
+	int nCol, nWidth;		
 
-	pListCtrl->DeleteAllItems();	
-
-	int nCurrentColumnCount = pListCtrl->GetColumnCount();
+	int nCurrentColumnCount = pListCtrl->GetColumnCount();	
 	for (nCol=0; nCol < nCurrentColumnCount; nCol++)
 	{
-		pListCtrl->DeleteColumn(nCol);
-	}	
+		pListCtrl->DeleteColumn(0);	// Delete the 1st column nCurrentColumnCount times
+	}		
 	
 	for (nCol=0; nCol < m_nColumns; nCol++) 
 	{					
