@@ -93,8 +93,15 @@ END_MESSAGE_MAP()
 // COptionsDlg message handlers
 
 void COptionsDlg::OnOK() 
-{
+{	
 	CDialog::OnOK();
+
+	// Advice confused users
+	if (m_nPingCount == 0)
+	{
+		AfxMessageBox("Ping count 0 is not allowed. You may want to try 'Scan dead hosts' option below.");
+		return;
+	}
 
 	g_options->m_nMaxThreads = m_nMaxThreads;
 	g_options->m_nPingTimeout = m_nPingTimeout;

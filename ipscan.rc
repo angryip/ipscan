@@ -169,8 +169,9 @@ BEGIN
     EDITTEXT        IDC_TIMEOUT,51,37,40,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_PINGCOUNT,51,50,40,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_PORTTIMEOUT,51,63,40,12,ES_AUTOHSCROLL
-    CONTROL         "Continue scanning dead hosts",IDC_SCAN_HOST_IF_DEAD,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,77,111,10
+    CONTROL         "Scan dead hosts (if no ping reply)",
+                    IDC_SCAN_HOST_IF_DEAD,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,77,121,10
     CONTROL         "All hosts",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP,123,16,42,10
     CONTROL         "Only alive",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,123,
@@ -665,7 +666,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_VERSION             "2.20"
+    IDS_VERSION             "2.21"
     IDS_SCAN_HOMEPAGE       "http://www.angryziber.com/ipscan/"
     IDS_HOMEPAGE            "http://www.angryziber.com/"
     IDS_MAIL                "angryziber@angryziber.com"
