@@ -235,6 +235,7 @@ void CSaveToFile::saveToHTML(FILE *fileHandle)
 	int i,j;	
 
 	CString tmp;
+	CString szValue;
 	LV_ITEM it;
 
 	// Output column names
@@ -265,7 +266,11 @@ void CSaveToFile::saveToHTML(FILE *fileHandle)
 
 		for (j=0; j < g_scanner->getColumnCount(); j++) 
 		{
-			fprintf(fileHandle, "<td>%s</td>\n", m_dlg->m_list.GetItemText(i,j));
+			szValue = m_dlg->m_list.GetItemText(i,j);
+			szValue.Replace("&", "&amp;");
+			szValue.Replace("<", "&lt;");
+			szValue.Replace(">", "&gt;");
+			fprintf(fileHandle, "<td>%s</td>\n", szValue);
 		}
 		
 		if (g_options->m_bScanPorts)
@@ -324,6 +329,7 @@ void CSaveToFile::saveToXML(FILE *fileHandle)
 	int i,j;	
 
 	CString szTmp;
+	CString szValue;
 	LV_ITEM it;
 
 	fputs("\t<ip_list>\n", fileHandle);	
@@ -345,9 +351,20 @@ void CSaveToFile::saveToXML(FILE *fileHandle)
 
 		for (j=0; j < g_scanner->getColumnCount(); j++) 
 		{
+			// Prepare column name
 			g_scanner->getColumnName(j, szTmp);
-			szTmp.MakeLower(); szTmp.Replace(".", ""); szTmp.Replace(' ', '_'); 
-			fprintf(fileHandle, "\t\t\t<%s>%s</%s>\n", szTmp, m_dlg->m_list.GetItemText(i,j), szTmp); 				
+			szTmp.MakeLower(); 
+			szTmp.Replace(".", "");
+			for (int nChar = 0; nChar < szTmp.GetLength(); nChar++)
+				if (szTmp[nChar] < 'a' || szTmp[nChar] > 'z')
+					szTmp.SetAt(nChar, '_');
+			// Prepare column value
+			szValue = m_dlg->m_list.GetItemText(i,j);
+			szValue.Replace("&", "&amp;");
+			szValue.Replace("<", "&lt;");
+			szValue.Replace(">", "&gt;");
+			// Output both
+			fprintf(fileHandle, "\t\t\t<%s>%s</%s>\n", szTmp, szValue, szTmp); 				
 		}
 		
 		if (g_options->m_bScanPorts)
