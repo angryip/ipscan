@@ -67,8 +67,6 @@ BEGIN
 
             MENUITEM "Telnet",                      ID_COMMANDS_OPENCOMPUTER_TELNET
 
-            MENUITEM "Telnet to specified port",    ID_COMMANDS_OPENCOMPUTER_TELNETTOSPECIFIEDPORT
-
         END
         MENUITEM SEPARATOR
         MENUITEM "IP -> Clipboard\tCtrl+C",     ID_COMMANDS_IPCLIPBOARD

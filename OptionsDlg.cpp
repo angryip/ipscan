@@ -109,7 +109,7 @@ void COptionsDlg::OnHelpbtn()
 		"Display options:\n"
 		"\tSelect what addresses you want to be displayed in the window:\n"
 		"\tAll IPs, only alive IPs or only those with the open port.\n"		
-		"Show ports below:\n"
+		"Ports on 2nd row:\n"
 		"\tIf enabled (and port scanning also enabled), then scanned ports will\n"
 		"\tbe displayed below each IP address in the list\n"
 		"Continue scanning...:\n"

@@ -172,8 +172,7 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_NOTIFY(HDN_ITEMCLICKA, 0, OnItemclickListHeader)
 	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_ASFTP, OnCommandsOpencomputerAsftp)
 	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_ASWEBSITE, OnCommandsOpencomputerAswebsite)
-	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_TELNET, OnCommandsOpencomputerTelnet)
-	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_TELNETTOSPECIFIEDPORT, OnCommandsOpencomputerTelnettospecifiedport)
+	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_TELNET, OnCommandsOpencomputerTelnet)	
 	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_HINT, OnCommandsOpencomputerHint)
 	ON_BN_CLICKED(IDC_BUTTONPASTE, OnButtonpaste)
 	ON_COMMAND(ID_HELP_COMMANDLINE, OnHelpCommandline)
@@ -943,80 +942,67 @@ void CIpscanDlg::OnItemclickListHeader(NMHDR* pNMHDR, LRESULT* pResult)
 
 void CIpscanDlg::OnOpencomputerinexplorer() 
 {
-	/*POSITION pos = m_list.GetFirstSelectedItemPosition();
-	m_menucuritem = m_list.GetNextSelectedItem(pos);
-	if (m_menucuritem<0) { ErrorNotSelected();return;}
-	char str[40],str2[16];
-	m_list.GetItemText(m_menucuritem,CL_IP,str2,16);
-	sprintf((char*)&str,"\\\\%s",(char*)&str2);
-	if ((int)ShellExecute(0,"open",(char*)&str,NULL,NULL,SW_SHOWNORMAL)<=32) {
-		MessageBox("Netbios is not accessible on this computer (no shares or port is closed) or probably you don't have windows networking installed.",NULL,MB_OK | MB_ICONHAND);
-	}*/
-	MessageBox("NOP");
+	int nItemIndex = m_list.GetCurrentSelectedItem();		
+	if (nItemIndex == -1)
+		return;
+
+	status("Opening...");
+	CString szIP = m_list.GetItemText(nItemIndex, CL_IP);
+	szIP = "\\\\" + szIP;	
+	if ((int)ShellExecute(0, "open", szIP, NULL, NULL, SW_SHOWNORMAL) <= 32) 
+	{
+		MessageBox("Cannot ShellExecute " + szIP, NULL, MB_OK | MB_ICONHAND);
+	}	
+	status(NULL);
 }
 
 
 void CIpscanDlg::OnCommandsOpencomputerAsftp() 
 {
-	MessageBox("NOP");
-	/*
-	POSITION pos = m_list.GetFirstSelectedItemPosition();
-	m_menucuritem = m_list.GetNextSelectedItem(pos);
-	if (m_menucuritem<0) { ErrorNotSelected();return;}
-	char str[40],str2[16];
-	m_list.GetItemText(m_menucuritem,CL_IP,str2,16);
-	sprintf((char*)&str,"ftp://%s/",(char*)&str2);
-	if ((int)ShellExecute(0,"open",(char*)&str,NULL,NULL,SW_SHOWNORMAL)<=32) {
-		MessageBox("No program is assotsiated to open FTP urls.",NULL,MB_OK | MB_ICONHAND);
-	}*/
+	int nItemIndex = m_list.GetCurrentSelectedItem();		
+	if (nItemIndex == -1)
+		return;
+
+	status("Opening...");
+	CString szIP = m_list.GetItemText(nItemIndex, CL_IP);
+	szIP = "ftp://" + szIP + "/";	
+	if ((int)ShellExecute(0, "open", szIP, NULL, NULL, SW_SHOWNORMAL) <= 32) 
+	{
+		MessageBox("Cannot ShellExecute " + szIP, NULL, MB_OK | MB_ICONHAND);
+	}	
+	status(NULL);
 }
 
 void CIpscanDlg::OnCommandsOpencomputerAswebsite() 
 {
-	MessageBox("NOP");
-	/*POSITION pos = m_list.GetFirstSelectedItemPosition();
-	m_menucuritem = m_list.GetNextSelectedItem(pos);
-	if (m_menucuritem<0) { ErrorNotSelected();return;}
-	char str[40],str2[16];
-	m_list.GetItemText(m_menucuritem,CL_IP,str2,16);
-	sprintf((char*)&str,"http://%s/",(char*)&str2);
-	if ((int)ShellExecute(0,"open",(char*)&str,NULL,NULL,SW_SHOWNORMAL)<=32) {
-		MessageBox("No program is assotsiated to open HTTP urls.",NULL,MB_OK | MB_ICONHAND);
-	}*/
+	int nItemIndex = m_list.GetCurrentSelectedItem();		
+	if (nItemIndex == -1)
+		return;
+
+	status("Opening...");
+	CString szIP = m_list.GetItemText(nItemIndex, CL_IP);
+	szIP = "http://" + szIP + "/";	
+	if ((int)ShellExecute(0, "open", szIP, NULL, NULL, SW_SHOWNORMAL) <= 32) 
+	{
+		MessageBox("Cannot ShellExecute " + szIP, NULL, MB_OK | MB_ICONHAND);
+	}	
+	status(NULL);
 }
 
 void CIpscanDlg::OnCommandsOpencomputerTelnet() 
 {
-	MessageBox("NOP");
-	/*
-	POSITION pos = m_list.GetFirstSelectedItemPosition();
-	m_menucuritem = m_list.GetNextSelectedItem(pos);
-	if (m_menucuritem<0) { ErrorNotSelected();return;}
-	char str[40],str2[16];
-	m_list.GetItemText(m_menucuritem,CL_IP,str2,16);
-	sprintf((char*)&str,"telnet://%s/",(char*)&str2);
-	if ((int)ShellExecute(0,"open",(char*)&str,NULL,NULL,SW_SHOWNORMAL)<=32) {
-		MessageBox("No program is assotsiated to open TELNET urls.",NULL,MB_OK | MB_ICONHAND);
-	}*/
-}
+	int nItemIndex = m_list.GetCurrentSelectedItem();		
+	if (nItemIndex == -1)
+		return;
 
-void CIpscanDlg::OnCommandsOpencomputerTelnettospecifiedport() 
-{
-	MessageBox("NOP");
-	/*
-	POSITION pos = m_list.GetFirstSelectedItemPosition();
-	m_menucuritem = m_list.GetNextSelectedItem(pos);
-	if (m_menucuritem<0) { ErrorNotSelected();return;}
-	char str2[16],portnum[10];
-	CString str;
-	m_list.GetItemText(m_menucuritem,CL_IP,str2,16);
-	m_list.GetItemText(m_menucuritem,CL_PORT,portnum,10);
-	str = portnum;
-	strcpy((char*)&portnum,str.Mid(0,str.Find(":")));
-	str.Format("%s %s",(char*)&str2,(char*)&portnum);		
-	if ((int)ShellExecute(0,NULL,"telnet.exe",str,NULL,SW_SHOWNORMAL)<=32) {
-		MessageBox("Error executing telnet program.",NULL,MB_OK | MB_ICONHAND);
-	}*/
+	status("Opening...");
+	CString szIP = m_list.GetItemText(nItemIndex, CL_IP);
+	szIP = "telnet://" + szIP + "/";	
+	if ((int)ShellExecute(0, "open", szIP, NULL, NULL, SW_SHOWNORMAL) <= 32) 
+	{
+		MessageBox("Cannot ShellExecute " + szIP, NULL, MB_OK | MB_ICONHAND);
+	}	
+	status(NULL);
 }
 
 void CIpscanDlg::OnCommandsOpencomputerHint() 
@@ -1151,23 +1137,24 @@ void CIpscanDlg::OnScanPortsClicked()
 void CIpscanDlg::OnSelectPortsClicked() 
 {
 	CPortDlg dlg;
-	dlg.DoModal();
-
-	LPCSTR szPortString = g_options->m_szPorts;
-
-	if (szPortString[0] == 0)
+	if (dlg.DoModal() == IDOK)
 	{
-		m_ctWhatPorts.SetWindowText("N/A");
-		m_ctScanPorts.SetCheck(FALSE);
-	}
-	else
-	{
-		m_ctWhatPorts.SetWindowText(g_options->m_szPorts);
-		m_ctScanPorts.SetCheck(TRUE);
-	}
+		LPCSTR szPortString = g_options->m_szPorts;
 
-	// To update properties
-	OnScanPortsClicked();
+		if (szPortString[0] == 0)
+		{
+			m_ctWhatPorts.SetWindowText("N/A");
+			m_ctScanPorts.SetCheck(FALSE);
+		}
+		else
+		{
+			m_ctWhatPorts.SetWindowText(g_options->m_szPorts);
+			m_ctScanPorts.SetCheck(TRUE);
+		}
+
+		// To update properties
+		OnScanPortsClicked();
+	}
 }
 
 void CIpscanDlg::OnCommandsShowIPdetails() 
