@@ -131,6 +131,7 @@ protected:
 	afx_msg void OnScanPortsClicked();
 	afx_msg void OnSelectPortsClicked();
 	afx_msg void OnCommandsShowIPdetails();
+	afx_msg void OnSelectColumns();
 	//}}AFX_MSG
 	
 	afx_msg void OnExecuteShowMenu(UINT nID);

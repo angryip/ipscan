@@ -16,6 +16,7 @@
 #include "ScanUtilsInternal.h"
 #include "Scanner.h"
 #include "PortDlg.h"
+#include "SelectColumnsDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -174,8 +175,10 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_TO_ADVANCED, OnButtonToAdvanced)
 	ON_BN_CLICKED(IDC_SCAN_PORTS, OnScanPortsClicked)
 	ON_BN_CLICKED(IDC_SELECT_PORTS, OnSelectPortsClicked)
-	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_COMMAND(ID_COMMANDS_SHOWDETAILS, OnCommandsShowIPdetails)
+	ON_BN_CLICKED(IDC_SELECT_COLUMNS, OnSelectColumns)
+	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
+	ON_COMMAND(ID_OPTIONS_SELECT_COLUMNS, OnSelectColumns)
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_RANGE(ID_MENU_SHOW_CMD_001, ID_MENU_SHOW_CMD_099, OnExecuteShowMenu)
@@ -328,15 +331,21 @@ BOOL CIpscanDlg::OnInitDialog()
 
 void CIpscanDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
-	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
+	nID &= 0xFFF0;
+
+	if (nID == IDM_ABOUTBOX)
 	{
 		CAboutDlg dlgAbout;
 		dlgAbout.DoModal();
 	}
-	else
+	else 
 	{
-		m_bSysCommand = TRUE;
-		CDialog::OnSysCommand(nID, lParam);
+		if (nID == SC_CLOSE)
+		{
+			m_bSysCommand = TRUE;
+		}
+		
+		CDialog::OnSysCommand(nID, lParam);		
 	}
 }
 
@@ -395,6 +404,7 @@ void CIpscanDlg::OnSize(UINT nType, int cx, int cy)
 
 void CIpscanDlg::OnIpExit() 
 {	
+	m_bSysCommand = TRUE;
 	SendMessage(WM_CLOSE,0,0);	
 }
 
@@ -1166,4 +1176,10 @@ void CIpscanDlg::EnableMenuItems(BOOL bEnable)
 	{
 		tmpMnu->EnableMenuItem(ID_MENU_SHOW_CMD_001 + i, nEnable);
 	}
+}
+
+void CIpscanDlg::OnSelectColumns() 
+{
+	CSelectColumnsDlg cDlg;
+	cDlg.DoModal();
 }
