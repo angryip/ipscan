@@ -23,6 +23,8 @@
 // Structure that is filled by Info plugin function
 ///////////////////////////////////////////////////////////////////////////////////////////
 
+// TODO: remove packing!!!
+
 typedef struct
 {	
 	// These are passed to the plugin
