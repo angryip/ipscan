@@ -35,6 +35,7 @@ public:
 
 // Implementation
 public:
+	void ZeroResultsForItem(int nItemIndex);
 	CString m_szSearchFor;
 	void GoToNextSearchIP();
 	void GoToNextClosedPortIP();

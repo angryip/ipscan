@@ -605,3 +605,16 @@ void CScanListCtrl::GoToNextSearchIP()
 
 	AfxMessageBox("\"" + m_szSearchFor + "\" was not found", MB_OK | MB_ICONWARNING);
 }
+
+void CScanListCtrl::ZeroResultsForItem(int nItemIndex)
+{
+	for (int i=1; i < g_scanner->getColumnCount(); i++)
+	{
+		SetItem(nItemIndex, i, LVIF_TEXT, "", 0, 0, 0, 0);
+	}
+
+	SetItem(nItemIndex, 0, LVIF_IMAGE, NULL, 2, 0, 0, 0);
+	SetItemData(nItemIndex, 0);
+
+	RedrawWindow();
+}

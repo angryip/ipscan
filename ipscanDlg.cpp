@@ -713,32 +713,30 @@ void CIpscanDlg::OnHelpForum()
 void CIpscanDlg::OnWindozesucksRescanip() 
 {
 	m_menucuritem = m_list.GetCurrentSelectedItem();
+	
+	if (m_menucuritem == -1)
+		return;
 		
-	if (!m_scanning) {
+	if (!m_scanning) 
+	{
 		char str[16];
 		m_list.GetItemText(m_menucuritem,CL_IP,(char*)&str,16);
 		m_curip = ntohl(inet_addr((char*)&str));
 		
-		m_scanning=TRUE;
+		m_scanning = TRUE;
+
 		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStop.m_hObject);
 		
 		g_nThreadCount = 0;
 		
 		status((char*)&str);
-		
-	//	int n = 0;
-	//	n = (UINT)m_menucuritem; //(UINT)m_curip - d->m_startip;
-		m_list.SetItem(m_menucuritem,0,LVIF_IMAGE,NULL,2,0,0,0);
-		m_list.SetItem(m_menucuritem,CL_STATE,LVIF_TEXT,"",0,0,0,0);
-		m_list.SetItem(m_menucuritem,CL_PORT,LVIF_TEXT,"",0,0,0,0);
-		m_list.SetItem(m_menucuritem,CL_ERROR,LVIF_TEXT,"",0,0,0,0);
-		m_list.SetItem(m_menucuritem,CL_HOSTNAME,LVIF_TEXT,"",0,0,0,0);
-		m_list.SetItem(m_menucuritem,CL_PINGTIME,LVIF_TEXT,"",0,0,0,0);
-		RedrawWindow();
+
+		m_list.ZeroResultsForItem(m_menucuritem);		
 		
 		ScanningThread((void*)m_menucuritem);
 		
 		m_scanning=FALSE;
+
 		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStart.m_hObject);
 		
 		status("Ready");
