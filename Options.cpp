@@ -483,5 +483,6 @@ void COptions::removeSettingsFromRegistry()
 			"until that you can restore settings by selecting both\n"
 			"\"Save\" menu items in Options menu.", "Info", MB_ICONINFORMATION | MB_OK);
 
+		g_options->m_bAutoSave = FALSE;
 	}
 }
