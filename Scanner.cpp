@@ -311,6 +311,12 @@ BOOL CScanner::finalizeScanning()
 	return TRUE;
 }
 
+
+#define MAXINT	0x7FFFFFFF	// Index of newly inserted items
+
+#define DEBUG_LOGS
+#undef DEBUG_LOGS
+
 BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 {
 	DWORD nItemIndex;
@@ -338,23 +344,31 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 	structInAddr.S_un.S_addr = nIP;
 	char *szIP = inet_ntoa(structInAddr);
 
+#ifdef DEBUG_LOGS
+	FILE *fileHandle = fopen(szIP, "w");
+#endif
+
 	if (bParameterIsIP && g_options->m_neDisplayOptions == DISPLAY_ALL)
 	{
 		// Insert an item if all items should be inserted
-		nItemIndex = g_d->m_list.InsertItem(g_d->m_list.GetItemCount(), szIP, 2);	// 2nd image - "?"
+		nItemIndex = g_d->m_list.InsertItem(MAXINT, szIP, 2);	// 2nd image - "?"
 	}
 
 	char szTmp[512];	// Temporary string. Scanning functions will return data using it.
 
 	// Ping it! (column number 1), Check if it is alive
 	BOOL bAlive = m_AllColumns[CL_PING].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));	
+
+#ifdef DEBUG_LOGS
+	fputs(bAlive? "Alive" : "Dead", fileHandle);
+#endif
 	
 	if (bAlive)	// This If is needed to insert an item or finish scanning this IP, other processing will follow
 	{
 		if (bParameterIsIP && g_options->m_neDisplayOptions == DISPLAY_ALIVE)
 		{
 			// Insert an item if it is not RescanIP() who called us and scanning mode is DISPLAY_ALIVE			
-			nItemIndex = g_d->m_list.InsertItem(g_d->m_list.GetItemCount(), szIP, 2);	// 2nd image - "?"
+			nItemIndex = g_d->m_list.InsertItem(MAXINT, szIP, 2);	// 2nd image - "?"
 		}
 	
 		// Increment number of alive hosts
@@ -369,6 +383,10 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 		}
 	}
 
+#ifdef DEBUG_LOGS
+	fputs("After inserting", fileHandle);
+#endif
+
 	if (g_options->m_bScanPorts && g_options->m_neDisplayOptions == DISPLAY_OPEN)
 	{
 		// If display only open ports, then scan ports prior to scanning other columns
@@ -379,7 +397,7 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 			if (bParameterIsIP)
 			{
 				// Insert an item if it is not RescanIP() who called us and scanning mode is DISPLAY_OPENPORT				
-				nItemIndex = g_d->m_list.InsertItem(g_d->m_list.GetItemCount(), szIP, 2);	// 2nd image - "?"
+				nItemIndex = g_d->m_list.InsertItem(MAXINT, szIP, 2);	// 2nd image - "?"
 			}
 		}
 		else
@@ -403,9 +421,25 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 		g_d->m_list.SetItem(nItemIndex, CL_IP, LVIF_IMAGE, NULL, 1, 0, 0, 0);
 	}
 
+#ifdef DEBUG_LOGS
+	fputs("After image setting", fileHandle);
+	CString szItemIndex;
+	szItemIndex.Format("Item index: %d ", nItemIndex);
+	fputs(szItemIndex, fileHandle);
+#endif
+
 	// Set item text returned from pinging (Dead or X ms)
 	g_d->m_list.SetItemText(nItemIndex, CL_PING, (char*) &szTmp);
-	
+
+#ifdef DEBUG_LOGS
+	fputs(szTmp, fileHandle);
+	g_d->m_list.GetItemText(nItemIndex, CL_PING, (char*) &szTmp, sizeof(szTmp));
+	fputs(szTmp, fileHandle);
+	szItemIndex.Format("Item index: %d ", nItemIndex);
+	fputs(szItemIndex, fileHandle);
+	g_d->m_list.GetItemText(nItemIndex, CL_IP, (char*) &szTmp, sizeof(szTmp));
+	fputs(szTmp, fileHandle);
+#endif
 	
 	// Scan other columns if sscanning of dead hosts is enabled or host is Alive
 	bool bScan = g_options->m_bScanHostIfDead || bAlive; 
@@ -464,6 +498,11 @@ BOOL CScanner::doScanIP(DWORD nParam, BOOL bParameterIsIP)
 			g_d->m_list.SetOpenPorts(nItemIndex, "N/S", FALSE);
 		}
 	}
+
+
+#ifdef DEBUG_LOGS
+	fclose(fileHandle);
+#endif
 
 	return TRUE;
 }
