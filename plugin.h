@@ -130,13 +130,15 @@ typedef BOOL (__cdecl TScanFunction)(DWORD nIP, LPSTR szReturn, int nBufferLen);
 // Parameters:
 //    nIdentifier - random number, which will be unique and the same for this
 //                  saving session. It will be passed to all SaveXXX functions.
+//    hwndParent - parent window handle in case plugin wants to display options
+//                 dialog box or something to the user.
 //    szFilename - the filename (full path) to save to.
 //    bAppend - append flag (if user wants to append instead of overwriting).
 //              If append is not supported, return value should be FALSE.
 //    szColumns - the list of saved columns. It is a NULL-terminated string of
 //                '¤'-delimeted column names. Use PLUGIN_DATA_DELIMETER constant 
 //                for working with these characters.
-typedef BOOL (__cdecl TSaveBeginFunction)(char nIdentifier, LPCSTR szFilename, BOOL bAppend, LPCSTR szColumns);
+typedef BOOL (__cdecl TSaveBeginFunction)(char nIdentifier, HWND hwndParent, LPCSTR szFilename, BOOL bAppend, LPCSTR szColumns);
 
 // "SaveRow" function.
 // This function will be called to save each row in the list.
