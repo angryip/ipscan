@@ -1193,6 +1193,12 @@ void CIpscanDlg::OnScanPortsClicked()
 {
 	BOOL bChecked = m_ctScanPorts.GetCheck();
 
+	if (m_nScanMode != SCAN_MODE_NOT_SCANNING)
+	{
+		m_ctScanPorts.SetCheck(g_options->m_bScanPorts);
+		return;
+	}
+
 	if (bChecked && g_options->m_aParsedPorts[0].nStartPort == 0)
 	{
 		AfxMessageBox("No ports selected", MB_ICONHAND | MB_OK, 0);
@@ -1293,6 +1299,7 @@ void CIpscanDlg::EnableMenuItems(BOOL bEnable)
 
 	tmpMnu->EnableMenuItem(ID_OPTIONS_OPTIONS, nEnable);
 	tmpMnu->EnableMenuItem(ID_OPTIONS_SELECT_COLUMNS, nEnable);
+	tmpMnu->EnableMenuItem(ID_OPTIONS_SELECTPORTS, nEnable);	
 
 	tmpMnu->EnableMenuItem(ID_SCAN_SAVETOTXT, nEnable);
 	tmpMnu->EnableMenuItem(ID_SCAN_SAVESELECTION, nEnable);
@@ -1315,6 +1322,7 @@ void CIpscanDlg::EnableMenuItems(BOOL bEnable)
 	}
 
 	GetDlgItem(IDC_SELECT_COLUMNS)->EnableWindow(bEnable);
+	GetDlgItem(IDC_SELECT_PORTS)->EnableWindow(bEnable);
 }
 
 void CIpscanDlg::OnSelectColumns() 
