@@ -257,17 +257,17 @@ BOOL CIpscanDlg::OnInitDialog()
 	}
 
 	// Set button's bitmaps
-	m_bmpuparrow.LoadBitmap(IDB_UPARROW);
+	m_bmpuparrow.LoadMappedBitmap(IDB_UPARROW);
 	((CButton*)GetDlgItem(IDC_BUTTONIPUP))->SetBitmap((HBITMAP)m_bmpuparrow.m_hObject);
-	pastebmp.LoadBitmap(IDB_PASTE);
+	pastebmp.LoadMappedBitmap(IDB_PASTE);
 	((CButton*)GetDlgItem(IDC_BUTTONPASTE))->SetBitmap((HBITMAP)pastebmp.m_hObject);
-	startbmp.LoadBitmap(IDB_BMPSTART);
-	stopbmp.LoadBitmap(IDB_BMPSTOP);
-	killbmp.LoadBitmap(IDB_BMPKILL);
+	startbmp.LoadMappedBitmap(IDB_BMPSTART);
+	stopbmp.LoadMappedBitmap(IDB_BMPSTOP);
+	killbmp.LoadMappedBitmap(IDB_BMPKILL);
 	((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)startbmp.m_hObject);
-	CBitmap *tmpbmp = new CBitmap; tmpbmp->LoadBitmap(IDB_CLASS_C_PIC);
+	CBitmap *tmpbmp = new CBitmap; tmpbmp->LoadMappedBitmap(IDB_CLASS_C_PIC);
 	((CButton*)GetDlgItem(IDC_CLASS_C))->SetBitmap((HBITMAP)tmpbmp->m_hObject);
-	tmpbmp = new CBitmap; tmpbmp->LoadBitmap(IDB_CLASS_D_PIC);
+	tmpbmp = new CBitmap; tmpbmp->LoadMappedBitmap(IDB_CLASS_D_PIC);
 	((CButton*)GetDlgItem(IDC_CLASS_D))->SetBitmap((HBITMAP)tmpbmp->m_hObject);
 	
 	// Set window size
