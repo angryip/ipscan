@@ -37,14 +37,14 @@ CSaveToFile::CSaveToFile(CIpscanDlg *dlg, BOOL bSaveSelection, LPSTR szFileName,
 	// Display this error message only if wasn't invoked via command-line
 	if (!dlg->m_szDefaultFileName && dlg->m_list.GetItemCount() == 0) 
 	{
-		dlg->MessageBox("The list is empty!",NULL,MB_OK | MB_ICONHAND);
+		dlg->MessageBox("The list is empty!", NULL, MB_OK | MB_ICONHAND);
 		return;
 	}
 
 	m_saveselection = bSaveSelection;
 	if (bSaveSelection && dlg->m_list.GetSelectedCount()==0)
 	{		
-		dlg->MessageBox("You must select some items first!",NULL,MB_OK | MB_ICONHAND);
+		dlg->MessageBox("You must select some items first!", NULL, MB_OK | MB_ICONHAND);
 		return;
 	}
 	
@@ -90,6 +90,9 @@ CSaveToFile::CSaveToFile(CIpscanDlg *dlg, BOOL bSaveSelection, LPSTR szFileName,
 				break;
 			case FILE_TYPE_XML:
 				saveToXML(fileHandle);
+				break;
+			case FILE_TYPE_IPPORT_LIST:
+				saveToIPPortList(fileHandle);
 				break;
 			default:
 				saveToTXT(fileHandle);
@@ -421,13 +424,61 @@ void CSaveToFile::saveToCSV(FILE *fileHandle)
 	}	
 }
 
+void CSaveToFile::saveToIPPortList(FILE *fileHandle)
+{
+	// Exports each IP-Port combination as XXX.XXX.XXX.XXX:XXX
+
+	if (!g_options->m_bScanPorts)
+	{
+		AfxMessageBox("Sorry, this option can only be used if port scanning is enabled", MB_OK | MB_ICONHAND, 0);
+		return;
+	}
+
+	int i,j;	
+	CString szIP;	
+	CString szPorts;
+	LV_ITEM it;
+
+	// Output data
+	for (i=0; i < m_dlg->m_list.GetItemCount(); i++) 
+	{
+		it.mask = LVIF_STATE; 
+		it.stateMask = LVIS_SELECTED;
+		it.iItem = i; 
+		it.iSubItem = CL_IP; 
+
+		m_dlg->m_list.GetItem(&it); 
+		if (m_saveselection && it.state != LVIS_SELECTED) 
+			continue;	// Skip not selected items
+
+		// Get the IP
+		szIP = m_dlg->m_list.GetItemText(i, 0);				
+		
+		// Get the port list
+		m_dlg->m_list.GetOpenPorts(i, szPorts);
+		
+		// If there are any ports
+		if (szPorts.GetLength() > 0 && szPorts[0] != 'N')	// 'N' means "N/A" or "N/S"
+		{
+			// Funny code to prefix each port with and IP address
+			szPorts.Replace(",", '\n' + szIP + ':');
+			// Now add an IP for the first one
+			szPorts = szIP + ':' + szPorts + '\n'; 
+		
+			fputs(szPorts, fileHandle);
+		}
+	}	
+}
+
+
 BOOL CSaveToFile::queryFilename()
 {
 	CFileDialog fd(FALSE,"txt",NULL,OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
 		"Text files (*.txt)|*.txt|"
 		"Comma-separated files (*.csv)|*.csv|"
 		"HTML files (*.htm*)|*.htm*|"
-		"XML files (*.xml)|*.xml||", 
+		"XML files (*.xml)|*.xml|" 
+		"IP-Port List files (*.lst)|*.lst||", 
 		m_dlg);
 
 	if (fd.DoModal() == IDOK)
@@ -449,6 +500,11 @@ BOOL CSaveToFile::queryFilename()
 		{
 			m_filetype = FILE_TYPE_XML;			
 		}
+		else 
+		if (nFilterIndex == 5)
+		{
+			m_filetype = FILE_TYPE_IPPORT_LIST;			
+		}
 		else
 		{
 			m_filetype = FILE_TYPE_TXT;
@@ -464,5 +520,7 @@ BOOL CSaveToFile::queryFilename()
 	}	
 
 }
+
+
 
 

@@ -23,10 +23,11 @@
 
 // File type constants
 
-#define FILE_TYPE_TXT	0
-#define FILE_TYPE_CSV	1
-#define FILE_TYPE_XML	2
-#define FILE_TYPE_HTML	3
+#define FILE_TYPE_TXT			0
+#define FILE_TYPE_CSV			1
+#define FILE_TYPE_XML			2
+#define FILE_TYPE_HTML			3
+#define FILE_TYPE_IPPORT_LIST	4
 
 class CSaveToFile  
 {
@@ -41,6 +42,7 @@ public:
 	void saveToTXT(FILE *fileHandle);
 	void saveToHTML(FILE *fileHandle);
 	void saveToXML(FILE *fileHandle);
+	void saveToIPPortList(FILE *fileHandle);
 	BOOL queryFilename();
 
 	CSaveToFile(CIpscanDlg *dlg, BOOL bSaveSelection = FALSE, LPSTR szFileName = NULL, int nFileFormat = -1, BOOL bAppend = FALSE);

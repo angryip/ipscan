@@ -86,6 +86,8 @@ BOOL CCommandLine::process()
 										m_nFileFormat = FILE_TYPE_HTML; break;
 									case 'x': 
 										m_nFileFormat = FILE_TYPE_XML; break;
+									case 'l': 
+										m_nFileFormat = FILE_TYPE_IPPORT_LIST; break;
 									default:
 										m_nFileFormat = FILE_TYPE_TXT; break;
 								}
@@ -150,6 +152,6 @@ void CCommandLine::displayHelp()
 				"\t-a\tappend to the file, do not overwrite\n"
 				"\t-h\tHide main window while scanning. Be careful with this!\n"
 				"\t  \tRun only from batch files with this option.\n"
-				"\t-f:X\tFile format. X can be 'csv', 'html', 'txt' or 'xml'.\n"
+				"\t-f:X\tFile format. X can be 'csv', 'html', 'txt', 'xml' or 'lst'.\n"
 			   ,"Angry IP Scanner Help",MB_OK | MB_ICONINFORMATION);
 }
