@@ -182,9 +182,13 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_BN_CLICKED(IDC_SELECT_PORTS, OnSelectPortsClicked)
 	ON_COMMAND(ID_COMMANDS_SHOWDETAILS, OnCommandsShowIPdetails)
 	ON_BN_CLICKED(IDC_SELECT_COLUMNS, OnSelectColumns)
+	ON_COMMAND(ID_OPTIONS_SAVEDIMENSIONS, OnOptionsSavedimensions)
+	ON_COMMAND(ID_UTILS_DELETEFROMLIST_DEADHOSTS, OnUtilsDeletefromlistDeadhosts)
+	ON_COMMAND(ID_UTILS_DELETEFROMLIST_ALIVEHOSTS, OnUtilsDeletefromlistAlivehosts)
+	ON_COMMAND(ID_UTILS_DELETEFROMLIST_CLOSEDPORTS, OnUtilsDeletefromlistClosedports)
 	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_COMMAND(ID_OPTIONS_SELECT_COLUMNS, OnSelectColumns)
-	ON_COMMAND(ID_OPTIONS_SAVEDIMENSIONS, OnOptionsSavedimensions)
+	ON_COMMAND(ID_UTILS_DELETEFROMLIST_OPENPORTS, OnUtilsDeletefromlistOpenports)
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_RANGE(ID_MENU_SHOW_CMD_001, ID_MENU_SHOW_CMD_099, OnExecuteShowMenu)
@@ -315,7 +319,7 @@ BOOL CIpscanDlg::OnInitDialog()
 	OnButtonToAdvanced(); // Hide advanced controls by default
 	OnScanPortsClicked();	
 	
-	status("Ready");
+	status(NULL);	// Ready
 
 	// Init hostname
 	char hn[100];
@@ -423,7 +427,10 @@ HCURSOR CIpscanDlg::OnQueryDragIcon()
 
 void CIpscanDlg::status(LPCSTR str) 
 {
-	SetDlgItemText(IDC_STATUS, str);
+	if (str != NULL)
+		SetDlgItemText(IDC_STATUS, str);
+	else
+		SetDlgItemText(IDC_STATUS, "Ready");
 }
 
 void CIpscanDlg::OnSize(UINT nType, int cx, int cy) 
@@ -529,7 +536,7 @@ void CIpscanDlg::OnButtonScan()
 			g_scanner->finalizeScanning();
 			
 			((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStart.m_hObject); // start scan bitmap
-			status("Ready");
+			status(NULL);	// Ready
 			
 			EnableMenuItems(TRUE);			
 
@@ -770,7 +777,7 @@ void CIpscanDlg::OnShowNetBIOSInfo()
 {
 	status("Getting info...");
 	m_list.ShowNetBIOSInfo();
-	status("Ready");	
+	status(NULL);
 }
 
 void CIpscanDlg::OnHelpAngryipscannerwebpage() 
@@ -821,7 +828,7 @@ void CIpscanDlg::OnRescanIP()
 
 		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStart.m_hObject);
 		
-		status("Ready");
+		status(NULL);	// Ready
 	}
 }
 
@@ -1171,7 +1178,7 @@ void CIpscanDlg::OnExecuteShowMenu(UINT nID)
 
 	g_scanner->runScanFunction(m_list.GetNumericIP(m_menucuritem), nFunctionIndex, (char*) &szBuffer, sizeof(szBuffer), TRUE);
 
-	status("Ready");
+	status(NULL);
 
 	CString szResult;	
 	m_menuContext->GetSubMenu(INDEX_SHOW_MENU)->GetMenuString(nFunctionIndex - CL_STATIC_COUNT, szResult, MF_BYPOSITION);
@@ -1238,3 +1245,51 @@ void CIpscanDlg::OnSelectColumns()
 	cDlg.DoModal();
 }
 
+
+void CIpscanDlg::OnUtilsDeletefromlistDeadhosts() 
+{
+	status("Deleting...");	
+	CString szMessage;
+	szMessage.Format("%d items were deleted.", m_list.DeleteAllDeadHosts());
+	MessageBox(szMessage, NULL, MB_OK | MB_ICONINFORMATION);
+	status(NULL);	// Ready
+}
+
+void CIpscanDlg::OnUtilsDeletefromlistAlivehosts() 
+{	
+	status("Deleting...");
+	CString szMessage;
+	szMessage.Format("%d items were deleted.", m_list.DeleteAllAliveHosts());
+	MessageBox(szMessage, NULL, MB_OK | MB_ICONINFORMATION);	
+	status(NULL);	// Ready
+}
+
+void CIpscanDlg::OnUtilsDeletefromlistClosedports() 
+{
+	if (!g_options->m_bScanPorts)
+	{
+		MessageBox("Port scanning is not selected.", NULL, MB_OK | MB_ICONHAND);
+		return;
+	}
+
+	status("Deleting...");
+	CString szMessage;
+	szMessage.Format("%d items were deleted.", m_list.DeleteAllClosedPortsHosts());
+	MessageBox(szMessage, NULL, MB_OK | MB_ICONINFORMATION);		
+	status(NULL);	// Ready
+}
+
+void CIpscanDlg::OnUtilsDeletefromlistOpenports() 
+{
+	if (!g_options->m_bScanPorts)
+	{
+		MessageBox("Port scanning is not selected.", NULL, MB_OK | MB_ICONHAND);
+		return;
+	}
+
+	status("Deleting...");
+	CString szMessage;
+	szMessage.Format("%d items were deleted.", m_list.DeleteAllOpenPortsHosts());
+	MessageBox(szMessage, NULL, MB_OK | MB_ICONINFORMATION);		
+	status(NULL);	// Ready	
+}

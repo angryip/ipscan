@@ -133,6 +133,10 @@ protected:
 	afx_msg void OnCommandsShowIPdetails();
 	afx_msg void OnSelectColumns();
 	afx_msg void OnOptionsSavedimensions();
+	afx_msg void OnUtilsDeletefromlistDeadhosts();
+	afx_msg void OnUtilsDeletefromlistAlivehosts();
+	afx_msg void OnUtilsDeletefromlistClosedports();
+	afx_msg void OnUtilsDeletefromlistOpenports();
 	//}}AFX_MSG
 	
 	afx_msg void OnExecuteShowMenu(UINT nID);

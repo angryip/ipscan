@@ -29,6 +29,10 @@ public:
 
 // Implementation
 public:
+	int DeleteAllOpenPortsHosts();
+	int DeleteAllClosedPortsHosts();
+	int DeleteAllAliveHosts();
+	int DeleteAllDeadHosts();
 	int GetColumnCount();
 	void SetScanPorts();
 	int m_nPortsColumn;

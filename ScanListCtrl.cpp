@@ -650,3 +650,90 @@ int CScanListCtrl::GetColumnCount()
 {
 	return GetHeaderCtrl()->GetItemCount();	
 }
+
+int CScanListCtrl::DeleteAllDeadHosts()
+{
+	int nDeleted = 0;
+	int nItems = GetItemCount();
+	for (int i=0; i < nItems; i++)
+	{
+		CString szText = GetItemText(i, CL_PING);
+		
+		if (szText.GetAt(0) == 'D')
+		{
+			DeleteItem(i);
+			i--;	// Because number of items has decreased
+			nItems--;
+			nDeleted++;
+		}
+	}
+
+	return nDeleted;
+}
+
+int CScanListCtrl::DeleteAllAliveHosts()
+{
+	int nDeleted = 0;
+	int nItems = GetItemCount();
+	for (int i=0; i < nItems; i++)
+	{
+		CString szText = GetItemText(i, CL_PING);
+		
+		if (szText.GetAt(0) != 'D')
+		{
+			DeleteItem(i);
+			i--;	// Because number of items has decreased
+			nItems--;
+			nDeleted++;
+		}
+	}
+	return nDeleted;
+}
+
+int CScanListCtrl::DeleteAllClosedPortsHosts()
+{
+	if (!g_options->m_bScanPorts)
+		return 0;
+
+	int nDeleted = 0;
+	int nItems = GetItemCount();
+	int nPortsColumn = g_scanner->getColumnCount();	// The last column
+
+	for (int i=0; i < nItems; i++)
+	{
+		CString szText = GetItemText(i, nPortsColumn);
+		
+		if (szText.GetLength() == 0 || szText.GetAt(0) == 'N')
+		{
+			DeleteItem(i);
+			i--;	// Because number of items has decreased
+			nItems--;
+			nDeleted++;
+		}
+	}
+	return nDeleted;
+}
+
+int CScanListCtrl::DeleteAllOpenPortsHosts()
+{
+	if (!g_options->m_bScanPorts)
+		return 0;
+
+	int nDeleted = 0;
+	int nItems = GetItemCount();
+	int nPortsColumn = g_scanner->getColumnCount();	// The last column
+
+	for (int i=0; i < nItems; i++)
+	{
+		CString szText = GetItemText(i, nPortsColumn);
+		
+		if (szText.GetLength() > 0 && szText.GetAt(0) != 'N')
+		{
+			DeleteItem(i);
+			i--;	// Because number of items has decreased
+			nItems--;
+			nDeleted++;
+		}
+	}
+	return nDeleted;
+}
