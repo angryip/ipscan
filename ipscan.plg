@@ -1,0 +1,60 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: ipscan - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x409 /fo"Release/ipscan.res" /d "NDEBUG" "C:\programm.ing\My_progs\ipscan\ipscan.rc"" 
+Creating temporary file "C:\WINDOZA\TEMP\RSPA1D1.TMP" with contents
+[
+/nologo /MT /W3 /Gi /GX /O1 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"Release/ipscan.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\programm.ing\My_progs\ipscan\ipscan.cpp"
+"C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp"
+"C:\programm.ing\My_progs\ipscan\OptionsDlg.cpp"
+"C:\programm.ing\My_progs\ipscan\SearchDlg.cpp"
+]
+Creating command line "cl.exe @C:\WINDOZA\TEMP\RSPA1D1.TMP" 
+Creating temporary file "C:\WINDOZA\TEMP\RSPA1D2.TMP" with contents
+[
+/nologo /MT /W3 /Gi /GX /O1 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"Release/ipscan.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\programm.ing\My_progs\ipscan\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\WINDOZA\TEMP\RSPA1D2.TMP" 
+Creating temporary file "C:\WINDOZA\TEMP\RSPA1D3.TMP" with contents
+[
+/nologo /subsystem:windows /incremental:no /pdb:"Release/ipscan.pdb" /machine:I386 /out:"Release/ipscan.exe" 
+.\Release\ipscan.obj
+.\Release\ipscanDlg.obj
+.\Release\OptionsDlg.obj
+.\Release\SearchDlg.obj
+.\Release\StdAfx.obj
+.\Release\ipscan.res
+]
+Creating command line "link.exe @C:\WINDOZA\TEMP\RSPA1D3.TMP"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ipscan.cpp
+ipscanDlg.cpp
+C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1041) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1041) : warning C4309: '=' : truncation of constant value
+C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1050) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1050) : warning C4309: '=' : truncation of constant value
+C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1050) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\programm.ing\My_progs\ipscan\ipscanDlg.cpp(1050) : warning C4309: '=' : truncation of constant value
+OptionsDlg.cpp
+SearchDlg.cpp
+Generating Code...
+Linking...
+
+
+
+<h3>Results</h3>
+ipscan.exe - 0 error(s), 6 warning(s)
+</pre>
+</body>
+</html>

@@ -1,0 +1,489 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1251)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "Save &all to TXT...",         ID_SCAN_SAVETOTXT
+        MENUITEM "Save &selection...",          ID_SCAN_SAVESELECTION
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit\tAlt+X",                ID_IP_EXIT
+    END
+    POPUP "&Go to"
+    BEGIN
+        MENUITEM "Next &alive host\tCtrl+A",    ID_GOTO_NEXTALIVE
+        MENUITEM "Next &dead host\tCtrl+D",     ID_GOTO_NEXTDEAD
+        MENUITEM SEPARATOR
+        MENUITEM "Next &open port\tCtrl+O",     ID_GOTO_NEXTOPENPORT
+        MENUITEM "Next &closed port\tCtrl+L",   ID_GOTO_NEXTCLOSEDPORT
+        MENUITEM SEPARATOR
+        MENUITEM "&Hostname...\tCtrl+F",        ID_GOTO_HOSTNAME
+    END
+    POPUP "&Commands"
+    BEGIN
+        MENUITEM "&Show error description\tCtrl+E", ID__SHOWERRORDESCRIPTION
+        MENUITEM "&Open computer in explorer\tCtrl+R", 
+                                                ID__OPENCOMPUTERINEXPLORER
+        MENUITEM "Show &NetBIOS info\tCtrl+N",  ID_WINDOZESUCKS_SHOWNETBIOSINFO
+
+        MENUITEM "Rescan &IP\tCtrl+I",          ID_WINDOZESUCKS_RESCANIP
+        MENUITEM SEPARATOR
+        MENUITEM "IP -> Clipboard\tCtrl+C",     ID_WINDOZESUCKS_IPCLIPBOARD
+        MENUITEM "Hostname -> Clipboard",       ID_WINDOZESUCKS_HOSTNAMECLIPBOARD
+
+    END
+    POPUP "&Options"
+    BEGIN
+        MENUITEM "O&ptions...\tCtrl+P",         ID_OPTIONS_OPTIONS
+        MENUITEM "&Save options",               ID_OPTIONS_SAVEOPTIONS
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "Angry IP Scanner &Webpage",   ID_HELP_ANGRYIPSCANNERWEBPAGE
+
+        MENUITEM "Angryziber &Software",        ID_HELP_ANGRYZIBERSOFTWARE
+        MENUITEM SEPARATOR
+        MENUITEM "&About...\tF12",              ID_HELP_ABOUT
+    END
+END
+
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral (Default) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEUD)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_IMAGELIST           BITMAP  DISCARDABLE     "res\\bitmap1.bmp"
+IDB_BMPKILL             BITMAP  DISCARDABLE     "res\\bmpkill.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_OPTIONS DIALOG DISCARDABLE  0, 0, 181, 153
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Options"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,120,7,52,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,120,22,52,14
+    PUSHBUTTON      "&Help!!!",IDC_HELPBTN,120,38,52,14
+    EDITTEXT        IDC_EDIT2,51,7,39,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_THREADS,51,21,40,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_TIMEOUT,51,35,40,12,ES_AUTOHSCROLL
+    CONTROL         "All hosts",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,13,68,42,10
+    CONTROL         "Only alive",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,55,
+                    68,47,10
+    CONTROL         "Only open ports",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON | 
+                    NOT WS_VISIBLE,104,69,65,10
+    CONTROL         "Resolve host names",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,91,80,10
+    CONTROL         "Try to resolve hostname if host is dead",IDC_CHECK3,
+                    "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,17,
+                    104,137,10
+    CONTROL         "Check for open port",IDC_CHECK2,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,118,79,10
+    CONTROL         "on dead hosts",IDC_CHECKPORTONDEAD,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,93,118,61,10
+    EDITTEXT        IDC_EDIT1,37,131,40,12,ES_AUTOHSCROLL | ES_NUMBER | 
+                    WS_DISABLED
+    LTEXT           "Port:",IDC_STATIC,17,133,16,8
+    LTEXT           "Timer delay:",IDC_STATIC,7,9,39,8
+    LTEXT           "ms",IDC_STATIC,94,9,10,8
+    LTEXT           "Max threads:",IDC_STATIC,7,23,42,8
+    LTEXT           "Ping timeout:",IDC_STATIC,7,37,42,8
+    LTEXT           "ms",IDC_STATIC,94,37,10,8
+    EDITTEXT        IDC_EDIT3,89,131,62,12,ES_AUTOHSCROLL | NOT WS_VISIBLE
+    GROUPBOX        "Display options",IDC_STATIC,7,57,165,26
+    LTEXT           "Coming soon (in the next version)!",IDC_STATIC,13,69,
+                    107,8,NOT WS_VISIBLE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_OPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 172
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 146
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MENU1 ACCELERATORS DISCARDABLE 
+BEGIN
+    "A",            ID_GOTO_NEXTALIVE,      VIRTKEY, CONTROL, NOINVERT
+    "C",            ID_WINDOZESUCKS_IPCLIPBOARD, VIRTKEY, CONTROL, NOINVERT
+    "D",            ID_GOTO_NEXTDEAD,       VIRTKEY, CONTROL, NOINVERT
+    "E",            ID__SHOWERRORDESCRIPTION, VIRTKEY, CONTROL, NOINVERT
+    "F",            ID_GOTO_HOSTNAME,       VIRTKEY, CONTROL, NOINVERT
+    "I",            ID_WINDOZESUCKS_RESCANIP, VIRTKEY, CONTROL, NOINVERT
+    "L",            ID_GOTO_NEXTCLOSEDPORT, VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_WINDOZESUCKS_SHOWNETBIOSINFO, VIRTKEY, CONTROL, 
+                                                    NOINVERT
+    "O",            ID_GOTO_NEXTOPENPORT,   VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_OPTIONS_OPTIONS,     VIRTKEY, CONTROL, NOINVERT
+    "R",            ID__OPENCOMPUTERINEXPLORER, VIRTKEY, CONTROL, NOINVERT
+    VK_F12,         ID_HELP_ABOUT,          VIRTKEY, NOINVERT
+    VK_INSERT,      ID_WINDOZESUCKS_IPCLIPBOARD, VIRTKEY, CONTROL, NOINVERT
+    "X",            ID_IP_EXIT,             VIRTKEY, CONTROL, NOINVERT
+END
+
+#endif    // Neutral (Default) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Russian resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+#ifdef _WIN32
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_GOPIC               BITMAP  DISCARDABLE     "res\\bmp00001.bmp"
+IDB_UPARROW             BITMAP  DISCARDABLE     "res\\bmp00002.bmp"
+IDB_BMPSTART            BITMAP  DISCARDABLE     "res\\bmp00003.bmp"
+IDB_BMPSTOP             BITMAP  DISCARDABLE     "res\\bmp00004.bmp"
+IDB_CLASS_C_PIC         BITMAP  DISCARDABLE     "res\\bmp00005.bmp"
+IDB_CLASS_D_PIC         BITMAP  DISCARDABLE     "res\\bmp00006.bmp"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\ipscan.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\ipscan.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_BUTTONABOUT          "Click Here!!!\nAbout"
+    IDS_FIRSTCOLUMN         "110"
+    IDS_STRING32773         "IP"
+    IDS_STRING32774         "40"
+    IDS_STRING32775         "State"
+    IDS_STRING32776         "140"
+    IDS_STRING32777         "Hostname"
+    IDS_STRING32778         "70"
+    IDS_STRING32779         "Port"
+    IDS_STRING32780         "60"
+    IDS_STRING32781         "Ping"
+    IDS_STRING32782         "50"
+    IDS_STRING32783         "Error"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STRING32784         "1"
+    IDS_STRING32785         "1"
+    IDS_STRING32786         "1"
+    IDS_STRING32787         "1"
+    IDS_STRING32788         "1"
+    IDS_STRING32789         "1"
+    IDS_STRING32790         "1"
+    IDS_STRING32791         "1"
+    IDS_VERSION             "1.80"
+END
+
+#endif    // Russian resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 73
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,20,20
+    LTEXT           "Angry IP scanner",IDC_STATIC,40,10,59,8,SS_NOPREFIX
+    LTEXT           "Written by Angryziber",IDC_STATIC,36,40,69,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+    LTEXT           "VER",IDC_VERSION,108,10,16,8
+    LTEXT           "angryziber@mail.com",IDC_EMAIL,106,40,69,8,SS_NOTIFY
+    LTEXT           "Check for the latest version at",IDC_STATIC,8,55,95,8
+    LTEXT           "http://www.angryipscanner.com/",IDC_HTTP,105,55,106,8,
+                    SS_NOTIFY
+    LTEXT           "This program is",IDC_STATIC,39,22,48,8
+    CONTROL         137,IDC_GOEMAIL,"Static",SS_BITMAP | SS_NOTIFY,214,38,13,
+                    11
+    CONTROL         137,IDC_GOHTTP,"Static",SS_BITMAP | SS_NOTIFY,214,53,13,
+                    11
+    LTEXT           "free",IDC_TXTFREE,89,22,60,8
+END
+
+IDD_IPSCAN_DIALOG DIALOGEX 0, 0, 320, 201
+STYLE WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Angry IP Scanner"
+MENU IDR_MENU1
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "IPAddress1",IDC_IPADDRESS1,"SysIPAddress32",WS_TABSTOP,
+                    37,1,99,12
+    CONTROL         "IPAddress2",IDC_IPADDRESS2,"SysIPAddress32",WS_TABSTOP,
+                    151,1,100,12
+    DEFPUSHBUTTON   "Start scan",IDC_BUTTON1,256,1,30,13,BS_BITMAP
+    EDITTEXT        IDC_HOSTNAME,37,16,106,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "IP ^",IDC_BUTTONIPUP,146,16,24,13,BS_BITMAP
+    PUSHBUTTON      "Button2",IDC_CLASS_D,178,16,18,13,BS_BITMAP
+    PUSHBUTTON      "Button2",IDC_CLASS_C,198,16,18,13,BS_BITMAP
+    CONTROL         "List1",IDC_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,0,31,320,152
+    CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",WS_BORDER,
+                    164,186,155,12
+    LTEXT           "Ready",IDC_STATUS,0,186,164,12,SS_NOTIFY | 
+                    SS_CENTERIMAGE | SS_SUNKEN | NOT WS_GROUP
+    LTEXT           "IP range:",IDC_STATIC,2,3,30,8
+    LTEXT           "to",IDC_STATIC,141,4,8,8
+    LTEXT           "Hostname:",IDC_STATIC,1,18,35,8
+    LTEXT           "Threads",IDC_STATIC,230,19,27,8
+    CTEXT           "0",IDC_NUMTHREADS,260,19,25,10,SS_SUNKEN
+END
+
+IDD_SEARCH DIALOG DISCARDABLE  0, 0, 142, 85
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Find hostname"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_SEARCHEDIT,7,19,128,14,ES_AUTOHSCROLL
+    CONTROL         "Case sensitive",IDC_CASESENSITIVE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,37,37,61,10
+    DEFPUSHBUTTON   "Find &next",IDOK,13,64,50,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,78,64,50,14
+    LTEXT           "Enter hostname to search for:",IDC_STATIC,7,7,94,8
+    CONTROL         "From the beginning",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,37,49,76,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 66
+    END
+
+    IDD_SEARCH, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 135
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 78
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 0,0,0,0
+ PRODUCTVERSION 0,0,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "Angryziber Software\0"
+            VALUE "FileDescription", "Angry IP scanner\0"
+            VALUE "FileVersion", "0, 0, 0, 0\0"
+            VALUE "InternalName", "ipscan\0"
+            VALUE "LegalCopyright", "Copyright (C) 2000\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "ipscan.exe\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "\0"
+            VALUE "ProductVersion", "0, 0, 0, 0\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About..."
+    IDP_SOCKETS_INIT_FAILED "Windows sockets initialization failed."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\ipscan.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
