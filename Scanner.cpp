@@ -590,7 +590,7 @@ BOOL CScanner::doScanPorts(DWORD nIP, CString &szResult, int nPingTime, int nThr
 	if (nPingTime >= 0 && g_options->m_bOptimizePorts)
 	{
 		if (nPingTime == 0)	nPingTime = 10;
-		timeout.tv_usec = nPingTime * 3 * 1000;		// Optimized port scanning prevents port filtering from making scanning slower
+		timeout.tv_usec = nPingTime * 4 * 1000;		// Optimized port scanning prevents port filtering from making scanning slower
 	}
 	else
 	{
