@@ -8,16 +8,12 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#define CL_IP			0
-#define CL_PING			1
-
-// Diplay Options
-#define DO_ALL		0
-#define DO_ALIVE	1
-#define DO_OPENPORT	2
-
 #include "Scanner.h"
 #include "ScanListCtrl.h"
+
+#define SCAN_MODE_NOT_SCANNING	0
+#define SCAN_MODE_SCANNING		1
+#define SCAN_MODE_FINISHING		2
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -44,7 +40,7 @@ public:
 	unsigned long m_endip;
 	unsigned long m_startip;
 	unsigned long m_curip;
-	int m_scanning;		
+	int m_nScanMode;
 	CImageList m_imglist;
 	CIpscanDlg(CWnd* pParent = NULL);	// standard constructor
 
@@ -89,7 +85,7 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnIpExit();
-	afx_msg void OnButton1();
+	afx_msg void OnButtonScan();
 	afx_msg void OnHelpAbout();
 	afx_msg void OnOptionsOptions();
 	afx_msg void OnButtonipup();
@@ -97,7 +93,7 @@ protected:
 	afx_msg void OnScanSavetotxt();
 	afx_msg void OnRclickList(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnOpencomputerinexplorer();	
-	afx_msg void OnWindozesucksIpclipboard();	
+	afx_msg void OnIPToClipboard();	
 	afx_msg void OnScanSaveselection();
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	afx_msg void OnOptionsSaveoptions();
@@ -105,10 +101,10 @@ protected:
 	afx_msg void OnFieldchangedIpaddress2(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnClassC();
 	afx_msg void OnClassD();
-	afx_msg void OnWindozesucksShownetbiosinfo();
+	afx_msg void OnShowNetBIOSInfo();
 	afx_msg void OnHelpAngryipscannerwebpage();
 	afx_msg void OnHelpAngryzibersoftware();
-	afx_msg void OnWindozesucksRescanip();
+	afx_msg void OnRescanIP();
 	afx_msg void OnGotoNextalive();
 	afx_msg void OnGotoNextdead();
 	afx_msg void OnGotoNextopenport();

@@ -12,6 +12,17 @@
 #include "ScanListCtrl.h"
 #include <afxtempl.h>	// For CArray
 
+// Well-known columns
+#define CL_STATIC_COUNT			2
+#define CL_IP					0
+#define CL_PING					1
+
+// Diplay Options
+#define DO_ALL		0
+#define DO_ALIVE	1
+#define DO_OPENPORT	2
+
+
 // Function type definitions
 
 typedef struct

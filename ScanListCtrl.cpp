@@ -389,7 +389,7 @@ void CScanListCtrl::CopyIPToClipboard()
 	if (nCurrentItem < 0)
 		return;
 	
-	CString szIP = GetItemText(nCurrentItem, 0);
+	CString szIP = GetItemText(nCurrentItem, CL_IP);
 	
 	HGLOBAL hglbCopy = GlobalAlloc(GMEM_DDESHARE, szIP.GetLength() + 1); 
 	LPTSTR lp;
@@ -415,7 +415,7 @@ void CScanListCtrl::ShowNetBIOSInfo()
 	CString szUserName, szComputerName, szGroupName, szMacAddress;
 	CMessageDlg cMessageDlg(this);	
 	
-	GetItemText(nCurrentItem, 0, (char*)&ipstr, 16);
+	GetItemText(nCurrentItem, CL_IP, (char*)&ipstr, 16);
 
 	CNetBIOSUtils cNetBIOS;
 	cNetBIOS.setIP((char*)&ipstr);
@@ -489,7 +489,7 @@ void CScanListCtrl::GoToNextAliveIP()
 	
 	for (; i < GetItemCount(); i++) 
 	{
-		if (!(GetItemText(i, 1) == "Dead")) 
+		if (!(GetItemText(i, CL_PING) == "Dead")) 
 		{
 			SetSelectedItem(i);
 			break;
@@ -506,7 +506,7 @@ void CScanListCtrl::GoToNextDeadIP()
 	
 	for (; i < GetItemCount(); i++) 
 	{
-		if (GetItemText(i, 1) == "Dead") 
+		if (GetItemText(i, CL_PING) == "Dead") 
 		{
 			SetSelectedItem(i);
 			break;
@@ -608,12 +608,12 @@ void CScanListCtrl::GoToNextSearchIP()
 
 void CScanListCtrl::ZeroResultsForItem(int nItemIndex)
 {
-	for (int i=1; i < g_scanner->getColumnCount(); i++)
+	for (int i=CL_PING; i < g_scanner->getColumnCount(); i++)
 	{
 		SetItem(nItemIndex, i, LVIF_TEXT, "", 0, 0, 0, 0);
 	}
 
-	SetItem(nItemIndex, 0, LVIF_IMAGE, NULL, 2, 0, 0, 0);
+	SetItem(nItemIndex, CL_IP, LVIF_IMAGE, NULL, 2, 0, 0, 0);
 	SetItemData(nItemIndex, 0);
 
 	RedrawWindow();

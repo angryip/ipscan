@@ -33,6 +33,9 @@ CWinApp *app;
 int bSortAscending = 1;
 int nSortedCol = -1;
 
+#define INDEX_CONTEXT_MENU	2
+#define	INDEX_SHOW_MENU		2
+
 class CAboutDlg : public CDialog
 {
 public:	
@@ -130,7 +133,7 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_WM_QUERYDRAGICON()
 	ON_WM_SIZE()
 	ON_COMMAND(ID_IP_EXIT, OnIpExit)
-	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
+	ON_BN_CLICKED(IDC_BUTTON1, OnButtonScan)
 	ON_COMMAND(ID_HELP_ABOUT, OnHelpAbout)
 	ON_COMMAND(ID_OPTIONS_OPTIONS, OnOptionsOptions)
 	ON_BN_CLICKED(IDC_BUTTONIPUP, OnButtonipup)
@@ -138,7 +141,7 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_SCAN_SAVETOTXT, OnScanSavetotxt)
 	ON_NOTIFY(NM_RCLICK, IDC_LIST, OnRclickList)
 	ON_COMMAND(ID__OPENCOMPUTERINEXPLORER, OnOpencomputerinexplorer)	
-	ON_COMMAND(ID_WINDOZESUCKS_IPCLIPBOARD, OnWindozesucksIpclipboard)	
+	ON_COMMAND(ID_WINDOZESUCKS_IPCLIPBOARD, OnIPToClipboard)	
 	ON_COMMAND(ID_SCAN_SAVESELECTION, OnScanSaveselection)
 	ON_WM_SHOWWINDOW()
 	ON_COMMAND(ID_OPTIONS_SAVEOPTIONS, OnOptionsSaveoptions)
@@ -146,10 +149,10 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_NOTIFY(IPN_FIELDCHANGED, IDC_IPADDRESS2, OnFieldchangedIpaddress2)
 	ON_BN_CLICKED(IDC_CLASS_C, OnClassC)
 	ON_BN_CLICKED(IDC_CLASS_D, OnClassD)
-	ON_COMMAND(ID_WINDOZESUCKS_SHOWNETBIOSINFO, OnWindozesucksShownetbiosinfo)
+	ON_COMMAND(ID_WINDOZESUCKS_SHOWNETBIOSINFO, OnShowNetBIOSInfo)
 	ON_COMMAND(ID_HELP_ANGRYIPSCANNERWEBPAGE, OnHelpAngryipscannerwebpage)
 	ON_COMMAND(ID_HELP_ANGRYZIBERSOFTWARE, OnHelpAngryzibersoftware)
-	ON_COMMAND(ID_WINDOZESUCKS_RESCANIP, OnWindozesucksRescanip)
+	ON_COMMAND(ID_WINDOZESUCKS_RESCANIP, OnRescanIP)
 	ON_COMMAND(ID_GOTO_NEXTALIVE, OnGotoNextalive)
 	ON_COMMAND(ID_GOTO_NEXTDEAD, OnGotoNextdead)
 	ON_COMMAND(ID_GOTO_NEXTOPENPORT, OnGotoNextopenport)
@@ -264,11 +267,11 @@ BOOL CIpscanDlg::OnInitDialog()
 	gethostname((char *)&hn,100);
 	SetDlgItemText(IDC_HOSTNAME,hn);
 
-	m_scanning=FALSE;
+	m_nScanMode = SCAN_MODE_NOT_SCANNING;
 
 	// Load menu		
-	g_scanner->initMenuWithColumns(GetMenu()->GetSubMenu(2)->GetSubMenu(2));	// Show menu	
-	m_menuContext = GetMenu()->GetSubMenu(2);	// TODO: Should not be stored!
+	g_scanner->initMenuWithColumns(GetMenu()->GetSubMenu(INDEX_CONTEXT_MENU)->GetSubMenu(INDEX_SHOW_MENU));	// Show menu	
+	m_menuContext = GetMenu()->GetSubMenu(INDEX_CONTEXT_MENU);	// TODO: Should not be stored!
 
 	hAccel = LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MENU1));
 
@@ -297,7 +300,7 @@ BOOL CIpscanDlg::OnInitDialog()
 		
 		if (m_nCmdLineOptions & CMDO_START_SCAN)
 		{
-			CIpscanDlg::OnButton1();
+			CIpscanDlg::OnButtonScan();
 		}
 	}
 	delete cCmdLine;
@@ -375,9 +378,9 @@ void CIpscanDlg::OnIpExit()
 	SendMessage(WM_CLOSE,0,0);	
 }
 
-void CIpscanDlg::OnButton1() 
+void CIpscanDlg::OnButtonScan() 
 {	
-	if (!m_scanning) 
+	if (m_nScanMode == SCAN_MODE_NOT_SCANNING) 
 	{
 		char str[16];
 		m_ip1.GetWindowText((char *)&str,16);
@@ -397,7 +400,7 @@ void CIpscanDlg::OnButton1()
 		m_progress.SetPos(0);
 		m_tickcount = GetTickCount()/1000;
 
-		m_scanning=TRUE;
+		m_nScanMode = SCAN_MODE_SCANNING;
 		
 		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStop.m_hObject); // stop scanning button
 
@@ -417,15 +420,16 @@ void CIpscanDlg::OnButton1()
 		SetTimer(1, g_options->m_nTimerDelay, NULL);
 
 	} 
-	else 
+	else // m_nScanMode is SCAN_MODE_SCANNING or SCAN_MODE_FINISHING)
 	{
-		if (g_nThreadCount!=0) 
+		if (g_nThreadCount != 0) 
 		{
 			
-			if (m_scanning==2) 
+			if (m_nScanMode == SCAN_MODE_FINISHING) 
 			{
 				if (MessageBox("Are you sure you want to interrupt scanning by killing all the threads?\nScanning results will be incomplete.",NULL,MB_YESNO | MB_ICONQUESTION)==IDNO) return;
 			
+				// Kill threads
 				for (UINT i=0; i<=10000; i++) 
 				{
 					if (g_hThreads[i]!=0) 
@@ -435,20 +439,23 @@ void CIpscanDlg::OnButton1()
 						g_hThreads[i]=0;
 					}
 				}
+
+				// All threads are dead now
 				m_numthreads.SetWindowText("0");
 				g_nThreadCount = 0;
-				goto finish_all;
 			}
-
-			m_endip = m_curip;
-			m_progress.SetPos(100);
-			m_scanning = 2;
+			else // SCAN_MODE_SCANNING
+			{
+				m_endip = m_curip;
+				m_progress.SetPos(100);
+				m_nScanMode = SCAN_MODE_FINISHING;
+			}
+			
 		} 
-		else 
+		else // g_nThreadCount == 0
 		{
-finish_all:
 			KillTimer(1);
-			m_scanning=FALSE;
+			m_nScanMode = SCAN_MODE_NOT_SCANNING;
 
 			status("Finalizing...");
 			g_scanner->finalizeScanning();
@@ -457,9 +464,9 @@ finish_all:
 			status("Ready");
 			
 			CMenu *tmpMenu = GetMenu();
-			tmpMenu->GetSubMenu(3)->EnableMenuItem(ID_OPTIONS_OPTIONS,MF_ENABLED);
-			tmpMenu->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVETOTXT,MF_ENABLED);
-			tmpMenu->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVESELECTION,MF_ENABLED);
+			tmpMenu->GetSubMenu(3)->EnableMenuItem(ID_OPTIONS_OPTIONS, MF_ENABLED);
+			tmpMenu->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVETOTXT, MF_ENABLED);
+			tmpMenu->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVESELECTION, MF_ENABLED);
 
 			m_progress.SetPos(0);
 
@@ -562,7 +569,7 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 		if (g_nThreadCount == 0) 
 		{
 			m_endip--;
-			OnButton1();
+			OnButtonScan();
 			
 			return;
 		} 
@@ -570,7 +577,7 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 		{
 			status("Wait for all threads to terminate");
 			((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpKill.m_hObject);
-			m_scanning = 2; // waiting can be interrupted
+			m_nScanMode = SCAN_MODE_FINISHING; // waiting can be interrupted
 		}
 	}
 	
@@ -601,7 +608,7 @@ void CIpscanDlg::OnRclickList(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-void CIpscanDlg::OnWindozesucksIpclipboard() 
+void CIpscanDlg::OnIPToClipboard() 
 {
 	m_list.CopyIPToClipboard();
 }
@@ -682,7 +689,7 @@ void CIpscanDlg::OnClassD()
 	m_ip2_virgin=FALSE;
 }
 
-void CIpscanDlg::OnWindozesucksShownetbiosinfo() 
+void CIpscanDlg::OnShowNetBIOSInfo() 
 {
 	status("Getting info...");
 	m_list.ShowNetBIOSInfo();
@@ -704,20 +711,20 @@ void CIpscanDlg::OnHelpForum()
 	CLink::goToHomepageForum();	
 }
 
-void CIpscanDlg::OnWindozesucksRescanip() 
+void CIpscanDlg::OnRescanIP() 
 {
 	m_menucuritem = m_list.GetCurrentSelectedItem();
 	
 	if (m_menucuritem == -1)
 		return;
 		
-	if (!m_scanning) 
+	if (m_nScanMode == SCAN_MODE_NOT_SCANNING) 
 	{
 		char str[16];
 		m_list.GetItemText(m_menucuritem,CL_IP,(char*)&str,16);
 		m_curip = ntohl(inet_addr((char*)&str));
 		
-		m_scanning = TRUE;
+		m_nScanMode = SCAN_MODE_SCANNING;
 
 		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStop.m_hObject);
 		
@@ -729,7 +736,7 @@ void CIpscanDlg::OnWindozesucksRescanip()
 		
 		ScanningThread((void*)m_menucuritem);
 		
-		m_scanning=FALSE;
+		m_nScanMode = SCAN_MODE_NOT_SCANNING;
 
 		((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)m_bmpStart.m_hObject);
 		
@@ -807,7 +814,8 @@ void CIpscanDlg::OnItemclickListHeader(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
 	
-	if (m_scanning) return;
+	if (m_nScanMode == SCAN_MODE_SCANNING) 
+		return;
 	
 	if (phdn->iButton == 0) {  // left button
 		if( phdn->iItem == nSortedCol )

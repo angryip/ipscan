@@ -172,10 +172,10 @@ void CScanner::initListColumns(CListCtrl *pListCtrl)
 
 void CScanner::initMenuWithColumns(CMenu *pMenu)
 {
-	for (int nCol=2; nCol < m_nAllColumns; nCol++) 
+	for (int nCol=CL_STATIC_COUNT; nCol < m_nAllColumns; nCol++) 
 	{							
-		pMenu->InsertMenu(nCol-2, MF_BYPOSITION, ID_MENU_SHOW_CMD_001 + nCol-2, *m_AllColumns[nCol].pszColumnName);		
-		pMenu->EnableMenuItem(nCol-2, MF_BYPOSITION | MF_ENABLED);
+		pMenu->InsertMenu(nCol-CL_STATIC_COUNT, MF_BYPOSITION, ID_MENU_SHOW_CMD_001 + nCol-CL_STATIC_COUNT, *m_AllColumns[nCol].pszColumnName);		
+		pMenu->EnableMenuItem(nCol-CL_STATIC_COUNT, MF_BYPOSITION | MF_ENABLED);
 	}
 }
 
@@ -209,7 +209,7 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 	// get IP address
 	DWORD nIP;
 	char szIP[16];
-	g_d->m_list.GetItemText(nItemIndex, 0, (char*) &szIP, sizeof(szIP));
+	g_d->m_list.GetItemText(nItemIndex, CL_IP, (char*) &szIP, sizeof(szIP));
 	nIP = inet_addr((char*)&szIP);
 
 	char szTmp[512];
@@ -236,7 +236,7 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 	bool bScan = g_options->m_bScanHostIfDead || bAlive;
 
 	// Run other scans
-	for (int i=2; i < m_nColumns; i++)
+	for (int i=CL_STATIC_COUNT; i < m_nColumns; i++)
 	{
 		if (bScan)
 		{

@@ -120,11 +120,11 @@ BOOL COptionsDlg::OnInitDialog()
 	int nColumnCount = g_scanner->getColumnCount();
 	CString szPluginName;
 
-	for (int i=2; i < nColumnCount; i++)
+	for (int i=CL_STATIC_COUNT; i < nColumnCount; i++)
 	{
 		g_scanner->getColumnName(i, szPluginName);
 		m_ctPluginList.AddString(szPluginName);
-		m_ctPluginList.SetItemData(i - 2, i);
+		m_ctPluginList.SetItemData(i - CL_STATIC_COUNT, i);
 	}
 	
 	return TRUE;  
