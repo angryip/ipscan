@@ -188,8 +188,8 @@ void COptions::load()
 	
 	m_nTimerDelay = app->GetProfileInt("","Delay",20);
 	m_nMaxThreads = app->GetProfileInt("","MaxThreads",150);
-	m_nPingTimeout = app->GetProfileInt("","Timeout",2000);
-	m_nPingCount = app->GetProfileInt("","PingCount",2);
+	m_nPingTimeout = app->GetProfileInt("","Timeout",3000);
+	m_nPingCount = app->GetProfileInt("","PingCount",3);
 	m_nPortTimeout = app->GetProfileInt("","PortTimeout",3000);
 	m_neDisplayOptions = app->GetProfileInt("","DisplayOptions",0);
 	m_bScanHostIfDead = app->GetProfileInt("", "ScanHostIfDead", FALSE);
@@ -200,6 +200,18 @@ void COptions::load()
 	setPortString(app->GetProfileString("", "PortString", ""));	// also parses it
 
 	// Load Favourites
+	loadFavourites();
+
+	// Path, where the Angry IP Scanner resides
+	m_szExecutablePath = __targv[0];
+	int nTmp = m_szExecutablePath.ReverseFind('\\');
+	m_szExecutablePath.Delete(nTmp, m_szExecutablePath.GetLength() - nTmp);	
+}
+
+void COptions::loadFavourites()
+{
+	CWinApp *app = AfxGetApp();
+
 	CString szKey;
 
 	for (int i=0; i < 99; i++)
@@ -214,15 +226,33 @@ void COptions::load()
 		szKey.Format("FavouriteIP1_%d", i);
 		m_aFavourites[i].nIP1 = app->GetProfileInt("", szKey, 0);
 		szKey.Format("FavouriteIP2_%d", i);
-		m_aFavourites[i].nIP1 = app->GetProfileInt("", szKey, 0);
+		m_aFavourites[i].nIP2 = app->GetProfileInt("", szKey, 0);
 	}
 
-	// Path, where the Angry IP Scanner resides
-	m_szExecutablePath = __targv[0];
-	int nTmp = m_szExecutablePath.ReverseFind('\\');
-	m_szExecutablePath.Delete(nTmp, m_szExecutablePath.GetLength() - nTmp);	
 }
 
+
+void COptions::saveFavourites()
+{
+	CWinApp *app = AfxGetApp();
+
+	CString szKey;
+
+	for (int i=0; i < 99; i++)
+	{
+		szKey.Format("FavouriteName_%d", i);
+		app->WriteProfileString("", szKey, m_aFavourites[i].szName);
+
+		if (m_aFavourites[i].szName.GetLength() == 0)
+			break;
+
+		szKey.Format("FavouriteIP1_%d", i);
+		app->WriteProfileInt("", szKey, m_aFavourites[i].nIP1);
+
+		szKey.Format("FavouriteIP2_%d", i);
+		app->WriteProfileInt("", szKey, m_aFavourites[i].nIP2);	
+	}
+}
 
 void COptions::setWindowPos()
 {
@@ -321,6 +351,8 @@ void COptions::addFavourite()
 			break;
 		}
 	}
+
+	saveFavourites();
 }
 
 void COptions::deleteFavourite()
@@ -330,8 +362,16 @@ void COptions::deleteFavourite()
 	if (dlg.DoModal() == IDOK)
 	{
 		for (int i = dlg.m_nFavouriteIndex; i < 99; i++)
-		{
-			m_a
+		{			
+			m_aFavourites[i] = m_aFavourites[i+1];
+
+			if (m_aFavourites[i].szName.GetLength() == 0)
+				break;
 		}
+
 	}
+
+	saveFavourites();
 }
+
+

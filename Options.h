@@ -32,6 +32,7 @@ typedef	struct {CString szName; u_long nIP1; u_long nIP2; } tFavourite;
 class COptions  
 {
 public:
+	void saveFavourites();
 	void deleteFavourite();
 	void addFavourite();
 	int m_nPortCount;
@@ -61,6 +62,8 @@ public:
 	BOOL parsePortString();
 	void initFavouritesMenu(CMenu *pMenu);
 	
+protected:
+	void loadFavourites();
 };
 
 #endif // !defined(AFX_OPTIONS_H__AC5DAD55_DC6A_4BD2_AE72_12C6AF55FCCA__INCLUDED_)

@@ -346,11 +346,25 @@ BOOL CIpscanDlg::OnInitDialog()
 	m_ipup.GetWindowRect(&rc); g_nListOffset = rc.bottom;
 	m_ctScanPorts.GetWindowRect(&rc); g_nAdvancedOffset = rc.bottom - g_nListOffset + 1;
 	m_ip1.GetWindowRect(&rc); g_nListOffset -= (rc.top-5);
-	m_progress.GetWindowRect(&rc); g_nStatusHeight = rc.bottom-rc.top-2;	
+	m_progress.GetWindowRect(&rc); g_nStatusHeight = rc.bottom-rc.top-2;		
 	
-	m_bAdvancedMode = true;	// OnButtonToAdvanced() will change this to false
-	g_nListOffset += g_nAdvancedOffset; // OnButtonToAdvanced() will subtract this
-	OnButtonToAdvanced(); // Hide advanced controls by default
+	if (g_options->m_bScanPorts)
+	{
+		// Show advanced controls if port scanning is enabled
+		m_bAdvancedMode = false;	// OnButtonToAdvanced() will change this to true
+
+		((CButton*)GetDlgItem(IDC_BUTTON_TO_ADVANCED))->SetCheck(TRUE);
+	}
+	else
+	{
+		// Do not show advanced controls if port scanning is disabled
+		m_bAdvancedMode = true;		// OnButtonToAdvanced() will change this to false
+		
+		g_nListOffset += g_nAdvancedOffset; // OnButtonToAdvanced() will subtract this
+	}
+
+	OnButtonToAdvanced(); // Show/Hide advanced controls
+	
 	OnScanPortsClicked();	
 	
 	status(NULL);	// Ready
@@ -1595,4 +1609,6 @@ void CIpscanDlg::OnExecuteFavouritesMenu(UINT nID)
 void CIpscanDlg::OnFavouritesDeleteFavourite() 
 {
 	g_options->deleteFavourite();	
+
+	RefreshFavouritesMenu();
 }
