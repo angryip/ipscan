@@ -37,8 +37,7 @@ int ThreadProcRescanThisIP = -1;
 
 class CAboutDlg : public CDialog
 {
-public:
-	int nextfree;	
+public:	
 	CAboutDlg();
 
 // Dialog Data
@@ -61,9 +60,7 @@ protected:
 	afx_msg void OnGoemail();
 	afx_msg void OnGohttp();
 	virtual BOOL OnInitDialog();
-	afx_msg void OnAboutOK();
-	afx_msg void OnTimer(UINT nIDEvent);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnAboutOK();		
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
@@ -87,10 +84,8 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 	//{{AFX_MSG_MAP(CAboutDlg)
 	ON_BN_CLICKED(IDOK, OnAboutOK)
-	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_EMAIL, OnGoemail)
 	ON_BN_CLICKED(IDC_HTTP, OnGohttp)
-	ON_WM_MOUSEMOVE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -841,71 +836,12 @@ BOOL CAboutDlg::OnInitDialog()
 	ver.LoadString(IDS_VERSION);
 	SetDlgItemText(IDC_VERSION,ver);	
 
-	SetTimer(0,15000,NULL);
-	
 	return TRUE;  
 }
 
 void CAboutDlg::OnAboutOK() 
 {
-	KillTimer(0); KillTimer(1);
 	EndDialog(IDOK);
-}
-
-void CAboutDlg::OnTimer(UINT nIDEvent) 
-{
-	if (nIDEvent==0) {
-		KillTimer(0);
-		SetTimer(1,500,NULL);
-		nextfree=1;
-		
-	} else {
-		CString tmp;
-		switch (nextfree) {
-			case 0: tmp = "free"; break;
-			case 1: tmp = "FREE"; break;
-			case 2: tmp = "F R E E"; break;
-			case 3: tmp = "FREE"; break;
-			case 4: tmp = "<FREE>"; break;
-			case 5: tmp = "[FREE]"; break;
-			case 6: tmp = "*FREE*"; break;
-			case 7: tmp = "FREE"; break;
-			case 8: tmp = "FRE E"; break;
-			case 9: tmp = "FR E E"; break;
-			case 10: tmp = "F R E E"; break;
-			case 11: tmp = "F R EE"; break;
-			case 12: tmp = "F REE"; break;
-			case 13: tmp = "FREE"; break;
-			case 14: tmp = "FREEE"; break;
-			case 15: tmp = "FREEEE"; break;
-			case 16: tmp = "FREEEEE"; break;
-			case 17: tmp = "FREEEEEE"; break;
-			case 18: tmp = "COOOOOOL"; break;
-			case 19: tmp = "COOOOOL"; break;
-			case 20: tmp = "COOOOL"; break;
-			case 21: tmp = "COOOL"; break;
-			case 22: tmp = "COOL"; break;
-			case 23: tmp = "FREE"; break;
-			case 24: tmp = " FREE"; break;
-			case 25: tmp = "> FREE"; break;
-			case 26: tmp = "=> FREE"; break;
-			case 27: tmp = "==> FREE"; break;
-			case 28: tmp = "===> FREE"; break;
-			case 29: tmp = "====> FREE"; break;
-			case 30: tmp = "=====> FREE"; break;
-			case 31: tmp = "=====< FREE"; break;
-			case 32: tmp = "====< FREE"; break;
-			case 33: tmp = "===< FREE"; break;
-			case 34: tmp = "==< FREE"; break;
-			case 35: tmp = "=< FREE"; break;
-			case 36: tmp = "< FREE"; break;
-			case 37: tmp = "FREE!!!"; nextfree=-1; break;
-		}
-		nextfree++;
-		m_free.SetWindowText(tmp);
-	}
-	
-	CDialog::OnTimer(nIDEvent);
 }
 
 void CIpscanDlg::OnShowWindow(BOOL bShow, UINT nStatus) 
@@ -1033,11 +969,6 @@ void CIpscanDlg::OnWindozesucksShownetbiosinfo()
 	MessageBox((char*)&comspec,"NetBIOS",MB_OK | MB_ICONINFORMATION);
 exit_func:
 	status("Ready");
-}
-
-void CAboutDlg::OnMouseMove(UINT nFlags, CPoint point) 
-{	
-	CDialog::OnMouseMove(nFlags, point);
 }
 
 void CIpscanDlg::OnHelpAngryipscannerwebpage() 
