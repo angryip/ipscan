@@ -97,11 +97,11 @@ void CScanListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	}
 	else
 	{
-		DWORD nColor = ::GetSysColor(COLOR_WINDOW);
+		DWORD nColor = ::GetSysColor(COLOR_WINDOW);		
 
 		if (nItem % 2 == 1) // Even
 		{
-			nColor -= 0x100000;		// subtract 0x10 from Blue byte to make it more "yellow"
+			nColor -= 0x200000;		// subtract 0x20 from Blue byte to make it more "yellow"
 		}		
 
 		pDC->FillRect(rcHighlight, &CBrush(nColor));			
