@@ -33,8 +33,6 @@ BEGIN
         MENUITEM "Export &all...",              ID_SCAN_SAVETOTXT
         MENUITEM "Export &selection...",        ID_SCAN_SAVESELECTION
         MENUITEM SEPARATOR
-        MENUITEM "&Install the program...",     ID_OPTIONS_INSTALL_PROGRAM
-        MENUITEM SEPARATOR
         MENUITEM "E&xit\tAlt+F4",               ID_IP_EXIT
     END
     POPUP "&Go to"
@@ -84,8 +82,6 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Save options",               ID_OPTIONS_SAVEOPTIONS
         MENUITEM "Save &dimensions",            ID_OPTIONS_SAVEDIMENSIONS
-        MENUITEM SEPARATOR
-        MENUITEM "&Install the program...",     ID_OPTIONS_INSTALL_PROGRAM
     END
     POPUP "&Utils"
     BEGIN
@@ -100,10 +96,15 @@ BEGIN
             MENUITEM "&Open ports",                 ID_UTILS_DELETEFROMLIST_OPENPORTS
 
         END
-        MENUITEM "Show &last scan info",        ID_OPTIONS_SHOWLASTSCANINFO
-        MENUITEM "&Remove settings from registry", 
-                                                ID_UTILS_WIPETRACESREMOVESETTINGSFROMREGISTRY
+        POPUP "Install / Uninstall"
+        BEGIN
+            MENUITEM "&Install the program...",     ID_OPTIONS_INSTALL_PROGRAM
 
+            MENUITEM "&Remove settings from registry", 
+                                                    ID_UTILS_WIPETRACESREMOVESETTINGSFROMREGISTRY
+
+        END
+        MENUITEM "Show &last scan info",        ID_OPTIONS_SHOWLASTSCANINFO
     END
     POPUP "&Help"
     BEGIN
