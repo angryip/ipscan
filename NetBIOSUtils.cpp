@@ -141,7 +141,7 @@ BOOL CNetBIOSUtils::GetNames(CString &szUserName, CString &szComputerName, CStri
     if (NULL == pStatus)
         return FALSE;
 
-    if (!AdapterStatus (m_nLana, (PVOID) pStatus, cbBuffer, CONST_OWN_NETBIOS_NAME))
+    if (!AdapterStatus (m_nLana, (PVOID) pStatus, cbBuffer, m_szIP))
     {
         HeapFree (hHeap, 0, pStatus);
         return FALSE;
@@ -167,7 +167,7 @@ BOOL CNetBIOSUtils::GetNames(CString &szUserName, CString &szComputerName, CStri
 	}
 
 	// get user name
-	for (i = 0; i < pStatus->name_count; i++)
+	for (i = pStatus->name_count-1; i >= 0; i--)
 	{
 		if (pNames[i].name[15] == 3)
 		{
@@ -176,6 +176,7 @@ BOOL CNetBIOSUtils::GetNames(CString &szUserName, CString &szComputerName, CStri
 			break;
 		}
 	}
+	szUserName.Delete(szUserName.Find("$"));
 
 	// get mac address
    	szMacAddress.Format(_T("%02X %02X %02X %02X %02X %02X"),
