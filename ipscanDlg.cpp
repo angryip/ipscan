@@ -214,10 +214,11 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_OPTIONS_SHOWLASTSCANINFO, ShowCompleteInformation)
 	ON_WM_CLOSE()
 	ON_COMMAND(ID_FAVOURITES_ADDCURRENTRANGE, OnFavouritesAddcurrentrange)
+	ON_COMMAND(ID_FAVOURITES_DELETEFAVOURITE, OnFavouritesDeleteFavourite)
 	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_COMMAND(ID_OPTIONS_SELECT_COLUMNS, OnSelectColumns)
 	ON_COMMAND(ID_OPTIONS_SELECTPORTS, OnSelectPortsClicked)
-	ON_COMMAND(ID_FAVOURITES_DELETEFAVOURITE, OnFavouritesDeleteFavourite)
+	ON_COMMAND(ID_UTILS_WIPETRACESREMOVESETTINGSFROMREGISTRY, OnUtilsRemoveSettingsFromRegistry)
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_RANGE(ID_MENU_SHOW_CMD_001, ID_MENU_SHOW_CMD_099, OnExecuteShowMenu)
@@ -1611,4 +1612,9 @@ void CIpscanDlg::OnFavouritesDeleteFavourite()
 	g_options->deleteFavourite();	
 
 	RefreshFavouritesMenu();
+}
+
+void CIpscanDlg::OnUtilsRemoveSettingsFromRegistry() 
+{
+	g_options->removeSettingsFromRegistry();	
 }

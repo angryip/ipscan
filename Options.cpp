@@ -375,3 +375,23 @@ void COptions::deleteFavourite()
 }
 
 
+void COptions::removeSettingsFromRegistry()
+{
+	CWinApp *app = AfxGetApp();
+
+	if (MessageBox(app->GetMainWnd()->m_hWnd, 
+		"So, you want to wipe traces and remove Angry IP Scanner's settings from registry?\n\n"
+		"Do you know that all your choosen options and settings will be lost?\n\n"
+		"Are you sure?", "Wipe Traces", MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2) == IDYES)
+	{
+		// Remove settings
+		RegDeleteKey(HKEY_CURRENT_USER, "Software\\Angryziber\\ipscan");
+		
+		MessageBox(app->GetMainWnd()->m_hWnd, 
+			"Settings are now deleted from registry.\n\n"
+			"They will be reset next time you run Angry IP Scanner\n"
+			"until that you can restore settings by selecting both\n"
+			"\"Save\" menu items in Options menu.", "Info", MB_ICONINFORMATION | MB_OK);
+
+	}
+}

@@ -154,6 +154,7 @@ protected:
 	afx_msg void OnClose();
 	afx_msg void OnFavouritesAddcurrentrange();
 	afx_msg void OnFavouritesDeleteFavourite();
+	afx_msg void OnUtilsRemoveSettingsFromRegistry();
 	//}}AFX_MSG
 	
 	afx_msg void OnExecuteShowMenu(UINT nID);

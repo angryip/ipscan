@@ -109,6 +109,9 @@ BEGIN
 
         END
         MENUITEM "Show &last scan info",        ID_OPTIONS_SHOWLASTSCANINFO
+        MENUITEM "&Remove settings from registry", 
+                                                ID_UTILS_WIPETRACESREMOVESETTINGSFROMREGISTRY
+
     END
     POPUP "&Help"
     BEGIN
