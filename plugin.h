@@ -50,6 +50,7 @@ TInfoStruct;
 // After loading a plugin into memory, Angry IP Scanner runs this function
 // in order to check that it is a valid plugin and that it is written for
 // the correct version of Angry IP Scanner. 
+// If this function returns FALSE, then plugin won't be used
 // Parameters:
 //   pInfoStruct - is used for getting information about the plugin
 //                 plugins must fill this structure with correct data
@@ -72,6 +73,7 @@ typedef BOOL (__cdecl TOptionsFunction)(HWND hwndParent);
 // "Init" function.
 // This function is executed before scanning process begins. It can be used for internal
 // initializations, such as allocating of memory, loading of settings, etc.
+// If this function returns FALSE, then plugin won't be used
 // Parameters:
 //    nIndex - this is the unique index of this plugin. In Angry IP Scanner, plugins
 //             can be selected multiple times to represent multiple columns in the list.
@@ -97,6 +99,7 @@ typedef BOOL (__cdecl TFinalizeFunction)();
 // is then displayed on the list. This function must support multithreading,
 // because it will be called many times in parallel to increase scanning 
 // speed.
+// If this function returns FALSE, then N/A will be displayed in the list.
 // Parameters:
 //   nIP - the IP address to gather information about
 //   szReturn - the buffer for returning scanning results to.
