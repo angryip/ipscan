@@ -916,7 +916,15 @@ void CIpscanDlg::OnGotoHostname()
 
 BOOL CIpscanDlg::PreTranslateMessage(MSG* pMsg) 
 {
-	if (TranslateAccelerator(m_hWnd, hAccel, pMsg)) 
+	BOOL bDoAccelerator = TRUE;
+
+	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_DELETE)
+	{
+		if (pMsg->hwnd != m_list.m_hWnd)
+			bDoAccelerator = FALSE;	// Do not let accelerator capture Del key from editboxes
+	}
+
+	if (bDoAccelerator && TranslateAccelerator(m_hWnd, hAccel, pMsg)) 
 		return TRUE;
 
 	if (m_pToolTips != NULL)
