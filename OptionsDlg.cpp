@@ -259,7 +259,7 @@ void COptionsDlg::OnColumnAboutButton()
 	if (g_scanner->m_AllColumns[m_nCurrentlySelectedColumn].pInfoFunction == NULL)
 		return;
 
-	g_scanner->showColumnInfo(m_nCurrentlySelectedColumn);
+	g_scanner->showColumnInfo(m_nCurrentlySelectedColumn, TRUE);
 }
 
 void COptionsDlg::OnColumnOptionsButton() 
@@ -267,7 +267,7 @@ void COptionsDlg::OnColumnOptionsButton()
 	if (m_nCurrentlySelectedColumn < 0)
 		return;
 
-	g_scanner->showColumnOptions(m_nCurrentlySelectedColumn);
+	g_scanner->showColumnOptions(m_nCurrentlySelectedColumn, TRUE);
 }
 
 void COptionsDlg::OnSave() 

@@ -240,7 +240,7 @@ void CSelectColumnsDlg::OnSelectColumnInfo()
 
 	nCurSel += CL_STATIC_COUNT;
 
-	g_scanner->showColumnInfo(nCurSel);
+	g_scanner->showColumnInfo(nCurSel, TRUE);
 }
 
 void CSelectColumnsDlg::OnDeselect() 

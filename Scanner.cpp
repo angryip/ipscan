@@ -274,12 +274,16 @@ int CScanner::getColumnReference(int nItemIndex)
 	return m_Columns[nItemIndex];
 }
 
-void CScanner::showColumnInfo(int nColumn)
+// Shows the information of column to the User by the column index
+void CScanner::showColumnInfo(int nColumn, BOOL bAllColumns/* = TRUE*/)
 {
 	BOOL bNoInfo = FALSE;
 	TInfoStruct infoStruct;	
 
-	if (g_options->m_bScanPorts && nColumn == getColumnCount())
+	if (!bAllColumns)
+		nColumn = m_Columns[nColumn];
+
+	if (!bAllColumns && g_options->m_bScanPorts && nColumn == getColumnCount())
 	{
 		// This is a Open Ports special column
 		strcpy((char*)&infoStruct.szDescription, "Open ports (which were selected for scanning and appeared open)");
@@ -304,20 +308,25 @@ void CScanner::showColumnInfo(int nColumn)
 	}
 	else
 	{
-		MessageBox(*AfxGetApp()->GetMainWnd() , infoStruct.szDescription, infoStruct.szPluginName, MB_OK | MB_ICONINFORMATION);
+		MessageBox(*AfxGetApp()->GetMainWnd(), infoStruct.szDescription, infoStruct.szPluginName, MB_OK | MB_ICONINFORMATION);
 	}
 }
 
-void CScanner::showColumnOptions(int nColumn)
+void CScanner::showColumnOptions(int nColumn, BOOL bAllColumns/* = TRUE*/)
 {
-	if (g_options->m_bScanPorts && nColumn == getColumnCount())
+	if (!bAllColumns)
+		nColumn = m_Columns[nColumn];
+
+	if (!bAllColumns && g_options->m_bScanPorts && nColumn == getColumnCount())
 	{
+		// This is a special Open Ports column
 		AfxMessageBox("See the main Options dialog box", MB_ICONINFORMATION | MB_OK, 0);
 		return;
 	}
 	else
 	if (m_AllColumns[nColumn].pOptionsFunction == NULL) 
 	{
+		// This column doesn't have options
 		AfxMessageBox("This column doesn't have any options.", MB_ICONINFORMATION | MB_OK, 0);
 		return;
 	}

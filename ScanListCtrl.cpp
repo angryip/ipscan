@@ -998,12 +998,12 @@ void CScanListCtrl::OnItemClickListHeader(NMHDR* pNMHDR, LRESULT* pResult)
 		if (rcWin.right - 15 > mousePos.x)
 		{
 			// Options icon			
-			g_scanner->showColumnOptions(phdn->iSubItem);
+			g_scanner->showColumnOptions(phdn->iSubItem, FALSE);
 		}
 		else
 		{
 			// Info icon
-			g_scanner->showColumnInfo(phdn->iSubItem);			
+			g_scanner->showColumnInfo(phdn->iSubItem, FALSE);			
 		}
 
 		return;	// Do not proceed with sorting stuff
