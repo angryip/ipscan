@@ -7,6 +7,7 @@
 #include "ScanUtilsInternal.h"
 #include "Scanner.h"
 #include "ms_icmp.h"
+#include "NetBIOSUtils.h"
 
 
 #ifdef _DEBUG
@@ -36,6 +37,9 @@ char aPingDataBuf[32];
 
 int nNumAlive = 0;
 
+// For NetBIOS
+
+CNetBIOSUtils *g_NetBIOSUtils = NULL;
 
 //////////////////////////////////////////////////////////////////////////////////
 // PING
@@ -43,22 +47,26 @@ int nNumAlive = 0;
 
 BOOL ScanIntInitPing()
 {
-	HMODULE hICMP = LoadLibrary("ICMP.DLL");
-	if (!hICMP) {
-		CString szTmp;
-		szTmp.LoadString(IDS_SCAN_HOMEPAGE);
-		szTmp = "ICMP.DLL is not found. Program will not work.\n"
-		    	"You can find this DLL on Angry IP Scanner homepage: " + szTmp;
-		MessageBox(0, szTmp,"Error",MB_OK | MB_ICONHAND);
-		exit(666);
+	if (!lpfnIcmpCloseHandle) // if not already done
+	{
+		HMODULE hICMP = LoadLibrary("ICMP.DLL");
+		if (!hICMP) 
+		{
+			CString szTmp;
+			szTmp.LoadString(IDS_SCAN_HOMEPAGE);
+			szTmp = "ICMP.DLL is not found. Program will not work.\n"
+		    		"You can find this DLL on Angry IP Scanner homepage: " + szTmp;
+			MessageBox(0, szTmp,"Error",MB_OK | MB_ICONHAND);
+			exit(666);
+		}
+
+		lpfnIcmpCreateFile  = (FARPROC)GetProcAddress(hICMP,"IcmpCreateFile");
+		lpfnIcmpCloseHandle = (TIcmpCloseHandle)GetProcAddress(hICMP,"IcmpCloseHandle");
+		lpfnIcmpSendEcho    = (TIcmpSendEcho)GetProcAddress(hICMP,"IcmpSendEcho");
+
+		// Fill data buffer for pinging
+		for (int i=0; i < sizeof(aPingDataBuf); i++) aPingDataBuf[i]=i+65;
 	}
-
-	lpfnIcmpCreateFile  = (FARPROC)GetProcAddress(hICMP,"IcmpCreateFile");
-    lpfnIcmpCloseHandle = (TIcmpCloseHandle)GetProcAddress(hICMP,"IcmpCloseHandle");
-    lpfnIcmpSendEcho    = (TIcmpSendEcho)GetProcAddress(hICMP,"IcmpSendEcho");
-
-	// Fill data buffer for pinging
-	for (int i=0; i < sizeof(aPingDataBuf); i++) aPingDataBuf[i]=i+65;
 
 	nNumAlive = 0;
 
@@ -177,11 +185,18 @@ BOOL ScanIntInfoHostname(TInfoStruct *pInfoStruct)
 
 BOOL ScanIntInitNetBIOS()
 {
+	if (g_NetBIOSUtils == NULL)
+		g_NetBIOSUtils = new CNetBIOSUtils();
 	return TRUE;
 }
 
 BOOL ScanIntFinalizeNetBIOS()
 {
+	if (g_NetBIOSUtils != NULL)
+	{
+		delete g_NetBIOSUtils;
+		g_NetBIOSUtils = NULL;
+	}
 	return TRUE;
 }
 
@@ -189,56 +204,80 @@ BOOL ScanIntFinalizeNetBIOS()
 
 BOOL ScanIntDoNetBIOSComputerName(DWORD nIP, LPSTR szReturn, int nBufferLen)
 {
-	szReturn[0] = 0;
+	CString szComputerName;
+	g_NetBIOSUtils->setIP(nIP);
+	g_NetBIOSUtils->GetNames(NULL, &szComputerName, NULL, NULL);
+	if (szComputerName.GetLength() > nBufferLen)
+		szComputerName.SetAt(nBufferLen - 1, 0);
+	strcpy(szReturn, szComputerName);
 	return TRUE;
 }
 
 BOOL ScanIntInfoNetBIOSComputerName(TInfoStruct *pInfoStruct)
 {
-	memset(pInfoStruct, 0, sizeof(TInfoStruct));
-	return TRUE;
+	strcpy(pInfoStruct->szColumnName, "Comp. Name");
+	strcpy(pInfoStruct->szPluginName, "NetBIOS Computer Name");
+	return TRUE;	
 }
 
 // Group Name
 
 BOOL ScanIntDoNetBIOSGroupName(DWORD nIP, LPSTR szReturn, int nBufferLen)
 {
-	szReturn[0] = 0;
-	return TRUE;
+	CString szGroupName;
+	g_NetBIOSUtils->setIP(nIP);
+	g_NetBIOSUtils->GetNames(NULL, NULL, &szGroupName, NULL);
+	if (szGroupName.GetLength() > nBufferLen)
+		szGroupName.SetAt(nBufferLen - 1, 0);
+	strcpy(szReturn, szGroupName);
+	return TRUE;	
 }
 
 BOOL ScanIntInfoNetBIOSGroupName(TInfoStruct *pInfoStruct)
 {
-	memset(pInfoStruct, 0, sizeof(TInfoStruct));
-	return TRUE;
+	strcpy(pInfoStruct->szColumnName, "Group Name");
+	strcpy(pInfoStruct->szPluginName, "NetBIOS Group Name");
+	return TRUE;		
 }
 
 // User Name
 
 BOOL ScanIntDoNetBIOSUserName(DWORD nIP, LPSTR szReturn, int nBufferLen)
 {
-	szReturn[0] = 0;
-	return TRUE;
+	CString szUserName;
+	g_NetBIOSUtils->setIP(nIP);
+	g_NetBIOSUtils->GetNames(&szUserName, NULL, NULL, NULL);
+	if (szUserName.GetLength() > nBufferLen)
+		szUserName.SetAt(nBufferLen - 1, 0);
+	strcpy(szReturn, szUserName);
+	return TRUE;	
 }
 
 BOOL ScanIntInfoNetBIOSUserName(TInfoStruct *pInfoStruct)
 {
-	memset(pInfoStruct, 0, sizeof(TInfoStruct));
-	return TRUE;
+	strcpy(pInfoStruct->szColumnName, "User Name");
+	strcpy(pInfoStruct->szPluginName, "NetBIOS User Name");
+	return TRUE;		
 }
 
 // Mac Address
 
 BOOL ScanIntDoNetBIOSMacAddress(DWORD nIP, LPSTR szReturn, int nBufferLen)
 {
-	szReturn[0] = 0;
-	return TRUE;
+	CString szMacAddress;
+	g_NetBIOSUtils->setIP(nIP);
+	g_NetBIOSUtils->GetNames(NULL, NULL, NULL, &szMacAddress);
+	if (szMacAddress.GetLength() > nBufferLen)
+		szMacAddress.SetAt(nBufferLen - 1, 0);
+	strcpy(szReturn, szMacAddress);
+	return TRUE;	
 }
 
 BOOL ScanIntInfoNetBIOSMacAddress(TInfoStruct *pInfoStruct)
 {
-	memset(pInfoStruct, 0, sizeof(TInfoStruct));
-	return TRUE;
+	strcpy(pInfoStruct->szColumnName, "Mac Address");
+	strcpy(pInfoStruct->szPluginName, "Mac Address");
+	return TRUE;		
 }
 
 

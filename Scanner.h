@@ -41,6 +41,7 @@ typedef struct
 class CScanner  
 {
 public:	
+	BOOL finalizeScanning();
 	BOOL initScanning();
 	void initListColumns(CListCtrl *cListCtrl);
 	void loadSettings();

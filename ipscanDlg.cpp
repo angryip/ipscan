@@ -403,11 +403,9 @@ void CIpscanDlg::OnButton1()
 		tmp->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVESELECTION,MF_GRAYED);
 
 		g_nThreadCount = 0;
-		//memset(&threads,0,sizeof(threads));
-/*		numalive = 0;
-		numopen = 0;*/
 		
 		// Initialize scanning engine
+		status("Initializing...");
 		g_scanner->initScanning();
 
 		SetTimer(1,m_delay,NULL);
@@ -445,14 +443,17 @@ void CIpscanDlg::OnButton1()
 finish_all:
 			KillTimer(1);
 			m_scanning=FALSE;
+
+			status("Finalizing...");
+			g_scanner->finalizeScanning();
 			
 			((CButton*)GetDlgItem(IDC_BUTTON1))->SetBitmap((HBITMAP)startbmp.m_hObject); // start scan bitmap
 			status("Ready");
 			
-			CMenu *tmp = GetMenu();
-			tmp->GetSubMenu(3)->EnableMenuItem(ID_OPTIONS_OPTIONS,MF_ENABLED);
-			tmp->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVETOTXT,MF_ENABLED);
-			tmp->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVESELECTION,MF_ENABLED);
+			CMenu *tmpMenu = GetMenu();
+			tmpMenu->GetSubMenu(3)->EnableMenuItem(ID_OPTIONS_OPTIONS,MF_ENABLED);
+			tmpMenu->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVETOTXT,MF_ENABLED);
+			tmpMenu->GetSubMenu(0)->EnableMenuItem(ID_SCAN_SAVESELECTION,MF_ENABLED);
 
 			m_progress.SetPos(0);
 

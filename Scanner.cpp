@@ -168,6 +168,16 @@ BOOL CScanner::initScanning()
 	return TRUE;
 }
 
+BOOL CScanner::finalizeScanning()
+{	
+	for (int i=0; i < m_nColumnCount; i++)
+	{
+		if (m_Columns[i].pFinalizeFunction != NULL)
+			m_Columns[i].pFinalizeFunction();
+	}
+	return TRUE;
+}
+
 BOOL CScanner::doScanIP(DWORD nItemIndex)
 {
 	// get IP address
@@ -178,7 +188,7 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 
 	char szTmp[512];
 
-	// Ping it!
+	// Ping it! (column number 1)
 	BOOL bAlive = m_Columns[1].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));
 	g_d->m_list.SetItemText(nItemIndex, 1, (char*) &szTmp);
 	
@@ -191,16 +201,32 @@ BOOL CScanner::doScanIP(DWORD nItemIndex)
 		g_d->m_list.SetItem(nItemIndex, 0, LVIF_IMAGE, NULL, 1, 0, 0, 0);
 	}
 
+	// TODO!!
+	bool bScanIfDead = false;
+
 	// Run other scans
 	for (int i=2; i < m_nColumnCount; i++)
 	{
-		if (m_Columns[i].pInfoFunction != NULL)
+		if (bScanIfDead || bAlive)
 		{
-			m_Columns[i].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));
+			if (m_Columns[i].pInfoFunction != NULL)
+			{
+				szTmp[0] = 0;
+				m_Columns[i].pScanFunction(nIP, (char*) &szTmp, sizeof(szTmp));
+				
+				// Returned empty string
+				if (szTmp[0] == 0)
+					strcpy((char*)&szTmp, "<N/A>");
+			}
+			else
+			{
+				strcpy((char*)&szTmp, "ERR!");
+			}
 		}
 		else
 		{
-			strcpy((char*)&szTmp, "ERR!");
+			// Dead host, not scanner
+			strcpy((char*) &szTmp, "<N/S>");
 		}
 		g_d->m_list.SetItemText(nItemIndex, i, (char*) &szTmp);
 	}	
@@ -246,9 +272,7 @@ UINT ScanningThread(LPVOID nItemIndex)
 	g_scanner->doScanIP((DWORD)nItemIndex);
 	
 	/////////////////////////////////////////////////////////////////////////////
-	// Shutdown thread //////////////////////////////////////////////////////////
-	
-	g_nThreadCount--;
+	// Shutdown thread //////////////////////////////////////////////////////////	
 
 	// Remove thread's handle	
 	if (g_nThreadCount >=0) 
@@ -260,6 +284,8 @@ UINT ScanningThread(LPVOID nItemIndex)
 	CloseHandle(g_hThreads[nIndex]);
 
 	g_hThreads[nIndex]=0;
+
+	g_nThreadCount--;
 
 	// Display current number of threads
 	szTmp.Format("%d", g_nThreadCount);
@@ -403,5 +429,6 @@ exit_thread:
 ////////////////////////////////////////////////////////////////////////
 //////////////////////////// THREAD ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
+
 
 

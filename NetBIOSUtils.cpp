@@ -37,8 +37,10 @@ void CNetBIOSUtils::setIP(LPCSTR szIP)
 
 void CNetBIOSUtils::setIP(DWORD nIP)
 {
-	hostent *he = gethostbyaddr((char*) &nIP, sizeof(nIP), 0);
-	m_szIP = he->h_name;
+	in_addr in;
+	in.S_un.S_addr = nIP;
+	LPSTR ipa = inet_ntoa(in);	
+	m_szIP = ipa;
 }
 
 void CNetBIOSUtils::MakeName(char *achDest, LPCSTR szSrc)
@@ -164,6 +166,7 @@ BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CStri
 	// get computer name
 	if (szComputerName != NULL)
 	{
+		*szComputerName = "";
 		memcpy(&szName, pNames[0].name, 15); szName[15] = 0;
 		*szComputerName = szName;
 	}
@@ -171,6 +174,7 @@ BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CStri
 	// get group name
 	if (szGroupName != NULL)
 	{
+		*szGroupName = "";
 		for (i = 0; i < pStatus->name_count; i++)
 		{
 			if ((pNames[i].name_flags & GROUP_NAME) == GROUP_NAME)
@@ -185,6 +189,7 @@ BOOL CNetBIOSUtils::GetNames(CString *szUserName, CString *szComputerName, CStri
 	// get user name
 	if (szUserName != NULL)
 	{
+		*szUserName = "";
 		for (i = pStatus->name_count-1; i >= 0; i--)
 		{
 			if (pNames[i].name[15] == 3)
