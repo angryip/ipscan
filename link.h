@@ -23,6 +23,8 @@ protected:
 	HCURSOR		m_hCursor;
 	COLORREF	m_crClicked;
 
+	void PaintLink(CString &szText, COLORREF crColor);	
+
 // Operations
 public:
 
@@ -35,6 +37,7 @@ public:
 
 // Implementation
 public:
+	BOOL m_bTrackLeave;
 	static void goToWriteMail();
 	static void goToHomepage();
 	static void goToScannerHomepage();
@@ -42,13 +45,13 @@ public:
 
 	// Generated message map functions
 protected:		
-	void PaintLink(CString &szText, COLORREF crColor);
 	//{{AFX_MSG(CLink)
 	afx_msg void OnPaint();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	//}}AFX_MSG
-
+	LPARAM  OnMouseLeave(WPARAM wp, LPARAM lp);
 	DECLARE_MESSAGE_MAP()
 };
 

@@ -11,23 +11,30 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+
 BEGIN_MESSAGE_MAP(CLink, CStatic)
 	//{{AFX_MSG_MAP(CLink)
 	ON_WM_PAINT()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_SETCURSOR()
+	ON_WM_MOUSEMOVE()
 	//}}AFX_MSG_MAP
+	ON_MESSAGE(WM_MOUSELEAVE,OnMouseLeave)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CLink
 
+#define COLOR_INACTIVE	RGB(0, 0, 0xAA)
+#define COLOR_ACTIVE	RGB(0, 0, 0xFF)
+
 CLink::CLink()
 {
-	m_crText = RGB(0, 0, 0xFF);
-	m_crClicked = RGB(0xFF, 0, 0);
+	m_crText = COLOR_INACTIVE;
+	m_crClicked = COLOR_ACTIVE;
 
 	m_hCursor = AfxGetApp()->LoadCursor(IDC_HAND);
+	m_bTrackLeave = FALSE;
 }
 
 CLink::~CLink()
@@ -75,7 +82,6 @@ void CLink::PreSubclassWindow()
 
 void CLink::OnLButtonDown(UINT nFlags, CPoint point) 
 {	
-	
 	CStatic::OnLButtonDown(nFlags, point);
 }
 
@@ -90,6 +96,34 @@ BOOL CLink::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	return CStatic::OnSetCursor(pWnd, nHitTest, message);
 }
 
+void CLink::OnMouseMove(UINT nFlags, CPoint point) 
+{
+	if (!m_bTrackLeave) 
+	{
+        // First time since mouse entered my window: request leave notification
+        TRACKMOUSEEVENT tme;
+        tme.cbSize = sizeof(tme);
+        tme.hwndTrack = m_hWnd;
+        tme.dwFlags = TME_LEAVE;
+        _TrackMouseEvent(&tme);
+        m_bTrackLeave = TRUE;
+	
+		m_crText = COLOR_ACTIVE;
+		Invalidate(FALSE);
+		UpdateWindow();
+	}
+	CStatic::OnMouseMove(nFlags, point);
+}
+
+
+LPARAM CLink::OnMouseLeave(WPARAM wp, LPARAM lp)
+{    
+	m_crText = COLOR_INACTIVE;
+	m_bTrackLeave = FALSE;
+	Invalidate(FALSE);
+	UpdateWindow();
+    return 0;
+}
 
 void CLink::goToScannerHomepage()
 {
@@ -112,3 +146,4 @@ void CLink::goToWriteMail()
 	szMail = "mailto:" + szMail;
 	ShellExecute(0, NULL, szMail, NULL, NULL, SW_SHOWNORMAL);	
 }
+

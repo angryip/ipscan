@@ -12,6 +12,7 @@
 class CCommandLine 
 {
 public:
+	CString m_szFilename;
 	CString m_szEndIP;
 	CString m_szStartIP;
 	static void displayHelp();

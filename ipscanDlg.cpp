@@ -105,6 +105,7 @@ CIpscanDlg::CIpscanDlg(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_szDefaultFileName = NULL;
 }
 
 void CIpscanDlg::DoDataExchange(CDataExchange* pDX)
@@ -322,6 +323,10 @@ BOOL CIpscanDlg::OnInitDialog()
 		m_ip1.SetWindowText(cCmdLine->m_szStartIP);
 		m_ip2.SetWindowText(cCmdLine->m_szEndIP);
 		m_ip2_virgin = FALSE;
+		if (cCmdLine->m_szFilename.GetLength() > 0)
+		{
+			m_szDefaultFileName = new CString(cCmdLine->m_szFilename);
+		}
 		CIpscanDlg::OnButton1();
 	}
 	delete cCmdLine;
