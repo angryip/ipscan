@@ -148,6 +148,7 @@ void COptions::save()
 	app->WriteProfileInt("", "ScanPorts", m_bScanPorts);
 	app->WriteProfileInt("", "ShowPortsBelow", m_bShowPortsBelow);
 	app->WriteProfileInt("", "OptimizePorts", m_bOptimizePorts);
+	app->WriteProfileInt("", "AutoSave", m_bAutoSave);
 
 	g_scanner->saveSelectedColumns();
 }
@@ -196,11 +197,15 @@ void COptions::load()
 	m_bScanPorts = app->GetProfileInt("", "ScanPorts", FALSE);
 	m_bShowPortsBelow = app->GetProfileInt("", "ShowPortsBelow", TRUE);
 	m_bOptimizePorts = app->GetProfileInt("", "OptimizePorts", TRUE);
+	m_bAutoSave = app->GetProfileInt("", "AutoSave", TRUE);
 	
 	setPortString(app->GetProfileString("", "PortString", ""));	// also parses it
 
 	// Load Favourites
 	loadFavourites();
+
+	// Load Openers
+	loadOpeners();
 
 	// Path, where the Angry IP Scanner resides
 	m_szExecutablePath = __targv[0];
@@ -231,7 +236,6 @@ void COptions::loadFavourites()
 
 }
 
-
 void COptions::saveFavourites()
 {
 	CWinApp *app = AfxGetApp();
@@ -251,6 +255,65 @@ void COptions::saveFavourites()
 
 		szKey.Format("FavouriteIP2_%d", i);
 		app->WriteProfileInt("", szKey, m_aFavourites[i].nIP2);	
+	}
+}
+
+void COptions::loadOpeners()
+{
+	CWinApp *app = AfxGetApp();
+
+	CString szKey;
+
+	for (int i=0; i < 99; i++)
+	{
+		szKey.Format("OpenerName_%d", i);
+		m_aOpeners[i].szName = app->GetProfileString("", szKey);
+		
+		if (m_aOpeners[i].szName.GetLength() == 0)
+			break;
+
+		
+		szKey.Format("OpenerString_%d", i);
+		m_aOpeners[i].szExecute = app->GetProfileString("", szKey);
+	}
+
+	// Add default openers, if no openers were loaded
+	if (m_aOpeners[0].szName.GetLength() == 0)
+	{
+		m_aOpeners[0].szName = "In explorer";
+		m_aOpeners[0].szExecute = "\\\\%s";
+
+		m_aOpeners[1].szName = "Web Browser (HTTP)";
+		m_aOpeners[1].szExecute = "http://%s/";
+
+		m_aOpeners[2].szName = "FTP";
+		m_aOpeners[2].szExecute = "ftp://%s/";
+
+		m_aOpeners[3].szName = "Telnet";
+		m_aOpeners[3].szExecute = "telnet://%s/";
+
+		m_aOpeners[4].szName = "Ping";
+		m_aOpeners[4].szExecute = "ping %s";
+	}
+
+}
+
+void COptions::saveOpeners()
+{
+	CWinApp *app = AfxGetApp();
+
+	CString szKey;
+
+	for (int i=0; i < 99; i++)
+	{
+		szKey.Format("OpenerName_%d", i);
+		app->WriteProfileString("", szKey, m_aOpeners[i].szName);
+
+		if (m_aOpeners[i].szName.GetLength() == 0)
+			break;
+
+		szKey.Format("OpenerString_%d", i);
+		app->WriteProfileString("", szKey, m_aOpeners[i].szExecute);
 	}
 }
 
@@ -313,6 +376,33 @@ void COptions::initFavouritesMenu(CMenu *pMenu)
 		pMenu->InsertMenu(i+3, MF_BYPOSITION, ID_MENU_FAVOURITES_001 + i, m_aFavourites[i].szName);				
 	}
 }
+
+void COptions::initOpenersMenu(CMenu *pMenu)
+{	
+	// Delete items first
+	for (int i=0; i < 99; i++) 
+	{
+		if (!pMenu->DeleteMenu(2, MF_BYPOSITION))
+			break;
+	}
+
+	CString szTmp;
+
+	// Add menu items for openers
+	for (i=0; i < 99; i++) 
+	{
+		if (m_aOpeners[i].szName.GetLength() == 0)
+			break;
+		
+		if (i <= 9)
+			szTmp.Format("%s\tCtrl+%d", m_aOpeners[i].szName, i);
+		else
+			szTmp = m_aOpeners[i].szName;
+
+		pMenu->InsertMenu(i+2, MF_BYPOSITION, ID_MENU_OPEN_CMD_001 + i, szTmp);
+	}
+}
+
 
 void COptions::addFavourite()
 {

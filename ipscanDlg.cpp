@@ -29,6 +29,7 @@
 #include "PortDlg.h"
 #include "SelectColumnsDlg.h"
 #include "QueryDlg.h"
+#include "EditOpenersDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -58,6 +59,7 @@ BOOL g_bScanExistingItems = FALSE;
 
 #define INDEX_CONTEXT_MENU	2
 #define	INDEX_SHOW_MENU		4
+#define	INDEX_OPEN_MENU		5
 
 #define INDEX_FAVOURITES_MENU	3
 
@@ -171,7 +173,6 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_WM_TIMER()
 	ON_COMMAND(ID_SCAN_SAVETOTXT, OnScanSavetotxt)
 	ON_NOTIFY(NM_RCLICK, IDC_LIST, OnRclickList)
-	ON_COMMAND(ID__OPENCOMPUTERINEXPLORER, OnOpencomputerinexplorer)	
 	ON_COMMAND(ID_COMMANDS_IPCLIPBOARD, OnIPToClipboard)	
 	ON_COMMAND(ID_SCAN_SAVESELECTION, OnScanSaveselection)
 	ON_WM_SHOWWINDOW()
@@ -190,10 +191,6 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_GOTO_NEXTCLOSEDPORT, OnGotoNextclosedport)
 	ON_COMMAND(ID_GOTO_HOSTNAME, OnGotoHostname)
 	ON_NOTIFY(HDN_ITEMCLICKA, 0, OnItemclickListHeader)
-	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_ASFTP, OnCommandsOpencomputerAsftp)
-	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_ASWEBSITE, OnCommandsOpencomputerAswebsite)
-	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_TELNET, OnCommandsOpencomputerTelnet)	
-	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_HINT, OnCommandsOpencomputerHint)
 	ON_BN_CLICKED(IDC_BUTTONPASTE, OnButtonpaste)
 	ON_COMMAND(ID_HELP_COMMANDLINE, OnHelpCommandline)
 	ON_COMMAND(ID_HELP_FORUM, OnHelpForum)
@@ -215,13 +212,15 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_WM_CLOSE()
 	ON_COMMAND(ID_FAVOURITES_ADDCURRENTRANGE, OnFavouritesAddcurrentrange)
 	ON_COMMAND(ID_FAVOURITES_DELETEFAVOURITE, OnFavouritesDeleteFavourite)
+	ON_COMMAND(ID_UTILS_WIPETRACESREMOVESETTINGSFROMREGISTRY, OnUtilsRemoveSettingsFromRegistry)
 	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	ON_COMMAND(ID_OPTIONS_SELECT_COLUMNS, OnSelectColumns)
 	ON_COMMAND(ID_OPTIONS_SELECTPORTS, OnSelectPortsClicked)
-	ON_COMMAND(ID_UTILS_WIPETRACESREMOVESETTINGSFROMREGISTRY, OnUtilsRemoveSettingsFromRegistry)
+	ON_COMMAND(ID_COMMANDS_OPENCOMPUTER_CONFIGURE, OnCommandsOpencomputerConfigure)
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_RANGE(ID_MENU_SHOW_CMD_001, ID_MENU_SHOW_CMD_099, OnExecuteShowMenu)
+	ON_COMMAND_RANGE(ID_MENU_OPEN_CMD_001, ID_MENU_OPEN_CMD_099, OnExecuteOpenMenu)
 	ON_COMMAND_RANGE(ID_MENU_FAVOURITES_001, ID_MENU_FAVOURITES_099, OnExecuteFavouritesMenu)
 
 END_MESSAGE_MAP()
@@ -388,7 +387,11 @@ BOOL CIpscanDlg::OnInitDialog()
 	// Init favourites menu
 	RefreshFavouritesMenu();
 
+	// Init openers menu
+	RefreshOpenersMenu();
+
 	hAccel = LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MENU1));
+
 
 	#ifdef DEBUG_MESSAGES
 		AfxMessageBox("OnInitDialog(): Menu loaded", 0, 0);
@@ -1096,83 +1099,6 @@ void CIpscanDlg::OnItemclickListHeader(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-void CIpscanDlg::OnOpencomputerinexplorer() 
-{
-	int nItemIndex = m_list.GetCurrentSelectedItem();		
-	if (nItemIndex == -1)
-		return;
-
-	status("Opening...");
-	CString szIP = m_list.GetItemText(nItemIndex, CL_IP);
-	szIP = "\\\\" + szIP;	
-	if ((int)ShellExecute(0, "open", szIP, NULL, NULL, SW_SHOWNORMAL) <= 32) 
-	{
-		MessageBox("This host cannot be opened (ShellExecute " + szIP + " failed)\nIt may not have anything shared.", NULL, MB_OK | MB_ICONHAND);
-	}	
-	status(NULL);
-}
-
-
-void CIpscanDlg::OnCommandsOpencomputerAsftp() 
-{
-	int nItemIndex = m_list.GetCurrentSelectedItem();		
-	if (nItemIndex == -1)
-		return;
-
-	status("Opening...");
-	CString szIP = m_list.GetItemText(nItemIndex, CL_IP);
-	szIP = "ftp://" + szIP + "/";	
-	if ((int)ShellExecute(0, "open", szIP, NULL, NULL, SW_SHOWNORMAL) <= 32) 
-	{
-		MessageBox("This host cannot be opened (ShellExecute " + szIP + " failed)", NULL, MB_OK | MB_ICONHAND);
-	}	
-	status(NULL);
-}
-
-void CIpscanDlg::OnCommandsOpencomputerAswebsite() 
-{
-	int nItemIndex = m_list.GetCurrentSelectedItem();		
-	if (nItemIndex == -1)
-		return;
-
-	status("Opening...");
-	CString szIP = m_list.GetItemText(nItemIndex, CL_IP);
-	szIP = "http://" + szIP + "/";	
-	if ((int)ShellExecute(0, "open", szIP, NULL, NULL, SW_SHOWNORMAL) <= 32) 
-	{
-		MessageBox("This host cannot be opened (ShellExecute " + szIP + " failed)", NULL, MB_OK | MB_ICONHAND);
-	}	
-	status(NULL);
-}
-
-void CIpscanDlg::OnCommandsOpencomputerTelnet() 
-{
-	int nItemIndex = m_list.GetCurrentSelectedItem();		
-	if (nItemIndex == -1)
-		return;
-
-	status("Opening...");
-	CString szIP = m_list.GetItemText(nItemIndex, CL_IP);
-	szIP = "telnet://" + szIP + "/";	
-	if ((int)ShellExecute(0, "open", szIP, NULL, NULL, SW_SHOWNORMAL) <= 32) 
-	{
-		MessageBox("This host cannot be opened (ShellExecute " + szIP + " failed)", NULL, MB_OK | MB_ICONHAND);
-	}	
-	status(NULL);
-}
-
-void CIpscanDlg::OnCommandsOpencomputerHint() 
-{
-	CMessageDlg cMsgDlg;
-	cMsgDlg.setMessageText("Note: these commands are provided for your convenience only. They are not "
-		       "guaranteed to work. They just try to execute specified commands using "
-			   "Windows Shell API to see if any other program is assotsiated with "
-			   "that action. Please don't mail me with questions, why these don't "
-			   "work. If you know what they should do, then you can setup your "
-			   "system yourself to handle URL requests.");	
-	cMsgDlg.DoModal();
-}
-
 void CIpscanDlg::OnButtonpaste() 
 {
 	OpenClipboard();
@@ -1366,6 +1292,45 @@ void CIpscanDlg::OnExecuteShowMenu(UINT nID)
 	cMsgDlg.setMessageText(szResult);
 
 	cMsgDlg.DoModal();
+
+}
+
+void CIpscanDlg::OnExecuteOpenMenu(UINT nID)
+{	
+	int nOpenerIndex = nID - ID_MENU_OPEN_CMD_001;
+	
+	if (g_options->m_aOpeners[nOpenerIndex].szName.GetLength() == 0)
+		return;
+
+	m_menucuritem = m_list.GetCurrentSelectedItem();
+	
+	if (m_menucuritem == -1)
+		return;	
+	
+	CString szIP = m_list.GetItemText(m_menucuritem, CL_IP);
+
+	status("Opening " + szIP + " (" + g_options->m_aOpeners[nOpenerIndex].szName + ")...");
+	
+	CString szExecute;
+	CString szParameters;
+
+	szExecute.Format(g_options->m_aOpeners[nOpenerIndex].szExecute, szIP);
+
+	int nSpacePos = szExecute.Find(TCHAR(' '));
+
+	// Extract parameters to a variable
+	if (nSpacePos >= 0)
+	{
+		szParameters = szExecute.Mid(nSpacePos);
+		szExecute.Delete(nSpacePos, szExecute.GetLength() - nSpacePos);
+
+	}
+
+	if ((int)ShellExecute(0, NULL, szExecute, szParameters, NULL, SW_SHOWNORMAL) <= 32) 
+	{
+		MessageBox("This IP cannot be opened (ShellExecute \"" + szExecute + szParameters + "\" failed)", NULL, MB_OK | MB_ICONHAND);
+	}	
+	status(NULL);
 
 }
 
@@ -1571,7 +1536,14 @@ void CIpscanDlg::OnClose()
 	if (m_nScanMode == SCAN_MODE_SCANNING)
 		KillTimer(1);	// For safety	
 
-	KillAllRunningThreads();		
+	KillAllRunningThreads();
+
+	// Perform auto-saving
+	if (g_options->m_bAutoSave)
+	{
+		g_options->save();
+		g_options->saveDimensions();
+	}
 
 	CDialog::OnClose();	
 }
@@ -1586,6 +1558,11 @@ void CIpscanDlg::OnFavouritesAddcurrentrange()
 void CIpscanDlg::RefreshFavouritesMenu()
 {
 	g_options->initFavouritesMenu(GetMenu()->GetSubMenu(INDEX_FAVOURITES_MENU));
+}
+
+void CIpscanDlg::RefreshOpenersMenu()
+{
+	g_options->initOpenersMenu(GetMenu()->GetSubMenu(INDEX_CONTEXT_MENU)->GetSubMenu(INDEX_OPEN_MENU));
 }
 
 void CIpscanDlg::OnExecuteFavouritesMenu(UINT nID)
@@ -1617,4 +1594,10 @@ void CIpscanDlg::OnFavouritesDeleteFavourite()
 void CIpscanDlg::OnUtilsRemoveSettingsFromRegistry() 
 {
 	g_options->removeSettingsFromRegistry();	
+}
+
+void CIpscanDlg::OnCommandsOpencomputerConfigure() 
+{
+	CEditOpenersDlg dlg;
+	dlg.DoModal();
 }

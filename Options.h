@@ -29,11 +29,15 @@ typedef struct {u_short nStartPort; u_short nEndPort; } tPortRange;
 
 typedef	struct {CString szName; u_long nIP1; u_long nIP2; } tFavourite;
 
+typedef	struct {CString szName; CString szExecute; } tOpener;
+
 class COptions  
 {
 public:
+	BOOL m_bAutoSave;
 	void removeSettingsFromRegistry();
 	void saveFavourites();
+	void saveOpeners();
 	void deleteFavourite();
 	void addFavourite();
 	int m_nPortCount;
@@ -54,6 +58,7 @@ public:
 	int m_nTimerDelay;
 	tPortRange *m_aParsedPorts;	// Array
 	tFavourite m_aFavourites[100];
+	tOpener m_aOpeners[100];
 	void setPortString(LPCSTR szPortString);
 	CString m_szPorts;
 	COptions();
@@ -62,9 +67,11 @@ public:
 	void save();
 	BOOL parsePortString();
 	void initFavouritesMenu(CMenu *pMenu);
+	void initOpenersMenu(CMenu *pMenu);
 	
 protected:
 	void loadFavourites();
+	void loadOpeners();
 };
 
 #endif // !defined(AFX_OPTIONS_H__AC5DAD55_DC6A_4BD2_AE72_12C6AF55FCCA__INCLUDED_)

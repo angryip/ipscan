@@ -36,6 +36,7 @@ class CIpscanDlg : public CDialog
 // Construction
 public:	
 	void RefreshFavouritesMenu();
+	void RefreshOpenersMenu();
 	void KillAllRunningThreads();
 	CString m_szCompleteInformation;
 	int m_nCmdLineFileFormat;
@@ -110,7 +111,6 @@ protected:
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnScanSavetotxt();
 	afx_msg void OnRclickList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnOpencomputerinexplorer();	
 	afx_msg void OnIPToClipboard();	
 	afx_msg void OnScanSaveselection();
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
@@ -129,10 +129,6 @@ protected:
 	afx_msg void OnGotoNextclosedport();
 	afx_msg void OnGotoHostname();
 	afx_msg void OnItemclickListHeader(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnCommandsOpencomputerAsftp();
-	afx_msg void OnCommandsOpencomputerAswebsite();
-	afx_msg void OnCommandsOpencomputerTelnet();	
-	afx_msg void OnCommandsOpencomputerHint();
 	afx_msg void OnButtonpaste();
 	afx_msg void OnHelpCommandline();
 	afx_msg void OnHelpForum();
@@ -155,9 +151,11 @@ protected:
 	afx_msg void OnFavouritesAddcurrentrange();
 	afx_msg void OnFavouritesDeleteFavourite();
 	afx_msg void OnUtilsRemoveSettingsFromRegistry();
+	afx_msg void OnCommandsOpencomputerConfigure();
 	//}}AFX_MSG
 	
 	afx_msg void OnExecuteShowMenu(UINT nID);
+	afx_msg void OnExecuteOpenMenu(UINT nID);
 	afx_msg void OnExecuteFavouritesMenu(UINT nID);
 
 	DECLARE_MESSAGE_MAP()

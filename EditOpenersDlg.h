@@ -9,73 +9,55 @@
  * You may not rename the program and distribute it.                 *
  *********************************************************************/
 
-#if !defined(AFX_OPTIONSDLG_H__DD7FF820_D58E_11D3_83C7_A196C701772A__INCLUDED_)
-#define AFX_OPTIONSDLG_H__DD7FF820_D58E_11D3_83C7_A196C701772A__INCLUDED_
+#if !defined(AFX_EDITOPENERSDLG_H__0F185E75_CC4A_4A84_8877_BA985B26CC3A__INCLUDED_)
+#define AFX_EDITOPENERSDLG_H__0F185E75_CC4A_4A84_8877_BA985B26CC3A__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
-
-#include "IpscanDlg.h"
-
-// OptionsDlg.h : header file
+// EditOpenersDlg.h : header file
 //
 
 /////////////////////////////////////////////////////////////////////////////
-// COptionsDlg dialog
+// CEditOpenersDlg dialog
 
-class COptionsDlg : public CDialog
+class CEditOpenersDlg : public CDialog
 {
 // Construction
-public:	
-	COptionsDlg(CWnd* pParent = NULL);   // standard constructor
+public:
+	CEditOpenersDlg(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(COptionsDlg)
-	enum { IDD = IDD_OPTIONS };
-	CStatic	m_statColumnSelected;
-	CStatic	m_statColumnType;
-	CButton	m_btnOptionsColumn;
-	CButton	m_btnAboutColumn;
-	CButton	m_ctPluginOptionsGroup;
-	CListBox	m_ctPluginList;
-	int		m_nTimerDelay;
-	UINT	m_nMaxThreads;
-	UINT	m_nPingTimeout;
-	int		m_nDisplayOptions;
-	BOOL	m_bScanHostIfDead;
-	int		m_nPortTimeout;
-	BOOL	m_bShowPortsBelow;
-	BOOL	m_bScanPorts;
-	int		m_nPingCount;
-	BOOL	m_bOptimizePorts;
-	BOOL	m_bAutoSave;
+	//{{AFX_DATA(CEditOpenersDlg)
+	enum { IDD = IDD_EDIT_OPENERS_DLG };
+	CEdit	m_ctrlExecutionString;
+	CEdit	m_ctrlTitle;
+	CListBox	m_ctrlList;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(COptionsDlg)
-	public:
-	virtual int DoModal();
+	//{{AFX_VIRTUAL(CEditOpenersDlg)
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
-	int m_nCurrentlySelectedColumn;
+	void RefreshList();
 
 	// Generated message map functions
-	//{{AFX_MSG(COptionsDlg)
-	virtual void OnOK();			
-	afx_msg void OnHelpbtn();	
+	//{{AFX_MSG(CEditOpenersDlg)
 	virtual BOOL OnInitDialog();
-	afx_msg void OnSelchangePluginList();
-	afx_msg void OnSelectColumnsBtn();
-	afx_msg void OnColumnAboutButton();
-	afx_msg void OnColumnOptionsButton();
-	afx_msg void OnSave();
+	afx_msg void OnBtnEdit();
+	afx_msg void OnBtnChange();
+	afx_msg void OnBtnInsert();
+	virtual void OnOK();
+	afx_msg void OnBtnUp();
+	afx_msg void OnBtnDown();
+	afx_msg void OnClose();
+	afx_msg void OnBtnDelete();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
@@ -83,4 +65,4 @@ protected:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
-#endif // !defined(AFX_OPTIONSDLG_H__DD7FF820_D58E_11D3_83C7_A196C701772A__INCLUDED_)
+#endif // !defined(AFX_EDITOPENERSDLG_H__0F185E75_CC4A_4A84_8877_BA985B26CC3A__INCLUDED_)

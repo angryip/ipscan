@@ -60,17 +60,9 @@ BEGIN
         END
         POPUP "Open computer"
         BEGIN
-            MENUITEM "<HINT>",                      ID_COMMANDS_OPENCOMPUTER_HINT
+            MENUITEM "Configure...",                ID_COMMANDS_OPENCOMPUTER_CONFIGURE
 
             MENUITEM SEPARATOR
-            MENUITEM "In explorer\tCtrl+R",         ID__OPENCOMPUTERINEXPLORER
-
-            MENUITEM "FTP",                         ID_COMMANDS_OPENCOMPUTER_ASFTP
-
-            MENUITEM "Web site (HTTP)",             ID_COMMANDS_OPENCOMPUTER_ASWEBSITE
-
-            MENUITEM "Telnet",                      ID_COMMANDS_OPENCOMPUTER_TELNET
-
         END
         MENUITEM SEPARATOR
         MENUITEM "IP -> Clipboard\tCtrl+C",     ID_COMMANDS_IPCLIPBOARD
@@ -161,7 +153,7 @@ IDB_BMPKILL             BITMAP  DISCARDABLE     "res\\bmpkill.bmp"
 // Dialog
 //
 
-IDD_OPTIONS DIALOG DISCARDABLE  0, 0, 197, 221
+IDD_OPTIONS DIALOG DISCARDABLE  0, 0, 197, 231
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Options"
 FONT 8, "MS Sans Serif"
@@ -181,6 +173,8 @@ BEGIN
                     123,38,63,10
     CONTROL         "Ports on 2nd row",IDC_SHOW_PORTS_BELOW,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,117,54,69,10
+    CONTROL         "Faster port scans",IDC_OPTIMIZE_PORTS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,117,66,70,10
     CONTROL         "Scan ports",IDC_SCAN_PORTS,"Button",BS_AUTOCHECKBOX | 
                     NOT WS_VISIBLE | WS_TABSTOP,138,78,50,10
     LISTBOX         IDC_PLUGIN_LIST,6,101,86,93,LBS_NOINTEGRALHEIGHT | 
@@ -191,10 +185,13 @@ BEGIN
                     WS_DISABLED
     PUSHBUTTON      "Select scanned columns...",IDC_SELECT_COLUMNS_BTN,98,
                     179,91,14
-    DEFPUSHBUTTON   "&OK",IDOK,9,202,46,14
-    PUSHBUTTON      "OK && &Save",IDSAVE,63,202,48,14
-    PUSHBUTTON      "&Cancel",IDCANCEL,119,202,49,14
-    PUSHBUTTON      "?",IDC_HELPBTN,176,202,14,14
+    CONTROL         "Save options && dimensions automatically on exit",
+                    IDC_AUTO_SAVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,
+                    198,181,10
+    DEFPUSHBUTTON   "&OK",IDOK,9,212,46,14
+    PUSHBUTTON      "OK && &Save",IDSAVE,63,212,48,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,120,212,49,14
+    PUSHBUTTON      "?",IDC_HELPBTN,176,212,14,14
     LTEXT           "Timer delay:",IDC_STATIC,7,14,39,8
     LTEXT           "ms",IDC_STATIC,93,13,10,8
     LTEXT           "Max threads:",IDC_STATIC,7,27,42,8
@@ -210,8 +207,6 @@ BEGIN
     RTEXT           "N/A",IDC_COLUMN_TYPE,137,107,28,8
     LTEXT           "Scanned:",IDC_STATIC,115,157,32,8
     RTEXT           "N/A",IDC_COLUMN_SELECTED,151,157,14,8
-    CONTROL         "Faster port scans",IDC_OPTIMIZE_PORTS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,117,66,70,10
 END
 
 
@@ -228,7 +223,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 188
         TOPMARGIN, 7
-        BOTTOMMARGIN, 216
+        BOTTOMMARGIN, 226
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -257,6 +252,16 @@ BEGIN
     VK_F12,         ID_HELP_ABOUT,          VIRTKEY, NOINVERT
     VK_INSERT,      ID_COMMANDS_IPCLIPBOARD, VIRTKEY, CONTROL, NOINVERT
     "X",            ID_IP_EXIT,             VIRTKEY, CONTROL, NOINVERT
+    "0",            ID_MENU_OPEN_CMD_001,   VIRTKEY, CONTROL, NOINVERT
+    "1",            ID_MENU_OPEN_CMD_002,   VIRTKEY, CONTROL, NOINVERT
+    "2",            ID_MENU_OPEN_CMD_003,   VIRTKEY, CONTROL, NOINVERT
+    "3",            ID_MENU_OPEN_CMD_004,   VIRTKEY, CONTROL, NOINVERT
+    "4",            ID_MENU_OPEN_CMD_005,   VIRTKEY, CONTROL, NOINVERT
+    "5",            ID_MENU_OPEN_CMD_006,   VIRTKEY, CONTROL, NOINVERT
+    "6",            ID_MENU_OPEN_CMD_007,   VIRTKEY, CONTROL, NOINVERT
+    "7",            ID_MENU_OPEN_CMD_008,   VIRTKEY, CONTROL, NOINVERT
+    "8",            ID_MENU_OPEN_CMD_009,   VIRTKEY, CONTROL, NOINVERT
+    "9",            ID_MENU_OPEN_CMD_010,   VIRTKEY, CONTROL, NOINVERT
 END
 
 #endif    // Neutral (Default) resources
@@ -418,6 +423,29 @@ BEGIN
                     WS_TABSTOP
 END
 
+IDD_EDIT_OPENERS_DLG DIALOG DISCARDABLE  0, 0, 268, 141
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Edit Openers"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LISTBOX         IDC_OPENER_LIST,7,16,90,94,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Up",IDC_BTN_UP,101,19,15,14
+    PUSHBUTTON      "Dn",IDC_BTN_DOWN,101,36,15,14
+    PUSHBUTTON      ">",IDC_BTN_EDIT,101,55,15,14
+    EDITTEXT        IDC_OPENER_TITLE,126,27,129,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EXECUTION_STRING,126,56,130,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "Change current",IDC_BTN_CHANGE,119,96,69,14
+    PUSHBUTTON      "Insert new",IDC_BTN_INSERT,195,96,66,14
+    DEFPUSHBUTTON   "Close",IDOK,105,120,50,14
+    LTEXT           "Openers:",IDC_STATIC,7,6,30,8
+    GROUPBOX        "Opener configuration",IDC_STATIC,119,7,142,83
+    LTEXT           "Execution string:",IDC_STATIC,126,47,53,8
+    LTEXT           "use %s for an IP address",IDC_STATIC,126,73,78,8
+    LTEXT           "Menu item title:",IDC_STATIC,126,18,48,8
+    PUSHBUTTON      "Del",IDC_BTN_DELETE,101,74,15,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -489,6 +517,14 @@ BEGIN
         RIGHTMARGIN, 179
         TOPMARGIN, 7
         BOTTOMMARGIN, 56
+    END
+
+    IDD_EDIT_OPENERS_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 261
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 134
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -630,7 +666,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_VERSION             "2.11"
+    IDS_VERSION             "2.12"
     IDS_SCAN_HOMEPAGE       "http://www.angryziber.com/ipscan/"
     IDS_HOMEPAGE            "http://www.angryziber.com/"
     IDS_MAIL                "angryziber@angryziber.com"
