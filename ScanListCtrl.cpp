@@ -91,7 +91,7 @@ void CScanListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
 	// Labels are offset by a certain amount  
 	// This offset is related to the width of a space character
-	int offset = pDC->GetTextExtent(_T(" "), 1 ).cx*2;
+	int offset = pDC->GetTextExtent(_T(" "), 1 ).cx * 2;
 
 	CRect rcHighlight;
 	CRect rcWnd;	
@@ -100,23 +100,25 @@ void CScanListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	rcHighlight.left = rcLabel.left;
 	
 	// Draw the background color
+	DWORD nColor;
+
 	if( bHighlight )
 	{		
 		pDC->SetBkColor(::GetSysColor(COLOR_HIGHLIGHT));
 
-		pDC->FillRect(rcHighlight, &CBrush(::GetSysColor(COLOR_HIGHLIGHT)));
+		nColor = ::GetSysColor(COLOR_HIGHLIGHT);		
 	}
 	else
 	{
-		DWORD nColor = ::GetSysColor(COLOR_WINDOW);		
+		nColor = ::GetSysColor(COLOR_WINDOW);		
 
-		if (nItem % 2 == 1) // Even
+		if (nItem & 1 == 1) // Even
 		{
 			nColor -= 0x200000;		// subtract 0x20 from Blue byte to make it more "yellow"
-		}		
-
-		pDC->FillRect(rcHighlight, &CBrush(nColor));			
+		}				
 	}
+
+	pDC->FillRect(rcHighlight, &CBrush(nColor));
 
 	// Draw port scan results below other results for each item
 	if (m_bShowPorts)
@@ -130,9 +132,9 @@ void CScanListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		GetOpenPorts(nItem, szOpenPorts);
 
 		if (szOpenPorts.GetLength() == 0)
-			szOpenPorts = "Open ports: ???";
+			szOpenPorts = "  Open ports: ???";
 		else
-			szOpenPorts = "Open ports: " + szOpenPorts;		
+			szOpenPorts = "  Open ports: " + szOpenPorts;		
 
 		pDC->DrawText(szOpenPorts, -1, rcCol, DT_LEFT | DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP 
 					| DT_BOTTOM | DT_END_ELLIPSIS);
