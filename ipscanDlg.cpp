@@ -26,6 +26,9 @@ UINT listofs,statusheight;
 CIpscanDlg* d;
 CWinApp *app;
 
+int bSortAscending = 1;
+int nSortedCol = -1;
+
 int ThreadProcRescanThisIP = -1;
 
 class CAboutDlg : public CDialog
@@ -153,6 +156,8 @@ BEGIN_MESSAGE_MAP(CIpscanDlg, CDialog)
 	ON_COMMAND(ID_GOTO_NEXTOPENPORT, OnGotoNextopenport)
 	ON_COMMAND(ID_GOTO_NEXTCLOSEDPORT, OnGotoNextclosedport)
 	ON_COMMAND(ID_GOTO_HOSTNAME, OnGotoHostname)
+	ON_NOTIFY(HDN_ITEMCLICKA, 0, OnItemclickListHeader)
+	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnItemclickListHeader)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -284,7 +289,7 @@ BOOL CIpscanDlg::OnInitDialog()
 
 	HMODULE hICMP = LoadLibrary("ICMP.DLL");
 	if (!hICMP) {
-		MessageBox("ICMP.DLL is not found. Program will not work.\nYou can find this DLL on Angry IP Scanner homepage: http://ipscan.angryziber.cjb.net/","Error",MB_OK | MB_ICONHAND);
+		MessageBox("ICMP.DLL is not found. Program will not work.\nYou can find this DLL on Angry IP Scanner homepage: http://www.angryipscanner.com/","Error",MB_OK | MB_ICONHAND);
 		exit(666);
 	}
 
@@ -609,6 +614,7 @@ dead_host:
 		}
 		if (d->m_display!=DO_ALL && ThreadProcRescanThisIP == -1) {
 			n = d->m_list.InsertItem(n,ipa,0); 
+			//d->m_list.SetItemData(n, n);
 		}
 		numalive++;
 		d->m_list.SetItem(n,0,LVIF_IMAGE,NULL,0,0,0,0);
@@ -675,6 +681,8 @@ exit_thread:
 void CIpscanDlg::OnTimer(UINT nIDEvent) 
 {	
 	 	
+	int i;
+	
 	if (m_curip<m_endip) {
 		if (numthreads>=m_maxthreads-1) return;
 		in_addr in;
@@ -682,8 +690,10 @@ void CIpscanDlg::OnTimer(UINT nIDEvent)
 		in.S_un.S_addr = htonl(m_curip);
 		ipa = inet_ntoa(in);
 		status(ipa);
-		if (m_display==DO_ALL)
-			m_list.InsertItem(m_list.GetItemCount(),ipa,2);
+		if (m_display==DO_ALL) {
+			i = m_list.InsertItem(m_list.GetItemCount(),ipa,2);
+			//m_list.SetItemData(i, i);
+		}
 		CWinThread *thr = AfxBeginThread(ThreadProc,(void*)m_curip);
 		if (m_startip < m_endip) {
 			m_curip++;
@@ -1303,4 +1313,61 @@ void CIpscanDlg::OnGotoHostname()
 	}
 
 	AfxMessageBox("\""+m_search+"\" was not found",MB_OK | MB_ICONWARNING);
+}
+
+int CALLBACK SortCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort) {
+   CString    strItem1 = d->m_list.GetItemText(lParam1, nSortedCol);
+   CString    strItem2 = d->m_list.GetItemText(lParam2, nSortedCol);
+
+   int ret,ip1,ip2;
+   
+   switch (nSortedCol) {
+	case CL_IP:
+		ip1 = ntohl(inet_addr(strItem1));
+		ip2 = ntohl(inet_addr(strItem2));
+		if (ip1>ip2) ret=1; else if (ip1<ip2) ret=-1; else ret=0;
+		break;
+	case CL_PINGTIME:
+		if (strItem1 == "N/A") ip1 = 0; else sscanf(strItem1,"%d",&ip1);
+		if (strItem2 == "N/A") ip2 = 0; else sscanf(strItem2,"%d",&ip2);
+		if (ip1>ip2) ret=1; else if (ip1<ip2) ret=-1; else ret=0;
+		break;
+	case CL_STATE:
+	case CL_HOSTNAME:
+	case CL_PORT:
+	case CL_ERROR:
+		ret = strcmp(strItem1, strItem2);
+		break;
+   }
+   
+   //MessageBoxA(0,strItem1+" "+strItem2,NULL,MB_OK);
+   return ret*bSortAscending;
+
+}
+
+
+
+void CIpscanDlg::OnItemclickListHeader(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
+	
+	if (m_scanning) return;
+	
+	if (phdn->iButton == 0) {  // left button
+		if( phdn->iItem == nSortedCol )
+	        bSortAscending = -bSortAscending;
+        else
+            bSortAscending = 1;
+
+        nSortedCol = phdn->iItem;
+
+        for (int i=0;i < m_list.GetItemCount();i++) {
+			m_list.SetItemData(i, i);
+		}
+
+		m_list.SortItems(&SortCompareFunc,0);
+
+	}
+		
+	*pResult = 0;
 }

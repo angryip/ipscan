@@ -120,6 +120,7 @@ protected:
 	afx_msg void OnGotoNextopenport();
 	afx_msg void OnGotoNextclosedport();
 	afx_msg void OnGotoHostname();
+	afx_msg void OnItemclickListHeader(NMHDR* pNMHDR, LRESULT* pResult);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

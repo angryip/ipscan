@@ -98,16 +98,16 @@ Resource81=IDR_MENU1 (Unknown language: 0x25
 Resource82=IDR_MENU1 (Unknown language: 0x25
 Resource83=IDR_MENU1 (Unknown language: 0x25
 Resource84=IDR_MENU1 (Unknown language: 0x25
-Resource85=IDD_SEARCH (English (U.S.))
+Resource85=IDD_IPSCAN_DIALOG (English (U.S.))
 Resource86=IDR_MENU1 (Unknown language: 0x25
-Resource87=IDR_MENU1 (Neutral (Default))
+Resource87=IDD_ABOUTBOX (English (U.S.))
 Resource88=IDR_MENU1 (Unknown language: 0x25
-Resource89=IDD_IPSCAN_DIALOG (English (U.S.))
+Resource89=IDR_MENU1 (Neutral)
 Resource90=IDR_MENU1 (Unknown language: 0x25
 Resource91=IDD_OPTIONS (Neutral (Default))
-Resource92=IDD_ABOUTBOX (English (U.S.))
+Resource92=IDD_SEARCH (English (U.S.))
 Class5=CSearchDlg
-Resource93=IDR_MENU1 (Neutral)
+Resource93=IDR_MENU1 (Neutral (Default))
 
 [CLS:CIpscanApp]
 Type=0
@@ -121,7 +121,7 @@ Type=0
 HeaderFile=ipscanDlg.h
 ImplementationFile=ipscanDlg.cpp
 Filter=D
-LastObject=ID_WINDOZESUCKS_RESCANIP
+LastObject=IDC_LIST
 BaseClass=CDialog
 VirtualFilter=dWC
 
