@@ -64,6 +64,7 @@ protected:
 
 	// Generated message map functions
 protected:
+	BOOL m_bSearchCaseSensitive;
 	void ShowErrorNothingSelected();
 	//{{AFX_MSG(CScanListCtrl)	
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);

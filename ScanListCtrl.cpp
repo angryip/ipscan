@@ -502,7 +502,7 @@ void CScanListCtrl::GoToNextAliveIP()
 	if (i == -1)
 		return;
 	
-	for (; i < GetItemCount(); i++) 
+	for (i++; i < GetItemCount(); i++) 
 	{
 		if (!(GetItemText(i, CL_PING) == "Dead")) 
 		{
@@ -520,7 +520,7 @@ void CScanListCtrl::GoToNextDeadIP()
 	if (i == -1)
 		return;
 	
-	for (; i < GetItemCount(); i++) 
+	for (i++; i < GetItemCount(); i++) 
 	{
 		if (GetItemText(i, CL_PING) == "Dead") 
 		{
@@ -532,12 +532,15 @@ void CScanListCtrl::GoToNextDeadIP()
 
 void CScanListCtrl::GoToNextOpenPortIP()
 {
+	if (!g_options->m_bScanPorts)
+		return;
+
 	SetFocus();	
 	int i = GetCurrentSelectedItem();
 	if (i == -1)
 		return;
 	
-	for (; i < GetItemCount(); i++) 
+	for (i++; i < GetItemCount(); i++) 
 	{
 		if (GetItemText(i, m_nPortsColumn).GetAt(0) != 'N')		// "N/A" or "N/S"
 		{
@@ -549,12 +552,15 @@ void CScanListCtrl::GoToNextOpenPortIP()
 
 void CScanListCtrl::GoToNextClosedPortIP()
 {
+	if (!g_options->m_bScanPorts)
+		return;
+
 	SetFocus();	
 	int i = GetCurrentSelectedItem();
 	if (i == -1)
 		return;
 	
-	for (; i < GetItemCount(); i++) 
+	for (i++; i < GetItemCount(); i++) 
 	{
 		if (GetItemText(i, m_nPortsColumn).GetAt(0) == 'N')		// "N/A" or "N/S"
 		{
@@ -569,11 +575,13 @@ void CScanListCtrl::GoToNextSearchIP()
 	CSearchDlg cSearchDlg;
 
 	cSearchDlg.m_search = m_szSearchFor;
+	cSearchDlg.m_case = m_bSearchCaseSensitive;
 	
 	if (cSearchDlg.DoModal()==IDCANCEL) 
 		return;
 
 	m_szSearchFor = cSearchDlg.m_search;
+	m_bSearchCaseSensitive = cSearchDlg.m_case;
 
 	int i;
 
@@ -588,7 +596,7 @@ void CScanListCtrl::GoToNextSearchIP()
 	
 	SetFocus();	
 
-	if (cSearchDlg.m_case) 
+	if (m_bSearchCaseSensitive) 
 	{
 		for (; i < GetItemCount(); i++) 
 		{

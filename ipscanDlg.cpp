@@ -347,7 +347,7 @@ BOOL CIpscanDlg::OnInitDialog()
 
 	m_nScanMode = SCAN_MODE_NOT_SCANNING;
 
-	// Load menu		
+	// Load menu			
 	g_scanner->initMenuWithColumns(GetMenu()->GetSubMenu(INDEX_CONTEXT_MENU)->GetSubMenu(INDEX_SHOW_MENU));	// Show menu	
 	m_menuContext = GetMenu()->GetSubMenu(INDEX_CONTEXT_MENU);	// TODO: Should not be stored!
 
@@ -1314,7 +1314,7 @@ void CIpscanDlg::OnUtilsDeletefromlistClosedports()
 {
 	if (!g_options->m_bScanPorts)
 	{
-		MessageBox("Port scanning is not selected.", NULL, MB_OK | MB_ICONHAND);
+		MessageBox("Port scanning is not enabled.", NULL, MB_OK | MB_ICONHAND);
 		return;
 	}
 
@@ -1329,7 +1329,7 @@ void CIpscanDlg::OnUtilsDeletefromlistOpenports()
 {
 	if (!g_options->m_bScanPorts)
 	{
-		MessageBox("Port scanning is not selected.", NULL, MB_OK | MB_ICONHAND);
+		MessageBox("Port scanning is not enabled.", NULL, MB_OK | MB_ICONHAND);
 		return;
 	}
 
@@ -1347,7 +1347,7 @@ void CIpscanDlg::OnRescanIP()
 		return;
 	}
 
-	if (m_list.GetCurrentSelectedItem() == -1)
+	if (m_list.GetCurrentSelectedItem(FALSE) == -1)
 	{
 		MessageBox("No items selected", NULL, MB_OK | MB_ICONHAND);
 		return;
@@ -1386,11 +1386,12 @@ void CIpscanDlg::OnCommandsDeleteIP()
 		return;
 	}
 
-	if (m_list.GetCurrentSelectedItem() == -1)
+	if (m_list.GetCurrentSelectedItem(FALSE) == -1)
 	{
 		MessageBox("No items selected", NULL, MB_OK | MB_ICONHAND);
 		return;
-	}
+	}	
+	
 
 	m_list.DeleteSelectedItems();
 }
