@@ -39,6 +39,7 @@ public:
 
 	// Generated message map functions
 protected:		
+	void PaintLink(CString &szText, COLORREF crColor);
 	//{{AFX_MSG(CLink)
 	afx_msg void OnPaint();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

@@ -34,17 +34,14 @@ CLink::~CLink()
 {
 }
 
-/////////////////////////////////////////////////////////////////////////////
-// CLink message handlers
-
-void CLink::OnPaint() 
+void CLink::PaintLink(CString &szText, COLORREF crColor)
 {
 	CPaintDC dc(this); // device context for painting
-	
+
 	RECT rc;
 	GetClientRect(&rc);
 
-	dc.SetTextColor(m_crText);
+	dc.SetTextColor(crColor);
 	dc.SetBkMode(TRANSPARENT);
 
 	CFont fnt;
@@ -52,11 +49,19 @@ void CLink::OnPaint()
 	
 	dc.SelectObject(fnt);
 	
-	CString szText;
+	dc.DrawText(szText, &rc, DT_CENTER);
+}
 
+/////////////////////////////////////////////////////////////////////////////
+// CLink message handlers
+
+void CLink::OnPaint() 
+{	
+	
+	CString szText;
 	GetWindowText(szText);
 
-	dc.DrawText(szText, &rc, DT_CENTER);
+	PaintLink(szText, m_crText);	
 	
 }
 
@@ -69,11 +74,7 @@ void CLink::PreSubclassWindow()
 }
 
 void CLink::OnLButtonDown(UINT nFlags, CPoint point) 
-{
-	CString szText;
-	GetWindowText(szText);
-
-	// TODO: change color here
+{	
 	
 	CStatic::OnLButtonDown(nFlags, point);
 }
@@ -88,3 +89,4 @@ BOOL CLink::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	
 	return CStatic::OnSetCursor(pWnd, nHitTest, message);
 }
+

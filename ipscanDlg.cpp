@@ -8,6 +8,7 @@
 #include "SearchDlg.h"
 #include "ms_icmp.h"
 #include "link.h"
+#include "CommandLine.h";
 #include <winbase.h>
 
 #ifdef _DEBUG
@@ -325,26 +326,9 @@ BOOL CIpscanDlg::OnInitDialog()
 	hAccel = LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MENU1));
 	//m_menucuritem = -1;
 
-	if (__argc!=1) {
-	
-		if (__argc<3 || __argc>4 || strlen(__targv[1])<7 || strlen(__targv[2])<7) {
-	
-			MessageBox("Command-line usage:\n"
-			   "ipscan.exe <start_ip> <end_ip> [filename]\n"
-			   "\tstart_ip\t- starting IP address\n"
-			   "\tend_ip\t- ending IP address\n"
-			   "\tfilename\t- filename to save listing to (optional)\n"
-			   "Note: if 3rd parameter is given, then the program will\n"
-			   "close after saving data to a file",
-			   "Angry IP Scanner Help",MB_OK | MB_ICONINFORMATION);
-			d->CloseWindow();
-		}
-		
-
-		MessageBox("Scanning "+(CString)__targv[1]+" to "+(CString)__targv[2],"",0);
-	}
-	
-	
+	CCommandLine *cCmdLine = new CCommandLine();
+	cCmdLine->process();
+	delete cCmdLine;
 	
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -400,7 +384,8 @@ HCURSOR CIpscanDlg::OnQueryDragIcon()
 	return (HCURSOR) m_hIcon;
 }
 
-void CIpscanDlg::status(LPCSTR str) {
+void CIpscanDlg::status(LPCSTR str) 
+{
 	SetDlgItemText(IDC_STATUS,str);
 }
 
@@ -434,7 +419,8 @@ void CIpscanDlg::OnButton1()
 		m_endip = ntohl(inet_addr((char*)&str));
 		m_endip++;
 
-		if (m_endip<m_startip) {
+		if (m_endip<m_startip) 
+		{
 			MessageBox("Ending IP address is lower than starting.",NULL,MB_OK | MB_ICONHAND);
 			return;
 		}

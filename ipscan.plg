@@ -3,28 +3,47 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: ipscan - Win32 Release--------------------
+--------------------Configuration: ipscan - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\anton\LOCALS~1\Temp\RSP116.tmp" with contents
+Creating temporary file "C:\DOCUME~1\anton\LOCALS~1\Temp\RSP63.tmp" with contents
 [
-/nologo /subsystem:windows /incremental:no /pdb:"Release/ipscan.pdb" /machine:I386 /out:"Release/ipscan.exe" 
-.\Release\ipscan.obj
-.\Release\ipscanDlg.obj
-.\Release\OptionsDlg.obj
-.\Release\SearchDlg.obj
-.\Release\StdAfx.obj
-.\Release\ipscan.res
-.\Release\Link.obj
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/ipscan.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\ipscan\ipscanDlg.cpp"
 ]
-Creating command line "link.exe @C:\DOCUME~1\anton\LOCALS~1\Temp\RSP116.tmp"
+Creating command line "cl.exe @C:\DOCUME~1\anton\LOCALS~1\Temp\RSP63.tmp" 
+Creating temporary file "C:\DOCUME~1\anton\LOCALS~1\Temp\RSP64.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:yes /pdb:"Debug/ipscan.pdb" /debug /machine:I386 /out:"Debug/ipscan.exe" /pdbtype:sept 
+.\Debug\ipscan.obj
+.\Debug\ipscanDlg.obj
+.\Debug\Link.obj
+.\Debug\OptionsDlg.obj
+.\Debug\SearchDlg.obj
+.\Debug\StdAfx.obj
+.\Debug\ipscan.res
+.\Debug\CommandLine.obj
+]
+Creating command line "link.exe @C:\DOCUME~1\anton\LOCALS~1\Temp\RSP64.tmp"
 <h3>Output Window</h3>
+Compiling...
+ipscanDlg.cpp
+C:\ipscan\ipscanDlg.cpp(11) : warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\ipscan\ipscanDlg.cpp(1057) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\ipscan\ipscanDlg.cpp(1057) : warning C4309: '=' : truncation of constant value
+C:\ipscan\ipscanDlg.cpp(1066) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\ipscan\ipscanDlg.cpp(1066) : warning C4309: '=' : truncation of constant value
+C:\ipscan\ipscanDlg.cpp(1066) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\ipscan\ipscanDlg.cpp(1066) : warning C4309: '=' : truncation of constant value
 Linking...
+Creating command line "bscmake.exe /nologo /o"Debug/ipscan.bsc"  .\Debug\StdAfx.sbr .\Debug\ipscan.sbr .\Debug\ipscanDlg.sbr .\Debug\Link.sbr .\Debug\OptionsDlg.sbr .\Debug\SearchDlg.sbr .\Debug\CommandLine.sbr"
+Creating browse info file...
+<h3>Output Window</h3>
 
 
 
 <h3>Results</h3>
-ipscan.exe - 0 error(s), 0 warning(s)
+ipscan.exe - 0 error(s), 7 warning(s)
 </pre>
 </body>
 </html>
