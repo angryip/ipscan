@@ -17,6 +17,7 @@
 #include "ipscan.h"
 #include "ipscanDlg.h"
 #include "IPFeedDlgFactory.h"
+#include "mmsystem.h"
 #include "OptionsDlg.h"
 #include "SearchDlg.h"
 #include "InstallDlg.h"
@@ -672,9 +673,6 @@ void CIpscanDlg::OnButtonScan()
 
 			status(NULL);	// Ready
 
-			// Get attention of the user
-			FlashWindow(TRUE);
-
 			if (m_szDefaultFileName)
 			{
 				// Program was invoked via command-line, so save data to file & exit
@@ -715,7 +713,11 @@ void CIpscanDlg::OnButtonScan()
 
 				if (bShowScanInfo)
 				{
-					ShowCompleteInformation();
+					// Get attention of the user					
+					FlashWindow(TRUE);
+					PlaySound("SystemExclamation", NULL, SND_ALIAS | SND_ASYNC);
+					// Show info
+					ShowCompleteInformation();					
 				}
 			}
 
