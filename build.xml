@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<project basedir="." name="ipscan" default="all">
+
+	<property name="dist" value="dist"/>
+	<property name="ext" value="ext"/>
+	<property name="src" value="src"/>
+	<property name="test" value="test"/>
+	<property name="testresults" value="testresults"/>
+			
+	<property name="version" value="2.99a"/>
+	<property name="main.class" value="net.azib.ipscan.Main"/>
+	<property name="swt.jars" value="../swt"/>
+	<property name="retroguard.jar" value="${ext}/retroguard/retroguard.jar"/>
+	<property name="emma.dir" value="${ext}/emma"/>
+	<property name="ext.src" value="${ext}/rocksaw/src:${ext}/vserv-tcpip/src"/>
+	
+	<taskdef name="obfuscate" classname="COM.rl.ant.RetroGuardTask" classpath="${retroguard.jar}"/>
+	
+	<path id="emma.lib">
+		<pathelement location="${emma.dir}/emma.jar" />
+		<pathelement location="${emma.dir}/emma_ant.jar" />
+	</path>
+
+	<taskdef resource="emma_ant.properties" classpathref="emma.lib"/>
+	
+	<patternset id="classpath.resources">
+		<exclude name="**/*.java"/>
+	</patternset>
+
+	<target name="all" depends="cleanup,compile,compile-tests,test,package,cleanup_end"/>
+
+	<target name="all-linux" depends="cleanup,compile,compile-tests,test,package-linux,cleanup_end"/>
+
+	<target name="cleanup">
+		<delete dir="classes-${src}"/>
+		<delete dir="classes-${test}"/>
+		<!--<delete dir="${testresults}"/>-->
+	</target>
+	
+    <target name="cleanup_end">
+        <antcall target="cleanup"/>
+    </target>
+
+	<macrodef name="compile">
+		<attribute name="path"/>
+		<attribute name="dest" default="@{path}"/>
+		<attribute name="extpath" default=""/>
+		<attribute name="debug" default="false"/>
+		<attribute name="optimize" default="true"/>
+		<sequential>
+			<mkdir dir="classes-@{dest}"/>
+			<javac destdir="classes-@{dest}" debug="@{debug}" source="1.4" target="1.4" optimize="@{optimize}">
+				<src path="@{path}"/>
+				<src path="@{extpath}"/>				
+				<classpath>
+					<fileset dir="${ext}" includes="**/*.jar"/>
+					<fileset dir="${swt.jars}" includes="*.jar"/>
+				</classpath>
+			</javac>
+			<copy todir="classes-@{dest}">
+				<fileset dir="@{path}">
+					<patternset refid="classpath.resources"/>
+				</fileset>
+			</copy>
+		</sequential>
+	</macrodef>
+
+	<target name="compile">
+		<compile path="${src}" extpath="${ext.src}"/>
+	</target>
+	
+	<path id="test.path" path="classes-${test}"/>
+
+	<target name="compile-tests">
+		<compile path="${src}" dest="${test}" extpath="${ext.src}" debug="true"/>
+		<emma>
+			<instr instrpathref="test.path" destdir="classes-${test}.instr" metadatafile="${testresults}/metadata.emma" merge="false" filter="net.azib.ipscan.*"/>
+		</emma>
+		<copy todir="classes-${test}" overwrite="true">
+			<fileset dir="classes-${test}.instr" includes="**/*.class"/>
+		</copy>
+		<delete dir="classes-${test}.instr"/>
+		<compile path="${test}" dest="${test}" debug="true"/>
+	</target>
+
+	<target name="test">
+		<mkdir dir="${testresults}"/>
+		<delete file="coverage.ec"/>
+		<junit haltonfailure="true" showoutput="true" dir="${basedir}" fork="on" forkmode="once">
+			<classpath>
+				<dirset dir="classes-${test}"/>
+				<fileset dir="${swt.jars}" includes="*.jar"/>
+				<path refid="emma.lib"/>
+			</classpath>
+			<formatter type="brief"/>
+			<batchtest todir="${testresults}">
+				<fileset dir="classes-${test}" includes="**/*Test.class"/>
+			</batchtest>
+		</junit>
+		<emma>
+			<report sourcepath="${src}" encoding="us-ascii">
+				<fileset dir="${basedir}" includes="coverage.ec"/>
+				<fileset dir="${testresults}" includes="*.emma"/>
+				<txt outfile="${testresults}/coverage.txt"/>
+				<html outfile="${testresults}/coverage.html"/>
+			</report>
+		</emma>
+	</target>
+	
+<!--
+	<target name="changelog" if="label">
+		<exec dir="${basedir}" executable="${basedir}/../build/cvs2cl.pl" failonerror="true">
+			 <arg line="- -file changelog.txt - -tags - -branches - -revisions -g -Q -l -d'2 months ago&lt;today'"/>
+		</exec>
+	</target>
+-->
+
+	<target name="package">
+		<delete dir="${dist}"/>
+		<mkdir dir="${dist}"/>
+		<jar destfile="${dist}/${ant.project.name}.jar">
+			<manifest>
+				<attribute name="Main-Class" value="${main.class}"/>
+				<attribute name="AngryIPScanner" value="${version}"/>
+			</manifest>
+			<fileset dir="classes-${src}"/>
+		</jar>
+	</target>
+
+	<target name="package-linux">
+		<delete dir="${dist}"/>
+		<mkdir dir="${dist}"/>
+		<unzip src="${swt.jars}/swt-gtk.jar" dest="classes-${src}"/>
+		<delete includeemptydirs="true">
+			<fileset dir="classes-${src}" file="version.txt"/>
+			<fileset dir="classes-${src}/org/eclipse/swt/browser"/>
+			<fileset dir="classes-${src}/org/eclipse/swt/internal/mozilla"/>
+			<fileset dir="classes-${src}/org/eclipse/swt/internal/image">
+				<include name="JPEG*"/>
+				<include name="OS2*"/>
+				<include name="PNG*"/>
+				<include name="Png*"/>
+				<include name="TIFF*"/>
+				<include name="Win*"/>
+			</fileset>
+			<fileset dir="classes-${src}/org/eclipse/swt/custom"/>
+			<!--<fileset dir="classes-${src}/org/eclipse/swt/widgets/XXX*"/>-->
+			<fileset dir="classes-${src}/org/eclipse/swt/dnd"/>
+			<fileset dir="classes-${src}/org/eclipse/swt/awt"/>
+		</delete>
+		<jar destfile="${dist}/${ant.project.name}.jar">
+			<manifest>
+				<attribute name="Main-Class" value="${main.class}"/>
+				<attribute name="AngryIPScanner" value="${version}"/>
+			</manifest>
+			<fileset dir="classes-${src}"/>
+		</jar>
+		<obfuscate infile="${dist}/${ant.project.name}.jar" outfile="${dist}/${ant.project.name}-obf.jar" rgsfile="${ext}/retroguard/retroguard.conf"/>
+	</target>
+
+</project>
