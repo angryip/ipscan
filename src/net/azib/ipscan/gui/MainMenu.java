@@ -4,10 +4,12 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsActions;
 import net.azib.ipscan.gui.actions.FavoritesActions;
 import net.azib.ipscan.gui.actions.FileActions;
+import net.azib.ipscan.gui.actions.GotoActions;
 import net.azib.ipscan.gui.actions.HelpActions;
 import net.azib.ipscan.gui.actions.ToolsActions;
 
@@ -74,12 +76,11 @@ public class MainMenu {
 			},
 			new Object[] {"menu.goto",  
 				new Object[] {
-					new Object[] {"menu.goto.aliveHost", new Integer(SWT.CONTROL | 'H'), null},
-					new Object[] {"menu.goto.deadHost", new Integer(SWT.CONTROL | 'E'), null},
-					new Object[] {"menu.goto.openPort", new Integer(SWT.CONTROL | 'P'), null},
-					new Object[] {"menu.goto.closedPort", new Integer(SWT.CONTROL | 'L'), null},
+					new Object[] {"menu.goto.aliveHost", new Integer(SWT.CONTROL | 'H'), new GotoActions.NextHost(mainWindow, ScanningSubject.RESULT_TYPE_ALIVE)},
+					new Object[] {"menu.goto.deadHost", new Integer(SWT.CONTROL | 'E'), new GotoActions.NextHost(mainWindow, ScanningSubject.RESULT_TYPE_DEAD)},
+					new Object[] {"menu.goto.openPort", new Integer(SWT.CONTROL | 'P'), new GotoActions.NextHost(mainWindow, ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO)},
 					null,
-					new Object[] {"menu.goto.find", new Integer(SWT.CONTROL | 'F'), null},
+					new Object[] {"menu.goto.find", new Integer(SWT.CONTROL | 'F'), new GotoActions.Find(mainWindow)},
 				}	
 			},
 			new Object[] {"menu.commands",  

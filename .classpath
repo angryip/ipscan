@@ -9,7 +9,7 @@
 	<classpathentry sourcepath="ECLIPSE_HOME/plugins/org.eclipse.jdt.source_3.1.0/src/org.junit_3.8.1/junitsrc.zip" kind="var" path="JUNIT_HOME/junit.jar"/>
 	<classpathentry kind="lib" path="ext/rocksaw/lib/tmp.jar">
 		<attributes>
-			<attribute value="ipscan3/ext/rocksaw/lib" name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY"/>
+			<attribute value="ipscan/ext/rocksaw/lib" name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="/swt/src" kind="lib" path="/swt/swt-gtk.jar">

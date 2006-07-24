@@ -27,10 +27,16 @@ public class ScanningResult {
 		this.type = resultType;
 	}
 	
+	/**
+	 * @return the scanning results as List, result of each Fetcher is an element
+	 */
 	public List getValues() {
 		return values;
 	}
 	
+	/**
+	 * @return the scanning result type, see constants in {@link ScanningSubject}
+	 */
 	public int getType() {
 		return type;
 	}

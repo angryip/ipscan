@@ -43,7 +43,7 @@ public class InputDialog {
 		Display currentDisplay = Display.getCurrent();
 		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		
-		shell = new Shell(parent);
+		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		shell.setSize(new Point(300, 112));
 		shell.setLayout(null);
 		messageLabel = new Label(shell, SWT.NONE);
