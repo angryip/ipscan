@@ -45,7 +45,7 @@ public class GotoActions {
 			for (int i = startElement; i < numElements; i++) {
 				ScanningResult scanningResult = results.getResult(i);
 				
-				if (scanningResult.getType() == whatToSearchFor) {
+				if (scanningResult.getType() >= whatToSearchFor) {
 					resultTable.setSelection(i);
 					resultTable.setFocus();
 					return;

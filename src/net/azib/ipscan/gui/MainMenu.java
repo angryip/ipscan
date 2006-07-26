@@ -76,9 +76,9 @@ public class MainMenu {
 			},
 			new Object[] {"menu.goto",  
 				new Object[] {
-					new Object[] {"menu.goto.aliveHost", new Integer(SWT.CONTROL | 'H'), new GotoActions.NextHost(mainWindow, ScanningSubject.RESULT_TYPE_ALIVE)},
-					new Object[] {"menu.goto.deadHost", new Integer(SWT.CONTROL | 'E'), new GotoActions.NextHost(mainWindow, ScanningSubject.RESULT_TYPE_DEAD)},
-					new Object[] {"menu.goto.openPort", new Integer(SWT.CONTROL | 'P'), new GotoActions.NextHost(mainWindow, ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO)},
+					new Object[] {"menu.goto.aliveHost", new Integer(SWT.CONTROL | SWT.SHIFT | 'H'), new GotoActions.NextHost(mainWindow, ScanningSubject.RESULT_TYPE_ALIVE)},
+					new Object[] {"menu.goto.deadHost", new Integer(SWT.CONTROL | SWT.SHIFT | 'D'), new GotoActions.NextHost(mainWindow, ScanningSubject.RESULT_TYPE_DEAD)},
+					new Object[] {"menu.goto.openPort", new Integer(SWT.CONTROL | SWT.SHIFT | 'P'), new GotoActions.NextHost(mainWindow, ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO)},
 					null,
 					new Object[] {"menu.goto.find", new Integer(SWT.CONTROL | 'F'), new GotoActions.Find(mainWindow)},
 				}	
