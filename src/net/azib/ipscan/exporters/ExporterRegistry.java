@@ -44,6 +44,10 @@ public class ExporterRegistry {
 		exporters.put(exporter.getFilenameExtension(), exporter);
 		exporter = new CSVExporter();
 		exporters.put(exporter.getFilenameExtension(), exporter);
+		exporter = new XMLExporter();
+		exporters.put(exporter.getFilenameExtension(), exporter);
+		exporter = new IPListExporter();
+		exporters.put(exporter.getFilenameExtension(), exporter);
 	}
 
 	/**

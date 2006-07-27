@@ -22,7 +22,7 @@ public abstract class AbstractExporterTestCase extends TestCase {
 	
 	protected Exporter exporter;
 	protected ByteArrayOutputStream outputStream;
-	private String outputContent;
+	protected String outputContent;
 	
 	public void testLabel() {
 		assertNotNull(Labels.getInstance().getString(exporter.getLabel()));

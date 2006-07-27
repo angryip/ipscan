@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.net.InetAddress;
 
 /**
  * CSV Exporter
@@ -16,52 +15,52 @@ import java.net.InetAddress;
  */
 public class CSVExporter implements Exporter {
 
-	/** CSV delimeter character */
+	/* CSV delimeter character */
 	static final char DELIMETER = ',';
-	/** Delimeter escaping character (if data contains DELIMETER) */
+	/* Delimeter escaping character (if data contains DELIMETER) */
 	static final char DELIMETER_ESCAPED = '.';
-	/** Newline character */
+	/* Newline character */
 	static final String NEWLINE = System.getProperty("line.separator");
 	
 	private Writer output;
 	private boolean isAppend;
 
-	/**
+	/*
 	 * @see net.azib.ipscan.exporters.Exporter#getLabel()
 	 */
 	public String getLabel() {
 		return "exporter.csv";
 	}
 
-	/**
+	/*
 	 * @see net.azib.ipscan.exporters.Exporter#getFilenameExtension()
 	 */
 	public String getFilenameExtension() {
 		return "csv";
 	}
 
-	/**
+	/*
 	 * @see net.azib.ipscan.exporters.Exporter#setAppend(boolean)
 	 */
 	public void setAppend(boolean append) {
 		isAppend = append;
 	}
 
-	/**
+	/*
 	 * @see net.azib.ipscan.exporters.Exporter#start(java.io.OutputStream, String)
 	 */
 	public void start(OutputStream outputStream, String feederInfo) {
 		output = new OutputStreamWriter(outputStream);
 	}
 
-	/**
+	/*
 	 * @see net.azib.ipscan.exporters.Exporter#end()
 	 */
 	public void end() throws IOException {
 		output.flush();
 	}
 	
-	/**
+	/*
 	 * @see net.azib.ipscan.exporters.Exporter#setFetchers(String[])
 	 */
 	public void setFetchers(String[] fetcherNames) throws IOException {
@@ -75,7 +74,7 @@ public class CSVExporter implements Exporter {
 		}
 	}
 
-	/**
+	/*
 	 * @see net.azib.ipscan.exporters.Exporter#nextAdressResults(InetAddress, Object[])
 	 */
 	public void nextAdressResults(Object[] results) throws IOException {
@@ -97,7 +96,7 @@ public class CSVExporter implements Exporter {
 		return o.toString().replace(DELIMETER, DELIMETER_ESCAPED);
 	}
 
-	/**
+	/*
 	 * @see net.azib.ipscan.exporters.Exporter#clone()
 	 */
 	public Object clone() throws CloneNotSupportedException {

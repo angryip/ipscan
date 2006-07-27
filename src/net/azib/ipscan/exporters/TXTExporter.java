@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.net.InetAddress;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -28,32 +27,32 @@ public class TXTExporter implements Exporter {
 	private boolean isAppend;
 	int[] padLengths;
 
-	/**
+	/*
 	 * @see net.azib.ipscan.exporters.Exporter#getLabel()
 	 */
 	public String getLabel() {
 		return "exporter.txt";
 	}
 
-	/**
+	/*
 	 * @see net.azib.ipscan.exporters.Exporter#getFilenameExtension()
 	 */
 	public String getFilenameExtension() {
 		return "txt";
 	}
 	
-	/**
+	/*
 	 * @see net.azib.ipscan.exporters.Exporter#setAppend(boolean)
 	 */
 	public void setAppend(boolean append) {
 		isAppend = append;
 	}
 
-	/**
+	/*
 	 * @see net.azib.ipscan.exporters.Exporter#start(java.io.OutputStream, String)
 	 */
 	public void start(OutputStream outputStream, String feederInfo) throws IOException {
-		output = new OutputStreamWriter(outputStream);
+		output = new OutputStreamWriter(outputStream, Labels.getInstance().getString("encoding"));
 		if (!isAppend) {
 			output.write(Labels.getInstance().getString("exporter.txt.generated"));
 			println(Version.FULL_NAME);
@@ -68,15 +67,14 @@ public class TXTExporter implements Exporter {
 		}
 	}
 
-	/**
+	/*
 	 * @see net.azib.ipscan.exporters.Exporter#end()
 	 */
 	public void end() throws IOException {
 		output.flush();
 	}
 	
-	/**
-	 * @throws IOException 
+	/*
 	 * @see net.azib.ipscan.exporters.Exporter#setFetchers(String[])
 	 */
 	public void setFetchers(String[] fetcherNames) throws IOException {
@@ -92,7 +90,7 @@ public class TXTExporter implements Exporter {
 		}
 	}
 
-	/**
+	/*
 	 * @see net.azib.ipscan.exporters.Exporter#nextAdressResults(InetAddress, Object[])
 	 */
 	public void nextAdressResults(Object[] results) throws IOException {
@@ -131,7 +129,7 @@ public class TXTExporter implements Exporter {
 		output.write(NEWLINE);
 	}
 
-	/**
+	/*
 	 * @see net.azib.ipscan.exporters.Exporter#clone()
 	 */
 	public Object clone() throws CloneNotSupportedException {
