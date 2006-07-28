@@ -18,7 +18,8 @@ public class FavoritesConfig {
 	private Preferences preferences = Config.getPreferences(); 
 	private Map favorites = new LinkedHashMap();
 
-	public FavoritesConfig() {
+	// package local constructor
+	FavoritesConfig() {
 		load();
 	}
 

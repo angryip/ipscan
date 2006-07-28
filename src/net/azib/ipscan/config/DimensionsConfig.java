@@ -14,14 +14,37 @@ import org.eclipse.swt.graphics.Rectangle;
  */
 public class DimensionsConfig {
 
-	private Preferences preferences = Config.getPreferences(); 
+	private Preferences preferences;
 	
-	public int windowHeight = preferences.getInt("windowHeight", 350);
-	public int windowWidth = preferences.getInt("windowWidth", 560);
-	public int windowTop = preferences.getInt("windowTop", 100);
-	public int windowLeft = preferences.getInt("windowLeft", 100);
-	public boolean isWindowMaximized = preferences.getBoolean("windowMaximized", false);
+	public int windowHeight;
+	public int windowWidth;
+	public int windowTop;
+	public int windowLeft;
+	public boolean isWindowMaximized;
 	
+	// package local constructor
+	DimensionsConfig() {
+		preferences = Config.getPreferences();
+		load();
+	}
+	
+	/**
+	 * This constructor is for tests
+	 * @param preferences
+	 */
+	DimensionsConfig(Preferences preferences) {
+		this.preferences = preferences;
+		load();
+	}
+
+	private void load() {
+		windowHeight = preferences.getInt("windowHeight", 350);
+		windowWidth = preferences.getInt("windowWidth", 560);
+		windowTop = preferences.getInt("windowTop", 100);
+		windowLeft = preferences.getInt("windowLeft", 100);
+		isWindowMaximized = preferences.getBoolean("windowMaximized", false);		
+	}
+
 	public void store() {
 		if (!isWindowMaximized) {
 			preferences.putInt("windowHeight", windowHeight);
