@@ -33,10 +33,10 @@ public class IPListExporterTest extends AbstractExporterTestCase {
 		exporter.nextAdressResults(new Object[] {"", "123", "", "1,23; 4 56"});
 		exporter.end();
 		
-		assertContains("123:1\n");
-		assertContains("123:23\n");
-		assertContains("123:4\n");		
-		assertContains("123:56\n");		
+		assertContains("123:1");
+		assertContains("123:23");
+		assertContains("123:4");		
+		assertContains("123:56");		
 	}
 
 	public void testFetchersWithAppend() throws IOException {

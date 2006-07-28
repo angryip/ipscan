@@ -34,7 +34,7 @@ public class FavoritesConfig {
 	/**
 	 * Loads preferences
 	 */
-	private void load() {
+	void load() {
 		if (preferences == null) {
 			return;
 		}

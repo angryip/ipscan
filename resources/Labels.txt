@@ -66,6 +66,7 @@ text.find=Enter the text to search for
 text.find.notFound=Nothing was found.
 text.find.restart=Would you like to start from the beginning?
 text.about=%NAME\n\nVersion %VERSION\n%COPYLEFT\n\n<a>%WEBSITE</a>\n<a>%MAILTO</a>\n\nThis is an Open Source Software released under the GPL.
+text.gettingStarted=Dummy
 text.gettingStarted1=Angry IP Scanner is an IP address scanner tool.\n\nIt is used for scanning IP addresses for finding alive hosts, gathering any kind of needed information about each host.
 text.gettingStarted2=Main terminology:\n\nFeeder - generator of IP addresses for scanning. Angry IP Scanner provides various kinds of feeders: IP Range, Random, and IP List File. You can select a feeder using the combo box next to the "Start" button.\n\nFetcher - gathers specific information about a host, e.g. ping time, hostname, open ports. Feeders usually represent columns in the scanning results list.
 button.OK=OK

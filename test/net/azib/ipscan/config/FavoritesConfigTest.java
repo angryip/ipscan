@@ -16,7 +16,11 @@ import junit.framework.TestCase;
 public class FavoritesConfigTest extends TestCase {
 	
 	public void testAdd() {
-		FavoritesConfig favorites = new FavoritesConfig();
+		FavoritesConfig favorites = new FavoritesConfig() {
+			void load() {
+				// do nothing
+			}			
+		};
 		favorites.add("Mega favorite", "aaa:xxx");
 		assertEquals("aaa:xxx", favorites.get("Mega favorite"));
 		assertEquals(1, favorites.size());

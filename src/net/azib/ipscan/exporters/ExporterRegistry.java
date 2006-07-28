@@ -3,8 +3,8 @@
  */
 package net.azib.ipscan.exporters;
 
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -37,7 +37,7 @@ public class ExporterRegistry {
 	 * Private constructor
 	 */
 	private ExporterRegistry() {
-		exporters = new HashMap();
+		exporters = new LinkedHashMap();
 		Exporter exporter;
 		
 		exporter = new TXTExporter();
