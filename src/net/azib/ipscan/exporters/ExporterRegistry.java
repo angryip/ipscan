@@ -17,7 +17,7 @@ public class ExporterRegistry {
 	
 	private static ExporterRegistry instance;
 	
-	/** All available Exporter implementations, Map of Class instances */
+	/** All available Exporter implementations, Map of Exporter instances (prototypes) */
 	private Map exporters;
 	
 	static {

@@ -74,4 +74,21 @@ public class DimensionsConfig {
 		isWindowMaximized = isMaximized;
 	}
 
+	/**
+	 * @param fetcherName
+	 * @return column width corresponding to a fetcher
+	 */
+	public int getColumnWidth(String fetcherName) {
+		return preferences.getInt("columnWidth." + fetcherName, 90);
+	}
+	
+	/**
+	 * Persist the width of a column corresponding to a fetcher
+	 * @param fetcherName
+	 * @param width
+	 */
+	public void setColumnWidth(String fetcherName, int width) {
+		preferences.putInt("columnWidth." + fetcherName, width);
+	}
+
 }

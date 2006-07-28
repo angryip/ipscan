@@ -15,81 +15,66 @@ import junit.framework.TestCase;
  */
 public class FavoritesConfigTest extends TestCase {
 	
+	private Preferences preferences;
+	private FavoritesConfig config;
+
+	protected void setUp() throws Exception {
+		preferences = Preferences.userRoot().node("ipscan-test");
+		config = new FavoritesConfig(preferences);
+	}
+
+	protected void tearDown() throws Exception {
+		preferences.removeNode();
+	}
+	
 	public void testAdd() {
-		FavoritesConfig favorites = new FavoritesConfig() {
-			void load() {
-				// do nothing
-			}			
-		};
-		favorites.add("Mega favorite", "aaa:xxx");
-		assertEquals("aaa:xxx", favorites.get("Mega favorite"));
-		assertEquals(1, favorites.size());
+		config.add("Mega favorite", "aaa:xxx");
+		assertEquals("aaa:xxx", config.get("Mega favorite"));
+		assertEquals(1, config.size());
 	}
 	
 	public void testLoad() throws Exception {
-		Preferences prefs = Preferences.userRoot().node("ipscan-test");
-		
-		try {
-			prefs.put("favorites", "aa###aaa###bb###bbb###cc###ccc");
-			FavoritesConfig favorites = new FavoritesConfig(prefs);
+		preferences.put("favorites", "aa###aaa###bb###bbb###cc###ccc");
+		FavoritesConfig favorites = new FavoritesConfig(preferences);
 
-			assertEquals("aaa", favorites.get("aa"));
-			assertEquals("bbb", favorites.get("bb"));
-			assertEquals("ccc", favorites.get("cc"));
-			assertEquals(3, favorites.size());
-		}
-		finally {
-			prefs.removeNode();
-		}
+		assertEquals("aaa", favorites.get("aa"));
+		assertEquals("bbb", favorites.get("bb"));
+		assertEquals("ccc", favorites.get("cc"));
+		assertEquals(3, favorites.size());
 	}
 	
 	public void testOrder() throws Exception {
-		Preferences prefs = Preferences.userRoot().node("ipscan-test");
-		
-		try {
-			prefs.put("favorites", "aa###aaa###bb###bbb###cc###ccc");
-			FavoritesConfig favorites = new FavoritesConfig(prefs);
+		preferences.put("favorites", "aa###aaa###bb###bbb###cc###ccc");
+		FavoritesConfig favorites = new FavoritesConfig(preferences);
 
-			Iterator favoriteNames = favorites.iterateNames();
-			assertEquals("aa", favoriteNames.next());
-			assertEquals("bb", favoriteNames.next());
-			assertEquals("cc", favoriteNames.next());
-			assertFalse(favoriteNames.hasNext());
-		}
-		finally {
-			prefs.removeNode();
-		}
+		Iterator favoriteNames = favorites.iterateNames();
+		assertEquals("aa", favoriteNames.next());
+		assertEquals("bb", favoriteNames.next());
+		assertEquals("cc", favoriteNames.next());
+		assertFalse(favoriteNames.hasNext());
 	}
 	
 	public void testStore() throws Exception {
-		Preferences prefs = Preferences.userRoot().node("ipscan-test");
+		FavoritesConfig favorites = new FavoritesConfig(preferences);
 		
-		try {
-			FavoritesConfig favorites = new FavoritesConfig(prefs);
-			
-			favorites.add("x", "y");
-			favorites.add("Buga muga x,1,2,3,4,5", "opopo op : , . l ; - # | @@");
-			favorites.add("127.0.0.1", "192.168.2.25");
-			favorites.store();
-			
-			assertEquals("x###y###Buga muga x,1,2,3,4,5###opopo op : , . l ; - # | @@###127.0.0.1###192.168.2.25", prefs.get("favorites", ""));
-		}
-		finally {
-			prefs.removeNode();
-		}
+		favorites.add("x", "y");
+		favorites.add("Buga muga x,1,2,3,4,5", "opopo op : , . l ; - # | @@");
+		favorites.add("127.0.0.1", "192.168.2.25");
+		favorites.store();
+		
+		assertEquals("x###y###Buga muga x,1,2,3,4,5###opopo op : , . l ; - # | @@###127.0.0.1###192.168.2.25", preferences.get("favorites", ""));
 	}
 	
 	public void testUpdate() {
-		FavoritesConfig favorites = new FavoritesConfig();
-		favorites.add("z", "zzz");
-		favorites.add("y", "yyy");
-		favorites.add("x", "xxx");
+		config.add("z", "zzz");
+		config.add("y", "yyy");
+		config.add("x", "xxx");
 		
-		favorites.update(new String[] {"x", "z"});
+		config.update(new String[] {"x", "z"});
 		
-		Iterator i = favorites.iterateNames();
-		assertEquals("xxx", favorites.get((String)i.next()));
-		assertEquals("zzz", favorites.get((String)i.next()));
+		Iterator i = config.iterateNames();
+		assertEquals("xxx", config.get((String)i.next()));
+		assertEquals("zzz", config.get((String)i.next()));
 		assertFalse(i.hasNext());
 	}
 

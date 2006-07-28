@@ -3,21 +3,17 @@
  */
 package net.azib.ipscan.gui;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.DimensionsConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.fetchers.Fetcher;
-import net.azib.ipscan.fetchers.FilteredPortsFetcher;
-import net.azib.ipscan.fetchers.HostnameFetcher;
-import net.azib.ipscan.fetchers.IPFetcher;
-import net.azib.ipscan.fetchers.PingFetcher;
-import net.azib.ipscan.fetchers.PingTTLFetcher;
-import net.azib.ipscan.fetchers.PortsFetcher;
+import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsActions;
 
@@ -56,23 +52,28 @@ public class ResultTable extends Table {
 		setLinesVisible(true);
 		
 		// TODO: initialize fetchers before each scan
-		List fetchers = new ArrayList();
-		fetchers.add(new IPFetcher());
-		fetchers.add(new PingFetcher());
-		fetchers.add(new PingTTLFetcher());
-		fetchers.add(new HostnameFetcher());
-		fetchers.add(new PortsFetcher());
-		fetchers.add(new FilteredPortsFetcher());
+		List fetchers = FetcherRegistry.getInstance().getRegisteredFetchers();
 		scanningResults.setFetchers(fetchers);
 
 		Listener columnClickListener = new ColumnsActions.ColumnClick(columnsMenu);
+		Listener columnResizeListener = new Listener() {
+			public void handleEvent(Event event) {
+				// save column width
+				TableColumn column = (TableColumn) event.widget;
+				Config.getDimensionsConfig().setColumnWidth(column.getText(), column.getWidth());
+			}
+		};
+		
+		DimensionsConfig dimensionsConfig = Config.getDimensionsConfig();
 		
 		for (Iterator i = fetchers.iterator(); i.hasNext();) {
 			Fetcher fetcher = (Fetcher) i.next();
 			TableColumn tableColumn = new TableColumn(this, SWT.NONE);
-			tableColumn.setWidth(90);
-			tableColumn.setText(Labels.getInstance().getString(fetcher.getLabel()));
+			String fetcherName = Labels.getInstance().getString(fetcher.getLabel());
+			tableColumn.setWidth(dimensionsConfig.getColumnWidth(fetcherName));
+			tableColumn.setText(fetcherName);
 			tableColumn.addListener(SWT.Selection, columnClickListener);
+			tableColumn.addListener(SWT.Resize, columnResizeListener);
 		}
 		
 		// pre-load button images
