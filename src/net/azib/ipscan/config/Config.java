@@ -19,6 +19,8 @@ public final class Config {
 	private static GlobalConfig globalConfig;
 	/** favorites are stored here */
 	private static FavoritesConfig favoritesConfig;
+	/** various dimensions are stored here */
+	private static DimensionsConfig dimensionsConfig;
 	
 	private Config() {
 	}
@@ -30,11 +32,13 @@ public final class Config {
 		preferences = Preferences.userRoot().node("ipscan");
 		globalConfig = new GlobalConfig();
 		favoritesConfig = new FavoritesConfig();
+		dimensionsConfig = new DimensionsConfig();
 	}
 	
 	public static void store() {
 		globalConfig.store();
 		favoritesConfig.store();
+		dimensionsConfig.store();
 	}
 
 	public static Preferences getPreferences() {
@@ -53,6 +57,10 @@ public final class Config {
 	 */
 	public static FavoritesConfig getFavoritesConfig() {
 		return favoritesConfig;
+	}
+	
+	public static DimensionsConfig getDimensionsConfig() {
+		return dimensionsConfig;
 	}
 	
 }

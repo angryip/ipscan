@@ -23,22 +23,23 @@ public final class GlobalConfig {
 	private static final String ADAPT_PORT_TIMEOUT = "adaptPortTimeout";
 	private static final String PORT_STRING = "portString";
 	
-	public int maxThreads = Config.getPreferences().getInt(MAX_THREADS, 100);
-	public int threadDelay = Config.getPreferences().getInt(THREAD_DELAY, 20);
-	public int activeFeeder = Config.getPreferences().getInt(ACTIVE_FEEDER, 0);
-	public boolean scanDeadHosts = Config.getPreferences().getBoolean(SCAN_DEAD_HOSTS, false);
-	public int pingTimeout = Config.getPreferences().getInt(PING_TIMEOUT, 3000);
-	public int pingCount = Config.getPreferences().getInt(PING_COUNT, 3);
-	public boolean skipBroadcastAddresses = Config.getPreferences().getBoolean(SKIP_BROADCAST_ADDRESSES, true);
-	public int portTimeout = Config.getPreferences().getInt(PORT_TIMEOUT, 3000);;
-	public boolean adaptPortTimeout = Config.getPreferences().getBoolean(ADAPT_PORT_TIMEOUT, true);
-	public String portString = Config.getPreferences().get(PORT_STRING, "");
+	private Preferences preferences = Config.getPreferences();
+	
+	public int maxThreads = preferences.getInt(MAX_THREADS, 100);
+	public int threadDelay = preferences.getInt(THREAD_DELAY, 20);
+	public int activeFeeder = preferences.getInt(ACTIVE_FEEDER, 0);
+	public boolean scanDeadHosts = preferences.getBoolean(SCAN_DEAD_HOSTS, false);
+	public int pingTimeout = preferences.getInt(PING_TIMEOUT, 3000);
+	public int pingCount = preferences.getInt(PING_COUNT, 3);
+	public boolean skipBroadcastAddresses = preferences.getBoolean(SKIP_BROADCAST_ADDRESSES, true);
+	public int portTimeout = preferences.getInt(PORT_TIMEOUT, 3000);;
+	public boolean adaptPortTimeout = preferences.getBoolean(ADAPT_PORT_TIMEOUT, true);
+	public String portString = preferences.get(PORT_STRING, "");
 	
 	/**
 	 * Stores all the internal properties to the storage media
 	 */
 	public void store() {
-		Preferences preferences = Config.getPreferences();
 		preferences.putInt(MAX_THREADS, maxThreads);
 		preferences.putInt(THREAD_DELAY, threadDelay);
 		preferences.putInt(ACTIVE_FEEDER, activeFeeder);

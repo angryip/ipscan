@@ -21,7 +21,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
@@ -32,7 +31,9 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
@@ -88,7 +89,16 @@ public class MainWindow {
 		createStatusBar();
 		createTable();
 		
-		shell.setSize(new Point(500, 280));
+		shell.setBounds(Config.getDimensionsConfig().getWindowBounds());
+		shell.setMaximized(Config.getDimensionsConfig().isWindowMaximized);
+		
+		shell.addListener(SWT.Close, new Listener() {
+			public void handleEvent(Event event) {
+				// save dimensions!
+				Config.getDimensionsConfig().setWindowBounds(shell.getBounds(), shell.getMaximized());
+			}
+		});
+		
 		shell.open();
 	}
 
