@@ -9,14 +9,10 @@ import java.net.UnknownHostException;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.InetAddressUtils;
 import net.azib.ipscan.feeders.Feeder;
-import net.azib.ipscan.feeders.FeederException;
 import net.azib.ipscan.feeders.RandomFeeder;
+import net.azib.ipscan.gui.actions.FeederActions;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -106,7 +102,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		formData.bottom = new FormAttachment(ipPrototypeText, 0, SWT.BOTTOM);
 		ipMaskCombo.setLayoutData(formData);
         
-		HostnameSelectionListener hostnameSelectionListener = new HostnameSelectionListener();
+		FeederActions.HostnameButton hostnameSelectionListener = new FeederActions.HostnameButton(hostnameText, ipPrototypeText);
         try {
 			hostnameText.setText(InetAddress.getLocalHost().getHostName());
 		} 
@@ -146,11 +142,15 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		formData.left = new FormAttachment(countLabel);
 		formData.top = new FormAttachment(ipUpButton, 0, SWT.CENTER);
 		formData.right = new FormAttachment(ipMaskCombo, 0, SWT.RIGHT);
-//		formData.bottom = new FormAttachment(ipUpButton, 0, SWT.BOTTOM);
 		countSpinner.setLayoutData(formData);
 		
 		// fill the IP text with local IP address
-		hostnameSelectionListener.widgetSelected(null);
+		try {
+			ipPrototypeText.setText(InetAddressUtils.getAddressByName(hostnameText.getText()));
+		}
+		catch (UnknownHostException e) {
+			// don't report any errors on initialization
+		}
 		                        
 		pack();
 	}
@@ -171,28 +171,4 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		countSpinner.setSelection(Integer.parseInt(parts[2]));
 	}
 	
-	private final class HostnameSelectionListener implements SelectionListener, TraverseListener {
-		public void widgetDefaultSelected(SelectionEvent event) {
-			widgetSelected(event);
-		}
-
-		public void widgetSelected(SelectionEvent event) {
-			try {
-				String hostname = hostnameText.getText();
-				String address = InetAddressUtils.getAddressByName(hostname);
-				ipPrototypeText.setText(address);
-			} 
-			catch (UnknownHostException e) {
-				throw new FeederException("invalidHostname");
-			}
-		}
-		
-		public void keyTraversed(TraverseEvent e) {
-			if (e.detail == SWT.TRAVERSE_RETURN) {
-				widgetSelected(null);
-				e.doit = false;
-			}
-		}
-	}
-
 }

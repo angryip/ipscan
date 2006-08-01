@@ -77,8 +77,9 @@ public class InetAddressUtilsTest extends TestCase {
 	
 	public void testGetAddressByName() throws UnknownHostException {
 		// this test depends on the network configuraton of the system
-		// it may fail if operating system is Linux and there are no network interfaces configured, except for loopback
+		// it may fail if operating system is Linux and there are no network interfaces configured, except "lo" (loopback)
 		assertFalse(InetAddress.getByName(InetAddressUtils.getAddressByName(InetAddress.getLocalHost().getHostName())).isLoopbackAddress());
 		assertFalse(InetAddress.getByName(InetAddressUtils.getAddressByName("localhost")).isLoopbackAddress());
 	}
+	
 }

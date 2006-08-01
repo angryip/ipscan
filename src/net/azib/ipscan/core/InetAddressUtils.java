@@ -136,7 +136,7 @@ public class InetAddressUtils {
 		InetAddress address = InetAddress.getByName(hostname);
 		if (address.isLoopbackAddress()) {
 			// loopback address (127.0.0.1) was returned, try to find the local address 
-			// by enumeration network interfaces		
+			// by enumeration of network interfaces		
 			try {
 				outer: 
 				for (Enumeration i = NetworkInterface.getNetworkInterfaces(); i.hasMoreElements(); ) {
@@ -155,6 +155,6 @@ public class InetAddressUtils {
 			}
 		}
 		return address.getHostAddress();
-	}
+	}		
 
 }

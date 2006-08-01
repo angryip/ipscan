@@ -11,6 +11,7 @@ import net.azib.ipscan.core.InetAddressUtils;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederException;
 import net.azib.ipscan.feeders.RangeFeeder;
+import net.azib.ipscan.gui.actions.FeederActions;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -104,14 +105,21 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         endIPText.setLayoutData(formData);
         endIPText.addKeyListener(new EndIPKeyListener());
         
-		HostnameSelectionListener hostnameSelectionListener = new HostnameSelectionListener();
+        FeederActions.HostnameButton hostnameListener = new FeederActions.HostnameButton(hostnameText, startIPText) {
+			public void widgetSelected(SelectionEvent event) {
+				// raise the flag
+				isEndIPUnedited = true;
+				// now do the stuff
+				super.widgetSelected(event);
+			}
+        };
         try {
 			hostnameText.setText(InetAddress.getLocalHost().getHostName());
 		} 
         catch (UnknownHostException e1) {
 			// leave hostnameText empty
 		}
-        hostnameText.addTraverseListener(hostnameSelectionListener);
+        hostnameText.addTraverseListener(hostnameListener);
         formData = new FormData(105, SWT.DEFAULT);
 		formData.top = new FormAttachment(startIPText);
 		formData.left = new FormAttachment(startIPText, 0, SWT.LEFT);
@@ -124,7 +132,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		hostnameLabel.setLayoutData(formData);
 		
 		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
-		ipUpButton.addSelectionListener(hostnameSelectionListener);
+		ipUpButton.addSelectionListener(hostnameListener);
 		formData = new FormData(35, SWT.DEFAULT);
 		formData.top = new FormAttachment(endIPText);
 		formData.left = new FormAttachment(hostnameText);
@@ -152,7 +160,13 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		netmaskCombo.setLayoutData(formData);
 		
 		// fill the IP text with local IP address
-		hostnameSelectionListener.widgetSelected(null);
+		try {
+			startIPText.setText(InetAddressUtils.getAddressByName(hostnameText.getText()));
+			endIPText.setText(startIPText.getText());
+		}
+		catch (UnknownHostException e) {
+			// don't report any errors on initialization
+		}
                 
 		pack();
 	}
@@ -189,31 +203,6 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		}
 	}
 
-	private final class HostnameSelectionListener implements SelectionListener, TraverseListener {
-		public void widgetDefaultSelected(SelectionEvent event) {
-			widgetSelected(event);
-		}
-
-		public void widgetSelected(SelectionEvent event) {
-			try {
-				String hostname = hostnameText.getText();
-				String address = InetAddressUtils.getAddressByName(hostname);
-				isEndIPUnedited = true;
-				startIPText.setText(address);
-			} 
-			catch (UnknownHostException e) {
-				throw new FeederException("invalidHostname");
-			}
-		}
-		
-		public void keyTraversed(TraverseEvent e) {
-			if (e.detail == SWT.TRAVERSE_RETURN) {
-				widgetSelected(null);
-				e.doit = false;
-			}
-		}
-	}
-
 	private final class NetmaskSelectionListener implements SelectionListener, TraverseListener {
 		public void widgetDefaultSelected(SelectionEvent event) {
 			widgetSelected(event);
@@ -225,8 +214,6 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 				InetAddress netmask = InetAddressUtils.parseNetmask(netmaskString);
 				InetAddress startIP = InetAddress.getByName(startIPText.getText());
 				
-				// TODO: retrieve all addresses of the hostname and let user choose the correct one
-		
 				startIPText.setText(InetAddressUtils.startRangeByNetmask(startIP, netmask).getHostAddress());
 				endIPText.setText(InetAddressUtils.endRangeByNetmask(startIP, netmask).getHostAddress());
 				isEndIPUnedited = false;
