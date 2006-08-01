@@ -131,9 +131,13 @@ public class FeederActions {
 				}
 				else {
 					// emulate click on the single menu item
-					Event event = new Event();
-					event.widget = popupMenu.getItem(0);
-					menuItemListener.handleEvent(event);
+					if (popupMenu.getItemCount() == 1) {
+						Event event = new Event();
+						event.widget = popupMenu.getItem(0);
+						menuItemListener.handleEvent(event);
+					}
+					// otherwise, unable to retrieve any sane local addresses,
+					// leave the field as-is, which probably shows the loopback address already
 				}
 			}
 			catch (SocketException e) {
