@@ -7,9 +7,10 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.SortedSet;
+import java.util.Set;
 import java.util.TreeSet;
 
 import net.azib.ipscan.config.Config;
@@ -25,7 +26,8 @@ import net.azib.ipscan.core.net.Pinger;
  */
 public class PortsFetcher implements Fetcher {
 	
-	public static final String PARAMETER_PORTS = "ports";
+	private static final String PARAMETER_OPEN_PORTS = "openPorts";
+	private static final String PARAMETER_FILTERED_PORTS = "filteredPorts";
 	
 	// initialize options for this scan
 	private int timeout = Config.getGlobal().portTimeout;
@@ -42,16 +44,18 @@ public class PortsFetcher implements Fetcher {
 
 	/**
 	 * This method does the actual port scanning.
-	 * It then remembers the results for other exteding fetchers to use, like FilteredPortsFetcher.
+	 * It then remembers the results for other extending fetchers to use, like FilteredPortsFetcher.
 	 * @param subject
 	 */
-	protected SortedSet scanPorts(ScanningSubject subject) {
-		TreeSet portsList = (TreeSet) subject.getParameter(PARAMETER_PORTS);
+	protected void scanPorts(ScanningSubject subject) {
+		Set openPorts = getOpenPorts(subject);
 					
-		if (portsList == null) {
+		if (openPorts == null) {
 			// no results are available yet, let's proceed with the scanning
-			portsList = new TreeSet();
-			subject.setParameter(PARAMETER_PORTS, portsList);
+			openPorts = new TreeSet();
+			Set filteredPorts = new TreeSet();
+			subject.setParameter(PARAMETER_OPEN_PORTS, openPorts);
+			subject.setParameter(PARAMETER_FILTERED_PORTS, filteredPorts);
 
 			int adaptedTimeout = timeout;
 			
@@ -59,25 +63,27 @@ public class PortsFetcher implements Fetcher {
 			Pinger pinger = (Pinger) subject.getParameter(PingFetcher.PARAMETER_PINGER);
 			if (adaptTimeout && pinger != null && !pinger.isTimeout()) {
 				adaptedTimeout = Math.min(Math.max(pinger.getAverageTime() * 4, 30), timeout);
-			}			
+			}
 			
 			Socket socket = null;
-			// TODO: clone port iterator for performance instead of creating for every thread separately
+			// clone port iterator for performance instead of creating for every thread
 			for (PortIterator i = portIteratorPrototype.copy(); i.hasNext(); ) {
+				// TODO: UDP ports?
+				// TODO: reuse sockets?
+				socket = new Socket();
+				int port = i.next();
 				try {				
-					// TODO: UDP ports?
-					// TODO: reuse sockets?
-					socket = new Socket();
-					int port = i.next();
 					socket.connect(new InetSocketAddress(subject.getIPAddress(), port), adaptedTimeout);
 					if (socket.isConnected()) {
-						portsList.add(new Integer(port));
+						openPorts.add(new Integer(port));
 					}
 				}
+				catch (SocketTimeoutException e) {
+					filteredPorts.add(new Integer(port));
+				}
 				catch (IOException e) {
-					// connection refused stuff
+					// connection refused
 					assert e instanceof ConnectException : e;
-					// TODO: timeouts should be processed
 				}
 				finally {
 					if (socket != null) {
@@ -89,7 +95,22 @@ public class PortsFetcher implements Fetcher {
 				}
 			}
 		}
-		return portsList;
+	}
+
+	/**
+	 * @param subject
+	 * @return
+	 */
+	protected Set getFilteredPorts(ScanningSubject subject) {
+		return (Set) subject.getParameter(PARAMETER_FILTERED_PORTS);
+	}
+
+	/**
+	 * @param subject
+	 * @return
+	 */
+	protected Set getOpenPorts(ScanningSubject subject) {
+		return (Set) subject.getParameter(PARAMETER_OPEN_PORTS);
 	}
 	
 	/**
@@ -132,15 +153,16 @@ public class PortsFetcher implements Fetcher {
 		return sb.toString();
 	}
 
-	/**
+	/*
 	 * @see net.azib.ipscan.fetchers.Fetcher#scan(net.azib.ipscan.core.ScanningSubject)
 	 */
 	public String scan(ScanningSubject subject) {
-		SortedSet portsList = scanPorts(subject);
-		boolean portsFound = portsList.size() > 0;
+		scanPorts(subject);
+		Set openPorts = getOpenPorts(subject);
+		boolean portsFound = openPorts.size() > 0;
 		if (portsFound) {
 			subject.setResultType(ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO);
 		}
-		return portsFound ? portListToRange(portsList, displayAsRanges) : null;
+		return portsFound ? portListToRange(openPorts, displayAsRanges) : null;
 	}
 }

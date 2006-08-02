@@ -30,13 +30,15 @@ public class IPListExporterTest extends AbstractExporterTestCase {
 		
 		exporter.start(outputStream, "feederstuff");		
 		exporter.setFetchers(new String[] {"fetcher1", labels.getString("fetcher.ip"), "mega long fetcher 2", labels.getString("fetcher.ports")});
-		exporter.nextAdressResults(new Object[] {"", "123", "", "1,23; 4 56"});
+		exporter.nextAdressResults(new Object[] {"", "123", "", "1,23; 4-6 78"});
 		exporter.end();
 		
 		assertContains("123:1");
 		assertContains("123:23");
 		assertContains("123:4");		
-		assertContains("123:56");		
+		assertContains("123:5");		
+		assertContains("123:6");		
+		assertContains("123:78");		
 	}
 
 	public void testFetchersWithAppend() throws IOException {

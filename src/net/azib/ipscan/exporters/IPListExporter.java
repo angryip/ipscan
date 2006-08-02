@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.PortIterator;
 
 /**
  * IP List Exporter
@@ -104,9 +105,8 @@ public class IPListExporter implements Exporter {
 		}
 		
 		if (portList != null) {
-			String[] ports = (portList).split("\\D");
-			for (int i = 0; i < ports.length; i++) {
-				output.println(address + DELIMETER + ports[i]);
+			for (PortIterator i = new PortIterator(portList); i.hasNext(); ) {
+				output.println(address + DELIMETER + i.next());
 			}
 		}
 	}

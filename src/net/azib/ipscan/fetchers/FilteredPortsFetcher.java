@@ -2,7 +2,8 @@
  * 
  */
 package net.azib.ipscan.fetchers;
-import java.util.SortedSet;
+
+import java.util.Set;
 
 import net.azib.ipscan.core.ScanningSubject;
 
@@ -18,8 +19,9 @@ public class FilteredPortsFetcher extends PortsFetcher {
 	}
 
 	public String scan(ScanningSubject subject) {
-		SortedSet portsList = scanPorts(subject);
-		return portsList.size() > 0 ? "no filtered info: " +  portListToRange(portsList, displayAsRanges) : null;
+		scanPorts(subject);
+		Set filteredPorts = getFilteredPorts(subject);
+		return filteredPorts.size() > 0 ? portListToRange(filteredPorts, displayAsRanges) : null;
 	}
 
 }
