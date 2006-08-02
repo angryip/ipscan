@@ -74,7 +74,7 @@ public class FavoritesActions {
 	
 	public static class Edit implements Listener {
 		public void handleEvent(Event event) {
-			new EditFavoritesDialog();
+			new EditFavoritesDialog().open();
 		}
 	}
 

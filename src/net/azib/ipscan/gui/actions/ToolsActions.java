@@ -17,7 +17,7 @@ public class ToolsActions {
 
 	public static class Options implements Listener {
 		public void handleEvent(Event event) {
-			new OptionsWindow();
+			new OptionsWindow().open();
 		}
 	}
 

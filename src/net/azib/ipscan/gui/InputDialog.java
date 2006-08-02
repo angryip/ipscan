@@ -90,6 +90,7 @@ public class InputDialog {
 			if (!display.readAndDispatch()) 
 				display.sleep();
 		}
+		shell.dispose();
 		return message;
 	}
 

@@ -27,7 +27,7 @@ public class CommandsActions {
 
 		public void handleEvent(Event event) {
 			checkSelection(resultTable);
-			new DetailsWindow(resultTable); 
+			new DetailsWindow(resultTable).open(); 
 		}
 	}
 	

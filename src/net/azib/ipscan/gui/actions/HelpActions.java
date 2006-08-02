@@ -20,13 +20,13 @@ public class HelpActions {
 	
 	public static class GettingStarted implements Listener {
 		public void handleEvent(Event event) {
-			new GettingStartedWindow();
+			new GettingStartedWindow().open();
 		}
 	}
 
 	public static class About implements Listener { 		
 		public void handleEvent(Event event) { 
-			new AboutWindow(); 
+			new AboutWindow().open(); 
 		}
 	}
 

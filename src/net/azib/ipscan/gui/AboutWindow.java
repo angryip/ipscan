@@ -29,7 +29,16 @@ public class AboutWindow {
 
 	public AboutWindow() {
 		createShell();		
+	}
+	
+	public void open() {
 		shell.open();
+		Display display = Display.getCurrent();
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch()) 
+				display.sleep();
+		}
+		shell.dispose();
 	}
 
 	/**
