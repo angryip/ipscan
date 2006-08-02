@@ -104,8 +104,10 @@ public class FeederActions {
 				Menu popupMenu = new Menu(Display.getCurrent().getActiveShell(), SWT.POP_UP);
 				Listener menuItemListener = new Listener() {
 					public void handleEvent(Event event) {
-						String address = (String) event.widget.getData();
+						MenuItem menuItem = (MenuItem) event.widget;
+						String address = (String) menuItem.getData();
 						ipText.setText(address);
+						menuItem.getParent().dispose();
 					}
 				};
 				
@@ -135,6 +137,7 @@ public class FeederActions {
 						Event event = new Event();
 						event.widget = popupMenu.getItem(0);
 						menuItemListener.handleEvent(event);
+						popupMenu.dispose();
 					}
 					// otherwise, unable to retrieve any sane local addresses,
 					// leave the field as-is, which probably shows the loopback address already
