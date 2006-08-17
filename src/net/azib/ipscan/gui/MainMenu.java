@@ -31,6 +31,7 @@ public class MainMenu {
 	private Menu resultsContextMenu;
 	private Menu favoritesMenu;
 	private Menu columnsMenu;
+	private Menu openersMenu;
 		
 	public MainMenu(MainWindow mainWindow) {
 		
@@ -44,6 +45,19 @@ public class MainMenu {
 		
 		// generate the menu from the definition
 		generateMenu(shell, menuDefinition, mainMenu);
+		
+		openersMenu = new Menu(shell, SWT.DROP_DOWN);
+		MenuItem openersMenuItem = new MenuItem(mainMenu.getItem(2).getMenu(), SWT.CASCADE);
+		openersMenuItem.setText(Labels.getInstance().getString("menu.commands.open"));
+		openersMenuItem.setMenu(openersMenu);
+		CommandsActions.ShowOpenersMenu showOpenersMenuListener = new CommandsActions.ShowOpenersMenu(mainWindow, openersMenu);
+		openersMenu.addListener(SWT.Show, showOpenersMenuListener);
+		MenuItem menuItem = new MenuItem(openersMenu, SWT.PUSH);
+		menuItem.setText(Labels.getInstance().getString("menu.commands.open.edit"));
+		menuItem.addListener(SWT.Selection, new CommandsActions.EditOpeners());
+		menuItem = new MenuItem(openersMenu, SWT.SEPARATOR);
+		// run the listener to populate the menu initially and initialize accelerators
+		showOpenersMenuListener.handleEvent(null);
 		
 		// retrieve results context menu, that is the same as "commands" menu
 		// note: the index of 2 is hardcoded and may theoretically change
@@ -94,7 +108,6 @@ public class MainMenu {
 					new Object[] {"menu.commands.copyDetails", null, null},
 					null,
 					new Object[] {"menu.commands.show", null, null},
-					new Object[] {"menu.commands.open", null, null},
 				}	
 			},
 			new Object[] {"menu.favorites",  

@@ -19,9 +19,8 @@ import org.eclipse.swt.widgets.Button;
  *
  * @author anton
  */
-public class InputDialog {
+public class InputDialog extends AbstractModalDialog {
 
-	private Shell shell = null;  //  @jve:decl-index=0:visual-constraint="10,10"
 	private Label messageLabel = null;
 	private Text text = null;
 	private Button okButton = null;
@@ -73,7 +72,7 @@ public class InputDialog {
 		});
 	}
 	
-	public void setText(String text) {
+	private void setText(String text) {
 		this.text.setText(text);
 		this.text.setSelection(0, -1);
 	}
@@ -83,14 +82,9 @@ public class InputDialog {
 	 * 
 	 * @return the entered text or null in case of cancel.
 	 */
-	public String open() {
-		shell.open();
-		Display display = Display.getCurrent();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) 
-				display.sleep();
-		}
-		shell.dispose();
+	public String open(String text) {
+		setText(text);
+		super.open();
 		return message;
 	}
 

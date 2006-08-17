@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Shell;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.gui.MainWindow;
+import net.azib.ipscan.gui.UserErrorException;
 
 /**
  * The main executable class.
@@ -80,9 +81,14 @@ public class Main {
 		String localizedMessage;
 		try {
 			// try to load localized message
-			String exceptionClassName = getClassShortName(e.getClass());
-			String originalMessage = e.getMessage();
-			localizedMessage = Labels.getInstance().getString("exception." + exceptionClassName + (originalMessage != null ? "." + originalMessage : ""));
+			if (e instanceof UserErrorException) {
+				localizedMessage = e.getMessage();
+			}
+			else {
+				String exceptionClassName = getClassShortName(e.getClass());
+				String originalMessage = e.getMessage();
+				localizedMessage = Labels.getInstance().getString("exception." + exceptionClassName + (originalMessage != null ? "." + originalMessage : ""));
+			}
 			// add cause summary, if it exists
 			if (e.getCause() != null) {
 				localizedMessage += "\n\n" + e.getCause().toString();

@@ -20,9 +20,8 @@ import org.eclipse.swt.widgets.Text;
  *
  * @author anton
  */
-public class GettingStartedWindow {
+public class GettingStartedWindow extends AbstractModalDialog {
 
-	private Shell shell;  //  @jve:decl-index=0:visual-constraint="10,10"
 	private int activePage = 1;
 	private Text gettingStartedText;
 	private Button closeButton;
@@ -32,16 +31,6 @@ public class GettingStartedWindow {
 		createShell();		
 	}
 	
-	public void open() {
-		shell.open();
-		Display display = Display.getCurrent();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) 
-				display.sleep();
-		}
-		shell.dispose();
-	}
-
 	/**
 	 * This method initializes shell
 	 */

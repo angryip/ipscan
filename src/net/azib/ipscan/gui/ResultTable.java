@@ -144,7 +144,7 @@ public class ResultTable extends Table {
 	 */
 	public String getIPDetails() {
 		int selectedIndex = getSelectionIndex();
-		return scanningResults.getIPDetails(selectedIndex);
+		return scanningResults.getResultsAsString(selectedIndex);
 	}
 	
 	/**

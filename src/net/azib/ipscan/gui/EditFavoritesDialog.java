@@ -6,8 +6,8 @@ package net.azib.ipscan.gui;
 import java.util.Iterator;
 
 import net.azib.ipscan.config.Config;
-import net.azib.ipscan.config.FavoritesConfig;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.NamedListConfig;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -25,25 +25,14 @@ import org.eclipse.swt.widgets.Shell;
  *
  * @author anton
  */
-public class EditFavoritesDialog {
+public class EditFavoritesDialog extends AbstractModalDialog {
 
-	private Shell shell = null;
 	private List favoritesList;
 	
 	public EditFavoritesDialog() {
 		createShell();
 	}
 	
-	public void open() {
-		shell.open();
-		Display display = Display.getCurrent();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) 
-				display.sleep();
-		}
-		shell.dispose();
-	}
-
 	/**
 	 * This method initializes shell
 	 */
@@ -105,7 +94,7 @@ public class EditFavoritesDialog {
 	}
 	
 	private void saveFavorites() {
-		FavoritesConfig favoritesConfig = Config.getFavoritesConfig();
+		NamedListConfig favoritesConfig = Config.getFavoritesConfig();
 		favoritesConfig.update(favoritesList.getItems());
 		favoritesConfig.store();
 	}

@@ -29,9 +29,8 @@ import org.eclipse.swt.layout.RowLayout;
  *
  * @author anton
  */
-public class OptionsWindow {
+public class OptionsWindow extends AbstractModalDialog {
 
-	private Shell shell = null;  //  @jve:decl-index=0:visual-constraint="10,10"
 	private TabFolder tabFolder;
 	private Composite scanningTab;
 	private Composite displayTab;
@@ -54,16 +53,6 @@ public class OptionsWindow {
 		loadOptions();
 	}
 	
-	public void open() {
-		shell.open();
-		Display display = Display.getCurrent();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) 
-				display.sleep();
-		}
-		shell.dispose();
-	}
-
 	/**
 	 * This method initializes shell
 	 */

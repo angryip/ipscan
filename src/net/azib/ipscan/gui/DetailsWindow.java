@@ -19,26 +19,15 @@ import org.eclipse.swt.widgets.Text;
  *
  * @author anton
  */
-public class DetailsWindow {
+public class DetailsWindow extends AbstractModalDialog {
 
 	private ResultTable resultTable;
-	private Shell shell;
 		
 	public DetailsWindow(ResultTable resultTable) {
 		this.resultTable = resultTable;
 		createShell(resultTable.getShell());
 	}
 	
-	public void open() {
-		shell.open();
-		Display display = Display.getCurrent();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) 
-				display.sleep();
-		}
-		shell.dispose();
-	}
-
 	/**
 	 * This method initializes shell
 	 */

@@ -23,24 +23,12 @@ import org.eclipse.swt.widgets.Text;
  *
  * @author anton
  */
-public class AboutWindow {
-
-	private Shell shell;  //  @jve:decl-index=0:visual-constraint="10,10"
+public class AboutWindow extends AbstractModalDialog {
 
 	public AboutWindow() {
 		createShell();		
 	}
 	
-	public void open() {
-		shell.open();
-		Display display = Display.getCurrent();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) 
-				display.sleep();
-		}
-		shell.dispose();
-	}
-
 	/**
 	 * This method initializes shell
 	 */

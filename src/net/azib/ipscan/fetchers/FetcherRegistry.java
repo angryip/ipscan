@@ -54,4 +54,19 @@ public class FetcherRegistry {
 		return fetchers;
 	}
 	
+	/**
+	 * Searches for selected fetcher with the given label
+	 * @param label
+	 * @return the index, if found, or -1
+	 */
+	public int getSelectedFetcherIndex(String label) {
+		// TODO: this probably needs to be changed to reflect selected fetchers and be more effective
+		for (int i = 0; i < fetchers.size(); i++) {
+			if (label.equals(((Fetcher)fetchers.get(i)).getLabel())) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
 }

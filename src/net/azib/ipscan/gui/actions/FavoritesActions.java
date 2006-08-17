@@ -6,8 +6,8 @@ package net.azib.ipscan.gui.actions;
 import java.util.Iterator;
 
 import net.azib.ipscan.config.Config;
-import net.azib.ipscan.config.FavoritesConfig;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.NamedListConfig;
 import net.azib.ipscan.gui.EditFavoritesDialog;
 import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.MainWindow;
@@ -38,11 +38,10 @@ public class FavoritesActions {
 			InputDialog inputDialog = new InputDialog(
 					Labels.getInstance().getString("title.favorite.add"), 
 					Labels.getInstance().getString("text.favorite.add"));
-			inputDialog.setText(feederInfo);
-			String favoriteName = inputDialog.open();
+			String favoriteName = inputDialog.open(feederInfo);
 			
 			if (favoriteName != null) {
-				FavoritesConfig favoritesConfig = Config.getFavoritesConfig();
+				NamedListConfig favoritesConfig = Config.getFavoritesConfig();
 				if (favoritesConfig.get(favoriteName) != null) {
 					throw new UserErrorException("favorite.alreadyExists");
 				}
@@ -90,7 +89,7 @@ public class FavoritesActions {
 
 		public void handleEvent(Event event) {
 			// populate favorites in the menu
-			FavoritesConfig favoritesConfig = Config.getFavoritesConfig();
+			NamedListConfig favoritesConfig = Config.getFavoritesConfig();
 			
 			// note: 3 is the number of items in the menu when no favorites exist
 			// dispose old favorites

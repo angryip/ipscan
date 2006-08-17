@@ -18,7 +18,9 @@ public final class Config {
 	/** easily accessible global configuration */
 	private static GlobalConfig globalConfig;
 	/** favorites are stored here */
-	private static FavoritesConfig favoritesConfig;
+	private static NamedListConfig favoritesConfig;
+	/** openers are stored here */
+	private static OpenersConfig openersConfig;
 	/** various dimensions are stored here */
 	private static DimensionsConfig dimensionsConfig;
 	
@@ -32,12 +34,14 @@ public final class Config {
 		preferences = Preferences.userRoot().node("ipscan");
 		globalConfig = new GlobalConfig();
 		favoritesConfig = new FavoritesConfig();
+		openersConfig = new OpenersConfig();
 		dimensionsConfig = new DimensionsConfig();
 	}
-	
+
 	public static void store() {
 		globalConfig.store();
 		favoritesConfig.store();
+		openersConfig.store();
 		dimensionsConfig.store();
 	}
 
@@ -55,10 +59,20 @@ public final class Config {
 	/**
 	 * @return Favorites config (quick access);
 	 */
-	public static FavoritesConfig getFavoritesConfig() {
+	public static NamedListConfig getFavoritesConfig() {
 		return favoritesConfig;
 	}
+
+	/**
+	 * @return Openers config (quick access);
+	 */
+	public static OpenersConfig getOpenersConfig() {
+		return openersConfig;
+	}
 	
+	/**
+	 * @return Dimensions config (quick access);
+	 */
 	public static DimensionsConfig getDimensionsConfig() {
 		return dimensionsConfig;
 	}

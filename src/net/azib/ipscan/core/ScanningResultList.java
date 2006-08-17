@@ -33,7 +33,14 @@ public class ScanningResultList {
 		scanningResults.set(index, result);
 	}
 
-	public synchronized String getIPDetails(int index) {
+	/**
+	 * Returns all results for a particular IP address as a String.
+	 * This is used in showing the IP Details dialog box.
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public synchronized String getResultsAsString(int index) {
 		// TODO: what if a String is retrieved???
 		ScanningResult scanningResult = (ScanningResult) scanningResults.get(index);
 		StringBuffer details = new StringBuffer(1024);
@@ -63,7 +70,7 @@ public class ScanningResultList {
 	/**
 	 * @return an Iterator of scanning results
 	 */
-	public Iterator iterator() {
+	public synchronized Iterator iterator() {
 		return scanningResults.iterator();
 	}
 
@@ -71,6 +78,10 @@ public class ScanningResultList {
 		return scanningResults.get(tableIndex) instanceof ScanningResult;
 	}
 
+	/**
+	 * @param tableIndex
+	 * @return a results of a single IP adress, corresponding to an index
+	 */
 	public synchronized ScanningResult getResult(int tableIndex) {
 		// TODO: error handling
 		return (ScanningResult) scanningResults.get(tableIndex);
