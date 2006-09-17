@@ -50,7 +50,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(Labels.getInstance().getString("title.openers.edit"));
-		shell.setSize(new Point(405, 295));		
+		shell.setSize(new Point(405, 297));		
 		shell.setLayout(null);		
 		
 		Label messageLabel = new Label(shell, SWT.NONE);
@@ -93,12 +93,12 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		
 		Button okButton = new Button(shell, SWT.NONE);
 		okButton.setText(Labels.getInstance().getString("button.OK"));		
-		okButton.setBounds(new Rectangle(180, 240, 75, 22));
+		okButton.setBounds(new Rectangle(180, 238, 75, 25));
 		shell.setDefaultButton(okButton);
 		
 		Button cancelButton = new Button(shell, SWT.NONE);
 		cancelButton.setText(Labels.getInstance().getString("button.cancel"));		
-		cancelButton.setBounds(new Rectangle(265, 240, 75, 22));
+		cancelButton.setBounds(new Rectangle(265, 238, 75, 25));
 		
 		editGroup = new Group(shell, SWT.NONE);
 		editGroup.setBounds(205, 30, 185, 200);

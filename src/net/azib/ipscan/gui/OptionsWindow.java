@@ -61,14 +61,14 @@ public class OptionsWindow extends AbstractModalDialog {
 		shell = new Shell(currentDisplay != null ? currentDisplay.getActiveShell() : null, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		shell.setText(Labels.getInstance().getString("title.options"));
 		createTabFolder();
-		shell.setSize(new Point(350, 420));
+		shell.setSize(new Point(350, 423));
 		shell.setLayout(null);
 		okButton = new Button(shell, SWT.NONE);
-		okButton.setBounds(new Rectangle(175, 365, 75, 22));
+		okButton.setBounds(new Rectangle(175, 365, 75, 25));
 		okButton.setText("OK");
 		shell.setDefaultButton(okButton);
 		cancelButton = new Button(shell, SWT.NONE);
-		cancelButton.setBounds(new Rectangle(260, 365, 75, 22));
+		cancelButton.setBounds(new Rectangle(260, 365, 75, 25));
 		cancelButton.setText("Cancel");
 
 		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {

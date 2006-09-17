@@ -50,8 +50,8 @@ public class InputDialog extends AbstractModalDialog {
 		text = new Text(shell, SWT.BORDER);
 		text.setBounds(new Rectangle(5, 24, 281, 24));
 		okButton = new Button(shell, SWT.NONE);
-		okButton.setLocation(new Point(57, 59));
-		okButton.setSize(new Point(70, 22));
+		okButton.setLocation(new Point(57, 55));
+		okButton.setSize(new Point(70, 25));
 		okButton.setText(Labels.getInstance().getString("button.OK"));
 		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -61,8 +61,8 @@ public class InputDialog extends AbstractModalDialog {
 		});
 		shell.setDefaultButton(okButton);
 		cancelButton = new Button(shell, SWT.NONE);
-		cancelButton.setLocation(new Point(155, 59));
-		cancelButton.setSize(new Point(70, 22));
+		cancelButton.setLocation(new Point(155, 55));
+		cancelButton.setSize(new Point(70, 25));
 		cancelButton.setText(Labels.getInstance().getString("button.cancel"));
 		cancelButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {

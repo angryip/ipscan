@@ -38,7 +38,7 @@ public class AboutWindow extends AbstractModalDialog {
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(Labels.getInstance().getString("title.about"));
-		shell.setSize(new Point(400, 360));
+		shell.setSize(new Point(400, 363));
 		
 		Label iconLabel = new Label(shell, SWT.ICON);
 		iconLabel.setBounds(10, 10, 0, 0);
@@ -82,7 +82,7 @@ public class AboutWindow extends AbstractModalDialog {
 		
 		Button button = new Button(shell, SWT.NONE);
 		button.setText(Labels.getInstance().getString("button.close"));
-		button.setBounds(170, 305, 80, 22);
+		button.setBounds(170, 305, 80, 25);
 		button.setFocus();
 		button.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
