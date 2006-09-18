@@ -11,15 +11,15 @@ import java.util.prefs.Preferences;
 /**
  * This is a generic named list config.
  * Can be used for storing favorites, openers, and other 
- * user-defined configuration.
+ * user-defined configurations.
  *
  * @author anton
  */
 public class NamedListConfig {
 	
-	private String preferenceName;
-	private Preferences preferences = Config.getPreferences(); 
-	private Map namedList = new LinkedHashMap();
+	protected String preferenceName;
+	protected Preferences preferences = Config.getPreferences(); 
+	protected Map namedList = new LinkedHashMap();
 
 	// package local constructor
 	NamedListConfig(String preferenceName) {
@@ -48,9 +48,13 @@ public class NamedListConfig {
 		String[] namedListPrefs = preferences.get(preferenceName, "").split("###");
 		for (int i = 0; i < namedListPrefs.length; i += 2) {
 			if (namedListPrefs[i].length() > 0) {
-				namedList.put(namedListPrefs[i], namedListPrefs[i+1]);
+				namedList.put(namedListPrefs[i], serializeValue(namedListPrefs[i+1]));
 			}
 		}
+	}
+
+	Object serializeValue(String value) {
+		return value;
 	}
 
 	/**
@@ -72,12 +76,12 @@ public class NamedListConfig {
 	 * @param name displayed to the user
 	 * @param value to store according to the name
 	 */
-	public void add(String name, String value) {
+	public void add(String name, Object value) {
 		namedList.put(name, value);
 	}
 
 	/**
-	 * @param name favorite name
+	 * @param name name
 	 * @return stored value
 	 */
 	public String get(String name) {
@@ -85,7 +89,7 @@ public class NamedListConfig {
 	}
 
 	/**
-	 * @return an Iterator for iterating names of available favorites
+	 * @return an Iterator for iterating names of available items
 	 */
 	public Iterator iterateNames() {
 		return namedList.keySet().iterator();

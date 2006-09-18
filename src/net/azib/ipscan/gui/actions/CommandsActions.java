@@ -4,11 +4,10 @@
 package net.azib.ipscan.gui.actions;
 
 import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import net.azib.ipscan.config.Config;
-import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.OpenersConfig.Opener;
 import net.azib.ipscan.gui.DetailsWindow;
 import net.azib.ipscan.gui.EditOpenersDialog;
 import net.azib.ipscan.gui.MainWindow;
@@ -105,9 +104,11 @@ public class CommandsActions {
 	public static class SelectOpener implements Listener {
 		
 		private MainWindow mainWindow;
+		private OpenerLauncher openerLauncher;
 		
 		public SelectOpener(MainWindow mainWindow) {
 			this.mainWindow = mainWindow;
+			this.openerLauncher = new OpenerLauncher(mainWindow);
 		}
 		
 		public void handleEvent(Event event) {
@@ -117,52 +118,18 @@ public class CommandsActions {
 			if (indexOf >= 0) {
 				name = name.substring(0, indexOf);
 			}
-			String openerString = Config.getOpenersConfig().get(name);
+			Opener opener = Config.getOpenersConfig().getOpener(name);
 			
 			int selectedItem = mainWindow.getResultTable().getSelectionIndex();
 			if (selectedItem < 0) {
 				throw new UserErrorException("commands.noSelection");
 			}				
 
-			openerString = prepareOpenerStringForItem(openerString, selectedItem);
 			
-			new OpenerLauncher().launch(openerString);
+			mainWindow.setStatusText(Labels.getInstance().getString("state.opening") + name);
+			openerLauncher.launch(opener, selectedItem);
+			mainWindow.setStatusText(null);
 		}
-		
-		/**
-		 * Replaces references to scanned values in an opener string.
-		 * Refefernces look like ${fetcher_label}
-		 * @param openerString
-		 * @return opener string with values replaced
-		 */
-		String prepareOpenerStringForItem(String openerString, int selectedItem) {
-			Pattern paramsPattern = Pattern.compile("\\$\\{(.+?)\\}");
-			Matcher matcher = paramsPattern.matcher(openerString);
-			StringBuffer sb = new StringBuffer(64);
-			while (matcher.find()) {
-				// resolve the required fetcher
-				String fetcherName = matcher.group(1);
-				int fetcherIndex = FetcherRegistry.getInstance().getSelectedFetcherIndex(fetcherName);
-				if (fetcherIndex < 0) {
-					throw new UserErrorException("opener.unknownFetcher", fetcherName);
-				}
-
-				// retrieve the scanned value
-				String scannedValue = getScannedValue(selectedItem, fetcherIndex);
-				if (scannedValue == null) {
-					throw new UserErrorException("opener.nullFetcherValue", fetcherName);					
-				}
-				
-				matcher.appendReplacement(sb, scannedValue);
-			}
-			matcher.appendTail(sb);
-			return sb.toString();
-		}
-
-		String getScannedValue(int selectedItem, int fetcherIndex) {
-			return (String) mainWindow.getResultTable().getScanningResults().getResult(selectedItem).getValues().get(fetcherIndex);
-		}
-		
 	}
 
 }

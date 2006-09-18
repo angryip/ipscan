@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import net.azib.ipscan.gui.UserErrorException;
 
 /**
- * BrowserLauncher
+ * The cross-platform browser launcher
  * 
  * @author anton
  */

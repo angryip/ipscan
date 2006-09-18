@@ -3,8 +3,12 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import net.azib.ipscan.config.OpenersConfig.Opener;
+import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.UserErrorException;
 
 /**
@@ -14,7 +18,15 @@ import net.azib.ipscan.gui.UserErrorException;
  */
 public class OpenerLauncher {
 	
-	public void launch(String openerString) {
+	private MainWindow mainWindow;
+	
+	public OpenerLauncher(MainWindow mainWindow) {
+		this.mainWindow = mainWindow;
+	}
+
+	public void launch(Opener opener, int selectedItem) {
+		String openerString = prepareOpenerStringForItem(opener.execString, selectedItem);
+		
 		// check for URLs
 		if (openerString.startsWith("http:") || openerString.startsWith("https:") || openerString.startsWith("ftp:") || openerString.startsWith("mailto:")) {
 			BrowserLauncher.openURL(openerString);
@@ -22,14 +34,52 @@ public class OpenerLauncher {
 		else {
 			// run a process here
 			try {
-				// TODO: we probably need to support shell patterns, etc
-				Runtime.getRuntime().exec(openerString);
+				if (opener.inTerminal) {
+					TerminalLauncher.launchInTerminal(openerString, opener.workingDir);
+				}
+				else {
+					// TODO: we probably need to support shell patterns, etc
+					Runtime.getRuntime().exec(openerString, null, opener.workingDir);
+				}
 			}
-			catch (IOException e) {
+			catch (Exception e) {
 				throw new UserErrorException("opener.failed", openerString);
 			}
 		}
-
 	}
 
+	/**
+	 * Replaces references to scanned values in an opener string.
+	 * Refefernces look like ${fetcher_label}
+	 * @param openerString
+	 * @return opener string with values replaced
+	 */
+	String prepareOpenerStringForItem(String openerString, int selectedItem) {
+		Pattern paramsPattern = Pattern.compile("\\$\\{(.+?)\\}");
+		Matcher matcher = paramsPattern.matcher(openerString);
+		StringBuffer sb = new StringBuffer(64);
+		while (matcher.find()) {
+			// resolve the required fetcher
+			String fetcherName = matcher.group(1);
+			int fetcherIndex = FetcherRegistry.getInstance().getSelectedFetcherIndex(fetcherName);
+			if (fetcherIndex < 0) {
+				throw new UserErrorException("opener.unknownFetcher", fetcherName);
+			}
+
+			// retrieve the scanned value
+			try {
+				String scannedValue = getScannedValue(selectedItem, fetcherIndex);
+				matcher.appendReplacement(sb, scannedValue);
+			}
+			catch (Exception e) {
+				throw new UserErrorException("opener.nullFetcherValue", fetcherName);					
+			}
+		}
+		matcher.appendTail(sb);
+		return sb.toString();
+	}
+
+	String getScannedValue(int selectedItem, int fetcherIndex) {
+		return (String) mainWindow.getResultTable().getScanningResults().getResult(selectedItem).getValues().get(fetcherIndex);
+	}
 }

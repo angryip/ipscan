@@ -67,10 +67,12 @@ public class DimensionsConfig {
 	 * @param isMaximized 
 	 */
 	public void setWindowBounds(Rectangle bounds, boolean isMaximized) {
-		windowTop = bounds.y;
-		windowLeft = bounds.x;
-		windowHeight = bounds.height;
-		windowWidth = bounds.width;
+		if (!isMaximized) {
+			windowTop = bounds.y;
+			windowLeft = bounds.x;
+			windowHeight = bounds.height;
+			windowWidth = bounds.width;
+		}
 		isWindowMaximized = isMaximized;
 	}
 

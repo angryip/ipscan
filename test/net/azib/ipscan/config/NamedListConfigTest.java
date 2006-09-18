@@ -56,8 +56,6 @@ public class NamedListConfigTest extends TestCase {
 	}
 	
 	public void testStore() throws Exception {
-		NamedListConfig config = new NamedListConfig(preferences, PREFERENCE_NAME);
-		
 		config.add("x", "y");
 		config.add("Buga muga x,1,2,3,4,5", "opopo op : , . l ; - # | @@");
 		config.add("127.0.0.1", "192.168.2.25");

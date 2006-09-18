@@ -3,11 +3,13 @@
  */
 package net.azib.ipscan.gui;
 
+import java.io.File;
 import java.util.Iterator;
 
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.OpenersConfig;
+import net.azib.ipscan.config.OpenersConfig.Opener;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -35,6 +37,8 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	private Text openerNameText;
 	private Text openerStringText;
 	private Text openerDirText;
+	private Button isCommandlineCheckbox;
+	
 	private SaveButtonListener saveButtonListener;
 	
 	public EditOpenersDialog() {
@@ -126,9 +130,9 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		openerDirText = new Text(editGroup, SWT.BORDER);
 		openerDirText.setSize(SWT.DEFAULT, 22);
 		
-		Button isCommanLineCheckbox = new Button(editGroup, SWT.CHECK);
-		isCommanLineCheckbox.setText(Labels.getInstance().getString("text.openers.isCommandLine"));
-		isCommanLineCheckbox.setSize(SWT.DEFAULT, 18);
+		isCommandlineCheckbox = new Button(editGroup, SWT.CHECK);
+		isCommandlineCheckbox.setText(Labels.getInstance().getString("text.openers.isCommandLine"));
+		isCommandlineCheckbox.setSize(SWT.DEFAULT, 18);
 		
 		editGroup.layout();
 		
@@ -214,8 +218,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		
 		public void handleEvent(Event event) {
 			String openerName = openerNameText.getText();
-			String openerValue = openerStringText.getText();
-			Config.getOpenersConfig().add(openerName, openerValue);
+			Config.getOpenersConfig().add(openerName, new OpenersConfig.Opener(openerStringText.getText(), isCommandlineCheckbox.getSelection(), new File(openerDirText.getText())));
 			openersList.setItem(openersList.getSelectionIndex(), openerName);			
 		}
 	}
@@ -238,10 +241,11 @@ public class EditOpenersDialog extends AbstractModalDialog {
 			int selectionIndex = openersList.getSelectionIndex();
 			String openerName = openersList.getItem(selectionIndex);
 			editGroup.setText(openerName);
-			String openerValue = Config.getOpenersConfig().get(openerName);
+			Opener opener = Config.getOpenersConfig().getOpener(openerName);
 			openerNameText.setText(openerName);
-			openerStringText.setText(openerValue);
-			// TODO: load other stuff too
+			openerStringText.setText(opener.execString);
+			openerDirText.setText(opener.workingDir != null ? opener.workingDir.toString() : "");
+			isCommandlineCheckbox.setSelection(opener.inTerminal);
 		}
 	}
 
