@@ -10,8 +10,12 @@ import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.OpenersConfig;
 import net.azib.ipscan.config.OpenersConfig.Opener;
+import net.azib.ipscan.fetchers.Fetcher;
+import net.azib.ipscan.fetchers.FetcherRegistry;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.RowLayout;
@@ -22,6 +26,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -124,6 +129,10 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		openerStringText = new Text(editGroup, SWT.BORDER);
 		openerStringText.setSize(SWT.DEFAULT, 22);
 		
+		Button hintButton = new Button(editGroup, SWT.NONE);
+		hintButton.setText(Labels.getInstance().getString("text.openers.hint"));
+		hintButton.addListener(SWT.Selection, new HintButtonListener());
+		
 		Label openerDirLabel = new Label(editGroup, SWT.NONE);
 		openerDirLabel.setText(Labels.getInstance().getString("text.openers.directory"));
 		openerDirLabel.setSize(SWT.DEFAULT, 18);
@@ -136,14 +145,14 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		
 		editGroup.layout();
 		
-		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		okButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
 				saveOpeners();
 				shell.close();
 			}
 		});
-		cancelButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		cancelButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
 				Config.getOpenersConfig().load();
 				shell.close();
 			}
@@ -157,6 +166,23 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		OpenersConfig openersConfig = Config.getOpenersConfig();
 		openersConfig.update(openersList.getItems());
 		openersConfig.store();
+	}
+	
+	private class HintButtonListener implements Listener {
+		
+		public void handleEvent(Event event) {
+			// compose the message with all available fetchers
+			StringBuffer message = new StringBuffer(Labels.getInstance().getString("text.openers.hintText"));
+			for (Iterator i = FetcherRegistry.getInstance().getRegisteredFetchers().iterator(); i.hasNext(); ) {
+				String fetcherLabel = ((Fetcher)i.next()).getLabel();
+				message.append("${").append(fetcherLabel).append("}   - ").append(Labels.getInstance().getString(fetcherLabel)).append('\n');
+			}
+			
+			MessageBox mb = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
+			mb.setText(Labels.getInstance().getString("title.openers.edit"));
+			mb.setMessage(message.toString());
+			mb.open();
+		}
 	}
 	
 	private class UpButtonListener implements Listener {
@@ -218,8 +244,15 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		
 		public void handleEvent(Event event) {
 			String openerName = openerNameText.getText();
+			if (openerName.length() == 0)
+				return;
+			
+			int selectedItem = openersList.getSelectionIndex();
+			if (selectedItem < 0)
+				throw new UserErrorException("opener.edit.noSelection");
+			
 			Config.getOpenersConfig().add(openerName, new OpenersConfig.Opener(openerStringText.getText(), isCommandlineCheckbox.getSelection(), new File(openerDirText.getText())));
-			openersList.setItem(openersList.getSelectionIndex(), openerName);			
+			openersList.setItem(selectedItem, openerName);			
 		}
 	}
 
