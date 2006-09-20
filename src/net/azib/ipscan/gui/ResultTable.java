@@ -41,12 +41,15 @@ public class ResultTable extends Table {
 	private String feederInfo;
 	private Menu columnsMenu;
 
-	public ResultTable(Composite parent, Menu columnsMenu) {
+	public ResultTable(Composite parent) {
 		super(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL);
-		this.columnsMenu = columnsMenu;
 		initialize();
 	}
 	
+	void setColumnsMenu(Menu columnsMenu) {
+		this.columnsMenu = columnsMenu;
+	}
+
 	private void initialize() {
 		setHeaderVisible(true);
 		setLinesVisible(true);
@@ -147,6 +150,12 @@ public class ResultTable extends Table {
 		return scanningResults.getResultsAsString(selectedIndex);
 	}
 	
+	public void remove(int[] indices) {
+		// we need to remove the elements from our real storage as well
+		scanningResults.remove(indices);
+		super.remove(indices);
+	}
+
 	/**
 	 * Initializes a new scan.
 	 * (clears all elments, etc)

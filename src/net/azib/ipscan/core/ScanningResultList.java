@@ -92,4 +92,14 @@ public class ScanningResultList {
 		return (String) scanningResults.get(tableIndex);
 	}
 
+	/**
+	 * @param indices
+	 */
+	public void remove(int[] indices) {
+		// this removal is probably O(n^2)...
+		for (int i = 0; i < indices.length; i++) {
+			scanningResults.remove(i);	
+		}
+	}
+
 }

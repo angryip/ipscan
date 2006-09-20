@@ -30,15 +30,30 @@ import org.eclipse.swt.widgets.MenuItem;
 public class CommandsActions {
 	
 	public static class Details implements Listener {
-		ResultTable resultTable;
+		private ResultTable resultTable;
 		
-		public Details(ResultTable table) {
-			resultTable = table;
+		public Details(ResultTable resultTable) {
+			this.resultTable = resultTable;
 		}
 
 		public void handleEvent(Event event) {
 			checkSelection(resultTable);
 			new DetailsWindow(resultTable).open(); 
+		}
+	}
+	
+	public static class Delete implements Listener {
+		private ResultTable resultTable;
+		
+		public Delete(ResultTable resultTable) {
+			this.resultTable = resultTable;
+		}
+
+		public void handleEvent(Event event) {
+			checkSelection(resultTable);
+			int firstSelection = resultTable.getSelectionIndex();
+			resultTable.remove(resultTable.getSelectionIndices());
+			resultTable.setSelection(firstSelection);
 		}
 	}
 	

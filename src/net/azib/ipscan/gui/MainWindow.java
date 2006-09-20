@@ -83,11 +83,12 @@ public class MainWindow {
 		// load and set icon
 		Image image = new Image(shell.getDisplay(), Labels.getInstance().getImageAsStream("icon"));
 		shell.setImage(image);
+		resultTable = new ResultTable(shell);
 		
 		createMenu();
 		createControls();
 		createStatusBar();
-		createTable();
+		initTable();
 		
 		shell.setBounds(Config.getDimensionsConfig().getWindowBounds());
 		shell.setMaximized(Config.getDimensionsConfig().isWindowMaximized);
@@ -146,8 +147,8 @@ public class MainWindow {
 	/**
 	 * This method initializes resultTable	
 	 */
-	private void createTable() {
-		resultTable = new ResultTable(shell, mainMenu.getColumnsPopupMenu());
+	private void initTable() {
+		resultTable.setColumnsMenu(mainMenu.getColumnsPopupMenu());
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(feederArea);
 		formData.left = new FormAttachment(0);

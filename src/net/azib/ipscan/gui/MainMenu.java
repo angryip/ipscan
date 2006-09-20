@@ -102,7 +102,7 @@ public class MainMenu {
 					new Object[] {"menu.commands.details", null, new CommandsActions.Details(mainWindow.getResultTable())},
 					null,
 					new Object[] {"menu.commands.rescan", new Integer(SWT.CONTROL | 'R'), null},
-					new Object[] {"menu.commands.delete", new Integer(SWT.DEL), null},
+					new Object[] {"menu.commands.delete", new Integer(SWT.DEL), new CommandsActions.Delete(mainWindow.getResultTable())},
 					null,
 					new Object[] {"menu.commands.copy", new Integer(SWT.CONTROL | 'C'), null},
 					new Object[] {"menu.commands.copyDetails", null, null},
