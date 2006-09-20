@@ -15,6 +15,9 @@ import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.UserErrorException;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
@@ -57,6 +60,36 @@ public class CommandsActions {
 		}
 	}
 	
+	public static class CopyIP implements Listener {
+		private ResultTable resultTable;
+		
+		public CopyIP(ResultTable resultTable) {
+			this.resultTable = resultTable;
+		}
+
+		public void handleEvent(Event event) {
+			checkSelection(resultTable);
+			Clipboard clipboard = new Clipboard(event.display);
+			clipboard.setContents(new Object[] {resultTable.getItem(resultTable.getSelectionIndex()).getText()}, new Transfer[] {TextTransfer.getInstance()});
+			clipboard.dispose();
+		}
+	}
+	
+	public static class CopyIPDetails implements Listener {
+		private ResultTable resultTable;
+		
+		public CopyIPDetails(ResultTable resultTable) {
+			this.resultTable = resultTable;
+		}
+
+		public void handleEvent(Event event) {
+			checkSelection(resultTable);
+			Clipboard clipboard = new Clipboard(event.display);
+			clipboard.setContents(new Object[] {resultTable.getIPDetails()}, new Transfer[] {TextTransfer.getInstance()});
+			clipboard.dispose();
+		}
+	}
+
 	/**
 	 * Checks that there is at least one item selected in the results list.
 	 * @param mainWindow

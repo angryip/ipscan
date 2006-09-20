@@ -104,8 +104,8 @@ public class MainMenu {
 					new Object[] {"menu.commands.rescan", new Integer(SWT.CONTROL | 'R'), null},
 					new Object[] {"menu.commands.delete", new Integer(SWT.DEL), new CommandsActions.Delete(mainWindow.getResultTable())},
 					null,
-					new Object[] {"menu.commands.copy", new Integer(SWT.CONTROL | 'C'), null},
-					new Object[] {"menu.commands.copyDetails", null, null},
+					new Object[] {"menu.commands.copy", new Integer(SWT.CONTROL | 'C'), new CommandsActions.CopyIP(mainWindow.getResultTable())},
+					new Object[] {"menu.commands.copyDetails", null, new CommandsActions.CopyIPDetails(mainWindow.getResultTable())},
 					null,
 					new Object[] {"menu.commands.show", null, null},
 				}	
