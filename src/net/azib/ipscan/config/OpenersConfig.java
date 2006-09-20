@@ -4,6 +4,7 @@
 package net.azib.ipscan.config;
 
 import java.io.File;
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
 /**
@@ -60,10 +61,16 @@ public class OpenersConfig extends NamedListConfig {
 		public File workingDir;
 		
 		Opener(String serialized) {
-			String[] parts = serialized.split("@@@");
-			execString = parts[0];
-			inTerminal = parts[1].charAt(0) == '1';
-			workingDir = parts.length >= 3 && parts[2].length() > 0 ? new File(parts[2]) : null;
+			try {
+				String[] parts = serialized.split("@@@");
+				execString = parts[0];
+				inTerminal = parts[1].charAt(0) == '1';
+				workingDir = parts.length >= 3 && parts[2].length() > 0 ? new File(parts[2]) : null;
+			}
+			catch (ArrayIndexOutOfBoundsException e) {
+				// this happens when broken settings have been loaded
+				Logger.global.fine("Broken opener config read: " + serialized);
+			}
 		}
 
 		public Opener(String execString, boolean inTerminal, File workingDir) {

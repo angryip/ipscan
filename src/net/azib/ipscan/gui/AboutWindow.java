@@ -65,7 +65,6 @@ public class AboutWindow extends AbstractModalDialog {
 		Text licenseText = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
 		licenseText.setBounds(60, 140, 320, 160);
 		licenseText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
-		// TODO: load full GPL text from file
 		licenseText.setText("Licensed under the GNU General Public License Version 2\n\n" +
 							Version.NAME + " is free software; you can redistribute it and/or " +
 							"modify it under the terms of the GNU General Public License " +

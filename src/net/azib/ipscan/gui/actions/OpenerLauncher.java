@@ -3,6 +3,8 @@
  */
 package net.azib.ipscan.gui.actions;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,10 +41,12 @@ public class OpenerLauncher {
 				}
 				else {
 					// TODO: we probably need to support shell patterns, etc
-					Runtime.getRuntime().exec(openerString, null, opener.workingDir);
+					// TODO: merge launchInTerminal with this code
+					Runtime.getRuntime().exec((System.getProperty("os.name").startsWith("Windows") ? "start /b " : "") + openerString, null, opener.workingDir);
 				}
 			}
 			catch (Exception e) {
+				Logger.global.log(Level.WARNING, "opener.failed", e);
 				throw new UserErrorException("opener.failed", openerString);
 			}
 		}

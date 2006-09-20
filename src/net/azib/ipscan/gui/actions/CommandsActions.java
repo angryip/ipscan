@@ -124,16 +124,18 @@ public class CommandsActions {
 			if (selectedItem < 0) {
 				throw new UserErrorException("commands.noSelection");
 			}				
-
-			mainWindow.setStatusText(Labels.getInstance().getString("state.opening") + name);
-			openerLauncher.launch(opener, selectedItem);
+					
 			try {
+				mainWindow.setStatusText(Labels.getInstance().getString("state.opening") + name);
+				openerLauncher.launch(opener, selectedItem);
 				// wait a bit to make status visible
 				// TODO: somehow wait until the process is started
 				Thread.sleep(500);
 			}
 			catch (InterruptedException e) {}
-			mainWindow.setStatusText(null);
+			finally {
+				mainWindow.setStatusText(null);
+			}
 		}
 	}
 
