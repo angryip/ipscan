@@ -21,4 +21,10 @@ public class Version {
 	public static final String WEBSITE = "http://www.azib.net/ipscan/";
 	
 	public static final String MAILTO = "support@azib.net";
+
+	public static final String FORUM_URL = "http://www.azib.net/ipscan/forum/";
+	
+	public static final String PLUGINS_URL = "http://www.azib.net/ipscan/plugins/";
+	
+	public static final String LATEST_VERSION_URL = "http://www.azib.net/ipscan/IPSCAN.VERSION";
 }
