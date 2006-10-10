@@ -198,12 +198,12 @@ public class MainWindow {
 		// start/stop button
 		Button button = new Button(controlsArea, SWT.NONE);
 		shell.setDefaultButton(button);
-		button.setLayoutData(new RowData(SWT.DEFAULT, SWT.DEFAULT));
+		button.setLayoutData(new RowData(SWT.DEFAULT, 23));
 		button.addSelectionListener(new StartStopScanningAction(this, button));
 		
 		// feeder selection combobox
 		feederSelectionCombo = new Combo(controlsArea, SWT.READ_ONLY);
-		feederSelectionCombo.setLayoutData(new RowData(SWT.DEFAULT, SWT.DEFAULT));
+		feederSelectionCombo.setLayoutData(new RowData(SWT.DEFAULT, 23));
 		for (Iterator i = feederGUIList.iterator(); i.hasNext();) {
 			AbstractFeederGUI feederGUI = (AbstractFeederGUI) i.next();
 			feederSelectionCombo.add(feederGUI.getFeederName());	

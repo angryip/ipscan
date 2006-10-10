@@ -63,7 +63,7 @@ public class FileFeederGUI extends AbstractFeederGUI {
         formData = new FormData();
         formData.top = new FormAttachment(0);
         formData.left = new FormAttachment(fileNameText);
-		formData.height = 20;        
+		formData.height = 22;        
         browseButton.setLayoutData(formData);
         browseButton.addSelectionListener(new SelectionListener() {
 
