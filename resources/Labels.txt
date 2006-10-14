@@ -95,6 +95,7 @@ button.down=&Down
 button.delete=De&lete
 button.save=&Save
 button.insert=&Insert
+combobox.feeder.tooltip=IP Feeder selection. Change this if you need another source for IP addresses to scan
 list.unknown.img=images/list/unknown.gif
 list.dead.img=images/list/dead.gif
 list.alive.img=images/list/alive.gif
@@ -108,7 +109,9 @@ feeder.range=IP Range
 feeder.range.startIP=IP Range:
 feeder.range.endIP=to
 feeder.range.netmask=Netmask
+feeder.range.netmask.tooltip=Netmask of the IP range. Use either number of bits (e.g. /24) or the dotted notation (.255. = ..)
 feeder.range.hostname=Hostname:
+feeder.range.hostname.tooltip=Use this field to resolve hostnames to IP addresses
 feeder.file=IP List File
 feeder.file.name=Filename
 feeder.file.browse=Browse...

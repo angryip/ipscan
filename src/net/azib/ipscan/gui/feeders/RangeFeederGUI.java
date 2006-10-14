@@ -124,6 +124,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		formData.top = new FormAttachment(startIPText);
 		formData.left = new FormAttachment(startIPText, 0, SWT.LEFT);
 		hostnameText.setLayoutData(formData);
+		hostnameText.setToolTipText(Labels.getInstance().getString("feeder.range.hostname.tooltip"));
         
         hostnameLabel.setText(getStringLabel("hostname"));
         formData = new FormData();
@@ -142,6 +143,9 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         netmaskCombo.setText(getStringLabel("netmask"));
 		netmaskCombo.setVisibleItemCount(10);
 		// Warning: IPv4 specific netmasks
+		netmaskCombo.add("/16");	// TODO: implement these
+		netmaskCombo.add("/24");
+		netmaskCombo.add("/28");
 		netmaskCombo.add("255...240");
 		netmaskCombo.add("255...224");
 		netmaskCombo.add("255...192");
@@ -158,6 +162,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		formData.right = new FormAttachment(endIPText, 0, SWT.RIGHT);
 		formData.bottom = new FormAttachment(hostnameText, 0, SWT.BOTTOM);
 		netmaskCombo.setLayoutData(formData);
+		netmaskCombo.setToolTipText(Labels.getInstance().getString("feeder.range.netmask.tooltip"));
 		
 		// fill the IP text with local IP address
 		try {

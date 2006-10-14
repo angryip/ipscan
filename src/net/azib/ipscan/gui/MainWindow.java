@@ -212,6 +212,7 @@ public class MainWindow {
 		feederSelectionCombo.addSelectionListener(feederSelectionListener);
 		// initialize the selected feeder GUI 
 		feederSelectionCombo.select(Config.getGlobal().activeFeeder);
+		feederSelectionCombo.setToolTipText(Labels.getInstance().getString("combobox.feeder.tooltip"));
 		feederSelectionListener.widgetSelected(null);
 		
 		((RowData)button.getLayoutData()).height = feederSelectionCombo.getBounds().height;
