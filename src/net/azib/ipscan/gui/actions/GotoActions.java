@@ -9,14 +9,16 @@ import java.util.List;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
+import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.gui.InputDialog;
-import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.ResultTable;
+import net.azib.ipscan.gui.StatusBar;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * GotoActions
@@ -25,18 +27,17 @@ import org.eclipse.swt.widgets.MessageBox;
  */
 public class GotoActions {
 
-	public static class NextHost implements Listener {
-		
-		private MainWindow mainWindow;
+	private static class NextHost implements Listener {
+
+		private ResultTable resultTable;
 		private int whatToSearchFor;
 		
-		public NextHost(MainWindow mainWindow, int whatToSearchFor) {
-			this.mainWindow = mainWindow;
+		NextHost(ResultTable resultTable, int whatToSearchFor) {
+			this.resultTable = resultTable;
 			this.whatToSearchFor = whatToSearchFor;
 		}
 
 		public void handleEvent(Event event) {
-			ResultTable resultTable = mainWindow.getResultTable();
 			ScanningResultList results = resultTable.getScanningResults();
 			
 			int numElements = resultTable.getItemCount();
@@ -61,17 +62,36 @@ public class GotoActions {
 
 	}
 	
+	public static class NextAliveHost extends NextHost {
+		public NextAliveHost(ResultTable resultTable) {
+			super(resultTable, ScanningSubject.RESULT_TYPE_ALIVE);
+		}
+	}
+	
+	public static class NextDeadHost extends NextHost {
+		public NextDeadHost(ResultTable resultTable) {
+			super(resultTable, ScanningSubject.RESULT_TYPE_DEAD);
+		}
+	}
+	
+	public static class NextHostWithInfo extends NextHost {
+		public NextHostWithInfo(ResultTable resultTable) {
+			super(resultTable, ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO);
+		}
+	}
+	
 	public static class Find implements Listener {
-		
-		private MainWindow mainWindow;
+
+		private ResultTable resultTable;
+		private StatusBar statusBar;
 		private String lastText = "";
 		
-		public Find(MainWindow mainWindow) {
-			this.mainWindow = mainWindow;
+		public Find(StatusBar statusBar, ResultTable resultTable) {
+			this.statusBar = statusBar;
+			this.resultTable = resultTable;
 		}
 		
 		public void handleEvent(Event event) {
-			
 			InputDialog dialog = new InputDialog(Labels.getInstance().getString("title.find"), Labels.getInstance().getString("text.find"));
 			String text = dialog.open(lastText);
 			if (text == null) {
@@ -80,18 +100,16 @@ public class GotoActions {
 			lastText = text;
 			
 			try {
-				mainWindow.setStatusText(Labels.getInstance().getString("state.searching"));
+				statusBar.setStatusText(Labels.getInstance().getString("state.searching"));
 
-				findText(text);
+				findText(text, event.display.getActiveShell());
 			}
 			finally {
-				mainWindow.setStatusText(null);				
+				statusBar.setStatusText(null);				
 			}
 		}
 
-		private void findText(String text) {
-			
-			ResultTable resultTable = mainWindow.getResultTable();
+		private void findText(String text, Shell activeShell) {
 			ScanningResultList results = resultTable.getScanningResults();
 			
 			int numElements = resultTable.getItemCount();
@@ -112,28 +130,24 @@ public class GotoActions {
 						return;
 					}
 				}
-				
 			}
 			
 			if (startElement > 0) {
-				MessageBox messageBox = new MessageBox(mainWindow.getShell(), SWT.YES | SWT.NO | SWT.ICON_QUESTION);
+				MessageBox messageBox = new MessageBox(activeShell, SWT.YES | SWT.NO | SWT.ICON_QUESTION);
 				messageBox.setText(Labels.getInstance().getString("title.find"));
 				messageBox.setMessage(Labels.getInstance().getString("text.find.notFound") + " " + Labels.getInstance().getString("text.find.restart"));
 				if (messageBox.open() == SWT.YES) {
 					resultTable.deselectAll();
-					findText(text);
+					findText(text, activeShell);
 				}
 			}
 			else {
-				MessageBox messageBox = new MessageBox(mainWindow.getShell(), SWT.OK | SWT.ICON_INFORMATION);
+				MessageBox messageBox = new MessageBox(activeShell, SWT.OK | SWT.ICON_INFORMATION);
 				messageBox.setText(Labels.getInstance().getString("title.find"));
 				messageBox.setMessage(Labels.getInstance().getString("text.find.notFound"));
 				messageBox.open();
 			}
-			
 		}
-		
 	}	
-	
 	
 }

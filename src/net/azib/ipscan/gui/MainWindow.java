@@ -3,26 +3,20 @@
  */
 package net.azib.ipscan.gui;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
-import net.azib.ipscan.feeders.FeederException;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.feeders.AbstractFeederGUI;
-import net.azib.ipscan.gui.feeders.FileFeederGUI;
-import net.azib.ipscan.gui.feeders.RandomFeederGUI;
-import net.azib.ipscan.gui.feeders.RangeFeederGUI;
+import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -32,9 +26,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -47,64 +39,62 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class MainWindow {
 	
-	private Shell shell;  
+	private Shell shell;
 	
+	private Composite feederArea;
 	private ResultTable resultTable;
 	
 	private MainMenu mainMenu;
 	private Combo feederSelectionCombo;
-	private List feederGUIList;
-	private Composite feederArea;
-	private AbstractFeederGUI feederGUI;
+	private FeederGUIRegistry feederRegistry;
 	
 	private Composite controlsArea;
 	
-	private Composite statusBar;
-	private ProgressBar progressBar;
-	private Label statusText;
-	private Label threadsText;
+	private StatusBar statusBar;
 	
 	/**
 	 * Creates and initializes the main window.
 	 */
-	public MainWindow() {
-		createShell();
+	public MainWindow(Shell shell, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, ResultTable resultTable, StatusBar statusBar, MainMenu mainMenu, FeederGUIRegistry feederGUIRegistry) {
+		
+		this.shell = shell;
+		this.feederArea = feederArea;
+		this.controlsArea = controlsArea;
+		this.feederSelectionCombo = feederSelectionCombo;
+		this.resultTable = resultTable;
+		this.statusBar = statusBar;
+		this.mainMenu = mainMenu;
+		this.feederRegistry = feederGUIRegistry;
+		
+		populateShell();
+		
+		createControls();
+		
+		initTable();
+		
+		shell.setBounds(Config.getDimensionsConfig().getWindowBounds());
+		shell.setMaximized(Config.getDimensionsConfig().isWindowMaximized);
+		shell.open();
 	}
 
 	/**
 	 * This method initializes shell
 	 */
-	private void createShell() {
+	private void populateShell() {
 		FormLayout formLayout = new FormLayout();
-		shell = new Shell();
 		shell.setLayout(formLayout);
 		shell.setText(Version.FULL_NAME);
 		
 		// load and set icon
 		Image image = new Image(shell.getDisplay(), Labels.getInstance().getImageAsStream("icon"));
 		shell.setImage(image);
-		resultTable = new ResultTable(shell);
-		
-		createMenu();
-		createControls();
-		createStatusBar();
-		initTable();
-		
-		shell.setBounds(Config.getDimensionsConfig().getWindowBounds());
-		shell.setMaximized(Config.getDimensionsConfig().isWindowMaximized);
-		
+				
 		shell.addListener(SWT.Close, new Listener() {
 			public void handleEvent(Event event) {
 				// save dimensions!
 				Config.getDimensionsConfig().setWindowBounds(shell.getBounds(), shell.getMaximized());
 			}
 		});
-		
-		shell.open();
-	}
-
-	private void createMenu() {		
-		mainMenu = new MainMenu(this);
 	}
 
 	public Shell getShell() {
@@ -114,46 +104,31 @@ public class MainWindow {
 	public boolean isDisposed() {
 		return shell.isDisposed();
 	}
-	
+
+	/**
+	 * @deprecated use FeederGUIRegistry instead
+	 */
 	public AbstractFeederGUI getFeederGUI() {
-		return feederGUI;
+		return feederRegistry.current();
 	}
 	
 	/**
-	 * Selects the appropriate feeder by it's name
+	 * @deprecated
 	 */
-	public void selectFeederGUI(String feederName) {
-		String[] items = feederSelectionCombo.getItems();
-		for (int i = 0; i < items.length; i++) {
-			if (items[i].equals(feederName)) {
-				// select the feeder if found
-				feederSelectionCombo.select(i);
-				feederSelectionCombo.notifyListeners(SWT.Selection, null);
-				return;
-			}
-		}
-		// if not found
-		throw new FeederException("No such feeder found: " + feederName);
-	}
-
 	public ResultTable getResultTable() {
 		return resultTable;
 	}
 
-	public Label getStatusText() {
-		return statusText;
-	}
-	
 	/**
 	 * This method initializes resultTable	
 	 */
 	private void initTable() {
-		resultTable.setColumnsMenu(mainMenu.getColumnsPopupMenu());
+		resultTable.initialize(mainMenu.getColumnsPopupMenu());
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(feederArea);
 		formData.left = new FormAttachment(0);
 		formData.right = new FormAttachment(100);
-		formData.bottom = new FormAttachment(statusBar, 0);
+		formData.bottom = new FormAttachment(statusBar.getComposite(), -3);
 		resultTable.setLayoutData(formData);
 		resultTable.setMenu(mainMenu.getResultsContextMenu());
 	}
@@ -164,26 +139,11 @@ public class MainWindow {
 	private void createControls() {
 		
 		// feederArea is the placeholder for the visible feeder
-		feederArea = new Composite(shell, SWT.NONE);
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(0);
 		formData.left = new FormAttachment(0);
 		feederArea.setLayoutData(formData);
 		
-		// create feeder GUIs
-		// TODO: move this code to a more appropriate place
-		feederGUIList = new ArrayList();
-		feederGUI = new RangeFeederGUI(feederArea);
-		feederGUI.setVisible(false);
-		feederGUIList.add(feederGUI);
-		feederGUI = new RandomFeederGUI(feederArea);
-		feederGUI.setVisible(false);
-		feederGUIList.add(feederGUI);
-		feederGUI = new FileFeederGUI(feederArea);
-		feederGUI.setVisible(false);
-		feederGUIList.add(feederGUI);
-		
-		controlsArea = new Composite(shell, SWT.NONE);
 		formData = new FormData();
 		formData.top = new FormAttachment(0);
 		formData.left = new FormAttachment(feederArea);
@@ -202,9 +162,8 @@ public class MainWindow {
 		button.addSelectionListener(new StartStopScanningAction(this, button));
 		
 		// feeder selection combobox
-		feederSelectionCombo = new Combo(controlsArea, SWT.READ_ONLY);
 		feederSelectionCombo.setLayoutData(new RowData(SWT.DEFAULT, 23));
-		for (Iterator i = feederGUIList.iterator(); i.hasNext();) {
+		for (Iterator i = feederRegistry.iterator(); i.hasNext();) {
 			AbstractFeederGUI feederGUI = (AbstractFeederGUI) i.next();
 			feederSelectionCombo.add(feederGUI.getFeederName());	
 		}
@@ -218,54 +177,26 @@ public class MainWindow {
 		((RowData)button.getLayoutData()).height = feederSelectionCombo.getBounds().height;
 		((RowData)button.getLayoutData()).width = feederSelectionCombo.getBounds().width;
 	}
-
+	
 	/**
-	 * This method initializes status bar and it's controls
+	 * @deprecated use statusBar instead
 	 */
-	private void createStatusBar() {
-		statusBar = new Composite(shell, SWT.NONE);
-		FormData formData = new FormData();
-		formData.left = new FormAttachment(0);
-		formData.right = new FormAttachment(100);
-		formData.height = 18;
-		formData.bottom = new FormAttachment(100);
-		statusBar.setLayoutData(formData);
-		RowLayout rowLayout = new RowLayout();
-		rowLayout.fill = true;
-		rowLayout.wrap = false;
-		rowLayout.spacing = 0;
-		statusBar.setLayout(/*rowLayout*/ new FillLayout());
-		
-		statusText = new Label(statusBar, SWT.BORDER);
-		//statusText.setLayoutData(new RowData(150, SWT.DEFAULT));
-		setStatusText(null);
-		
-		threadsText = new Label(statusBar, SWT.BORDER);
-		//threadsText.setLayoutData(new RowData(50, SWT.DEFAULT));
-		threadsText.setText(Labels.getInstance().getString("text.threads") + "0");
-		
-		progressBar = new ProgressBar(statusBar, SWT.BORDER);
-		//progressBar.setLayoutData(new RowData());
-		progressBar.setSelection(0);
-	}
-	
 	public void setStatusText(String statusText) {
-		if (statusText == null) {
-			statusText = Labels.getInstance().getString("state.ready"); 
-		}
-		if (!this.statusText.isDisposed())
-			this.statusText.setText(statusText);
+		statusBar.setStatusText(statusText);
 	}
 	
+	/**
+	 * @deprecated use statusBar instead
+	 */
 	public void setRunningThreads(int runningThreads) {
-		if (!threadsText.isDisposed()) 
-			// TODO: make this more efficient
-			threadsText.setText(Labels.getInstance().getString("text.threads") + runningThreads);
+		statusBar.setRunningThreads(runningThreads);
 	}
 	
+	/**
+	 * @deprecated use statusBar instead
+	 */
 	public void setProgress(int progress) {
-		if (!progressBar.isDisposed())
-			progressBar.setSelection(progress);
+		statusBar.setProgress(progress);
 	}
 	
 	/**
@@ -277,18 +208,11 @@ public class MainWindow {
 		}
 
 		public void widgetSelected(SelectionEvent e) {
-			// hide current feeder
-			feederGUI.setVisible(false);
-			// get new feeder
-			int newActiveFeeder = feederSelectionCombo.getSelectionIndex();
-			feederGUI = (AbstractFeederGUI) feederGUIList.get(newActiveFeeder);
-			Config.getGlobal().activeFeeder = newActiveFeeder;
-			// make new feeder visible
-			feederGUI.setVisible(true);
-			
+			feederRegistry.select(feederSelectionCombo.getSelectionIndex());
+						
 			// all this 'magic' is needed in order to resize everything properly
 			// and accomodate feeders with different sizes
-			Rectangle bounds = feederGUI.getBounds();
+			Rectangle bounds = feederRegistry.current().getBounds();
 			FormData feederAreaLayoutData = ((FormData)feederArea.getLayoutData());
 			feederAreaLayoutData.height = bounds.height;
 			feederAreaLayoutData.width = bounds.width;

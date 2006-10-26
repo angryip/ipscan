@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 import net.azib.ipscan.config.OpenersConfig.Opener;
 import net.azib.ipscan.fetchers.FetcherRegistry;
-import net.azib.ipscan.gui.MainWindow;
+import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.UserErrorException;
 
 /**
@@ -20,10 +20,10 @@ import net.azib.ipscan.gui.UserErrorException;
  */
 public class OpenerLauncher {
 	
-	private MainWindow mainWindow;
+	private ResultTable resultTable;
 	
-	public OpenerLauncher(MainWindow mainWindow) {
-		this.mainWindow = mainWindow;
+	public OpenerLauncher(ResultTable resultTable) {
+		this.resultTable = resultTable;
 	}
 
 	public void launch(Opener opener, int selectedItem) {
@@ -84,6 +84,6 @@ public class OpenerLauncher {
 	}
 
 	String getScannedValue(int selectedItem, int fetcherIndex) {
-		return (String) mainWindow.getResultTable().getScanningResults().getResult(selectedItem).getValues().get(fetcherIndex);
+		return (String) resultTable.getScanningResults().getResult(selectedItem).getValues().get(fetcherIndex);
 	}
 }

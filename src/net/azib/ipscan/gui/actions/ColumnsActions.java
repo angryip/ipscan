@@ -4,6 +4,7 @@
 package net.azib.ipscan.gui.actions;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.gui.MainMenu.ColumnsMenu;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
@@ -24,7 +25,7 @@ public class ColumnsActions {
 		
 		private Menu columnsMenu;
 		
-		public ColumnClick(Menu columnsMenu) {
+		public ColumnClick(ColumnsMenu columnsMenu) {
 			this.columnsMenu = columnsMenu;
 		}
 
@@ -39,7 +40,7 @@ public class ColumnsActions {
 				sortMenuItem.setText(Labels.getInstance().getString("menu.columns.sortBy") + tableColumn.getText());
 			}
 			
-			// remember the clicked column
+			// remember the clicked column (see SortBy below)
 			sortMenuItem.setData(tableColumn);
 			
 			// show the menu
@@ -63,6 +64,8 @@ public class ColumnsActions {
 			else {
 				table.setSortDirection(table.getSortDirection() == SWT.UP ? SWT.DOWN : SWT.UP);
 			}
+			
+			// TODO: execute ScanningResultList.sort() here!!!
 		}
 
 	}

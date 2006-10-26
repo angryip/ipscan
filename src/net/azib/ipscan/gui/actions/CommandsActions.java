@@ -10,9 +10,10 @@ import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.OpenersConfig.Opener;
 import net.azib.ipscan.gui.DetailsWindow;
 import net.azib.ipscan.gui.EditOpenersDialog;
-import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.ResultTable;
+import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.UserErrorException;
+import net.azib.ipscan.gui.MainMenu.OpenersMenu;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
@@ -109,9 +110,9 @@ public class CommandsActions {
 		private Menu openersMenu;
 		private Listener openersSelectListener;
 
-		public ShowOpenersMenu(MainWindow mainWindow, Menu openersMenu) {
+		public ShowOpenersMenu(OpenersMenu openersMenu, SelectOpener selectOpener) {
 			this.openersMenu = openersMenu;
-			this.openersSelectListener = new SelectOpener(mainWindow);
+			this.openersSelectListener = selectOpener;
 		}
 
 		public void handleEvent(Event event) {
@@ -136,10 +137,8 @@ public class CommandsActions {
 				menuItem.setData(new Integer(index));
 				menuItem.addListener(SWT.Selection, openersSelectListener);
 			}
-			
 
 		}
-
 	}
 	
 	public static class EditOpeners implements Listener {
@@ -151,12 +150,14 @@ public class CommandsActions {
 	
 	public static class SelectOpener implements Listener {
 		
-		private MainWindow mainWindow;
+		private StatusBar statusBar;
+		private ResultTable resultTable;
 		private OpenerLauncher openerLauncher;
 		
-		public SelectOpener(MainWindow mainWindow) {
-			this.mainWindow = mainWindow;
-			this.openerLauncher = new OpenerLauncher(mainWindow);
+		public SelectOpener(StatusBar statusBar, ResultTable resultTable, OpenerLauncher openerLauncher) {
+			this.statusBar = statusBar;
+			this.resultTable = resultTable;
+			this.openerLauncher = openerLauncher;
 		}
 		
 		public void handleEvent(Event event) {
@@ -168,13 +169,13 @@ public class CommandsActions {
 			}
 			Opener opener = Config.getOpenersConfig().getOpener(name);
 			
-			int selectedItem = mainWindow.getResultTable().getSelectionIndex();
+			int selectedItem = resultTable.getSelectionIndex();
 			if (selectedItem < 0) {
 				throw new UserErrorException("commands.noSelection");
 			}				
 					
 			try {
-				mainWindow.setStatusText(Labels.getInstance().getString("state.opening") + name);
+				statusBar.setStatusText(Labels.getInstance().getString("state.opening") + name);
 				openerLauncher.launch(opener, selectedItem);
 				// wait a bit to make status visible
 				// TODO: somehow wait until the process is started
@@ -182,7 +183,7 @@ public class CommandsActions {
 			}
 			catch (InterruptedException e) {}
 			finally {
-				mainWindow.setStatusText(null);
+				statusBar.setStatusText(null);
 			}
 		}
 	}

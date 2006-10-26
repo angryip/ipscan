@@ -4,6 +4,8 @@
 package net.azib.ipscan.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class ScanningResultList {
 
 	private List fetchers;
 	private List scanningResults = new ArrayList(1024);
+	private ResultsComparator resultsComparator = new ResultsComparator();
 
 	public synchronized int add(String name) {
 		int index = scanningResults.size();
@@ -99,6 +102,32 @@ public class ScanningResultList {
 		// this removal is probably O(n^2)...
 		for (int i = 0; i < indices.length; i++) {
 			scanningResults.remove(i);	
+		}
+	}
+	
+	/**
+	 * Sorts by the specified column index.
+	 * @param columnIndex
+	 */
+	public void sort(int columnIndex) {
+		resultsComparator.index = columnIndex;
+		Collections.sort(scanningResults, resultsComparator);
+	}
+	
+	private static class ResultsComparator implements Comparator {
+		
+		private int index;
+
+		public int compare(Object o1, Object o2) {
+			if (!(o1 instanceof ScanningResult))
+				return -1;
+			if (!(o2 instanceof ScanningResult))
+				return 1;
+			
+			Object val1 = ((ScanningResult)o1).getValues().get(index);
+			Object val2 = ((ScanningResult)o2).getValues().get(index);
+			
+			return val1.toString().compareTo(val2.toString());
 		}
 	}
 

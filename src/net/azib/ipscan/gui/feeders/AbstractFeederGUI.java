@@ -20,6 +20,7 @@ public abstract class AbstractFeederGUI extends Composite {
 
 	public AbstractFeederGUI(Composite parent) {
 		super(parent, SWT.NONE);
+		setVisible(false);
 		initialize();
 	}
 

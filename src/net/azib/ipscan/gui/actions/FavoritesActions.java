@@ -10,8 +10,9 @@ import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.NamedListConfig;
 import net.azib.ipscan.gui.EditFavoritesDialog;
 import net.azib.ipscan.gui.InputDialog;
-import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.UserErrorException;
+import net.azib.ipscan.gui.MainMenu.FavoritesMenu;
+import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
@@ -27,14 +28,14 @@ import org.eclipse.swt.widgets.MenuItem;
 public class FavoritesActions {
 
 	public static class Add implements Listener {
-		private MainWindow mainWindow;
+		private FeederGUIRegistry feederRegistry;
 		
-		public Add(MainWindow mainWindow) {
-			this.mainWindow = mainWindow;
+		public Add(FeederGUIRegistry feederRegistry) {
+			this.feederRegistry = feederRegistry;
 		}
 		
 		public void handleEvent(Event event) {
-			String feederInfo = mainWindow.getFeederGUI().getInfo();
+			String feederInfo = feederRegistry.current().getInfo();
 			InputDialog inputDialog = new InputDialog(
 					Labels.getInstance().getString("title.favorite.add"), 
 					Labels.getInstance().getString("text.favorite.add"));
@@ -45,19 +46,19 @@ public class FavoritesActions {
 				if (favoritesConfig.get(favoriteName) != null) {
 					throw new UserErrorException("favorite.alreadyExists");
 				}
-				String serializedFeeder = mainWindow.getFeederGUI().getFeederName() + '\t' + mainWindow.getFeederGUI().serialize();				
+				String serializedFeeder = feederRegistry.current().getFeederName() + '\t' + feederRegistry.current().serialize();				
 				favoritesConfig.add(favoriteName, serializedFeeder);
 			}
 		}
 	}
 	
 	public static class Select implements Listener {
-		private MainWindow mainWindow;
+		private FeederGUIRegistry feederRegistry;
 		
-		public Select(MainWindow mainWindow) {
-			this.mainWindow = mainWindow;
+		public Select(FeederGUIRegistry feederRegistry) {
+			this.feederRegistry = feederRegistry;
 		}
-		
+
 		public void handleEvent(Event event) {
 			MenuItem menuItem = (MenuItem) event.widget;
 			String serializedFeeder = Config.getFavoritesConfig().get(menuItem.getText());
@@ -66,8 +67,8 @@ public class FavoritesActions {
 			String feederName = serializedFeeder.substring(0, indexOf);
 			serializedFeeder = serializedFeeder.substring(indexOf + 1);
 			
-			mainWindow.selectFeederGUI(feederName);
-			mainWindow.getFeederGUI().unserialize(serializedFeeder);
+			feederRegistry.select(feederName);
+			feederRegistry.current().unserialize(serializedFeeder);
 		}
 	}
 	
@@ -81,10 +82,10 @@ public class FavoritesActions {
 		private Menu favoritesMenu;
 		private Listener favoritesSelectListener;
 		
-		public ShowMenu(MainWindow mainWindow, Menu favoritesMenu) {
+		public ShowMenu(FavoritesMenu favoritesMenu, Select favoritesSelectListener) {
 			this.favoritesMenu = favoritesMenu;
 			// the listener for favorites selections from the menu
-			this.favoritesSelectListener = new Select(mainWindow);
+			this.favoritesSelectListener = favoritesSelectListener;
 		}
 
 		public void handleEvent(Event event) {

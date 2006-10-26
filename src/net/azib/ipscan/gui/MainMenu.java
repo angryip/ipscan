@@ -4,7 +4,6 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsActions;
 import net.azib.ipscan.gui.actions.FavoritesActions;
@@ -14,10 +13,14 @@ import net.azib.ipscan.gui.actions.HelpActions;
 import net.azib.ipscan.gui.actions.ToolsActions;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Decorations;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * MainMenu
@@ -26,18 +29,25 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class MainMenu {
 	
-	private MainWindow mainWindow;
+	private MutablePicoContainer container;
+	
 	private Menu mainMenu;
-	private Menu resultsContextMenu;
-	private Menu favoritesMenu;
-	private Menu columnsMenu;
-	private Menu openersMenu;
+	private ResultsContextMenu resultsContextMenu;
+	private FavoritesMenu favoritesMenu;
+	private ColumnsMenu columnsMenu;
+	private OpenersMenu openersMenu;
 		
-	public MainMenu(MainWindow mainWindow) {
+	public MainMenu(Shell shell, PicoContainer parentContainer) {
 		
-		this.mainWindow = mainWindow;
-		Shell shell = mainWindow.getShell();
+		// create the menu-specific child container
+		this.container = new DefaultPicoContainer(parentContainer);
 		
+		// register some components not registered in the main menu
+		container.registerComponentImplementation(CommandsActions.SelectOpener.class);
+		container.registerComponentImplementation(CommandsActions.ShowOpenersMenu.class);
+		container.registerComponentImplementation(FavoritesActions.ShowMenu.class);
+		container.registerComponentImplementation(FavoritesActions.Select.class);		
+
 		mainMenu = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(mainMenu);		
 				
@@ -46,11 +56,13 @@ public class MainMenu {
 		// generate the menu from the definition
 		generateMenu(shell, menuDefinition, mainMenu);
 		
-		openersMenu = new Menu(shell, SWT.DROP_DOWN);
+		openersMenu = new OpenersMenu(shell);
+		container.registerComponentInstance(OpenersMenu.class, openersMenu);
+		
 		MenuItem openersMenuItem = new MenuItem(mainMenu.getItem(2).getMenu(), SWT.CASCADE);
 		openersMenuItem.setText(Labels.getInstance().getString("menu.commands.open"));
 		openersMenuItem.setMenu(openersMenu);
-		CommandsActions.ShowOpenersMenu showOpenersMenuListener = new CommandsActions.ShowOpenersMenu(mainWindow, openersMenu);
+		Listener showOpenersMenuListener = (Listener) container.getComponentInstance(CommandsActions.ShowOpenersMenu.class);
 		openersMenu.addListener(SWT.Show, showOpenersMenuListener);
 		MenuItem menuItem = new MenuItem(openersMenu, SWT.PUSH);
 		menuItem.setText(Labels.getInstance().getString("menu.commands.open.edit"));
@@ -62,15 +74,16 @@ public class MainMenu {
 		// retrieve results context menu, that is the same as "commands" menu
 		// note: the index of 2 is hardcoded and may theoretically change
 		// TODO: probably something better should be done here
-		resultsContextMenu = new Menu(shell, SWT.POP_UP);
+		resultsContextMenu = new ResultsContextMenu(shell);
 		generateSubMenu((Object[]) ((Object[]) menuDefinition[2])[1], resultsContextMenu);		
 		
-		// retrieve favoritesMenu, which is 3
-		favoritesMenu = mainMenu.getItem(3).getMenu();
-		favoritesMenu.addListener(SWT.Show, new FavoritesActions.ShowMenu(mainWindow, favoritesMenu));
+		// retrieve favoritesMenu, which is 3 (TODO: ugly hardcode of favorites menu retrieval)
+		favoritesMenu = (FavoritesMenu) mainMenu.getItem(3).getMenu();
+		container.registerComponentInstance("favoritesMenu", favoritesMenu);
+		favoritesMenu.addListener(SWT.Show, (Listener) container.getComponentInstance(FavoritesActions.ShowMenu.class));
 		
 		// this is the menu when clicking on a column header
-		columnsMenu = new Menu(shell, SWT.POP_UP);
+		columnsMenu = new ColumnsMenu(shell);
 		generateSubMenu(createColumnsMenuDefinition(), columnsMenu);
 	}
 	
@@ -79,47 +92,47 @@ public class MainMenu {
 		Object[] menuDefinition = new Object[] {
 			new Object[] {"menu.file",  
 				new Object[] {
-					new Object[] {"menu.file.saveAll", new Integer(SWT.CONTROL | 'S'), new FileActions.SaveResults(mainWindow, false)},
-					new Object[] {"menu.file.saveSelection", null, new FileActions.SaveResults(mainWindow, true)},
+					new Object[] {"menu.file.saveAll", new Integer(SWT.CONTROL | 'S'), FileActions.SaveAll.class},
+					new Object[] {"menu.file.saveSelection", null, FileActions.SaveSelection.class},
 					null,
 					new Object[] {"menu.file.exportOptions", null, null},
 					new Object[] {"menu.file.importOptions", null, null},
 					null,
-					new Object[] {"menu.file.exit", null, new FileActions.Exit()},
+					new Object[] {"menu.file.exit", null, FileActions.Exit.class},
 				}	
 			},
 			new Object[] {"menu.goto",  
 				new Object[] {
-					new Object[] {"menu.goto.aliveHost", new Integer(SWT.CONTROL | SWT.SHIFT | 'H'), new GotoActions.NextHost(mainWindow, ScanningSubject.RESULT_TYPE_ALIVE)},
-					new Object[] {"menu.goto.deadHost", new Integer(SWT.CONTROL | SWT.SHIFT | 'D'), new GotoActions.NextHost(mainWindow, ScanningSubject.RESULT_TYPE_DEAD)},
-					new Object[] {"menu.goto.openPort", new Integer(SWT.CONTROL | SWT.SHIFT | 'P'), new GotoActions.NextHost(mainWindow, ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO)},
+					new Object[] {"menu.goto.aliveHost", new Integer(SWT.CONTROL | SWT.SHIFT | 'H'), GotoActions.NextAliveHost.class},
+					new Object[] {"menu.goto.deadHost", new Integer(SWT.CONTROL | SWT.SHIFT | 'D'), GotoActions.NextDeadHost.class},
+					new Object[] {"menu.goto.openPort", new Integer(SWT.CONTROL | SWT.SHIFT | 'P'), GotoActions.NextHostWithInfo.class},
 					null,
-					new Object[] {"menu.goto.find", new Integer(SWT.CONTROL | 'F'), new GotoActions.Find(mainWindow)},
+					new Object[] {"menu.goto.find", new Integer(SWT.CONTROL | 'F'), GotoActions.Find.class},
 				}	
 			},
 			new Object[] {"menu.commands",  
 				new Object[] {
-					new Object[] {"menu.commands.details", null, new CommandsActions.Details(mainWindow.getResultTable())},
+					new Object[] {"menu.commands.details", null, CommandsActions.Details.class},
 					null,
 					new Object[] {"menu.commands.rescan", new Integer(SWT.CONTROL | 'R'), null},
-					new Object[] {"menu.commands.delete", new Integer(SWT.DEL), new CommandsActions.Delete(mainWindow.getResultTable())},
+					new Object[] {"menu.commands.delete", new Integer(SWT.DEL), CommandsActions.Delete.class},
 					null,
-					new Object[] {"menu.commands.copy", new Integer(SWT.CONTROL | 'C'), new CommandsActions.CopyIP(mainWindow.getResultTable())},
-					new Object[] {"menu.commands.copyDetails", null, new CommandsActions.CopyIPDetails(mainWindow.getResultTable())},
+					new Object[] {"menu.commands.copy", new Integer(SWT.CONTROL | 'C'), CommandsActions.CopyIP.class},
+					new Object[] {"menu.commands.copyDetails", null, CommandsActions.CopyIPDetails.class},
 					null,
 					//new Object[] {"menu.commands.show", null, null},
 				}	
 			},
 			new Object[] {"menu.favorites",  
 				new Object[] {
-					new Object[] {"menu.favorites.add", new Integer(SWT.CONTROL | 'D'), new FavoritesActions.Add(mainWindow)},
-					new Object[] {"menu.favorites.edit", null, new FavoritesActions.Edit()},
+					new Object[] {"menu.favorites.add", new Integer(SWT.CONTROL | 'D'), FavoritesActions.Add.class},
+					new Object[] {"menu.favorites.edit", null, FavoritesActions.Edit.class},
 					null,
 				}	
 			},
 			new Object[] {"menu.tools",  
 				new Object[] {
-					new Object[] {"menu.tools.options", new Integer(SWT.CONTROL | 'O'), new ToolsActions.Options()},
+					new Object[] {"menu.tools.options", new Integer(SWT.CONTROL | 'O'), ToolsActions.Options.class},
 					new Object[] {"menu.tools.fetchers", null, null},
 					null,
 					new Object[] {"menu.tools.delete", null, null},
@@ -128,17 +141,17 @@ public class MainMenu {
 			},
 			new Object[] {"menu.help",  
 				new Object[] {
-					new Object[] {"menu.help.gettingStarted", new Integer(SWT.F1), new HelpActions.GettingStarted()},
+					new Object[] {"menu.help.gettingStarted", new Integer(SWT.F1), HelpActions.GettingStarted.class},
 					null,
-					new Object[] {"menu.help.website", null, new HelpActions.Website()},
-					new Object[] {"menu.help.forum", null, new HelpActions.Forum()},
-					new Object[] {"menu.help.plugins", null, new HelpActions.Plugins()},
+					new Object[] {"menu.help.website", null, HelpActions.Website.class},
+					new Object[] {"menu.help.forum", null, HelpActions.Forum.class},
+					new Object[] {"menu.help.plugins", null, HelpActions.Plugins.class},
 					null,
 					new Object[] {"menu.help.cmdLine", null, null},
 					null,
-					new Object[] {"menu.help.checkVersion", null, new HelpActions.CheckVersion(mainWindow)},
+					new Object[] {"menu.help.checkVersion", null, HelpActions.CheckVersion.class},
 					null,
-					new Object[] {"menu.help.about", new Integer(SWT.F12), new HelpActions.About()},
+					new Object[] {"menu.help.about", new Integer(SWT.F12), HelpActions.About.class},
 				}	
 			},
 		};
@@ -148,7 +161,7 @@ public class MainMenu {
 	private Object[] createColumnsMenuDefinition() {
 		// a shortened version of menu definition
 		Object[] menuDefinition = new Object[] {
-			new Object[] {"menu.columns.sortBy", null, new ColumnsActions.SortBy()},
+			new Object[] {"menu.columns.sortBy", null, ColumnsActions.SortBy.class},
 			new Object[] {"menu.columns.info", null, null},
 			new Object[] {"menu.columns.options", null, null},
 		};
@@ -172,7 +185,8 @@ public class MainMenu {
 			menuItem.setText(labels.getString((String) topMenuDef[0]));
 			
 			Object[] subMenuDef = (Object[]) topMenuDef[1];
-			Menu subMenu = new Menu(shell, SWT.DROP_DOWN);
+			// TODO: ugly hardcode of FavoritesMenu creation
+			Menu subMenu = i == 3 ? new FavoritesMenu(shell) : new Menu(shell, SWT.DROP_DOWN);
 			menuItem.setMenu(subMenu);
 			
 			generateSubMenu(subMenuDef, subMenu);
@@ -196,12 +210,20 @@ public class MainMenu {
 			else {
 				MenuItem subItem = new MenuItem(menu, SWT.PUSH);
 				subItem.setText(labels.getString((String) menuDef[0]));
+				
 				if (menuDef[1] != null)
 					subItem.setAccelerator(((Integer)menuDef[1]).intValue());
-				if (menuDef[2] != null)
-					subItem.addListener(SWT.Selection, (Listener) menuDef[2]);
-				else
+				
+				if (menuDef[2] != null) {
+					// register the component if it is not registered yet
+					if (container.getComponentAdapter(menuDef[2]) == null)
+						container.registerComponentImplementation((Class) menuDef[2]);
+					// .. and create the instance, satisfying all the dependencies
+					subItem.addListener(SWT.Selection, (Listener) container.getComponentInstance(menuDef[2]));
+				}
+				else {
 					subItem.setEnabled(false);
+				}
 			}
 		}
 	}
@@ -214,8 +236,48 @@ public class MainMenu {
 		return favoritesMenu;
 	}
 	
-	public Menu getColumnsPopupMenu() {
+	public ColumnsMenu getColumnsPopupMenu() {
 		return columnsMenu;
+	}
+
+	/**
+	 * OpenersMenu wrapper for type-safety
+	 */
+	public static class OpenersMenu extends Menu {
+		public OpenersMenu(Decorations parent) {
+			super(parent, SWT.DROP_DOWN);
+		}
+		protected void checkSubclass() { } // allow extending of Menu class
+	}
+	
+	/**
+	 * ResultsContextMenu wrapper for type-safety
+	 */
+	public static class ResultsContextMenu extends Menu {
+		public ResultsContextMenu(Decorations parent) {
+			super(parent, SWT.POP_UP);
+		}
+		protected void checkSubclass() { } // allow extending of Menu class
+	}
+	
+	/**
+	 * FavoritesMenu wrapper for type-safety
+	 */
+	public static class FavoritesMenu extends Menu {
+		public FavoritesMenu(Decorations parent) {
+			super(parent, SWT.DROP_DOWN);
+		}
+		protected void checkSubclass() { } // allow extending of Menu class
+	}
+	
+	/**
+	 * ColumnsMenu wrapper for type-safety
+	 */
+	public static class ColumnsMenu extends Menu {
+		public ColumnsMenu(Decorations parent) {
+			super(parent, SWT.POP_UP);
+		}
+		protected void checkSubclass() { } // allow extending of Menu class
 	}
 	
 }

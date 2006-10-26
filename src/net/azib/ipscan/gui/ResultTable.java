@@ -14,6 +14,7 @@ import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.gui.MainMenu.ColumnsMenu;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsActions;
 
@@ -22,7 +23,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -34,23 +34,18 @@ import org.eclipse.swt.widgets.TableItem;
  */
 public class ResultTable extends Table {
 		
-	private ScanningResultList scanningResults = new ScanningResultList();
+	private ScanningResultList scanningResults;
 	
 	private Image[] images = new Image[4];
 
 	private String feederInfo;
-	private Menu columnsMenu;
 
-	public ResultTable(Composite parent) {
+	public ResultTable(Composite parent, ScanningResultList scanningResultList) {
 		super(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL);
-		initialize();
+		this.scanningResults = scanningResultList;
 	}
 	
-	void setColumnsMenu(Menu columnsMenu) {
-		this.columnsMenu = columnsMenu;
-	}
-
-	private void initialize() {
+	public void initialize(ColumnsMenu columnsMenu) {
 		setHeaderVisible(true);
 		setLinesVisible(true);
 		

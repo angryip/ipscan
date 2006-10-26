@@ -13,8 +13,8 @@ import net.azib.ipscan.exporters.ExportProcessor;
 import net.azib.ipscan.exporters.Exporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
 import net.azib.ipscan.exporters.ExportProcessor.ScanningResultSelector;
-import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.ResultTable;
+import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.UserErrorException;
 
 import org.eclipse.swt.SWT;
@@ -35,19 +35,19 @@ public class FileActions {
 		}
 	}
 
-	public static class SaveResults implements Listener {
-		MainWindow mainWindow;
-		boolean isSelection;
-
-		public SaveResults(MainWindow mainWindow, boolean isSelection) {
-			this.mainWindow = mainWindow;
+	private static class SaveResults implements Listener {
+		private ResultTable resultTable;
+		private StatusBar statusBar;
+		private boolean isSelection;
+		
+		SaveResults(ResultTable resultTable, StatusBar statusBar, boolean isSelection) {
+			this.resultTable = resultTable;
+			this.statusBar = statusBar;
 			// TODO: implement isSelection
 			this.isSelection = isSelection;
 		}
 
 		public void handleEvent(Event event) {
-			ResultTable resultTable = mainWindow.getResultTable();
-
 			if (resultTable.getItemCount() <= 0) {
 				throw new UserErrorException("commands.noResults");
 			}
@@ -74,7 +74,7 @@ public class FileActions {
 				// create exporter instance
 				Exporter exporter = ExporterRegistry.getInstance().createExporter(fileName);
 				
-				mainWindow.setStatusText(Labels.getInstance().getString("state.saving"));
+				statusBar.setStatusText(Labels.getInstance().getString("state.saving"));
 				
 				ExportProcessor exportProcessor = new ExportProcessor(exporter, fileName);
 				
@@ -83,14 +83,14 @@ public class FileActions {
 				if (isSelection) {
 					scanningResultSelector = new ScanningResultSelector() {
 						public boolean isResultSelected(int index, ScanningResult result) {
-							return mainWindow.getResultTable().isSelected(index);
+							return resultTable.isSelected(index);
 						}
 					};
 				}
 				
-				exportProcessor.process(resultTable.getScanningResults(), mainWindow.getResultTable().getFeederInfo(), scanningResultSelector);
+				exportProcessor.process(resultTable.getScanningResults(), resultTable.getFeederInfo(), scanningResultSelector);
 				
-				mainWindow.setStatusText(null);
+				statusBar.setStatusText(null);
 			}
 		}
 
@@ -107,5 +107,16 @@ public class FileActions {
 			sb.append(")");
 		}
 	}
+	
+	public static class SaveAll extends SaveResults {
+		public SaveAll(ResultTable resultTable, StatusBar statusBar) {
+			super(resultTable, statusBar, false);
+		}
+	}
 
+	public static class SaveSelection extends SaveResults {
+		public SaveSelection(ResultTable resultTable, StatusBar statusBar) {
+			super(resultTable, statusBar, true);
+		}
+	}
 }

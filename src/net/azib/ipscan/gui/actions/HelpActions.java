@@ -13,7 +13,7 @@ import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.gui.AboutWindow;
 import net.azib.ipscan.gui.GettingStartedWindow;
-import net.azib.ipscan.gui.MainWindow;
+import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.UserErrorException;
 
 import org.eclipse.swt.SWT;
@@ -59,16 +59,16 @@ public class HelpActions {
 	}
 	
 	public static class CheckVersion implements Listener {
-		private MainWindow mainWindow;
+		private StatusBar statusBar;
 		
-		public CheckVersion(MainWindow mainWindow) {
-			this.mainWindow = mainWindow;
+		public CheckVersion(StatusBar statusBar) {
+			this.statusBar = statusBar;
 		}
 
 		public void handleEvent(Event event) {
 			BufferedReader reader = null;
 			try {
-				mainWindow.setStatusText(Labels.getInstance().getString("state.retrievingVersion"));
+				statusBar.setStatusText(Labels.getInstance().getString("state.retrievingVersion"));
 				
 				URL url = new URL(Version.LATEST_VERSION_URL);
 				URLConnection conn = url.openConnection();
@@ -102,7 +102,7 @@ public class HelpActions {
 				}
 				catch (IOException e) {}
 				
-				mainWindow.setStatusText(null);
+				statusBar.setStatusText(null);
 			}
 		}
 	}

@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.GUIComponentContainer;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.UserErrorException;
@@ -41,7 +42,9 @@ public class Main {
 		// initialize Config instance
 		Config.initialize();
 		
-		MainWindow mainWindow = new MainWindow();
+		// create the main window using dependency injection
+		MainWindow mainWindow = new GUIComponentContainer().createMainWindow();
+		
 		while (!mainWindow.isDisposed()) {
 			try {
 				if (!display.readAndDispatch())
