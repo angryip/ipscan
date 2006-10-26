@@ -45,6 +45,7 @@ public class MainWindow {
 	private ResultTable resultTable;
 	
 	private MainMenu mainMenu;
+	
 	private Combo feederSelectionCombo;
 	private FeederGUIRegistry feederRegistry;
 	

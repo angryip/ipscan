@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.BasicComponentParameter;
+import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
@@ -39,7 +39,9 @@ public class GUIComponentContainer {
 		MutablePicoContainer container = new DefaultPicoContainer();
 		this.container = container;
 		
-		container.registerComponentInstance(container);
+		ComponentParameter anyComponentParameter = new ComponentParameter();
+		
+		//container.registerComponentInstance(container);
 		
 		// non-GUI
 		container.registerComponentImplementation(ScanningResultList.class);
@@ -47,42 +49,44 @@ public class GUIComponentContainer {
 		// GUI follows
 		
 		// Some "shared" GUI components
-		container.registerComponentImplementation("mainShell", Shell.class);
+		Shell mainShell = new Shell();
+		container.registerComponentInstance("mainShell", mainShell);
+		
 		container.registerComponentImplementation("feederArea", Composite.class, new Parameter[] {
-			new BasicComponentParameter("mainShell"),
+			new ComponentParameter("mainShell"),
 			new ConstantParameter(new Integer(SWT.NONE))});
 		container.registerComponentImplementation("controlsArea", Composite.class, new Parameter[] {
-			new BasicComponentParameter("mainShell"),
+			new ComponentParameter("mainShell"),
 			new ConstantParameter(new Integer(SWT.NONE))});
 		container.registerComponentImplementation("feederSelectionCombo", Combo.class, new Parameter[] {
-			new BasicComponentParameter("controlsArea"),
+			new ComponentParameter("controlsArea"),
 			new ConstantParameter(new Integer(SWT.READ_ONLY))});
 		
 		// GUI Feeders
 		container.registerComponentImplementation(FeederGUIRegistry.class);
-		Parameter[] feederGUIParameters = new Parameter[] {new BasicComponentParameter("feederArea")};
+		Parameter[] feederGUIParameters = new Parameter[] {new ComponentParameter("feederArea")};
 		container.registerComponentImplementation(RangeFeederGUI.class, RangeFeederGUI.class, feederGUIParameters);
 		container.registerComponentImplementation(RandomFeederGUI.class, RandomFeederGUI.class, feederGUIParameters);
 		container.registerComponentImplementation(FileFeederGUI.class, FileFeederGUI.class, feederGUIParameters);
 		
 		container.registerComponentImplementation(OpenerLauncher.class);
 		container.registerComponentImplementation(MainWindow.class, MainWindow.class, new Parameter[] {
-			new BasicComponentParameter("mainShell"), 
-			new BasicComponentParameter("feederArea"),
-			new BasicComponentParameter("controlsArea"),
-			new BasicComponentParameter("feederSelectionCombo"),
-			BasicComponentParameter.BASIC_DEFAULT,
-			BasicComponentParameter.BASIC_DEFAULT,
-			BasicComponentParameter.BASIC_DEFAULT,
-			BasicComponentParameter.BASIC_DEFAULT});
+			new ComponentParameter("mainShell"), 
+			new ComponentParameter("feederArea"),
+			new ComponentParameter("controlsArea"),
+			new ComponentParameter("feederSelectionCombo"),
+			anyComponentParameter,
+			anyComponentParameter,
+			anyComponentParameter,
+			anyComponentParameter});
 		container.registerComponentImplementation(ResultTable.class, ResultTable.class, new Parameter[] {
-			new BasicComponentParameter("mainShell"), 
-			BasicComponentParameter.BASIC_DEFAULT});
+			new ComponentParameter("mainShell"), 
+			anyComponentParameter});
 		container.registerComponentImplementation(StatusBar.class, StatusBar.class, new Parameter[] {
-			new BasicComponentParameter("mainShell")});
-		container.registerComponentImplementation(MainMenu.class, MainMenu.class, new Parameter[] {
-			new BasicComponentParameter("mainShell"), 
-			BasicComponentParameter.BASIC_DEFAULT});
+			new ComponentParameter("mainShell")});
+		
+		MainMenu mainMenu = new MainMenu(mainShell, container);
+		container.registerComponentInstance(mainMenu);
 	}
 	
 	public MainWindow createMainWindow() {
