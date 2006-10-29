@@ -8,8 +8,10 @@ import java.net.InetAddress;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScannerThread;
 import net.azib.ipscan.core.ScanningStateCallback;
-import net.azib.ipscan.gui.MainWindow;
+import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.ScanningResultsConsumer;
+import net.azib.ipscan.gui.StatusBar;
+import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -26,8 +28,10 @@ import org.eclipse.swt.widgets.Display;
 public class StartStopScanningAction implements SelectionListener, ScanningStateCallback {
 	
 	private ScannerThread scannerThread;
-	
-	private MainWindow mainWindow;
+
+	private StatusBar statusBar;
+	private ResultTable resultTable;
+	private FeederGUIRegistry feederRegistry;
 	private Button button;
 	private Image[] images = new Image[4];
 	
@@ -35,9 +39,11 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 	
 	private int state = ScanningStateCallback.STATE_IDLE;
 	
-	public StartStopScanningAction(MainWindow mainWindow, Button button) {
-		this.mainWindow = mainWindow;
-		this.button = button;
+	public StartStopScanningAction(ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, Button startStopButton) {
+		this.resultTable = resultTable;
+		this.statusBar = statusBar;
+		this.feederRegistry = feederRegistry;
+		this.button = startStopButton;
 		this.display = button.getDisplay();
 		
 		// pre-load button images
@@ -58,9 +64,9 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 		switch (state) {
 			case ScanningStateCallback.STATE_IDLE:
 				// start the scan!
-				mainWindow.getResultTable().initNewScan(mainWindow.getFeederGUI().getInfo());
-				ScanningResultsConsumer resultsConsumer = new ScanningResultsConsumer(mainWindow.getResultTable());
-				scannerThread = new ScannerThread(mainWindow.getFeederGUI().getFeeder(), mainWindow.getResultTable().getFetchers());
+				resultTable.initNewScan(feederRegistry.current().getInfo());
+				ScanningResultsConsumer resultsConsumer = new ScanningResultsConsumer(resultTable);
+				scannerThread = new ScannerThread(feederRegistry.current().getFeeder(), resultTable.getFetchers());
 				scannerThread.setResultsCallback(resultsConsumer);
 				scannerThread.setStatusCallback(this);
 				scannerThread.start();
@@ -82,20 +88,20 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 			return;
 		display.asyncExec(new Runnable() {
 			public void run() {
-				if (mainWindow.isDisposed())
+				if (statusBar.isDisposed())
 					return;
 				
 				switch (StartStopScanningAction.this.state) {
 					case STATE_IDLE:
 						// reset state text
-						mainWindow.setStatusText(null);
-						mainWindow.setProgress(0);
+						statusBar.setStatusText(null);
+						statusBar.setProgress(0);
 						break;
 					case STATE_STOPPING:
-						mainWindow.setStatusText(Labels.getInstance().getString("state.waitForThreads"));
+						statusBar.setStatusText(Labels.getInstance().getString("state.waitForThreads"));
 						break;
 					case STATE_KILLING:
-						mainWindow.setStatusText(Labels.getInstance().getString("state.killingThreads"));
+						statusBar.setStatusText(Labels.getInstance().getString("state.killingThreads"));
 						break;
 				}
 				// change button image
@@ -109,15 +115,15 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 			return;
 		display.asyncExec(new Runnable() {
 			public void run() {
-				if (mainWindow.isDisposed())
+				if (statusBar.isDisposed())
 					return;
 				
 				if (currentAddress != null) {
-					mainWindow.setStatusText(Labels.getInstance().getString("state.scanning") + currentAddress.getHostAddress());
+					statusBar.setStatusText(Labels.getInstance().getString("state.scanning") + currentAddress.getHostAddress());
 				}					
 
-				mainWindow.setRunningThreads(runningThreads);
-				mainWindow.setProgress(percentageComplete);
+				statusBar.setRunningThreads(runningThreads);
+				statusBar.setProgress(percentageComplete);
 
 				// change button image
 				button.setImage(images[StartStopScanningAction.this.state]);

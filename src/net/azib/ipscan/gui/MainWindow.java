@@ -47,6 +47,8 @@ public class MainWindow {
 	private MainMenu mainMenu;
 	
 	private Combo feederSelectionCombo;
+	private Button startStopButton;
+	private StartStopScanningAction startStopScanningAction;
 	private FeederGUIRegistry feederRegistry;
 	
 	private Composite controlsArea;
@@ -56,12 +58,14 @@ public class MainWindow {
 	/**
 	 * Creates and initializes the main window.
 	 */
-	public MainWindow(Shell shell, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, ResultTable resultTable, StatusBar statusBar, MainMenu mainMenu, FeederGUIRegistry feederGUIRegistry) {
+	public MainWindow(Shell shell, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, MainMenu mainMenu, FeederGUIRegistry feederGUIRegistry) {
 		
 		this.shell = shell;
 		this.feederArea = feederArea;
 		this.controlsArea = controlsArea;
 		this.feederSelectionCombo = feederSelectionCombo;
+		this.startStopScanningAction = startStopScanningAction;
+		this.startStopButton = startStopButton;
 		this.resultTable = resultTable;
 		this.statusBar = statusBar;
 		this.mainMenu = mainMenu;
@@ -107,13 +111,6 @@ public class MainWindow {
 	}
 
 	/**
-	 * @deprecated use FeederGUIRegistry instead
-	 */
-	public AbstractFeederGUI getFeederGUI() {
-		return feederRegistry.current();
-	}
-	
-	/**
 	 * @deprecated
 	 */
 	public ResultTable getResultTable() {
@@ -157,10 +154,9 @@ public class MainWindow {
 		controlsArea.setLayout(rowLayout);
 				
 		// start/stop button
-		Button button = new Button(controlsArea, SWT.NONE);
-		shell.setDefaultButton(button);
-		button.setLayoutData(new RowData(SWT.DEFAULT, 23));
-		button.addSelectionListener(new StartStopScanningAction(this, button));
+		shell.setDefaultButton(startStopButton);
+		startStopButton.setLayoutData(new RowData(SWT.DEFAULT, 23));
+		startStopButton.addSelectionListener(startStopScanningAction);
 		
 		// feeder selection combobox
 		feederSelectionCombo.setLayoutData(new RowData(SWT.DEFAULT, 23));
@@ -175,31 +171,10 @@ public class MainWindow {
 		feederSelectionCombo.setToolTipText(Labels.getInstance().getString("combobox.feeder.tooltip"));
 		feederSelectionListener.widgetSelected(null);
 		
-		((RowData)button.getLayoutData()).height = feederSelectionCombo.getBounds().height;
-		((RowData)button.getLayoutData()).width = feederSelectionCombo.getBounds().width;
+		((RowData)startStopButton.getLayoutData()).height = feederSelectionCombo.getBounds().height;
+		((RowData)startStopButton.getLayoutData()).width = feederSelectionCombo.getBounds().width;
 	}
-	
-	/**
-	 * @deprecated use statusBar instead
-	 */
-	public void setStatusText(String statusText) {
-		statusBar.setStatusText(statusText);
-	}
-	
-	/**
-	 * @deprecated use statusBar instead
-	 */
-	public void setRunningThreads(int runningThreads) {
-		statusBar.setRunningThreads(runningThreads);
-	}
-	
-	/**
-	 * @deprecated use statusBar instead
-	 */
-	public void setProgress(int progress) {
-		statusBar.setProgress(progress);
-	}
-	
+			
 	/**
 	 * IP Feeder selection listener. Updates the GUI according to the IP Feeder selection.
 	 */

@@ -9,12 +9,14 @@ import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.actions.OpenerLauncher;
+import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import net.azib.ipscan.gui.feeders.FileFeederGUI;
 import net.azib.ipscan.gui.feeders.RandomFeederGUI;
 import net.azib.ipscan.gui.feeders.RangeFeederGUI;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -58,9 +60,12 @@ public class GUIComponentContainer {
 		container.registerComponentImplementation("controlsArea", Composite.class, new Parameter[] {
 			new ComponentParameter("mainShell"),
 			new ConstantParameter(new Integer(SWT.NONE))});
+		container.registerComponentImplementation("startStopButton", Button.class, new Parameter[] {
+			new ComponentParameter("controlsArea"),
+			new ConstantParameter(new Integer(SWT.NONE))});
 		container.registerComponentImplementation("feederSelectionCombo", Combo.class, new Parameter[] {
 			new ComponentParameter("controlsArea"),
-			new ConstantParameter(new Integer(SWT.READ_ONLY))});
+			new ConstantParameter(new Integer(SWT.READ_ONLY))});		
 		
 		// GUI Feeders
 		container.registerComponentImplementation(FeederGUIRegistry.class);
@@ -75,10 +80,13 @@ public class GUIComponentContainer {
 			new ComponentParameter("feederArea"),
 			new ComponentParameter("controlsArea"),
 			new ComponentParameter("feederSelectionCombo"),
+			new ComponentParameter("startStopButton"),
+			anyComponentParameter,
 			anyComponentParameter,
 			anyComponentParameter,
 			anyComponentParameter,
 			anyComponentParameter});
+		container.registerComponentImplementation(StartStopScanningAction.class);
 		container.registerComponentImplementation(ResultTable.class, ResultTable.class, new Parameter[] {
 			new ComponentParameter("mainShell"), 
 			anyComponentParameter});

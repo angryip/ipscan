@@ -62,6 +62,17 @@ public class StatusBar {
 		return composite;
 	}
 	
+	/**
+	 * @return true if the underlying widgets are disposed
+	 */
+	public boolean isDisposed() {
+		return composite.isDisposed();
+	}
+	
+	/**
+	 * Sets the status bar text displayed to the user.
+	 * @param statusText the text to set, null to use the default text (Ready)
+	 */
 	public void setStatusText(String statusText) {
 		if (statusText == null) {
 			statusText = Labels.getInstance().getString("state.ready"); 
