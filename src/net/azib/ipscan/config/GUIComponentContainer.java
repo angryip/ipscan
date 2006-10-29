@@ -8,6 +8,7 @@ import net.azib.ipscan.gui.MainMenu;
 import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
+import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.OpenerLauncher;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
@@ -20,6 +21,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -43,16 +45,13 @@ public class GUIComponentContainer {
 		
 		ComponentParameter anyComponentParameter = new ComponentParameter();
 		
-		//container.registerComponentInstance(container);
-		
 		// non-GUI
 		container.registerComponentImplementation(ScanningResultList.class);
 		
 		// GUI follows
 		
 		// Some "shared" GUI components
-		Shell mainShell = new Shell();
-		container.registerComponentInstance("mainShell", mainShell);
+		container.registerComponentImplementation("mainShell", Shell.class);
 		
 		container.registerComponentImplementation("feederArea", Composite.class, new Parameter[] {
 			new ComponentParameter("mainShell"),
@@ -86,15 +85,23 @@ public class GUIComponentContainer {
 			anyComponentParameter,
 			anyComponentParameter,
 			anyComponentParameter});
-		container.registerComponentImplementation(StartStopScanningAction.class);
 		container.registerComponentImplementation(ResultTable.class, ResultTable.class, new Parameter[] {
 			new ComponentParameter("mainShell"), 
+			anyComponentParameter,
 			anyComponentParameter});
 		container.registerComponentImplementation(StatusBar.class, StatusBar.class, new Parameter[] {
 			new ComponentParameter("mainShell")});
 		
-		MainMenu mainMenu = new MainMenu(mainShell, container);
-		container.registerComponentInstance(mainMenu);
+		container.registerComponentImplementation(MainMenu.class, MainMenu.class, new Parameter[] {
+			new ComponentParameter("mainShell"),
+			new ConstantParameter(container)});
+		container.registerComponentImplementation(MainMenu.ColumnsMenu.class, MainMenu.ColumnsMenu.class, new Parameter[] {
+			new ComponentParameter("mainShell"),
+			anyComponentParameter});
+
+		// various actions / listener
+		container.registerComponentImplementation(StartStopScanningAction.class);
+		container.registerComponentImplementation(ColumnsActions.SortBy.class);
 	}
 	
 	public MainWindow createMainWindow() {

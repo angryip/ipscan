@@ -42,41 +42,26 @@ public class MainWindow {
 	private Shell shell;
 	
 	private Composite feederArea;
-	private ResultTable resultTable;
 	
 	private MainMenu mainMenu;
 	
 	private Combo feederSelectionCombo;
-	private Button startStopButton;
-	private StartStopScanningAction startStopScanningAction;
 	private FeederGUIRegistry feederRegistry;
-	
-	private Composite controlsArea;
-	
-	private StatusBar statusBar;
-	
+		
 	/**
 	 * Creates and initializes the main window.
 	 */
 	public MainWindow(Shell shell, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, MainMenu mainMenu, FeederGUIRegistry feederGUIRegistry) {
 		
-		this.shell = shell;
-		this.feederArea = feederArea;
-		this.controlsArea = controlsArea;
-		this.feederSelectionCombo = feederSelectionCombo;
-		this.startStopScanningAction = startStopScanningAction;
-		this.startStopButton = startStopButton;
-		this.resultTable = resultTable;
-		this.statusBar = statusBar;
-		this.mainMenu = mainMenu;
-		this.feederRegistry = feederGUIRegistry;
+		initShell(shell, mainMenu);
 		
-		populateShell();
+		initFeederArea(feederArea, feederGUIRegistry);
 		
-		createControls();
+		initControlsArea(controlsArea, feederSelectionCombo, startStopButton, startStopScanningAction);
 		
-		initTable();
-		
+		initTableAndStatusBar(resultTable, statusBar);
+
+		// after all controls are initialized, resize and open
 		shell.setBounds(Config.getDimensionsConfig().getWindowBounds());
 		shell.setMaximized(Config.getDimensionsConfig().isWindowMaximized);
 		shell.open();
@@ -85,7 +70,10 @@ public class MainWindow {
 	/**
 	 * This method initializes shell
 	 */
-	private void populateShell() {
+	private void initShell(final Shell shell, final MainMenu mainMenu) {
+		this.shell = shell;
+		this.mainMenu = mainMenu;
+		
 		FormLayout formLayout = new FormLayout();
 		shell.setLayout(formLayout);
 		shell.setText(Version.FULL_NAME);
@@ -102,26 +90,24 @@ public class MainWindow {
 		});
 	}
 
+	/**
+	 * @return the underlying shell, used by the Main class
+	 */
 	public Shell getShell() {
 		return shell;
 	}
 
+	/**
+	 * @return true if the underlying shell is disposed
+	 */
 	public boolean isDisposed() {
 		return shell.isDisposed();
 	}
 
 	/**
-	 * @deprecated
-	 */
-	public ResultTable getResultTable() {
-		return resultTable;
-	}
-
-	/**
 	 * This method initializes resultTable	
 	 */
-	private void initTable() {
-		resultTable.initialize(mainMenu.getColumnsPopupMenu());
+	private void initTableAndStatusBar(ResultTable resultTable, StatusBar statusBar) {
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(feederArea);
 		formData.left = new FormAttachment(0);
@@ -131,18 +117,23 @@ public class MainWindow {
 		resultTable.setMenu(mainMenu.getResultsContextMenu());
 	}
 
-	/**
-	 * This method initializes feederGUI	
-	 */
-	private void createControls() {
-		
+	private void initFeederArea(Composite feederArea, FeederGUIRegistry feederRegistry) {
 		// feederArea is the placeholder for the visible feeder
+		this.feederArea = feederArea;
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(0);
 		formData.left = new FormAttachment(0);
 		feederArea.setLayoutData(formData);
+
+		this.feederRegistry = feederRegistry;		
+	}
+
+	/**
+	 * This method initializes main controls of the main window	
+	 */
+	private void initControlsArea(Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction) {
 		
-		formData = new FormData();
+		FormData formData = new FormData();
 		formData.top = new FormAttachment(0);
 		formData.left = new FormAttachment(feederArea);
 		formData.right = new FormAttachment(100);
@@ -159,6 +150,7 @@ public class MainWindow {
 		startStopButton.addSelectionListener(startStopScanningAction);
 		
 		// feeder selection combobox
+		this.feederSelectionCombo = feederSelectionCombo;
 		feederSelectionCombo.setLayoutData(new RowData(SWT.DEFAULT, 23));
 		for (Iterator i = feederRegistry.iterator(); i.hasNext();) {
 			AbstractFeederGUI feederGUI = (AbstractFeederGUI) i.next();

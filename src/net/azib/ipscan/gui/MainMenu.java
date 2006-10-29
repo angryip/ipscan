@@ -81,13 +81,10 @@ public class MainMenu {
 		favoritesMenu = (FavoritesMenu) mainMenu.getItem(3).getMenu();
 		container.registerComponentInstance("favoritesMenu", favoritesMenu);
 		favoritesMenu.addListener(SWT.Show, (Listener) container.getComponentInstance(FavoritesActions.ShowMenu.class));
-		
-		// this is the menu when clicking on a column header
-		columnsMenu = new ColumnsMenu(shell);
-		generateSubMenu(createColumnsMenuDefinition(), columnsMenu);
 	}
-	
-	private Object[] createMenuDefinition() {
+
+	// TODO: convert this mess to normal code: make a custom MenuItem, which accepts stuff into the constructor
+	private static Object[] createMenuDefinition() {
 		// a shortened version of menu definition
 		Object[] menuDefinition = new Object[] {
 			new Object[] {"menu.file",  
@@ -155,17 +152,6 @@ public class MainMenu {
 				}	
 			},
 		};
-		return menuDefinition;
-	}
-
-	private Object[] createColumnsMenuDefinition() {
-		// a shortened version of menu definition
-		Object[] menuDefinition = new Object[] {
-			new Object[] {"menu.columns.sortBy", null, ColumnsActions.SortBy.class},
-			new Object[] {"menu.columns.info", null, null},
-			new Object[] {"menu.columns.options", null, null},
-		};
-		
 		return menuDefinition;
 	}
 
@@ -271,11 +257,24 @@ public class MainMenu {
 	}
 	
 	/**
-	 * ColumnsMenu wrapper for type-safety
+	 * ColumnsMenu wrapper for type-safety.
+	 * This is the menu when clicking on a column header.
 	 */
 	public static class ColumnsMenu extends Menu {
-		public ColumnsMenu(Decorations parent) {
+		public ColumnsMenu(Decorations parent, ColumnsActions.SortBy sortByListener) {
 			super(parent, SWT.POP_UP);
+			
+			MenuItem item = new MenuItem(this, SWT.PUSH);
+			item.setText(Labels.getInstance().getString("menu.columns.sortBy"));
+			item.addListener(SWT.Selection, sortByListener);
+			
+			item = new MenuItem(this, SWT.PUSH);
+			item.setText(Labels.getInstance().getString("menu.columns.info"));
+			item.setEnabled(false);
+			
+			item = new MenuItem(this, SWT.PUSH);
+			item.setText(Labels.getInstance().getString("menu.columns.options"));
+			item.setEnabled(false);
 		}
 		protected void checkSubclass() { } // allow extending of Menu class
 	}

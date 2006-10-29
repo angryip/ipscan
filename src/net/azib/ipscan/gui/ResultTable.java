@@ -41,12 +41,10 @@ public class ResultTable extends Table {
 
 	private String feederInfo;
 
-	public ResultTable(Composite parent, ScanningResultList scanningResultList) {
+	public ResultTable(Composite parent, ColumnsMenu columnsMenu, ScanningResultList scanningResultList) {
 		super(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		this.scanningResults = scanningResultList;
-	}
-	
-	public void initialize(ColumnsMenu columnsMenu) {
+		
 		setHeaderVisible(true);
 		setLinesVisible(true);
 		
