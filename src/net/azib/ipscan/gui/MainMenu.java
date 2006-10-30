@@ -33,9 +33,6 @@ public class MainMenu {
 	
 	private Menu mainMenu;
 	private ResultsContextMenu resultsContextMenu;
-	private FavoritesMenu favoritesMenu;
-	private ColumnsMenu columnsMenu;
-	private OpenersMenu openersMenu;
 		
 	public MainMenu(Shell shell, PicoContainer parentContainer) {
 		
@@ -43,195 +40,152 @@ public class MainMenu {
 		this.container = new DefaultPicoContainer(parentContainer);
 		
 		// register some components not registered in the main menu
-		container.registerComponentImplementation(CommandsActions.SelectOpener.class);
-		container.registerComponentImplementation(CommandsActions.ShowOpenersMenu.class);
+		container.registerComponentImplementation(FavoritesMenu.class);
 		container.registerComponentImplementation(FavoritesActions.ShowMenu.class);
 		container.registerComponentImplementation(FavoritesActions.Select.class);		
+		container.registerComponentImplementation(FavoritesActions.Add.class);		
+		container.registerComponentImplementation(FavoritesActions.Edit.class);
+		container.registerComponentImplementation(OpenersMenu.class);
+		container.registerComponentImplementation(CommandsActions.EditOpeners.class);
+		container.registerComponentImplementation(CommandsActions.SelectOpener.class);
+		container.registerComponentImplementation(CommandsActions.ShowOpenersMenu.class);
 
 		mainMenu = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(mainMenu);		
-				
-		Object[] menuDefinition = createMenuDefinition();
-		
+						
 		// generate the menu from the definition
-		generateMenu(shell, menuDefinition, mainMenu);
-		
-		openersMenu = new OpenersMenu(shell);
-		container.registerComponentInstance(OpenersMenu.class, openersMenu);
-		
-		MenuItem openersMenuItem = new MenuItem(mainMenu.getItem(2).getMenu(), SWT.CASCADE);
-		openersMenuItem.setText(Labels.getInstance().getString("menu.commands.open"));
-		openersMenuItem.setMenu(openersMenu);
-		Listener showOpenersMenuListener = (Listener) container.getComponentInstance(CommandsActions.ShowOpenersMenu.class);
-		openersMenu.addListener(SWT.Show, showOpenersMenuListener);
-		MenuItem menuItem = new MenuItem(openersMenu, SWT.PUSH);
-		menuItem.setText(Labels.getInstance().getString("menu.commands.open.edit"));
-		menuItem.addListener(SWT.Selection, new CommandsActions.EditOpeners());
-		menuItem = new MenuItem(openersMenu, SWT.SEPARATOR);
-		// run the listener to populate the menu initially and initialize accelerators
-		showOpenersMenuListener.handleEvent(null);
-		
+		createMenu(mainMenu);
+				
 		// retrieve results context menu, that is the same as "commands" menu
 		// note: the index of 2 is hardcoded and may theoretically change
 		// TODO: probably something better should be done here
 		resultsContextMenu = new ResultsContextMenu(shell);
-		generateSubMenu((Object[]) ((Object[]) menuDefinition[2])[1], resultsContextMenu);		
+		//initMenu(resultsContextMenu, "");
+		//generateSubMenu((Object[]) ((Object[]) menuDefinition[2])[1], resultsContextMenu);		
+	}
+
+	private void createMenu(Menu menu) {
 		
-		// retrieve favoritesMenu, which is 3 (TODO: ugly hardcode of favorites menu retrieval)
-		favoritesMenu = (FavoritesMenu) mainMenu.getItem(3).getMenu();
-		container.registerComponentInstance("favoritesMenu", favoritesMenu);
+		Menu subMenu = initMenu(menu, "menu.file");
+		initMenuItem(subMenu, "menu.file.saveAll", new Integer(SWT.CONTROL | 'S'), initListener(FileActions.SaveAll.class));
+		initMenuItem(subMenu, "menu.file.saveSelection", null, initListener(FileActions.SaveSelection.class));
+		initMenuItem(subMenu, null, null, null);
+		initMenuItem(subMenu, "menu.file.exportOptions", null, null);
+		initMenuItem(subMenu, "menu.file.importOptions", null, null);
+		initMenuItem(subMenu, null, null, null);
+		initMenuItem(subMenu, "menu.file.exit", null, initListener(FileActions.Exit.class));
+		
+		subMenu = initMenu(menu, "menu.goto");
+		initMenuItem(subMenu, "menu.goto.aliveHost", new Integer(SWT.CONTROL | SWT.SHIFT | 'H'), initListener(GotoActions.NextAliveHost.class));
+		initMenuItem(subMenu, "menu.goto.deadHost", new Integer(SWT.CONTROL | SWT.SHIFT | 'D'), initListener(GotoActions.NextDeadHost.class));
+		initMenuItem(subMenu, "menu.goto.openPort", new Integer(SWT.CONTROL | SWT.SHIFT | 'P'), initListener(GotoActions.NextHostWithInfo.class));
+		initMenuItem(subMenu, null, null, null);
+		initMenuItem(subMenu, "menu.goto.find", new Integer(SWT.CONTROL | 'F'), initListener(GotoActions.Find.class));
+		
+		subMenu = initMenu(menu, "menu.commands");
+		initMenuItem(subMenu, "menu.commands.details", null, initListener(CommandsActions.Details.class));
+		initMenuItem(subMenu, null, null, null);
+		initMenuItem(subMenu, "menu.commands.rescan", new Integer(SWT.CONTROL | 'R'), null);
+		initMenuItem(subMenu, "menu.commands.delete", new Integer(SWT.DEL), initListener(CommandsActions.Delete.class));
+		initMenuItem(subMenu, null, null, null);
+		initMenuItem(subMenu, "menu.commands.copy", new Integer(SWT.CONTROL | 'C'), initListener(CommandsActions.CopyIP.class));
+		initMenuItem(subMenu, "menu.commands.copyDetails", null, initListener(CommandsActions.CopyIPDetails.class));
+		initMenuItem(subMenu, null, null, null);		
+		createOpenersMenu(subMenu);
+		// initMenuItem(subMenu, "menu.commands.show", null, initListener());
+
+		createFavoritesMenu(menu);
+		
+		subMenu = initMenu(menu, "menu.tools");
+		initMenuItem(subMenu, "menu.tools.options", new Integer(SWT.CONTROL | 'O'), initListener(ToolsActions.Options.class));
+		initMenuItem(subMenu, "menu.tools.fetchers", null, null);
+		initMenuItem(subMenu, null, null, null);
+		initMenuItem(subMenu, "menu.tools.delete", null, null);
+		initMenuItem(subMenu, "menu.tools.lastInfo", new Integer(SWT.CONTROL | 'I'), null);
+		
+		subMenu = initMenu(menu, "menu.help");
+		initMenuItem(subMenu, "menu.help.gettingStarted", new Integer(SWT.F1), initListener(HelpActions.GettingStarted.class));
+		initMenuItem(subMenu, null, null, null);
+		initMenuItem(subMenu, "menu.help.website", null, initListener(HelpActions.Website.class));
+		initMenuItem(subMenu, "menu.help.forum", null, initListener(HelpActions.Forum.class));
+		initMenuItem(subMenu, "menu.help.plugins", null, initListener(HelpActions.Plugins.class));
+		initMenuItem(subMenu, null, null, null);
+		initMenuItem(subMenu, "menu.help.cmdLine", null, null);
+		initMenuItem(subMenu, null, null, null);
+		initMenuItem(subMenu, "menu.help.checkVersion", null, initListener(HelpActions.CheckVersion.class));
+		initMenuItem(subMenu, null, null, null);
+		initMenuItem(subMenu, "menu.help.about", new Integer(SWT.F12), initListener(HelpActions.About.class));
+	}
+
+	private void createFavoritesMenu(Menu menu) {
+		MenuItem favoritesMenuItem = new MenuItem(menu, SWT.CASCADE);
+		favoritesMenuItem.setText(Labels.getInstance().getString("menu.favorites"));
+		Menu favoritesMenu = (Menu) container.getComponentInstance(FavoritesMenu.class);
 		favoritesMenu.addListener(SWT.Show, (Listener) container.getComponentInstance(FavoritesActions.ShowMenu.class));
+		favoritesMenuItem.setMenu(favoritesMenu);
 	}
 
-	// TODO: convert this mess to normal code: make a custom MenuItem, which accepts stuff into the constructor
-	private static Object[] createMenuDefinition() {
-		// a shortened version of menu definition
-		Object[] menuDefinition = new Object[] {
-			new Object[] {"menu.file",  
-				new Object[] {
-					new Object[] {"menu.file.saveAll", new Integer(SWT.CONTROL | 'S'), FileActions.SaveAll.class},
-					new Object[] {"menu.file.saveSelection", null, FileActions.SaveSelection.class},
-					null,
-					new Object[] {"menu.file.exportOptions", null, null},
-					new Object[] {"menu.file.importOptions", null, null},
-					null,
-					new Object[] {"menu.file.exit", null, FileActions.Exit.class},
-				}	
-			},
-			new Object[] {"menu.goto",  
-				new Object[] {
-					new Object[] {"menu.goto.aliveHost", new Integer(SWT.CONTROL | SWT.SHIFT | 'H'), GotoActions.NextAliveHost.class},
-					new Object[] {"menu.goto.deadHost", new Integer(SWT.CONTROL | SWT.SHIFT | 'D'), GotoActions.NextDeadHost.class},
-					new Object[] {"menu.goto.openPort", new Integer(SWT.CONTROL | SWT.SHIFT | 'P'), GotoActions.NextHostWithInfo.class},
-					null,
-					new Object[] {"menu.goto.find", new Integer(SWT.CONTROL | 'F'), GotoActions.Find.class},
-				}	
-			},
-			new Object[] {"menu.commands",  
-				new Object[] {
-					new Object[] {"menu.commands.details", null, CommandsActions.Details.class},
-					null,
-					new Object[] {"menu.commands.rescan", new Integer(SWT.CONTROL | 'R'), null},
-					new Object[] {"menu.commands.delete", new Integer(SWT.DEL), CommandsActions.Delete.class},
-					null,
-					new Object[] {"menu.commands.copy", new Integer(SWT.CONTROL | 'C'), CommandsActions.CopyIP.class},
-					new Object[] {"menu.commands.copyDetails", null, CommandsActions.CopyIPDetails.class},
-					null,
-					//new Object[] {"menu.commands.show", null, null},
-				}	
-			},
-			new Object[] {"menu.favorites",  
-				new Object[] {
-					new Object[] {"menu.favorites.add", new Integer(SWT.CONTROL | 'D'), FavoritesActions.Add.class},
-					new Object[] {"menu.favorites.edit", null, FavoritesActions.Edit.class},
-					null,
-				}	
-			},
-			new Object[] {"menu.tools",  
-				new Object[] {
-					new Object[] {"menu.tools.options", new Integer(SWT.CONTROL | 'O'), ToolsActions.Options.class},
-					new Object[] {"menu.tools.fetchers", null, null},
-					null,
-					new Object[] {"menu.tools.delete", null, null},
-					new Object[] {"menu.tools.lastInfo", new Integer(SWT.CONTROL | 'I'), null},
-				}	
-			},
-			new Object[] {"menu.help",  
-				new Object[] {
-					new Object[] {"menu.help.gettingStarted", new Integer(SWT.F1), HelpActions.GettingStarted.class},
-					null,
-					new Object[] {"menu.help.website", null, HelpActions.Website.class},
-					new Object[] {"menu.help.forum", null, HelpActions.Forum.class},
-					new Object[] {"menu.help.plugins", null, HelpActions.Plugins.class},
-					null,
-					new Object[] {"menu.help.cmdLine", null, null},
-					null,
-					new Object[] {"menu.help.checkVersion", null, HelpActions.CheckVersion.class},
-					null,
-					new Object[] {"menu.help.about", new Integer(SWT.F12), HelpActions.About.class},
-				}	
-			},
-		};
-		return menuDefinition;
-	}
-
-	/**
-	 * Generates a menu according to the menu definition
-	 * @param shell
-	 * @param menuDefinition
-	 * @param menu the menu, where to append the generated menu
-	 */
-	private void generateMenu(final Shell shell, Object[] menuDefinition, Menu menu) {
-		Labels labels = Labels.getInstance();
-		
-		for (int i = 0; i < menuDefinition.length; i++) {
-			Object[] topMenuDef = (Object[]) menuDefinition[i];
-			
-			MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
-			menuItem.setText(labels.getString((String) topMenuDef[0]));
-			
-			Object[] subMenuDef = (Object[]) topMenuDef[1];
-			// TODO: ugly hardcode of FavoritesMenu creation
-			Menu subMenu = i == 3 ? new FavoritesMenu(shell) : new Menu(shell, SWT.DROP_DOWN);
-			menuItem.setMenu(subMenu);
-			
-			generateSubMenu(subMenuDef, subMenu);
-		}
-	}
-
-	/**
-	 * Generates a submenu according to the definition
-	 * @param menuDefinition
-	 * @param menu
-	 */
-	private void generateSubMenu(Object[] menuDefinition, Menu menu) {		
-		Labels labels = Labels.getInstance();
-		
-		for (int j = 0; j < menuDefinition.length; j++) {
-			Object[] menuDef = (Object[]) menuDefinition[j];
-			
-			if (menuDef == null) {
-				new MenuItem(menu, SWT.SEPARATOR);
-			}
-			else {
-				MenuItem subItem = new MenuItem(menu, SWT.PUSH);
-				subItem.setText(labels.getString((String) menuDef[0]));
+	private void createOpenersMenu(Menu subMenu) {
+		OpenersMenu openersMenu = (OpenersMenu) container.getComponentInstance(OpenersMenu.class);
+		MenuItem openersMenuItem = new MenuItem(subMenu, SWT.CASCADE);
+		openersMenuItem.setText(Labels.getInstance().getString("menu.commands.open"));
+		openersMenuItem.setMenu(openersMenu);
 				
-				if (menuDef[1] != null)
-					subItem.setAccelerator(((Integer)menuDef[1]).intValue());
-				
-				if (menuDef[2] != null) {
-					// register the component if it is not registered yet
-					if (container.getComponentAdapter(menuDef[2]) == null)
-						container.registerComponentImplementation((Class) menuDef[2]);
-					// .. and create the instance, satisfying all the dependencies
-					subItem.addListener(SWT.Selection, (Listener) container.getComponentInstance(menuDef[2]));
-				}
-				else {
-					subItem.setEnabled(false);
-				}
-			}
-		}
+		Listener showOpenersMenuListener = (Listener) container.getComponentInstance(CommandsActions.ShowOpenersMenu.class);
+		openersMenu.addListener(SWT.Show, showOpenersMenuListener);
+		// run the listener to populate the menu initially and initialize accelerators
+		showOpenersMenuListener.handleEvent(null);
 	}
-	
+
 	public Menu getResultsContextMenu() {
 		return resultsContextMenu;
 	}
-
-	public Menu getFavoritesMenu() {
-		return favoritesMenu;
+	
+	private static Menu initMenu(Menu menu, String label) {
+		MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
+		menuItem.setText(Labels.getInstance().getString(label));
+		
+		Menu subMenu = new Menu(menu.getShell(), SWT.DROP_DOWN);
+		menuItem.setMenu(subMenu);
+		
+		return subMenu;
 	}
 	
-	public ColumnsMenu getColumnsPopupMenu() {
-		return columnsMenu;
+	private Listener initListener(Class listenerClass) {
+		// register the component if it is not registered yet
+		if (container.getComponentAdapter(listenerClass) == null)
+			container.registerComponentImplementation(listenerClass);
+		// .. and create the instance, satisfying all the dependencies
+		return (Listener) container.getComponentInstance(listenerClass);
 	}
+	
+	private static MenuItem initMenuItem(Menu parent, String label, Integer accelerator, Listener listener) {
+		MenuItem menuItem = new MenuItem(parent, label == null ? SWT.SEPARATOR : SWT.PUSH);
+		
+		if (label != null) 
+			menuItem.setText(Labels.getInstance().getString(label));
+		
+		if (accelerator != null)
+			menuItem.setAccelerator(accelerator.intValue());
+		
+		if (listener != null)
+			menuItem.addListener(SWT.Selection, listener);
+		else
+			menuItem.setEnabled(false);
+		
+		return menuItem;
+	}
+		
 
 	/**
 	 * OpenersMenu wrapper for type-safety
 	 */
 	public static class OpenersMenu extends Menu {
-		public OpenersMenu(Decorations parent) {
+		public OpenersMenu(Decorations parent, CommandsActions.EditOpeners editOpenersListener) {
 			super(parent, SWT.DROP_DOWN);
+
+			initMenuItem(this, "menu.commands.open.edit", null, editOpenersListener);
+			initMenuItem(this, null, null, null);
 		}
 		protected void checkSubclass() { } // allow extending of Menu class
 	}
@@ -250,8 +204,12 @@ public class MainMenu {
 	 * FavoritesMenu wrapper for type-safety
 	 */
 	public static class FavoritesMenu extends Menu {
-		public FavoritesMenu(Decorations parent) {
+		public FavoritesMenu(Decorations parent, FavoritesActions.Add addListener, FavoritesActions.Edit editListener) {
 			super(parent, SWT.DROP_DOWN);
+
+			initMenuItem(this, "menu.favorites.add", new Integer(SWT.CONTROL | 'D'), addListener);
+			initMenuItem(this, "menu.favorites.edit", null, editListener);
+			initMenuItem(this, null, null, null);
 		}
 		protected void checkSubclass() { } // allow extending of Menu class
 	}
@@ -264,17 +222,9 @@ public class MainMenu {
 		public ColumnsMenu(Decorations parent, ColumnsActions.SortBy sortByListener) {
 			super(parent, SWT.POP_UP);
 			
-			MenuItem item = new MenuItem(this, SWT.PUSH);
-			item.setText(Labels.getInstance().getString("menu.columns.sortBy"));
-			item.addListener(SWT.Selection, sortByListener);
-			
-			item = new MenuItem(this, SWT.PUSH);
-			item.setText(Labels.getInstance().getString("menu.columns.info"));
-			item.setEnabled(false);
-			
-			item = new MenuItem(this, SWT.PUSH);
-			item.setText(Labels.getInstance().getString("menu.columns.options"));
-			item.setEnabled(false);
+			initMenuItem(this, "menu.columns.sortBy", null, sortByListener);
+			initMenuItem(this, "menu.columns.info", null, null);
+			initMenuItem(this, "menu.columns.options", null, null);
 		}
 		protected void checkSubclass() { } // allow extending of Menu class
 	}
