@@ -8,6 +8,7 @@ import java.util.Iterator;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
+import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.feeders.AbstractFeederGUI;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
@@ -43,23 +44,21 @@ public class MainWindow {
 	
 	private Composite feederArea;
 	
-	private MainMenu mainMenu;
-	
 	private Combo feederSelectionCombo;
 	private FeederGUIRegistry feederRegistry;
 		
 	/**
 	 * Creates and initializes the main window.
 	 */
-	public MainWindow(Shell shell, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, MainMenu mainMenu, FeederGUIRegistry feederGUIRegistry) {
+	public MainWindow(Shell shell, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry) {
 		
-		initShell(shell, mainMenu);
+		initShell(shell);
 		
 		initFeederArea(feederArea, feederGUIRegistry);
 		
 		initControlsArea(controlsArea, feederSelectionCombo, startStopButton, startStopScanningAction);
 		
-		initTableAndStatusBar(resultTable, statusBar);
+		initTableAndStatusBar(resultTable, resultsContextMenu, statusBar);
 
 		// after all controls are initialized, resize and open
 		shell.setBounds(Config.getDimensionsConfig().getWindowBounds());
@@ -70,9 +69,8 @@ public class MainWindow {
 	/**
 	 * This method initializes shell
 	 */
-	private void initShell(final Shell shell, final MainMenu mainMenu) {
+	private void initShell(final Shell shell) {
 		this.shell = shell;
-		this.mainMenu = mainMenu;
 		
 		FormLayout formLayout = new FormLayout();
 		shell.setLayout(formLayout);
@@ -107,14 +105,14 @@ public class MainWindow {
 	/**
 	 * This method initializes resultTable	
 	 */
-	private void initTableAndStatusBar(ResultTable resultTable, StatusBar statusBar) {
+	private void initTableAndStatusBar(ResultTable resultTable, CommandsMenu resultsContextMenu, StatusBar statusBar) {
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(feederArea);
 		formData.left = new FormAttachment(0);
 		formData.right = new FormAttachment(100);
 		formData.bottom = new FormAttachment(statusBar.getComposite(), -3);
 		resultTable.setLayoutData(formData);
-		resultTable.setMenu(mainMenu.getResultsContextMenu());
+		resultTable.setMenu(resultsContextMenu);
 	}
 
 	private void initFeederArea(Composite feederArea, FeederGUIRegistry feederRegistry) {

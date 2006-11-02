@@ -8,6 +8,7 @@ import net.azib.ipscan.gui.MainMenu;
 import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
+import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.OpenerLauncher;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
@@ -20,6 +21,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 
 import org.picocontainer.MutablePicoContainer;
@@ -52,6 +54,10 @@ public class GUIComponentContainer {
 		
 		// Some "shared" GUI components
 		container.registerComponentImplementation("mainShell", Shell.class);
+		container.registerComponentImplementation("mainMenu", Menu.class, new Parameter[] {
+			new ComponentParameter("mainShell"),
+			new ConstantParameter(new Integer(SWT.BAR))});
+		container.registerComponentImplementation("commandsMenu", CommandsMenu.class);
 		
 		container.registerComponentImplementation("feederArea", Composite.class, new Parameter[] {
 			new ComponentParameter("mainShell"),
@@ -94,6 +100,8 @@ public class GUIComponentContainer {
 		
 		container.registerComponentImplementation(MainMenu.class, MainMenu.class, new Parameter[] {
 			new ComponentParameter("mainShell"),
+			new ComponentParameter("mainMenu"),
+			new ComponentParameter("commandsMenu"),
 			new ConstantParameter(container)});
 		container.registerComponentImplementation(MainMenu.ColumnsMenu.class, MainMenu.ColumnsMenu.class, new Parameter[] {
 			new ComponentParameter("mainShell"),
@@ -105,6 +113,9 @@ public class GUIComponentContainer {
 	}
 	
 	public MainWindow createMainWindow() {
+		// initialize the main menu
+		container.getComponentInstance(MainMenu.class);
+		// initialize and return the main window
 		return (MainWindow) container.getComponentInstance(MainWindow.class);
 	}
 

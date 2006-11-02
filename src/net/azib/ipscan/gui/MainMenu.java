@@ -31,13 +31,10 @@ public class MainMenu {
 	
 	private MutablePicoContainer container;
 	
-	private Menu mainMenu;
-	private ResultsContextMenu resultsContextMenu;
-		
-	public MainMenu(Shell shell, PicoContainer parentContainer) {
+	public MainMenu(Shell shell, Menu mainMenu, CommandsMenu resultsContextMenu, PicoContainer parentContainer) {
 		
 		// create the menu-specific child container
-		this.container = new DefaultPicoContainer(parentContainer);
+		container = new DefaultPicoContainer(parentContainer);
 		
 		// register some components not registered in the main menu
 		container.registerComponentImplementation(FavoritesMenu.class);
@@ -45,26 +42,19 @@ public class MainMenu {
 		container.registerComponentImplementation(FavoritesActions.Select.class);		
 		container.registerComponentImplementation(FavoritesActions.Add.class);		
 		container.registerComponentImplementation(FavoritesActions.Edit.class);
-		container.registerComponentImplementation(OpenersMenu.class);
+		
 		container.registerComponentImplementation(CommandsActions.EditOpeners.class);
 		container.registerComponentImplementation(CommandsActions.SelectOpener.class);
 		container.registerComponentImplementation(CommandsActions.ShowOpenersMenu.class);
-
-		mainMenu = new Menu(shell, SWT.BAR);
+		container.registerComponentImplementation(OpenersMenu.class);
+		
 		shell.setMenuBar(mainMenu);		
-						
-		// generate the menu from the definition
-		createMenu(mainMenu);
+		createMainMenuItems(mainMenu);
 				
-		// retrieve results context menu, that is the same as "commands" menu
-		// note: the index of 2 is hardcoded and may theoretically change
-		// TODO: probably something better should be done here
-		resultsContextMenu = new ResultsContextMenu(shell);
-		//initMenu(resultsContextMenu, "");
-		//generateSubMenu((Object[]) ((Object[]) menuDefinition[2])[1], resultsContextMenu);		
+		createCommandsMenuItems(resultsContextMenu);
 	}
 
-	private void createMenu(Menu menu) {
+	private void createMainMenuItems(Menu menu) {
 		
 		Menu subMenu = initMenu(menu, "menu.file");
 		initMenuItem(subMenu, "menu.file.saveAll", new Integer(SWT.CONTROL | 'S'), initListener(FileActions.SaveAll.class));
@@ -83,16 +73,7 @@ public class MainMenu {
 		initMenuItem(subMenu, "menu.goto.find", new Integer(SWT.CONTROL | 'F'), initListener(GotoActions.Find.class));
 		
 		subMenu = initMenu(menu, "menu.commands");
-		initMenuItem(subMenu, "menu.commands.details", null, initListener(CommandsActions.Details.class));
-		initMenuItem(subMenu, null, null, null);
-		initMenuItem(subMenu, "menu.commands.rescan", new Integer(SWT.CONTROL | 'R'), null);
-		initMenuItem(subMenu, "menu.commands.delete", new Integer(SWT.DEL), initListener(CommandsActions.Delete.class));
-		initMenuItem(subMenu, null, null, null);
-		initMenuItem(subMenu, "menu.commands.copy", new Integer(SWT.CONTROL | 'C'), initListener(CommandsActions.CopyIP.class));
-		initMenuItem(subMenu, "menu.commands.copyDetails", null, initListener(CommandsActions.CopyIPDetails.class));
-		initMenuItem(subMenu, null, null, null);		
-		createOpenersMenu(subMenu);
-		// initMenuItem(subMenu, "menu.commands.show", null, initListener());
+		createCommandsMenuItems(subMenu);
 
 		createFavoritesMenu(menu);
 		
@@ -117,15 +98,22 @@ public class MainMenu {
 		initMenuItem(subMenu, "menu.help.about", new Integer(SWT.F12), initListener(HelpActions.About.class));
 	}
 
-	private void createFavoritesMenu(Menu menu) {
-		MenuItem favoritesMenuItem = new MenuItem(menu, SWT.CASCADE);
-		favoritesMenuItem.setText(Labels.getInstance().getString("menu.favorites"));
-		Menu favoritesMenu = (Menu) container.getComponentInstance(FavoritesMenu.class);
-		favoritesMenu.addListener(SWT.Show, (Listener) container.getComponentInstance(FavoritesActions.ShowMenu.class));
-		favoritesMenuItem.setMenu(favoritesMenu);
+	private void createCommandsMenuItems(Menu menu) {
+		initMenuItem(menu, "menu.commands.details", null, initListener(CommandsActions.Details.class));
+		initMenuItem(menu, null, null, null);
+		initMenuItem(menu, "menu.commands.rescan", new Integer(SWT.CONTROL | 'R'), null);
+		initMenuItem(menu, "menu.commands.delete", new Integer(SWT.DEL), initListener(CommandsActions.Delete.class));
+		initMenuItem(menu, null, null, null);
+		initMenuItem(menu, "menu.commands.copy", new Integer(SWT.CONTROL | 'C'), initListener(CommandsActions.CopyIP.class));
+		initMenuItem(menu, "menu.commands.copyDetails", null, initListener(CommandsActions.CopyIPDetails.class));
+		initMenuItem(menu, null, null, null);		
+		createOpenersMenu(menu);
+		// initMenuItem(subMenu, "menu.commands.show", null, initListener());
 	}
 
 	private void createOpenersMenu(Menu subMenu) {
+		// TODO: this OpenersMenu singleton produces 
+		// Gtk-WARNING **: gtk_menu_attach_to_widget(): menu already attached to GtkImageMenuItem 
 		OpenersMenu openersMenu = (OpenersMenu) container.getComponentInstance(OpenersMenu.class);
 		MenuItem openersMenuItem = new MenuItem(subMenu, SWT.CASCADE);
 		openersMenuItem.setText(Labels.getInstance().getString("menu.commands.open"));
@@ -137,10 +125,14 @@ public class MainMenu {
 		showOpenersMenuListener.handleEvent(null);
 	}
 
-	public Menu getResultsContextMenu() {
-		return resultsContextMenu;
+	private void createFavoritesMenu(Menu parentMenu) {
+		MenuItem favoritesMenuItem = new MenuItem(parentMenu, SWT.CASCADE);
+		favoritesMenuItem.setText(Labels.getInstance().getString("menu.favorites"));
+		Menu favoritesMenu = (Menu) container.getComponentInstance(FavoritesMenu.class);
+		favoritesMenu.addListener(SWT.Show, (Listener) container.getComponentInstance(FavoritesActions.ShowMenu.class));
+		favoritesMenuItem.setMenu(favoritesMenu);
 	}
-	
+
 	private static Menu initMenu(Menu menu, String label) {
 		MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
 		menuItem.setText(Labels.getInstance().getString(label));
@@ -175,8 +167,17 @@ public class MainMenu {
 		
 		return menuItem;
 	}
-		
-
+			
+	/**
+	 * CommandsMenu wrapper for type-safety
+	 */
+	public static class CommandsMenu extends Menu {
+		public CommandsMenu(Decorations parent) {
+			super(parent, SWT.POP_UP);
+		}
+		protected void checkSubclass() { } // allow extending of Menu class
+	}
+	
 	/**
 	 * OpenersMenu wrapper for type-safety
 	 */
@@ -189,17 +190,7 @@ public class MainMenu {
 		}
 		protected void checkSubclass() { } // allow extending of Menu class
 	}
-	
-	/**
-	 * ResultsContextMenu wrapper for type-safety
-	 */
-	public static class ResultsContextMenu extends Menu {
-		public ResultsContextMenu(Decorations parent) {
-			super(parent, SWT.POP_UP);
-		}
-		protected void checkSubclass() { } // allow extending of Menu class
-	}
-	
+
 	/**
 	 * FavoritesMenu wrapper for type-safety
 	 */
