@@ -8,16 +8,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.Collections;
 
+import junit.framework.TestCase;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
-import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.exporters.ExportProcessor.ScanningResultSelector;
 import net.azib.ipscan.fetchers.IPFetcher;
-
-import junit.framework.TestCase;
 
 /**
  * ExportProcessorTest
@@ -32,8 +31,7 @@ public class ExportProcessorTest extends TestCase {
 		
 		ScanningResultList scanningResultList = new ScanningResultList();
 		scanningResultList.setFetchers(Collections.singletonList(new IPFetcher()));
-		scanningResultList.add("fooBar");
-		scanningResultList.update(0, new ScanningResult(Collections.singletonList("super-IP-value"), ScanningSubject.RESULT_TYPE_UNKNOWN));
+		scanningResultList.add(InetAddress.getByName("192.168.0.13"));
 		exportProcessor.process(scanningResultList, "megaFeeder", null);
 		
 		String content = readFileContent(file);
@@ -41,7 +39,7 @@ public class ExportProcessorTest extends TestCase {
 		assertTrue(content.indexOf("megaFeeder") > 0);
 		assertTrue(content.indexOf(Labels.getInstance().getString(new IPFetcher().getLabel())) > 0);
 		assertTrue(content.indexOf("fooBar") < 0);		
-		assertTrue(content.indexOf("super-IP-value") > 0);		
+		assertTrue(content.indexOf("192.168.0.13") > 0);		
 	}
 
 	/**
@@ -67,25 +65,23 @@ public class ExportProcessorTest extends TestCase {
 		ScanningResultList scanningResultList = new ScanningResultList();
 		scanningResultList.setFetchers(Collections.singletonList(new IPFetcher()));
 		
-		scanningResultList.add("fooBar");
-		scanningResultList.update(0, new ScanningResult(Collections.singletonList("fooBar"), ScanningSubject.RESULT_TYPE_UNKNOWN));
-		scanningResultList.add("barFoo");
-		scanningResultList.update(1, new ScanningResult(Collections.singletonList("barFoo"), ScanningSubject.RESULT_TYPE_UNKNOWN));
-		scanningResultList.add("barBar");
-		scanningResultList.update(2, new ScanningResult(Collections.singletonList("barBar"), ScanningSubject.RESULT_TYPE_UNKNOWN));
+		scanningResultList.add(InetAddress.getByName("192.168.13.66"));
+		scanningResultList.add(InetAddress.getByName("192.168.13.67"));
+		scanningResultList.add(InetAddress.getByName("192.168.13.76"));
 		
 		exportProcessor.process(scanningResultList, "feeder2", new ScanningResultSelector() {
 			public boolean isResultSelected(int index, ScanningResult result) {
-				return ((String)result.getValues().get(0)).startsWith("bar");
+				// select only IP addresses ending with 6
+				return ((String)result.getValues().get(0)).endsWith("6");
 			}
 		});
 		
 		String content = readFileContent(file);
 		
 		assertTrue(content.indexOf("feeder2") > 0);
-		assertFalse(content.indexOf("fooBar") > 0);		
-		assertTrue(content.indexOf("barFoo") > 0);		
-		assertTrue(content.indexOf("barBar") > 0);		
+		assertTrue(content.indexOf("192.168.13.66") > 0);
+		assertTrue(content.indexOf("192.168.13.67") < 0);		
+		assertTrue(content.indexOf("192.168.13.76") > 0);		
 	}
 
 }

@@ -96,7 +96,7 @@ public class LabelsTest extends TestCase {
 		String fileContent = sb.toString();
 		
 		String key = null;
-		String value = null;
+//		String value = null;
 		try {
 //			System.out.println(file.getPath());
 
@@ -104,7 +104,8 @@ public class LabelsTest extends TestCase {
 			while (matcher.find()) {
 				// try to load the label
 				key = matcher.group(1);
-				value = Labels.getInstance().getString(key);
+//				value = 
+				Labels.getInstance().getString(key);
 //				System.out.println(key + "=" + value);
 			}
 
@@ -112,7 +113,8 @@ public class LabelsTest extends TestCase {
 			while (matcher.find()) {
 				// try to load the label
 				key = "exception." + matcher.group(1) + "." + matcher.group(2);
-				value = Labels.getInstance().getString(key);
+//				value = 
+				Labels.getInstance().getString(key);
 //				System.out.println(key + "=" + value);
 			}
 		}

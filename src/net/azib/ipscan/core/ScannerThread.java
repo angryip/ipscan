@@ -4,7 +4,6 @@
 package net.azib.ipscan.core;
 
 import java.net.InetAddress;
-import java.util.List;
 
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.feeders.Feeder;
@@ -17,6 +16,7 @@ import net.azib.ipscan.feeders.Feeder;
 public class ScannerThread extends Thread {
 
 	private Scanner scanner;
+	private ScanningResultList scanningResultList;
 	private Feeder feeder;
 	private ScanningStateCallback statusCallback;
 	private ScanningResultsCallback resultsCallback;
@@ -25,13 +25,14 @@ public class ScannerThread extends Thread {
 	private int maxThreads = Config.getGlobal().maxThreads;
 	private int threadDelay = Config.getGlobal().threadDelay;
 	
-	public ScannerThread(Feeder feeder, List fetchers) {
+	public ScannerThread(Feeder feeder, Scanner scanner, ScanningResultList scanningResults) {
 		super("Scanner Thread");
 		// this thread is daemon because we want JVM to terminate it
 		// automatically if user closes the program (Main thread, that is)
 		setDaemon(true);
 		this.feeder = feeder;
-		this.scanner = new Scanner(fetchers);
+		this.scanner = scanner;
+		this.scanningResultList = scanningResults;
 	}
 
 	public void run() {
@@ -119,19 +120,20 @@ public class ScannerThread extends Thread {
 	 */
 	private class IPThread extends Thread {
 		private InetAddress address;
-		private int preparationNumber;
+		private int preparationIndex;
 		
-		public IPThread(InetAddress address, int preparationNumber) {
+		IPThread(InetAddress address, int preparationIndex) {
 			super("IP Thread: " + address.getHostAddress());
 			setDaemon(true);
 			this.address = address;
-			this.preparationNumber = preparationNumber;
+			this.preparationIndex = preparationIndex;
 		}
 
 		public void run() {
 			try {
-				ScanningResult results = scanner.scan(address);
-				resultsCallback.consumeResults(preparationNumber, results);
+				ScanningResult result = scanningResultList.getResult(preparationIndex); 
+				scanner.scan(address, result);
+				resultsCallback.consumeResults(preparationIndex, result);
 			}
 			finally {
 				runningThreads--;

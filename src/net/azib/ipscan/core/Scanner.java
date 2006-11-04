@@ -4,12 +4,11 @@
 package net.azib.ipscan.core;
 
 import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.fetchers.Fetcher;
+import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.PingFetcher;
 
 /**
@@ -20,44 +19,43 @@ import net.azib.ipscan.fetchers.PingFetcher;
  */
 public class Scanner {
 	
-	/** The List of Fetchers, which are used for this scan */ 
-	private List fetchers;
+	private FetcherRegistry fetcherRegistry;
 	
-	public Scanner(List fetchers) {
-		this.fetchers = fetchers;
+	public Scanner(FetcherRegistry fetcherRegistry) {
+		this.fetcherRegistry = fetcherRegistry;
 	}
 
 	/**
 	 * Executes all registered fetchers for the current IP address.
-	 * @return results
+	 * @param address the IP address to scan
+	 * @param result where the results are injected
 	 */
-	public ScanningResult scan(InetAddress address) {
+	public void scan(InetAddress address, ScanningResult result) {
 		
 		// create a scanning subject object, which will be used by fetchers
 		// to cache common information
 		ScanningSubject scanningSubject = new ScanningSubject(address);
 		
-		// reset results
-		List values = new ArrayList();
-		
 		// populate results
 		boolean continueScanning = true;
-		for (Iterator i = fetchers.iterator(); i.hasNext();) {
+		int fetcherIndex = 0;
+		for (Iterator i = fetcherRegistry.getRegisteredFetchers().iterator(); i.hasNext();) {
 			Fetcher fetcher = (Fetcher) i.next();
 			if (continueScanning) {
-				String result = fetcher.scan(scanningSubject);
+				String value = fetcher.scan(scanningSubject);
 				// TODO: write better code
 				if (!Config.getGlobal().scanDeadHosts && fetcher instanceof PingFetcher) {
-					continueScanning = result != null;
+					continueScanning = value != null;
 					// TODO: hardcoded [timeout]
-					//result = result == null ? "[timeout]" : result;
+					//value = value == null ? "[timeout]" : value;
 				}
-				values.add(result);
+				result.setValue(fetcherIndex, value);
 			}
 			// TODO: display something in the else
+			fetcherIndex++;
 		}
 		
-		return new ScanningResult(values, scanningSubject.getResultType());
+		result.setType(scanningSubject.getResultType());
 	}
 	
 }

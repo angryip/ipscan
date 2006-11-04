@@ -7,6 +7,7 @@ import java.net.InetAddress;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScannerThread;
+import net.azib.ipscan.core.ScannerThreadFactory;
 import net.azib.ipscan.core.ScanningStateCallback;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.ScanningResultsConsumer;
@@ -27,6 +28,7 @@ import org.eclipse.swt.widgets.Display;
  */
 public class StartStopScanningAction implements SelectionListener, ScanningStateCallback {
 	
+	private ScannerThreadFactory scannerThreadFactory;
 	private ScannerThread scannerThread;
 
 	private StatusBar statusBar;
@@ -39,7 +41,8 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 	
 	private int state = ScanningStateCallback.STATE_IDLE;
 	
-	public StartStopScanningAction(ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, Button startStopButton) {
+	public StartStopScanningAction(ScannerThreadFactory scannerThreadFactory, ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, Button startStopButton) {
+		this.scannerThreadFactory = scannerThreadFactory;
 		this.resultTable = resultTable;
 		this.statusBar = statusBar;
 		this.feederRegistry = feederRegistry;
@@ -66,7 +69,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 				// start the scan!
 				resultTable.initNewScan(feederRegistry.current().getInfo());
 				ScanningResultsConsumer resultsConsumer = new ScanningResultsConsumer(resultTable);
-				scannerThread = new ScannerThread(feederRegistry.current().getFeeder(), resultTable.getFetchers());
+				scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.current().getFeeder());
 				scannerThread.setResultsCallback(resultsConsumer);
 				scannerThread.setStatusCallback(this);
 				scannerThread.start();

@@ -15,28 +15,13 @@ import java.util.List;
  */
 public class FetcherRegistry {
 	
-	private static FetcherRegistry instance;
-	
 	/** All available Fetcher implementations, List of Fetcher instances */
 	private List fetchers;
-	
-	static {
-		// TODO: maybe it is better to call it from the main class?
-		initialize();
-	}
-	
-	public static FetcherRegistry getInstance() {
-		return instance;
-	}
-	
-	public static void initialize() {
-		instance = new FetcherRegistry();
-	}
 	
 	/**
 	 * Private constructor
 	 */
-	private FetcherRegistry() {
+	public FetcherRegistry() {
 		fetchers = new ArrayList();
 		fetchers.add(new IPFetcher());
 		fetchers.add(new PingFetcher());

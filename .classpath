@@ -22,5 +22,6 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="swt/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="ext/picocontainer/picocontainer-1.0.jar" sourcepath="ext/picocontainer/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

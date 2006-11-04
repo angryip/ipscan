@@ -3,6 +3,7 @@
  */
 package net.azib.ipscan.core;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,9 +15,6 @@ import net.azib.ipscan.fetchers.Fetcher;
 
 /**
  * The holder of scanning results.
- * TODO: synchronization
- * TODO: tests
- * TODO: javadocs 
  *
  * @author anton
  */
@@ -26,24 +24,37 @@ public class ScanningResultList {
 	private List scanningResults = new ArrayList(1024);
 	private ResultsComparator resultsComparator = new ResultsComparator();
 
-	public synchronized int add(String name) {
-		int index = scanningResults.size();
-		scanningResults.add(name);
-		return index;
+	// TODO: provide fetchers via DI here!
+	public void setFetchers(List fetchers) {
+		this.fetchers = fetchers;
 	}
 
-	public synchronized void update(int index, ScanningResult result) {
-		scanningResults.set(index, result);
+	public List getFetchers() {
+		return fetchers;
+	}
+	
+	/**
+	 * Adds the new scanned IP address
+	 * @param address
+	 * @return the index of the added address, can be used in calls to other methods
+	 */
+	public synchronized int add(InetAddress address) {
+		int index = scanningResults.size();
+		scanningResults.add(new ScanningResult(address));
+		return index;
 	}
 
 	/**
 	 * Returns all results for a particular IP address as a String.
 	 * This is used in showing the IP Details dialog box.
+	 * TODO: write tests!
 	 * 
 	 * @param index
 	 * @return
 	 */
 	public synchronized String getResultsAsString(int index) {
+		// cross-platform newline :-)
+		String newLine = System.getProperty("line.separator");
 		// TODO: what if a String is retrieved???
 		ScanningResult scanningResult = (ScanningResult) scanningResults.get(index);
 		StringBuffer details = new StringBuffer(1024);
@@ -53,17 +64,9 @@ public class ScanningResultList {
 			details.append(fetcherName).append(":\t");
 			Object value = iterator.next(); 
 			details.append(value != null ? value : "");
-			details.append("\n--------------------------------------------------------------------------------------\n");
+			details.append(newLine).append("--------------------------------------------------------------------------------------").append(newLine);
 		}
 		return details.toString();	
-	}
-
-	public void setFetchers(List fetchers) {
-		this.fetchers = fetchers;
-	}
-
-	public List getFetchers() {
-		return fetchers;
 	}
 
 	public synchronized void clear() {
@@ -72,34 +75,29 @@ public class ScanningResultList {
 	
 	/**
 	 * @return an Iterator of scanning results
+	 * 
+	 * Note: the returned Iterator is not synchronized
 	 */
 	public synchronized Iterator iterator() {
 		return scanningResults.iterator();
 	}
 
-	public synchronized boolean isReady(int tableIndex) {
-		return scanningResults.get(tableIndex) instanceof ScanningResult;
-	}
-
 	/**
-	 * @param tableIndex
-	 * @return a results of a single IP adress, corresponding to an index
+	 * @param index
+	 * @return the results of the IP adress, corresponding to an index
 	 */
-	public synchronized ScanningResult getResult(int tableIndex) {
-		// TODO: error handling
-		return (ScanningResult) scanningResults.get(tableIndex);
-	}
-
-	public synchronized String getName(int tableIndex) {
-		// TODO: error handling
-		return (String) scanningResults.get(tableIndex);
+	public synchronized ScanningResult getResult(int index) {
+		return (ScanningResult) scanningResults.get(index);
 	}
 
 	/**
+	 * Removes some elements by the provided indices
 	 * @param indices
+	 * 
+	 * Note: old indices returned by {@link #add(InetAddress)} are no longer valid
 	 */
-	public void remove(int[] indices) {
-		// this removal is probably O(n^2)...
+	public synchronized void remove(int[] indices) {
+		// TODO: this removal is probably O(n^2)...
 		for (int i = 0; i < indices.length; i++) {
 			scanningResults.remove(i);	
 		}
@@ -108,8 +106,10 @@ public class ScanningResultList {
 	/**
 	 * Sorts by the specified column index.
 	 * @param columnIndex
+	 * 
+	 * Note: old indices returned by {@link #add(InetAddress)} are no longer valid
 	 */
-	public void sort(int columnIndex) {
+	public synchronized void sort(int columnIndex) {
 		resultsComparator.index = columnIndex;
 		Collections.sort(scanningResults, resultsComparator);
 	}

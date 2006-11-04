@@ -8,6 +8,7 @@ import java.util.Iterator;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.OpenersConfig.Opener;
+import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.DetailsWindow;
 import net.azib.ipscan.gui.EditOpenersDialog;
 import net.azib.ipscan.gui.ResultTable;
@@ -142,9 +143,15 @@ public class CommandsActions {
 	}
 	
 	public static class EditOpeners implements Listener {
+		
+		FetcherRegistry fetcherRegistry;
+
+		public EditOpeners(FetcherRegistry fetcherRegistry) {
+			this.fetcherRegistry = fetcherRegistry;
+		}
 
 		public void handleEvent(Event event) {
-			new EditOpenersDialog().open(); 
+			new EditOpenersDialog(fetcherRegistry).open(); 
 		}
 	}
 	

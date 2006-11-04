@@ -3,7 +3,10 @@
  */
 package net.azib.ipscan.config;
 
+import net.azib.ipscan.core.Scanner;
+import net.azib.ipscan.core.ScannerThreadFactory;
 import net.azib.ipscan.core.ScanningResultList;
+import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.MainMenu;
 import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.ResultTable;
@@ -23,7 +26,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
-
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -48,7 +50,10 @@ public class GUIComponentContainer {
 		ComponentParameter anyComponentParameter = new ComponentParameter();
 		
 		// non-GUI
+		container.registerComponentImplementation(FetcherRegistry.class);
 		container.registerComponentImplementation(ScanningResultList.class);
+		container.registerComponentImplementation(Scanner.class);
+		container.registerComponentImplementation(ScannerThreadFactory.class);
 		
 		// GUI follows
 		
@@ -92,7 +97,8 @@ public class GUIComponentContainer {
 			anyComponentParameter,
 			anyComponentParameter});
 		container.registerComponentImplementation(ResultTable.class, ResultTable.class, new Parameter[] {
-			new ComponentParameter("mainShell"), 
+			new ComponentParameter("mainShell"),
+			anyComponentParameter,
 			anyComponentParameter,
 			anyComponentParameter});
 		container.registerComponentImplementation(StatusBar.class, StatusBar.class, new Parameter[] {

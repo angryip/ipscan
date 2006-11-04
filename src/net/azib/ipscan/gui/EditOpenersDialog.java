@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class EditOpenersDialog extends AbstractModalDialog {
 
+	FetcherRegistry fetcherResgitry;
 	private List openersList;
 	private Group editGroup;
 	private Text openerNameText;
@@ -46,7 +47,8 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	
 	private SaveButtonListener saveButtonListener;
 	
-	public EditOpenersDialog() {
+	public EditOpenersDialog(FetcherRegistry fetcherRegistry) {
+		this.fetcherResgitry = fetcherRegistry;
 		createShell();
 	}
 	
@@ -173,7 +175,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		public void handleEvent(Event event) {
 			// compose the message with all available fetchers
 			StringBuffer message = new StringBuffer(Labels.getInstance().getString("text.openers.hintText"));
-			for (Iterator i = FetcherRegistry.getInstance().getRegisteredFetchers().iterator(); i.hasNext(); ) {
+			for (Iterator i = fetcherResgitry.getRegisteredFetchers().iterator(); i.hasNext(); ) {
 				String fetcherLabel = ((Fetcher)i.next()).getLabel();
 				message.append("${").append(fetcherLabel).append("}   - ").append(Labels.getInstance().getString(fetcherLabel)).append('\n');
 			}

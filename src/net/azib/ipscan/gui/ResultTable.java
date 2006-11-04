@@ -3,6 +3,7 @@
  */
 package net.azib.ipscan.gui;
 
+import java.net.InetAddress;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class ResultTable extends Table {
 
 	private String feederInfo;
 
-	public ResultTable(Composite parent, ColumnsMenu columnsMenu, ScanningResultList scanningResultList) {
+	public ResultTable(Composite parent, ColumnsMenu columnsMenu, FetcherRegistry fetcherRegistry, ScanningResultList scanningResultList) {
 		super(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		this.scanningResults = scanningResultList;
 		
@@ -49,7 +50,7 @@ public class ResultTable extends Table {
 		setLinesVisible(true);
 		
 		// TODO: initialize fetchers before each scan
-		List fetchers = FetcherRegistry.getInstance().getRegisteredFetchers();
+		List fetchers = fetcherRegistry.getRegisteredFetchers();
 		scanningResults.setFetchers(fetchers);
 
 		Listener columnClickListener = new ColumnsActions.ColumnClick(columnsMenu);
@@ -105,10 +106,10 @@ public class ResultTable extends Table {
 		// override anything important, so this should be safe (tm)
 	}
 
-	public int addResultsRow(final String name) {
+	public int addResultsRow(final InetAddress address) {
 		if (isDisposed())
 			return 0;
-		final int index = scanningResults.add(name);
+		final int index = scanningResults.add(address);
 		getDisplay().syncExec(new Runnable() {
 			public void run() {
 				ResultTable.this.setItemCount(index+1);
@@ -117,12 +118,12 @@ public class ResultTable extends Table {
 		return index;
 	}
 
-	public void populateResults(final int index, final ScanningResult result) {
+	public void updateResults(final int index) {
 		if (isDisposed())
 			return;
-		scanningResults.update(index, result);
 		getDisplay().syncExec(new Runnable() {
 			public void run() {
+				// redraw the item
 				ResultTable.this.clear(index);
 			}
 		});
@@ -177,17 +178,11 @@ public class ResultTable extends Table {
 			TableItem item = (TableItem)event.item;
 			int tableIndex = ResultTable.this.indexOf(item);
 			
-			if (scanningResults.isReady(tableIndex)) {
-				ScanningResult scanningResult = scanningResults.getResult(tableIndex);
-				List values = scanningResult.getValues();
-				String[] resultStrings = (String[]) values.toArray(new String[values.size()]);
-				item.setText(resultStrings);
-				item.setImage(0, images[scanningResult.getType()]);
-			}
-			else {
-				item.setText(0, scanningResults.getName(tableIndex));
-				item.setImage(images[ScanningSubject.RESULT_TYPE_UNKNOWN]);
-			}
+			ScanningResult scanningResult = scanningResults.getResult(tableIndex);
+			List values = scanningResult.getValues();
+			String[] resultStrings = (String[]) values.toArray(new String[values.size()]);
+			item.setText(resultStrings);
+			item.setImage(0, images[scanningResult.getType()]);
 		}
 		
 	}

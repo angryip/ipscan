@@ -5,6 +5,7 @@ package net.azib.ipscan.gui.actions;
 
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.UserErrorException;
 import junit.framework.TestCase;
 
@@ -17,7 +18,7 @@ public class OpenerLauncherTest extends TestCase {
 
 	public void testReplaceValues() {
 		Config.initialize();
-		OpenerLauncher ol = new OpenerLauncher(null) {
+		OpenerLauncher ol = new OpenerLauncher(new FetcherRegistry(), null) {
 			String getScannedValue(int selectedItem, int fetcherIndex) {
 				switch (fetcherIndex) {
 					case 0:

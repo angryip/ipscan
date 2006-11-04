@@ -24,14 +24,14 @@ public class ScanningResultsConsumer implements ScanningResultsCallback {
 	 * @see net.azib.ipscan.core.ScanningResultsCallback#prepareForResults(InetAddress)
 	 */
 	public int prepareForResults(InetAddress address) {
-		return resultTable.addResultsRow(address.getHostAddress());
+		return resultTable.addResultsRow(address);
 	}
 
 	/**
 	 * @see net.azib.ipscan.core.ScanningResultsCallback#consumeResults(int, ScanningResult)
 	 */
-	public void consumeResults(int preparationNumber, ScanningResult results) {
-		resultTable.populateResults(preparationNumber, results);
+	public void consumeResults(int preparationIndex, ScanningResult results) {
+		resultTable.updateResults(preparationIndex);
 	}
 
 }
