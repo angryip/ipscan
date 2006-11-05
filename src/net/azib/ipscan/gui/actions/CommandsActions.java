@@ -182,7 +182,7 @@ public class CommandsActions {
 			}				
 					
 			try {
-				statusBar.setStatusText(Labels.getInstance().getString("state.opening") + name);
+				statusBar.setStatusText(Labels.getLabel("state.opening") + name);
 				openerLauncher.launch(opener, selectedItem);
 				// wait a bit to make status visible
 				// TODO: somehow wait until the process is started

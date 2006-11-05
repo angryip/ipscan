@@ -36,12 +36,12 @@ public class LabelsTest extends TestCase {
 	}
 
 	public void testSimpleLabel() {
-		assertEquals("&File", Labels.getInstance().getString("menu.file"));
+		assertEquals("&File", Labels.getLabel("menu.file"));
 	}
 	
 	public void testInexistentLabel() {
 		try {
-			Labels.getInstance().getString("abra-cadabra");
+			Labels.getLabel("abra-cadabra");
 			fail();
 		}
 		catch (Exception e) {
@@ -105,7 +105,7 @@ public class LabelsTest extends TestCase {
 				// try to load the label
 				key = matcher.group(1);
 //				value = 
-				Labels.getInstance().getString(key);
+				Labels.getLabel(key);
 //				System.out.println(key + "=" + value);
 			}
 
@@ -114,7 +114,7 @@ public class LabelsTest extends TestCase {
 				// try to load the label
 				key = "exception." + matcher.group(1) + "." + matcher.group(2);
 //				value = 
-				Labels.getInstance().getString(key);
+				Labels.getLabel(key);
 //				System.out.println(key + "=" + value);
 			}
 		}

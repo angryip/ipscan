@@ -25,7 +25,7 @@ public abstract class AbstractExporterTestCase extends TestCase {
 	protected String outputContent;
 	
 	public void testLabel() {
-		assertNotNull(Labels.getInstance().getString(exporter.getLabel()));
+		assertNotNull(Labels.getLabel(exporter.getLabel()));
 	}
 
 	public void testFilenameExtension() {

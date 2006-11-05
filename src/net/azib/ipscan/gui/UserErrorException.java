@@ -16,7 +16,7 @@ public class UserErrorException extends RuntimeException {
 	private static final long serialVersionUID = 123283472834982L;
 	
 	public UserErrorException(String label) {
-		super(Labels.getInstance().getString("exception.UserErrorException." + label));
+		super(Labels.getLabel("exception.UserErrorException." + label));
 	}
 	
 	public UserErrorException(String label, Throwable cause) {
@@ -25,7 +25,7 @@ public class UserErrorException extends RuntimeException {
 	}
 	
 	public UserErrorException(String label, String rawInfo) {
-		super(Labels.getInstance().getString("exception.UserErrorException." + label) + rawInfo);
+		super(Labels.getLabel("exception.UserErrorException." + label) + rawInfo);
 	}
 
 }

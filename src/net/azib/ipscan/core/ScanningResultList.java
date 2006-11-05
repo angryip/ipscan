@@ -60,7 +60,7 @@ public class ScanningResultList {
 		StringBuffer details = new StringBuffer(1024);
 		Iterator iterator = scanningResult.getValues().iterator();
 		for (int i = 0; iterator.hasNext(); i++) {
-			String fetcherName = Labels.getInstance().getString(((Fetcher)fetchers.get(i)).getLabel());
+			String fetcherName = Labels.getLabel(((Fetcher)fetchers.get(i)).getLabel());
 			details.append(fetcherName).append(":\t");
 			Object value = iterator.next(); 
 			details.append(value != null ? value : "");

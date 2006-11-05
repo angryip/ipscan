@@ -37,9 +37,9 @@ public class ScannerTest extends TestCase {
 		assertEquals(InetAddress.getLocalHost(), scanningResult.getAddress());
 		assertEquals(4, scanningResult.getValues().size());
 		assertEquals("blah", scanningResult.getValues().get(0));
-		assertEquals(Labels.getInstance().getString("fetcher.value.nothing"), scanningResult.getValues().get(1));
+		assertEquals(Labels.getLabel("fetcher.value.nothing"), scanningResult.getValues().get(1));
 		assertEquals("666 ms", scanningResult.getValues().get(2));
-		assertEquals(Labels.getInstance().getString("fetcher.value.aborted"), scanningResult.getValues().get(3));
+		assertEquals(Labels.getLabel("fetcher.value.aborted"), scanningResult.getValues().get(3));
 	}
 	
 	private class FakeFetcher implements Fetcher {

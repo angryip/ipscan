@@ -29,7 +29,7 @@ public class IPListExporterTest extends AbstractExporterTestCase {
 		Labels labels = Labels.getInstance();
 		
 		exporter.start(outputStream, "feederstuff");		
-		exporter.setFetchers(new String[] {"fetcher1", labels.getString("fetcher.ip"), "mega long fetcher 2", labels.getString("fetcher.ports")});
+		exporter.setFetchers(new String[] {"fetcher1", labels.get("fetcher.ip"), "mega long fetcher 2", labels.get("fetcher.ports")});
 		exporter.nextAdressResults(new Object[] {"", "123", "", "1,23; 4-6 78"});
 		exporter.end();
 		
@@ -54,7 +54,7 @@ public class IPListExporterTest extends AbstractExporterTestCase {
 		Labels labels = Labels.getInstance();
 
 		exporter.start(outputStream, "feederstuff");
-		exporter.setFetchers(new String[] {labels.getString("fetcher.ip"), "fetcher1", labels.getString("fetcher.ports")});
+		exporter.setFetchers(new String[] {labels.get("fetcher.ip"), "fetcher1", labels.get("fetcher.ports")});
 		exporter.nextAdressResults(new Object[] {InetAddress.getLocalHost(), null, null});
 		exporter.end();
 	}
@@ -62,9 +62,9 @@ public class IPListExporterTest extends AbstractExporterTestCase {
 	public void testFindFetcherByLabel() {
 		Labels labels = Labels.getInstance();
 		
-		assertEquals(0, IPListExporter.findFetcherByLabel("fetcher.ip", new String[] {labels.getString("fetcher.ip")}));
-		assertEquals(3, IPListExporter.findFetcherByLabel("fetcher.ip", new String[] {"a", "b", "c", labels.getString("fetcher.ip")}));
-		assertEquals(1, IPListExporter.findFetcherByLabel("fetcher.ports", new String[] {labels.getString("fetcher.ports") + "x", labels.getString("fetcher.ports"), "mmmm"}));
+		assertEquals(0, IPListExporter.findFetcherByLabel("fetcher.ip", new String[] {labels.get("fetcher.ip")}));
+		assertEquals(3, IPListExporter.findFetcherByLabel("fetcher.ip", new String[] {"a", "b", "c", labels.get("fetcher.ip")}));
+		assertEquals(1, IPListExporter.findFetcherByLabel("fetcher.ports", new String[] {labels.get("fetcher.ports") + "x", labels.get("fetcher.ports"), "mmmm"}));
 		
 		try {
 			IPListExporter.findFetcherByLabel("fetcher.ip", new String[] {"1", "2"});

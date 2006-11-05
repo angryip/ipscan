@@ -92,7 +92,7 @@ public class GotoActions {
 		}
 		
 		public void handleEvent(Event event) {
-			InputDialog dialog = new InputDialog(Labels.getInstance().getString("title.find"), Labels.getInstance().getString("text.find"));
+			InputDialog dialog = new InputDialog(Labels.getLabel("title.find"), Labels.getLabel("text.find"));
 			String text = dialog.open(lastText);
 			if (text == null) {
 				return;
@@ -100,7 +100,7 @@ public class GotoActions {
 			lastText = text;
 			
 			try {
-				statusBar.setStatusText(Labels.getInstance().getString("state.searching"));
+				statusBar.setStatusText(Labels.getLabel("state.searching"));
 
 				findText(text, event.display.getActiveShell());
 			}
@@ -134,8 +134,8 @@ public class GotoActions {
 			
 			if (startElement > 0) {
 				MessageBox messageBox = new MessageBox(activeShell, SWT.YES | SWT.NO | SWT.ICON_QUESTION);
-				messageBox.setText(Labels.getInstance().getString("title.find"));
-				messageBox.setMessage(Labels.getInstance().getString("text.find.notFound") + " " + Labels.getInstance().getString("text.find.restart"));
+				messageBox.setText(Labels.getLabel("title.find"));
+				messageBox.setMessage(Labels.getLabel("text.find.notFound") + " " + Labels.getLabel("text.find.restart"));
 				if (messageBox.open() == SWT.YES) {
 					resultTable.deselectAll();
 					findText(text, activeShell);
@@ -143,8 +143,8 @@ public class GotoActions {
 			}
 			else {
 				MessageBox messageBox = new MessageBox(activeShell, SWT.OK | SWT.ICON_INFORMATION);
-				messageBox.setText(Labels.getInstance().getString("title.find"));
-				messageBox.setMessage(Labels.getInstance().getString("text.find.notFound"));
+				messageBox.setText(Labels.getLabel("title.find"));
+				messageBox.setMessage(Labels.getLabel("text.find.notFound"));
 				messageBox.open();
 			}
 		}

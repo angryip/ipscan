@@ -68,7 +68,7 @@ public class HelpActions {
 		public void handleEvent(Event event) {
 			BufferedReader reader = null;
 			try {
-				statusBar.setStatusText(Labels.getInstance().getString("state.retrievingVersion"));
+				statusBar.setStatusText(Labels.getLabel("state.retrievingVersion"));
 				
 				URL url = new URL(Version.LATEST_VERSION_URL);
 				URLConnection conn = url.openConnection();
@@ -83,13 +83,13 @@ public class HelpActions {
 				messageBox.setText(Version.FULL_NAME);
 				
 				if (!Version.VERSION.equals(latestVersion)) {
-					String message = Labels.getInstance().getString("text.version.old");
+					String message = Labels.getLabel("text.version.old");
 					message = message.replaceFirst("%LATEST", latestVersion);
 					message = message.replaceFirst("%VERSION", Version.VERSION);
 					messageBox.setMessage(message);
 				}
 				else {
-					messageBox.setMessage(Labels.getInstance().getString("text.version.latest"));
+					messageBox.setMessage(Labels.getLabel("text.version.latest"));
 				}
 				messageBox.open();
 			}

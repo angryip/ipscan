@@ -81,7 +81,7 @@ public class IPListExporter implements Exporter {
 	 * @throws ExporterException in case fetcher is not found
 	 */
 	static int findFetcherByLabel(String label, String[] fetcherNames) {
-		String fetcherName = Labels.getInstance().getString(label);
+		String fetcherName = Labels.getLabel(label);
 		for (int i = 0; i < fetcherNames.length; i++) {
 			if (fetcherName.equals(fetcherNames[i])) {
 				return i;

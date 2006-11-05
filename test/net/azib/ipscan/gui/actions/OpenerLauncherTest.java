@@ -40,7 +40,7 @@ public class OpenerLauncherTest extends TestCase {
 			fail();
 		}
 		catch (UserErrorException e) {
-			assertEquals(Labels.getInstance().getString("exception.UserErrorException.opener.unknownFetcher") + "noSuchFetcher", e.getMessage());
+			assertEquals(Labels.getLabel("exception.UserErrorException.opener.unknownFetcher") + "noSuchFetcher", e.getMessage());
 		}
 
 		try {
@@ -48,7 +48,7 @@ public class OpenerLauncherTest extends TestCase {
 			fail();
 		}
 		catch (UserErrorException e) {
-			assertEquals(Labels.getInstance().getString("exception.UserErrorException.opener.nullFetcherValue") + "fetcher.ping.ttl", e.getMessage());
+			assertEquals(Labels.getLabel("exception.UserErrorException.opener.nullFetcherValue") + "fetcher.ping.ttl", e.getMessage());
 		}
 	}
 }

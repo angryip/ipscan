@@ -41,12 +41,12 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
-		shell.setText(Labels.getInstance().getString("title.favorite.edit"));
+		shell.setText(Labels.getLabel("title.favorite.edit"));
 		shell.setSize(new Point(405, 297));		
 		shell.setLayout(null);		
 		
 		Label messageLabel = new Label(shell, SWT.NONE);
-		messageLabel.setText(Labels.getInstance().getString("text.favorite.edit"));		
+		messageLabel.setText(Labels.getLabel("text.favorite.edit"));		
 		messageLabel.setBounds(new Rectangle(10, 10, 282, 14));
 		
 		favoritesList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
@@ -57,27 +57,27 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 		}
 		
 		Button upButton = new Button(shell, SWT.NONE);
-		upButton.setText(Labels.getInstance().getString("button.up"));		
+		upButton.setText(Labels.getLabel("button.up"));		
 		upButton.setBounds(new Rectangle(350, 30, 40, 25));
 		upButton.addListener(SWT.Selection, new UpButtonListener());
 		
 		Button downButton = new Button(shell, SWT.NONE);
-		downButton.setText(Labels.getInstance().getString("button.down"));		
+		downButton.setText(Labels.getLabel("button.down"));		
 		downButton.setBounds(new Rectangle(350, 60, 40, 25));
 		downButton.addListener(SWT.Selection, new DownButtonListener());
 		
 		Button deleteButton = new Button(shell, SWT.NONE);
-		deleteButton.setText(Labels.getInstance().getString("button.delete"));		
+		deleteButton.setText(Labels.getLabel("button.delete"));		
 		deleteButton.setBounds(new Rectangle(350, 105, 40, 25));
 		deleteButton.addListener(SWT.Selection, new DeleteButtonListener());
 		
 		Button okButton = new Button(shell, SWT.NONE);
-		okButton.setText(Labels.getInstance().getString("button.OK"));		
+		okButton.setText(Labels.getLabel("button.OK"));		
 		okButton.setBounds(new Rectangle(180, 238, 75, 25));
 		shell.setDefaultButton(okButton);
 		
 		Button cancelButton = new Button(shell, SWT.NONE);
-		cancelButton.setText(Labels.getInstance().getString("button.cancel"));		
+		cancelButton.setText(Labels.getLabel("button.cancel"));		
 		cancelButton.setBounds(new Rectangle(265, 238, 75, 25));		
 		
 		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {

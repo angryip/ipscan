@@ -42,11 +42,11 @@ public class Scanner {
 			if (!scanningSubject.isScanningAborted()) {
 				String value = fetcher.scan(scanningSubject);
 				if (value == null) 
-					value = Labels.getInstance().getString("fetcher.value.nothing");
+					value = Labels.getLabel("fetcher.value.nothing");
 				result.setValue(fetcherIndex, value);
 			}
 			else {
-				result.setValue(fetcherIndex, Labels.getInstance().getString("fetcher.value.aborted"));
+				result.setValue(fetcherIndex, Labels.getLabel("fetcher.value.aborted"));
 			}
 			fetcherIndex++;
 		}

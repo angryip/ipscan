@@ -34,10 +34,10 @@ public class ColumnsActions {
 			TableColumn tableColumn = (TableColumn) e.widget;
 			MenuItem sortMenuItem = columnsMenu.getItem(0);
 			if (tableColumn.getParent().getSortColumn() == tableColumn) {
-				sortMenuItem.setText(Labels.getInstance().getString("menu.columns.sortDirection"));
+				sortMenuItem.setText(Labels.getLabel("menu.columns.sortDirection"));
 			}
 			else {
-				sortMenuItem.setText(Labels.getInstance().getString("menu.columns.sortBy") + tableColumn.getText());
+				sortMenuItem.setText(Labels.getLabel("menu.columns.sortBy") + tableColumn.getText());
 			}
 			
 			// remember the clicked column (see SortBy below)

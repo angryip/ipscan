@@ -60,12 +60,12 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
-		shell.setText(Labels.getInstance().getString("title.openers.edit"));
+		shell.setText(Labels.getLabel("title.openers.edit"));
 		shell.setSize(new Point(405, 297));		
 		shell.setLayout(null);		
 		
 		Label messageLabel = new Label(shell, SWT.NONE);
-		messageLabel.setText(Labels.getInstance().getString("text.openers.edit"));		
+		messageLabel.setText(Labels.getLabel("text.openers.edit"));		
 		messageLabel.setBounds(new Rectangle(10, 10, 282, 14));
 		
 		openersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
@@ -77,38 +77,38 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		openersList.addListener(SWT.Selection, new ItemSelectListener());
 		
 		Button upButton = new Button(shell, SWT.NONE);
-		upButton.setText(Labels.getInstance().getString("button.up"));		
+		upButton.setText(Labels.getLabel("button.up"));		
 		upButton.setBounds(new Rectangle(150, 30, 40, 25));
 		upButton.addListener(SWT.Selection, new UpButtonListener());
 		
 		Button downButton = new Button(shell, SWT.NONE);
-		downButton.setText(Labels.getInstance().getString("button.down"));		
+		downButton.setText(Labels.getLabel("button.down"));		
 		downButton.setBounds(new Rectangle(150, 60, 40, 25));
 		downButton.addListener(SWT.Selection, new DownButtonListener());
 		
 		Button insertButton = new Button(shell, SWT.NONE);
-		insertButton.setText(Labels.getInstance().getString("button.insert"));		
+		insertButton.setText(Labels.getLabel("button.insert"));		
 		insertButton.setBounds(new Rectangle(150, 105, 40, 25));
 		insertButton.addListener(SWT.Selection, new InsertButtonListener());
 
 		Button deleteButton = new Button(shell, SWT.NONE);
-		deleteButton.setText(Labels.getInstance().getString("button.delete"));		
+		deleteButton.setText(Labels.getLabel("button.delete"));		
 		deleteButton.setBounds(new Rectangle(150, 135, 40, 25));
 		deleteButton.addListener(SWT.Selection, new DeleteButtonListener());
 
 		Button saveButton = new Button(shell, SWT.NONE);
-		saveButton.setText(Labels.getInstance().getString("button.save"));		
+		saveButton.setText(Labels.getLabel("button.save"));		
 		saveButton.setBounds(new Rectangle(150, 165, 40, 25));
 		saveButtonListener = new SaveButtonListener();
 		saveButton.addListener(SWT.Selection, saveButtonListener);
 		
 		Button okButton = new Button(shell, SWT.NONE);
-		okButton.setText(Labels.getInstance().getString("button.OK"));		
+		okButton.setText(Labels.getLabel("button.OK"));		
 		okButton.setBounds(new Rectangle(180, 238, 75, 25));
 		shell.setDefaultButton(okButton);
 		
 		Button cancelButton = new Button(shell, SWT.NONE);
-		cancelButton.setText(Labels.getInstance().getString("button.cancel"));		
+		cancelButton.setText(Labels.getLabel("button.cancel"));		
 		cancelButton.setBounds(new Rectangle(265, 238, 75, 25));
 		
 		editGroup = new Group(shell, SWT.NONE);
@@ -120,29 +120,29 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		editGroup.setLayout(rowLayout);
 		
 		Label openerNameLabel = new Label(editGroup, SWT.NONE);
-		openerNameLabel.setText(Labels.getInstance().getString("text.openers.name"));
+		openerNameLabel.setText(Labels.getLabel("text.openers.name"));
 		openerNameLabel.setSize(SWT.DEFAULT, 18);
 		openerNameText = new Text(editGroup, SWT.BORDER);
 		openerNameText.setSize(SWT.DEFAULT, 22);
 
 		Label openerStringLabel = new Label(editGroup, SWT.NONE);
-		openerStringLabel.setText(Labels.getInstance().getString("text.openers.string"));
+		openerStringLabel.setText(Labels.getLabel("text.openers.string"));
 		openerStringLabel.setSize(SWT.DEFAULT, 18);
 		openerStringText = new Text(editGroup, SWT.BORDER);
 		openerStringText.setSize(SWT.DEFAULT, 22);
 		
 		Button hintButton = new Button(editGroup, SWT.NONE);
-		hintButton.setText(Labels.getInstance().getString("text.openers.hint"));
+		hintButton.setText(Labels.getLabel("text.openers.hint"));
 		hintButton.addListener(SWT.Selection, new HintButtonListener());
 		
 		Label openerDirLabel = new Label(editGroup, SWT.NONE);
-		openerDirLabel.setText(Labels.getInstance().getString("text.openers.directory"));
+		openerDirLabel.setText(Labels.getLabel("text.openers.directory"));
 		openerDirLabel.setSize(SWT.DEFAULT, 18);
 		openerDirText = new Text(editGroup, SWT.BORDER);
 		openerDirText.setSize(SWT.DEFAULT, 22);
 		
 		isCommandlineCheckbox = new Button(editGroup, SWT.CHECK);
-		isCommandlineCheckbox.setText(Labels.getInstance().getString("text.openers.isCommandLine"));
+		isCommandlineCheckbox.setText(Labels.getLabel("text.openers.isCommandLine"));
 		isCommandlineCheckbox.setSize(SWT.DEFAULT, 18);
 		
 		editGroup.layout();
@@ -174,14 +174,14 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		
 		public void handleEvent(Event event) {
 			// compose the message with all available fetchers
-			StringBuffer message = new StringBuffer(Labels.getInstance().getString("text.openers.hintText"));
+			StringBuffer message = new StringBuffer(Labels.getLabel("text.openers.hintText"));
 			for (Iterator i = fetcherResgitry.getRegisteredFetchers().iterator(); i.hasNext(); ) {
 				String fetcherLabel = ((Fetcher)i.next()).getLabel();
-				message.append("${").append(fetcherLabel).append("}   - ").append(Labels.getInstance().getString(fetcherLabel)).append('\n');
+				message.append("${").append(fetcherLabel).append("}   - ").append(Labels.getLabel(fetcherLabel)).append('\n');
 			}
 			
 			MessageBox mb = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
-			mb.setText(Labels.getInstance().getString("title.openers.edit"));
+			mb.setText(Labels.getLabel("title.openers.edit"));
 			mb.setMessage(message.toString());
 			mb.open();
 		}

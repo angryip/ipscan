@@ -37,8 +37,8 @@ public class FavoritesActions {
 		public void handleEvent(Event event) {
 			String feederInfo = feederRegistry.current().getInfo();
 			InputDialog inputDialog = new InputDialog(
-					Labels.getInstance().getString("title.favorite.add"), 
-					Labels.getInstance().getString("text.favorite.add"));
+					Labels.getLabel("title.favorite.add"), 
+					Labels.getLabel("text.favorite.add"));
 			String favoriteName = inputDialog.open(feederInfo);
 			
 			if (favoriteName != null) {

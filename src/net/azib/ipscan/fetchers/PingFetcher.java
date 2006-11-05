@@ -75,7 +75,7 @@ public class PingFetcher implements Fetcher {
 			subject.abortScanning();
 		}
 		
-		return isAlive ? Integer.toString(pinger.getAverageTime()) + Labels.getInstance().getString("fetcher.value.ms") : null;
+		return isAlive ? Integer.toString(pinger.getAverageTime()) + Labels.getLabel("fetcher.value.ms") : null;
 	}
 
 }

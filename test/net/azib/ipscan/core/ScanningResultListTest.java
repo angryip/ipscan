@@ -53,10 +53,10 @@ public class ScanningResultListTest extends TestCase {
 		String s = scanningResults.getResultsAsString(index);
 		String ln = System.getProperty("line.separator");
 		assertTrue(s.endsWith(ln));
-		assertTrue(s.indexOf(Labels.getInstance().getString(fetchers[0].getLabel()) + ":\t172.28.43.55" + ln) >= 0);
-		assertTrue(s.indexOf(Labels.getInstance().getString(fetchers[1].getLabel()) + ":\t123" + ln) >= 0);
-		assertTrue(s.indexOf(Labels.getInstance().getString(fetchers[2].getLabel()) + ":\txxxxx" + ln) >= 0);
-		assertTrue(s.indexOf(Labels.getInstance().getString(fetchers[3].getLabel()) + ":\t" + ln) >= 0);
+		assertTrue(s.indexOf(Labels.getLabel(fetchers[0].getLabel()) + ":\t172.28.43.55" + ln) >= 0);
+		assertTrue(s.indexOf(Labels.getLabel(fetchers[1].getLabel()) + ":\t123" + ln) >= 0);
+		assertTrue(s.indexOf(Labels.getLabel(fetchers[2].getLabel()) + ":\txxxxx" + ln) >= 0);
+		assertTrue(s.indexOf(Labels.getLabel(fetchers[3].getLabel()) + ":\t" + ln) >= 0);
 	}
 	
 	private static class DummyFetcher implements Fetcher {

@@ -52,14 +52,14 @@ public class TXTExporter implements Exporter {
 	 * @see net.azib.ipscan.exporters.Exporter#start(java.io.OutputStream, String)
 	 */
 	public void start(OutputStream outputStream, String feederInfo) throws IOException {
-		output = new OutputStreamWriter(outputStream, Labels.getInstance().getString("encoding"));
+		output = new OutputStreamWriter(outputStream, Labels.getLabel("encoding"));
 		if (!isAppend) {
-			output.write(Labels.getInstance().getString("exporter.txt.generated"));
+			output.write(Labels.getLabel("exporter.txt.generated"));
 			println(Version.FULL_NAME);
 			println(Version.WEBSITE);
 			output.write(NEWLINE);
 			
-			String scanned = Labels.getInstance().getString("exporter.txt.scanned");
+			String scanned = Labels.getLabel("exporter.txt.scanned");
 			scanned = scanned.replaceFirst("%INFO", feederInfo);  
 			println(scanned);
 			println(DateFormat.getDateTimeInstance().format(new Date()));

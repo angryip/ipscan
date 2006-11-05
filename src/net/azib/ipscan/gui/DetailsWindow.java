@@ -32,7 +32,7 @@ public class DetailsWindow extends AbstractModalDialog {
 	 */
 	private void createShell(Shell parent) {
 		shell = new Shell(parent, SWT.TOOL | SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
-		shell.setText(Labels.getInstance().getString("title.details"));
+		shell.setText(Labels.getLabel("title.details"));
 		shell.setSize(new Point(300, 300));
 		shell.setImage(parent.getImage());
 		FillLayout fillLayout = new FillLayout();

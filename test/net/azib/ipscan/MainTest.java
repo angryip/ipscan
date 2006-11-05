@@ -28,11 +28,11 @@ public class MainTest extends TestCase {
 		assertTrue(wasStackTraceLogged[0]);
 		
 		// localized exception
-		assertEquals(Labels.getInstance().getString("exception.FeederException.range.greaterThan"), 
+		assertEquals(Labels.getLabel("exception.FeederException.range.greaterThan"), 
 				Main.getLocalizedMessage(new FeederException("range.greaterThan")));
 		
 		// message-less localized exception
-		assertEquals(Labels.getInstance().getString("exception.OutOfMemoryError"), 
+		assertEquals(Labels.getLabel("exception.OutOfMemoryError"), 
 				Main.getLocalizedMessage(new OutOfMemoryError()));
 	}
 	

@@ -48,7 +48,7 @@ public class StatusBar {
 		
 		threadsText = new Label(composite, SWT.BORDER);
 		//threadsText.setLayoutData(new RowData(50, SWT.DEFAULT));
-		threadsText.setText(Labels.getInstance().getString("text.threads") + "0");
+		threadsText.setText(Labels.getLabel("text.threads") + "0");
 		
 		progressBar = new ProgressBar(composite, SWT.BORDER);
 		//progressBar.setLayoutData(new RowData());
@@ -75,7 +75,7 @@ public class StatusBar {
 	 */
 	public void setStatusText(String statusText) {
 		if (statusText == null) {
-			statusText = Labels.getInstance().getString("state.ready"); 
+			statusText = Labels.getLabel("state.ready"); 
 		}
 		if (!this.statusText.isDisposed())
 			this.statusText.setText(statusText);
@@ -84,7 +84,7 @@ public class StatusBar {
 	public void setRunningThreads(int runningThreads) {
 		if (!threadsText.isDisposed()) 
 			// TODO: make this more efficient
-			threadsText.setText(Labels.getInstance().getString("text.threads") + runningThreads);
+			threadsText.setText(Labels.getLabel("text.threads") + runningThreads);
 	}
 	
 	public void setProgress(int progress) {

@@ -80,8 +80,19 @@ public final class Labels {
 		return getClass().getClassLoader().getResourceAsStream(imagePath);
 	}
 	
-	public String getString(String key) {
+	/**
+	 * Retrieves a String specified by the label key
+	 * @param key
+	 */
+	public String get(String key) {
 		return labels.getString(key);
+	}
+	
+	/**
+	 * A shortened form of Labels.getLabel()
+	 */
+	public static String getLabel(String key) {
+		return getInstance().get(key);
 	}
 	
 }

@@ -39,7 +39,7 @@ public class XMLExporterTest extends AbstractExporterTestCase {
 
 	public void testFetchersWithoutAppend() throws IOException {
 		exporter.start(outputStream, "feederstuff");
-		exporter.setFetchers(new String[] {"fetcher1", Labels.getInstance().getString("fetcher.ip"), "mega long fetcher 2"});
+		exporter.setFetchers(new String[] {"fetcher1", Labels.getLabel("fetcher.ip"), "mega long fetcher 2"});
 		exporter.nextAdressResults(new Object[] {"", "123", ""});
 		exporter.end();
 		assertContains("IP");

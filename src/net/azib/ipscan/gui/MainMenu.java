@@ -116,7 +116,7 @@ public class MainMenu {
 		// Gtk-WARNING **: gtk_menu_attach_to_widget(): menu already attached to GtkImageMenuItem 
 		OpenersMenu openersMenu = (OpenersMenu) container.getComponentInstance(OpenersMenu.class);
 		MenuItem openersMenuItem = new MenuItem(subMenu, SWT.CASCADE);
-		openersMenuItem.setText(Labels.getInstance().getString("menu.commands.open"));
+		openersMenuItem.setText(Labels.getLabel("menu.commands.open"));
 		openersMenuItem.setMenu(openersMenu);
 				
 		Listener showOpenersMenuListener = (Listener) container.getComponentInstance(CommandsActions.ShowOpenersMenu.class);
@@ -127,7 +127,7 @@ public class MainMenu {
 
 	private void createFavoritesMenu(Menu parentMenu) {
 		MenuItem favoritesMenuItem = new MenuItem(parentMenu, SWT.CASCADE);
-		favoritesMenuItem.setText(Labels.getInstance().getString("menu.favorites"));
+		favoritesMenuItem.setText(Labels.getLabel("menu.favorites"));
 		Menu favoritesMenu = (Menu) container.getComponentInstance(FavoritesMenu.class);
 		favoritesMenu.addListener(SWT.Show, (Listener) container.getComponentInstance(FavoritesActions.ShowMenu.class));
 		favoritesMenuItem.setMenu(favoritesMenu);
@@ -135,7 +135,7 @@ public class MainMenu {
 
 	private static Menu initMenu(Menu menu, String label) {
 		MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
-		menuItem.setText(Labels.getInstance().getString(label));
+		menuItem.setText(Labels.getLabel(label));
 		
 		Menu subMenu = new Menu(menu.getShell(), SWT.DROP_DOWN);
 		menuItem.setMenu(subMenu);
@@ -155,7 +155,7 @@ public class MainMenu {
 		MenuItem menuItem = new MenuItem(parent, label == null ? SWT.SEPARATOR : SWT.PUSH);
 		
 		if (label != null) 
-			menuItem.setText(Labels.getInstance().getString(label));
+			menuItem.setText(Labels.getLabel(label));
 		
 		if (accelerator != null)
 			menuItem.setAccelerator(accelerator.intValue());

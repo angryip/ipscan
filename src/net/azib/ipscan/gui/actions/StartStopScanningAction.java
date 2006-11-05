@@ -101,10 +101,10 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 						statusBar.setProgress(0);
 						break;
 					case STATE_STOPPING:
-						statusBar.setStatusText(Labels.getInstance().getString("state.waitForThreads"));
+						statusBar.setStatusText(Labels.getLabel("state.waitForThreads"));
 						break;
 					case STATE_KILLING:
-						statusBar.setStatusText(Labels.getInstance().getString("state.killingThreads"));
+						statusBar.setStatusText(Labels.getLabel("state.killingThreads"));
 						break;
 				}
 				// change button image
@@ -122,7 +122,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 					return;
 				
 				if (currentAddress != null) {
-					statusBar.setStatusText(Labels.getInstance().getString("state.scanning") + currentAddress.getHostAddress());
+					statusBar.setStatusText(Labels.getLabel("state.scanning") + currentAddress.getHostAddress());
 				}					
 
 				statusBar.setRunningThreads(runningThreads);

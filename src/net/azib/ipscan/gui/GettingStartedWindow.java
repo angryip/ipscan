@@ -39,7 +39,7 @@ public class GettingStartedWindow extends AbstractModalDialog {
 		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
-		shell.setText(Labels.getInstance().getString("title.gettingStarted"));
+		shell.setText(Labels.getLabel("title.gettingStarted"));
 		shell.setSize(new Point(400, 240));
 		
 		Label iconLabel = new Label(shell, SWT.ICON);
@@ -56,7 +56,7 @@ public class GettingStartedWindow extends AbstractModalDialog {
 		gettingStartedText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		
 		closeButton = new Button(shell, SWT.NONE);
-		closeButton.setText(Labels.getInstance().getString("button.close"));
+		closeButton.setText(Labels.getLabel("button.close"));
 		closeButton.setBounds(110, 180, 80, 25);
 		closeButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
@@ -66,7 +66,7 @@ public class GettingStartedWindow extends AbstractModalDialog {
 		});
 
 		nextButton = new Button(shell, SWT.NONE);
-		nextButton.setText(Labels.getInstance().getString("button.next"));
+		nextButton.setText(Labels.getLabel("button.next"));
 		nextButton.setBounds(210, 180, 80, 25);
 		nextButton.setFocus();
 		nextButton.addListener(SWT.Selection, new Listener() {
@@ -82,12 +82,12 @@ public class GettingStartedWindow extends AbstractModalDialog {
 	}
 	
 	private void displayActivePage() {
-		String text = Labels.getInstance().getString("text.gettingStarted" + activePage);
+		String text = Labels.getLabel("text.gettingStarted" + activePage);
 		gettingStartedText.setText(text);
 		
 		// check for the next one
 		try {
-			Labels.getInstance().getString("text.gettingStarted" + (activePage+1));
+			Labels.getLabel("text.gettingStarted" + (activePage+1));
 		}
 		catch (Exception e) {
 			// no label, disable the next button

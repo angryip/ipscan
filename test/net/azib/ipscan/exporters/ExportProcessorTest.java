@@ -37,7 +37,7 @@ public class ExportProcessorTest extends TestCase {
 		String content = readFileContent(file);
 		
 		assertTrue(content.indexOf("megaFeeder") > 0);
-		assertTrue(content.indexOf(Labels.getInstance().getString(new IPFetcher().getLabel())) > 0);
+		assertTrue(content.indexOf(Labels.getLabel(new IPFetcher().getLabel())) > 0);
 		assertTrue(content.indexOf("fooBar") < 0);		
 		assertTrue(content.indexOf("192.168.0.13") > 0);		
 	}

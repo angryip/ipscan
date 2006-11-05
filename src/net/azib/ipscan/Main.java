@@ -90,7 +90,7 @@ public class Main {
 			else {
 				String exceptionClassName = getClassShortName(e.getClass());
 				String originalMessage = e.getMessage();
-				localizedMessage = Labels.getInstance().getString("exception." + exceptionClassName + (originalMessage != null ? "." + originalMessage : ""));
+				localizedMessage = Labels.getLabel("exception." + exceptionClassName + (originalMessage != null ? "." + originalMessage : ""));
 			}
 			// add cause summary, if it exists
 			if (e.getCause() != null) {

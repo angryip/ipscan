@@ -67,7 +67,7 @@ public class ResultTable extends Table {
 		for (Iterator i = fetchers.iterator(); i.hasNext();) {
 			Fetcher fetcher = (Fetcher) i.next();
 			TableColumn tableColumn = new TableColumn(this, SWT.NONE);
-			String fetcherName = Labels.getInstance().getString(fetcher.getLabel());
+			String fetcherName = Labels.getLabel(fetcher.getLabel());
 			tableColumn.setWidth(dimensionsConfig.getColumnWidth(fetcherName));
 			tableColumn.setText(fetcherName);
 			tableColumn.addListener(SWT.Selection, columnClickListener);

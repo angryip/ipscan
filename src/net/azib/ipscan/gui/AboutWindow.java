@@ -37,7 +37,7 @@ public class AboutWindow extends AbstractModalDialog {
 		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
-		shell.setText(Labels.getInstance().getString("title.about"));
+		shell.setText(Labels.getLabel("title.about"));
 		shell.setSize(new Point(400, 363));
 		
 		Label iconLabel = new Label(shell, SWT.ICON);
@@ -51,7 +51,7 @@ public class AboutWindow extends AbstractModalDialog {
 
 		// TODO: make clicking on links work
 		Link textLabel = new Link(shell, SWT.NONE);
-		String text = Labels.getInstance().getString("text.about");
+		String text = Labels.getLabel("text.about");
 		text = text.replaceAll("%NAME", Version.NAME);
 		text = text.replaceAll("%VERSION", Version.VERSION);
 		text = text.replaceAll("%COPYLEFT", Version.COPYLEFT);
@@ -80,7 +80,7 @@ public class AboutWindow extends AbstractModalDialog {
 							"02110-1301, USA, or visit http://www.fsf.org/");
 		
 		Button button = new Button(shell, SWT.NONE);
-		button.setText(Labels.getInstance().getString("button.close"));
+		button.setText(Labels.getLabel("button.close"));
 		button.setBounds(170, 305, 80, 25);
 		button.setFocus();
 		button.addListener(SWT.Selection, new Listener() {

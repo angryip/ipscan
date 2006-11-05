@@ -25,7 +25,7 @@ public abstract class AbstractFetcherTestCase extends TestCase {
 	protected abstract void setUp() throws Exception;
 
 	public void testLabel() {
-		assertNotNull(Labels.getInstance().getString(fetcher.getLabel()));
+		assertNotNull(Labels.getLabel(fetcher.getLabel()));
 	}
 	
 }

@@ -58,7 +58,7 @@ public class FileActions {
 			// gather lists of extensions and exporter names
 			List extensions = new ArrayList();
 			List descriptions = new ArrayList();
-			StringBuffer labelBuffer = new StringBuffer(Labels.getInstance().getString(isSelection ? "title.saveSelection" : "title.saveAll"));
+			StringBuffer labelBuffer = new StringBuffer(Labels.getLabel(isSelection ? "title.saveSelection" : "title.saveAll"));
 			addFileExtensions(extensions, descriptions, labelBuffer);
 			
 			// initialize other stuff
@@ -74,7 +74,7 @@ public class FileActions {
 				// create exporter instance
 				Exporter exporter = ExporterRegistry.getInstance().createExporter(fileName);
 				
-				statusBar.setStatusText(Labels.getInstance().getString("state.saving"));
+				statusBar.setStatusText(Labels.getLabel("state.saving"));
 				
 				ExportProcessor exportProcessor = new ExportProcessor(exporter, fileName);
 				
@@ -100,7 +100,7 @@ public class FileActions {
 				Exporter exporter = (Exporter) i.next();
 				extensions.add("*." + exporter.getFilenameExtension());
 				sb.append(exporter.getFilenameExtension()).append(", ");;
-				descriptions.add(Labels.getInstance().getString(exporter.getLabel()));
+				descriptions.add(Labels.getLabel(exporter.getLabel()));
 			}
 			// strip the last comma
 			sb.delete(sb.length() - 2, sb.length());
