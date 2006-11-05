@@ -46,6 +46,10 @@ public abstract class AbstractExporterTestCase extends TestCase {
 			}
 		};
 		exporter2.start(mockOutputStream, "feederstuff");
+		// output something to ensure that the flush will be called
+		exporter2.setFetchers(new String[] {Labels.getLabel("fetcher.ip"), Labels.getLabel("fetcher.ports")});
+		exporter2.nextAdressResults(new Object[] {"1", "2"});
+		// this should invoke flush among other things
 		exporter2.end();
 		// close: no
 		assertFalse(wasClosed[0]);

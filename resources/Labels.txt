@@ -105,6 +105,7 @@ opener.ftp=FTP
 opener.telnet=Telnet
 opener.ssh=SSH
 opener.netbios=Windows Shares
+opener.email=E-mail sample
 feeder.range=IP Range
 feeder.range.startIP=IP Range:
 feeder.range.endIP=to

@@ -4,12 +4,13 @@
 	<property name="dist" value="dist"/>
 	<property name="ext" value="ext"/>
 	<property name="src" value="src"/>
+	<property name="resources" value="resources"/>
 	<property name="test" value="test"/>
 	<property name="testresults" value="testresults"/>
 			
 	<property name="version" value="2.99a"/>
 	<property name="main.class" value="net.azib.ipscan.Main"/>
-	<property name="swt.jars" value="../swt"/>
+	<property name="swt" value="../swt"/>
 	<property name="retroguard.jar" value="${ext}/retroguard/retroguard.jar"/>
 	<property name="emma.dir" value="${ext}/emma"/>
 	<property name="ext.src" value="${ext}/rocksaw/src:${ext}/vserv-tcpip/src"/>
@@ -54,11 +55,16 @@
 				<src path="@{extpath}"/>				
 				<classpath>
 					<fileset dir="${ext}" includes="**/*.jar"/>
-					<fileset dir="${swt.jars}" includes="*.jar"/>
+					<fileset dir="${swt}" includes="*.jar"/>
 				</classpath>
 			</javac>
 			<copy todir="classes-@{dest}">
 				<fileset dir="@{path}">
+					<patternset refid="classpath.resources"/>
+				</fileset>
+			</copy>
+			<copy todir="classes-@{dest}">
+				<fileset dir="${resources}">
 					<patternset refid="classpath.resources"/>
 				</fileset>
 			</copy>
@@ -84,12 +90,14 @@
 	</target>
 
 	<target name="test">
+		<delete dir="${testresults}"/>
 		<mkdir dir="${testresults}"/>
 		<delete file="coverage.ec"/>
 		<junit haltonfailure="true" showoutput="true" dir="${basedir}" fork="on" forkmode="once">
+			<jvmarg line="-Djava.library.path=${ext}/rocksaw/lib:${swt}/lib"/>
 			<classpath>
 				<dirset dir="classes-${test}"/>
-				<fileset dir="${swt.jars}" includes="*.jar"/>
+				<fileset dir="${swt}" includes="*.jar"/>
 				<path refid="emma.lib"/>
 			</classpath>
 			<formatter type="brief"/>
@@ -98,7 +106,7 @@
 			</batchtest>
 		</junit>
 		<emma>
-			<report sourcepath="${src}" encoding="us-ascii">
+			<report sourcepath="${src}" encoding="UTF-8">
 				<fileset dir="${basedir}" includes="coverage.ec"/>
 				<fileset dir="${testresults}" includes="*.emma"/>
 				<txt outfile="${testresults}/coverage.txt"/>
@@ -107,14 +115,6 @@
 		</emma>
 	</target>
 	
-<!--
-	<target name="changelog" if="label">
-		<exec dir="${basedir}" executable="${basedir}/../build/cvs2cl.pl" failonerror="true">
-			 <arg line="- -file changelog.txt - -tags - -branches - -revisions -g -Q -l -d'2 months ago&lt;today'"/>
-		</exec>
-	</target>
--->
-
 	<target name="package">
 		<delete dir="${dist}"/>
 		<mkdir dir="${dist}"/>
@@ -130,10 +130,13 @@
 	<target name="package-linux">
 		<delete dir="${dist}"/>
 		<mkdir dir="${dist}"/>
-		<unzip src="${swt.jars}/swt-gtk.jar" dest="classes-${src}"/>
+		<unzip src="${swt}/swt-gtk.jar" dest="classes-${src}"/>
 		<delete includeemptydirs="true">
 			<fileset dir="classes-${src}" file="version.txt"/>
 			<fileset dir="classes-${src}/org/eclipse/swt/browser"/>
+			<fileset dir="classes-${src}/org/eclipse/swt/opengl"/>
+			<fileset dir="classes-${src}/org/eclipse/swt/internal/opengl"/>
+			<fileset dir="classes-${src}/org/eclipse/swt/internal/theme"/>
 			<fileset dir="classes-${src}/org/eclipse/swt/internal/mozilla"/>
 			<fileset dir="classes-${src}/org/eclipse/swt/internal/image">
 				<include name="JPEG*"/>
@@ -144,11 +147,23 @@
 				<include name="Win*"/>
 			</fileset>
 			<fileset dir="classes-${src}/org/eclipse/swt/custom"/>
-			<!--<fileset dir="classes-${src}/org/eclipse/swt/widgets/XXX*"/>-->
-			<fileset dir="classes-${src}/org/eclipse/swt/dnd"/>
+			<fileset dir="classes-${src}/org/eclipse/swt/widgets">
+				<include name="Cool*"/>
+				<include name="Expand*"/>
+				<include name="Font*"/>
+				<include name="Color*"/>
+				<include name="ToolBar*"/>				
+				<include name="ToolItem*"/>
+				<include name="Tracker*"/>
+				<include name="Tray*"/>
+				<include name="Tree*"/>
+			</fileset>
+<!--		GIJ doesn't start without this one, however Sun's java has no problems...
+			<fileset dir="classes-${src}/org/eclipse/swt/dnd"/>-->
 			<fileset dir="classes-${src}/org/eclipse/swt/awt"/>
 		</delete>
-		<jar destfile="${dist}/${ant.project.name}.jar">
+		<unzip src="${ext}/picocontainer/picocontainer-1.0.jar" dest="classes-${src}"/>
+		<jar destfile="${dist}/${ant.project.name}.jar" >
 			<manifest>
 				<attribute name="Main-Class" value="${main.class}"/>
 				<attribute name="AngryIPScanner" value="${version}"/>

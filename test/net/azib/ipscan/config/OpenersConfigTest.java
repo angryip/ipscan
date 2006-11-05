@@ -22,6 +22,7 @@ public class OpenersConfigTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		preferences = Preferences.userRoot().node("ipscan-test");
+		preferences.clear();
 		config = new OpenersConfig(preferences);
 	}
 
