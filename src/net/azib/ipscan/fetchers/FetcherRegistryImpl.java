@@ -40,6 +40,14 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 	}
 	
 	/* (non-Javadoc)
+	 * @see net.azib.ipscan.fetchers.FetcherRegistry#getSelectedFetchers()
+	 */
+	public List getSelectedFetchers() {
+		// TODO: support true selected fethers
+		return fetchers;
+	}
+
+	/* (non-Javadoc)
 	 * @see net.azib.ipscan.fetchers.FetcherRegistry#getSelectedFetcherIndex(java.lang.String)
 	 */
 	public int getSelectedFetcherIndex(String label) {

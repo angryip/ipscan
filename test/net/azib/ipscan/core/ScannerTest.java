@@ -30,7 +30,7 @@ public class ScannerTest extends TestCase {
 		Scanner scanner = new Scanner(new FakeFetcherRegistry());
 		
 		// scan the local host
-		ScanningResult scanningResult = new ScanningResult(InetAddress.getLocalHost());
+		ScanningResult scanningResult = new ScanningResult(InetAddress.getLocalHost(), 4);
 		scanner.scan(InetAddress.getLocalHost(), scanningResult);
 		
 		assertEquals(ScanningSubject.RESULT_TYPE_ALIVE, scanningResult.getType());
@@ -90,11 +90,15 @@ public class ScannerTest extends TestCase {
 	
 	private class FakeFetcherRegistry implements FetcherRegistry {
 		public List getRegisteredFetchers() {
-			return Arrays.asList(new Fetcher[] {new FakeFetcher(), new AnotherFakeFetcher(), new AbortingFetcher(), new FailingFetcher()});
+			return null;
 		}
 
 		public int getSelectedFetcherIndex(String label) {
 			return 0;
+		}
+
+		public List getSelectedFetchers() {
+			return Arrays.asList(new Fetcher[] {new FakeFetcher(), new AnotherFakeFetcher(), new AbortingFetcher(), new FailingFetcher()});
 		}
 	}
 	

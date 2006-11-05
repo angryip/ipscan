@@ -49,10 +49,6 @@ public class ResultTable extends Table {
 		setHeaderVisible(true);
 		setLinesVisible(true);
 		
-		// TODO: initialize fetchers before each scan
-		List fetchers = fetcherRegistry.getRegisteredFetchers();
-		scanningResults.setFetchers(fetchers);
-
 		Listener columnClickListener = new ColumnsActions.ColumnClick(columnsMenu);
 		Listener columnResizeListener = new Listener() {
 			public void handleEvent(Event event) {
@@ -64,6 +60,7 @@ public class ResultTable extends Table {
 		
 		DimensionsConfig dimensionsConfig = Config.getDimensionsConfig();
 		
+		List fetchers = fetcherRegistry.getSelectedFetchers();
 		for (Iterator i = fetchers.iterator(); i.hasNext();) {
 			Fetcher fetcher = (Fetcher) i.next();
 			TableColumn tableColumn = new TableColumn(this, SWT.NONE);
@@ -127,13 +124,6 @@ public class ResultTable extends Table {
 				ResultTable.this.clear(index);
 			}
 		});
-	}
-
-	/** 
-	 * @return the List of currently selected Fetchers.
-	 */
-	public List getFetchers() {
-		return scanningResults.getFetchers();
 	}
 
 	/**

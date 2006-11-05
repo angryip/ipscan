@@ -10,12 +10,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Collections;
+import java.util.List;
 
 import junit.framework.TestCase;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.exporters.ExportProcessor.ScanningResultSelector;
+import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.IPFetcher;
 
 /**
@@ -29,8 +31,7 @@ public class ExportProcessorTest extends TestCase {
 		File file = File.createTempFile("exportTest", "txt");
 		ExportProcessor exportProcessor = new ExportProcessor(new TXTExporter(), file.getAbsolutePath());
 		
-		ScanningResultList scanningResultList = new ScanningResultList();
-		scanningResultList.setFetchers(Collections.singletonList(new IPFetcher()));
+		ScanningResultList scanningResultList = new ScanningResultList(new FakeFetcherRegistry());
 		scanningResultList.add(InetAddress.getByName("192.168.0.13"));
 		exportProcessor.process(scanningResultList, "megaFeeder", null);
 		
@@ -62,8 +63,7 @@ public class ExportProcessorTest extends TestCase {
 		File file = File.createTempFile("exportTest", "txt");
 		ExportProcessor exportProcessor = new ExportProcessor(new TXTExporter(), file.getAbsolutePath());
 		
-		ScanningResultList scanningResultList = new ScanningResultList();
-		scanningResultList.setFetchers(Collections.singletonList(new IPFetcher()));
+		ScanningResultList scanningResultList = new ScanningResultList(new FakeFetcherRegistry());
 		
 		scanningResultList.add(InetAddress.getByName("192.168.13.66"));
 		scanningResultList.add(InetAddress.getByName("192.168.13.67"));
@@ -82,6 +82,20 @@ public class ExportProcessorTest extends TestCase {
 		assertTrue(content.indexOf("192.168.13.66") > 0);
 		assertTrue(content.indexOf("192.168.13.67") < 0);		
 		assertTrue(content.indexOf("192.168.13.76") > 0);		
+	}
+
+	private class FakeFetcherRegistry implements FetcherRegistry {
+		public List getRegisteredFetchers() {
+			return null;
+		}
+
+		public int getSelectedFetcherIndex(String label) {
+			return 0;
+		}
+
+		public List getSelectedFetchers() {
+			return Collections.singletonList(new IPFetcher());
+		}
 	}
 
 }

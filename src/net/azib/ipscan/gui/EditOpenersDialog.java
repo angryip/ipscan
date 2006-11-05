@@ -175,7 +175,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		public void handleEvent(Event event) {
 			// compose the message with all available fetchers
 			StringBuffer message = new StringBuffer(Labels.getLabel("text.openers.hintText"));
-			for (Iterator i = fetcherResgitry.getRegisteredFetchers().iterator(); i.hasNext(); ) {
+			for (Iterator i = fetcherResgitry.getSelectedFetchers().iterator(); i.hasNext(); ) {
 				String fetcherLabel = ((Fetcher)i.next()).getLabel();
 				message.append("${").append(fetcherLabel).append("}   - ").append(Labels.getLabel(fetcherLabel)).append('\n');
 			}

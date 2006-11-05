@@ -37,7 +37,7 @@ public class Scanner {
 		
 		// populate results
 		int fetcherIndex = 0;
-		for (Iterator i = fetcherRegistry.getRegisteredFetchers().iterator(); i.hasNext();) {
+		for (Iterator i = fetcherRegistry.getSelectedFetchers().iterator(); i.hasNext();) {
 			Fetcher fetcher = (Fetcher) i.next();
 			if (!scanningSubject.isScanningAborted()) {
 				String value = fetcher.scan(scanningSubject);

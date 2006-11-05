@@ -4,7 +4,7 @@
 package net.azib.ipscan.core;
 
 import java.net.InetAddress;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,8 +16,8 @@ public class ScanningResult {
 
 	/** The scanned IP address */
 	private InetAddress address;
-	/** Scanning results as List, result of each Fetcher is an element */
-	private List values;
+	/** Scanning results, result of each Fetcher is an element */
+	private String[] values;
 	/** Scanning result type, see constants in {@link ScanningSubject} */
 	private int type;
 	
@@ -25,11 +25,12 @@ public class ScanningResult {
 	 * Creates a new instance, initializing the first value to the 
 	 * provided address
 	 * @param address
+	 * @param numberOfFetchers the number of currently available fetchers
 	 */
-	ScanningResult(InetAddress address) {
+	ScanningResult(InetAddress address, int numberOfFetchers) {
 		this.address = address;
-		values = new ArrayList();
-		values.add(address.getHostAddress());
+		values = new String[numberOfFetchers];
+		values[0] = address.getHostAddress();
 		type = ScanningSubject.RESULT_TYPE_UNKNOWN;
 	}
 	
@@ -38,10 +39,10 @@ public class ScanningResult {
 	}
 	
 	/**
-	 * @return the scanning results as List, result of each Fetcher is an element
+	 * @return the scanning results as an unmodifiable List, result of each Fetcher is an element
 	 */
 	public List getValues() {
-		return values;
+		return Arrays.asList(values);
 	}
 	
 	/**
@@ -64,11 +65,7 @@ public class ScanningResult {
 	 * @param value
 	 */
 	public void setValue(int fetcherIndex, String value) {
-		// TODO: make values an array
-		if (values.size() <= fetcherIndex)
-			values.add(fetcherIndex, value);
-		else
-			values.set(fetcherIndex, value);
+		values[fetcherIndex] = value;
 	}
 	
 }
