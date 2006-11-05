@@ -30,6 +30,8 @@ public class ScanningSubject {
 	private Map parameters;
 	/** The result type constant value, can be modified by some Fetchers */
 	private int resultType = RESULT_TYPE_UNKNOWN;
+	/** Whether we need to continue scanning or it can be aborted */
+	private boolean isScanningAborted = false;
 	
 	/**
 	 * This constructor should only be used by the Scanner class or unit tests.
@@ -80,5 +82,19 @@ public class ScanningSubject {
 	public void setResultType(int resultType) {
 		this.resultType = resultType;
 	}
+	
+	/**
+	 * @return true if a fetcher has instructed to abort scanning 
+	 */
+	public boolean isScanningAborted() {
+		return isScanningAborted;
+	}
 
+	/**
+	 * Can be used to inform the scanner to abort scanning
+	 */
+	public void abortScanning() {
+		this.isScanningAborted = true;
+	}
+	
 }

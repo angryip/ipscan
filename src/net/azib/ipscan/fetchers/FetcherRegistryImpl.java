@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author anton
  */
-public class FetcherRegistry {
+public class FetcherRegistryImpl implements FetcherRegistry {
 	
 	/** All available Fetcher implementations, List of Fetcher instances */
 	private List fetchers;
@@ -21,7 +21,7 @@ public class FetcherRegistry {
 	/**
 	 * Private constructor
 	 */
-	public FetcherRegistry() {
+	public FetcherRegistryImpl() {
 		fetchers = new ArrayList();
 		fetchers.add(new IPFetcher());
 		fetchers.add(new PingFetcher());
@@ -32,17 +32,15 @@ public class FetcherRegistry {
 		fetchers = Collections.unmodifiableList(fetchers);
 	}
 
-	/**
-	 * @return a List of all registered Fetchers
+	/* (non-Javadoc)
+	 * @see net.azib.ipscan.fetchers.FetcherRegistry#getRegisteredFetchers()
 	 */
 	public List getRegisteredFetchers() {
 		return fetchers;
 	}
 	
-	/**
-	 * Searches for selected fetcher with the given label
-	 * @param label
-	 * @return the index, if found, or -1
+	/* (non-Javadoc)
+	 * @see net.azib.ipscan.fetchers.FetcherRegistry#getSelectedFetcherIndex(java.lang.String)
 	 */
 	public int getSelectedFetcherIndex(String label) {
 		// TODO: this probably needs to be changed to reflect selected fetchers and be more effective

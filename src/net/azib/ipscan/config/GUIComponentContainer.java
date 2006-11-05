@@ -7,6 +7,7 @@ import net.azib.ipscan.core.Scanner;
 import net.azib.ipscan.core.ScannerThreadFactory;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.fetchers.FetcherRegistryImpl;
 import net.azib.ipscan.gui.MainMenu;
 import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.ResultTable;
@@ -50,7 +51,7 @@ public class GUIComponentContainer {
 		ComponentParameter anyComponentParameter = new ComponentParameter();
 		
 		// non-GUI
-		container.registerComponentImplementation(FetcherRegistry.class);
+		container.registerComponentImplementation(FetcherRegistry.class, FetcherRegistryImpl.class);
 		container.registerComponentImplementation(ScanningResultList.class);
 		container.registerComponentImplementation(Scanner.class);
 		container.registerComponentImplementation(ScannerThreadFactory.class);

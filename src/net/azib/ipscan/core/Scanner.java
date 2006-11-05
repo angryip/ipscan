@@ -6,10 +6,9 @@ package net.azib.ipscan.core;
 import java.net.InetAddress;
 import java.util.Iterator;
 
-import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
-import net.azib.ipscan.fetchers.PingFetcher;
 
 /**
  * Scanner functionality is encapsulated in this class.
@@ -37,21 +36,18 @@ public class Scanner {
 		ScanningSubject scanningSubject = new ScanningSubject(address);
 		
 		// populate results
-		boolean continueScanning = true;
 		int fetcherIndex = 0;
 		for (Iterator i = fetcherRegistry.getRegisteredFetchers().iterator(); i.hasNext();) {
 			Fetcher fetcher = (Fetcher) i.next();
-			if (continueScanning) {
+			if (!scanningSubject.isScanningAborted()) {
 				String value = fetcher.scan(scanningSubject);
-				// TODO: write better code
-				if (!Config.getGlobal().scanDeadHosts && fetcher instanceof PingFetcher) {
-					continueScanning = value != null;
-					// TODO: hardcoded [timeout]
-					//value = value == null ? "[timeout]" : value;
-				}
+				if (value == null) 
+					value = Labels.getInstance().getString("fetcher.value.nothing");
 				result.setValue(fetcherIndex, value);
 			}
-			// TODO: display something in the else
+			else {
+				result.setValue(fetcherIndex, Labels.getInstance().getString("fetcher.value.aborted"));
+			}
 			fetcherIndex++;
 		}
 		

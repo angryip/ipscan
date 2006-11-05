@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.net.Pinger;
 
@@ -68,7 +69,13 @@ public class PingFetcher implements Fetcher {
 		Pinger pinger = executePing(subject);
 		boolean isAlive = pinger != null && !pinger.isTimeout();
 		subject.setResultType(isAlive ? ScanningSubject.RESULT_TYPE_ALIVE : ScanningSubject.RESULT_TYPE_DEAD);
-		return isAlive ? Integer.toString(pinger.getAverageTime()) + " ms" : null;
+		
+		if (!isAlive && !Config.getGlobal().scanDeadHosts) {
+			// the host is dead, we are not going to continue...
+			subject.abortScanning();
+		}
+		
+		return isAlive ? Integer.toString(pinger.getAverageTime()) + Labels.getInstance().getString("fetcher.value.ms") : null;
 	}
 
 }
