@@ -156,7 +156,7 @@ public class PortsFetcher implements Fetcher {
 	/*
 	 * @see net.azib.ipscan.fetchers.Fetcher#scan(net.azib.ipscan.core.ScanningSubject)
 	 */
-	public String scan(ScanningSubject subject) {
+	public Object scan(ScanningSubject subject) {
 		scanPorts(subject);
 		Set openPorts = getOpenPorts(subject);
 		boolean portsFound = openPorts.size() > 0;

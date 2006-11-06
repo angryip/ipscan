@@ -17,7 +17,7 @@ public class ScanningResult {
 	/** The scanned IP address */
 	private InetAddress address;
 	/** Scanning results, result of each Fetcher is an element */
-	private String[] values;
+	private Object[] values;
 	/** Scanning result type, see constants in {@link ScanningSubject} */
 	private int type;
 	
@@ -29,7 +29,7 @@ public class ScanningResult {
 	 */
 	ScanningResult(InetAddress address, int numberOfFetchers) {
 		this.address = address;
-		values = new String[numberOfFetchers];
+		values = new Object[numberOfFetchers];
 		values[0] = address.getHostAddress();
 		type = ScanningSubject.RESULT_TYPE_UNKNOWN;
 	}
@@ -64,7 +64,7 @@ public class ScanningResult {
 	 * @param fetcherIndex
 	 * @param value
 	 */
-	public void setValue(int fetcherIndex, String value) {
+	public void setValue(int fetcherIndex, Object value) {
 		values[fetcherIndex] = value;
 	}
 	

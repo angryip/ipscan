@@ -7,9 +7,8 @@ package net.azib.ipscan.fetchers;
 import net.azib.ipscan.core.ScanningSubject;
 
 /**
- * HostnameFetcher retrieves hostnames of IP addresses
- * by reverse DNS lookups.
- *
+ * HostnameFetcher retrieves hostnames of IP addresses by reverse DNS lookups.
+ * 
  * @author anton
  */
 public class HostnameFetcher implements Fetcher {
@@ -24,11 +23,10 @@ public class HostnameFetcher implements Fetcher {
 	/**
 	 * @see net.azib.ipscan.fetchers.Fetcher#scan(net.azib.ipscan.core.ScanningSubject)
 	 */
-	public String scan(ScanningSubject subject) {
+	public Object scan(ScanningSubject subject) {
 		String hostname = subject.getIPAddress().getCanonicalHostName();
-		// TODO: in case hostname is not found, this method will return the 
-		// textual IP address, which is probably not what we want here...
-		return hostname;
+		// return the returned hostname only if it is not the same as the IP address (this is how the above method works)
+		return subject.getIPAddress().getHostAddress().equals(hostname) ? null : hostname;
 	}
 
 }

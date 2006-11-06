@@ -4,6 +4,8 @@
  */
 package net.azib.ipscan.fetchers;
 
+import net.azib.ipscan.core.NotAvailableValue;
+import net.azib.ipscan.core.NotScannedValue;
 import net.azib.ipscan.core.ScanningSubject;
 
 /**
@@ -31,7 +33,8 @@ public interface Fetcher extends Cloneable {
 	/**
 	 * Does the actual fetching.
 	 * @param subject the scanning subject, containing an IP address
-	 * @return String representation of the fetched data, null in case of any error.
+	 * @return the fetched data (a String in most cases), null in case of any error. 
+	 * Special values may also be returned, such as {@link NotAvailableValue} or {@link NotScannedValue}
 	 */
-	public String scan(ScanningSubject subject);
+	public Object scan(ScanningSubject subject);
 }

@@ -122,7 +122,7 @@ public class ScanningResultListTest extends TestCase {
 			return label;
 		}
 
-		public String scan(ScanningSubject subject) {
+		public Object scan(ScanningSubject subject) {
 			return null;
 		}		
 	}

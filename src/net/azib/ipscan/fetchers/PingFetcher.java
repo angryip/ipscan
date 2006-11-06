@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.azib.ipscan.config.Config;
-import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.IntegerWithUnit;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.net.Pinger;
 
@@ -65,7 +65,7 @@ public class PingFetcher implements Fetcher {
 		return pinger;
 	}
 
-	public String scan(ScanningSubject subject) {
+	public Object scan(ScanningSubject subject) {
 		Pinger pinger = executePing(subject);
 		boolean isAlive = pinger != null && !pinger.isTimeout();
 		subject.setResultType(isAlive ? ScanningSubject.RESULT_TYPE_ALIVE : ScanningSubject.RESULT_TYPE_DEAD);
@@ -75,7 +75,7 @@ public class PingFetcher implements Fetcher {
 			subject.abortScanning();
 		}
 		
-		return isAlive ? Integer.toString(pinger.getAverageTime()) + Labels.getLabel("fetcher.value.ms") : null;
+		return isAlive ? new IntegerWithUnit(pinger.getAverageTime(), "fetcher.value.ms") : null;
 	}
 
 }

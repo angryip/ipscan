@@ -10,7 +10,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.azib.ipscan.config.Config;
-import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 
@@ -37,9 +36,9 @@ public class ScannerTest extends TestCase {
 		assertEquals(InetAddress.getLocalHost(), scanningResult.getAddress());
 		assertEquals(4, scanningResult.getValues().size());
 		assertEquals("blah", scanningResult.getValues().get(0));
-		assertEquals(Labels.getLabel("fetcher.value.nothing"), scanningResult.getValues().get(1));
+		assertEquals(NotAvailableValue.INSTANCE, scanningResult.getValues().get(1));
 		assertEquals("666 ms", scanningResult.getValues().get(2));
-		assertEquals(Labels.getLabel("fetcher.value.aborted"), scanningResult.getValues().get(3));
+		assertEquals(NotScannedValue.INSTANCE, scanningResult.getValues().get(3));
 	}
 	
 	private class FakeFetcher implements Fetcher {
@@ -47,7 +46,7 @@ public class ScannerTest extends TestCase {
 			return null;
 		}
 
-		public String scan(ScanningSubject subject) {
+		public Object scan(ScanningSubject subject) {
 			try {
 				// check that the IP is correct
 				assertEquals(InetAddress.getLocalHost(), subject.getIPAddress());
@@ -66,7 +65,7 @@ public class ScannerTest extends TestCase {
 	}
 	
 	private class AnotherFakeFetcher extends FakeFetcher {
-		public String scan(ScanningSubject subject) {
+		public Object scan(ScanningSubject subject) {
 			// the parameter was set by FakeFetcher
 			assertEquals(new Long(211082), subject.getParameter("megaParam"));
 			// try null as a return value
@@ -75,14 +74,14 @@ public class ScannerTest extends TestCase {
 	}
 	
 	private class AbortingFetcher extends FakeFetcher {
-		public String scan(ScanningSubject subject) {
+		public Object scan(ScanningSubject subject) {
 			subject.abortScanning();
 			return "666 ms";
 		}
 	}
 	
 	private class FailingFetcher extends FakeFetcher {
-		public String scan(ScanningSubject subject) {
+		public Object scan(ScanningSubject subject) {
 			fail("This fetcher should not be reached");
 			return null;
 		}

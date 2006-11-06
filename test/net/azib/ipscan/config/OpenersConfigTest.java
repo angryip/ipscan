@@ -55,7 +55,7 @@ public class OpenersConfigTest extends TestCase {
 		o = new OpenersConfig.Opener("c:\\program files\\mega app\\app.exe@@@0@@@c:\\windoze system");
 		assertEquals("c:\\program files\\mega app\\app.exe", o.execString);
 		assertEquals(false, o.inTerminal);
-		assertEquals("c:\\windoze system", o.workingDir.getName());
+		assertEquals("c:\\windoze system", o.workingDir.toString());
 	}
 	
 	public void testLoad() throws Exception {

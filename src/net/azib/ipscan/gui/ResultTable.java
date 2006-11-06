@@ -170,7 +170,12 @@ public class ResultTable extends Table {
 			
 			ScanningResult scanningResult = scanningResults.getResult(tableIndex);
 			List values = scanningResult.getValues();
-			String[] resultStrings = (String[]) values.toArray(new String[values.size()]);
+			String[] resultStrings = new String[values.size()];
+			for (int i = 0; i < values.size(); i++) {				
+				Object value = values.get(i);
+				if (value != null)
+					resultStrings[i] = value.toString();
+			}			 
 			item.setText(resultStrings);
 			item.setImage(0, images[scanningResult.getType()]);
 		}

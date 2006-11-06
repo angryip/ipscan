@@ -24,7 +24,7 @@ public class IPFetcher implements Fetcher {
 	/**
 	 * @see net.azib.ipscan.fetchers.Fetcher#scan(net.azib.ipscan.core.ScanningSubject)
 	 */
-	public String scan(ScanningSubject subject) {
+	public Object scan(ScanningSubject subject) {
 		return subject.getIPAddress().getHostAddress();
 	}
 

@@ -18,7 +18,7 @@ public class FilteredPortsFetcher extends PortsFetcher {
 		return "fetcher.ports.filtered";
 	}
 
-	public String scan(ScanningSubject subject) {
+	public Object scan(ScanningSubject subject) {
 		scanPorts(subject);
 		Set filteredPorts = getFilteredPorts(subject);
 		return filteredPorts.size() > 0 ? portListToRange(filteredPorts, displayAsRanges) : null;

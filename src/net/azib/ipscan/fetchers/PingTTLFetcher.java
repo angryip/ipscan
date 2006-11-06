@@ -19,10 +19,10 @@ public class PingTTLFetcher extends PingFetcher {
 		return "fetcher.ping.ttl";
 	}
 
-	public String scan(ScanningSubject subject) {
+	public Object scan(ScanningSubject subject) {
 		Pinger pinger = executePing(subject);
 		boolean isAlive = pinger != null && !pinger.isTimeout();
 		subject.setResultType(isAlive ? ScanningSubject.RESULT_TYPE_ALIVE : ScanningSubject.RESULT_TYPE_DEAD);
-		return isAlive ? Integer.toString(pinger.getTTL()) : null;
+		return isAlive ? new Integer(pinger.getTTL()) : null;
 	}
 }
