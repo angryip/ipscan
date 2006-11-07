@@ -14,12 +14,14 @@ import net.azib.ipscan.gui.actions.ToolsActions;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Decorations;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
@@ -45,8 +47,9 @@ public class MainMenu {
 		
 		container.registerComponentImplementation(CommandsActions.EditOpeners.class);
 		container.registerComponentImplementation(CommandsActions.SelectOpener.class);
-		container.registerComponentImplementation(CommandsActions.ShowOpenersMenu.class);
-		container.registerComponentImplementation(OpenersMenu.class);
+		container.registerComponentImplementation(CommandsActions.ShowOpenersMenu.class);		
+		// this one is not cached because we need 2 instances of it - in the Commands menu and in the context menu
+		container.registerComponent(new ConstructorInjectionComponentAdapter(OpenersMenu.class, OpenersMenu.class)); 
 		
 		shell.setMenuBar(mainMenu);		
 		createMainMenuItems(mainMenu);
@@ -112,24 +115,16 @@ public class MainMenu {
 	}
 
 	private void createOpenersMenu(Menu subMenu) {
-		// TODO: this OpenersMenu singleton produces 
-		// Gtk-WARNING **: gtk_menu_attach_to_widget(): menu already attached to GtkImageMenuItem 
 		OpenersMenu openersMenu = (OpenersMenu) container.getComponentInstance(OpenersMenu.class);
 		MenuItem openersMenuItem = new MenuItem(subMenu, SWT.CASCADE);
 		openersMenuItem.setText(Labels.getLabel("menu.commands.open"));
 		openersMenuItem.setMenu(openersMenu);
-				
-		Listener showOpenersMenuListener = (Listener) container.getComponentInstance(CommandsActions.ShowOpenersMenu.class);
-		openersMenu.addListener(SWT.Show, showOpenersMenuListener);
-		// run the listener to populate the menu initially and initialize accelerators
-		showOpenersMenuListener.handleEvent(null);
 	}
 
 	private void createFavoritesMenu(Menu parentMenu) {
 		MenuItem favoritesMenuItem = new MenuItem(parentMenu, SWT.CASCADE);
 		favoritesMenuItem.setText(Labels.getLabel("menu.favorites"));
 		Menu favoritesMenu = (Menu) container.getComponentInstance(FavoritesMenu.class);
-		favoritesMenu.addListener(SWT.Show, (Listener) container.getComponentInstance(FavoritesActions.ShowMenu.class));
 		favoritesMenuItem.setMenu(favoritesMenu);
 	}
 
@@ -182,11 +177,18 @@ public class MainMenu {
 	 * OpenersMenu wrapper for type-safety
 	 */
 	public static class OpenersMenu extends Menu {
-		public OpenersMenu(Decorations parent, CommandsActions.EditOpeners editOpenersListener) {
+		public OpenersMenu(Decorations parent, CommandsActions.EditOpeners editOpenersListener, CommandsActions.ShowOpenersMenu showOpenersMenuListener) {
 			super(parent, SWT.DROP_DOWN);
 
 			initMenuItem(this, "menu.commands.open.edit", null, editOpenersListener);
 			initMenuItem(this, null, null, null);
+			
+			addListener(SWT.Show, showOpenersMenuListener);
+
+			// run the listener to populate the menu initially and initialize accelerators
+			Event e = new Event();
+			e.widget = this;
+			showOpenersMenuListener.handleEvent(e);
 		}
 		protected void checkSubclass() { } // allow extending of Menu class
 	}
@@ -195,12 +197,14 @@ public class MainMenu {
 	 * FavoritesMenu wrapper for type-safety
 	 */
 	public static class FavoritesMenu extends Menu {
-		public FavoritesMenu(Decorations parent, FavoritesActions.Add addListener, FavoritesActions.Edit editListener) {
+		public FavoritesMenu(Decorations parent, FavoritesActions.Add addListener, FavoritesActions.Edit editListener, FavoritesActions.ShowMenu showFavoritesMenuListener) {
 			super(parent, SWT.DROP_DOWN);
 
 			initMenuItem(this, "menu.favorites.add", new Integer(SWT.CONTROL | 'D'), addListener);
 			initMenuItem(this, "menu.favorites.edit", null, editListener);
 			initMenuItem(this, null, null, null);
+			
+			addListener(SWT.Show, showFavoritesMenuListener);
 		}
 		protected void checkSubclass() { } // allow extending of Menu class
 	}

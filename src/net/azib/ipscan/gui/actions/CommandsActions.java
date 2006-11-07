@@ -14,7 +14,6 @@ import net.azib.ipscan.gui.EditOpenersDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.UserErrorException;
-import net.azib.ipscan.gui.MainMenu.OpenersMenu;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
@@ -108,15 +107,14 @@ public class CommandsActions {
 	
 	public static class ShowOpenersMenu implements Listener {
 		
-		private Menu openersMenu;
 		private Listener openersSelectListener;
 
-		public ShowOpenersMenu(OpenersMenu openersMenu, SelectOpener selectOpener) {
-			this.openersMenu = openersMenu;
+		public ShowOpenersMenu(SelectOpener selectOpener) {
 			this.openersSelectListener = selectOpener;
 		}
 
 		public void handleEvent(Event event) {
+			Menu openersMenu = (Menu)event.widget;
 			MenuItem[] menuItems = openersMenu.getItems();
 			for (int i = 2; i < menuItems.length; i++) {
 				menuItems[i].dispose();

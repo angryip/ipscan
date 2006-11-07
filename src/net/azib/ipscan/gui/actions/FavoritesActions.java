@@ -11,7 +11,6 @@ import net.azib.ipscan.config.NamedListConfig;
 import net.azib.ipscan.gui.EditFavoritesDialog;
 import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.UserErrorException;
-import net.azib.ipscan.gui.MainMenu.FavoritesMenu;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 
 import org.eclipse.swt.SWT;
@@ -79,16 +78,15 @@ public class FavoritesActions {
 	}
 
 	public static class ShowMenu implements Listener {
-		private Menu favoritesMenu;
 		private Listener favoritesSelectListener;
 		
-		public ShowMenu(FavoritesMenu favoritesMenu, Select favoritesSelectListener) {
-			this.favoritesMenu = favoritesMenu;
+		public ShowMenu(Select favoritesSelectListener) {
 			// the listener for favorites selections from the menu
 			this.favoritesSelectListener = favoritesSelectListener;
 		}
 
 		public void handleEvent(Event event) {
+			Menu favoritesMenu = (Menu) event.widget;
 			// populate favorites in the menu
 			NamedListConfig favoritesConfig = Config.getFavoritesConfig();
 			
