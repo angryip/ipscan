@@ -14,8 +14,10 @@ import junit.framework.TestCase;
  */
 public class ExporterRegistryTest extends TestCase {
 	
+	private ExporterRegistry exporterRegistry = new ExporterRegistry(new Exporter[] {new TXTExporter(), new CSVExporter()});
+	
 	public void testIterator() {
-		for (Iterator i = ExporterRegistry.getInstance().iterator(); i.hasNext(); ) {
+		for (Iterator i = exporterRegistry.iterator(); i.hasNext(); ) {
 			Exporter exporter = (Exporter) i.next();
 			assertNotNull(exporter);
 			assertNotNull(exporter.getFilenameExtension());
@@ -25,16 +27,16 @@ public class ExporterRegistryTest extends TestCase {
 	public void testCreate() {
 		Exporter exporter;
 		
-		exporter = ExporterRegistry.getInstance().createExporter("aa.abc." + new TXTExporter().getFilenameExtension());
+		exporter = exporterRegistry.createExporter("aa.abc." + new TXTExporter().getFilenameExtension());
 		assertTrue(exporter instanceof TXTExporter);
 		
-		exporter = ExporterRegistry.getInstance().createExporter("/tmp/foo/megafile." + new TXTExporter().getFilenameExtension());
+		exporter = exporterRegistry.createExporter("/tmp/foo/megafile." + new TXTExporter().getFilenameExtension());
 		assertTrue(exporter instanceof TXTExporter);
 	}
 
 	public void testCreateFailes() {
 		try {
-			ExporterRegistry.getInstance().createExporter("noextension");
+			exporterRegistry.createExporter("noextension");
 			fail();
 		}
 		catch (ExporterException e) {
@@ -42,7 +44,7 @@ public class ExporterRegistryTest extends TestCase {
 		}
 		
 		try {
-			ExporterRegistry.getInstance().createExporter("unknown.extension");
+			exporterRegistry.createExporter("unknown.extension");
 			fail();
 		}
 		catch (ExporterException e) {

@@ -75,7 +75,7 @@ public class CSVExporter implements Exporter {
 	}
 
 	/*
-	 * @see net.azib.ipscan.exporters.Exporter#nextAdressResults(InetAddress, Object[])
+	 * @see net.azib.ipscan.exporters.Exporter#nextAdressResults(Object[])
 	 */
 	public void nextAdressResults(Object[] results) throws IOException {
 		output.write(csvSafeString(results[0]));

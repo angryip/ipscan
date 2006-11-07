@@ -36,11 +36,13 @@ public class FileActions {
 	}
 
 	private static class SaveResults implements Listener {
+		private ExporterRegistry exporterRegistry;
 		private ResultTable resultTable;
 		private StatusBar statusBar;
 		private boolean isSelection;
 		
-		SaveResults(ResultTable resultTable, StatusBar statusBar, boolean isSelection) {
+		private SaveResults(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, boolean isSelection) {
+			this.exporterRegistry = exporterRegistry;
 			this.resultTable = resultTable;
 			this.statusBar = statusBar;
 			// TODO: implement isSelection
@@ -72,7 +74,7 @@ public class FileActions {
 			// check the received file name
 			if (fileName != null) {
 				// create exporter instance
-				Exporter exporter = ExporterRegistry.getInstance().createExporter(fileName);
+				Exporter exporter = exporterRegistry.createExporter(fileName);
 				
 				statusBar.setStatusText(Labels.getLabel("state.saving"));
 				
@@ -96,7 +98,7 @@ public class FileActions {
 
 		private void addFileExtensions(List extensions, List descriptions, StringBuffer sb) {
 			sb.append(" (");
-			for (Iterator i = ExporterRegistry.getInstance().iterator(); i.hasNext(); ) {
+			for (Iterator i = exporterRegistry.iterator(); i.hasNext(); ) {
 				Exporter exporter = (Exporter) i.next();
 				extensions.add("*." + exporter.getFilenameExtension());
 				sb.append(exporter.getFilenameExtension()).append(", ");;
@@ -109,14 +111,14 @@ public class FileActions {
 	}
 	
 	public static class SaveAll extends SaveResults {
-		public SaveAll(ResultTable resultTable, StatusBar statusBar) {
-			super(resultTable, statusBar, false);
+		public SaveAll(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar) {
+			super(exporterRegistry, resultTable, statusBar, false);
 		}
 	}
 
 	public static class SaveSelection extends SaveResults {
-		public SaveSelection(ResultTable resultTable, StatusBar statusBar) {
-			super(resultTable, statusBar, true);
+		public SaveSelection(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar) {
+			super(exporterRegistry, resultTable, statusBar, true);
 		}
 	}
 }

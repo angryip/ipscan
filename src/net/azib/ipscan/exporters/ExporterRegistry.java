@@ -8,46 +8,22 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Exporter Registry singleton class.
- * Actually, it registers both plugins and builtins.
+ * The registry of all Exporters.
+ * It registers both plugins and builtins.
  *
  * @author anton
  */
 public class ExporterRegistry {
 	
-	private static ExporterRegistry instance;
-	
 	/** All available Exporter implementations, Map of Exporter instances (prototypes) */
 	private Map exporters;
 	
-	static {
-		// TODO: maybe it is better to call it from the main class?
-		initialize();
-	}
-	
-	public static ExporterRegistry getInstance() {
-		return instance;
-	}
-	
-	public static void initialize() {
-		instance = new ExporterRegistry();
-	}
-	
-	/**
-	 * Private constructor
-	 */
-	private ExporterRegistry() {
+	public ExporterRegistry(Exporter[] registeredExporters) {
 		exporters = new LinkedHashMap();
-		Exporter exporter;
 		
-		exporter = new TXTExporter();
-		exporters.put(exporter.getFilenameExtension(), exporter);
-		exporter = new CSVExporter();
-		exporters.put(exporter.getFilenameExtension(), exporter);
-		exporter = new XMLExporter();
-		exporters.put(exporter.getFilenameExtension(), exporter);
-		exporter = new IPListExporter();
-		exporters.put(exporter.getFilenameExtension(), exporter);
+		for (int i = 0; i < registeredExporters.length; i++) {
+			exporters.put(registeredExporters[i].getFilenameExtension(), registeredExporters[i]);
+		}
 	}
 
 	/**

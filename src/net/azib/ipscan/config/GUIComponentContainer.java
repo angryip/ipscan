@@ -6,6 +6,11 @@ package net.azib.ipscan.config;
 import net.azib.ipscan.core.Scanner;
 import net.azib.ipscan.core.ScannerThreadFactory;
 import net.azib.ipscan.core.ScanningResultList;
+import net.azib.ipscan.exporters.CSVExporter;
+import net.azib.ipscan.exporters.ExporterRegistry;
+import net.azib.ipscan.exporters.IPListExporter;
+import net.azib.ipscan.exporters.TXTExporter;
+import net.azib.ipscan.exporters.XMLExporter;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.FetcherRegistryImpl;
 import net.azib.ipscan.gui.MainMenu;
@@ -51,6 +56,11 @@ public class GUIComponentContainer {
 		ComponentParameter anyComponentParameter = new ComponentParameter();
 		
 		// non-GUI
+		container.registerComponentImplementation(TXTExporter.class);
+		container.registerComponentImplementation(CSVExporter.class);
+		container.registerComponentImplementation(XMLExporter.class);
+		container.registerComponentImplementation(IPListExporter.class);
+		container.registerComponentImplementation(ExporterRegistry.class);
 		container.registerComponentImplementation(FetcherRegistry.class, FetcherRegistryImpl.class);
 		container.registerComponentImplementation(ScanningResultList.class);
 		container.registerComponentImplementation(Scanner.class);
