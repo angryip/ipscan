@@ -1,5 +1,5 @@
 /*
- * $Id: ICMPEchoPacket.java,v 1.1 2005/09/13 20:15:53 angryziber Exp $
+ * $Id: ICMPEchoPacket.java 5260 2005-05-10 21:01:16Z dfs $
  *
  * Copyright 2004-2005 Daniel F. Savarese
  * Contact Information: http://www.savarese.org/contact.html

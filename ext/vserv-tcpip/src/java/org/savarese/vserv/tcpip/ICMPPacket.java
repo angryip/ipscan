@@ -1,5 +1,5 @@
 /*
- * $Id: ICMPPacket.java,v 1.1 2005/09/13 20:15:53 angryziber Exp $
+ * $Id: ICMPPacket.java 5347 2005-05-25 22:45:54Z dfs $
  *
  * Copyright 2004-2005 Daniel F. Savarese
  * Contact Information: http://www.savarese.org/contact.html
@@ -206,37 +206,8 @@ public abstract class ICMPPacket extends IPPacket {
    * @return The computed ICMP checksum.
    */
   public final int computeICMPChecksum(boolean update) {
-    int total = 0;
-    int len   = getIPPacketLength();
-    int i     = _offset;
-    int imax  = _offset + OFFSET_ICMP_CHECKSUM;
-
-    while(i < imax)
-      total+=(((_data_[i++] & 0xff) << 8) | (_data_[i++] & 0xff));
-
-    // Skip existing checksum.
-    i = _offset + OFFSET_ICMP_CHECKSUM + 2;
-
-    imax = len - (len % 2);
-
-    while(i < imax)
-      total+=(((_data_[i++] & 0xff) << 8) | (_data_[i++] & 0xff));
-
-    if(i < len)
-      total+=((_data_[i] & 0xff) << 8);
-
-    // Fold to 16 bits
-    while((total & 0xffff0000) != 0)
-      total = (total & 0xffff) + (total >>> 16);
-
-    total = (~total & 0xffff);
-
-    if(update) {
-      _data_[_offset + OFFSET_ICMP_CHECKSUM]     = (byte)(total >> 8);
-      _data_[_offset + OFFSET_ICMP_CHECKSUM + 1] = (byte)(total & 0xff);
-    }
-
-    return total;
+    return _computeChecksum_(_offset, _offset + OFFSET_ICMP_CHECKSUM,
+                             getIPPacketLength(), 0, update);
   }
 
 

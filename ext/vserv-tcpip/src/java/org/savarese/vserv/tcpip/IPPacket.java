@@ -1,5 +1,5 @@
 /* 
- * $Id: IPPacket.java,v 1.1 2005/09/13 20:15:53 angryziber Exp $
+ * $Id: IPPacket.java 6025 2005-12-10 23:21:25Z dfs $
  *
  * Copyright 2004-2005 Daniel F. Savarese
  * Contact Information: http://www.savarese.org/contact.html
@@ -34,8 +34,17 @@ import java.net.*;
 
 public class IPPacket {
 
+  /** Offset into byte array of the type of service header value. */
+  public static final int OFFSET_TYPE_OF_SERVICE = 1;
+
   /** Offset into byte array of total packet length header value. */
   public static final int OFFSET_TOTAL_LENGTH = 2;
+
+  /** Offset into byte array of the identification header value. */
+  public static final int OFFSET_IDENTIFICATION = 4;
+
+  /** Offset into byte array of the flags header value. */
+  public static final int OFFSET_FLAGS = 6;
 
   /** Offset into byte array of source address header value. */
   public static final int OFFSET_SOURCE_ADDRESS      = 12;
@@ -133,6 +142,79 @@ public class IPPacket {
 
 
   /**
+   * Sets the IP version header value.
+   *
+   * @param version A 4-bit unsigned integer.
+   */
+  public final void setIPVersion(int version) {
+    _data_[0] &= 0x0f;
+    _data_[0] |= ((version << 4) & 0xf0);
+  }
+
+
+  /**
+   * Returns the IP version header value.
+   *
+   * @return The IP version header value.
+   */
+  public final int getIPVersion() {
+    return ((_data_[0] & 0xf0) >> 4);
+  }
+
+
+  /**
+   * Sets the IP header length field.  At most, this can be a 
+   * four-bit value.  The high order bits beyond the fourth bit
+   * will be ignored.
+   *
+   * @param length The length of the IP header in 32-bit words.
+   */
+  public void setIPHeaderLength(int length) {
+    // Clear low order bits and then set
+    _data_[0] &= 0xf0;
+    _data_[0] |= (length & 0x0f);
+  }
+
+
+  /**
+   * @return The length of the IP header in 32-bit words.
+   */
+  public final int getIPHeaderLength() {
+    return (_data_[0] & 0x0f);
+  }
+
+
+  /**
+   * @return The length of the IP header in bytes.
+   */
+  public final int getIPHeaderByteLength() {
+    return getIPHeaderLength() << 2;
+  }
+
+
+  /**
+   * Sets the IP type of service header value.  You have to set the individual
+   * service bits yourself.  Convenience methods for setting the service
+   * bit fields directly may be added in a future version.
+   *
+   * @param service An 8-bit unsigned integer.
+   */
+  public final void setTypeOfService(int service) {
+    _data_[OFFSET_TYPE_OF_SERVICE] = (byte)(service & 0xff);
+  }
+
+
+  /**
+   * Returns the IP type of service header value.
+   *
+   * @return The IP type of service header value.
+   */
+  public final int getTypeOfService() {
+    return (_data_[OFFSET_TYPE_OF_SERVICE] & 0xff);
+  }
+
+
+  /**
    * Sets the IP packet total length header value.
    *
    * @param length The total IP packet length in bytes.
@@ -153,32 +235,71 @@ public class IPPacket {
 
 
   /**
-   * Sets the IP header length field.  At most, this can be a 
-   * four-bit value.  The high order bits beyond the fourth bit
-   * will be ignored.
+   * Sets the IP identification header value.
    *
-   * @param length The length of the IP header in 32-bit words.
+   * @param id A 16-bit unsigned integer.
    */
-  public void setIPHeaderLength(int length) {
-    // Clear low order bits and then set
-    _data_[0] &= 0xf0;
-    _data_[0] |= (length & 0xf);
+  public void setIdentification(int id) {
+    _data_[OFFSET_IDENTIFICATION]     = (byte)((id >> 8) & 0xff);
+    _data_[OFFSET_IDENTIFICATION + 1] = (byte)(id & 0xff);
   }
 
 
   /**
-   * @return The length of the IP header in 32-bit words.
+   * Returns the IP identification header value.
+   *
+   * @return The IP identification header value.
    */
-  public final int getIPHeaderLength() {
-    return (_data_[0] & 0xf);
+  public final int getIdentification() {
+    return (((_data_[OFFSET_IDENTIFICATION] & 0xff) << 8) |
+            (_data_[OFFSET_IDENTIFICATION + 1] & 0xff)); 
   }
 
 
   /**
-   * @return The length of the IP header in bytes.
+   * Sets the IP flags header value.  You have to set the individual
+   * flag bits yourself.  Convenience methods for setting the flag
+   * bit fields directly may be added in a future version.
+   *
+   * @param flags A 3-bit unsigned integer.
    */
-  public final int getIPHeaderByteLength() {
-    return getIPHeaderLength() << 2;
+  public final void setIPFlags(int flags) {
+    _data_[OFFSET_FLAGS] &= 0x1f;
+    _data_[OFFSET_FLAGS] |= ((flags << 5) & 0xe0);
+  }
+
+
+  /**
+   * Returns the IP flags header value.
+   *
+   * @return The IP flags header value.
+   */
+  public final int getIPFlags() {
+    return ((_data_[OFFSET_FLAGS] & 0xe0) >> 5);
+  }
+
+
+  /**
+   * Sets the fragment offset header value.  The offset specifies a
+   * number of octets (i.e., bytes).
+   *
+   * @param offset A 13-bit unsigned integer.
+   */
+  public void setFragmentOffset(int offset) {
+    _data_[OFFSET_FLAGS] &= 0xe0;
+    _data_[OFFSET_FLAGS] |= ((offset >> 8) & 0x1f);
+    _data_[OFFSET_FLAGS + 1] = (byte)(offset & 0xff);
+  }
+
+
+  /**
+   * Returns the fragment offset header value.
+   *
+   * @return The fragment offset header value.
+   */
+  public final int getFragmentOffset() {
+    return (((_data_[OFFSET_FLAGS] & 0x1f) << 8) |
+            (_data_[OFFSET_FLAGS + 1] & 0xff)); 
   }
 
 
@@ -201,11 +322,67 @@ public class IPPacket {
 
 
   /**
+   * Sets the time to live value in seconds.
+   *
+   * @param ttl The time to live value in seconds.
+   */
+  public final void setTTL(int ttl) {
+    _data_[OFFSET_TTL] = (byte)ttl;
+  }
+
+
+  /**
    * @return The time to live value in seconds.
    */
   public final int getTTL() {
     return _data_[OFFSET_TTL];
   }
+
+
+  /**
+   * Calculates checksums assuming the checksum is a 16-bit header field.
+   * This method is generalized to work for IP, ICMP, UDP, and TCP packets
+   * given the proper parameters.
+   */
+  protected int _computeChecksum_(int startOffset,
+                                  int checksumOffset,
+                                  int length,
+                                  int virtualHeaderTotal,
+                                  boolean update)
+  {
+    int total = 0;
+    int i     = startOffset;
+    int imax  = checksumOffset;
+
+    while(i < imax)
+      total+=(((_data_[i++] & 0xff) << 8) | (_data_[i++] & 0xff));
+
+    // Skip existing checksum.
+    i = checksumOffset + 2;
+
+    imax = length - (length % 2);
+
+    while(i < imax)
+      total+=(((_data_[i++] & 0xff) << 8) | (_data_[i++] & 0xff));
+
+    if(i < length)
+      total+=((_data_[i] & 0xff) << 8);
+
+    total+=virtualHeaderTotal;
+
+    // Fold to 16 bits
+    while((total & 0xffff0000) != 0)
+      total = (total & 0xffff) + (total >>> 16);
+
+    total = (~total & 0xffff);
+
+    if(update) {
+      _data_[checksumOffset]     = (byte)(total >> 8);
+      _data_[checksumOffset + 1] = (byte)(total & 0xff);
+    }
+
+    return total;
+  } 
 
 
   /**
@@ -218,31 +395,8 @@ public class IPPacket {
    * @return The computed IP checksum.
    */
   public final int computeIPChecksum(boolean update) {
-    int i     = 0;
-    int len   = getIPHeaderByteLength();
-    int total = 0;
-
-    while(i < OFFSET_IP_CHECKSUM)
-      total+=(((_data_[i++] & 0xff) << 8) | (_data_[i++] & 0xff));
-
-    // Skip existing checksum.
-    i = OFFSET_IP_CHECKSUM + 2;
-
-    while(i < len)
-      total+=(((_data_[i++] & 0xff) << 8) | (_data_[i++] & 0xff));
-
-    // Fold to 16 bits
-    while((total & 0xffff0000) != 0)
-      total = (total & 0xffff) + (total >>> 16);
-
-    total = (~total & 0xffff);
-
-    if(update) {
-      _data_[OFFSET_IP_CHECKSUM]     = (byte)(total >> 8);
-      _data_[OFFSET_IP_CHECKSUM + 1] = (byte)(total & 0xff);
-    }
-
-    return total;
+    return _computeChecksum_(0, OFFSET_IP_CHECKSUM, getIPHeaderByteLength(),
+                             0, update);
   }
 
 

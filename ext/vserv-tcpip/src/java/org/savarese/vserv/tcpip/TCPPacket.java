@@ -1,5 +1,5 @@
 /*
- * $Id: TCPPacket.java,v 1.1 2005/09/13 20:15:53 angryziber Exp $
+ * $Id: TCPPacket.java 6023 2005-12-10 20:42:15Z dfs $
  *
  * Copyright 2004-2005 Daniel F. Savarese
  * Contact Information: http://www.savarese.org/contact.html
@@ -338,6 +338,17 @@ public class TCPPacket extends IPPacket {
 
 
   /**
+   * Sets te TCP header length (i.e., the data offset field) in 32-bit words.
+   *
+   * @param length The TCP header length in 32-bit words.
+   */
+  public final void setTCPHeaderLength(int length) {
+    _data_[__offset + OFFSET_HEADER_LENGTH] &= 0x0f;
+    _data_[__offset + OFFSET_HEADER_LENGTH] |= ((length << 4) & 0xf0);
+  }
+
+
+  /**
    * @return The TCP header length in 32-bit words.
    */
   public final int getTCPHeaderLength() {
@@ -354,11 +365,42 @@ public class TCPPacket extends IPPacket {
 
 
   /**
+   * Sets the TCP window size.
+   *
+   * @param window The TCP window size.
+   */
+  public final void setWindowSize(int window) {
+    _data_[__offset + OFFSET_WINDOW_SIZE]  = (byte)((window >> 8) & 0xff);
+    _data_[__offset + OFFSET_WINDOW_SIZE + 1] = (byte)(window & 0xff);
+  }
+
+
+  /**
    * @return The TCP window size.
    */
   public final int getWindowSize() {
     return (((_data_[__offset + OFFSET_WINDOW_SIZE] & 0xff) << 8) |
             (_data_[__offset + OFFSET_WINDOW_SIZE + 1] & 0xff)); 
+  }
+
+
+  /**
+   * Sets the urgent pointer.
+   *
+   * @param pointer The urgent pointer value.
+   */
+  public final void setUrgentPointer(int pointer) {
+    _data_[__offset + OFFSET_URG_POINTER]  = (byte)((pointer >> 8) & 0xff);
+    _data_[__offset + OFFSET_URG_POINTER + 1] = (byte)(pointer & 0xff);
+  }
+
+
+  /**
+   * @return The urgent pointer value.
+   */
+  public final int getUrgentPointer() {
+    return (((_data_[__offset + OFFSET_URG_POINTER] & 0xff) << 8) |
+            (_data_[__offset + OFFSET_URG_POINTER + 1] & 0xff)); 
   }
 
 
@@ -433,39 +475,9 @@ public class TCPPacket extends IPPacket {
    * @return The computed TCP checksum.
    */
   public final int computeTCPChecksum(boolean update) {
-    int total = 0;
-    int len   = getIPPacketLength();
-    int i     = __offset;
-    int imax  = __offset + OFFSET_TCP_CHECKSUM;
-
-    while(i < imax)
-      total+=(((_data_[i++] & 0xff) << 8) | (_data_[i++] & 0xff));
-
-    // Skip existing checksum.
-    i = __offset + OFFSET_URG_POINTER;
-
-    imax = len - (len % 2);
-
-    while(i < imax)
-      total+=(((_data_[i++] & 0xff) << 8) | (_data_[i++] & 0xff));
-
-    if(i < len)
-      total+=((_data_[i] & 0xff) << 8);
-
-    total+=__getVirtualHeaderTotal();
-
-    // Fold to 16 bits
-    while((total & 0xffff0000) != 0)
-      total = (total & 0xffff) + (total >>> 16);
-
-    total = (~total & 0xffff);
-
-    if(update) {
-      _data_[__offset + OFFSET_TCP_CHECKSUM]     = (byte)(total >> 8);
-      _data_[__offset + OFFSET_TCP_CHECKSUM + 1] = (byte)(total & 0xff);
-    }
-
-    return total;
+    return _computeChecksum_(__offset, __offset + OFFSET_TCP_CHECKSUM,
+                             getIPPacketLength(), __getVirtualHeaderTotal(),
+                             update);
   }
 
 
