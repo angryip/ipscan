@@ -1,5 +1,5 @@
 /*
- * $Id: RawSocket.java,v 1.2 2005/11/20 21:48:31 angryziber Exp $
+ * $Id: RawSocket.java 5979 2005-11-09 18:11:02Z dfs $
  *
  * Copyright 2004-2005 Daniel F. Savarese
  * Contact Information: http://www.savarese.org/contact.html

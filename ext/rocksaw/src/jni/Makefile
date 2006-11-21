@@ -1,5 +1,5 @@
 #
-# $Id: Makefile,v 1.2 2005/11/20 21:48:31 angryziber Exp $
+# $Id: Makefile 6875 2006-04-14 00:29:33Z dfs $
 #
 # Copyright 2004-2005 Daniel F. Savarese
 # Contact Information: http://www.savarese.org/contact.html
@@ -19,6 +19,7 @@
 
 UNAME  := $(shell uname)
 CYGWIN := $(findstring CYGWIN,$(UNAME))
+DARWIN := $(findstring Darwin,$(UNAME))
 
 ifeq ($(CYGWIN),CYGWIN)
   JDK_HOME := $(shell cygpath $(JDK_HOME))
@@ -40,9 +41,15 @@ ifeq ($(CYGWIN),CYGWIN)
   LIBEXTENSION = dll
   LDFLAGS += -Wl,--kill-at -l$(WINSOCK)
 else
-  CFLAGS += -fpic
   LIBNAME      = librocksaw
-  LIBEXTENSION = so
+
+  ifeq ($(DARWIN),Darwin)
+    LIBEXTENSION = jnilib
+    LDFLAGS += -dynamiclib -noprebind -single_module
+  else
+    CFLAGS += -fpic
+    LIBEXTENSION = so
+  endif
 endif
 
 SRC     := $(shell find . -name "*.c" -print)
