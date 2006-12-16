@@ -6,7 +6,9 @@ package net.azib.ipscan.core;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import junit.framework.TestCase;
 import net.azib.ipscan.config.Config;
@@ -20,11 +22,14 @@ import net.azib.ipscan.fetchers.FetcherRegistry;
  */
 public class ScannerTest extends TestCase {
 	
+	private Set initCalled = new HashSet();
+	private Set cleanupCalled = new HashSet();
+	
 	protected void setUp() throws Exception {
 		Config.initialize();
 	}
 
-	public void test() throws Exception {
+	public void testScan() throws Exception {
 		// initialize with fake fetchers
 		Scanner scanner = new Scanner(new FakeFetcherRegistry());
 		
@@ -41,6 +46,26 @@ public class ScannerTest extends TestCase {
 		assertEquals(NotScannedValue.INSTANCE, scanningResult.getValues().get(3));
 	}
 	
+	public void testInit() throws Exception {
+		// initialize with fake fetchers
+		Scanner scanner = new Scanner(new FakeFetcherRegistry());
+		scanner.init();
+		
+		assertTrue(initCalled.contains(FakeFetcher.class));
+		assertTrue(initCalled.contains(AnotherFakeFetcher.class));
+		assertTrue(initCalled.contains(AbortingFetcher.class));
+	}
+	
+	public void testCleanup() throws Exception {
+		// initialize with fake fetchers
+		Scanner scanner = new Scanner(new FakeFetcherRegistry());
+		scanner.cleanup();
+		
+		assertTrue(cleanupCalled.contains(FakeFetcher.class));
+		assertTrue(cleanupCalled.contains(AnotherFakeFetcher.class));
+		assertTrue(cleanupCalled.contains(AbortingFetcher.class));
+	}
+
 	private class FakeFetcher implements Fetcher {
 		public String getLabel() {
 			return null;
@@ -62,6 +87,15 @@ public class ScannerTest extends TestCase {
 			}
 			return "blah";
 		}
+
+		public void init() {
+			initCalled.add(getClass());
+		}
+
+		public void cleanup() {
+			cleanupCalled.add(getClass());
+		}
+
 	}
 	
 	private class AnotherFakeFetcher extends FakeFetcher {

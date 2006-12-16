@@ -32,6 +32,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		
+		Logger.global.setLevel(Level.CONFIG);
+		
 		initProperties();
 		
 		Display display = Display.getDefault();

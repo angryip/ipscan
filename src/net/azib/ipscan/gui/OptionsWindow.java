@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TabItem;
@@ -41,6 +42,7 @@ public class OptionsWindow extends AbstractModalDialog {
 	private Button deadHostsCheckbox;
 	private Text pingingTimeoutText;
 	private Text pingingCountText;
+	private Combo pingTypeCombo;
 	private Button skipBroadcastsCheckbox;
 	private Composite fetchersTab;
 	private Composite portsTab;
@@ -128,7 +130,7 @@ public class OptionsWindow extends AbstractModalDialog {
 		threadsGroup.setLayout(groupLayout);
 
 		GridData gridData = new GridData();
-		gridData.widthHint = 50;
+		gridData.widthHint = 80;
 		
 		Label label;
 		
@@ -145,6 +147,13 @@ public class OptionsWindow extends AbstractModalDialog {
 		Group pingingGroup = new Group(scanningTab, SWT.NONE);
 		pingingGroup.setLayout(groupLayout);
 		pingingGroup.setText(Labels.getLabel("options.pinging"));
+		
+		label = new Label(pingingGroup, SWT.NONE);
+		label.setText(Labels.getLabel("options.pinging.type"));
+		pingTypeCombo = new Combo(pingingGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
+		pingTypeCombo.setLayoutData(gridData);
+		pingTypeCombo.add(Labels.getLabel("options.pinging.type.icmp"));
+		pingTypeCombo.select(0);
 
 		label = new Label(pingingGroup, SWT.NONE);
 		label.setText(Labels.getLabel("options.pinging.count"));

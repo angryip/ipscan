@@ -37,6 +37,9 @@ public class ScannerThread extends Thread {
 
 	public void run() {
 		changeStatus(ScanningStateCallback.STATE_SCANNING);
+		
+		scanner.init();
+		
 		while(feeder.hasNext() && state == ScanningStateCallback.STATE_SCANNING) {
 			try {
 				
@@ -88,6 +91,8 @@ public class ScannerThread extends Thread {
 		catch (InterruptedException e) {
 			// nothing special to do here
 		}
+		
+		scanner.cleanup();
 		
 		// finally, the scanning is complete
 		changeStatus(ScanningStateCallback.STATE_IDLE);

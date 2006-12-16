@@ -16,7 +16,7 @@ import java.util.TreeSet;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.core.PortIterator;
 import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.core.net.Pinger;
+import net.azib.ipscan.core.net.PingResult;
 
 /**
  * PortsFetcher scans TCP ports.
@@ -60,9 +60,10 @@ public class PortsFetcher implements Fetcher {
 			int adaptedTimeout = timeout;
 			
 			// now try to adapt timeout if it is enabled and pinging results are availbale
-			Pinger pinger = (Pinger) subject.getParameter(PingFetcher.PARAMETER_PINGER);
-			if (adaptTimeout && pinger != null && !pinger.isTimeout()) {
-				adaptedTimeout = Math.min(Math.max(pinger.getAverageTime() * 4, 30), timeout);
+			PingResult pingResult = (PingResult) subject.getParameter(PingFetcher.PARAMETER_PINGER);
+			if (adaptTimeout && pingResult.isAlive()) {
+				// TODO: use longest time istead of the average one for adapting
+				adaptedTimeout = Math.min(Math.max(pingResult.getAverageTime() * 4, 30), timeout);
 			}
 			
 			Socket socket = null;
@@ -165,4 +166,11 @@ public class PortsFetcher implements Fetcher {
 		}
 		return portsFound ? portListToRange(openPorts, displayAsRanges) : null;
 	}
+
+	public void init() {
+	}
+
+	public void cleanup() {
+	}
+
 }

@@ -37,4 +37,14 @@ public interface Fetcher extends Cloneable {
 	 * Special values may also be returned, such as {@link NotAvailableValue} or {@link NotScannedValue}
 	 */
 	public Object scan(ScanningSubject subject);
+	
+	/**
+	 * Called before scanning has started to do any intialization stuff
+	 */
+	public void init();
+	
+	/**
+	 * Called after the scanning has been completed to do any cleanup needed
+	 */
+	public void cleanup();
 }

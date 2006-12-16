@@ -5,6 +5,7 @@ package net.azib.ipscan.gui.feeders;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.logging.Logger;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.InetAddressUtils;
@@ -35,9 +36,13 @@ import org.eclipse.swt.widgets.Text;
 /**
  * GUI for initialization of RangeFeeder.
  * 
+ * TODO: delete button doesn't work well in edit fields
+ * 
  * @author anton
  */
 public class RangeFeederGUI extends AbstractFeederGUI {
+	
+	private static final Logger LOG = Logger.getLogger(RangeFeederGUI.class.getName());
 
 	private Label ipRangeLabel;
 	private Text startIPText;
@@ -109,6 +114,8 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 			public void widgetSelected(SelectionEvent event) {
 				// raise the flag
 				isEndIPUnedited = true;
+				// reset the netmask combo
+				netmaskCombo.setText(getStringLabel("netmask"));
 				// now do the stuff
 				super.widgetSelected(event);
 			}
@@ -171,6 +178,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		}
 		catch (UnknownHostException e) {
 			// don't report any errors on initialization
+			LOG.fine(e.toString());
 		}
                 
 		pack();
@@ -189,6 +197,8 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		String[] parts = serialized.split(":::");
 		startIPText.setText(parts[0]);
 		endIPText.setText(parts[1]);
+		// reset the netmask combo
+		netmaskCombo.setText(getStringLabel("netmask"));
 	}
 
 	private final class EndIPKeyListener implements KeyListener {

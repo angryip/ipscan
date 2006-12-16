@@ -7,12 +7,14 @@ package net.azib.ipscan.fetchers;
 import net.azib.ipscan.core.ScanningSubject;
 
 /**
- * Dummy fetcher, which is able to return the textual representation 
- * of the passed IP address.
+ * A fetcher for displaying of user-defined comments about every IP address.
+ * 
+ * TODO: implement CommentFetcher
+ * TODO: make an editor for comments
  *
  * @author anton
  */
-public class IPFetcher implements Fetcher {
+public class CommentFetcher implements Fetcher {
 
 	/**
 	 * @see net.azib.ipscan.fetchers.Fetcher#getLabel()
@@ -25,7 +27,7 @@ public class IPFetcher implements Fetcher {
 	 * @see net.azib.ipscan.fetchers.Fetcher#scan(net.azib.ipscan.core.ScanningSubject)
 	 */
 	public Object scan(ScanningSubject subject) {
-		return subject.getIPAddress().getHostAddress();
+		return "a dummy comment!!!";
 	}
 
 	public void init() {

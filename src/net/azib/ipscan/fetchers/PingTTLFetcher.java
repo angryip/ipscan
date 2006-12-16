@@ -5,7 +5,7 @@
 package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.core.net.Pinger;
+import net.azib.ipscan.core.net.PingResult;
 
 /**
  * PingTTLFetcher shares pinging results with PingFetcher
@@ -20,9 +20,8 @@ public class PingTTLFetcher extends PingFetcher {
 	}
 
 	public Object scan(ScanningSubject subject) {
-		Pinger pinger = executePing(subject);
-		boolean isAlive = pinger != null && !pinger.isTimeout();
-		subject.setResultType(isAlive ? ScanningSubject.RESULT_TYPE_ALIVE : ScanningSubject.RESULT_TYPE_DEAD);
-		return isAlive ? new Integer(pinger.getTTL()) : null;
+		PingResult result = executePing(subject);
+		subject.setResultType(result.isAlive() ? ScanningSubject.RESULT_TYPE_ALIVE : ScanningSubject.RESULT_TYPE_DEAD);
+		return result.isAlive() && result.getTTL() > 0 ? new Integer(result.getTTL()) : null;
 	}
 }

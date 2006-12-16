@@ -124,6 +124,12 @@ public class ScanningResultListTest extends TestCase {
 
 		public Object scan(ScanningSubject subject) {
 			return null;
+		}
+
+		public void cleanup() {
+		}
+
+		public void init() {
 		}		
 	}
 	

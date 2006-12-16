@@ -11,7 +11,12 @@ import java.util.logging.Logger;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.core.IntegerWithUnit;
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.core.net.ICMPPinger;
+import net.azib.ipscan.core.net.PingResult;
 import net.azib.ipscan.core.net.Pinger;
+import net.azib.ipscan.core.net.ICMPSharedPinger;
+import net.azib.ipscan.core.net.TCPPinger;
+import net.azib.ipscan.core.net.UDPPinger;
 
 /**
  * PingFetcher is able to ping IP addresses.
@@ -20,11 +25,11 @@ import net.azib.ipscan.core.net.Pinger;
  * @author anton
  */
 public class PingFetcher implements Fetcher {
-
+	
 	public static final String PARAMETER_PINGER = "pinger";
 	
-	private int timeout = Config.getGlobal().pingTimeout; 
-	private int count = Config.getGlobal().pingCount; 
+	/** The shared pinger - this one must be static, because PingTTLFetcher will use it as well */
+	private static Pinger pinger;
 	
 	public PingFetcher() {
 	}
@@ -33,49 +38,65 @@ public class PingFetcher implements Fetcher {
 		return "fetcher.ping";
 	}
 	
-	protected Pinger executePing(ScanningSubject subject) {
+	protected PingResult executePing(ScanningSubject subject) {
 		
-		// TODO: share a single Pinger (and therefore, a single RAW socket)
-		// because all the received packets are copied to all the open raw sockets
-		// which makes it very ineffective
+		PingResult result = null;
 		
-		Pinger pinger = null;
 		if (subject.hasParameter(PARAMETER_PINGER)) {
-			pinger = (Pinger) subject.getParameter(PARAMETER_PINGER);
+			result = (PingResult) subject.getParameter(PARAMETER_PINGER);
 		}
 		else {
 			try {
-				pinger = new Pinger(subject.getIPAddress(), timeout);
-				pinger.ping(count); 
-				pinger.close();
+				result = pinger.ping(subject.getIPAddress(), Config.getGlobal().pingCount);
 			}
 			catch (IOException e) {
 				// if this is not a timeout
 				Logger.global.log(Level.WARNING, "Pinging failed", e);
-				try {
-					if (pinger != null)
-						pinger.close();
-				}
-				catch (IOException e2) {}
-				pinger = null;
 			}
-			// remember the ready-made pinger (or null) for other fetchers to use
-			subject.setParameter(PARAMETER_PINGER, pinger);
+			// remember the result for other fetchers to use
+			subject.setParameter(PARAMETER_PINGER, result);
 		}
-		return pinger;
+		return result;
 	}
 
 	public Object scan(ScanningSubject subject) {
-		Pinger pinger = executePing(subject);
-		boolean isAlive = pinger != null && !pinger.isTimeout();
-		subject.setResultType(isAlive ? ScanningSubject.RESULT_TYPE_ALIVE : ScanningSubject.RESULT_TYPE_DEAD);
+		PingResult result = executePing(subject);
+		subject.setResultType(result.isAlive() ? ScanningSubject.RESULT_TYPE_ALIVE : ScanningSubject.RESULT_TYPE_DEAD);
 		
-		if (!isAlive && !Config.getGlobal().scanDeadHosts) {
+		if (!result.isAlive() && !Config.getGlobal().scanDeadHosts) {
 			// the host is dead, we are not going to continue...
 			subject.abortScanning();
 		}
 		
-		return isAlive ? new IntegerWithUnit(pinger.getAverageTime(), "fetcher.value.ms") : null;
+		return result.isAlive() ? new IntegerWithUnit(result.getAverageTime(), "fetcher.value.ms") : null;
 	}
+
+	public void init() {
+		try {
+			// TODO: dependency injection (PingerRegistry)
+			if (pinger == null) {
+				//pinger = new ICMPPinger(Config.getGlobal().pingTimeout);
+				pinger = new ICMPSharedPinger(Config.getGlobal().pingTimeout);
+				//pinger = new TCPPinger(Config.getGlobal().pingTimeout);
+				//pinger = new UDPPinger(Config.getGlobal().pingTimeout);
+			}
+		}
+		catch (Exception e) {
+			throw new FetcherException(e);
+		}
+	}
+
+	public void cleanup() {
+		try {
+			if (pinger != null) {
+				pinger.close();
+			}
+		}
+		catch (IOException e) {
+			throw new FetcherException(e);
+		}
+		pinger = null;
+	}
+
 
 }

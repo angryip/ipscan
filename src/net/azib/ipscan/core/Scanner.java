@@ -51,4 +51,22 @@ public class Scanner {
 		result.setType(scanningSubject.getResultType());
 	}
 	
+	/**
+	 * Init everything needed for scanning, including Fetchers
+	 */
+	public void init() {
+		for (Iterator i = fetcherRegistry.getSelectedFetchers().iterator(); i.hasNext();) {
+			((Fetcher)i.next()).init();
+		}
+	}
+	
+	/**
+	 * Cleanup after a scan
+	 */
+	public void cleanup() {
+		for (Iterator i = fetcherRegistry.getSelectedFetchers().iterator(); i.hasNext();) {
+			((Fetcher)i.next()).cleanup();
+		}
+	}
+	
 }

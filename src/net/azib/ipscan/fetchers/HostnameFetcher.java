@@ -29,4 +29,10 @@ public class HostnameFetcher implements Fetcher {
 		return subject.getIPAddress().getHostAddress().equals(hostname) ? null : hostname;
 	}
 
+	public void init() {
+	}
+
+	public void cleanup() {
+	}
+
 }
