@@ -14,8 +14,6 @@ import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.RowLayout;
@@ -37,18 +35,17 @@ import org.eclipse.swt.widgets.Text;
  */
 public class EditOpenersDialog extends AbstractModalDialog {
 
-	FetcherRegistry fetcherResgitry;
+	FetcherRegistry fetcherRegistry;
 	private List openersList;
-	private Group editGroup;
+	private Group editFieldsGroup;
 	private Text openerNameText;
 	private Text openerStringText;
-	private Text openerDirText;
-	private Button isCommandlineCheckbox;
-	
-	private SaveButtonListener saveButtonListener;
+	private Text workingDirText;
+	private Button isInTerminalCheckbox;
+	private int currentSelectionIndex;
 	
 	public EditOpenersDialog(FetcherRegistry fetcherRegistry) {
-		this.fetcherResgitry = fetcherRegistry;
+		this.fetcherRegistry = fetcherRegistry;
 		createShell();
 	}
 	
@@ -61,7 +58,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(Labels.getLabel("title.openers.edit"));
-		shell.setSize(new Point(405, 297));		
+		shell.setSize(new Point(405, 307));		
 		shell.setLayout(null);		
 		
 		Label messageLabel = new Label(shell, SWT.NONE);
@@ -86,96 +83,110 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		downButton.setBounds(new Rectangle(150, 60, 40, 25));
 		downButton.addListener(SWT.Selection, new DownButtonListener());
 		
-		Button insertButton = new Button(shell, SWT.NONE);
-		insertButton.setText(Labels.getLabel("button.insert"));		
-		insertButton.setBounds(new Rectangle(150, 105, 40, 25));
-		insertButton.addListener(SWT.Selection, new InsertButtonListener());
+		Button addButton = new Button(shell, SWT.NONE);
+		addButton.setText(Labels.getLabel("button.add"));		
+		addButton.setBounds(new Rectangle(150, 105, 40, 25));
+		addButton.addListener(SWT.Selection, new AddButtonListener());
 
 		Button deleteButton = new Button(shell, SWT.NONE);
 		deleteButton.setText(Labels.getLabel("button.delete"));		
 		deleteButton.setBounds(new Rectangle(150, 135, 40, 25));
 		deleteButton.addListener(SWT.Selection, new DeleteButtonListener());
 
-		Button saveButton = new Button(shell, SWT.NONE);
-		saveButton.setText(Labels.getLabel("button.save"));		
-		saveButton.setBounds(new Rectangle(150, 165, 40, 25));
-		saveButtonListener = new SaveButtonListener();
-		saveButton.addListener(SWT.Selection, saveButtonListener);
+		Button closeButton = new Button(shell, SWT.NONE);
+		closeButton.setText(Labels.getLabel("button.close"));		
+		closeButton.setBounds(new Rectangle(315, 245, 75, 25));
 		
-		Button okButton = new Button(shell, SWT.NONE);
-		okButton.setText(Labels.getLabel("button.OK"));		
-		okButton.setBounds(new Rectangle(180, 238, 75, 25));
-		shell.setDefaultButton(okButton);
-		
-		Button cancelButton = new Button(shell, SWT.NONE);
-		cancelButton.setText(Labels.getLabel("button.cancel"));		
-		cancelButton.setBounds(new Rectangle(265, 238, 75, 25));
-		
-		editGroup = new Group(shell, SWT.NONE);
-		editGroup.setBounds(205, 30, 185, 200);
+		editFieldsGroup = new Group(shell, SWT.NONE);
+		editFieldsGroup.setBounds(205, 30, 185, 200);
 		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
 		rowLayout.fill = true;
 		rowLayout.justify = true; 
 		rowLayout.marginTop = 13;
-		editGroup.setLayout(rowLayout);
+		editFieldsGroup.setLayout(rowLayout);
 		
-		Label openerNameLabel = new Label(editGroup, SWT.NONE);
+		Label openerNameLabel = new Label(editFieldsGroup, SWT.NONE);
 		openerNameLabel.setText(Labels.getLabel("text.openers.name"));
 		openerNameLabel.setSize(SWT.DEFAULT, 18);
-		openerNameText = new Text(editGroup, SWT.BORDER);
+		openerNameText = new Text(editFieldsGroup, SWT.BORDER);
 		openerNameText.setSize(SWT.DEFAULT, 22);
+		openerNameText.addListener(SWT.KeyUp, new OpenerNameChange());
 
-		Label openerStringLabel = new Label(editGroup, SWT.NONE);
+		isInTerminalCheckbox = new Button(editFieldsGroup, SWT.CHECK);
+		isInTerminalCheckbox.setText(Labels.getLabel("text.openers.inTerminal"));
+		isInTerminalCheckbox.setSize(SWT.DEFAULT, 18);
+
+		Label openerStringLabel = new Label(editFieldsGroup, SWT.NONE);
 		openerStringLabel.setText(Labels.getLabel("text.openers.string"));
 		openerStringLabel.setSize(SWT.DEFAULT, 18);
-		openerStringText = new Text(editGroup, SWT.BORDER);
+		openerStringText = new Text(editFieldsGroup, SWT.BORDER);
 		openerStringText.setSize(SWT.DEFAULT, 22);
 		
-		Button hintButton = new Button(editGroup, SWT.NONE);
+		Button hintButton = new Button(editFieldsGroup, SWT.NONE);
 		hintButton.setText(Labels.getLabel("text.openers.hint"));
 		hintButton.addListener(SWT.Selection, new HintButtonListener());
 		
-		Label openerDirLabel = new Label(editGroup, SWT.NONE);
+		Label openerDirLabel = new Label(editFieldsGroup, SWT.NONE);
 		openerDirLabel.setText(Labels.getLabel("text.openers.directory"));
 		openerDirLabel.setSize(SWT.DEFAULT, 18);
-		openerDirText = new Text(editGroup, SWT.BORDER);
-		openerDirText.setSize(SWT.DEFAULT, 22);
+		workingDirText = new Text(editFieldsGroup, SWT.BORDER);
+		workingDirText.setSize(SWT.DEFAULT, 22);
+				
+		editFieldsGroup.layout();
 		
-		isCommandlineCheckbox = new Button(editGroup, SWT.CHECK);
-		isCommandlineCheckbox.setText(Labels.getLabel("text.openers.isCommandLine"));
-		isCommandlineCheckbox.setSize(SWT.DEFAULT, 18);
+		openersList.select(0);
+		loadFieldsForSelection();
 		
-		editGroup.layout();
-		
-		okButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		shell.addListener(SWT.Close, new Listener() {
+			public void handleEvent(Event e) {
 				saveOpeners();
+			}
+		});
+		closeButton.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
 				shell.close();
 			}
 		});
-		cancelButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				Config.getOpenersConfig().load();
-				shell.close();
-			}
-		});
+		shell.setDefaultButton(closeButton);
 	}
 	
 	private void saveOpeners() {
-		// save any possible changes in the text boxes
-		saveButtonListener.handleEvent(null);
-		// now save everything else
+		// save any possible changes in text boxes
+		saveCurrentFields();			
+
+		// now save everything else (order, etc)
 		OpenersConfig openersConfig = Config.getOpenersConfig();
 		openersConfig.update(openersList.getItems());
 		openersConfig.store();
 	}
+
+	private void saveCurrentFields() {
+		String openerName = openerNameText.getText();
+		if (openerName.length() == 0)
+			return;
+		
+		File workingDir = workingDirText.getText().length() > 0 ? new File(workingDirText.getText()) : null;
+		Config.getOpenersConfig().add(openerName, new OpenersConfig.Opener(openerStringText.getText(), isInTerminalCheckbox.getSelection(), workingDir));
+		openersList.setItem(currentSelectionIndex, openerName);
+	}
 	
+	private void loadFieldsForSelection() {
+		currentSelectionIndex = openersList.getSelectionIndex();
+		String openerName = openersList.getItem(currentSelectionIndex);
+		editFieldsGroup.setText(openerName);
+		Opener opener = Config.getOpenersConfig().getOpener(openerName);
+		openerNameText.setText(openerName);
+		openerStringText.setText(opener.execString);
+		workingDirText.setText(opener.workingDir != null ? opener.workingDir.toString() : "");
+		isInTerminalCheckbox.setSelection(opener.inTerminal);
+	}
+
 	private class HintButtonListener implements Listener {
 		
 		public void handleEvent(Event event) {
 			// compose the message with all available fetchers
 			StringBuffer message = new StringBuffer(Labels.getLabel("text.openers.hintText"));
-			for (Iterator i = fetcherResgitry.getSelectedFetchers().iterator(); i.hasNext(); ) {
+			for (Iterator i = fetcherRegistry.getSelectedFetchers().iterator(); i.hasNext(); ) {
 				String fetcherLabel = ((Fetcher)i.next()).getLabel();
 				message.append("${").append(fetcherLabel).append("}   - ").append(Labels.getLabel(fetcherLabel)).append('\n');
 			}
@@ -238,49 +249,52 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	private class DeleteButtonListener implements Listener {
 		
 		public void handleEvent(Event event) {
-			openersList.remove(openersList.getSelectionIndices());			
+			int firstIndex = openersList.getSelectionIndex();
+			openersList.remove(openersList.getSelectionIndices());
+			openersList.setSelection(firstIndex);
+			loadFieldsForSelection();
 		}
 	}
 
-	private class SaveButtonListener implements Listener {
+	private class AddButtonListener implements Listener {
 		
 		public void handleEvent(Event event) {
-			String openerName = openerNameText.getText();
-			if (openerName.length() == 0)
-				return;
+			saveCurrentFields();
 			
-			int selectedItem = openersList.getSelectionIndex();
-			if (selectedItem < 0)
-				throw new UserErrorException("opener.edit.noSelection");
-			
-			Config.getOpenersConfig().add(openerName, new OpenersConfig.Opener(openerStringText.getText(), isCommandlineCheckbox.getSelection(), new File(openerDirText.getText())));
-			openersList.setItem(selectedItem, openerName);			
-		}
-	}
-
-	private class InsertButtonListener implements Listener {
-		
-		public void handleEvent(Event event) {
-			int selectionIndex = openersList.getSelectionIndex();
-			if (selectionIndex < 0) {
-				selectionIndex = openersList.getItemCount();
+			currentSelectionIndex = openersList.getSelectionIndex();
+			if (currentSelectionIndex < 0) {
+				currentSelectionIndex = openersList.getItemCount();
 			}
-			openersList.add("", selectionIndex);
-			openersList.setSelection(selectionIndex);
+			String newName = Labels.getLabel("text.openers.new");
+			openersList.add(newName, currentSelectionIndex);
+			openersList.setSelection(currentSelectionIndex);
+			
+			// reset fields
+			editFieldsGroup.setText(newName);
+			openerNameText.setText(newName);
+			openerStringText.setText("${fetcher.ip}");
+			workingDirText.setText("");
+			isInTerminalCheckbox.setSelection(false);
+			
+			openerNameText.forceFocus();
+			openerNameText.setSelection(0, newName.length());
 		}
 	}
 
 	private class ItemSelectListener implements Listener {
 		
 		public void handleEvent(Event event) {
-			int selectionIndex = openersList.getSelectionIndex();
-			String openerName = openersList.getItem(selectionIndex);
-			editGroup.setText(openerName);
-			Opener opener = Config.getOpenersConfig().getOpener(openerName);
-			openerNameText.setText(openerName);
-			openerStringText.setText(opener.execString);
-			openerDirText.setText(opener.workingDir != null ? opener.workingDir.toString() : "");
-			isCommandlineCheckbox.setSelection(opener.inTerminal);
+			saveCurrentFields();
+			loadFieldsForSelection();
+		}
+	}
+	
+	private class OpenerNameChange implements Listener {
+
+		public void handleEvent(Event event) {
+			String name = openerNameText.getText();
+			editFieldsGroup.setText(name);
+			openersList.setItem(currentSelectionIndex, name);
 		}
 	}
 

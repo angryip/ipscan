@@ -32,7 +32,7 @@ public class OpenerLauncher {
 		String openerString = prepareOpenerStringForItem(opener.execString, selectedItem);
 		
 		// check for URLs
-		if (openerString.startsWith("http:") || openerString.startsWith("https:") || openerString.startsWith("ftp:") || openerString.startsWith("mailto:")) {
+		if (openerString.startsWith("http:") || openerString.startsWith("https:") || openerString.startsWith("ftp:") || openerString.startsWith("mailto:") || openerString.startsWith("\\\\")) {
 			BrowserLauncher.openURL(openerString);
 		}
 		else {
@@ -44,7 +44,7 @@ public class OpenerLauncher {
 				else {
 					// TODO: we probably need to support shell patterns, etc
 					// TODO: merge launchInTerminal with this code
-					Runtime.getRuntime().exec((System.getProperty("os.name").startsWith("Windows") ? "start /b " : "") + openerString, null, opener.workingDir);
+					Runtime.getRuntime().exec(openerString, null, opener.workingDir);
 				}
 			}
 			catch (Exception e) {
