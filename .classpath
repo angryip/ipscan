@@ -8,20 +8,20 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="lib" path="ext/rocksaw/lib/tmp.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="ipscan/ext/rocksaw/lib"/>
+			<attribute value="ipscan/ext/rocksaw/lib" name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3.8.1"/>
-	<classpathentry kind="lib" path="/swt/swt-win32.jar" sourcepath="/swt/src">
+	<classpathentry sourcepath="/swt/src" kind="lib" path="/swt/swt-win32.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="swt/lib"/>
+			<attribute value="swt/lib" name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/swt/swt-gtk.jar" sourcepath="/swt/src">
+	<classpathentry sourcepath="/swt/src" kind="lib" path="/swt/swt-gtk.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="swt/lib"/>
+			<attribute value="swt/lib" name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="ext/picocontainer/picocontainer-1.0.jar" sourcepath="ext/picocontainer/src"/>
+	<classpathentry sourcepath="ext/picocontainer/src" kind="lib" path="ext/picocontainer/picocontainer-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

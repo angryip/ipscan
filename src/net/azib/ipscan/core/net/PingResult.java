@@ -18,7 +18,7 @@ public class PingResult {
 	long totalTime;
 	int replyCount;
 	
-	PingResult(InetAddress address) {
+	public PingResult(InetAddress address) {
 		this.address = address;
 		
 	}

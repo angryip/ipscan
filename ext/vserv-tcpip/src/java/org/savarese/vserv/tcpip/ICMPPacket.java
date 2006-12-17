@@ -49,6 +49,9 @@ public abstract class ICMPPacket extends IPPacket {
 
   /** The ICMP type number for an echo reply. */
   public static final int TYPE_ECHO_REPLY     = 0;
+  
+  /** The ICMP type number for an "host unreachable" message. */
+  public static final int TYPE_HOST_UNREACHABLE = 3;
 
   /** The byte offset into the IP packet where the ICMP packet begins. */
   int _offset;

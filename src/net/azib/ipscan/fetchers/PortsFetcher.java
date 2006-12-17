@@ -21,6 +21,8 @@ import net.azib.ipscan.core.net.PingResult;
 /**
  * PortsFetcher scans TCP ports.
  * Port list is obtained using the {@link net.azib.ipscan.core.PortIterator}.
+ * 
+ * TODO: return a specialized "list" object instead of a String
  *
  * @author anton
  */

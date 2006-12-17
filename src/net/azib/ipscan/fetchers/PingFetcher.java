@@ -52,6 +52,8 @@ public class PingFetcher implements Fetcher {
 			catch (IOException e) {
 				// if this is not a timeout
 				Logger.global.log(Level.WARNING, "Pinging failed", e);
+				// return an empty ping result
+				result = new PingResult(subject.getIPAddress());
 			}
 			// remember the result for other fetchers to use
 			subject.setParameter(PARAMETER_PINGER, result);

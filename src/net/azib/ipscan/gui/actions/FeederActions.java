@@ -33,6 +33,8 @@ import org.eclipse.swt.widgets.Text;
  * @author anton
  */
 public class FeederActions {
+	
+	private static final Logger LOG = Logger.getLogger(FeederActions.class.getName());
 
 	public static class HostnameButton implements SelectionListener, TraverseListener {
 		
@@ -144,7 +146,7 @@ public class FeederActions {
 				}
 			}
 			catch (SocketException e) {
-				Logger.global.log(Level.FINE, "Cannot enumerate network interfaces", e);
+				LOG.log(Level.FINE, "Cannot enumerate network interfaces", e);
 			}
 		}
 	}

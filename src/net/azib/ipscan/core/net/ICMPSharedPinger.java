@@ -54,7 +54,8 @@ public class ICMPSharedPinger implements Pinger {
 			sendingSocket.setSendTimeout(timeout);
 			receivingSocket.setReceiveTimeout(timeout);
 			//receivingSocket.setReceiveBufferSize()
-		} catch (java.net.SocketException se) {
+		} 
+		catch (java.net.SocketException se) {
 			sendingSocket.setUseSelectTimeout(true);
 			receivingSocket.setUseSelectTimeout(true);
 			sendingSocket.setSendTimeout(timeout);
@@ -179,7 +180,7 @@ public class ICMPSharedPinger implements Pinger {
 					receivingSocket.read(tmpAddress, data);
 					
 					if (packet.getType() == ICMPPacket.TYPE_ECHO_REPLY &&
-						//packet.getIdentifier() == (SharedPinger.this.hashCode() & 0xFFFF) &&
+						packet.getIdentifier() == (ICMPSharedPinger.this.hashCode() & 0xFFFF) &&
 						packet.getSequenceNumber() > 0) {
 						
 						long endTime = System.currentTimeMillis();
@@ -207,6 +208,11 @@ public class ICMPSharedPinger implements Pinger {
 							result.notifyAll();
 						}
 					}
+					else
+					if (packet.getType() == ICMPPacket.TYPE_HOST_UNREACHABLE) {
+						// TODO: received non-ECHO_REPLY packets may also be useful, saying "destination is unreachable"
+						// packet body in this case is the sent ICMP_REQUEST packet
+					}
 				}
 				catch (InterruptedIOException e) {
 					// socket read timeout
@@ -220,7 +226,6 @@ public class ICMPSharedPinger implements Pinger {
 					LOG.log(Level.WARNING, "Unable to read from the socket", e);
 				}
 			
-				// TODO: received non-ECHO_REPLY packets may be also useful, saying "destination is unreachable"
 			}
 			while(!interrupted());
 			
