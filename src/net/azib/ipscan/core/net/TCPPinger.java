@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.NoRouteToHostException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.logging.Level;
@@ -47,6 +48,9 @@ public class TCPPinger implements Pinger {
 			result.totalTime+=System.currentTimeMillis()-startTime;
 		}
 		catch (SocketTimeoutException e) {
+		}
+		catch (NoRouteToHostException e) {
+			// TODO: this means that the host is down
 		}
 		catch (IOException e) {
 			LOG.setLevel(Level.ALL);

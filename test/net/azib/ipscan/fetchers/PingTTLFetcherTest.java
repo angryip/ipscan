@@ -11,7 +11,7 @@ package net.azib.ipscan.fetchers;
 public class PingTTLFetcherTest extends AbstractFetcherTestCase {
 
 	protected void setUp() throws Exception {
-		fetcher = new PingTTLFetcher();
+		fetcher = new PingTTLFetcher(null);
 	}
 
 }

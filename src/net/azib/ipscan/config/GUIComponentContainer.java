@@ -6,6 +6,8 @@ package net.azib.ipscan.config;
 import net.azib.ipscan.core.Scanner;
 import net.azib.ipscan.core.ScannerThreadFactory;
 import net.azib.ipscan.core.ScanningResultList;
+import net.azib.ipscan.core.net.PingerRegistry;
+import net.azib.ipscan.core.net.PingerRegistryImpl;
 import net.azib.ipscan.exporters.CSVExporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
 import net.azib.ipscan.exporters.IPListExporter;
@@ -13,8 +15,15 @@ import net.azib.ipscan.exporters.TXTExporter;
 import net.azib.ipscan.exporters.XMLExporter;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.FetcherRegistryImpl;
+import net.azib.ipscan.fetchers.FilteredPortsFetcher;
+import net.azib.ipscan.fetchers.HostnameFetcher;
+import net.azib.ipscan.fetchers.IPFetcher;
+import net.azib.ipscan.fetchers.PingFetcher;
+import net.azib.ipscan.fetchers.PingTTLFetcher;
+import net.azib.ipscan.fetchers.PortsFetcher;
 import net.azib.ipscan.gui.MainMenu;
 import net.azib.ipscan.gui.MainWindow;
+import net.azib.ipscan.gui.OptionsWindow;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
@@ -55,13 +64,22 @@ public class GUIComponentContainer {
 		
 		ComponentParameter anyComponentParameter = new ComponentParameter();
 		
-		// non-GUI
+		// non-GUI TODO: move to a separate container
+		container.registerComponentImplementation(ExporterRegistry.class);
 		container.registerComponentImplementation(TXTExporter.class);
 		container.registerComponentImplementation(CSVExporter.class);
 		container.registerComponentImplementation(XMLExporter.class);
 		container.registerComponentImplementation(IPListExporter.class);
-		container.registerComponentImplementation(ExporterRegistry.class);
+		
 		container.registerComponentImplementation(FetcherRegistry.class, FetcherRegistryImpl.class);
+		container.registerComponentImplementation(IPFetcher.class);
+		container.registerComponentImplementation(PingFetcher.class);
+		container.registerComponentImplementation(PingTTLFetcher.class);
+		container.registerComponentImplementation(HostnameFetcher.class);
+		container.registerComponentImplementation(PortsFetcher.class);
+		container.registerComponentImplementation(FilteredPortsFetcher.class);
+		
+		container.registerComponentImplementation(PingerRegistry.class, PingerRegistryImpl.class);
 		container.registerComponentImplementation(ScanningResultList.class);
 		container.registerComponentImplementation(Scanner.class);
 		container.registerComponentImplementation(ScannerThreadFactory.class);
@@ -123,6 +141,8 @@ public class GUIComponentContainer {
 		container.registerComponentImplementation(MainMenu.ColumnsMenu.class, MainMenu.ColumnsMenu.class, new Parameter[] {
 			new ComponentParameter("mainShell"),
 			anyComponentParameter});
+		
+		container.registerComponentImplementation(OptionsWindow.class);
 
 		// various actions / listener
 		container.registerComponentImplementation(StartStopScanningAction.class);

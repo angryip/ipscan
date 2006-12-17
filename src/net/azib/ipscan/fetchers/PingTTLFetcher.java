@@ -6,6 +6,7 @@ package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.net.PingResult;
+import net.azib.ipscan.core.net.PingerRegistry;
 
 /**
  * PingTTLFetcher shares pinging results with PingFetcher
@@ -15,6 +16,10 @@ import net.azib.ipscan.core.net.PingResult;
  */
 public class PingTTLFetcher extends PingFetcher {
 	
+	public PingTTLFetcher(PingerRegistry pingerRegistry) {
+		super(pingerRegistry);
+	}
+
 	public String getLabel() {
 		return "fetcher.ping.ttl";
 	}

@@ -5,7 +5,11 @@ package net.azib.ipscan.gui.actions;
 
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistryImpl;
+import net.azib.ipscan.fetchers.HostnameFetcher;
+import net.azib.ipscan.fetchers.IPFetcher;
+import net.azib.ipscan.fetchers.PingFetcher;
 import net.azib.ipscan.gui.UserErrorException;
 import junit.framework.TestCase;
 
@@ -18,13 +22,14 @@ public class OpenerLauncherTest extends TestCase {
 
 	public void testReplaceValues() {
 		Config.initialize();
-		OpenerLauncher ol = new OpenerLauncher(new FetcherRegistryImpl(), null) {
+		Fetcher[] fetchers = {new IPFetcher(), new HostnameFetcher(), new IPFetcher()};
+		OpenerLauncher ol = new OpenerLauncher(new FetcherRegistryImpl(fetchers), null) {
 			String getScannedValue(int selectedItem, int fetcherIndex) {
 				switch (fetcherIndex) {
 					case 0:
 						return "127.0.0.1";
 					case 1:
-						return "PING";
+						return "HOSTNAME";
 					default:
 						return null;
 				}
@@ -32,7 +37,7 @@ public class OpenerLauncherTest extends TestCase {
 		};
 		
 		assertEquals("\\\\127.0.0.1", ol.prepareOpenerStringForItem("\\\\${fetcher.ip}", 0));
-		assertEquals("PING$$$127.0.0.1xxx${}", ol.prepareOpenerStringForItem("${fetcher.ping}$$$${fetcher.ip}xxx${}", 0));
+		assertEquals("HOSTNAME$$$127.0.0.1xxx${}", ol.prepareOpenerStringForItem("${fetcher.hostname}$$$${fetcher.ip}xxx${}", 0));
 		assertEquals("http://127.0.0.1:80/www", ol.prepareOpenerStringForItem("http://${fetcher.ip}:80/www", 0));
 		
 		try {
@@ -44,7 +49,7 @@ public class OpenerLauncherTest extends TestCase {
 		}
 
 		try {
-			ol.prepareOpenerStringForItem("${fetcher.ping.ttl}", 0);
+			ol.prepareOpenerStringForItem("${fetcher.hostname}", 0);
 			fail();
 		}
 		catch (UserErrorException e) {

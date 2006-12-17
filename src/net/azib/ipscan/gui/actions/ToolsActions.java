@@ -16,8 +16,15 @@ import net.azib.ipscan.gui.OptionsWindow;
 public class ToolsActions {
 
 	public static class Options implements Listener {
+		
+		private OptionsWindow optionsWindow;
+		
+		public Options(OptionsWindow optionsWindow) {
+			this.optionsWindow = optionsWindow;
+		}
+
 		public void handleEvent(Event event) {
-			new OptionsWindow().open();
+			optionsWindow.open();
 		}
 	}
 

@@ -6,6 +6,7 @@ package net.azib.ipscan.gui;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.net.PingerRegistry;
 
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -31,6 +32,8 @@ import org.eclipse.swt.layout.RowLayout;
  * @author anton
  */
 public class OptionsWindow extends AbstractModalDialog {
+	
+	private PingerRegistry pingerRegistry;
 
 	private TabFolder tabFolder;
 	private Composite scanningTab;
@@ -42,7 +45,7 @@ public class OptionsWindow extends AbstractModalDialog {
 	private Button deadHostsCheckbox;
 	private Text pingingTimeoutText;
 	private Text pingingCountText;
-	private Combo pingTypeCombo;
+	private Combo pingersCombo;
 	private Button skipBroadcastsCheckbox;
 	private Composite fetchersTab;
 	private Composite portsTab;
@@ -50,11 +53,17 @@ public class OptionsWindow extends AbstractModalDialog {
 	private Button adaptTimeoutCheckbox;
 	private Text portsText;
 	
-	public OptionsWindow() {
-		createShell();
-		loadOptions();
+	public OptionsWindow(PingerRegistry pingerRegistry) {
+		this.pingerRegistry = pingerRegistry;
 	}
 	
+	public void open() {
+		// widgets are created on demand
+		createShell();
+		loadOptions();
+		super.open();
+	}
+
 	/**
 	 * This method initializes shell
 	 */
@@ -150,10 +159,15 @@ public class OptionsWindow extends AbstractModalDialog {
 		
 		label = new Label(pingingGroup, SWT.NONE);
 		label.setText(Labels.getLabel("options.pinging.type"));
-		pingTypeCombo = new Combo(pingingGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
-		pingTypeCombo.setLayoutData(gridData);
-		pingTypeCombo.add(Labels.getLabel("options.pinging.type.icmp"));
-		pingTypeCombo.select(0);
+		pingersCombo = new Combo(pingingGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
+		pingersCombo.setLayoutData(gridData);
+		String[] pingerNames = pingerRegistry.getRegisteredNames();
+		for (int i = 0; i < pingerNames.length; i++) {
+			pingersCombo.add(Labels.getLabel(pingerNames[i]));
+			// this is used by saveOptions()
+			pingersCombo.setData(Integer.toString(i), pingerNames[i]);
+		}
+		pingersCombo.select(0);
 
 		label = new Label(pingingGroup, SWT.NONE);
 		label.setText(Labels.getLabel("options.pinging.count"));
@@ -254,6 +268,12 @@ public class OptionsWindow extends AbstractModalDialog {
 		GlobalConfig global = Config.getGlobal();
 		maxThreadsText.setText(Integer.toString(global.maxThreads));
 		threadDelayText.setText(Integer.toString(global.threadDelay));
+		String[] pingerNames = pingerRegistry.getRegisteredNames();
+		for (int i = 0; i < pingerNames.length; i++) {
+			if (global.selectedPinger.equals(pingerNames[i])) {
+				pingersCombo.select(i);
+			}
+		}
 		pingingCountText.setText(Integer.toString(global.pingCount));
 		pingingTimeoutText.setText(Integer.toString(global.pingTimeout));
 		deadHostsCheckbox.setSelection(global.scanDeadHosts);
@@ -267,6 +287,7 @@ public class OptionsWindow extends AbstractModalDialog {
 		GlobalConfig global = Config.getGlobal();
 		global.maxThreads = parseIntValue(maxThreadsText);
 		global.threadDelay = parseIntValue(threadDelayText);
+		global.selectedPinger = (String) pingersCombo.getData(Integer.toString(pingersCombo.getSelectionIndex()));
 		global.pingCount = parseIntValue(pingingCountText);
 		global.pingTimeout = parseIntValue(pingingTimeoutText);
 		global.scanDeadHosts = deadHostsCheckbox.getSelection();

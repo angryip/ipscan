@@ -16,6 +16,7 @@ public final class GlobalConfig {
 	private static final String THREAD_DELAY = "threadDelay";
 	private static final String ACTIVE_FEEDER = "activeFeeder";
 	private static final String SCAN_DEAD_HOSTS = "scanDeadHosts";
+	private static final String SELECTED_PINGER = "selectedPinger";
 	private static final String PING_TIMEOUT = "pingTimeout";
 	private static final String PING_COUNT = "pingCount";
 	private static final String SKIP_BROADCAST_ADDRESSES = "skipBroadcastAddresses";
@@ -29,6 +30,7 @@ public final class GlobalConfig {
 	public int threadDelay = preferences.getInt(THREAD_DELAY, 20);
 	public int activeFeeder = preferences.getInt(ACTIVE_FEEDER, 0);
 	public boolean scanDeadHosts = preferences.getBoolean(SCAN_DEAD_HOSTS, false);
+	public String selectedPinger = preferences.get(SELECTED_PINGER, "pinger.icmp");
 	public int pingTimeout = preferences.getInt(PING_TIMEOUT, 3000);
 	public int pingCount = preferences.getInt(PING_COUNT, 3);
 	public boolean skipBroadcastAddresses = preferences.getBoolean(SKIP_BROADCAST_ADDRESSES, true);
@@ -44,6 +46,7 @@ public final class GlobalConfig {
 		preferences.putInt(THREAD_DELAY, threadDelay);
 		preferences.putInt(ACTIVE_FEEDER, activeFeeder);
 		preferences.putBoolean(SCAN_DEAD_HOSTS, scanDeadHosts);
+		preferences.put(SELECTED_PINGER, selectedPinger);
 		preferences.putInt(PING_TIMEOUT, pingTimeout);
 		preferences.putInt(PING_COUNT, pingCount);
 		preferences.putBoolean(SKIP_BROADCAST_ADDRESSES, skipBroadcastAddresses);

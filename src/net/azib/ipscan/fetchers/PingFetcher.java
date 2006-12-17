@@ -11,12 +11,9 @@ import java.util.logging.Logger;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.core.IntegerWithUnit;
 import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.core.net.ICMPPinger;
 import net.azib.ipscan.core.net.PingResult;
 import net.azib.ipscan.core.net.Pinger;
-import net.azib.ipscan.core.net.ICMPSharedPinger;
-import net.azib.ipscan.core.net.TCPPinger;
-import net.azib.ipscan.core.net.UDPPinger;
+import net.azib.ipscan.core.net.PingerRegistry;
 
 /**
  * PingFetcher is able to ping IP addresses.
@@ -27,11 +24,15 @@ import net.azib.ipscan.core.net.UDPPinger;
 public class PingFetcher implements Fetcher {
 	
 	public static final String PARAMETER_PINGER = "pinger";
-	
+
 	/** The shared pinger - this one must be static, because PingTTLFetcher will use it as well */
 	private static Pinger pinger;
 	
-	public PingFetcher() {
+	/** The registry used for creation of Pinger instances */
+	private PingerRegistry pingerRegistry;
+	
+	public PingFetcher(PingerRegistry pingerRegistry) {
+		this.pingerRegistry = pingerRegistry;
 	}
 
 	public String getLabel() {
@@ -75,12 +76,8 @@ public class PingFetcher implements Fetcher {
 
 	public void init() {
 		try {
-			// TODO: dependency injection (PingerRegistry)
 			if (pinger == null) {
-				//pinger = new ICMPPinger(Config.getGlobal().pingTimeout);
-				pinger = new ICMPSharedPinger(Config.getGlobal().pingTimeout);
-				//pinger = new TCPPinger(Config.getGlobal().pingTimeout);
-				//pinger = new UDPPinger(Config.getGlobal().pingTimeout);
+				pinger = pingerRegistry.createPinger(Config.getGlobal().selectedPinger, Config.getGlobal().pingTimeout);
 			}
 		}
 		catch (Exception e) {
