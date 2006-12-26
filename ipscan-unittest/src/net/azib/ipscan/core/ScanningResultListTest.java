@@ -3,21 +3,27 @@
  */
 package net.azib.ipscan.core;
 
-import static org.junit.Assert.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
-import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * ScanningResultListTest
@@ -25,14 +31,25 @@ import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
  * @author anton
  */
 public class ScanningResultListTest {
-	
+
+	private List<Fetcher> fetchers = new ArrayList<Fetcher>(Arrays.asList(new Fetcher[] {new DummyFetcher("fetcher.ip"), new DummyFetcher("fetcher.ping"), new DummyFetcher("fetcher.hostname"), new DummyFetcher("fetcher.ping.ttl")}));
+
 	private FetcherRegistry fetcherRegistry;
 	private ScanningResultList scanningResults;
 	
 	@Before
 	public void setUp() throws Exception {
-		fetcherRegistry = new DummyFetcherRegistry();
+		fetcherRegistry = createMock(FetcherRegistry.class);
+		expect(fetcherRegistry.getSelectedFetchers())
+			.andReturn(fetchers).anyTimes();
+		replay(fetcherRegistry);
+		
 		scanningResults =  new ScanningResultList(fetcherRegistry);
+	}
+	
+	@After
+	public void tearDown() {
+		verify(fetcherRegistry);
 	}
 
 	@Test
@@ -146,26 +163,4 @@ public class ScanningResultListTest {
 		}		
 	}
 	
-	private static class DummyFetcherRegistry implements FetcherRegistry {
-		
-		private List<Fetcher> fetchers = new ArrayList<Fetcher>(Arrays.asList(new Fetcher[] {new DummyFetcher("fetcher.ip"), new DummyFetcher("fetcher.ping"), new DummyFetcher("fetcher.hostname"), new DummyFetcher("fetcher.ping.ttl")}));
-		
-		public Collection getRegisteredFetchers() {
-			return null;
-		}
-
-		public int getSelectedFetcherIndex(String label) {
-			return 0;
-		}
-		
-		public Collection getSelectedFetchers() {
-			return fetchers;
-		}
-
-		public void updateSelectedFetchers(String[] names) {
-		}
-
-		public void addListener(FetcherRegistryUpdateListener listener) {
-		}
-	}
 }

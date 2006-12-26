@@ -3,14 +3,15 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import static org.junit.Assert.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.fetchers.CommentFetcher;
-import net.azib.ipscan.fetchers.Fetcher;
-import net.azib.ipscan.fetchers.FetcherRegistryImpl;
-import net.azib.ipscan.fetchers.HostnameFetcher;
-import net.azib.ipscan.fetchers.IPFetcher;
+import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.UserErrorException;
 
 import org.junit.Before;
@@ -30,8 +31,14 @@ public class OpenerLauncherTest {
 
 	@Test
 	public void testReplaceValues() {
-		Fetcher[] fetchers = {new IPFetcher(), new HostnameFetcher(), new CommentFetcher()};
-		OpenerLauncher ol = new OpenerLauncher(new FetcherRegistryImpl(fetchers), null) {
+		FetcherRegistry fetcherRegistry = createMock(FetcherRegistry.class);
+		expect(fetcherRegistry.getSelectedFetcherIndex("fetcher.ip")).andReturn(0).times(3);
+		expect(fetcherRegistry.getSelectedFetcherIndex("fetcher.hostname")).andReturn(1);
+		expect(fetcherRegistry.getSelectedFetcherIndex("fetcher.comment")).andReturn(2);
+		expect(fetcherRegistry.getSelectedFetcherIndex("noSuchFetcher")).andReturn(-1);
+		replay(fetcherRegistry);
+		
+		OpenerLauncher ol = new OpenerLauncher(fetcherRegistry, null) {
 			String getScannedValue(int selectedItem, int fetcherIndex) {
 				switch (fetcherIndex) {
 					case 0:
@@ -63,5 +70,7 @@ public class OpenerLauncherTest {
 		catch (UserErrorException e) {
 			assertEquals(Labels.getLabel("exception.UserErrorException.opener.nullFetcherValue") + "fetcher.comment", e.getMessage());
 		}
+		
+		verify(fetcherRegistry);
 	}
 }

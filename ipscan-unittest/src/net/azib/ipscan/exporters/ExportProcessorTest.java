@@ -3,7 +3,11 @@
  */
 package net.azib.ipscan.exporters;
 
-import static org.junit.Assert.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,17 +15,18 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.Collection;
 import java.util.Collections;
 
-import org.junit.Test;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.exporters.ExportProcessor.ScanningResultSelector;
 import net.azib.ipscan.fetchers.FetcherRegistry;
-import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
 import net.azib.ipscan.fetchers.IPFetcher;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * ExportProcessorTest
@@ -29,13 +34,28 @@ import net.azib.ipscan.fetchers.IPFetcher;
  * @author anton
  */
 public class ExportProcessorTest {
+	
+	private FetcherRegistry fetcherRegistry;
+	
+	@Before
+	public void setUp() {
+		fetcherRegistry = createMock(FetcherRegistry.class);
+		expect(fetcherRegistry.getSelectedFetchers())
+			.andReturn(Collections.singletonList(new IPFetcher())).anyTimes();
+		replay(fetcherRegistry);
+	}
+	
+	@After
+	public void tearDown() {
+		verify(fetcherRegistry);
+	}
 
 	@Test
 	public void testProcess() throws Exception {
 		File file = File.createTempFile("exportTest", "txt");
 		ExportProcessor exportProcessor = new ExportProcessor(new TXTExporter(), file.getAbsolutePath());
 		
-		ScanningResultList scanningResultList = new ScanningResultList(new FakeFetcherRegistry());
+		ScanningResultList scanningResultList = new ScanningResultList(fetcherRegistry);
 		scanningResultList.add(InetAddress.getByName("192.168.0.13"));
 		exportProcessor.process(scanningResultList, "megaFeeder", null);
 		
@@ -68,7 +88,7 @@ public class ExportProcessorTest {
 		File file = File.createTempFile("exportTest", "txt");
 		ExportProcessor exportProcessor = new ExportProcessor(new TXTExporter(), file.getAbsolutePath());
 		
-		ScanningResultList scanningResultList = new ScanningResultList(new FakeFetcherRegistry());
+		ScanningResultList scanningResultList = new ScanningResultList(fetcherRegistry);
 		
 		scanningResultList.add(InetAddress.getByName("192.168.13.66"));
 		scanningResultList.add(InetAddress.getByName("192.168.13.67"));
@@ -87,26 +107,6 @@ public class ExportProcessorTest {
 		assertTrue(content.indexOf("192.168.13.66") > 0);
 		assertTrue(content.indexOf("192.168.13.67") < 0);		
 		assertTrue(content.indexOf("192.168.13.76") > 0);		
-	}
-
-	private class FakeFetcherRegistry implements FetcherRegistry {
-		public Collection getRegisteredFetchers() {
-			return null;
-		}
-
-		public int getSelectedFetcherIndex(String label) {
-			return 0;
-		}
-
-		public Collection getSelectedFetchers() {
-			return Collections.singletonList(new IPFetcher());
-		}
-
-		public void updateSelectedFetchers(String[] names) {
-		}
-
-		public void addListener(FetcherRegistryUpdateListener listener) {
-		}
 	}
 
 }

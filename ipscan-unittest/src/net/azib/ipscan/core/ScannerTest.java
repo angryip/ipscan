@@ -3,21 +3,27 @@
  */
 package net.azib.ipscan.core;
 
-import static org.junit.Assert.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
-import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * ScannerTest
@@ -28,17 +34,29 @@ public class ScannerTest {
 	
 	private Set<Class> initCalled = new HashSet<Class>();
 	private Set<Class> cleanupCalled = new HashSet<Class>();
+	private Scanner scanner;
+	private FetcherRegistry fetcherRegistry;
 	
 	@Before
 	public void setUp() throws Exception {
 		Config.initialize();
+		
+		fetcherRegistry = createMock(FetcherRegistry.class);
+		expect(fetcherRegistry.getSelectedFetchers()).andReturn(
+			Arrays.asList(new Fetcher[] {new FakeFetcher(), new AnotherFakeFetcher(), new AbortingFetcher(), new FailingFetcher()})
+		);
+		replay(fetcherRegistry);
+		
+		scanner = new Scanner(fetcherRegistry);
+	}
+	
+	@After
+	public void tearDown() {
+		verify(fetcherRegistry);
 	}
 
 	@Test
 	public void testScan() throws Exception {
-		// initialize with fake fetchers
-		Scanner scanner = new Scanner(new FakeFetcherRegistry());
-		
 		// scan the local host
 		ScanningResult scanningResult = new ScanningResult(InetAddress.getLocalHost(), 4);
 		scanner.scan(InetAddress.getLocalHost(), scanningResult);
@@ -54,8 +72,6 @@ public class ScannerTest {
 	
 	@Test
 	public void testInit() throws Exception {
-		// initialize with fake fetchers
-		Scanner scanner = new Scanner(new FakeFetcherRegistry());
 		scanner.init();
 		
 		assertTrue(initCalled.contains(FakeFetcher.class));
@@ -65,8 +81,6 @@ public class ScannerTest {
 	
 	@Test
 	public void testCleanup() throws Exception {
-		// initialize with fake fetchers
-		Scanner scanner = new Scanner(new FakeFetcherRegistry());
 		scanner.cleanup();
 		
 		assertTrue(cleanupCalled.contains(FakeFetcher.class));
@@ -126,26 +140,6 @@ public class ScannerTest {
 		public Object scan(ScanningSubject subject) {
 			fail("This fetcher should not be reached");
 			return null;
-		}
-	}
-	
-	private class FakeFetcherRegistry implements FetcherRegistry {
-		public Collection getRegisteredFetchers() {
-			return null;
-		}
-
-		public int getSelectedFetcherIndex(String label) {
-			return 0;
-		}
-
-		public Collection getSelectedFetchers() {
-			return Arrays.asList(new Fetcher[] {new FakeFetcher(), new AnotherFakeFetcher(), new AbortingFetcher(), new FailingFetcher()});
-		}
-
-		public void updateSelectedFetchers(String[] names) {
-		}
-
-		public void addListener(FetcherRegistryUpdateListener listener) {
 		}
 	}
 	
