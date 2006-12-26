@@ -29,10 +29,12 @@ import net.azib.ipscan.gui.UserErrorException;
  * @author anton
  */
 public class Main {
+	
+	private static final Logger LOG = Logger.getLogger(Main.class.getName());
 
 	public static void main(String[] args) {
 		
-		Logger.global.setLevel(Level.CONFIG);
+		LOG.setLevel(Level.CONFIG);
 		
 		initProperties();
 		
@@ -98,13 +100,13 @@ public class Main {
 			if (e.getCause() != null) {
 				localizedMessage += "\n\n" + e.getCause().toString();
 			}
-			Logger.global.log(Level.FINE, "error", e);
+			LOG.log(Level.FINE, "error", e);
 		}
 		catch (Exception e2) {
 			// fallback to default text
 			localizedMessage = e.toString();
 			// output stack trace to the console
-			Logger.global.log(Level.SEVERE, "unexpected error", e);
+			LOG.log(Level.SEVERE, "unexpected error", e);
 		}
 		return localizedMessage;
 	}

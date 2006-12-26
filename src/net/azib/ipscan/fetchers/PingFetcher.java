@@ -23,6 +23,8 @@ import net.azib.ipscan.core.net.PingerRegistry;
  */
 public class PingFetcher implements Fetcher {
 	
+	private static final Logger LOG = Logger.getLogger(PingFetcher.class.getName());
+	
 	public static final String PARAMETER_PINGER = "pinger";
 
 	/** The shared pinger - this one must be static, because PingTTLFetcher will use it as well */
@@ -52,7 +54,7 @@ public class PingFetcher implements Fetcher {
 			}
 			catch (IOException e) {
 				// if this is not a timeout
-				Logger.global.log(Level.WARNING, "Pinging failed", e);
+				LOG.log(Level.WARNING, "Pinging failed", e);
 				// return an empty ping result
 				result = new PingResult(subject.getIPAddress());
 			}

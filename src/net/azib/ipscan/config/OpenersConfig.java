@@ -13,6 +13,8 @@ import java.util.prefs.Preferences;
  * @author anton
  */
 public class OpenersConfig extends NamedListConfig {
+	
+	private static final Logger LOG = Logger.getLogger(OpenersConfig.class.getName());
 
 	public OpenersConfig() {
 		super("openers");
@@ -69,7 +71,7 @@ public class OpenersConfig extends NamedListConfig {
 			}
 			catch (ArrayIndexOutOfBoundsException e) {
 				// this happens when broken settings have been loaded
-				Logger.global.fine("Broken opener config read: " + serialized);
+				LOG.fine("Broken opener config read: " + serialized);
 			}
 		}
 

@@ -20,6 +20,8 @@ import net.azib.ipscan.gui.UserErrorException;
  */
 public class OpenerLauncher {
 	
+	private static final Logger LOG = Logger.getLogger(OpenerLauncher.class.getName());
+	
 	private FetcherRegistry fetcherRegistry;
 	private ScanningResultList scanningResults;
 	
@@ -48,7 +50,7 @@ public class OpenerLauncher {
 				}
 			}
 			catch (Exception e) {
-				Logger.global.log(Level.WARNING, "opener.failed", e);
+				LOG.log(Level.WARNING, "opener.failed", e);
 				throw new UserErrorException("opener.failed", openerString);
 			}
 		}

@@ -17,6 +17,8 @@ import net.azib.ipscan.gui.UserErrorException;
  */
 public class TerminalLauncher {
 	
+	private static final Logger LOG = Logger.getLogger(TerminalLauncher.class.getName());
+	
 	/**
 	 * Launches the execString in the terminal.
 	 * Supports Linux/Unix, MacOS, and Windows
@@ -45,7 +47,7 @@ public class TerminalLauncher {
 			}
 		}
 		catch (Exception e) {
-			Logger.global.log(Level.WARNING, "openTerminal.failed", e);
+			LOG.log(Level.WARNING, "openTerminal.failed", e);
 			throw new UserErrorException("openTerminal.failed", execString);
 		}
 	}
