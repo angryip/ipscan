@@ -28,6 +28,8 @@ import net.azib.ipscan.core.InetAddressUtils;
  */
 public class FileFeeder implements Feeder {
 	
+	private static final Logger LOG = Logger.getLogger(FileFeeder.class.getName());
+	
 	/** Found IP address Strings are put here */
 	private List foundIPAddresses;
 	private Iterator foundIPAddressesIterator;
@@ -113,7 +115,7 @@ public class FileFeeder implements Feeder {
 			return InetAddress.getByName((String) foundIPAddressesIterator.next());
 		}
 		catch (UnknownHostException e) {
-			Logger.global.log(Level.WARNING, "malformedIP", e);
+			LOG.log(Level.WARNING, "malformedIP", e);
 			throw new FeederException("malformedIP");
 		}
 	}
