@@ -25,8 +25,7 @@ doing a checkout:
 Under `ipscan' and `ipscan-unittest' you will find subdirectories:
 
 * ext       - external libraries used (some with source and other files)
-* src       - main Java sources
-* test      - unittest Java sources
+* src       - Java sources
 * resources - resources to be put into the jar file
 
 ---------------------------------------------------------------------------
