@@ -3,19 +3,22 @@
  */
 package net.azib.ipscan.exporters;
 
+import static org.junit.Assert.*;
+
 import java.util.Iterator;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * ExporterRegistryTest
  *
  * @author anton
  */
-public class ExporterRegistryTest extends TestCase {
+public class ExporterRegistryTest {
 	
 	private ExporterRegistry exporterRegistry = new ExporterRegistry(new Exporter[] {new TXTExporter(), new CSVExporter()});
 	
+	@Test
 	public void testIterator() {
 		for (Iterator i = exporterRegistry.iterator(); i.hasNext(); ) {
 			Exporter exporter = (Exporter) i.next();
@@ -24,6 +27,7 @@ public class ExporterRegistryTest extends TestCase {
 		}
 	}
 	
+	@Test
 	public void testCreate() {
 		Exporter exporter;
 		
@@ -34,7 +38,8 @@ public class ExporterRegistryTest extends TestCase {
 		assertTrue(exporter instanceof TXTExporter);
 	}
 
-	public void testCreateFailes() {
+	@Test
+	public void testCreateFailed() {
 		try {
 			exporterRegistry.createExporter("noextension");
 			fail();

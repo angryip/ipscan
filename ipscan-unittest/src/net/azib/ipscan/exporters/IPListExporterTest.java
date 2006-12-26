@@ -3,9 +3,14 @@
  */
 package net.azib.ipscan.exporters;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Locale;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import net.azib.ipscan.config.Labels;
 
@@ -16,7 +21,8 @@ import net.azib.ipscan.config.Labels;
  */
 public class IPListExporterTest extends AbstractExporterTestCase {
 	
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		Labels.initialize(Locale.ENGLISH);
 		super.setUp();
 	}
@@ -25,6 +31,7 @@ public class IPListExporterTest extends AbstractExporterTestCase {
 		return new IPListExporter();
 	}
 	
+	@Test
 	public void testBasic() throws IOException {
 		Labels labels = Labels.getInstance();
 		
@@ -41,15 +48,17 @@ public class IPListExporterTest extends AbstractExporterTestCase {
 		assertContains("123:78");		
 	}
 
+	@Test
 	public void testFetchersWithAppend() throws IOException {
 		// default implementation doesn't work
 	}
 	
-	
+	@Test
 	public void testFetchersWithoutAppend() throws IOException {
 		// default implementation doesn't work
 	}
 	
+	@Test
 	public void testNextAddressResultsWithNulls() throws IOException {
 		Labels labels = Labels.getInstance();
 
@@ -59,6 +68,7 @@ public class IPListExporterTest extends AbstractExporterTestCase {
 		exporter.end();
 	}
 
+	@Test
 	public void testFindFetcherByLabel() {
 		Labels labels = Labels.getInstance();
 		

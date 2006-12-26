@@ -3,15 +3,18 @@
  */
 package net.azib.ipscan.core;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+
+import org.junit.Test;
 
 /**
  * PortIteratorTest
  *
  * @author anton
  */
-public class PortIteratorTest extends TestCase {
+public class PortIteratorTest {
 
+	@Test
 	public void testBasic() {
 		assertEquals("1 2 3 5 7 ", iterateToString(new PortIterator("1,2,3,5,7")));
 		assertEquals("27 1 65535 ", iterateToString(new PortIterator("27, 1;65535")));
@@ -22,12 +25,14 @@ public class PortIteratorTest extends TestCase {
 		// TODO assertEquals("", iterateToString(new PortIterator("65536")));
 	}
 	
+	@Test
 	public void testRange() {
 		assertEquals("1 2 3 ", iterateToString(new PortIterator("1-3")));
 		assertEquals("65530 65531 65532 65533 65534 65535 ", iterateToString(new PortIterator("65530-65535")));
 		assertEquals("100 13 14 17 18 19 20 ", iterateToString(new PortIterator("100,13-14,17-20")));
 	}
 	
+	@Test
 	public void testCopy() {
 		assertNotNull(new PortIterator("1").copy());
 	}

@@ -3,33 +3,42 @@
  */
 package net.azib.ipscan.config;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.util.Iterator;
 import java.util.prefs.Preferences;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * OpenersConfigTest
  *
  * @author anton
  */
-public class OpenersConfigTest extends TestCase {
+public class OpenersConfigTest {
 	
 	private static final String PREFERENCE_NAME = "openers";
 	private Preferences preferences;
 	private OpenersConfig config;
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		preferences = Preferences.userRoot().node("ipscan-test");
 		preferences.clear();
 		config = new OpenersConfig(preferences);
 	}
 
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		preferences.removeNode();
 	}
 	
+	@Test
 	public void testAddNoStrings() {
 		try {
 			config.add("aa", "b");
@@ -38,6 +47,7 @@ public class OpenersConfigTest extends TestCase {
 		catch (IllegalArgumentException e) {}
 	}
 	
+	@Test
 	public void testAdd() {
 		config.add("Mega favorite", new OpenersConfig.Opener("a@@@0@@@c"));
 		assertEquals("a", config.getOpener("Mega favorite").execString);
@@ -46,6 +56,7 @@ public class OpenersConfigTest extends TestCase {
 		assertEquals(1, config.size());
 	}
 	
+	@Test
 	public void testOpenerDeserialize() {
 		OpenersConfig.Opener o = new OpenersConfig.Opener("uu@@uu@@@1@@@");
 		assertEquals("uu@@uu", o.execString);
@@ -58,6 +69,7 @@ public class OpenersConfigTest extends TestCase {
 		assertEquals("c:\\windoze system", o.workingDir.toString());
 	}
 	
+	@Test
 	public void testLoad() throws Exception {
 		preferences.put(PREFERENCE_NAME, "aa###aaa@@@1@@@###bb###bbb@@@1@@@");
 		OpenersConfig config = new OpenersConfig(preferences);
@@ -67,6 +79,7 @@ public class OpenersConfigTest extends TestCase {
 		assertEquals(2, config.size());
 	}
 	
+	@Test
 	public void testOrder() throws Exception {
 		preferences.put(PREFERENCE_NAME, "aa###aaa@@@1@@@###bb###bbb@@@1@@@");
 		OpenersConfig config = new OpenersConfig(preferences);
@@ -77,6 +90,7 @@ public class OpenersConfigTest extends TestCase {
 		assertFalse(namesIterator.hasNext());
 	}
 	
+	@Test
 	public void testStore() throws Exception {
 		config.add("x", new OpenersConfig.Opener("aa", true, null));
 		config.add("x y z", new OpenersConfig.Opener("a a", true, new File("zzz z")));
@@ -85,6 +99,7 @@ public class OpenersConfigTest extends TestCase {
 		assertEquals("x###aa@@@1@@@###x y z###a a@@@1@@@zzz z", preferences.get(PREFERENCE_NAME, ""));
 	}
 	
+	@Test
 	public void testUpdate() {
 		config.add("x", new OpenersConfig.Opener("aa", true, null));
 		config.add("y", new OpenersConfig.Opener("bb", false, null));
@@ -93,8 +108,8 @@ public class OpenersConfigTest extends TestCase {
 		config.update(new String[] {"x", "z"});
 		
 		Iterator i = config.iterateNames();
-		assertEquals("x", (String)i.next());
-		assertEquals("z", (String)i.next());
+		assertEquals("x", i.next());
+		assertEquals("z", i.next());
 		assertFalse(i.hasNext());
 	}
 

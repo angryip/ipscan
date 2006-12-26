@@ -1,14 +1,17 @@
 package net.azib.ipscan.core;
 
+import static org.junit.Assert.*;
+
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class InetAddressUtilsTest extends TestCase {
+public class InetAddressUtilsTest {
 	
+	@Test
 	public void testStartRangeByNetmask() throws UnknownHostException {
 		assertEquals("127.0.1.64", InetAddressUtils.startRangeByNetmask(
 				InetAddress.getByName("127.0.1.92"), 
@@ -21,6 +24,7 @@ public class InetAddressUtilsTest extends TestCase {
 				InetAddress.getByName("255.255.0.0")).getHostAddress());
 	}
 
+	@Test
 	public void testEndRangeByNetmask() throws UnknownHostException {
 		assertEquals("127.0.1.127", InetAddressUtils.endRangeByNetmask(
 				InetAddress.getByName("127.0.1.92"), 
@@ -33,12 +37,14 @@ public class InetAddressUtilsTest extends TestCase {
 				InetAddress.getByName("255.255.0.0")).getHostAddress());
 	}
 	
+	@Test
 	public void testIncrement() throws UnknownHostException {
 		assertEquals("127.0.0.2", InetAddressUtils.increment(InetAddress.getByName("127.0.0.1")).getHostAddress());
 		assertEquals("128.0.0.0", InetAddressUtils.increment(InetAddress.getByName("127.255.255.255")).getHostAddress());
 		assertEquals("0.0.0.0", InetAddressUtils.increment(InetAddress.getByName("255.255.255.255")).getHostAddress());
 	}
 
+	@Test
 	public void testGreaterThan() throws UnknownHostException {
 		assertTrue(InetAddressUtils.greaterThan(InetAddress.getByName("127.0.0.1"), InetAddress.getByName("127.0.0.0")));
 		assertTrue(InetAddressUtils.greaterThan(InetAddress.getByName("129.0.0.1"), InetAddress.getByName("128.0.0.0")));
@@ -48,6 +54,7 @@ public class InetAddressUtilsTest extends TestCase {
 		assertFalse(InetAddressUtils.greaterThan(InetAddress.getByName("127.0.0.1"), InetAddress.getByName("127.0.5.0")));
 	}	
 	
+	@Test
 	public void testParseNetmask() throws UnknownHostException {
 		assertEquals("255.255.255.255", InetAddressUtils.parseNetmask("255.255.255.255").getHostAddress());
 		assertEquals("255.255.255.255", InetAddressUtils.parseNetmask("255...255").getHostAddress());
@@ -57,6 +64,7 @@ public class InetAddressUtilsTest extends TestCase {
 		assertEquals("0.0.0.0", InetAddressUtils.parseNetmask("0.0.0.0").getHostAddress());
 	}
 	
+	@Test
 	public void testMaskPrototypeBytes() throws UnknownHostException {
 		byte[] bytes = InetAddress.getByName("32.23.34.254").getAddress();
 		InetAddressUtils.maskPrototypeAddressBytes(bytes, InetAddress.getByName("255.0.0.255").getAddress(), InetAddress.getByName("29.1.2.255").getAddress());
@@ -71,12 +79,14 @@ public class InetAddressUtilsTest extends TestCase {
 		assertEquals("29.128.127.73", InetAddress.getByAddress(bytes).getHostAddress());
 	}
 	
+	@Test
 	public void testIsLikelyBroadcast() throws UnknownHostException {
 		assertTrue(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("127.0.2.0")));
 		assertTrue(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("127.6.32.255")));
 		assertFalse(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("127.4.5.6")));
 	}
 	
+	@Test
 	public void testGetAddressByName() throws Exception {
 		Enumeration ifaces = NetworkInterface.getNetworkInterfaces();
 		ifaces.nextElement();

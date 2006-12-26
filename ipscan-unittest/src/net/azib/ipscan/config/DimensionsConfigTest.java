@@ -3,32 +3,38 @@
  */
 package net.azib.ipscan.config;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.prefs.Preferences;
 
 import org.eclipse.swt.graphics.Rectangle;
-
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * DimensionsConfigTest
  * 
  * @author anton
  */
-public class DimensionsConfigTest extends TestCase {
+public class DimensionsConfigTest {
 
 	private Preferences preferences;
 	private DimensionsConfig config;
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		preferences = Preferences.userRoot().node("ipscan-test");
 		config = new DimensionsConfig(preferences);
 	}
 
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		preferences.removeNode();
 	}
 
-	public void testGetWindowDimensions() throws Exception {
+	@Test
+	public void getWindowDimensions() throws Exception {
 		config.windowHeight = 1;
 		config.windowWidth = 2;
 		config.windowTop = 3;
@@ -36,7 +42,8 @@ public class DimensionsConfigTest extends TestCase {
 		assertEquals(new Rectangle(4, 3, 2, 1), config.getWindowBounds());
 	}
 
-	public void testStore() throws Exception {
+	@Test
+	public void store() throws Exception {
 		config.setWindowBounds(new Rectangle(11, 22, 33, 44), false);
 		config.store();
 		assertEquals(11, preferences.getInt("windowLeft", 0));
@@ -46,7 +53,8 @@ public class DimensionsConfigTest extends TestCase {
 		assertEquals(11, preferences.getInt("windowLeft", 0));
 	}
 
-	public void testColumnWidths() throws Exception {
+	@Test
+	public void columnWidths() throws Exception {
 		config.setColumnWidth("ABC", 35);
 		assertEquals(35, config.getColumnWidth("ABC"));
 		assertEquals(35, preferences.getInt("columnWidth.ABC", 0));

@@ -1,14 +1,18 @@
 package net.azib.ipscan.feeders;
 
-import junit.framework.TestCase;
+import static net.azib.ipscan.feeders.FeederTestUtils.*;
+import static org.junit.Assert.*;
+
+import org.junit.Test;
 
 /**
  * Test of RangeFeeder 
  * 
  * @author anton
  */
-public class RangeFeederTest extends TestCase {
+public class RangeFeederTest {
 
+	@Test
 	public void testHappyPath() throws FeederException {
 		RangeFeeder rangeFeeder = new RangeFeeder();
 		assertEquals(2, rangeFeeder.initialize(new String[] {"10.11.12.13", "10.11.12.15"}));
@@ -21,33 +25,36 @@ public class RangeFeederTest extends TestCase {
 		assertFalse(rangeFeeder.hasNext());
 	}
 	
+	@Test
 	public void testInvalidRange() {
 		try {
 			new RangeFeeder().initialize("10.11.12.13", "10.11.12.10");
 			fail();
 		}
 		catch (FeederException e) {
-			FeederTestUtils.assertFeederException("range.greaterThan", e);
+			assertFeederException("range.greaterThan", e);
 		}
 	}
 
+	@Test
 	public void testMalformedIP() {
 		try {
 			new RangeFeeder().initialize("10.11.12.abc", "10.11.12.10");
 			fail();
 		}
 		catch (FeederException e) {
-			FeederTestUtils.assertFeederException("malformedIP", e);
+			assertFeederException("malformedIP", e);
 		}
 		try {
 			new RangeFeeder().initialize("10.11.12.1", "ziga");
 			fail();
 		}
 		catch (FeederException e) {
-			FeederTestUtils.assertFeederException("malformedIP", e);
+			assertFeederException("malformedIP", e);
 		}
 	}
 	
+	@Test
 	public void testExtremeValues() {
 		RangeFeeder rangeFeeder = null; 
 		
@@ -63,6 +70,7 @@ public class RangeFeederTest extends TestCase {
 		assertFalse(rangeFeeder.hasNext());
 	}
 		
+	@Test
 	public void testGetPercentageComplete() throws Exception {
 		RangeFeeder rangeFeeder = new RangeFeeder();
 		rangeFeeder.initialize("100.11.12.13", "100.11.12.15");
@@ -80,6 +88,7 @@ public class RangeFeederTest extends TestCase {
 		assertEquals(100, rangeFeeder.getPercentageComplete());
 	}
 	
+	@Test
 	public void testGetInfo() {
 		RangeFeeder rangeFeeder = new RangeFeeder();
 		rangeFeeder.initialize("100.11.12.13", "100.11.12.13");

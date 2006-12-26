@@ -3,25 +3,34 @@
  */
 package net.azib.ipscan.gui.actions;
 
+import static org.junit.Assert.*;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistryImpl;
 import net.azib.ipscan.fetchers.HostnameFetcher;
 import net.azib.ipscan.fetchers.IPFetcher;
 import net.azib.ipscan.gui.UserErrorException;
-import junit.framework.TestCase;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * OpenerLauncherTest
  *
  * @author anton
  */
-public class OpenerLauncherTest extends TestCase {
+public class OpenerLauncherTest {
 
-	public void testReplaceValues() {
+	@Before
+	public void setUp() {
 		Config.initialize();
-		Fetcher[] fetchers = {new IPFetcher(), new HostnameFetcher(), new IPFetcher()};
+	}
+
+	@Test
+	public void testReplaceValues() {
+		Fetcher[] fetchers = {new IPFetcher(), new HostnameFetcher(), new CommentFetcher()};
 		OpenerLauncher ol = new OpenerLauncher(new FetcherRegistryImpl(fetchers), null) {
 			String getScannedValue(int selectedItem, int fetcherIndex) {
 				switch (fetcherIndex) {
@@ -48,11 +57,11 @@ public class OpenerLauncherTest extends TestCase {
 		}
 
 		try {
-			ol.prepareOpenerStringForItem("${fetcher.hostname}", 0);
+			ol.prepareOpenerStringForItem("${fetcher.comment}", 0);
 			fail();
 		}
 		catch (UserErrorException e) {
-			assertEquals(Labels.getLabel("exception.UserErrorException.opener.nullFetcherValue") + "fetcher.ping.ttl", e.getMessage());
+			assertEquals(Labels.getLabel("exception.UserErrorException.opener.nullFetcherValue") + "fetcher.comment", e.getMessage());
 		}
 	}
 }

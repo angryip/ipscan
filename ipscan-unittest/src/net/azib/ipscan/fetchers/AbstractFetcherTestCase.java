@@ -3,9 +3,13 @@
  */
 package net.azib.ipscan.fetchers;
 
+import static org.junit.Assert.*;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
-import junit.framework.TestCase;
+
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * TestCase for Fetchers.
@@ -13,17 +17,20 @@ import junit.framework.TestCase;
  *
  * @author anton
  */
-public abstract class AbstractFetcherTestCase extends TestCase {
+public abstract class AbstractFetcherTestCase {
 	
 	Fetcher fetcher;
 	
-	static {
-		// some fetchers are Configurale and therefore need an initialized Config
+	@BeforeClass
+	public static void globalSetUp() {
+		// some fetchers are Configurable and therefore need an initialized Config
 		Config.initialize();
 	}
 	
-	protected abstract void setUp() throws Exception;
+	@Before
+	public abstract void setUp() throws Exception;
 
+	@Test
 	public void testLabel() {
 		assertNotNull(Labels.getLabel(fetcher.getLabel()));
 	}

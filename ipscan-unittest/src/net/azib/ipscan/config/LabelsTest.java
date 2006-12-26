@@ -1,5 +1,10 @@
 package net.azib.ipscan.config;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -10,17 +15,19 @@ import java.util.MissingResourceException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.azib.ipscan.config.Labels;
-
 import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 
-public class LabelsTest extends TestCase {
+import org.junit.Before;
+import org.junit.Test;
 
-	protected void setUp() throws Exception {
+public class LabelsTest {
+
+	@Before
+	public void setUp() throws Exception {
 		// Labels should initialize themselves on first load
 	}
 	
+	@Test
 	public void testReinitialize() {
 		Labels.initialize(new Locale("en"));
 		Object oldInternalInstance = Labels.getInstance();
@@ -28,6 +35,7 @@ public class LabelsTest extends TestCase {
 		assertTrue(oldInternalInstance == Labels.getInstance());
 	}
 	
+	@Test
 	public void testInitialize() {
 		Labels.initialize(new Locale("en"));
 		Object oldInternalInstance = Labels.getInstance();
@@ -35,10 +43,12 @@ public class LabelsTest extends TestCase {
 		assertFalse(oldInternalInstance == Labels.getInstance());
 	}
 
+	@Test
 	public void testSimpleLabel() {
 		assertEquals("&File", Labels.getLabel("menu.file"));
 	}
 	
+	@Test
 	public void testInexistentLabel() {
 		try {
 			Labels.getLabel("abra-cadabra");
@@ -49,12 +59,13 @@ public class LabelsTest extends TestCase {
 		}
 	}
 	
+	@Test
 	public void testImageAsStream() throws IOException {
 		InputStream stream = Labels.getInstance().getImageAsStream("button.start.img");
-		// Now check the first bytes of PNG image header
-		assertEquals('G', stream.read());
-		assertEquals('I', stream.read());
-		assertEquals('F', stream.read());
+		// Now check the first bytes of GIF image header
+		assertEquals((int)'G', stream.read());
+		assertEquals((int)'I', stream.read());
+		assertEquals((int)'F', stream.read());
 		stream.close();
 	}
 	
@@ -62,6 +73,7 @@ public class LabelsTest extends TestCase {
 	 * This test recursively processes all source files and tries
 	 * to resolve every label it finds. 
 	 */
+	@Test
 	public void testAllLabels() throws IOException {
 		File srcDir = new File("src");
 		recurseAndTestLabels(srcDir);

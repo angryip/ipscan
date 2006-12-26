@@ -3,16 +3,25 @@
  */
 package net.azib.ipscan.core.net;
 
+import static org.junit.Assert.*;
 import net.azib.ipscan.config.Labels;
-import junit.framework.TestCase;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * PingerRegistryImplTest
  *
  * @author Anton Keks
  */
-public class PingerRegistryImplTest extends TestCase {
+public class PingerRegistryImplTest {
+	
+	@Before
+	public void setUp() {
+		System.setProperty("java.library.path", "../swt/lib");
+	}
 
+	@Test
 	public void testGetRegisteredNames() throws Exception {
 		String[] names = new PingerRegistryImpl().getRegisteredNames();
 		assertNotNull(names);
@@ -21,6 +30,7 @@ public class PingerRegistryImplTest extends TestCase {
 		}
 	}
 	
+	@Test
 	public void testCreatePinger() throws Exception {
 		PingerRegistry registry = new PingerRegistryImpl();
 		String[] names = registry.getRegisteredNames();

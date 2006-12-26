@@ -3,6 +3,8 @@
  */
 package net.azib.ipscan.exporters;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -10,6 +12,9 @@ import java.util.Locale;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
@@ -21,7 +26,8 @@ import net.azib.ipscan.config.Version;
  */
 public class XMLExporterTest extends AbstractExporterTestCase {
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		Labels.initialize(Locale.ENGLISH);
 		super.setUp();
 	}
@@ -30,6 +36,7 @@ public class XMLExporterTest extends AbstractExporterTestCase {
 		return new XMLExporter();
 	}
 	
+	@Test
 	public void testHeaderWithoutAppend() throws IOException {
 		exporter.start(outputStream, "feederstuff");
 		exporter.end();
@@ -37,6 +44,7 @@ public class XMLExporterTest extends AbstractExporterTestCase {
 		assertContains(Version.WEBSITE);
 	}
 
+	@Test
 	public void testFetchersWithoutAppend() throws IOException {
 		exporter.start(outputStream, "feederstuff");
 		exporter.setFetchers(new String[] {"fetcher1", Labels.getLabel("fetcher.ip"), "mega long fetcher 2"});
@@ -48,6 +56,7 @@ public class XMLExporterTest extends AbstractExporterTestCase {
 		assertContains("mega long fetcher 2");		
 	}
 
+	@Test
 	public void testFetchersWithAppend() {
 		try {
 			exporter.setAppend(true);
@@ -58,6 +67,7 @@ public class XMLExporterTest extends AbstractExporterTestCase {
 		}
 	}
 
+	@Test
 	public void testFeederInfoWithName() throws IOException {
 		exporter.start(outputStream, "Blah: 192.168.1.1 - 192.168.3.255");
 		exporter.end();
@@ -65,12 +75,14 @@ public class XMLExporterTest extends AbstractExporterTestCase {
 		assertContains("192.168.1.1 - 192.168.3.255");
 	}
 
+	@Test
 	public void testFeederInfoNoName() throws IOException {
 		exporter.start(outputStream, "Booga 192.168.1.1/123");
 		exporter.end();
 		assertContains("Booga 192.168.1.1/123");
 	}
 	
+	@Test
 	public void testValidXML() throws Exception {
 		exporter.start(outputStream, "<megaInfo'''");
 		exporter.setFetchers(new String[] {"IP", "hello", "fet::cher2"});

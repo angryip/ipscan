@@ -3,6 +3,8 @@
  */
 package net.azib.ipscan.core;
 
+import static org.junit.Assert.*;
+
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +12,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
@@ -21,22 +24,25 @@ import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
  *
  * @author anton
  */
-public class ScanningResultListTest extends TestCase {
+public class ScanningResultListTest {
 	
 	private FetcherRegistry fetcherRegistry;
 	private ScanningResultList scanningResults;
 	
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		fetcherRegistry = new DummyFetcherRegistry();
 		scanningResults =  new ScanningResultList(fetcherRegistry);
 	}
 
+	@Test
 	public void testAdd() throws Exception {
 		int index = scanningResults.add(InetAddress.getByName("10.0.0.5"));
 		assertEquals("10.0.0.5", scanningResults.getResult(index).getAddress().getHostAddress());
 		assertEquals("10.0.0.5", scanningResults.getResult(index).getValues().get(0));
 	}
 	
+	@Test
 	public void testIterator() throws Exception {
 		assertFalse(scanningResults.iterator().hasNext());
 		scanningResults.add(InetAddress.getLocalHost());
@@ -46,6 +52,7 @@ public class ScanningResultListTest extends TestCase {
 		assertFalse(i.hasNext());
 	}
 	
+	@Test
 	public void testClear() throws Exception {
 		fetcherRegistry.getSelectedFetchers().clear();
 		fetcherRegistry.getSelectedFetchers().add(new DummyFetcher("hello"));
@@ -56,11 +63,13 @@ public class ScanningResultListTest extends TestCase {
 		assertEquals("Cached Fetchers must be re-initilized", 1, scanningResults.getFetchers().size());
 	}
 	
+	@Test
 	public void testCachedFetchers() throws Exception {
 		fetcherRegistry.getSelectedFetchers().clear();
 		assertEquals("Fetchers should be cached from the last scan", 4, scanningResults.getFetchers().size());
 	}
 	
+	@Test
 	public void testRemove() throws Exception {
 		scanningResults.add(InetAddress.getByName("127.9.9.1"));
 		int i2 = scanningResults.add(InetAddress.getByName("127.9.9.2"));
@@ -76,6 +85,7 @@ public class ScanningResultListTest extends TestCase {
 		assertFalse(i.hasNext());
 	}
 	
+	@Test
 	public void testSort() throws Exception {
 		scanningResults.add(InetAddress.getByName("127.9.9.1"));
 		scanningResults.getResult(0).setValue(1, "x");
@@ -96,6 +106,7 @@ public class ScanningResultListTest extends TestCase {
 		assertFalse(i.hasNext());
 	}
 	
+	@Test
 	public void testGetResultsAsString() throws Exception {
 		List fetchers = scanningResults.getFetchers();
 		int index = scanningResults.add(InetAddress.getByName("172.28.43.55"));
@@ -137,7 +148,7 @@ public class ScanningResultListTest extends TestCase {
 	
 	private static class DummyFetcherRegistry implements FetcherRegistry {
 		
-		private List fetchers = new ArrayList(Arrays.asList(new Fetcher[] {new DummyFetcher("fetcher.ip"), new DummyFetcher("fetcher.ping"), new DummyFetcher("fetcher.hostname"), new DummyFetcher("fetcher.ping.ttl")}));
+		private List<Fetcher> fetchers = new ArrayList<Fetcher>(Arrays.asList(new Fetcher[] {new DummyFetcher("fetcher.ip"), new DummyFetcher("fetcher.ping"), new DummyFetcher("fetcher.hostname"), new DummyFetcher("fetcher.ping.ttl")}));
 		
 		public Collection getRegisteredFetchers() {
 			return null;

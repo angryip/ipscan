@@ -3,24 +3,28 @@
  */
 package net.azib.ipscan.core;
 
+import static org.junit.Assert.*;
 import net.azib.ipscan.config.Labels;
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * NotAvailableValueTest
  *
  * @author anton
  */
-public class NotAvailableValueTest extends TestCase {
+public class NotAvailableValueTest {
 
+	@Test
 	public void testEquals() throws Exception {
 		assertEquals(NotAvailableValue.INSTANCE, NotAvailableValue.INSTANCE);
 	}
 	
+	@Test
 	public void testToString() throws Exception {
 		assertEquals(Labels.getLabel("fetcher.value.notAvailable"), NotAvailableValue.INSTANCE.toString());
 	}
 	
+	@Test
 	public void testCompareTo() throws Exception {
 		assertTrue(Comparable.class.isAssignableFrom(NotAvailableValue.class));
 		assertEquals(0, NotAvailableValue.INSTANCE.compareTo(NotAvailableValue.INSTANCE));

@@ -1,16 +1,20 @@
 package net.azib.ipscan;
 
+import static org.junit.Assert.*;
+
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.feeders.FeederException;
 
-public class MainTest extends TestCase {
+public class MainTest {
 
-	public void testGetLocalizedMessage() {
+	@Test
+	public void getLocalizedMessage() {
 		// unknown exception
 		final boolean wasStackTraceLogged[] = {false};
 		Throwable e = new Exception("hello, test!");
@@ -36,7 +40,8 @@ public class MainTest extends TestCase {
 				Main.getLocalizedMessage(new OutOfMemoryError()));
 	}
 	
-	public void testClassShortName() {
+	@Test
+	public void classShortName() {
 		assertEquals("String", Main.getClassShortName(String.class));
 		assertEquals("MainTest", Main.getClassShortName(MainTest.class));
 	}

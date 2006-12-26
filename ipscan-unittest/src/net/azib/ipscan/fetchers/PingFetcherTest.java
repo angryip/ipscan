@@ -3,6 +3,8 @@
  */
 package net.azib.ipscan.fetchers;
 
+import org.junit.Before;
+
 /**
  * PingFetcherTest
  *
@@ -10,7 +12,8 @@ package net.azib.ipscan.fetchers;
  */
 public class PingFetcherTest extends AbstractFetcherTestCase {
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		fetcher = new PingFetcher(null);
 	}
 

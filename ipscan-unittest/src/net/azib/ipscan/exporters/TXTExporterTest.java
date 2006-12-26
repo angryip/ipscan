@@ -3,7 +3,11 @@
  */
 package net.azib.ipscan.exporters;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
+
+import org.junit.Test;
 
 import net.azib.ipscan.config.Version;
 
@@ -18,6 +22,7 @@ public class TXTExporterTest extends AbstractExporterTestCase {
 		return new TXTExporter();
 	}
 	
+	@Test
 	public void testPad() {
 		assertEquals("a               ", ((TXTExporter)exporter).pad("a", 1));
 		assertEquals("                ", ((TXTExporter)exporter).pad("", 0));
@@ -26,6 +31,7 @@ public class TXTExporterTest extends AbstractExporterTestCase {
 		assertEquals("5               ", ((TXTExporter)exporter).pad(new Integer(5), 5));
 	}
 	
+	@Test
 	public void testHeaderWithoutAppend() throws IOException {
 		exporter.start(outputStream, "feederstuff");
 		exporter.end();
@@ -33,6 +39,7 @@ public class TXTExporterTest extends AbstractExporterTestCase {
 		assertContains(Version.WEBSITE);
 	}
 
+	@Test
 	public void testHeaderWithAppend() throws IOException {
 		exporter.setAppend(true);
 		exporter.start(outputStream, "feederstuff");
@@ -41,16 +48,19 @@ public class TXTExporterTest extends AbstractExporterTestCase {
 		assertNotContains(Version.WEBSITE);
 	}
 
+	@Test
 	public void testFetchersWithAppend() throws IOException {
 		super.testFetchersWithAppend();
 		assertTrue(((TXTExporter)exporter).padLengths != null);		
 	}
 
+	@Test
 	public void testFetchersWithoutAppend() throws IOException {
 		super.testFetchersWithoutAppend();
 		assertTrue(((TXTExporter)exporter).padLengths != null);		
 	}
 	
+	@Test
 	public void testFeederInfo() throws IOException {
 		exporter.start(outputStream, "192.168.1.1 - 192.168.3.255");
 		exporter.end();

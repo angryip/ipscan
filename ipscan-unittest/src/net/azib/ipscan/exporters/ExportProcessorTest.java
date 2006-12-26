@@ -3,6 +3,8 @@
  */
 package net.azib.ipscan.exporters;
 
+import static org.junit.Assert.*;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,7 +14,7 @@ import java.net.InetAddress;
 import java.util.Collection;
 import java.util.Collections;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
@@ -26,8 +28,9 @@ import net.azib.ipscan.fetchers.IPFetcher;
  *
  * @author anton
  */
-public class ExportProcessorTest extends TestCase {
+public class ExportProcessorTest {
 
+	@Test
 	public void testProcess() throws Exception {
 		File file = File.createTempFile("exportTest", "txt");
 		ExportProcessor exportProcessor = new ExportProcessor(new TXTExporter(), file.getAbsolutePath());
@@ -60,6 +63,7 @@ public class ExportProcessorTest extends TestCase {
 		return buffer.toString();
 	}
 	
+	@Test
 	public void testProcessWithSelector() throws Exception {
 		File file = File.createTempFile("exportTest", "txt");
 		ExportProcessor exportProcessor = new ExportProcessor(new TXTExporter(), file.getAbsolutePath());

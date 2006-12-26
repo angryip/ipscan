@@ -1,16 +1,20 @@
 package net.azib.ipscan.feeders;
 
+import static org.junit.Assert.*;
+import static net.azib.ipscan.feeders.FeederTestUtils.*;
+
 import java.io.StringReader;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * Test of FileFeeder
  *
  * @author anton
  */
-public class FileFeederTest extends TestCase {
+public class FileFeederTest {
 
+	@Test
 	public void testHappyPath() throws FeederException {
 		StringReader reader = new StringReader("10.11.12.13 10.11.12.14 10.11.12.15");
 		FileFeeder fileFeeder = new FileFeeder();
@@ -24,6 +28,7 @@ public class FileFeederTest extends TestCase {
 		assertFalse(fileFeeder.hasNext());
 	}
 	
+	@Test
 	public void testStringParams() {
 		try {
 			FileFeeder fileFeeder = new FileFeeder();
@@ -34,16 +39,18 @@ public class FileFeederTest extends TestCase {
 		}
 	}
 	
+	@Test
 	public void testNoFile() {
 		try {
 			new FileFeeder().initialize("no_such_file.txt");
 			fail();
 		}
 		catch (FeederException e) {
-			FeederTestUtils.assertFeederException("file.notExists", e);
+			assertFeederException("file.notExists", e);
 		}		
 	}
 	
+	@Test
 	public void testNothingFound() {
 		try {
 			StringReader reader = new StringReader("no ip addresses here");			
@@ -55,6 +62,7 @@ public class FileFeederTest extends TestCase {
 		}
 	}
 	
+	@Test
 	public void testExtractFromDifferentFormats() {
 		
 		assertAddressCount("The 127.0.0.1 is the localhost IP,\n but 192.168.255.255 is probably a broadcast IP", 2);
@@ -75,19 +83,8 @@ public class FileFeederTest extends TestCase {
 
 		assertAddressCount("<xml>66.87.99.128</xml>\n<xml>000.87.99.129</xml>0000.1.1.1", 2);
 	}
-	
-	private void assertAddressCount(String s, int addressCount) {
-		StringReader reader = new StringReader(s);			
-		FileFeeder feeder = new FileFeeder();
-		feeder.initialize(reader);
-		int numAddresses = 0;
-		while (feeder.hasNext()) {
-			feeder.next();
-			numAddresses++;
-		}
-		assertEquals(addressCount, numAddresses);
-	}
-		
+			
+	@Test
 	public void testGetPercentageComplete() throws Exception {
 		StringReader reader = new StringReader("1.2.3.4, 2.3.4.5, mega cool 0.0.0.0");
 		FileFeeder fileFeeder = new FileFeeder();
@@ -107,11 +104,24 @@ public class FileFeederTest extends TestCase {
 		assertEquals(100, fileFeeder.getPercentageComplete());
 	}	
 	
+	@Test
 	public void testGetInfo() {
 		FileFeeder fileFeeder = new FileFeeder();
 		StringReader reader = new StringReader("255.255.255.255, 2.3.4.5, mega cool 0.0.0.0");
 		fileFeeder.initialize(reader);
 		assertEquals("3", fileFeeder.getInfo());
+	}
+
+	private void assertAddressCount(String s, int addressCount) {
+		StringReader reader = new StringReader(s);			
+		FileFeeder feeder = new FileFeeder();
+		feeder.initialize(reader);
+		int numAddresses = 0;
+		while (feeder.hasNext()) {
+			feeder.next();
+			numAddresses++;
+		}
+		assertEquals(addressCount, numAddresses);
 	}
 
 }

@@ -3,6 +3,8 @@
  */
 package net.azib.ipscan.exporters;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -10,7 +12,9 @@ import java.net.InetAddress;
 
 import net.azib.ipscan.config.Labels;
 import junit.framework.ComparisonFailure;
-import junit.framework.TestCase;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * TestCase for Exporters.
@@ -18,20 +22,31 @@ import junit.framework.TestCase;
  *
  * @author anton
  */
-public abstract class AbstractExporterTestCase extends TestCase {
+public abstract class AbstractExporterTestCase {
 	
 	protected Exporter exporter;
 	protected ByteArrayOutputStream outputStream;
 	protected String outputContent;
 	
+	protected abstract Exporter createExporter();
+
+	@Before
+	public void setUp() throws Exception {
+		outputStream = new ByteArrayOutputStream();
+		exporter = createExporter();
+	}
+
+	@Test
 	public void testLabel() {
 		assertNotNull(Labels.getLabel(exporter.getLabel()));
 	}
 
+	@Test
 	public void testFilenameExtension() {
 		assertNotNull(exporter.getFilenameExtension());
 	}
 	
+	@Test
 	public void testStreamFlushAndClose() throws IOException {
 		final boolean wasClosed[] = new boolean[] {false, false};
 		Exporter exporter2 = createExporter();
@@ -57,6 +72,7 @@ public abstract class AbstractExporterTestCase extends TestCase {
 		assertTrue(wasClosed[1]);
 	}
 	
+	@Test
 	public void testBasic() throws Exception {
 		exporter.start(outputStream, "feederstuff");
 		exporter.setFetchers(new String[] {"IP", "hello", "fetcher2"});
@@ -71,14 +87,8 @@ public abstract class AbstractExporterTestCase extends TestCase {
 		assertContains("buga");
 		assertContains("-1");
 	}
-	
-	protected abstract Exporter createExporter();
-
-	protected void setUp() throws Exception {
-		outputStream = new ByteArrayOutputStream();
-		exporter = createExporter();
-	}
-	
+		
+	@Test
 	public void testFetchersWithoutAppend() throws IOException {
 		exporter.start(outputStream, "feederstuff");
 		exporter.setFetchers(new String[] {"IP", "fetcher1", "mega long fetcher 2"});
@@ -88,6 +98,7 @@ public abstract class AbstractExporterTestCase extends TestCase {
 		assertContains("mega long fetcher 2");		
 	}
 
+	@Test
 	public void testFetchersWithAppend() throws IOException {
 		exporter.setAppend(true);
 		exporter.start(outputStream, "feederstuff");
@@ -98,11 +109,13 @@ public abstract class AbstractExporterTestCase extends TestCase {
 		assertNotContains("mega long fetcher 2");		
 	}
 	
+	@Test
 	public void testClone() throws CloneNotSupportedException {
 		Exporter exporter2 = (Exporter) exporter.clone();
 		assertNotSame(exporter, exporter2);
 	}
 	
+	@Test
 	public void testNextAddressResultsWithNulls() throws IOException {
 		exporter.start(outputStream, "feederstuff");
 		exporter.setFetchers(new String[] {"IP", "fetcher1", "mega long fetcher 2"});
@@ -110,7 +123,7 @@ public abstract class AbstractExporterTestCase extends TestCase {
 		exporter.end();
 	}
 
-	private void assertContains(String string, boolean contains) throws IOException {
+	protected void assertContains(String string, boolean contains) throws IOException {
 		if (outputContent == null) {
 			outputStream.close();
 			// TODO: encoding???

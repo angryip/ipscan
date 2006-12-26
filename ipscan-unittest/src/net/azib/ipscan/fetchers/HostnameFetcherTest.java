@@ -3,8 +3,13 @@
  */
 package net.azib.ipscan.fetchers;
 
+import static org.junit.Assert.*;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import net.azib.ipscan.core.ScanningSubject;
 
@@ -15,10 +20,12 @@ import net.azib.ipscan.core.ScanningSubject;
  */
 public class HostnameFetcherTest extends AbstractFetcherTestCase {
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		fetcher = new HostnameFetcher();
 	}
 	
+	@Test
 	public void testScan() throws UnknownHostException {
 		// Some of these tests are run inside of if's to prevent their failing on certain network configurations
 		if (!InetAddress.getLocalHost().getCanonicalHostName().equals(InetAddress.getLocalHost().getHostAddress()))
@@ -29,5 +36,4 @@ public class HostnameFetcherTest extends AbstractFetcherTestCase {
 		assertNull(fetcher.scan(new ScanningSubject(InetAddress.getByName("255.255.255.255"))));
 		assertNull(fetcher.scan(new ScanningSubject(InetAddress.getByName("172.13.66.254"))));
 	}
-
 }

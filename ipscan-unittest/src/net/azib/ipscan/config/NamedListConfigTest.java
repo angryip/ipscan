@@ -3,38 +3,47 @@
  */
 package net.azib.ipscan.config;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 import java.util.Iterator;
 import java.util.prefs.Preferences;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * NamedListConfigTest
  *
  * @author anton
  */
-public class NamedListConfigTest extends TestCase {
+public class NamedListConfigTest {
 	
 	private static final String PREFERENCE_NAME = "blah";
 	private Preferences preferences;
 	private NamedListConfig config;
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		preferences = Preferences.userRoot().node("ipscan-test");
 		preferences.clear();
 		config = new NamedListConfig(preferences, PREFERENCE_NAME);
 	}
 
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		preferences.removeNode();
 	}
 	
+	@Test
 	public void testAdd() {
 		config.add("Mega favorite", "aaa:xxx");
 		assertEquals("aaa:xxx", config.get("Mega favorite"));
 		assertEquals(1, config.size());
 	}
 	
+	@Test
 	public void testLoad() throws Exception {
 		preferences.put(PREFERENCE_NAME, "aa###aaa###bb###bbb###cc###ccc");
 		NamedListConfig config = new NamedListConfig(preferences, PREFERENCE_NAME);
@@ -45,6 +54,7 @@ public class NamedListConfigTest extends TestCase {
 		assertEquals(3, config.size());
 	}
 	
+	@Test
 	public void testOrder() throws Exception {
 		preferences.put(PREFERENCE_NAME, "aa###aaa###bb###bbb###cc###ccc");
 		NamedListConfig config = new NamedListConfig(preferences, PREFERENCE_NAME);
@@ -56,6 +66,7 @@ public class NamedListConfigTest extends TestCase {
 		assertFalse(namesIterator.hasNext());
 	}
 	
+	@Test
 	public void testStore() throws Exception {
 		config.add("x", "y");
 		config.add("Buga muga x,1,2,3,4,5", "opopo op : , . l ; - # | @@");
@@ -65,6 +76,7 @@ public class NamedListConfigTest extends TestCase {
 		assertEquals("x###y###Buga muga x,1,2,3,4,5###opopo op : , . l ; - # | @@###127.0.0.1###192.168.2.25", preferences.get(PREFERENCE_NAME, ""));
 	}
 	
+	@Test
 	public void testUpdate() {
 		config.add("z", "zzz");
 		config.add("y", "yyy");

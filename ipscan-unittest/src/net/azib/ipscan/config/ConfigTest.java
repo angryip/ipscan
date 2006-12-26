@@ -3,18 +3,22 @@
  */
 package net.azib.ipscan.config;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * @author anton
  */
-public class ConfigTest extends TestCase {
+public class ConfigTest {
 	
-	protected void setUp() throws Exception {
-		super.setUp();
+	@BeforeClass
+	public static void globalSetUp() throws Exception {
 		Config.initialize();
 	}
 
+	@Test
 	public void testInitialize() {
 		assertNotNull(Config.getPreferences());
 		assertNotNull(Config.getGlobal());

@@ -3,6 +3,8 @@
  */
 package net.azib.ipscan.core;
 
+import static org.junit.Assert.*;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -10,7 +12,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
@@ -21,15 +24,17 @@ import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
  *
  * @author anton
  */
-public class ScannerTest extends TestCase {
+public class ScannerTest {
 	
-	private Set initCalled = new HashSet();
-	private Set cleanupCalled = new HashSet();
+	private Set<Class> initCalled = new HashSet<Class>();
+	private Set<Class> cleanupCalled = new HashSet<Class>();
 	
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		Config.initialize();
 	}
 
+	@Test
 	public void testScan() throws Exception {
 		// initialize with fake fetchers
 		Scanner scanner = new Scanner(new FakeFetcherRegistry());
@@ -47,6 +52,7 @@ public class ScannerTest extends TestCase {
 		assertEquals(NotScannedValue.INSTANCE, scanningResult.getValues().get(3));
 	}
 	
+	@Test
 	public void testInit() throws Exception {
 		// initialize with fake fetchers
 		Scanner scanner = new Scanner(new FakeFetcherRegistry());
@@ -57,6 +63,7 @@ public class ScannerTest extends TestCase {
 		assertTrue(initCalled.contains(AbortingFetcher.class));
 	}
 	
+	@Test
 	public void testCleanup() throws Exception {
 		// initialize with fake fetchers
 		Scanner scanner = new Scanner(new FakeFetcherRegistry());

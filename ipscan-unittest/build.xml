@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<project basedir="." name="ipscan" default="test">
+
+	<property name="dist" value="dist"/>
+	<property name="ext" value="ext"/>
+	<property name="src" value="src"/>
+	<property name="testresults" value="testresults"/>
+			
+	<property name="swt" value="../swt"/>
+	<property name="emma.dir" value="${ext}/emma"/>
+	
+	<path id="emma.lib">
+		<pathelement location="${emma.dir}/emma.jar" />
+		<pathelement location="${emma.dir}/emma_ant.jar" />
+	</path>
+
+	<taskdef resource="emma_ant.properties" classpathref="emma.lib"/>
+	
+	<patternset id="classpath.resources">
+		<exclude name="**/*.java"/>
+	</patternset>
+
+	<target name="test" depends="cleanup,compile-tests,do_test,cleanup_end"/>
+
+	<target name="cleanup">
+		<delete dir="bin"/>
+		<mkdir dir="bin"/>
+	</target>
+	
+    <target name="cleanup_end">
+        <antcall target="cleanup"/>
+    </target>
+
+	<macrodef name="compile">
+		<attribute name="path"/>
+		<attribute name="dest" default="@{path}"/>
+		<attribute name="extpath" default=""/>
+		<attribute name="debug" default="false"/>
+		<attribute name="optimize" default="true"/>
+		<sequential>
+			<mkdir dir="bin"/>
+			<javac destdir="bin" debug="@{debug}" source="1.5" target="1.5">
+				<src path="@{path}"/>
+				<src path="@{extpath}"/>				
+				<classpath>
+					<fileset dir="${ext}" includes="**/*.jar"/>
+					<fileset dir="${swt}" includes="*.jar"/>
+				</classpath>
+			</javac>
+			<copy todir="bin">
+				<fileset dir="@{path}">
+					<patternset refid="classpath.resources"/>
+				</fileset>
+			</copy>
+			<copy todir="bin">
+				<fileset dir="${resources}">
+					<patternset refid="classpath.resources"/>
+				</fileset>
+			</copy>
+		</sequential>
+	</macrodef>
+
+	<target name="compile-tests">
+		<compile path="${src}" dest="${test}" extpath="${ext.src}" debug="true"/>
+		<emma>
+			<instr instrpathref="test.path" destdir="bin.instr" metadatafile="${testresults}/metadata.emma" merge="false" filter="net.azib.ipscan.*"/>
+		</emma>
+		<copy todir="bin" overwrite="true">
+			<fileset dir="bin.instr" includes="**/*.class"/>
+		</copy>
+		<delete dir="bin.instr"/>
+		<compile path="${test}" dest="${test}" debug="true"/>
+	</target>
+
+	<target name="do_test">
+		<delete dir="${testresults}"/>
+		<mkdir dir="${testresults}"/>
+		<delete file="coverage.ec"/>
+		<junit haltonfailure="true" showoutput="true" dir="${basedir}" fork="on" forkmode="once">
+			<classpath>
+				<dirset dir="bin"/>
+				<fileset dir="${swt}" includes="*.jar"/>
+				<path refid="emma.lib"/>
+			</classpath>
+			<formatter type="brief"/>
+			<batchtest todir="${testresults}">
+				<fileset dir="bin" includes="**/*Test.class"/>
+			</batchtest>
+		</junit>
+		<emma>
+			<report sourcepath="${src}" encoding="UTF-8">
+				<fileset dir="${basedir}" includes="coverage.ec"/>
+				<fileset dir="${testresults}" includes="*.emma"/>
+				<txt outfile="${testresults}/coverage.txt"/>
+				<html outfile="${testresults}/coverage.html"/>
+			</report>
+		</emma>
+	</target>
+	
+</project>

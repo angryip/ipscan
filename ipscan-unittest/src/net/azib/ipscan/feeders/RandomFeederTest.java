@@ -1,14 +1,18 @@
 package net.azib.ipscan.feeders;
 
-import junit.framework.TestCase;
+import static net.azib.ipscan.feeders.FeederTestUtils.*;
+import static org.junit.Assert.*;
+
+import org.junit.Test;
 
 /**
  * Test of RandomFeeder
  *
  * @author anton
  */
-public class RandomFeederTest extends TestCase {
+public class RandomFeederTest {
 
+	@Test
 	public void testHappyPath() throws FeederException {
 		RandomFeeder randomFeeder = new RandomFeeder();
 		assertEquals(3, randomFeeder.initialize(new String[] {"255.255.255.255", "255...0", "2"}));
@@ -19,43 +23,47 @@ public class RandomFeederTest extends TestCase {
 		assertFalse(randomFeeder.hasNext());
 	}
 	
+	@Test
 	public void testInvalidCount() {
 		try {
 			new RandomFeeder().initialize(new String[] {"1.1.1.1", "2.2.2.2", "abc"});
 			fail();
 		}
 		catch (FeederException e) {
-			FeederTestUtils.assertFeederException("random.invalidCount", e);
+			assertFeederException("random.invalidCount", e);
 		}
 		try {
 			new RandomFeeder().initialize("1.1.1.1", "1.1.1.1", 0);
 			fail();
 		}
 		catch (FeederException e) {
-			FeederTestUtils.assertFeederException("random.invalidCount", e);
+			assertFeederException("random.invalidCount", e);
 		}
 	}
 	
+	@Test
 	public void testMalformedIP() {
 		try {
 			new RandomFeeder().initialize("abc", "10.11.12.10", 1);
 			fail();
 		}
 		catch (FeederException e) {
-			FeederTestUtils.assertFeederException("malformedIP", e);
+			assertFeederException("malformedIP", e);
 		}
 	}
 	
+	@Test
 	public void testInvalidNetmask() {
 		try {
 			new RandomFeeder().initialize("1.1.1.1", "invalid", 1);
 			fail();
 		}
 		catch (FeederException e) {
-			FeederTestUtils.assertFeederException("invalidNetmask", e);
+			assertFeederException("invalidNetmask", e);
 		}
 	}
 	
+	@Test
 	public void testFullMask() {
 		RandomFeeder randomFeeder = null; 
 		randomFeeder = new RandomFeeder();
@@ -65,6 +73,7 @@ public class RandomFeederTest extends TestCase {
 		assertFalse(randomFeeder.hasNext());
 	}
 		
+	@Test
 	public void testEmptyMask() {
 		RandomFeeder randomFeeder = null; 
 		randomFeeder = new RandomFeeder();
@@ -74,6 +83,7 @@ public class RandomFeederTest extends TestCase {
 		assertFalse(randomFeeder.hasNext());
 	}
 	
+	@Test
 	public void testMaskStartEnd() {
 		RandomFeeder randomFeeder = null; 
 		randomFeeder = new RandomFeeder();
@@ -85,6 +95,7 @@ public class RandomFeederTest extends TestCase {
 		assertFalse(randomFeeder.hasNext());
 	}
 	
+	@Test
 	public void testDifferent() {
 		RandomFeeder randomFeeder = null;
 		String address = null;
@@ -104,6 +115,7 @@ public class RandomFeederTest extends TestCase {
 		assertFalse(randomFeeder.hasNext());
 	}
 	
+	@Test
 	public void testGetPercentageComplete() throws Exception {
 		RandomFeeder randomFeeder = new RandomFeeder();
 		randomFeeder.initialize("100.11.12.13", "100.11.12.15", 3);
@@ -121,6 +133,7 @@ public class RandomFeederTest extends TestCase {
 		assertEquals(100, randomFeeder.getPercentageComplete());
 	}	
 
+	@Test
 	public void testGetInfo() {
 		RandomFeeder randomFeeder = new RandomFeeder();
 		randomFeeder.initialize("100.11.12.13", "100.11.12.15", 3);

@@ -3,17 +3,21 @@
  */
 package net.azib.ipscan.core.net;
 
+import static org.junit.Assert.assertTrue;
+
 import java.net.InetAddress;
 
-import junit.framework.TestCase;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * SharedPingerTest
  *
  * @author anton
  */
-public class ICMPSharedPingerTest extends TestCase {
+public class ICMPSharedPingerTest {
 	
+	@Test @Ignore("this test works only under root")
 	public void testPing() throws Exception {
 		Pinger pinger = new ICMPSharedPinger(1000);
 		PingResult result = pinger.ping(InetAddress.getLocalHost(), 3);
