@@ -4,11 +4,6 @@
 package net.azib.ipscan.feeders;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import net.azib.ipscan.core.InetAddressUtils;
-
-import org.savarese.vserv.tcpip.OctetConverter;
 
 /**
  * Smart text feeder for advenced users.
@@ -23,8 +18,6 @@ import org.savarese.vserv.tcpip.OctetConverter;
  * @author anton
  */
 public class SmartTextFeeder implements Feeder {
-	
-	private String netmask;
 	
 	public String getLabel() {
 		return null;
@@ -41,11 +34,11 @@ public class SmartTextFeeder implements Feeder {
 		// extract netmask
 		int slashPos = text.indexOf('/'); 
 		if (slashPos >= 0) {
-			netmask = text.substring(slashPos+1);
+			//netmask = text.substring(slashPos+1);
 			text = text.substring(0, slashPos);
 		}
 		
-		String[] tokens = text.split("\\.");
+		//String[] tokens = text.split("\\.");
 		// TODO: use port list parsing code here
 	}
 	
