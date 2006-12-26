@@ -52,14 +52,15 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 	}
 
 	public int getSelectedFetcherIndex(String label) {
-		int index = -1;
+		int index = 0;
 		for (Iterator i = selectedFetchers.values().iterator(); i.hasNext();) {
-			if (((Fetcher)i.next()).getLabel().equals(label))
-				break;
+			Fetcher fetcher = (Fetcher)i.next();
+			if (fetcher.getLabel().equals(label)) {
+				return index;
+			}
 			index++;
-			
 		}
-		return index;
+		return -1;
 	}
 	
 	public void updateSelectedFetchers(String[] labels) {

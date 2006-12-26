@@ -20,7 +20,7 @@ public class CommentFetcher implements Fetcher {
 	 * @see net.azib.ipscan.fetchers.Fetcher#getLabel()
 	 */
 	public String getLabel() {
-		return "fetcher.ip";
+		return "fetcher.comment";
 	}
 
 	/**
