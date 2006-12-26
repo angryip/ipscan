@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class EditOpenersDialog extends AbstractModalDialog {
 
-	FetcherRegistry fetcherRegistry;
+	private FetcherRegistry fetcherRegistry;
 	private List openersList;
 	private Group editFieldsGroup;
 	private Text openerNameText;
@@ -76,12 +76,12 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		Button upButton = new Button(shell, SWT.NONE);
 		upButton.setText(Labels.getLabel("button.up"));		
 		upButton.setBounds(new Rectangle(150, 30, 40, 25));
-		upButton.addListener(SWT.Selection, new UpButtonListener());
+		upButton.addListener(SWT.Selection, new UpButtonListener(openersList));
 		
 		Button downButton = new Button(shell, SWT.NONE);
 		downButton.setText(Labels.getLabel("button.down"));		
 		downButton.setBounds(new Rectangle(150, 60, 40, 25));
-		downButton.addListener(SWT.Selection, new DownButtonListener());
+		downButton.addListener(SWT.Selection, new DownButtonListener(openersList));
 		
 		Button addButton = new Button(shell, SWT.NONE);
 		addButton.setText(Labels.getLabel("button.add"));		
@@ -195,54 +195,6 @@ public class EditOpenersDialog extends AbstractModalDialog {
 			mb.setText(Labels.getLabel("title.openers.edit"));
 			mb.setMessage(message.toString());
 			mb.open();
-		}
-	}
-	
-	private class UpButtonListener implements Listener {
-
-		public void handleEvent(Event event) {
-			if (openersList.isSelected(0)) {
-				// do not move anything if the first item is selected
-				return;
-			}
-			
-			int[] selectedItems = openersList.getSelectionIndices();
-			for (int i = 0; i < selectedItems.length; i++) {
-				// here, index is always > 0
-				int index = selectedItems[i];
-
-				openersList.deselect(index);
-				String oldItem = openersList.getItem(index - 1);
-				openersList.setItem(index - 1, openersList.getItem(index));
-				openersList.setItem(index, oldItem);
-				openersList.select(index - 1);
-			}
-			
-			openersList.setTopIndex(selectedItems[0] - 2);
-		}
-	}
-
-	private class DownButtonListener implements Listener {
-		
-		public void handleEvent(Event event) {
-			if (openersList.isSelected(openersList.getItemCount() - 1)) {
-				// do not move anything if the last items is selected
-				return;
-			}
-			
-			int[] selectedItems = openersList.getSelectionIndices();
-			for (int i = selectedItems.length - 1; i >= 0; i--) {
-				// here, index is always < getItemCount()
-				int index = selectedItems[i];
-
-				openersList.deselect(index);
-				String oldItem = openersList.getItem(index + 1);
-				openersList.setItem(index + 1, openersList.getItem(index));
-				openersList.setItem(index, oldItem);
-				openersList.select(index + 1);
-			}
-			
-			openersList.setTopIndex(selectedItems[0]);
 		}
 	}
 	

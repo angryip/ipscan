@@ -528,11 +528,15 @@ public class RawSocket {
     if(getUseSelectTimeout() && !__rtimeout.isZero())
       result =
         __select(__socket, true, __rtimeout.seconds, __rtimeout.microseconds);
+	//System.out.println("s" + System.currentTimeMillis());
+	
+	// ??? setsockopt(ssock, IPPROTO_IP, IP_HDRINCL, (char *)&bOpt, sizeof(bOpt));
 
     if(result == 0)
       result =
         __recvfrom(__socket, data, offset, length, __family,
                    address.getAddress());
+	//System.out.println("e" + System.currentTimeMillis());
 
     if(result < 0) {
       if(__isErrorEAGAIN())

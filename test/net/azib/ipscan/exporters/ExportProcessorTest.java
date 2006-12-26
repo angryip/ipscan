@@ -9,8 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import junit.framework.TestCase;
 import net.azib.ipscan.config.Labels;
@@ -18,6 +18,7 @@ import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.exporters.ExportProcessor.ScanningResultSelector;
 import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
 import net.azib.ipscan.fetchers.IPFetcher;
 
 /**
@@ -85,7 +86,7 @@ public class ExportProcessorTest extends TestCase {
 	}
 
 	private class FakeFetcherRegistry implements FetcherRegistry {
-		public List getRegisteredFetchers() {
+		public Collection getRegisteredFetchers() {
 			return null;
 		}
 
@@ -93,8 +94,14 @@ public class ExportProcessorTest extends TestCase {
 			return 0;
 		}
 
-		public List getSelectedFetchers() {
+		public Collection getSelectedFetchers() {
 			return Collections.singletonList(new IPFetcher());
+		}
+
+		public void updateSelectedFetchers(String[] names) {
+		}
+
+		public void addListener(FetcherRegistryUpdateListener listener) {
 		}
 	}
 

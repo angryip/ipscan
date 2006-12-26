@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import net.azib.ipscan.gui.OptionsWindow;
+import net.azib.ipscan.gui.SelectFetchersDialog;
 
 /**
  * ToolsActions
@@ -28,4 +29,17 @@ public class ToolsActions {
 		}
 	}
 
+	public static class SelectFetchers implements Listener {
+		
+		private SelectFetchersDialog selectFetchersDialog;
+		
+		public SelectFetchers(SelectFetchersDialog selectFetchersDialog) {
+			this.selectFetchersDialog = selectFetchersDialog;
+		}
+
+		public void handleEvent(Event event) {
+			selectFetchersDialog.open();
+		}
+
+	}
 }

@@ -4,17 +4,18 @@
 package net.azib.ipscan.gui;
 
 import java.net.InetAddress;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import net.azib.ipscan.config.Config;
-import net.azib.ipscan.config.DimensionsConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
 import net.azib.ipscan.gui.MainMenu.ColumnsMenu;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsActions;
@@ -34,13 +35,17 @@ import org.eclipse.swt.widgets.TableItem;
  * 
  * @author anton
  */
-public class ResultTable extends Table {
+public class ResultTable extends Table implements FetcherRegistryUpdateListener {
 		
 	private ScanningResultList scanningResults;
 	
-	private Image[] images = new Image[4];
+	private Image[] listImages = new Image[4];
 
 	private String feederInfo;
+
+	private Listener columnClickListener;
+
+	private Listener columnResizeListener;
 
 	public ResultTable(Composite parent, ColumnsMenu columnsMenu, FetcherRegistry fetcherRegistry, ScanningResultList scanningResultList) {
 		super(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL);
@@ -49,33 +54,23 @@ public class ResultTable extends Table {
 		setHeaderVisible(true);
 		setLinesVisible(true);
 		
-		Listener columnClickListener = new ColumnsActions.ColumnClick(columnsMenu);
-		Listener columnResizeListener = new Listener() {
+		columnClickListener = new ColumnsActions.ColumnClick(columnsMenu);
+		columnResizeListener = new Listener() {
 			public void handleEvent(Event event) {
 				// save column width
 				TableColumn column = (TableColumn) event.widget;
 				Config.getDimensionsConfig().setColumnWidth(column.getText(), column.getWidth());
 			}
 		};
-		
-		DimensionsConfig dimensionsConfig = Config.getDimensionsConfig();
-		
-		List fetchers = fetcherRegistry.getSelectedFetchers();
-		for (Iterator i = fetchers.iterator(); i.hasNext();) {
-			Fetcher fetcher = (Fetcher) i.next();
-			TableColumn tableColumn = new TableColumn(this, SWT.NONE);
-			String fetcherName = Labels.getLabel(fetcher.getLabel());
-			tableColumn.setWidth(dimensionsConfig.getColumnWidth(fetcherName));
-			tableColumn.setText(fetcherName);
-			tableColumn.addListener(SWT.Selection, columnClickListener);
-			tableColumn.addListener(SWT.Resize, columnResizeListener);
-		}
+
+		fetcherRegistry.addListener(this);
+		handleUpdateOfSelectedFetchers(fetcherRegistry);
 		
 		// pre-load button images
-		images[ScanningSubject.RESULT_TYPE_UNKNOWN] = new Image(null, Labels.getInstance().getImageAsStream("list.unknown.img"));
-		images[ScanningSubject.RESULT_TYPE_DEAD] = new Image(null, Labels.getInstance().getImageAsStream("list.dead.img"));
-		images[ScanningSubject.RESULT_TYPE_ALIVE] = new Image(null, Labels.getInstance().getImageAsStream("list.alive.img"));
-		images[ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO] = new Image(null, Labels.getInstance().getImageAsStream("list.addinfo.img"));
+		listImages[ScanningSubject.RESULT_TYPE_UNKNOWN] = new Image(null, Labels.getInstance().getImageAsStream("list.unknown.img"));
+		listImages[ScanningSubject.RESULT_TYPE_DEAD] = new Image(null, Labels.getInstance().getImageAsStream("list.dead.img"));
+		listImages[ScanningSubject.RESULT_TYPE_ALIVE] = new Image(null, Labels.getInstance().getImageAsStream("list.alive.img"));
+		listImages[ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO] = new Image(null, Labels.getInstance().getImageAsStream("list.addinfo.img"));
 		
 		Listener detailsListener = new Listener() {
 			CommandsActions.Details detailsListener = new CommandsActions.Details(ResultTable.this);
@@ -95,6 +90,19 @@ public class ResultTable extends Table {
 //			getColumn(i).add
 //		}
 		
+	}
+
+	public void handleUpdateOfSelectedFetchers(FetcherRegistry fetcherRegistry) {
+		Collection fetchers = fetcherRegistry.getSelectedFetchers();
+		for (Iterator i = fetchers.iterator(); i.hasNext();) {
+			Fetcher fetcher = (Fetcher) i.next();
+			TableColumn tableColumn = new TableColumn(this, SWT.NONE);
+			String fetcherName = Labels.getLabel(fetcher.getLabel());
+			tableColumn.setWidth(Config.getDimensionsConfig().getColumnWidth(fetcherName));
+			tableColumn.setText(fetcherName);
+			tableColumn.addListener(SWT.Selection, columnClickListener);
+			tableColumn.addListener(SWT.Resize, columnResizeListener);
+		}
 	}
 
 	protected void checkSubclass() {
@@ -177,7 +185,7 @@ public class ResultTable extends Table {
 					resultStrings[i] = value.toString();
 			}			 
 			item.setText(resultStrings);
-			item.setImage(0, images[scanningResult.getType()]);
+			item.setImage(0, listImages[scanningResult.getType()]);
 		}
 		
 	}

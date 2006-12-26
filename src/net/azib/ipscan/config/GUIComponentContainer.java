@@ -25,6 +25,7 @@ import net.azib.ipscan.gui.MainMenu;
 import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.OptionsWindow;
 import net.azib.ipscan.gui.ResultTable;
+import net.azib.ipscan.gui.SelectFetchersDialog;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.ColumnsActions;
@@ -143,6 +144,7 @@ public class GUIComponentContainer {
 			anyComponentParameter});
 		
 		container.registerComponentImplementation(OptionsWindow.class);
+		container.registerComponentImplementation(SelectFetchersDialog.class);
 
 		// various actions / listener
 		container.registerComponentImplementation(StartStopScanningAction.class);

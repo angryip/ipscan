@@ -6,6 +6,7 @@ package net.azib.ipscan.core;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import junit.framework.TestCase;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
 
 /**
  * ScanningResultListTest
@@ -137,7 +139,7 @@ public class ScanningResultListTest extends TestCase {
 		
 		private List fetchers = new ArrayList(Arrays.asList(new Fetcher[] {new DummyFetcher("fetcher.ip"), new DummyFetcher("fetcher.ping"), new DummyFetcher("fetcher.hostname"), new DummyFetcher("fetcher.ping.ttl")}));
 		
-		public List getRegisteredFetchers() {
+		public Collection getRegisteredFetchers() {
 			return null;
 		}
 
@@ -145,8 +147,14 @@ public class ScanningResultListTest extends TestCase {
 			return 0;
 		}
 		
-		public List getSelectedFetchers() {
+		public Collection getSelectedFetchers() {
 			return fetchers;
+		}
+
+		public void updateSelectedFetchers(String[] names) {
+		}
+
+		public void addListener(FetcherRegistryUpdateListener listener) {
 		}
 	}
 }

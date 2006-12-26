@@ -59,12 +59,12 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 		Button upButton = new Button(shell, SWT.NONE);
 		upButton.setText(Labels.getLabel("button.up"));		
 		upButton.setBounds(new Rectangle(350, 30, 40, 25));
-		upButton.addListener(SWT.Selection, new UpButtonListener());
+		upButton.addListener(SWT.Selection, new UpButtonListener(favoritesList));
 		
 		Button downButton = new Button(shell, SWT.NONE);
 		downButton.setText(Labels.getLabel("button.down"));		
 		downButton.setBounds(new Rectangle(350, 60, 40, 25));
-		downButton.addListener(SWT.Selection, new DownButtonListener());
+		downButton.addListener(SWT.Selection, new DownButtonListener(favoritesList));
 		
 		Button deleteButton = new Button(shell, SWT.NONE);
 		deleteButton.setText(Labels.getLabel("button.delete"));		
@@ -99,56 +99,7 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 		favoritesConfig.store();
 	}
 	
-	private class UpButtonListener implements Listener {
-
-		public void handleEvent(Event event) {
-			if (favoritesList.isSelected(0)) {
-				// do not move anything if the first item is selected
-				return;
-			}
-			
-			int[] selectedItems = favoritesList.getSelectionIndices();
-			for (int i = 0; i < selectedItems.length; i++) {
-				// here, index is always > 0
-				int index = selectedItems[i];
-
-				favoritesList.deselect(index);
-				String oldItem = favoritesList.getItem(index - 1);
-				favoritesList.setItem(index - 1, favoritesList.getItem(index));
-				favoritesList.setItem(index, oldItem);
-				favoritesList.select(index - 1);
-			}
-			
-			favoritesList.setTopIndex(selectedItems[0] - 2);
-		}
-	}
-
-	private class DownButtonListener implements Listener {
-		
-		public void handleEvent(Event event) {
-			if (favoritesList.isSelected(favoritesList.getItemCount() - 1)) {
-				// do not move anything if the last items is selected
-				return;
-			}
-			
-			int[] selectedItems = favoritesList.getSelectionIndices();
-			for (int i = selectedItems.length - 1; i >= 0; i--) {
-				// here, index is always < getItemCount()
-				int index = selectedItems[i];
-
-				favoritesList.deselect(index);
-				String oldItem = favoritesList.getItem(index + 1);
-				favoritesList.setItem(index + 1, favoritesList.getItem(index));
-				favoritesList.setItem(index, oldItem);
-				favoritesList.select(index + 1);
-			}
-			
-			favoritesList.setTopIndex(selectedItems[0]);
-		}
-	}
-	
 	private class DeleteButtonListener implements Listener {
-		
 		public void handleEvent(Event event) {
 			favoritesList.remove(favoritesList.getSelectionIndices());			
 		}

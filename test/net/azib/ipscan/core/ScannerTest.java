@@ -6,14 +6,15 @@ package net.azib.ipscan.core;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
 
 /**
  * ScannerTest
@@ -122,7 +123,7 @@ public class ScannerTest extends TestCase {
 	}
 	
 	private class FakeFetcherRegistry implements FetcherRegistry {
-		public List getRegisteredFetchers() {
+		public Collection getRegisteredFetchers() {
 			return null;
 		}
 
@@ -130,8 +131,14 @@ public class ScannerTest extends TestCase {
 			return 0;
 		}
 
-		public List getSelectedFetchers() {
+		public Collection getSelectedFetchers() {
 			return Arrays.asList(new Fetcher[] {new FakeFetcher(), new AnotherFakeFetcher(), new AbortingFetcher(), new FailingFetcher()});
+		}
+
+		public void updateSelectedFetchers(String[] names) {
+		}
+
+		public void addListener(FetcherRegistryUpdateListener listener) {
 		}
 	}
 	

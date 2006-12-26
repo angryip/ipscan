@@ -9,7 +9,6 @@ import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistryImpl;
 import net.azib.ipscan.fetchers.HostnameFetcher;
 import net.azib.ipscan.fetchers.IPFetcher;
-import net.azib.ipscan.fetchers.PingFetcher;
 import net.azib.ipscan.gui.UserErrorException;
 import junit.framework.TestCase;
 

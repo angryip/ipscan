@@ -82,7 +82,7 @@ public class MainMenu {
 		
 		subMenu = initMenu(menu, "menu.tools");
 		initMenuItem(subMenu, "menu.tools.options", new Integer(SWT.CONTROL | 'O'), initListener(ToolsActions.Options.class));
-		initMenuItem(subMenu, "menu.tools.fetchers", null, null);
+		initMenuItem(subMenu, "menu.tools.fetchers", null, initListener(ToolsActions.SelectFetchers.class));
 		initMenuItem(subMenu, null, null, null);
 		initMenuItem(subMenu, "menu.tools.delete", null, null);
 		initMenuItem(subMenu, "menu.tools.lastInfo", new Integer(SWT.CONTROL | 'I'), null);
