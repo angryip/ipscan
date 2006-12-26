@@ -1,0 +1,57 @@
+$Id: README 6024 2005-12-10 23:04:56Z dfs $
+
+ABOUT
+-----
+
+Virtual Services TCP/IP, or VServ TCP/IP for short, is a Java library that
+enables you to easily manipulate IP and TCP packets.  It is intended for
+use in conjunction with a library which generates packets, such as
+VServ IPQ, as byte arrays.  At the moment it supports only IPv4 packet
+manipulation.
+
+The API is still in flux; some methods are missing and some existing
+methods will likely be renamed.  If you would like something added,
+please submit a patch in unified diff format.
+
+
+REQUIREMENTS
+------------
+
+VServ TCP/IP requires J2SE 1.4 or greater to compile and run.
+
+
+COMPILING
+---------
+
+The source code requires Apache Ant (http://ant.apache.org/) to compile.
+
+  ant -projecthelp
+
+will list all build targets in build.xml.  There are very few files
+in the source tree:
+
+  src/java  Java source code
+
+When you compile the source with
+
+  ant jar
+
+the following jar file will be created and placed in the lib/ directory:
+
+  vserv-tcpip-version.jar
+
+
+LICENSING
+---------
+
+VServ TCP/IP is Copyright 2004-2005 by Daniel F. Savarese and licensed
+under the Apache License 2.0 as described in the files:
+
+  LICENSE
+  NOTICE
+
+
+CONTACT
+-------
+
+To contact me see http://www.savarese.org/contact.html

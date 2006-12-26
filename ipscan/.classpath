@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="ext/rocksaw/src/java"/>
+	<classpathentry kind="src" path="ext/vserv-tcpip/src/java"/>
+	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="lib" path="ext/rocksaw/lib/tmp.jar">
+		<attributes>
+			<attribute value="ipscan/ext/rocksaw/lib" name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3.8.1"/>
+	<classpathentry sourcepath="/swt/src" kind="lib" path="/swt/swt-win32.jar">
+		<attributes>
+			<attribute value="swt/lib" name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/swt/src" kind="lib" path="/swt/swt-gtk.jar">
+		<attributes>
+			<attribute value="swt/lib" name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="ext/picocontainer/src" kind="lib" path="ext/picocontainer/picocontainer-1.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
