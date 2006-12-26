@@ -139,6 +139,7 @@ fetcher.ping.ttl=TTL
 fetcher.hostname=Hostname
 fetcher.ports=Ports
 fetcher.ports.filtered=Filtered Ports
+fetcher.comment=Comments
 fetcher.value.ms= ms
 fetcher.value.notAvailable=[n/a]
 fetcher.value.notScanned=[n/s]

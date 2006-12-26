@@ -1,8 +1,7 @@
-#Thu Dec 14 22:09:10 EET 2006
+#Tue Dec 26 20:43:25 EET 2006
 eclipse.preferences.version=1
 formatter_profile=_Angry IP Scanner
 formatter_settings_version=10
-internal.default.compliance=user
 org.eclipse.jdt.ui.exception.name=e
 org.eclipse.jdt.ui.gettersetter.use.is=true
 org.eclipse.jdt.ui.javadoc=true
