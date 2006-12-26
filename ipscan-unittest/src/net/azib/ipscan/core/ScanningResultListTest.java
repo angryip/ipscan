@@ -52,7 +52,7 @@ public class ScanningResultListTest {
 		assertFalse(i.hasNext());
 	}
 	
-	@Test
+	@Test @SuppressWarnings("unchecked")
 	public void testClear() throws Exception {
 		fetcherRegistry.getSelectedFetchers().clear();
 		fetcherRegistry.getSelectedFetchers().add(new DummyFetcher("hello"));
