@@ -31,9 +31,10 @@ Under `ipscan' and `ipscan-unittest' you will find subdirectories:
 
 ---------------------------------------------------------------------------
 To build Angry IP Scanner, use ant:
-
 cd ipscan
-ant all-linux
+ant all
+
+This will leave jar files in the `dist' directory.
 
 Then, to run:
 ./ipscan.sh

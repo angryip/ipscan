@@ -1,41 +1,28 @@
-<?xml version="1.0"?>
 <project basedir="." name="ipscan" default="all">
 
 	<property name="dist" value="dist"/>
 	<property name="ext" value="ext"/>
 	<property name="src" value="src"/>
 	<property name="resources" value="resources"/>
-	<property name="test" value="test"/>
-	<property name="testresults" value="testresults"/>
 			
 	<property name="version" value="2.99a"/>
 	<property name="main.class" value="net.azib.ipscan.Main"/>
 	<property name="swt" value="../swt"/>
 	<property name="retroguard.jar" value="${ext}/retroguard/retroguard.jar"/>
-	<property name="emma.dir" value="${ext}/emma"/>
 	<property name="ext.src" value="${ext}/rocksaw/src:${ext}/vserv-tcpip/src"/>
 	
 	<taskdef name="obfuscate" classname="COM.rl.ant.RetroGuardTask" classpath="${retroguard.jar}"/>
-	
-	<path id="emma.lib">
-		<pathelement location="${emma.dir}/emma.jar" />
-		<pathelement location="${emma.dir}/emma_ant.jar" />
-	</path>
-
-	<taskdef resource="emma_ant.properties" classpathref="emma.lib"/>
 	
 	<patternset id="classpath.resources">
 		<exclude name="**/*.java"/>
 	</patternset>
 
-	<target name="all" depends="cleanup,compile,compile-tests,test,package,cleanup_end"/>
-
-	<target name="all-linux" depends="cleanup,compile,compile-tests,test,package-linux,cleanup_end"/>
+	<target name="all" depends="cleanup,compile,package,cleanup_end"/>
 
 	<target name="cleanup">
-		<delete dir="classes-${src}"/>
-		<delete dir="classes-${test}"/>
-		<!--<delete dir="${testresults}"/>-->
+		<delete file="retroguard.log"/>
+		<delete dir="bin"/>
+		<mkdir dir="bin"/>
 	</target>
 	
     <target name="cleanup_end">
@@ -49,8 +36,8 @@
 		<attribute name="debug" default="false"/>
 		<attribute name="optimize" default="true"/>
 		<sequential>
-			<mkdir dir="classes-@{dest}"/>
-			<javac destdir="classes-@{dest}" debug="@{debug}" source="1.4" target="1.4" optimize="@{optimize}">
+			<mkdir dir="bin"/>
+			<javac destdir="bin" debug="@{debug}" source="1.4" target="1.4" optimize="@{optimize}">
 				<src path="@{path}"/>
 				<src path="@{extpath}"/>				
 				<classpath>
@@ -58,12 +45,12 @@
 					<fileset dir="${swt}" includes="*.jar"/>
 				</classpath>
 			</javac>
-			<copy todir="classes-@{dest}">
+			<copy todir="bin">
 				<fileset dir="@{path}">
 					<patternset refid="classpath.resources"/>
 				</fileset>
 			</copy>
-			<copy todir="classes-@{dest}">
+			<copy todir="bin">
 				<fileset dir="${resources}">
 					<patternset refid="classpath.resources"/>
 				</fileset>
@@ -75,47 +62,12 @@
 		<compile path="${src}" extpath="${ext.src}"/>
 	</target>
 	
-	<path id="test.path" path="classes-${test}"/>
-
-	<target name="compile-tests">
-		<compile path="${src}" dest="${test}" extpath="${ext.src}" debug="true"/>
-		<emma>
-			<instr instrpathref="test.path" destdir="classes-${test}.instr" metadatafile="${testresults}/metadata.emma" merge="false" filter="net.azib.ipscan.*"/>
-		</emma>
-		<copy todir="classes-${test}" overwrite="true">
-			<fileset dir="classes-${test}.instr" includes="**/*.class"/>
-		</copy>
-		<delete dir="classes-${test}.instr"/>
-		<compile path="${test}" dest="${test}" debug="true"/>
-	</target>
-
-	<target name="test">
-		<delete dir="${testresults}"/>
-		<mkdir dir="${testresults}"/>
-		<delete file="coverage.ec"/>
-		<junit haltonfailure="true" showoutput="true" dir="${basedir}" fork="on" forkmode="once">
-			<jvmarg line="-Djava.library.path=${ext}/rocksaw/lib:${swt}/lib"/>
-			<classpath>
-				<dirset dir="classes-${test}"/>
-				<fileset dir="${swt}" includes="*.jar"/>
-				<path refid="emma.lib"/>
-			</classpath>
-			<formatter type="brief"/>
-			<batchtest todir="${testresults}">
-				<fileset dir="classes-${test}" includes="**/*Test.class"/>
-			</batchtest>
-		</junit>
-		<emma>
-			<report sourcepath="${src}" encoding="UTF-8">
-				<fileset dir="${basedir}" includes="coverage.ec"/>
-				<fileset dir="${testresults}" includes="*.emma"/>
-				<txt outfile="${testresults}/coverage.txt"/>
-				<html outfile="${testresults}/coverage.html"/>
-			</report>
-		</emma>
-	</target>
+	<condition property="os-linux"><os name="Linux"/></condition>
+	<condition property="os-win32"><os family="Windows"/></condition>
 	
-	<target name="package">
+	<target name="package" depends="package-linux,package-win32"/>
+	
+	<target name="package-win32" if="os-win32">
 		<delete dir="${dist}"/>
 		<mkdir dir="${dist}"/>
 		<jar destfile="${dist}/${ant.project.name}.jar">
@@ -123,22 +75,22 @@
 				<attribute name="Main-Class" value="${main.class}"/>
 				<attribute name="AngryIPScanner" value="${version}"/>
 			</manifest>
-			<fileset dir="classes-${src}"/>
+			<fileset dir="bin"/>
 		</jar>
 	</target>
 
-	<target name="package-linux">
+	<target name="package-linux" if="os-linux">
 		<delete dir="${dist}"/>
 		<mkdir dir="${dist}"/>
-		<unzip src="${swt}/swt-gtk.jar" dest="classes-${src}"/>
+		<unzip src="${swt}/swt-gtk.jar" dest="bin"/>
 		<delete includeemptydirs="true">
-			<fileset dir="classes-${src}" file="version.txt"/>
-			<fileset dir="classes-${src}/org/eclipse/swt/browser"/>
-			<fileset dir="classes-${src}/org/eclipse/swt/opengl"/>
-			<fileset dir="classes-${src}/org/eclipse/swt/internal/opengl"/>
-			<fileset dir="classes-${src}/org/eclipse/swt/internal/theme"/>
-			<fileset dir="classes-${src}/org/eclipse/swt/internal/mozilla"/>
-			<fileset dir="classes-${src}/org/eclipse/swt/internal/image">
+			<fileset dir="bin" file="version.txt"/>
+			<fileset dir="bin/org/eclipse/swt/browser"/>
+			<fileset dir="bin/org/eclipse/swt/opengl"/>
+			<fileset dir="bin/org/eclipse/swt/internal/opengl"/>
+			<fileset dir="bin/org/eclipse/swt/internal/theme"/>
+			<fileset dir="bin/org/eclipse/swt/internal/mozilla"/>
+			<fileset dir="bin/org/eclipse/swt/internal/image">
 				<include name="JPEG*"/>
 				<include name="OS2*"/>
 				<include name="PNG*"/>
@@ -146,8 +98,8 @@
 				<include name="TIFF*"/>
 				<include name="Win*"/>
 			</fileset>
-			<fileset dir="classes-${src}/org/eclipse/swt/custom"/>
-			<fileset dir="classes-${src}/org/eclipse/swt/widgets">
+			<fileset dir="bin/org/eclipse/swt/custom"/>
+			<fileset dir="bin/org/eclipse/swt/widgets">
 				<include name="Cool*"/>
 				<include name="Expand*"/>
 				<include name="Font*"/>
@@ -158,17 +110,17 @@
 				<include name="Tray*"/>
 				<include name="Tree*"/>
 			</fileset>
-<!--		GIJ doesn't start without this one, however Sun's java has no problems...
-			<fileset dir="classes-${src}/org/eclipse/swt/dnd"/>-->
-			<fileset dir="classes-${src}/org/eclipse/swt/awt"/>
+			<!-- GIJ doesn't start without this one, however Sun's java has no problems...
+			<fileset dir="bin/org/eclipse/swt/dnd"/>-->
+			<fileset dir="bin/org/eclipse/swt/awt"/>
 		</delete>
-		<unzip src="${ext}/picocontainer/picocontainer-1.0.jar" dest="classes-${src}"/>
+		<unzip src="${ext}/picocontainer/picocontainer-1.0.jar" dest="bin"/>
 		<jar destfile="${dist}/${ant.project.name}.jar" >
 			<manifest>
 				<attribute name="Main-Class" value="${main.class}"/>
 				<attribute name="AngryIPScanner" value="${version}"/>
 			</manifest>
-			<fileset dir="classes-${src}"/>
+			<fileset dir="bin"/>
 		</jar>
 		<obfuscate infile="${dist}/${ant.project.name}.jar" outfile="${dist}/${ant.project.name}-obf.jar" rgsfile="${ext}/retroguard/retroguard.conf"/>
 	</target>
