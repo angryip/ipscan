@@ -5,6 +5,7 @@ package net.azib.ipscan.gui.actions;
 
 import java.lang.reflect.Method;
 
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.gui.UserErrorException;
 
 /**
@@ -20,14 +21,12 @@ public class BrowserLauncher {
 	 * @param url
 	 */
 	public static void openURL(String url) {
-		String osName = System.getProperty("os.name");
-
 		try {
-			if (osName.startsWith("Windows")) {
+			if (Platform.WINDOWS) {
 				Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
 			}
 			else
-			if (osName.startsWith("Mac OS")) {
+			if (Platform.MAC_OS) {
 				Class fileMgr = Class.forName("com.apple.eio.FileManager");
 				Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] { String.class });
 				openURL.invoke(null, new Object[] { url });
