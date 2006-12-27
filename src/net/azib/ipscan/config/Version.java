@@ -16,7 +16,7 @@ public class Version {
 	
 	public static final String FULL_NAME = NAME + " " + VERSION;
 	
-	public static final String COPYLEFT = "(C) 1998-2006 Anton Keks";
+	public static final String COPYLEFT = "(C) 1998-2007 Anton Keks";
 	
 	public static final String WEBSITE = "http://www.azib.net/ipscan/";
 	
@@ -26,5 +26,5 @@ public class Version {
 	
 	public static final String PLUGINS_URL = "http://www.azib.net/ipscan/plugins/";
 	
-	public static final String LATEST_VERSION_URL = "http://www.azib.net/ipscan/IPSCAN.VERSION";
+	public static final String LATEST_VERSION_URL = "http://www.azib.net/ipscan/IPSCAN.VERSION";	
 }

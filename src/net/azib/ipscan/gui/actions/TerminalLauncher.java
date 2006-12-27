@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.gui.UserErrorException;
 
 /**
@@ -26,10 +27,9 @@ public class TerminalLauncher {
 	 * @param workingDir the working directory (or null)
 	 */
 	public static void launchInTerminal(String execString, File workingDir) {
-		String osName = System.getProperty("os.name");
 
 		try {
-			if (osName.startsWith("Windows")) {
+			if (Platform.WINDOWS) {
 				// generate a command file :-)
 				File batFile = File.createTempFile("launch", ".cmd");
 				batFile.deleteOnExit();
