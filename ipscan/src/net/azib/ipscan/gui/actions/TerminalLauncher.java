@@ -40,9 +40,12 @@ public class TerminalLauncher {
 				
 				Runtime.getRuntime().exec(batFile.getAbsolutePath(), null, workingDir);
 			}
+			else
+			if (Platform.MAC_OS) {
+				Runtime.getRuntime().exec(new String[] {"osascript", "-e", "tell application \"Terminal\" to do script \"" + execString + "\""}, null, workingDir);
+			}
 			else { // assume Linux or other Unix
-				// TODO: maybe gnome-terminal, konsole, and MacOS-specific terminal should be tried as well...
-				// TODO: it seems that MacOS can use the $TERM environment variable to launch a terminal
+				// TODO: maybe gnome-terminal or konsole should be tried as well...
 				Runtime.getRuntime().exec(new String[] {"xterm", "-e", "bash", "-c", execString + ";bash"}, null, workingDir);
 			}
 		}
