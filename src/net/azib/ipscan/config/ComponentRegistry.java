@@ -50,16 +50,16 @@ import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
- * This class is a dependency injection configuration
+ * This class is the dependency injection configuration
  * using the Pico Container.
  *
  * @author anton
  */
-public class GUIComponentContainer {
+public class ComponentRegistry {
 	
 	private PicoContainer container;
 	
-	public GUIComponentContainer() {
+	public ComponentRegistry() {
 		MutablePicoContainer container = new DefaultPicoContainer();
 		this.container = container;
 		

@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.layout.RowLayout;
 
 /**
- * OptionsWindow
+ * Options Dialog
  *
  * @author anton
  */

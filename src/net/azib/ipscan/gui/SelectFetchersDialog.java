@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * SelectFetchersWindow
+ * SelectFetchersDialog
  *
  * @author Anton Keks
  */
