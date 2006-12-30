@@ -18,11 +18,11 @@ import org.eclipse.swt.widgets.Text;
  *
  * @author anton
  */
-public class DetailsWindow extends AbstractModalDialog {
+public class DetailsDialog extends AbstractModalDialog {
 
 	private ResultTable resultTable;
 		
-	public DetailsWindow(ResultTable resultTable) {
+	public DetailsDialog(ResultTable resultTable) {
 		this.resultTable = resultTable;
 		createShell(resultTable.getShell());
 	}

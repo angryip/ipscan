@@ -23,7 +23,7 @@ import net.azib.ipscan.fetchers.PingTTLFetcher;
 import net.azib.ipscan.fetchers.PortsFetcher;
 import net.azib.ipscan.gui.MainMenu;
 import net.azib.ipscan.gui.MainWindow;
-import net.azib.ipscan.gui.OptionsWindow;
+import net.azib.ipscan.gui.OptionsDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.SelectFetchersDialog;
 import net.azib.ipscan.gui.StatusBar;
@@ -143,7 +143,7 @@ public class GUIComponentContainer {
 			new ComponentParameter("mainShell"),
 			anyComponentParameter});
 		
-		container.registerComponentImplementation(OptionsWindow.class);
+		container.registerComponentImplementation(OptionsDialog.class);
 		container.registerComponentImplementation(SelectFetchersDialog.class);
 
 		// various actions / listener

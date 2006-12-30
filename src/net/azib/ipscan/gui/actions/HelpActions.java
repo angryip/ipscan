@@ -11,8 +11,8 @@ import java.net.URLConnection;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
-import net.azib.ipscan.gui.AboutWindow;
-import net.azib.ipscan.gui.GettingStartedWindow;
+import net.azib.ipscan.gui.AboutDialog;
+import net.azib.ipscan.gui.GettingStartedDialog;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.UserErrorException;
 
@@ -30,13 +30,13 @@ public class HelpActions {
 	
 	public static class GettingStarted implements Listener {
 		public void handleEvent(Event event) {
-			new GettingStartedWindow().open();
+			new GettingStartedDialog().open();
 		}
 	}
 
 	public static class About implements Listener { 		
 		public void handleEvent(Event event) { 
-			new AboutWindow().open(); 
+			new AboutDialog().open(); 
 		}
 	}
 

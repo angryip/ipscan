@@ -20,14 +20,14 @@ import org.eclipse.swt.widgets.Text;
  *
  * @author anton
  */
-public class GettingStartedWindow extends AbstractModalDialog {
+public class GettingStartedDialog extends AbstractModalDialog {
 
 	private int activePage = 1;
 	private Text gettingStartedText;
 	private Button closeButton;
 	private Button nextButton;
 
-	public GettingStartedWindow() {
+	public GettingStartedDialog() {
 		createShell();		
 	}
 	

@@ -9,7 +9,7 @@ import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.OpenersConfig.Opener;
 import net.azib.ipscan.fetchers.FetcherRegistry;
-import net.azib.ipscan.gui.DetailsWindow;
+import net.azib.ipscan.gui.DetailsDialog;
 import net.azib.ipscan.gui.EditOpenersDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
@@ -42,7 +42,7 @@ public class CommandsActions {
 
 		public void handleEvent(Event event) {
 			checkSelection(resultTable);
-			new DetailsWindow(resultTable).open(); 
+			new DetailsDialog(resultTable).open(); 
 		}
 	}
 	
