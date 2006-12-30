@@ -6,7 +6,7 @@ package net.azib.ipscan.gui.actions;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-import net.azib.ipscan.gui.OptionsWindow;
+import net.azib.ipscan.gui.OptionsDialog;
 import net.azib.ipscan.gui.SelectFetchersDialog;
 
 /**
@@ -18,9 +18,9 @@ public class ToolsActions {
 
 	public static class Options implements Listener {
 		
-		private OptionsWindow optionsWindow;
+		private OptionsDialog optionsWindow;
 		
-		public Options(OptionsWindow optionsWindow) {
+		public Options(OptionsDialog optionsWindow) {
 			this.optionsWindow = optionsWindow;
 		}
 

@@ -19,13 +19,13 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * About Window
+ * About Dialog
  *
  * @author anton
  */
-public class AboutWindow extends AbstractModalDialog {
+public class AboutDialog extends AbstractModalDialog {
 
-	public AboutWindow() {
+	public AboutDialog() {
 		createShell();		
 	}
 	

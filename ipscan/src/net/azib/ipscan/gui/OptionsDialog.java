@@ -31,7 +31,7 @@ import org.eclipse.swt.layout.RowLayout;
  *
  * @author anton
  */
-public class OptionsWindow extends AbstractModalDialog {
+public class OptionsDialog extends AbstractModalDialog {
 	
 	private PingerRegistry pingerRegistry;
 
@@ -53,7 +53,7 @@ public class OptionsWindow extends AbstractModalDialog {
 	private Button adaptTimeoutCheckbox;
 	private Text portsText;
 	
-	public OptionsWindow(PingerRegistry pingerRegistry) {
+	public OptionsDialog(PingerRegistry pingerRegistry) {
 		this.pingerRegistry = pingerRegistry;
 	}
 	
