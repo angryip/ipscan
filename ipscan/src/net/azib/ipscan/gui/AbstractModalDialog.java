@@ -3,6 +3,7 @@
  */
 package net.azib.ipscan.gui;
 
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.List;
@@ -19,12 +20,24 @@ public abstract class AbstractModalDialog {
 	protected Shell shell = null;
 
 	public void open() {
+		// center dialog box according to the parent window
+		Rectangle parentBounds = shell.getParent().getBounds();
+		Rectangle childBounds = shell.getBounds();
+		int x = parentBounds.x + (parentBounds.width - childBounds.width) / 2;
+		int y = parentBounds.y + (parentBounds.height - childBounds.height) / 2;
+		shell.setLocation(x, y);
+		
+		// open the dialog box 
 		shell.open();
+		
+		// create a separate event loop
 		Display display = Display.getCurrent();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) 
 				display.sleep();
 		}
+		
+		// destroy the window
 		shell.dispose();
 	}
 	
