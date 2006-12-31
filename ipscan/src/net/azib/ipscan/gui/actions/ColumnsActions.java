@@ -3,7 +3,9 @@
  */
 package net.azib.ipscan.gui.actions;
 
+import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.gui.MainMenu.ColumnsMenu;
 
 import org.eclipse.swt.SWT;
@@ -21,6 +23,19 @@ import org.eclipse.swt.widgets.TableColumn;
  */
 public class ColumnsActions {
 	
+	public static class ColumnResize implements Listener {
+		public void handleEvent(Event event) {
+			TableColumn column = (TableColumn) event.widget;
+			// do not save the width of the last column on Linux, because in GTK 
+			// it is stretched to the width of the whole table and therefore is incorrect
+			if (Platform.LINUX && column.getParent().getColumn(column.getParent().getColumnCount()-1) == column) 
+				return;
+
+			// save column width
+			Config.getDimensionsConfig().setColumnWidth(column.getText(), column.getWidth());
+		}
+	}
+
 	public static class ColumnClick implements Listener {
 		
 		private Menu columnsMenu;

@@ -55,14 +55,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		setLinesVisible(true);
 		
 		columnClickListener = new ColumnsActions.ColumnClick(columnsMenu);
-		columnResizeListener = new Listener() {
-			public void handleEvent(Event event) {
-				// save column width
-				TableColumn column = (TableColumn) event.widget;
-				Config.getDimensionsConfig().setColumnWidth(column.getText(), column.getWidth());
-			}
-		};
-
+		columnResizeListener = new ColumnsActions.ColumnResize();
 		fetcherRegistry.addListener(this);
 		handleUpdateOfSelectedFetchers(fetcherRegistry);
 		
@@ -85,14 +78,22 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		addListener(SWT.MouseDoubleClick, detailsListener);
 		
 		addListener(SWT.SetData, new SetDataListener());
-		
-//		for (int i = 0; i < getColumnCount(); i++) {
-//			getColumn(i).add
-//		}
-		
 	}
 
+	/**
+	 * Rebuild column list according to selected fetchers
+	 */
 	public void handleUpdateOfSelectedFetchers(FetcherRegistry fetcherRegistry) {
+		// remove all items (otherwise they will be shown incorrectly)
+		removeAll();
+		
+		// remove all columns
+		TableColumn[] columns = getColumns();
+		for (int i = 0; i < columns.length; i++) {
+			columns[i].dispose();
+		}
+		
+		// add the new selected columns back
 		Collection fetchers = fetcherRegistry.getSelectedFetchers();
 		for (Iterator i = fetchers.iterator(); i.hasNext();) {
 			Fetcher fetcher = (Fetcher) i.next();
@@ -148,6 +149,12 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		scanningResults.remove(indices);
 		super.remove(indices);
 	}
+	
+	public void removeAll() {
+		// remove all items from the real storage first
+		scanningResults.clear();
+		super.removeAll();
+	}
 
 	/**
 	 * Initializes a new scan.
@@ -157,8 +164,6 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 	public void initNewScan(String newFeederInfo) {
 		// initialize new feeder info
 		this.feederInfo = newFeederInfo; 
-		// remove previous results
-		scanningResults.clear();
 		// remove all items from the table
 		removeAll();
 	}
