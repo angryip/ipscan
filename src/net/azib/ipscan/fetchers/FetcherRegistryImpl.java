@@ -4,7 +4,6 @@
 package net.azib.ipscan.fetchers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -21,22 +20,21 @@ import java.util.Map;
 public class FetcherRegistryImpl implements FetcherRegistry {
 	
 	/** All available Fetcher implementations, List of Fetcher instances */
-	private List registeredFetchers;
+	private Map registeredFetchers;
 	/** Selected for scanning Fetcher implementations, keys are fetcher labels, values are Fetcher instances */
 	private Map selectedFetchers;
 	/** A collection of update listeners - observers of FetcherRegistry */
 	private List updateListeners = new ArrayList();
 	
 	public FetcherRegistryImpl(Fetcher[] registeredFetchers) {
-		this.registeredFetchers = Arrays.asList(registeredFetchers);
-		this.registeredFetchers = Collections.unmodifiableList(this.registeredFetchers);
+		this.registeredFetchers = new LinkedHashMap(registeredFetchers.length);
+		for (int i = 0; i < registeredFetchers.length; i++) {
+			this.registeredFetchers.put(registeredFetchers[i].getLabel(), registeredFetchers[i]);
+		}
+		this.registeredFetchers = Collections.unmodifiableMap(this.registeredFetchers);
 		
 		// TODO: this should be loaded from config as well as reasonable defaults should be made
-		this.selectedFetchers = new LinkedHashMap();
-		for (Iterator i = this.registeredFetchers.iterator(); i.hasNext();) {
-			Fetcher fetcher = (Fetcher) i.next();
-			this.selectedFetchers.put(fetcher.getLabel(), fetcher);
-		}
+		this.selectedFetchers = new LinkedHashMap(this.registeredFetchers);
 	}
 	
 	public void addListener(FetcherRegistryUpdateListener listener) {
@@ -44,7 +42,7 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 	}
 
 	public Collection getRegisteredFetchers() {
-		return registeredFetchers;
+		return registeredFetchers.values();
 	}
 	
 	public Collection getSelectedFetchers() {
@@ -67,7 +65,7 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 		// rebuild the map (to recreate the new order of elements)
 		Map newList = new LinkedHashMap();
 		for (int i = 0; i < labels.length; i++) {
-			newList.put(labels[i], selectedFetchers.get(labels[i]));
+			newList.put(labels[i], registeredFetchers.get(labels[i]));
 		}
 		selectedFetchers = newList;
 		

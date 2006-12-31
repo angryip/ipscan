@@ -112,21 +112,26 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		addButton.addListener(SWT.Selection, new AddRemoveButtonListener(registeredFetchersList, selectedFetchersList));
 		removeButton.addListener(SWT.Selection, new AddRemoveButtonListener(selectedFetchersList, registeredFetchersList));
 
-		Button closeButton = new Button(shell, SWT.NONE);
-		closeButton.setText(Labels.getLabel("button.close"));		
-		closeButton.setBounds(new Rectangle(315, 270, 75, 25));
+		Button okButton = new Button(shell, SWT.NONE);
+		okButton.setText(Labels.getLabel("button.OK"));		
+		okButton.setBounds(new Rectangle(220, 270, 80, 25));
 		
-		shell.addListener(SWT.Close, new Listener() {
+		Button cancelButton = new Button(shell, SWT.NONE);
+		cancelButton.setText(Labels.getLabel("button.cancel"));		
+		cancelButton.setBounds(new Rectangle(310, 270, 80, 25));
+		
+		cancelButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
-				saveSelectedFetchers();
-			}
-		});
-		closeButton.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
 				shell.close();
 			}
 		});
-		shell.setDefaultButton(closeButton);
+		okButton.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				saveSelectedFetchers();
+				shell.close();
+			}
+		});
+		shell.setDefaultButton(okButton);
 	}
 	
 	private void saveSelectedFetchers() {
