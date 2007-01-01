@@ -18,7 +18,7 @@ import java.util.prefs.Preferences;
 public class NamedListConfig {
 	
 	protected String preferenceName;
-	protected Preferences preferences = Config.getPreferences(); 
+	protected Preferences preferences; 
 	protected Map namedList = new LinkedHashMap();
 
 	// package local constructor

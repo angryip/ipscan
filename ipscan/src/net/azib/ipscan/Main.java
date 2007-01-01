@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Shell;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.ComponentRegistry;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.UserErrorException;
 
@@ -30,13 +31,11 @@ import net.azib.ipscan.gui.UserErrorException;
  */
 public class Main {
 	
-	private static final Logger LOG = Logger.getLogger(Main.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger();
 
 	public static void main(String[] args) {
 		
-		LOG.setLevel(Level.CONFIG);
-		
-		initProperties();
+		initSystemProperties();
 		
 		Display display = Display.getDefault();
 
@@ -72,7 +71,7 @@ public class Main {
 		display.dispose();
 	}
 
-	private static void initProperties() {
+	private static void initSystemProperties() {
 		// currently we support IPv4 only
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		// disable DNS caches
