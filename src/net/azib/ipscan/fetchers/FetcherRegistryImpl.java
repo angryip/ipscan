@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.prefs.Preferences;
 
 /**
  * Fetcher Registry singleton class.
@@ -19,6 +20,9 @@ import java.util.Map;
  */
 public class FetcherRegistryImpl implements FetcherRegistry {
 	
+	static final String PREFERENCE_SELECTED_FETCHERS = "selectedFetchers";
+	private Preferences preferences;
+	
 	/** All available Fetcher implementations, List of Fetcher instances */
 	private Map registeredFetchers;
 	/** Selected for scanning Fetcher implementations, keys are fetcher labels, values are Fetcher instances */
@@ -26,17 +30,49 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 	/** A collection of update listeners - observers of FetcherRegistry */
 	private List updateListeners = new ArrayList();
 	
-	public FetcherRegistryImpl(Fetcher[] registeredFetchers) {
+	public FetcherRegistryImpl(Fetcher[] registeredFetchers, Preferences preferences) {
+		this.preferences = preferences;
+		
 		this.registeredFetchers = new LinkedHashMap(registeredFetchers.length);
 		for (int i = 0; i < registeredFetchers.length; i++) {
 			this.registeredFetchers.put(registeredFetchers[i].getLabel(), registeredFetchers[i]);
 		}
 		this.registeredFetchers = Collections.unmodifiableMap(this.registeredFetchers);
 		
-		// TODO: this should be loaded from config as well as reasonable defaults should be made
-		this.selectedFetchers = new LinkedHashMap(this.registeredFetchers);
+		// now load the preferences to init selected fetchers
+		loadSelectedFetchers(preferences);
+	}
+
+	private void loadSelectedFetchers(Preferences preferences) {
+		String fetcherPrefValue = preferences.get(PREFERENCE_SELECTED_FETCHERS, null);
+		if (fetcherPrefValue == null) {
+			// no preferences previously saved, use these default values
+			this.selectedFetchers = new LinkedHashMap(this.registeredFetchers);
+		}
+		else {
+			String[] fetcherPrefs = fetcherPrefValue.split("###");
+			this.selectedFetchers = new LinkedHashMap(this.registeredFetchers.size());
+			// initialize saved selected fetchers
+			for (int i = 0; i < fetcherPrefs.length; i++) {
+				if (fetcherPrefs[i].length() > 0) {
+					this.selectedFetchers.put(fetcherPrefs[i], this.registeredFetchers.get(fetcherPrefs[i]));
+				}
+			}
+		}
 	}
 	
+	private void saveSelectedFetchers(Preferences preferences) {
+		StringBuffer sb = new StringBuffer();
+		for (Iterator i = this.selectedFetchers.keySet().iterator(); i.hasNext();) {
+			sb.append(i.next()).append("###");
+		}
+		String value = sb.toString();
+		if (value.endsWith("###"))
+			value = value.substring(0, value.length() - 3);
+		
+		preferences.put(PREFERENCE_SELECTED_FETCHERS, value);
+	}
+
 	public void addListener(FetcherRegistryUpdateListener listener) {
 		updateListeners.add(listener);
 	}
@@ -74,6 +110,9 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 			FetcherRegistryUpdateListener listener = (FetcherRegistryUpdateListener) i.next();
 			listener.handleUpdateOfSelectedFetchers(this);
 		}
+		
+		// save preferences
+		saveSelectedFetchers(preferences);
 	}
 	
 }

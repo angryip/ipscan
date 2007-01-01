@@ -65,7 +65,9 @@ public class ComponentRegistry {
 		
 		ComponentParameter anyComponentParameter = new ComponentParameter();
 		
-		// non-GUI TODO: move to a separate container
+		// non-GUI
+		container.registerComponentInstance(Config.getPreferences());
+		
 		container.registerComponentImplementation(ExporterRegistry.class);
 		container.registerComponentImplementation(TXTExporter.class);
 		container.registerComponentImplementation(CSVExporter.class);
@@ -85,7 +87,7 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(Scanner.class);
 		container.registerComponentImplementation(ScannerThreadFactory.class);
 		
-		// GUI follows
+		// GUI follows (TODO: move GUI to a separate place)
 		
 		// Some "shared" GUI components
 		container.registerComponentImplementation("mainShell", Shell.class);
