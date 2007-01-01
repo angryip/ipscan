@@ -11,6 +11,7 @@ import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.InetAddressUtils;
 import net.azib.ipscan.feeders.FeederException;
 
@@ -34,7 +35,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class FeederActions {
 	
-	private static final Logger LOG = Logger.getLogger(FeederActions.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger();
 
 	public static class HostnameButton implements SelectionListener, TraverseListener {
 		

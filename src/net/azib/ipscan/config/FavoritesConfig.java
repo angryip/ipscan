@@ -3,6 +3,8 @@
  */
 package net.azib.ipscan.config;
 
+import java.util.prefs.Preferences;
+
 /**
  * FavoritesConfig
  *
@@ -10,8 +12,8 @@ package net.azib.ipscan.config;
  */
 public class FavoritesConfig extends NamedListConfig {
 
-	public FavoritesConfig() {
-		super("favorites");
+	public FavoritesConfig(Preferences preferences) {
+		super(preferences, "favorites");
 	}
 
 }

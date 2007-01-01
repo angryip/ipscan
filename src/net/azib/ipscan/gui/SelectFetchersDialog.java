@@ -10,6 +10,7 @@ import java.util.Map;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.fetchers.IPFetcher;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -33,7 +34,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 	
 	private List selectedFetchersList;
 	private List registeredFetchersList;
-	private Map registeredFetcherLabelsByNames = new HashMap();
+	Map registeredFetcherLabelsByNames = new HashMap();
 
 	public SelectFetchersDialog(FetcherRegistry fetcherRegistry) {
 		this.fetcherRegistry = fetcherRegistry;
@@ -68,7 +69,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		selectedFetchersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		selectedFetchersList.setBounds(new Rectangle(10, 55, 155, 200));
 		Iterator i = fetcherRegistry.getSelectedFetchers().iterator();
-		//i.next();	// skip IP
+		i.next();	// skip IP
 		while (i.hasNext()) {
 			Fetcher fetcher = (Fetcher) i.next();
 			String fetcherName = Labels.getLabel(fetcher.getLabel());
@@ -98,7 +99,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		registeredFetchersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		registeredFetchersList.setBounds(new Rectangle(230, 55, 160, 200));
 		i = fetcherRegistry.getRegisteredFetchers().iterator();
-		//i.next(); // skip IP
+		i.next(); // skip IP
 		while (i.hasNext()) {
 			Fetcher fetcher = (Fetcher) i.next();
 			String fetcherName = Labels.getLabel(fetcher.getLabel());
@@ -127,19 +128,26 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		});
 		okButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				saveSelectedFetchers();
+				saveFetchersToRegistry(selectedFetchersList.getItems());
 				shell.close();
 			}
 		});
 		shell.setDefaultButton(okButton);
 	}
 	
-	private void saveSelectedFetchers() {
-		String[] fetchersToRetain = new String[selectedFetchersList.getItemCount()];
-		for (int i = 0; i < fetchersToRetain.length; i++) {
-			fetchersToRetain[i] = (String) registeredFetcherLabelsByNames.get(selectedFetchersList.getItem(i));
+	/**
+	 * Saves passed selected fetchers to the fetcher registry.
+	 * @param fetchersNamesToSave an array obtained by selectedFetchersList.getItems() 
+	 */
+	void saveFetchersToRegistry(String[] fetchersNamesToSave) {
+		// IPFetcher must be implicitly there
+		String[] fetchersLabelsToRetain = new String[fetchersNamesToSave.length+1];
+		fetchersLabelsToRetain[0] = IPFetcher.LABEL; 
+
+		for (int i = 0; i < fetchersNamesToSave.length; i++) {
+			fetchersLabelsToRetain[i+1] = (String) registeredFetcherLabelsByNames.get(fetchersNamesToSave[i]);
 		}
-		fetcherRegistry.updateSelectedFetchers(fetchersToRetain);
+		fetcherRegistry.updateSelectedFetchers(fetchersLabelsToRetain);
 	}
 
 	private static class AddRemoveButtonListener implements Listener {

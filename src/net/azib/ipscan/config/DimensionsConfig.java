@@ -23,20 +23,11 @@ public class DimensionsConfig {
 	public boolean isWindowMaximized;
 	
 	// package local constructor
-	DimensionsConfig() {
-		preferences = Config.getPreferences();
-		load();
-	}
-	
-	/**
-	 * This constructor is for tests
-	 * @param preferences
-	 */
 	DimensionsConfig(Preferences preferences) {
 		this.preferences = preferences;
 		load();
 	}
-
+	
 	private void load() {
 		windowHeight = preferences.getInt("windowHeight", 350);
 		windowWidth = preferences.getInt("windowWidth", 560);

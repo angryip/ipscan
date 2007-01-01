@@ -14,10 +14,10 @@ import java.util.prefs.Preferences;
  */
 public class OpenersConfig extends NamedListConfig {
 	
-	private static final Logger LOG = Logger.getLogger(OpenersConfig.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger();
 
-	public OpenersConfig() {
-		super("openers");
+	public OpenersConfig(Preferences preferences) {
+		super(preferences, "openers");
 		
 		if (size() == 0) {
 			boolean isWindows = System.getProperty("os.name").startsWith("Windows");
@@ -31,14 +31,6 @@ public class OpenersConfig extends NamedListConfig {
 			if (!isWindows) add(labels.get("opener.ssh"), new Opener("ssh ${fetcher.ip}", true, null));
 			add(labels.get("opener.email"), new Opener("mailto:somebody@example.com?subject=IP: ${fetcher.ip}", true, null));
 		}
-	}
-	
-	/**
-	 * This constructor is for tests
-	 * @param preferences
-	 */
-	OpenersConfig(Preferences preferences) {
-		super(preferences, "openers");
 	}
 	
 	Object serializeValue(String value) {
