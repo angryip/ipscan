@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.TableItem;
 
 /**
  * Table of scanning results.
- * TODO: separate fetcher selection logic to some other calls (the registry?)
  * 
  * @author anton
  */

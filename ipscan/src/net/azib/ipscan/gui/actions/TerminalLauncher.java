@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.gui.UserErrorException;
 
@@ -18,7 +19,7 @@ import net.azib.ipscan.gui.UserErrorException;
  */
 public class TerminalLauncher {
 	
-	private static final Logger LOG = Logger.getLogger(TerminalLauncher.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger();
 	
 	/**
 	 * Launches the execString in the terminal.

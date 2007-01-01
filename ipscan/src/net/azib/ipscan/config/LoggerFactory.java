@@ -1,0 +1,24 @@
+/**
+ * 
+ */
+package net.azib.ipscan.config;
+
+import java.util.logging.Logger;
+
+/**
+ * LoggerFactory is an easy way to obtain Logger instances.
+ *
+ * @author Anton Keks
+ */
+public class LoggerFactory {
+	
+	/**
+	 * @return Logger instance initialized to the name of the calling class.
+	 */
+	public static Logger getLogger() {
+	    Throwable t = new Throwable();                                             
+	    StackTraceElement directCaller = t.getStackTrace()[1];                     
+	    return Logger.getLogger(directCaller.getClassName());
+	}
+
+}

@@ -22,15 +22,6 @@ public class NamedListConfig {
 	protected Map namedList = new LinkedHashMap();
 
 	// package local constructor
-	NamedListConfig(String preferenceName) {
-		this.preferenceName = preferenceName;
-		load();
-	}
-
-	/**
-	 * This constructor is for tests
-	 * @param preferences
-	 */
 	NamedListConfig(Preferences preferences, String preferenceName) {
 		this.preferenceName = preferenceName;
 		this.preferences = preferences;

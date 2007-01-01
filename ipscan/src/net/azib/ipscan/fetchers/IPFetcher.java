@@ -14,11 +14,13 @@ import net.azib.ipscan.core.ScanningSubject;
  */
 public class IPFetcher implements Fetcher {
 
+	public static final String LABEL = "fetcher.ip";
+
 	/**
 	 * @see net.azib.ipscan.fetchers.Fetcher#getLabel()
 	 */
 	public String getLabel() {
-		return "fetcher.ip";
+		return LABEL;
 	}
 
 	/**

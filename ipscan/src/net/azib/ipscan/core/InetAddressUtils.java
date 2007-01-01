@@ -12,6 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+import net.azib.ipscan.config.LoggerFactory;
+
 /**
  * This class provides various utility static methods,
  * useful for transforming InetAddress objects.
@@ -20,7 +22,7 @@ import java.util.regex.Pattern;
  */
 public class InetAddressUtils {
 	
-	private static final Logger LOG = Logger.getLogger(InetAddressUtils.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger();
 	
 	// Warning! IPv4 specific code
 	public static final Pattern IP_ADDRESS_REGEX = Pattern.compile("\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b");

@@ -32,10 +32,10 @@ public final class Config {
 	 */
 	public static void initialize() {
 		preferences = Preferences.userRoot().node("ipscan");
-		globalConfig = new GlobalConfig();
-		favoritesConfig = new FavoritesConfig();
-		openersConfig = new OpenersConfig();
-		dimensionsConfig = new DimensionsConfig();
+		globalConfig = new GlobalConfig(preferences);
+		favoritesConfig = new FavoritesConfig(preferences);
+		openersConfig = new OpenersConfig(preferences);
+		dimensionsConfig = new DimensionsConfig(preferences);
 	}
 
 	public static void store() {

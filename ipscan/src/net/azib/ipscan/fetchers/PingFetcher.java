@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.IntegerWithUnit;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.net.PingResult;
@@ -23,7 +24,7 @@ import net.azib.ipscan.core.net.PingerRegistry;
  */
 public class PingFetcher implements Fetcher {
 	
-	private static final Logger LOG = Logger.getLogger(PingFetcher.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger();
 	
 	public static final String PARAMETER_PINGER = "pinger";
 

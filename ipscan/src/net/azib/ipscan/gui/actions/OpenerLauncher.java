@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.config.OpenersConfig.Opener;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.fetchers.FetcherRegistry;
@@ -20,7 +21,7 @@ import net.azib.ipscan.gui.UserErrorException;
  */
 public class OpenerLauncher {
 	
-	private static final Logger LOG = Logger.getLogger(OpenerLauncher.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger();
 	
 	private FetcherRegistry fetcherRegistry;
 	private ScanningResultList scanningResults;

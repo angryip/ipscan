@@ -24,7 +24,7 @@ public final class GlobalConfig {
 	private static final String ADAPT_PORT_TIMEOUT = "adaptPortTimeout";
 	private static final String PORT_STRING = "portString";
 	
-	private Preferences preferences = Config.getPreferences();
+	private Preferences preferences;
 	
 	public int maxThreads = preferences.getInt(MAX_THREADS, 100);
 	public int threadDelay = preferences.getInt(THREAD_DELAY, 20);
@@ -56,6 +56,7 @@ public final class GlobalConfig {
 	}
 
 	// package local constructor
-	GlobalConfig() {
+	GlobalConfig(Preferences preferences) {
+		this.preferences = preferences;
 	}
 }

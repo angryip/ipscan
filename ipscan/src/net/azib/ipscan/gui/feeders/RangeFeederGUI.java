@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 import java.util.logging.Logger;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.InetAddressUtils;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederException;
@@ -42,7 +43,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class RangeFeederGUI extends AbstractFeederGUI {
 	
-	private static final Logger LOG = Logger.getLogger(RangeFeederGUI.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger();
 
 	private Label ipRangeLabel;
 	private Text startIPText;

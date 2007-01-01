@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 
+import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.InetAddressUtils;
 
 /**
@@ -28,7 +29,7 @@ import net.azib.ipscan.core.InetAddressUtils;
  */
 public class FileFeeder implements Feeder {
 	
-	private static final Logger LOG = Logger.getLogger(FileFeeder.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger();
 	
 	/** Found IP address Strings are put here */
 	private List foundIPAddresses;
