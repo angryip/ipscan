@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.core.InetAddressUtils;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.RandomFeeder;
@@ -75,7 +76,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
         formData.top = new FormAttachment(ipPrototypeText, 0, SWT.CENTER);
         ipPrototypeLabel.setLayoutData(formData);
         
-		formData = new FormData(105, SWT.DEFAULT);
+		formData = new FormData(105 + (Platform.MAC_OS ? 35 : 0), SWT.DEFAULT);
 		formData.top = new FormAttachment(0);
 		formData.left = new FormAttachment(ipPrototypeLabel);
         ipPrototypeText.setLayoutData(formData);
@@ -96,7 +97,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		ipMaskCombo.add("255..0.255");
 		ipMaskCombo.add("255.0.0.255");
 		ipMaskCombo.select(3);
-		formData = new FormData(105, SWT.DEFAULT);
+		formData = new FormData(105 + (Platform.MAC_OS ? 35 : 0), SWT.DEFAULT);
 		formData.top = new FormAttachment(0);
 		formData.left = new FormAttachment(ipMaskLabel);
 		formData.bottom = new FormAttachment(ipPrototypeText, 0, SWT.BOTTOM);
@@ -123,7 +124,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		
 		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
 		ipUpButton.addSelectionListener(hostnameSelectionListener);
-		formData = new FormData(35, SWT.DEFAULT);
+		formData = new FormData();
 		formData.top = new FormAttachment(ipPrototypeText);
 		formData.left = new FormAttachment(hostnameText);
 		formData.bottom = new FormAttachment(hostnameText, 0, SWT.BOTTOM);

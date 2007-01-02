@@ -58,6 +58,7 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		closeButton = new Button(shell, SWT.NONE);
 		closeButton.setText(Labels.getLabel("button.close"));
 		closeButton.setBounds(110, 180, 80, 25);
+		closeButton.pack();
 		closeButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				shell.close();
@@ -69,6 +70,7 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		nextButton.setText(Labels.getLabel("button.next"));
 		nextButton.setBounds(210, 180, 80, 25);
 		nextButton.setFocus();
+		nextButton.pack();
 		nextButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				activePage++;
