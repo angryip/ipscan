@@ -75,13 +75,18 @@ public class OptionsDialog extends AbstractModalDialog {
 		shell.setSize(new Point(350, 423));
 		shell.setLayout(null);
 		okButton = new Button(shell, SWT.NONE);
-		okButton.setBounds(new Rectangle(175, 365, 75, 25));
+		okButton.setLocation(175, 365);
+		//okButton.setBounds(new Rectangle(175, 365, 75, 25));
 		okButton.setText("OK");
+		okButton.pack();
 		shell.setDefaultButton(okButton);
+		
 		cancelButton = new Button(shell, SWT.NONE);
-		cancelButton.setBounds(new Rectangle(260, 365, 75, 25));
+		cancelButton.setLocation(260, 365);
+		//cancelButton.setBounds(new Rectangle(260, 365, 75, 25));
 		cancelButton.setText("Cancel");
-
+		cancelButton.pack();
+		
 		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				saveOptions();

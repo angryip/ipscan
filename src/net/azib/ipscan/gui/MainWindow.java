@@ -63,7 +63,7 @@ public class MainWindow {
 		// after all controls are initialized, resize and open
 		shell.setBounds(Config.getDimensionsConfig().getWindowBounds());
 		shell.setMaximized(Config.getDimensionsConfig().isWindowMaximized);
-		shell.open();
+		shell.open();		
 	}
 
 	/**
@@ -144,12 +144,12 @@ public class MainWindow {
 				
 		// start/stop button
 		shell.setDefaultButton(startStopButton);
-		startStopButton.setLayoutData(new RowData(SWT.DEFAULT, 23));
+		startStopButton.setLayoutData(new RowData());
 		startStopButton.addSelectionListener(startStopScanningAction);
 		
 		// feeder selection combobox
 		this.feederSelectionCombo = feederSelectionCombo;
-		feederSelectionCombo.setLayoutData(new RowData(SWT.DEFAULT, 23));
+		feederSelectionCombo.setLayoutData(new RowData());
 		for (Iterator i = feederRegistry.iterator(); i.hasNext();) {
 			AbstractFeederGUI feederGUI = (AbstractFeederGUI) i.next();
 			feederSelectionCombo.add(feederGUI.getFeederName());	

@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.LoggerFactory;
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.core.InetAddressUtils;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederException;
@@ -88,7 +89,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         formData.top = new FormAttachment(startIPText, 0, SWT.CENTER);
         ipRangeLabel.setLayoutData(formData);
         
-		formData = new FormData(105, SWT.DEFAULT);
+		formData = new FormData(105 + (Platform.MAC_OS ? 35 : 0), SWT.DEFAULT);
 		formData.top = new FormAttachment(0);
 		formData.left = new FormAttachment(ipRangeLabel);
         startIPText.setLayoutData(formData);
@@ -106,7 +107,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         catch (UnknownHostException e) {
 			// leave endIPText empty
 		}
-		formData = new FormData(105, SWT.DEFAULT);
+		formData = new FormData(105 + (Platform.MAC_OS ? 35 : 0), SWT.DEFAULT);
 		formData.left = new FormAttachment(toLabel);
         endIPText.setLayoutData(formData);
         endIPText.addKeyListener(new EndIPKeyListener());
@@ -142,7 +143,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		
 		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
 		ipUpButton.addSelectionListener(hostnameListener);
-		formData = new FormData(35, SWT.DEFAULT);
+		formData = new FormData();
 		formData.top = new FormAttachment(endIPText);
 		formData.left = new FormAttachment(hostnameText);
 		formData.bottom = new FormAttachment(hostnameText, 0, SWT.BOTTOM);
