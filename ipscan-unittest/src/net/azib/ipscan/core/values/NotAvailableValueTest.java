@@ -1,10 +1,12 @@
 /**
  * 
  */
-package net.azib.ipscan.core;
+package net.azib.ipscan.core.values;
 
 import static org.junit.Assert.*;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.values.NotAvailableValue;
+
 import org.junit.Test;
 
 /**

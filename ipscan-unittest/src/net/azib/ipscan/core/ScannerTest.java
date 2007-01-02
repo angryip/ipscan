@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import net.azib.ipscan.config.Config;
+import net.azib.ipscan.core.values.NotAvailableValue;
+import net.azib.ipscan.core.values.NotScannedValue;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 

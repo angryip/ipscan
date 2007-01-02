@@ -3,28 +3,20 @@
  */
 package net.azib.ipscan.fetchers;
 
-import static org.junit.Assert.assertEquals;
+import net.azib.ipscan.config.Config;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.TreeSet;
-
-import org.junit.Test;
+import org.junit.Before;
 
 /**
  * PortsFetcherTest
  *
  * @author anton
  */
-public class PortsFetcherTest {
+public class PortsFetcherTest extends AbstractFetcherTestCase {
 
-	@Test
-	public void testPortListToRange() {
-		assertEquals("", PortsFetcher.portListToRange(Collections.EMPTY_LIST, true));
-		assertEquals("1", PortsFetcher.portListToRange(Arrays.asList(new Object[] {1}), true));
-		assertEquals("1-3", PortsFetcher.portListToRange(Arrays.asList(new Object[] {1, 2, 3}), true));
-		assertEquals("1-3", PortsFetcher.portListToRange(new TreeSet<Integer>(Arrays.asList(new Integer[] {2, 3, 1})), true));
-		assertEquals("1,2,3", PortsFetcher.portListToRange(Arrays.asList(new Object[] {1, 2, 3}), false));
-		assertEquals("1,5-6,15", PortsFetcher.portListToRange(Arrays.asList(new Object[] {1, 5, 6, 15}), true));
+	@Before
+	public void setUp() throws Exception {
+		fetcher = new PortsFetcher(Config.getGlobal());
 	}
+
 }
