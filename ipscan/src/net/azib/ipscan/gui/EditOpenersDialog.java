@@ -94,8 +94,9 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		deleteButton.addListener(SWT.Selection, new DeleteButtonListener());
 
 		Button closeButton = new Button(shell, SWT.NONE);
-		closeButton.setText(Labels.getLabel("button.close"));		
-		closeButton.setBounds(new Rectangle(315, 245, 75, 25));
+		closeButton.setText(Labels.getLabel("button.close"));
+		
+		positionButtons(closeButton, null);
 		
 		editFieldsGroup = new Group(shell, SWT.NONE);
 		editFieldsGroup.setBounds(205, 30, 185, 200);
@@ -147,7 +148,6 @@ public class EditOpenersDialog extends AbstractModalDialog {
 				shell.close();
 			}
 		});
-		shell.setDefaultButton(closeButton);
 	}
 	
 	private void saveOpeners() {

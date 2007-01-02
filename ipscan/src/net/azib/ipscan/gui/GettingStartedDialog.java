@@ -50,36 +50,33 @@ public class GettingStartedDialog extends AbstractModalDialog {
 			shell.setImage(parent.getImage());
 		}		
 		iconLabel.pack();
-		
-		gettingStartedText = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
-		gettingStartedText.setBounds(60, 10, 320, 160);
-		gettingStartedText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
-		
+				
 		closeButton = new Button(shell, SWT.NONE);
 		closeButton.setText(Labels.getLabel("button.close"));
-		closeButton.setBounds(110, 180, 80, 25);
-		closeButton.pack();
+
+		nextButton = new Button(shell, SWT.NONE);
+		nextButton.setText(Labels.getLabel("button.next"));
+		nextButton.setFocus();
+		
+		positionButtons(nextButton, closeButton);
+		
+		gettingStartedText = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
+		gettingStartedText.setBounds(60, 10, shell.getClientArea().width - 70, nextButton.getLocation().y - 20);
+		gettingStartedText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+		
 		closeButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				shell.close();
 				shell.dispose();
 			}
 		});
-
-		nextButton = new Button(shell, SWT.NONE);
-		nextButton.setText(Labels.getLabel("button.next"));
-		nextButton.setBounds(210, 180, 80, 25);
-		nextButton.setFocus();
-		nextButton.pack();
 		nextButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				activePage++;
 				displayActivePage();
 			}
 		});
-		
-		shell.setDefaultButton(nextButton);
-		
+
 		displayActivePage();
 	}
 	
