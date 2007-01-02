@@ -6,6 +6,8 @@ package net.azib.ipscan.core;
 import java.net.InetAddress;
 import java.util.Iterator;
 
+import net.azib.ipscan.core.values.NotAvailableValue;
+import net.azib.ipscan.core.values.NotScannedValue;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 

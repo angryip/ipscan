@@ -4,6 +4,7 @@
  */
 package net.azib.ipscan.fetchers;
 
+import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.net.PingResult;
 import net.azib.ipscan.core.net.PingerRegistry;
@@ -16,8 +17,8 @@ import net.azib.ipscan.core.net.PingerRegistry;
  */
 public class PingTTLFetcher extends PingFetcher {
 	
-	public PingTTLFetcher(PingerRegistry pingerRegistry) {
-		super(pingerRegistry);
+	public PingTTLFetcher(PingerRegistry pingerRegistry, GlobalConfig globalConfig) {
+		super(pingerRegistry, globalConfig);
 	}
 
 	public String getLabel() {

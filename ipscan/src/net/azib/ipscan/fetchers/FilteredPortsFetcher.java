@@ -3,9 +3,9 @@
  */
 package net.azib.ipscan.fetchers;
 
-import java.util.Set;
-
+import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.core.values.NumericListValue;
 
 /**
  * FilteredPortsFetcher uses the scanning results of PortsFetcher to display filtered ports.
@@ -14,14 +14,17 @@ import net.azib.ipscan.core.ScanningSubject;
  */
 public class FilteredPortsFetcher extends PortsFetcher {
 
+	public FilteredPortsFetcher(GlobalConfig globalConfig) {
+		super(globalConfig);
+	}
+
 	public String getLabel() {
 		return "fetcher.ports.filtered";
 	}
 
 	public Object scan(ScanningSubject subject) {
 		scanPorts(subject);
-		Set filteredPorts = getFilteredPorts(subject);
-		return filteredPorts.size() > 0 ? portListToRange(filteredPorts, displayAsRanges) : null;
+		NumericListValue filteredPorts = getFilteredPorts(subject);
+		return filteredPorts.size() > 0 ? filteredPorts.toString() : null;
 	}
-
 }

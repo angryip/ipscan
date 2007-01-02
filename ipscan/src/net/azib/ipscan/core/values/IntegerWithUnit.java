@@ -1,12 +1,13 @@
 /**
  * 
  */
-package net.azib.ipscan.core;
+package net.azib.ipscan.core.values;
 
 import net.azib.ipscan.config.Labels;
 
 /**
- * IntegerWithUnit - an Integer value together with a unit, e.g. "10 ms"
+ * IntegerWithUnit - an Integer value together with a unit, e.g. "10 ms".
+ * TODO: IntegerWithUnitTest
  *
  * @author anton
  */

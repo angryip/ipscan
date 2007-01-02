@@ -67,6 +67,10 @@ public class ComponentRegistry {
 		
 		// non-GUI
 		container.registerComponentInstance(Config.getPreferences());
+		container.registerComponentInstance(Config.getGlobal());
+		container.registerComponentInstance(Config.getDimensionsConfig());
+		container.registerComponentInstance(Config.getOpenersConfig());
+		container.registerComponentInstance(Config.getFavoritesConfig());
 		
 		container.registerComponentImplementation(ExporterRegistry.class);
 		container.registerComponentImplementation(TXTExporter.class);

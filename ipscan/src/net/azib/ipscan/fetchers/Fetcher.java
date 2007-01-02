@@ -4,9 +4,9 @@
  */
 package net.azib.ipscan.fetchers;
 
-import net.azib.ipscan.core.NotAvailableValue;
-import net.azib.ipscan.core.NotScannedValue;
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.core.values.NotAvailableValue;
+import net.azib.ipscan.core.values.NotScannedValue;
 
 /**
  * Interface of all IP Fetchers.

@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.config.LoggerFactory;
-import net.azib.ipscan.core.IntegerWithUnit;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.net.PingResult;
 import net.azib.ipscan.core.net.Pinger;
 import net.azib.ipscan.core.net.PingerRegistry;
+import net.azib.ipscan.core.values.IntegerWithUnit;
 
 /**
  * PingFetcher is able to ping IP addresses.
@@ -27,6 +27,8 @@ public class PingFetcher implements Fetcher {
 	private static final Logger LOG = LoggerFactory.getLogger();
 	
 	public static final String PARAMETER_PINGER = "pinger";
+	
+	private GlobalConfig config;
 
 	/** The shared pinger - this one must be static, because PingTTLFetcher will use it as well */
 	private static Pinger pinger;
@@ -34,8 +36,9 @@ public class PingFetcher implements Fetcher {
 	/** The registry used for creation of Pinger instances */
 	private PingerRegistry pingerRegistry;
 	
-	public PingFetcher(PingerRegistry pingerRegistry) {
+	public PingFetcher(PingerRegistry pingerRegistry, GlobalConfig globalConfig) {
 		this.pingerRegistry = pingerRegistry;
+		this.config = globalConfig;
 	}
 
 	public String getLabel() {
@@ -51,7 +54,7 @@ public class PingFetcher implements Fetcher {
 		}
 		else {
 			try {
-				result = pinger.ping(subject.getIPAddress(), Config.getGlobal().pingCount);
+				result = pinger.ping(subject.getIPAddress(), config.pingCount);
 			}
 			catch (IOException e) {
 				// if this is not a timeout
@@ -69,7 +72,7 @@ public class PingFetcher implements Fetcher {
 		PingResult result = executePing(subject);
 		subject.setResultType(result.isAlive() ? ScanningSubject.RESULT_TYPE_ALIVE : ScanningSubject.RESULT_TYPE_DEAD);
 		
-		if (!result.isAlive() && !Config.getGlobal().scanDeadHosts) {
+		if (!result.isAlive() && !config.scanDeadHosts) {
 			// the host is dead, we are not going to continue...
 			subject.abortScanning();
 		}
@@ -80,7 +83,7 @@ public class PingFetcher implements Fetcher {
 	public void init() {
 		try {
 			if (pinger == null) {
-				pinger = pingerRegistry.createPinger(Config.getGlobal().selectedPinger, Config.getGlobal().pingTimeout);
+				pinger = pingerRegistry.createPinger(config.selectedPinger, config.pingTimeout);
 			}
 		}
 		catch (Exception e) {

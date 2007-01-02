@@ -5,7 +5,7 @@ package net.azib.ipscan.core;
 
 import java.net.InetAddress;
 
-import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.feeders.Feeder;
 
 /**
@@ -22,11 +22,13 @@ public class ScannerThread extends Thread {
 	private ScanningResultsCallback resultsCallback;
 	private int state;
 	private int runningThreads;
-	private int maxThreads = Config.getGlobal().maxThreads;
-	private int threadDelay = Config.getGlobal().threadDelay;
 	
-	public ScannerThread(Feeder feeder, Scanner scanner, ScanningResultList scanningResults) {
+	private GlobalConfig config;
+	
+	public ScannerThread(Feeder feeder, Scanner scanner, ScanningResultList scanningResults, GlobalConfig globalConfig) {
 		super("Scanner Thread");
+		this.config = globalConfig;
+		
 		// this thread is daemon because we want JVM to terminate it
 		// automatically if user closes the program (Main thread, that is)
 		setDaemon(true);
@@ -44,9 +46,9 @@ public class ScannerThread extends Thread {
 			try {
 				
 				// make a small delay between thread creation
-				Thread.sleep(threadDelay);
+				Thread.sleep(config.threadDelay);
 								
-				if (runningThreads >= maxThreads) {
+				if (runningThreads >= config.maxThreads) {
 					// skip this iteration until more threads can be created
 					continue;
 				}
@@ -55,7 +57,7 @@ public class ScannerThread extends Thread {
 				final InetAddress address = feeder.next();
 				
 				// check if this is a likely broadcast address and needs to be skipped
-				if (Config.getGlobal().skipBroadcastAddresses && InetAddressUtils.isLikelyBroadcast(address)) {
+				if (config.skipBroadcastAddresses && InetAddressUtils.isLikelyBroadcast(address)) {
 					continue;
 				}
 
