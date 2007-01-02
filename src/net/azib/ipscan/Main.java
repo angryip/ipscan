@@ -31,7 +31,7 @@ import net.azib.ipscan.gui.UserErrorException;
  */
 public class Main {
 	
-	private static final Logger LOG = LoggerFactory.getLogger();
+	static final Logger LOG = LoggerFactory.getLogger();
 
 	public static void main(String[] args) {
 		

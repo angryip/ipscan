@@ -133,6 +133,29 @@ public class ScanningResultList {
 		Collections.sort(resultList, resultsComparator);
 	}
 	
+	/**
+	 * Finds the text in the result list. 
+	 * @param text the text to find
+	 * @param startIndex the element to start from
+	 * @return the index of found element, or -1
+	 */
+	public int findText(String text, int startIndex) {
+		for (int i = startIndex; i < resultList.size(); i++) {
+			ScanningResult scanningResult = getResult(i);
+			
+			for (Iterator j = scanningResult.getValues().iterator(); j.hasNext();) {
+				Object value = j.next();
+				
+				// TODO: case-insensitive search
+				if (value != null && value.toString().indexOf(text) >= 0) {						
+					return i;
+				}
+			}
+		}
+		// not found
+		return -1;
+	}
+	
 	private static class ResultsComparator implements Comparator {
 		
 		private int index;

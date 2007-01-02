@@ -3,6 +3,8 @@
  */
 package net.azib.ipscan.fetchers;
 
+import java.util.SortedSet;
+
 import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.values.NumericListValue;
@@ -24,7 +26,7 @@ public class FilteredPortsFetcher extends PortsFetcher {
 
 	public Object scan(ScanningSubject subject) {
 		scanPorts(subject);
-		NumericListValue filteredPorts = getFilteredPorts(subject);
-		return filteredPorts.size() > 0 ? filteredPorts.toString() : null;
+		SortedSet filteredPorts = getFilteredPorts(subject);
+		return filteredPorts.size() > 0 ? new NumericListValue(filteredPorts, displayAsRanges) : null;
 	}
 }

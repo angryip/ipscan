@@ -8,7 +8,8 @@ import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.core.PortIterator;
@@ -48,12 +49,12 @@ public class PortsFetcher implements Fetcher {
 	 * @param subject
 	 */
 	protected void scanPorts(ScanningSubject subject) {
-		NumericListValue openPorts = getOpenPorts(subject);
+		SortedSet openPorts = getOpenPorts(subject);
 					
 		if (openPorts == null) {
 			// no results are available yet, let's proceed with the scanning
-			openPorts = new NumericListValue(displayAsRanges);
-			Set filteredPorts = new NumericListValue(displayAsRanges);
+			openPorts = new TreeSet();
+			SortedSet filteredPorts = new TreeSet();
 			subject.setParameter(PARAMETER_OPEN_PORTS, openPorts);
 			subject.setParameter(PARAMETER_FILTERED_PORTS, filteredPorts);
 
@@ -102,16 +103,16 @@ public class PortsFetcher implements Fetcher {
 	 * @param subject
 	 * @return
 	 */
-	protected NumericListValue getFilteredPorts(ScanningSubject subject) {
-		return (NumericListValue) subject.getParameter(PARAMETER_FILTERED_PORTS);
+	protected SortedSet getFilteredPorts(ScanningSubject subject) {
+		return (SortedSet) subject.getParameter(PARAMETER_FILTERED_PORTS);
 	}
 
 	/**
 	 * @param subject
 	 * @return
 	 */
-	protected NumericListValue getOpenPorts(ScanningSubject subject) {
-		return (NumericListValue) subject.getParameter(PARAMETER_OPEN_PORTS);
+	protected SortedSet getOpenPorts(ScanningSubject subject) {
+		return (SortedSet) subject.getParameter(PARAMETER_OPEN_PORTS);
 	}
 	
 	/*
@@ -119,12 +120,12 @@ public class PortsFetcher implements Fetcher {
 	 */
 	public Object scan(ScanningSubject subject) {
 		scanPorts(subject);
-		NumericListValue openPorts = getOpenPorts(subject);
+		SortedSet openPorts = getOpenPorts(subject);
 		boolean portsFound = openPorts.size() > 0;
 		if (portsFound) {
 			subject.setResultType(ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO);
 		}
-		return portsFound ? openPorts : null;
+		return portsFound ? new NumericListValue(openPorts, displayAsRanges) : null;
 	}
 
 	public void init() {

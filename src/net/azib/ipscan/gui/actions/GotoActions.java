@@ -3,9 +3,6 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import java.util.Iterator;
-import java.util.List;
-
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
@@ -101,7 +98,6 @@ public class GotoActions {
 			
 			try {
 				statusBar.setStatusText(Labels.getLabel("state.searching"));
-
 				findText(text, event.display.getActiveShell());
 			}
 			finally {
@@ -112,27 +108,19 @@ public class GotoActions {
 		private void findText(String text, Shell activeShell) {
 			ScanningResultList results = resultTable.getScanningResults();
 			
-			int numElements = resultTable.getItemCount();
-			int startElement = resultTable.getSelectionIndex() + 1;
+			int startIndex = resultTable.getSelectionIndex() + 1;
 			
-			for (int i = startElement; i < numElements; i++) {
-				ScanningResult scanningResult = results.getResult(i);
-				
-				List values = scanningResult.getValues();
-				
-				for (Iterator j = values.iterator(); j.hasNext();) {
-					String value = (String) j.next();
-					
-					// TODO: case-insensitive search
-					if (value != null && value.indexOf(text) >= 0) {
-						resultTable.setSelection(i);
-						resultTable.setFocus();
-						return;
-					}
-				}
+			int foundIndex = results.findText(text, startIndex);					
+			
+			if (foundIndex >= 0) {
+				// if found, then select and finish
+				resultTable.setSelection(foundIndex);
+				resultTable.setFocus();
+				return;
 			}
 			
-			if (startElement > 0) {
+			if (startIndex > 0) {
+				// if started not from the beginning, offer to restart				
 				MessageBox messageBox = new MessageBox(activeShell, SWT.YES | SWT.NO | SWT.ICON_QUESTION);
 				messageBox.setText(Labels.getLabel("title.find"));
 				messageBox.setMessage(Labels.getLabel("text.find.notFound") + " " + Labels.getLabel("text.find.restart"));
@@ -142,6 +130,7 @@ public class GotoActions {
 				}
 			}
 			else {
+				// searching is finished, nothing was found				
 				MessageBox messageBox = new MessageBox(activeShell, SWT.OK | SWT.ICON_INFORMATION);
 				messageBox.setText(Labels.getLabel("title.find"));
 				messageBox.setMessage(Labels.getLabel("text.find.notFound"));

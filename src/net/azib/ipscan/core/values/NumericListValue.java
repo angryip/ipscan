@@ -5,56 +5,58 @@ package net.azib.ipscan.core.values;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.TreeSet;
 
 /**
  * NumericListValue - a value object containing a list of numbers.
+ * Note: it is immutable. 
+ * TODO: cache immutable number arrays
  * 
  * TODO: add parsing functionality here.
  *
  * @author Anton Keks
  */
-public class NumericListValue extends TreeSet {
+public class NumericListValue {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private boolean displayAsRanges; // TODO: make configurable
+	private int[] numbers;
 	
 	/**
-	 * Creates a new empty instance
-	 * @param displayAsRanges whether toString() outputs all number or their ranges
-	 */
-	public NumericListValue(boolean displayAsRanges) {
-		super();
-		this.displayAsRanges = displayAsRanges;
-	}
-
-	/**
 	 * Creates a new instance initialized with the following numbers.
-	 * @param numbers Set of numbers 
+	 * @param numbers Collections of Numbers (must be sorted for ranges to work) 
 	 * @param displayAsRanges whether toString() outputs all number or their ranges 
 	 */
 	public NumericListValue(Collection numbers, boolean displayAsRanges) {
-		super(numbers);
+		// copy numbers to an array (unfortunately toArray() cannot be used because int[] is not IS-A Object[])
+		this.numbers = new int[numbers.size()];
+		int c = 0;
+		for (Iterator i = numbers.iterator(); i.hasNext();) {			
+			this.numbers[c++] = ((Number)i.next()).intValue();
+		}
+		
 		this.displayAsRanges = displayAsRanges;
 	}
 	
+	/**
+	 * Outputs nice, human-friendly numeric list, displayed either as ranges or fully
+	 */
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		
-		Iterator i = iterator();
-		Integer prevPort = new Integer(Integer.MAX_VALUE);
-		boolean isRange = false;
+		int prevPort = Integer.MAX_VALUE;
+		boolean isRange = false;		
+		int i = 0;
 		
-		if (i.hasNext()) {
-			prevPort = (Integer) i.next();
+		if (numbers.length > 0) {
+			prevPort = numbers[0];
 			sb.append(prevPort);
 		}
 		
-		while (i.hasNext()) {
-			Integer port = (Integer) i.next();
+		while (++i < numbers.length) {
+			int port = numbers[i];
 			
-			if (displayAsRanges && prevPort.intValue() + 1 == port.intValue()) {
+			if (displayAsRanges && prevPort + 1 == port) {
 				isRange = true;
 			}
 			else {
