@@ -43,27 +43,28 @@ public class InputDialog extends AbstractModalDialog {
 		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-		shell.setSize(new Point(300, 112));
+		shell.setSize(new Point(310, 125));
 		shell.setLayout(null);
 		messageLabel = new Label(shell, SWT.NONE);
-		messageLabel.setBounds(new Rectangle(3, 5, 282, 14));
-		text = new Text(shell, SWT.BORDER);
-		text.setBounds(new Rectangle(5, 24, 281, 24));
+		messageLabel.setBounds(new Rectangle(10, 10, 282, 14));
+		
 		okButton = new Button(shell, SWT.NONE);
-		okButton.setLocation(new Point(57, 55));
-		okButton.setSize(new Point(70, 25));
 		okButton.setText(Labels.getLabel("button.OK"));
+		
+		cancelButton = new Button(shell, SWT.NONE);
+		cancelButton.setText(Labels.getLabel("button.cancel"));
+		
+		positionButtons(okButton, cancelButton);
+		
+		text = new Text(shell, SWT.BORDER);
+		text.setBounds(new Rectangle(10, 28, shell.getClientArea().width - 20, 24));
+
 		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				message = text.getText();
 				shell.dispose();
 			}
 		});
-		shell.setDefaultButton(okButton);
-		cancelButton = new Button(shell, SWT.NONE);
-		cancelButton.setLocation(new Point(155, 55));
-		cancelButton.setSize(new Point(70, 25));
-		cancelButton.setText(Labels.getLabel("button.cancel"));
 		cancelButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				message = null;

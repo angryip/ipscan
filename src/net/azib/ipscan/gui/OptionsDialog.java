@@ -8,23 +8,23 @@ import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.net.PingerRegistry;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * Options Dialog
@@ -69,24 +69,23 @@ public class OptionsDialog extends AbstractModalDialog {
 	 */
 	private void createShell() {
 		Display currentDisplay = Display.getCurrent();
+
 		shell = new Shell(currentDisplay != null ? currentDisplay.getActiveShell() : null, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		shell.setText(Labels.getLabel("title.options"));
-		createTabFolder();
-		shell.setSize(new Point(350, 423));
-		shell.setLayout(null);
+		shell.setSize(new Point(380, 423));
+
 		okButton = new Button(shell, SWT.NONE);
-		okButton.setLocation(175, 365);
-		//okButton.setBounds(new Rectangle(175, 365, 75, 25));
-		okButton.setText("OK");
-		okButton.pack();
-		shell.setDefaultButton(okButton);
+		okButton.setText(Labels.getLabel("button.OK"));
 		
 		cancelButton = new Button(shell, SWT.NONE);
-		cancelButton.setLocation(260, 365);
-		//cancelButton.setBounds(new Rectangle(260, 365, 75, 25));
-		cancelButton.setText("Cancel");
-		cancelButton.pack();
+		cancelButton.setText(Labels.getLabel("button.cancel"));
+
+		positionButtons(okButton, cancelButton);
 		
+		createTabFolder();
+		Rectangle clientArea = shell.getClientArea();
+		tabFolder.setBounds(new Rectangle(10, 10, clientArea.width - 20, okButton.getLocation().y - 20));
+
 		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				saveOptions();
@@ -109,7 +108,6 @@ public class OptionsDialog extends AbstractModalDialog {
 		createDisplayTab();
 		createFetchersTab();
 		createPortsTab();
-		tabFolder.setBounds(new Rectangle(5, 5, 330, 355));
 		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
 		tabItem.setText(Labels.getLabel("title.options.scanning"));
 		tabItem.setControl(scanningTab);

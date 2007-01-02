@@ -66,8 +66,16 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		selectedLabel.setText(Labels.getLabel("text.fetchers.selectedList"));		
 		selectedLabel.setBounds(new Rectangle(10, 35, 155, 14));
 		
+		Button okButton = new Button(shell, SWT.NONE);
+		okButton.setText(Labels.getLabel("button.OK"));		
+		
+		Button cancelButton = new Button(shell, SWT.NONE);
+		cancelButton.setText(Labels.getLabel("button.cancel"));		
+		
+		positionButtons(okButton, cancelButton);
+		
 		selectedFetchersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		selectedFetchersList.setBounds(new Rectangle(10, 55, 155, 200));
+		selectedFetchersList.setBounds(new Rectangle(10, 55, 155, okButton.getLocation().y - 65));
 		Iterator i = fetcherRegistry.getSelectedFetchers().iterator();
 		i.next();	// skip IP
 		while (i.hasNext()) {
@@ -97,7 +105,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		registeredLabel.setBounds(new Rectangle(230, 35, 155, 14));
 		
 		registeredFetchersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		registeredFetchersList.setBounds(new Rectangle(230, 55, 160, 200));
+		registeredFetchersList.setBounds(new Rectangle(230, 55, 160, okButton.getLocation().y - 65));
 		i = fetcherRegistry.getRegisteredFetchers().iterator();
 		i.next(); // skip IP
 		while (i.hasNext()) {
@@ -112,14 +120,6 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		downButton.addListener(SWT.Selection, new DownButtonListener(selectedFetchersList));
 		addButton.addListener(SWT.Selection, new AddRemoveButtonListener(registeredFetchersList, selectedFetchersList));
 		removeButton.addListener(SWT.Selection, new AddRemoveButtonListener(selectedFetchersList, registeredFetchersList));
-
-		Button okButton = new Button(shell, SWT.NONE);
-		okButton.setText(Labels.getLabel("button.OK"));		
-		okButton.setBounds(new Rectangle(220, 270, 80, 25));
-		
-		Button cancelButton = new Button(shell, SWT.NONE);
-		cancelButton.setText(Labels.getLabel("button.cancel"));		
-		cancelButton.setBounds(new Rectangle(310, 270, 80, 25));
 		
 		cancelButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {

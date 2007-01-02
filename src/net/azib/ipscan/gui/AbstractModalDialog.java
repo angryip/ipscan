@@ -3,7 +3,12 @@
  */
 package net.azib.ipscan.gui;
 
+import net.azib.ipscan.config.Platform;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.List;
@@ -21,11 +26,13 @@ public abstract class AbstractModalDialog {
 
 	public void open() {
 		// center dialog box according to the parent window
-		Rectangle parentBounds = shell.getParent().getBounds();
-		Rectangle childBounds = shell.getBounds();
-		int x = parentBounds.x + (parentBounds.width - childBounds.width) / 2;
-		int y = parentBounds.y + (parentBounds.height - childBounds.height) / 2;
-		shell.setLocation(x, y);
+		if (shell.getParent() != null) {
+			Rectangle parentBounds = shell.getParent().getBounds();
+			Rectangle childBounds = shell.getBounds();
+			int x = parentBounds.x + (parentBounds.width - childBounds.width) / 2;
+			int y = parentBounds.y + (parentBounds.height - childBounds.height) / 2;
+			shell.setLocation(x, y);
+		}
 		
 		// open the dialog box 
 		shell.open();
@@ -39,6 +46,38 @@ public abstract class AbstractModalDialog {
 		
 		// destroy the window
 		shell.dispose();
+	}
+	
+	/**
+	 * Positions 2 buttons at the bottom-right part of the shell.
+	 * On MacOS also changes ok and cancel button order.
+	 * @param okButton
+	 * @param cancelButton can be null
+	 */
+	protected void positionButtons(Button okButton, Button cancelButton) {
+		shell.setDefaultButton(okButton);
+		Rectangle clientArea = shell.getClientArea();
+		
+		Point size = okButton.computeSize(85, SWT.DEFAULT);
+		okButton.setSize(size);
+		
+		if (cancelButton != null) {
+			cancelButton.setSize(size);
+		
+			if (Platform.MAC_OS) {
+				// Mac OS users expect button order to be reverse
+				Button fooButton = okButton;
+				okButton = cancelButton;
+				cancelButton = fooButton;
+			}
+			// both buttons
+			cancelButton.setLocation(clientArea.width - size.x - 10, clientArea.height - size.y - 10);
+			okButton.setLocation(clientArea.width - size.x * 2 - 20, clientArea.height - size.y - 10);	
+		}
+		else {
+			// only one button
+			okButton.setLocation(clientArea.width - size.x - 10, clientArea.height - size.y - 10);
+		}
 	}
 	
 	// common listeners follow
