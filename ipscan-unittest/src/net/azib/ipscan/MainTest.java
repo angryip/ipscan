@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 
 import org.junit.Test;
 
@@ -18,8 +17,8 @@ public class MainTest {
 		// unknown exception
 		final boolean wasStackTraceLogged[] = {false};
 		Throwable e = new Exception("hello, test!");
-		Logger.global.setUseParentHandlers(false);
-		Logger.global.addHandler(new Handler() {
+		Main.LOG.setUseParentHandlers(false);
+		Main.LOG.addHandler(new Handler() {
 			public void close() throws SecurityException {
 			}
 			public void flush() {

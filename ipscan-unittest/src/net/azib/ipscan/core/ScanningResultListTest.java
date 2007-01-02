@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.values.NotScannedValue;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 
@@ -139,6 +140,28 @@ public class ScanningResultListTest {
 		assertTrue(s.indexOf(Labels.getLabel(((Fetcher)fetchers.get(1)).getLabel()) + ":\t123" + ln) >= 0);
 		assertTrue(s.indexOf(Labels.getLabel(((Fetcher)fetchers.get(2)).getLabel()) + ":\txxxxx" + ln) >= 0);
 		assertTrue(s.indexOf(Labels.getLabel(((Fetcher)fetchers.get(3)).getLabel()) + ":\t" + ln) >= 0);
+	}
+	
+	@Test
+	public void testFindText() throws Exception {
+		scanningResults.add(InetAddress.getByName("127.9.9.1"));
+		scanningResults.getResult(0).setValue(1, NotScannedValue.INSTANCE);
+		scanningResults.add(InetAddress.getByName("127.9.9.2"));
+		scanningResults.getResult(1).setValue(1, new Long(123456789L));
+		scanningResults.add(InetAddress.getByName("127.9.9.3"));
+		scanningResults.getResult(2).setValue(1, "zzzz");
+		scanningResults.add(InetAddress.getByName("127.9.9.4"));
+		scanningResults.getResult(3).setValue(1, "mmmmm");
+		scanningResults.add(InetAddress.getByName("127.9.9.5"));
+		scanningResults.getResult(4).setValue(1, null);
+		scanningResults.add(InetAddress.getByName("127.9.9.6"));
+		scanningResults.getResult(5).setValue(1, InetAddress.getByName("127.0.0.1"));
+		
+		assertEquals(-1, scanningResults.findText("sometext", 0));
+		assertEquals(1, scanningResults.findText("345", 0));
+		assertEquals(-1, scanningResults.findText("345", 2));
+		assertEquals(3, scanningResults.findText("m", 2));
+		assertEquals(5, scanningResults.findText("0.0.", 2));
 	}
 	
 	private static class DummyFetcher implements Fetcher {
