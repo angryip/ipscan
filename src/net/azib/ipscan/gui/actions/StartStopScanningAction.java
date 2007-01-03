@@ -35,7 +35,8 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 	private ResultTable resultTable;
 	private FeederGUIRegistry feederRegistry;
 	private Button button;
-	private Image[] images = new Image[4];
+	private Image[] buttonImages = new Image[4];
+	private String[] buttonTexts = new String[4];
 	
 	private Display display;
 	
@@ -50,13 +51,20 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 		this.display = button.getDisplay();
 		
 		// pre-load button images
-		images[ScanningStateCallback.STATE_IDLE] = new Image(null, Labels.getInstance().getImageAsStream("button.start.img"));
-		images[ScanningStateCallback.STATE_SCANNING] = new Image(null, Labels.getInstance().getImageAsStream("button.stop.img"));
-		images[ScanningStateCallback.STATE_STOPPING] = new Image(null, Labels.getInstance().getImageAsStream("button.kill.img"));
-		images[ScanningStateCallback.STATE_KILLING] = images[ScanningStateCallback.STATE_STOPPING];
+		buttonImages[ScanningStateCallback.STATE_IDLE] = new Image(null, Labels.getInstance().getImageAsStream("button.start.img"));
+		buttonImages[ScanningStateCallback.STATE_SCANNING] = new Image(null, Labels.getInstance().getImageAsStream("button.stop.img"));
+		buttonImages[ScanningStateCallback.STATE_STOPPING] = new Image(null, Labels.getInstance().getImageAsStream("button.kill.img"));
+		buttonImages[ScanningStateCallback.STATE_KILLING] = buttonImages[ScanningStateCallback.STATE_STOPPING];
+		
+		// pre-load button texts
+		buttonTexts[ScanningStateCallback.STATE_IDLE] = Labels.getLabel("button.start");
+		buttonTexts[ScanningStateCallback.STATE_SCANNING] = Labels.getLabel("button.stop");
+		buttonTexts[ScanningStateCallback.STATE_STOPPING] = Labels.getLabel("button.kill");
+		buttonTexts[ScanningStateCallback.STATE_KILLING] = Labels.getLabel("button.kill");
 		
 		// set the defaultimage
-		button.setImage(images[state]);
+		button.setImage(buttonImages[state]);
+		button.setText(buttonTexts[state]);
 	}
 
 	public void widgetDefaultSelected(SelectionEvent e) {
@@ -108,7 +116,8 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 						break;
 				}
 				// change button image
-				button.setImage(images[StartStopScanningAction.this.state]);
+				button.setImage(buttonImages[StartStopScanningAction.this.state]);
+				button.setText(buttonTexts[StartStopScanningAction.this.state]);
 			}
 		});
 	}
@@ -129,7 +138,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 				statusBar.setProgress(percentageComplete);
 
 				// change button image
-				button.setImage(images[StartStopScanningAction.this.state]);
+				button.setImage(buttonImages[StartStopScanningAction.this.state]);
 			}
 		});
 	}

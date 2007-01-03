@@ -4,6 +4,7 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.gui.actions.HelpActions;
 
@@ -41,13 +42,13 @@ public class AboutDialog extends AbstractModalDialog {
 		shell.setSize(new Point(400, 363));
 		
 		Label iconLabel = new Label(shell, SWT.ICON);
-		iconLabel.setBounds(10, 10, 0, 0);
-		
+		iconLabel.setLocation(10, 10);
 		if (parent != null) {
 			iconLabel.setImage(parent.getImage());
 			shell.setImage(parent.getImage());
 		}		
 		iconLabel.pack();
+		int leftBound = iconLabel.getBounds().width + 20;
 
 		// TODO: make clicking on links work
 		Link textLabel = new Link(shell, SWT.NONE);
@@ -58,7 +59,7 @@ public class AboutDialog extends AbstractModalDialog {
 		text = text.replaceAll("%WEBSITE", Version.WEBSITE);
 		text = text.replaceAll("%MAILTO", Version.MAILTO);
 		textLabel.setText(text);
-		textLabel.setBounds(60, 10, 0, 0);
+		textLabel.setLocation(leftBound, 10);
 		textLabel.addListener(SWT.Selection, new HelpActions.Website());
 		textLabel.pack();
 		
@@ -67,7 +68,7 @@ public class AboutDialog extends AbstractModalDialog {
 		positionButtons(button, null);
 		
 		Text licenseText = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
-		licenseText.setBounds(60, 140, shell.getClientArea().width - 70, button.getLocation().y - 150);
+		licenseText.setBounds(leftBound, 140, shell.getClientArea().width - leftBound - 10, button.getLocation().y - 150);
 		licenseText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		licenseText.setText("Licensed under the GNU General Public License Version 2\n\n" +
 							Version.NAME + " is free software; you can redistribute it and/or " +
@@ -90,7 +91,15 @@ public class AboutDialog extends AbstractModalDialog {
 			}
 		});
 		
-		shell.setDefaultButton(button);
+		if (Platform.MAC_OS) {
+			// no button on Mac
+			Point size = shell.getSize();
+			shell.setSize(size.x, size.y - button.getSize().y);
+			button.setVisible(false);
+		}
+		else {
+			button.setFocus();
+		}
 	}
 	
 }
