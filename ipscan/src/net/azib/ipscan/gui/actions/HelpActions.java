@@ -98,7 +98,8 @@ public class HelpActions {
 			}
 			finally {
 				try {
-					reader.close();
+					if (reader != null)
+						reader.close();
 				}
 				catch (IOException e) {}
 				
