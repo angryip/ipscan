@@ -43,13 +43,14 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		shell.setSize(new Point(400, 240));
 		
 		Label iconLabel = new Label(shell, SWT.ICON);
-		iconLabel.setBounds(10, 10, 0, 0);
+		iconLabel.setLocation(10, 10);
 		
 		if (parent != null) {
 			iconLabel.setImage(parent.getImage());
 			shell.setImage(parent.getImage());
 		}		
 		iconLabel.pack();
+		int leftBound = iconLabel.getBounds().width + 20;
 				
 		closeButton = new Button(shell, SWT.NONE);
 		closeButton.setText(Labels.getLabel("button.close"));
@@ -61,7 +62,7 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		positionButtons(nextButton, closeButton);
 		
 		gettingStartedText = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
-		gettingStartedText.setBounds(60, 10, shell.getClientArea().width - 70, nextButton.getLocation().y - 20);
+		gettingStartedText.setBounds(leftBound, 10, shell.getClientArea().width - leftBound - 10, closeButton.getLocation().y - 20);
 		gettingStartedText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		
 		closeButton.addListener(SWT.Selection, new Listener() {
