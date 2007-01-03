@@ -142,6 +142,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		hostnameLabel.setLayoutData(formData);
 		
 		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
+		ipUpButton.setText(Labels.getLabel("button.ipUp"));
 		ipUpButton.addSelectionListener(hostnameListener);
 		formData = new FormData();
 		formData.top = new FormAttachment(endIPText);

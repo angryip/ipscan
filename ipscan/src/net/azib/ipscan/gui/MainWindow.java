@@ -144,12 +144,12 @@ public class MainWindow {
 				
 		// start/stop button
 		shell.setDefaultButton(startStopButton);
-		startStopButton.setLayoutData(new RowData());
+		startStopButton.setLayoutData(new RowData(SWT.DEFAULT, 23));
 		startStopButton.addSelectionListener(startStopScanningAction);
 		
 		// feeder selection combobox
 		this.feederSelectionCombo = feederSelectionCombo;
-		feederSelectionCombo.setLayoutData(new RowData());
+		feederSelectionCombo.setLayoutData(new RowData(SWT.DEFAULT, 23));
 		for (Iterator i = feederRegistry.iterator(); i.hasNext();) {
 			AbstractFeederGUI feederGUI = (AbstractFeederGUI) i.next();
 			feederSelectionCombo.add(feederGUI.getFeederName());	
