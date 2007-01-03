@@ -123,6 +123,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		hostnameLabel.setLayoutData(formData);
 		
 		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
+		ipUpButton.setText(Labels.getLabel("button.ipUp"));
 		ipUpButton.addSelectionListener(hostnameSelectionListener);
 		formData = new FormData();
 		formData.top = new FormAttachment(ipPrototypeText);
