@@ -129,7 +129,7 @@ public class CommandsActions {
 				index++;
 				if (index <= 9) {
 					name += "\tCtrl+" + index;
-					menuItem.setAccelerator(SWT.CONTROL | ('0' + index));
+					menuItem.setAccelerator(SWT.MOD1 | ('0' + index));
 				}
 				
 				menuItem.setText(name);
