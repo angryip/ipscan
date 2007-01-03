@@ -16,7 +16,7 @@ public class Version {
 	
 	public static final String FULL_NAME = NAME + " " + VERSION;
 	
-	public static final String COPYLEFT = "(C) 1998-2007 Anton Keks";
+	public static final String COPYLEFT = "\u00A9 1998-2007 Anton Keks";
 	
 	public static final String WEBSITE = "http://www.azib.net/ipscan/";
 	
