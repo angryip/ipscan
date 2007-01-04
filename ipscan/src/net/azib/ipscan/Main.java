@@ -35,18 +35,25 @@ public class Main {
 
 	public static void main(String[] args) {
 		
+		long startTime = System.currentTimeMillis();
+		
 		initSystemProperties();
 		
-		Display display = Display.getDefault();
+		Display display = Display.getDefault();		
+		LOG.finer("SWT initialized after " + (System.currentTimeMillis() - startTime));
 
 		// initalize Labels instance
-		Labels.initialize(new Locale("en"));	// TODO: retrieve locale normally
-		
+		Labels.initialize(new Locale("en"));	// TODO: retrieve locale normally				
 		// initialize Config instance
-		Config.initialize();
+		Config.initialize();		
+		LOG.finer("Labels and Config initialized after " + (System.currentTimeMillis() - startTime));
+		
+		ComponentRegistry componentRegistry = new ComponentRegistry();
+		LOG.finer("ComponentRegistry initialized after " + (System.currentTimeMillis() - startTime));
 		
 		// create the main window using dependency injection
-		MainWindow mainWindow = new ComponentRegistry().createMainWindow();
+		MainWindow mainWindow = componentRegistry.createMainWindow();		
+		LOG.fine("Startup time: " + (System.currentTimeMillis() - startTime));
 		
 		while (!mainWindow.isDisposed()) {
 			try {

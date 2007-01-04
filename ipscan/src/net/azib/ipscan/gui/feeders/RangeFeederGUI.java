@@ -100,13 +100,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         formData.left = new FormAttachment(startIPText);
         formData.top = new FormAttachment(startIPText, 0, SWT.CENTER);
         toLabel.setLayoutData(formData);
-        
-        try {
-			endIPText.setText(InetAddress.getLocalHost().getHostAddress());
-		} 
-        catch (UnknownHostException e) {
-			// leave endIPText empty
-		}
+                
 		formData = new FormData(105 + (Platform.MAC_OS ? 35 : 0), SWT.DEFAULT);
 		formData.left = new FormAttachment(toLabel);
         endIPText.setLayoutData(formData);
@@ -122,12 +116,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 				super.widgetSelected(event);
 			}
         };
-        try {
-			hostnameText.setText(InetAddress.getLocalHost().getHostName());
-		} 
-        catch (UnknownHostException e1) {
-			// leave hostnameText empty
-		}
+        
         hostnameText.addTraverseListener(hostnameListener);
         formData = new FormData(105, SWT.DEFAULT);
 		formData.top = new FormAttachment(startIPText);
@@ -173,16 +162,22 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		formData.bottom = new FormAttachment(hostnameText, 0, SWT.BOTTOM);
 		netmaskCombo.setLayoutData(formData);
 		netmaskCombo.setToolTipText(Labels.getLabel("feeder.range.netmask.tooltip"));
-		
-		// fill the IP text with local IP address
-		try {
-			startIPText.setText(InetAddressUtils.getAddressByName(hostnameText.getText()));
-			endIPText.setText(startIPText.getText());
-		}
-		catch (UnknownHostException e) {
-			// don't report any errors on initialization
-			LOG.fine(e.toString());
-		}
+
+		// do this stuff asynchronously (to show GUI faster)
+		getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				// fill the IP and hostname fields with local hostname and IP addresses
+				try {
+					hostnameText.setText(InetAddress.getLocalHost().getHostName());
+					startIPText.setText(InetAddressUtils.getAddressByName(hostnameText.getText()));
+					endIPText.setText(startIPText.getText());
+				}
+				catch (UnknownHostException e) {
+					// don't report any errors on initialization, leave fields empty
+					LOG.fine(e.toString());
+				}
+			}
+		});
                 
 		pack();
 	}

@@ -75,6 +75,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		};
 		addListener(SWT.Traverse, detailsListener);
 		addListener(SWT.MouseDoubleClick, detailsListener);
+		addListener(SWT.KeyDown, new CommandsActions.Delete(this));
 		
 		addListener(SWT.SetData, new SetDataListener());
 	}
