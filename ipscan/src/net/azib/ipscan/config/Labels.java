@@ -5,7 +5,6 @@ package net.azib.ipscan.config;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
@@ -65,7 +64,8 @@ public final class Labels {
 			throw new MissingResourceException("Labels not found!", Labels.class.getName(), "Labels");
 		}
 		try {
-			instance.labels = new PropertyResourceBundle(new InputStreamReader(labelsStream, "UTF-8"));
+			// TODO: support UTF-8 here (unfortunately, stock PropertyResourceBundle supports Readers only starting with 1.6)
+			instance.labels = new PropertyResourceBundle(labelsStream);
 		}
 		catch (IOException e) {
 			throw new MissingResourceException(e.toString(), Labels.class.getName(), "Labels");

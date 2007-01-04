@@ -71,6 +71,7 @@ public class ComponentRegistry {
 		container.registerComponentInstance(Config.getDimensionsConfig());
 		container.registerComponentInstance(Config.getOpenersConfig());
 		container.registerComponentInstance(Config.getFavoritesConfig());
+		container.registerComponentInstance(Labels.getInstance());
 		
 		container.registerComponentImplementation(ExporterRegistry.class);
 		container.registerComponentImplementation(TXTExporter.class);
