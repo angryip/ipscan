@@ -54,6 +54,9 @@ public class CommandsActions {
 		}
 
 		public void handleEvent(Event event) {
+			// ignore other keys if this is a KeyDown event
+			if (event.type == SWT.KeyDown && event.keyCode != SWT.DEL)
+				return;			
 			checkSelection(resultTable);
 			int firstSelection = resultTable.getSelectionIndex();
 			resultTable.remove(resultTable.getSelectionIndices());

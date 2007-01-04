@@ -108,7 +108,7 @@ public class MainMenu {
 		initMenuItem(menu, "menu.commands.details", null, null, initListener(CommandsActions.Details.class));
 		initMenuItem(menu, null, null, null, null);
 		initMenuItem(menu, "menu.commands.rescan", "Ctrl+R", new Integer(SWT.MOD1 | 'R'), null);
-		initMenuItem(menu, "menu.commands.delete", "Del", new Integer(SWT.DEL), initListener(CommandsActions.Delete.class));
+		initMenuItem(menu, "menu.commands.delete", "Del", null, initListener(CommandsActions.Delete.class));
 		initMenuItem(menu, null, null, null, null);
 		initMenuItem(menu, "menu.commands.copy", "Ctrl+C", new Integer(SWT.MOD1 | 'C'), initListener(CommandsActions.CopyIP.class));
 		initMenuItem(menu, "menu.commands.copyDetails", null, null, initListener(CommandsActions.CopyIPDetails.class));

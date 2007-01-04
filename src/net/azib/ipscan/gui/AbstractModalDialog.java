@@ -91,8 +91,8 @@ public abstract class AbstractModalDialog {
 		}
 
 		public void handleEvent(Event event) {
-			if (list.isSelected(0)) {
-				// do not move anything if the first item is selected
+			if (list.getSelectionCount() == 0 || list.isSelected(0)) {
+				// do not move anything if either nothing is selected or only the first item is selected
 				return;
 			}
 			
@@ -121,8 +121,8 @@ public abstract class AbstractModalDialog {
 		}
 
 		public void handleEvent(Event event) {
-			if (list.isSelected(list.getItemCount() - 1)) {
-				// do not move anything if the last items is selected
+			if (list.getSelectionCount() == 0 || list.isSelected(list.getItemCount() - 1)) {
+				// do not move anything if either nothing is selected or only the last item is selected
 				return;
 			}
 			

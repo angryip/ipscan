@@ -71,6 +71,8 @@ public class InputDialog extends AbstractModalDialog {
 				shell.dispose();
 			}
 		});
+		
+		text.setFocus();
 	}
 	
 	private void setText(String text) {
