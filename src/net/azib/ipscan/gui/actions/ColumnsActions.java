@@ -5,9 +5,16 @@
  */
 package net.azib.ipscan.gui.actions;
 
+import java.util.MissingResourceException;
+
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
+import net.azib.ipscan.fetchers.Fetcher;
+import net.azib.ipscan.fetchers.FetcherException;
+import net.azib.ipscan.fetchers.PingFetcher;
+import net.azib.ipscan.fetchers.PortsFetcher;
+import net.azib.ipscan.gui.OptionsDialog;
 import net.azib.ipscan.gui.MainMenu.ColumnsMenu;
 
 import org.eclipse.swt.SWT;
@@ -15,6 +22,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
@@ -57,8 +65,8 @@ public class ColumnsActions {
 				sortMenuItem.setText(Labels.getLabel("menu.columns.sortBy") + tableColumn.getText());
 			}
 			
-			// remember the clicked column (see SortBy below)
-			sortMenuItem.setData(tableColumn);
+			// remember the clicked column (see SortBy, FetcherOptions, and FetcherInfo below)
+			columnsMenu.setData(tableColumn);
 			
 			// show the menu
 			columnsMenu.setLocation(e.display.getCursorLocation());
@@ -70,7 +78,7 @@ public class ColumnsActions {
 		
 		public void handleEvent(Event event) {
 			// retrieve the clicked column (see ColumnClick above)
-			TableColumn tableColumn = (TableColumn) event.widget.getData();
+			TableColumn tableColumn = (TableColumn) ((MenuItem)event.widget).getParent().getData();
 			
 			Table table = tableColumn.getParent();
 			
@@ -84,7 +92,54 @@ public class ColumnsActions {
 			
 			// TODO: execute ScanningResultList.sort() here!!!
 		}
+	}
+	
+	public static class FetcherOptions implements Listener {
+		
+		private OptionsDialog optionsDialog;
+		
+		public FetcherOptions(OptionsDialog optionsDialog) {
+			this.optionsDialog = optionsDialog;
+		}
 
+		public void handleEvent(Event event) {
+			// retrieve the clicked column (see ColumnClick above)
+			TableColumn tableColumn = (TableColumn) ((MenuItem)event.widget).getParent().getData();
+			
+			Fetcher fetcher = (Fetcher) tableColumn.getData();
+			
+			// some hardcodes here for 'special' fetchers
+			if (fetcher instanceof PingFetcher) {
+				optionsDialog.open();
+			}
+			else
+			if (fetcher instanceof PortsFetcher) {
+				optionsDialog.openTab(1);
+			}
+			else {
+				throw new FetcherException("options.notAvailable");
+			}
+		}
+	}
+	
+	public static class FetcherInfo implements Listener {
+		
+		public void handleEvent(Event event) {
+			// retrieve the clicked column (see ColumnClick above)
+			TableColumn tableColumn = (TableColumn) ((MenuItem)event.widget).getParent().getData();
+			
+			Fetcher fetcher = (Fetcher) tableColumn.getData();
+
+			MessageBox messageBox = new MessageBox(event.display.getActiveShell(), SWT.ICON_INFORMATION);
+			messageBox.setText(Labels.getLabel("text.fetchers.info") + Labels.getLabel(fetcher.getLabel()));
+			try {
+				messageBox.setMessage(Labels.getLabel(fetcher.getLabel() + ".info"));
+			}
+			catch (MissingResourceException e) {
+				messageBox.setMessage(Labels.getLabel("text.fetchers.info.notAvailable"));
+			}
+			messageBox.open();
+		}
 	}
 
 }

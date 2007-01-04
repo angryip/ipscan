@@ -18,4 +18,12 @@ public class FetcherException extends RuntimeException {
 		super(cause);
 	}
 
+	public FetcherException(String label, Throwable cause) {
+		super(label, cause);
+	}
+
+	public FetcherException(String label) {
+		super(label);
+	}
+
 }

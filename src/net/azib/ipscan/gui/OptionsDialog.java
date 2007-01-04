@@ -60,9 +60,18 @@ public class OptionsDialog extends AbstractModalDialog {
 	}
 	
 	public void open() {
+		openTab(0);
+	}
+	
+	/**
+	 * Opens the specified tab of options dialog
+	 * @param tabIndex
+	 */
+	public void openTab(int tabIndex) {
 		// widgets are created on demand
 		createShell();
 		loadOptions();
+		tabFolder.setSelection(tabIndex);
 		super.open();
 	}
 

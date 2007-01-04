@@ -20,14 +20,14 @@ public class ToolsActions {
 
 	public static class Options implements Listener {
 		
-		private OptionsDialog optionsWindow;
+		private OptionsDialog optionsDialog;
 		
-		public Options(OptionsDialog optionsWindow) {
-			this.optionsWindow = optionsWindow;
+		public Options(OptionsDialog optionsDialog) {
+			this.optionsDialog = optionsDialog;
 		}
 
 		public void handleEvent(Event event) {
-			optionsWindow.open();
+			optionsDialog.open();
 		}
 	}
 

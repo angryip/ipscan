@@ -50,7 +50,7 @@ public class MainMenu {
 		
 		container.registerComponentImplementation(CommandsActions.EditOpeners.class);
 		container.registerComponentImplementation(CommandsActions.SelectOpener.class);
-		container.registerComponentImplementation(CommandsActions.ShowOpenersMenu.class);		
+		container.registerComponentImplementation(CommandsActions.ShowOpenersMenu.class);
 		// this one is not cached because we need 2 instances of it - in the Commands menu and in the context menu
 		container.registerComponent(new ConstructorInjectionComponentAdapter(OpenersMenu.class, OpenersMenu.class)); 
 		
@@ -219,12 +219,12 @@ public class MainMenu {
 	 * This is the menu when clicking on a column header.
 	 */
 	public static class ColumnsMenu extends Menu {
-		public ColumnsMenu(Decorations parent, ColumnsActions.SortBy sortByListener) {
+		public ColumnsMenu(Decorations parent, ColumnsActions.SortBy sortByListener, ColumnsActions.FetcherInfo infoListener, ColumnsActions.FetcherOptions optionsListener) {
 			super(parent, SWT.POP_UP);
 			
 			initMenuItem(this, "menu.columns.sortBy", null, null, sortByListener);
-			initMenuItem(this, "menu.columns.info", null, null, null);
-			initMenuItem(this, "menu.columns.options", null, null, null);
+			initMenuItem(this, "menu.columns.options", null, null, optionsListener);
+			initMenuItem(this, "menu.columns.info", null, null, infoListener);
 		}
 		protected void checkSubclass() { } // allow extending of Menu class
 	}
