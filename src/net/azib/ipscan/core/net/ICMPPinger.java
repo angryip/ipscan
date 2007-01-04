@@ -84,9 +84,8 @@ public class ICMPPinger implements Pinger {
 				long start = OctetConverter.octetsToLong(data, dataOffset);
 				long time = end - start;
 				
-				result.totalTime += time;
-				result.replyCount++;
-				result.ttl = packet.getTTL() & 0xFF;
+				result.addReply(time);
+				result.setTTL(packet.getTTL() & 0xFF);
 			}
 		}
 		catch (InterruptedIOException e) {

@@ -116,7 +116,7 @@ public class ICMPSharedPinger implements Pinger {
 			}
 				
 			int totalTimeout = timeout * count;
-			while (totalTimeout > 0 && result.replyCount < count) {
+			while (totalTimeout > 0 && result.getReplyCount() < count) {
 				if (LOG.isLoggable(Level.FINEST)) {
 					LOG.finest("Waiting for response " + address + ": " + totalTimeout);
 				}
@@ -198,10 +198,9 @@ public class ICMPSharedPinger implements Pinger {
 							LOG.finest("Received " + packet.getSequenceNumber() + packet.getSourceAsInetAddress() + ": " + time);
 						}
 
-						result.totalTime += time;
-						result.replyCount++;
+						result.addReply(time);
 						// TTL should be the same among all packets
-						result.ttl = packet.getTTL() & 0xFF;
+						result.setTTL(packet.getTTL() & 0xFF);
 						
 						synchronized (result) {
 							// notify the sender that we have an answer :-)
