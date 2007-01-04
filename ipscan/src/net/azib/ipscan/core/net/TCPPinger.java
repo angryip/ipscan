@@ -40,12 +40,10 @@ public class TCPPinger implements Pinger {
 		long startTime = System.currentTimeMillis();
 		try {
 			socket.connect(new InetSocketAddress(address, PROBE_TCP_PORT), timeout);
-			result.replyCount++;
-			result.totalTime+=System.currentTimeMillis()-startTime;
+			result.addReply(System.currentTimeMillis()-startTime);
 		}
 		catch (ConnectException e) {
-			result.replyCount++;
-			result.totalTime+=System.currentTimeMillis()-startTime;
+			result.addReply(System.currentTimeMillis()-startTime);
 		}
 		catch (SocketTimeoutException e) {
 		}

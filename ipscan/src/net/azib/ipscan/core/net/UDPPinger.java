@@ -44,8 +44,7 @@ public class UDPPinger implements Pinger {
 				socket.receive(packet);
 			}
 			catch (PortUnreachableException e) {
-				result.replyCount++;
-				result.totalTime+=System.currentTimeMillis()-startTime;
+				result.addReply(System.currentTimeMillis()-startTime);
 			}
 			catch (SocketTimeoutException e) {
 			}

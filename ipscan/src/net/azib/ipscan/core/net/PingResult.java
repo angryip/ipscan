@@ -14,21 +14,40 @@ public class PingResult {
 
 	InetAddress address;
 
-	int ttl;
-	long totalTime;
-	int replyCount;
+	private int ttl;
+	private long totalTime;
+	private long longestTime;
+	private int replyCount;
 	
 	public PingResult(InetAddress address) {
-		this.address = address;
-		
+		this.address = address;		
+	}
+	
+	public void addReply(long time) {
+		replyCount++;
+		if (time > longestTime)
+			longestTime = time;
+		totalTime += time;
 	}
 
 	public int getTTL() {
 		return ttl;
 	}
 	
+	public void setTTL(int ttl) {
+		this.ttl = ttl;
+	}
+	
 	public int getAverageTime() {
 		return (int)(totalTime / replyCount);
+	}
+	
+	public int getLongestTime() {
+		return (int)longestTime;
+	}
+	
+	public int getReplyCount() {
+		return replyCount;
 	}
 	
 	/**

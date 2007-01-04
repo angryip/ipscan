@@ -36,7 +36,6 @@ public class PortsFetcher implements Fetcher {
 	
 	public PortsFetcher(GlobalConfig globalConfig) {
 		this.config = globalConfig;
-		this.portIteratorPrototype = new PortIterator(config.portString);
 	}
 
 	public String getLabel() {
@@ -62,9 +61,9 @@ public class PortsFetcher implements Fetcher {
 			
 			// now try to adapt timeout if it is enabled and pinging results are availbale
 			PingResult pingResult = (PingResult) subject.getParameter(PingFetcher.PARAMETER_PINGER);
-			if (config.adaptPortTimeout && pingResult.isAlive()) {
+			if (config.adaptPortTimeout && pingResult.getReplyCount() > 2) {
 				// TODO: use longest time istead of the average one for adapting
-				adaptedTimeout = Math.min(Math.max(pingResult.getAverageTime() * 4, 30), config.portTimeout);
+				adaptedTimeout = Math.min(Math.max(pingResult.getLongestTime() * 4, 50), config.portTimeout);
 			}
 			
 			Socket socket = null;
@@ -129,6 +128,8 @@ public class PortsFetcher implements Fetcher {
 	}
 
 	public void init() {
+		// rebuild port iterator before each scan
+		this.portIteratorPrototype = new PortIterator(config.portString);
 	}
 
 	public void cleanup() {
