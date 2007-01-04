@@ -77,7 +77,7 @@ public class ScanningResultList {
 			details.append(fetcherName).append(":\t");
 			Object value = iterator.next(); 
 			details.append(value != null ? value : "");
-			details.append(newLine).append("--------------------------------------------------------------------------------------").append(newLine);
+			details.append(newLine);
 		}
 		return details.toString();	
 	}

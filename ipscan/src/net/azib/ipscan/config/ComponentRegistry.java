@@ -139,6 +139,7 @@ public class ComponentRegistry {
 			new ComponentParameter("mainShell"),
 			anyComponentParameter,
 			anyComponentParameter,
+			anyComponentParameter,
 			anyComponentParameter});
 		container.registerComponentImplementation(StatusBar.class, StatusBar.class, new Parameter[] {
 			new ComponentParameter("mainShell")});
@@ -150,6 +151,8 @@ public class ComponentRegistry {
 			new ConstantParameter(container)});
 		container.registerComponentImplementation(MainMenu.ColumnsMenu.class, MainMenu.ColumnsMenu.class, new Parameter[] {
 			new ComponentParameter("mainShell"),
+			anyComponentParameter,
+			anyComponentParameter,
 			anyComponentParameter});
 		
 		container.registerComponentImplementation(OptionsDialog.class);
@@ -158,6 +161,10 @@ public class ComponentRegistry {
 		// various actions / listener
 		container.registerComponentImplementation(StartStopScanningAction.class);
 		container.registerComponentImplementation(ColumnsActions.SortBy.class);
+		container.registerComponentImplementation(ColumnsActions.FetcherOptions.class);
+		container.registerComponentImplementation(ColumnsActions.FetcherInfo.class);
+		container.registerComponentImplementation(ColumnsActions.ColumnClick.class);
+		container.registerComponentImplementation(ColumnsActions.ColumnResize.class);
 	}
 	
 	public MainWindow createMainWindow() {

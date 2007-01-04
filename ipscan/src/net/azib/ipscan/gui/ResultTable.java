@@ -18,7 +18,6 @@ import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
-import net.azib.ipscan.gui.MainMenu.ColumnsMenu;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsActions;
 
@@ -48,15 +47,15 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 
 	private Listener columnResizeListener;
 
-	public ResultTable(Composite parent, ColumnsMenu columnsMenu, FetcherRegistry fetcherRegistry, ScanningResultList scanningResultList) {
+	public ResultTable(Composite parent, FetcherRegistry fetcherRegistry, ScanningResultList scanningResultList, ColumnsActions.ColumnClick columnClickListener, ColumnsActions.ColumnResize columnResizeListener) {
 		super(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		this.scanningResults = scanningResultList;
 		
 		setHeaderVisible(true);
 		setLinesVisible(true);
 		
-		columnClickListener = new ColumnsActions.ColumnClick(columnsMenu);
-		columnResizeListener = new ColumnsActions.ColumnResize();
+		this.columnClickListener = columnClickListener;
+		this.columnResizeListener = columnResizeListener;
 		fetcherRegistry.addListener(this);
 		handleUpdateOfSelectedFetchers(fetcherRegistry);
 		
@@ -103,6 +102,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 			String fetcherName = Labels.getLabel(fetcher.getLabel());
 			tableColumn.setWidth(Config.getDimensionsConfig().getColumnWidth(fetcherName));
 			tableColumn.setText(fetcherName);
+			tableColumn.setData(fetcher);	// this is used in some listeners in ColumnsActions
 			tableColumn.addListener(SWT.Selection, columnClickListener);
 			tableColumn.addListener(SWT.Resize, columnResizeListener);
 		}
