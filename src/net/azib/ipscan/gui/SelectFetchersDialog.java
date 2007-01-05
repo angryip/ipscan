@@ -57,16 +57,19 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(Labels.getLabel("title.fetchers.select"));
-		shell.setSize(new Point(405, 332));		
+		shell.setSize(new Point(420, 332));		
 		shell.setLayout(null);		
 		
-		Label messageLabel = new Label(shell, SWT.NONE);
-		messageLabel.setText(Labels.getLabel("text.fetchers.select"));		
-		messageLabel.setBounds(new Rectangle(10, 10, 380, 14));
+		Label messageLabel = new Label(shell, SWT.WRAP);
+		messageLabel.setText(Labels.getLabel("text.fetchers.select"));
+		messageLabel.setSize(messageLabel.computeSize(420, SWT.DEFAULT));
+		messageLabel.setLocation(10, 10);
+		Rectangle messageLabelBounds = messageLabel.getBounds();
+		int topLocation = messageLabelBounds.y + messageLabelBounds.height + 10;
 		
 		Label selectedLabel = new Label(shell, SWT.NONE);
 		selectedLabel.setText(Labels.getLabel("text.fetchers.selectedList"));		
-		selectedLabel.setBounds(new Rectangle(10, 35, 155, 14));
+		selectedLabel.setBounds(new Rectangle(10, topLocation, 155, 14));
 		
 		Button okButton = new Button(shell, SWT.NONE);
 		okButton.setText(Labels.getLabel("button.OK"));		
@@ -77,7 +80,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		positionButtons(okButton, cancelButton);
 		
 		selectedFetchersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		selectedFetchersList.setBounds(new Rectangle(10, 55, 155, okButton.getLocation().y - 65));
+		selectedFetchersList.setBounds(new Rectangle(10, topLocation + 20, 155, okButton.getLocation().y - 25 - topLocation));
 		Iterator i = fetcherRegistry.getSelectedFetchers().iterator();
 		i.next();	// skip IP
 		while (i.hasNext()) {
@@ -87,27 +90,31 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		}
 		
 		Button upButton = new Button(shell, SWT.NONE);
-		upButton.setText(Labels.getLabel("button.up"));		
-		upButton.setBounds(new Rectangle(170, 55, 40, 25));
+		upButton.setText(Labels.getLabel("button.up"));	
+		upButton.pack();
+		upButton.setLocation(170, topLocation + 20);
 		
 		Button downButton = new Button(shell, SWT.NONE);
-		downButton.setText(Labels.getLabel("button.down"));		
-		downButton.setBounds(new Rectangle(170, 85, 40, 25));
+		downButton.setText(Labels.getLabel("button.down"));
+		downButton.pack();
+		downButton.setLocation(170, topLocation + 50);
 		
 		Button addButton = new Button(shell, SWT.NONE);
-		addButton.setText(Labels.getLabel("button.left"));		
-		addButton.setBounds(new Rectangle(170, 130, 40, 25));
+		addButton.setText(Labels.getLabel("button.left"));
+		addButton.pack();
+		addButton.setLocation(170, topLocation + 95);
 
 		Button removeButton = new Button(shell, SWT.NONE);
-		removeButton.setText(Labels.getLabel("button.right"));		
-		removeButton.setBounds(new Rectangle(170, 160, 40, 25));
+		removeButton.setText(Labels.getLabel("button.right"));
+		removeButton.pack();
+		removeButton.setLocation(170, topLocation + 125);
 		
 		Label registeredLabel = new Label(shell, SWT.NONE);
 		registeredLabel.setText(Labels.getLabel("text.fetchers.availableList"));		
-		registeredLabel.setBounds(new Rectangle(230, 35, 155, 14));
+		registeredLabel.setBounds(new Rectangle(245, topLocation, 155, 14));
 		
 		registeredFetchersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		registeredFetchersList.setBounds(new Rectangle(230, 55, 160, okButton.getLocation().y - 65));
+		registeredFetchersList.setBounds(new Rectangle(245, topLocation + 20, 160, okButton.getLocation().y - 25 - topLocation));
 		i = fetcherRegistry.getRegisteredFetchers().iterator();
 		i.next(); // skip IP
 		while (i.hasNext()) {
@@ -120,8 +127,12 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 
 		upButton.addListener(SWT.Selection, new UpButtonListener(selectedFetchersList));
 		downButton.addListener(SWT.Selection, new DownButtonListener(selectedFetchersList));
-		addButton.addListener(SWT.Selection, new AddRemoveButtonListener(registeredFetchersList, selectedFetchersList));
-		removeButton.addListener(SWT.Selection, new AddRemoveButtonListener(selectedFetchersList, registeredFetchersList));
+		AddRemoveButtonListener addButtonListener = new AddRemoveButtonListener(registeredFetchersList, selectedFetchersList);
+		addButton.addListener(SWT.Selection, addButtonListener);
+		registeredFetchersList.addListener(SWT.MouseDoubleClick, addButtonListener);
+		AddRemoveButtonListener removeButtonListener = new AddRemoveButtonListener(selectedFetchersList, registeredFetchersList);
+		removeButton.addListener(SWT.Selection, removeButtonListener);
+		selectedFetchersList.addListener(SWT.MouseDoubleClick, removeButtonListener);
 		
 		cancelButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {

@@ -9,6 +9,7 @@ import java.util.Iterator;
 
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
@@ -146,12 +147,12 @@ public class MainWindow {
 				
 		// start/stop button
 		shell.setDefaultButton(startStopButton);
-		startStopButton.setLayoutData(new RowData(SWT.DEFAULT, 23));
+		startStopButton.setLayoutData(new RowData(SWT.DEFAULT, !Platform.MAC_OS ? 23 : SWT.DEFAULT));
 		startStopButton.addSelectionListener(startStopScanningAction);
 		
 		// feeder selection combobox
 		this.feederSelectionCombo = feederSelectionCombo;
-		feederSelectionCombo.setLayoutData(new RowData(SWT.DEFAULT, 23));
+		if (!Platform.MAC_OS) feederSelectionCombo.setLayoutData(new RowData(SWT.DEFAULT, !Platform.MAC_OS ? 23 : SWT.DEFAULT));
 		for (Iterator i = feederRegistry.iterator(); i.hasNext();) {
 			AbstractFeederGUI feederGUI = (AbstractFeederGUI) i.next();
 			feederSelectionCombo.add(feederGUI.getFeederName());	

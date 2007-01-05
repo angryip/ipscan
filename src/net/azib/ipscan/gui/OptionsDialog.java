@@ -259,10 +259,10 @@ public class OptionsDialog extends AbstractModalDialog {
 		
 		label = new Label(portsGroup, SWT.WRAP);
 		label.setText(Labels.getLabel("options.ports.portsDescription"));
-		label.setLayoutData(new RowData(280, SWT.DEFAULT));
+		label.setLayoutData(new RowData(300, SWT.DEFAULT));
 		portsText = new Text(portsGroup, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL);
-		portsText.setLayoutData(new RowData(260, 60));
-		// TODO: configuration string validation
+		portsText.setLayoutData(new RowData(SWT.DEFAULT, 60));
+		// TODO: ports configuration string validation
 
 	}
 

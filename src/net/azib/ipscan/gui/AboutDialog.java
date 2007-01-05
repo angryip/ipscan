@@ -96,6 +96,7 @@ public class AboutDialog extends AbstractModalDialog {
 			Point size = shell.getSize();
 			shell.setSize(size.x, size.y - button.getSize().y);
 			button.setVisible(false);
+			licenseText.setFocus();
 		}
 		else {
 			button.setFocus();
