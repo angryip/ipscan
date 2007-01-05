@@ -110,7 +110,10 @@ public abstract class AbstractModalDialog {
 				list.select(index - 1);
 			}
 			
-			list.setTopIndex(selectedItems[0] - 2);
+			if (!Platform.MAC_OS) {
+				// this doesn't look good on Mac
+				list.setTopIndex(selectedItems[0] - 2);	
+			}
 		}
 	}
 
@@ -140,7 +143,10 @@ public abstract class AbstractModalDialog {
 				list.select(index + 1);
 			}
 			
-			list.setTopIndex(selectedItems[0]);
+			if (!Platform.MAC_OS) {
+				// this doesn't look good on Mac
+				list.setTopIndex(selectedItems[0]);	
+			}
 		}
 	}
 

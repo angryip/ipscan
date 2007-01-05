@@ -130,7 +130,7 @@ public class ColumnsActions {
 			
 			Fetcher fetcher = (Fetcher) tableColumn.getData();
 
-			MessageBox messageBox = new MessageBox(event.display.getActiveShell(), SWT.ICON_INFORMATION);
+			MessageBox messageBox = new MessageBox(event.display.getActiveShell(), SWT.ICON_INFORMATION | SWT.OK);
 			messageBox.setText(Labels.getLabel("text.fetchers.info") + Labels.getLabel(fetcher.getLabel()));
 			try {
 				messageBox.setMessage(Labels.getLabel(fetcher.getLabel() + ".info"));

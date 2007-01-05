@@ -10,7 +10,6 @@ import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.NamedListConfig;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
@@ -42,12 +41,12 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(Labels.getLabel("title.favorite.edit"));
-		shell.setSize(new Point(405, 297));		
 		shell.setLayout(null);		
 		
 		Label messageLabel = new Label(shell, SWT.NONE);
-		messageLabel.setText(Labels.getLabel("text.favorite.edit"));		
-		messageLabel.setBounds(new Rectangle(10, 10, 282, 14));
+		messageLabel.setText(Labels.getLabel("text.favorite.edit"));
+		messageLabel.pack();
+		messageLabel.setLocation(10, 10);
 		
 		favoritesList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		favoritesList.setBounds(new Rectangle(10, 30, 330, 200));
@@ -58,27 +57,31 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 		
 		Button upButton = new Button(shell, SWT.NONE);
 		upButton.setText(Labels.getLabel("button.up"));		
-		upButton.setBounds(new Rectangle(350, 30, 40, 25));
+		upButton.pack();
+		upButton.setLocation(350, 30);
 		upButton.addListener(SWT.Selection, new UpButtonListener(favoritesList));
 		
 		Button downButton = new Button(shell, SWT.NONE);
-		downButton.setText(Labels.getLabel("button.down"));		
-		downButton.setBounds(new Rectangle(350, 60, 40, 25));
+		downButton.setText(Labels.getLabel("button.down"));
+		downButton.pack();
+		downButton.setLocation(350, 60);
 		downButton.addListener(SWT.Selection, new DownButtonListener(favoritesList));
 		
 		Button deleteButton = new Button(shell, SWT.NONE);
-		deleteButton.setText(Labels.getLabel("button.delete"));		
-		deleteButton.setBounds(new Rectangle(350, 105, 40, 25));
+		deleteButton.setText(Labels.getLabel("button.delete"));
+		deleteButton.pack();
+		deleteButton.setLocation(350, 105);
 		deleteButton.addListener(SWT.Selection, new DeleteButtonListener());
 		
 		Button okButton = new Button(shell, SWT.NONE);
 		okButton.setText(Labels.getLabel("button.OK"));		
-		okButton.setBounds(new Rectangle(180, 238, 75, 25));
-		shell.setDefaultButton(okButton);
 		
 		Button cancelButton = new Button(shell, SWT.NONE);
 		cancelButton.setText(Labels.getLabel("button.cancel"));		
-		cancelButton.setBounds(new Rectangle(265, 238, 75, 25));		
+
+		shell.pack();
+		shell.setSize(shell.getSize().x, 297);
+		positionButtons(okButton, cancelButton);
 		
 		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -91,6 +94,7 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 				shell.close();
 			}
 		});
+		
 	}
 	
 	private void saveFavorites() {
