@@ -18,7 +18,7 @@ import org.eclipse.swt.layout.FormLayout;
  */
 public class LayoutHelper {
 
-	public static FormLayout createLayout(int marginWidth, int marginHeight, int spacing) {
+	public static FormLayout formLayout(int marginWidth, int marginHeight, int spacing) {
 		FormLayout formLayout = new FormLayout();
 		formLayout.marginWidth = marginWidth;
 		formLayout.marginHeight = marginHeight;
@@ -26,7 +26,7 @@ public class LayoutHelper {
 		return formLayout;
 	}
 	
-	public static FormData createData(int width, int height, FormAttachment left, FormAttachment right, FormAttachment top, FormAttachment bottom) {
+	public static FormData formData(int width, int height, FormAttachment left, FormAttachment right, FormAttachment top, FormAttachment bottom) {
 		FormData formData = new FormData(width, height);
 		formData.left = left;
 		formData.right = right;
@@ -35,7 +35,7 @@ public class LayoutHelper {
 		return formData;
 	}
 	
-	public static FormData createData(FormAttachment left, FormAttachment right, FormAttachment top, FormAttachment bottom) {
-		return createData(SWT.DEFAULT, SWT.DEFAULT, left, right, top, bottom);
+	public static FormData formData(FormAttachment left, FormAttachment right, FormAttachment top, FormAttachment bottom) {
+		return formData(SWT.DEFAULT, SWT.DEFAULT, left, right, top, bottom);
 	}
 }
