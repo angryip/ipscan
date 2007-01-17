@@ -6,11 +6,14 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Platform;
+import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.List;
@@ -82,6 +85,27 @@ public abstract class AbstractModalDialog {
 		}
 	}
 	
+	/**
+	 * Positions 2 buttons at the bottom-right part of the shell in the FormLayout.
+	 * On MacOS also changes ok and cancel button order.
+	 * @param okButton
+	 * @param cancelButton 
+	 * @param control the bottom-right widget, used as a guide
+	 */
+	protected void positionButtonsInFormLayout(Button okButton, Button cancelButton, Control control) {
+		shell.setDefaultButton(okButton);
+		
+		if (Platform.MAC_OS) {
+			// Mac OS users expect button order to be reverse
+			Button fooButton = okButton;
+			okButton = cancelButton;
+			cancelButton = fooButton;
+		}
+		// both buttons
+		cancelButton.setLayoutData(LayoutHelper.formData(85, SWT.DEFAULT, null, new FormAttachment(100), new FormAttachment(control, 6), null));
+		okButton.setLayoutData(LayoutHelper.formData(85, SWT.DEFAULT, null, new FormAttachment(cancelButton, -10), new FormAttachment(control, 6), null));
+	}
+
 	// common listeners follow
 	
 	protected static class UpButtonListener implements Listener {

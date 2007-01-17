@@ -16,7 +16,6 @@ import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
@@ -60,14 +59,15 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(Labels.getLabel("title.openers.edit"));
-		shell.setSize(new Point(405, 307));		
-		shell.setLayout(LayoutHelper.createLayout(10, 10, 4));		
+		shell.setLayout(LayoutHelper.formLayout(10, 10, 4));		
 		
 		Label messageLabel = new Label(shell, SWT.NONE);
 		messageLabel.setText(Labels.getLabel("text.openers.edit"));
 		
 		openersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		openersList.setLayoutData(LayoutHelper.createData(135, 200, null, null, new FormAttachment(messageLabel), null));
+		editFieldsGroup = new Group(shell, SWT.NONE);
+
+		openersList.setLayoutData(LayoutHelper.formData(135, 200, null, null, new FormAttachment(messageLabel), new FormAttachment(editFieldsGroup, 0, SWT.BOTTOM)));
 		for (Iterator i = Config.getOpenersConfig().iterateNames(); i.hasNext();) {
 			String name = (String) i.next();
 			openersList.add(name);
@@ -90,13 +90,12 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		deleteButton.setText(Labels.getLabel("button.delete"));
 		deleteButton.addListener(SWT.Selection, new DeleteButtonListener());
 
-		upButton.setLayoutData(LayoutHelper.createData(new FormAttachment(openersList), new FormAttachment(deleteButton, 0, SWT.RIGHT), new FormAttachment(messageLabel), null));
-		downButton.setLayoutData(LayoutHelper.createData(new FormAttachment(openersList), new FormAttachment(deleteButton, 0, SWT.RIGHT), new FormAttachment(upButton), null));
-		addButton.setLayoutData(LayoutHelper.createData(new FormAttachment(openersList), new FormAttachment(deleteButton, 0, SWT.RIGHT), new FormAttachment(downButton, 16), null));	
-		deleteButton.setLayoutData(LayoutHelper.createData(new FormAttachment(openersList), null, new FormAttachment(addButton), null));
+		upButton.setLayoutData(LayoutHelper.formData(new FormAttachment(openersList), new FormAttachment(deleteButton, 0, SWT.RIGHT), new FormAttachment(messageLabel), null));
+		downButton.setLayoutData(LayoutHelper.formData(new FormAttachment(openersList), new FormAttachment(deleteButton, 0, SWT.RIGHT), new FormAttachment(upButton), null));
+		addButton.setLayoutData(LayoutHelper.formData(new FormAttachment(openersList), new FormAttachment(deleteButton, 0, SWT.RIGHT), new FormAttachment(downButton, 16), null));	
+		deleteButton.setLayoutData(LayoutHelper.formData(new FormAttachment(openersList), null, new FormAttachment(addButton), null));
 						
-		editFieldsGroup = new Group(shell, SWT.NONE);
-		editFieldsGroup.setLayoutData(LayoutHelper.createData(new FormAttachment(upButton), null, new FormAttachment(messageLabel), null));
+		editFieldsGroup.setLayoutData(LayoutHelper.formData(new FormAttachment(upButton, 10), null, new FormAttachment(messageLabel), null));
 		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
 		rowLayout.fill = true;
 		rowLayout.justify = true; 
@@ -137,7 +136,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		if (!Platform.MAC_OS) {
 			Button closeButton = new Button(shell, SWT.NONE);
 			closeButton.setText(Labels.getLabel("button.close"));
-			closeButton.setLayoutData(LayoutHelper.createData(85, SWT.DEFAULT, null, new FormAttachment(editFieldsGroup, 0, SWT.RIGHT), new FormAttachment(editFieldsGroup), null));
+			closeButton.setLayoutData(LayoutHelper.formData(85, SWT.DEFAULT, null, new FormAttachment(editFieldsGroup, 0, SWT.RIGHT), new FormAttachment(editFieldsGroup, 6), null));
 			closeButton.addListener(SWT.Selection, new Listener() {
 				public void handleEvent(Event event) {
 					shell.close();

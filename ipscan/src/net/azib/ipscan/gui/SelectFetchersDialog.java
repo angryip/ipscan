@@ -13,10 +13,10 @@ import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.IPFetcher;
+import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -57,30 +57,18 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(Labels.getLabel("title.fetchers.select"));
-		shell.setSize(new Point(420, 332));		
-		shell.setLayout(null);		
+		shell.setLayout(LayoutHelper.formLayout(10, 10, 4));		
 		
 		Label messageLabel = new Label(shell, SWT.WRAP);
 		messageLabel.setText(Labels.getLabel("text.fetchers.select"));
-		messageLabel.setSize(messageLabel.computeSize(420, SWT.DEFAULT));
-		messageLabel.setLocation(10, 10);
-		Rectangle messageLabelBounds = messageLabel.getBounds();
-		int topLocation = messageLabelBounds.y + messageLabelBounds.height + 10;
+		messageLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), null, null));
 		
 		Label selectedLabel = new Label(shell, SWT.NONE);
 		selectedLabel.setText(Labels.getLabel("text.fetchers.selectedList"));		
-		selectedLabel.setBounds(new Rectangle(10, topLocation, 155, 14));
-		
-		Button okButton = new Button(shell, SWT.NONE);
-		okButton.setText(Labels.getLabel("button.OK"));		
-		
-		Button cancelButton = new Button(shell, SWT.NONE);
-		cancelButton.setText(Labels.getLabel("button.cancel"));		
-		
-		positionButtons(okButton, cancelButton);
-		
+		selectedLabel.setLayoutData(LayoutHelper.formData(null, null, new FormAttachment(messageLabel, 5), null));
+				
 		selectedFetchersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		selectedFetchersList.setBounds(new Rectangle(10, topLocation + 20, 155, okButton.getLocation().y - 25 - topLocation));
+		selectedFetchersList.setLayoutData(LayoutHelper.formData(140, 200, null, null, new FormAttachment(selectedLabel), null));
 		Iterator i = fetcherRegistry.getSelectedFetchers().iterator();
 		i.next();	// skip IP
 		while (i.hasNext()) {
@@ -91,30 +79,27 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		
 		Button upButton = new Button(shell, SWT.NONE);
 		upButton.setText(Labels.getLabel("button.up"));	
-		upButton.pack();
-		upButton.setLocation(170, topLocation + 20);
 		
 		Button downButton = new Button(shell, SWT.NONE);
 		downButton.setText(Labels.getLabel("button.down"));
-		downButton.pack();
-		downButton.setLocation(170, topLocation + 50);
 		
 		Button addButton = new Button(shell, SWT.NONE);
 		addButton.setText(Labels.getLabel("button.left"));
-		addButton.pack();
-		addButton.setLocation(170, topLocation + 95);
 
 		Button removeButton = new Button(shell, SWT.NONE);
 		removeButton.setText(Labels.getLabel("button.right"));
-		removeButton.pack();
-		removeButton.setLocation(170, topLocation + 125);
+		
+		upButton.setLayoutData(LayoutHelper.formData(new FormAttachment(selectedFetchersList), new FormAttachment(downButton, 0, SWT.RIGHT), new FormAttachment(selectedLabel), null));
+		downButton.setLayoutData(LayoutHelper.formData(new FormAttachment(selectedFetchersList), null, new FormAttachment(upButton), null));
+		addButton.setLayoutData(LayoutHelper.formData(new FormAttachment(selectedFetchersList), new FormAttachment(downButton, 0, SWT.RIGHT), new FormAttachment(downButton, 16), null));	
+		removeButton.setLayoutData(LayoutHelper.formData(new FormAttachment(selectedFetchersList), new FormAttachment(downButton, 0, SWT.RIGHT), new FormAttachment(addButton), null));
 		
 		Label registeredLabel = new Label(shell, SWT.NONE);
 		registeredLabel.setText(Labels.getLabel("text.fetchers.availableList"));		
-		registeredLabel.setBounds(new Rectangle(245, topLocation, 155, 14));
+		registeredLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(downButton, 10), null, new FormAttachment(messageLabel, 5), null));
 		
 		registeredFetchersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		registeredFetchersList.setBounds(new Rectangle(245, topLocation + 20, 160, okButton.getLocation().y - 25 - topLocation));
+		registeredFetchersList.setLayoutData(LayoutHelper.formData(140, 200, new FormAttachment(downButton, 10), null, new FormAttachment(registeredLabel), null));
 		i = fetcherRegistry.getRegisteredFetchers().iterator();
 		i.next(); // skip IP
 		while (i.hasNext()) {
@@ -125,6 +110,14 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 				registeredFetchersList.add(fetcherName);
 		}
 
+		Button okButton = new Button(shell, SWT.NONE);
+		okButton.setText(Labels.getLabel("button.OK"));
+		
+		Button cancelButton = new Button(shell, SWT.NONE);
+		cancelButton.setText(Labels.getLabel("button.cancel"));
+		
+		positionButtonsInFormLayout(okButton, cancelButton, registeredFetchersList);
+
 		upButton.addListener(SWT.Selection, new UpButtonListener(selectedFetchersList));
 		downButton.addListener(SWT.Selection, new DownButtonListener(selectedFetchersList));
 		AddRemoveButtonListener addButtonListener = new AddRemoveButtonListener(registeredFetchersList, selectedFetchersList);
@@ -133,6 +126,8 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		AddRemoveButtonListener removeButtonListener = new AddRemoveButtonListener(selectedFetchersList, registeredFetchersList);
 		removeButton.addListener(SWT.Selection, removeButtonListener);
 		selectedFetchersList.addListener(SWT.MouseDoubleClick, removeButtonListener);
+
+		shell.pack();
 		
 		cancelButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
@@ -145,7 +140,6 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 				shell.close();
 			}
 		});
-		shell.setDefaultButton(okButton);
 	}
 	
 	/**
