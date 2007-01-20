@@ -102,8 +102,8 @@ public abstract class AbstractModalDialog {
 			cancelButton = fooButton;
 		}
 		// both buttons
-		cancelButton.setLayoutData(LayoutHelper.formData(85, SWT.DEFAULT, null, new FormAttachment(100), new FormAttachment(control, 6), null));
-		okButton.setLayoutData(LayoutHelper.formData(85, SWT.DEFAULT, null, new FormAttachment(cancelButton, -10), new FormAttachment(control, 6), null));
+		cancelButton.setLayoutData(LayoutHelper.formData(85, SWT.DEFAULT, null, new FormAttachment(control, 0, SWT.RIGHT), new FormAttachment(control, 8), null));
+		okButton.setLayoutData(LayoutHelper.formData(85, SWT.DEFAULT, null, new FormAttachment(cancelButton, -10), new FormAttachment(control, 8), null));
 	}
 
 	// common listeners follow

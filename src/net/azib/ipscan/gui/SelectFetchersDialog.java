@@ -16,6 +16,7 @@ import net.azib.ipscan.fetchers.IPFetcher;
 import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
@@ -57,18 +58,17 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(Labels.getLabel("title.fetchers.select"));
-		shell.setLayout(LayoutHelper.formLayout(10, 10, 4));		
+		shell.setLayout(LayoutHelper.formLayout(10, 10, 4));
 		
 		Label messageLabel = new Label(shell, SWT.WRAP);
 		messageLabel.setText(Labels.getLabel("text.fetchers.select"));
-		messageLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), null, null));
 		
 		Label selectedLabel = new Label(shell, SWT.NONE);
 		selectedLabel.setText(Labels.getLabel("text.fetchers.selectedList"));		
 		selectedLabel.setLayoutData(LayoutHelper.formData(null, null, new FormAttachment(messageLabel, 5), null));
 				
 		selectedFetchersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		selectedFetchersList.setLayoutData(LayoutHelper.formData(140, 200, null, null, new FormAttachment(selectedLabel), null));
+		selectedFetchersList.setLayoutData(LayoutHelper.formData(140, 200, new FormAttachment(0), new FormAttachment(selectedLabel, 80, SWT.RIGHT), new FormAttachment(selectedLabel), null));
 		Iterator i = fetcherRegistry.getSelectedFetchers().iterator();
 		i.next();	// skip IP
 		while (i.hasNext()) {
@@ -127,6 +127,11 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		removeButton.addListener(SWT.Selection, removeButtonListener);
 		selectedFetchersList.addListener(SWT.MouseDoubleClick, removeButtonListener);
 
+		// this is a workaround for limitation of FormLayout to remove the extra edge below the form
+		shell.layout();
+		Rectangle bounds = registeredFetchersList.getBounds();
+		messageLabel.setLayoutData(LayoutHelper.formData(bounds.x + bounds.width - 10, SWT.DEFAULT, new FormAttachment(0), null, null, null));
+		
 		shell.pack();
 		
 		cancelButton.addListener(SWT.Selection, new Listener() {
