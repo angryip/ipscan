@@ -67,7 +67,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		openersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		editFieldsGroup = new Group(shell, SWT.NONE);
 
-		openersList.setLayoutData(LayoutHelper.formData(135, 200, null, null, new FormAttachment(messageLabel), new FormAttachment(editFieldsGroup, 0, SWT.BOTTOM)));
+		openersList.setLayoutData(LayoutHelper.formData(135, 200, null, null, new FormAttachment(messageLabel, 10), new FormAttachment(editFieldsGroup, 0, SWT.BOTTOM)));
 		for (Iterator i = Config.getOpenersConfig().iterateNames(); i.hasNext();) {
 			String name = (String) i.next();
 			openersList.add(name);
@@ -90,12 +90,12 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		deleteButton.setText(Labels.getLabel("button.delete"));
 		deleteButton.addListener(SWT.Selection, new DeleteButtonListener());
 
-		upButton.setLayoutData(LayoutHelper.formData(new FormAttachment(openersList), new FormAttachment(deleteButton, 0, SWT.RIGHT), new FormAttachment(messageLabel), null));
+		upButton.setLayoutData(LayoutHelper.formData(new FormAttachment(openersList), new FormAttachment(deleteButton, 0, SWT.RIGHT), new FormAttachment(messageLabel, 10), null));
 		downButton.setLayoutData(LayoutHelper.formData(new FormAttachment(openersList), new FormAttachment(deleteButton, 0, SWT.RIGHT), new FormAttachment(upButton), null));
 		addButton.setLayoutData(LayoutHelper.formData(new FormAttachment(openersList), new FormAttachment(deleteButton, 0, SWT.RIGHT), new FormAttachment(downButton, 16), null));	
 		deleteButton.setLayoutData(LayoutHelper.formData(new FormAttachment(openersList), null, new FormAttachment(addButton), null));
 						
-		editFieldsGroup.setLayoutData(LayoutHelper.formData(new FormAttachment(upButton, 10), null, new FormAttachment(messageLabel), null));
+		editFieldsGroup.setLayoutData(LayoutHelper.formData(new FormAttachment(upButton, 10), null, new FormAttachment(messageLabel, 10), null));
 		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
 		rowLayout.fill = true;
 		rowLayout.justify = true; 

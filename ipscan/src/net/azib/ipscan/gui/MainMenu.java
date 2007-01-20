@@ -86,8 +86,8 @@ public class MainMenu {
 		createFavoritesMenu(menu);
 		
 		subMenu = initMenu(menu, "menu.tools");
-		initMenuItem(subMenu, "menu.tools.options", Platform.MAC_OS ? "Ctrl+," : "Ctrl+O", new Integer(SWT.MOD1 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.Options.class));
-		initMenuItem(subMenu, "menu.tools.fetchers", null, null, initListener(ToolsActions.SelectFetchers.class));
+		initMenuItem(subMenu, "menu.tools.options", "Ctrl+O", new Integer(SWT.MOD1 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.Options.class));
+		initMenuItem(subMenu, "menu.tools.fetchers", "Ctrl+Shift+O", new Integer(SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.SelectFetchers.class));
 		initMenuItem(subMenu, null, null, null, null);
 		initMenuItem(subMenu, "menu.tools.delete", null, null, null);
 		initMenuItem(subMenu, "menu.tools.lastInfo", "Ctrl+I", new Integer(SWT.MOD1 | 'I'), null);
