@@ -22,15 +22,13 @@ public class OpenersConfig extends NamedListConfig {
 		super(preferences, "openers");
 		
 		if (size() == 0) {
-			boolean isWindows = System.getProperty("os.name").startsWith("Windows");
-				
 			Labels labels = Labels.getInstance();
 			// add default openers
-			if (isWindows) add(labels.get("opener.netbios"), new Opener("\\\\${fetcher.ip}", false, null));
+			if (Platform.WINDOWS) add(labels.get("opener.netbios"), new Opener("\\\\${fetcher.ip}", false, null));
 			add(labels.get("opener.web"), new Opener("http://${fetcher.ip}/", false, null));			
 			add(labels.get("opener.ftp"), new Opener("ftp://${fetcher.ip}/", false, null));
 			add(labels.get("opener.telnet"), new Opener("telnet ${fetcher.ip}", true, null));
-			if (!isWindows) add(labels.get("opener.ssh"), new Opener("ssh ${fetcher.ip}", true, null));
+			if (!Platform.WINDOWS) add(labels.get("opener.ssh"), new Opener("ssh ${fetcher.ip}", true, null));
 			add(labels.get("opener.email"), new Opener("mailto:somebody@example.com?subject=IP: ${fetcher.ip}", true, null));
 		}
 	}
