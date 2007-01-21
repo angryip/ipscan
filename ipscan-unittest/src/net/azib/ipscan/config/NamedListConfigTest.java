@@ -27,7 +27,7 @@ public class NamedListConfigTest {
 	@Before
 	public void setUp() throws Exception {
 		preferences = Preferences.userRoot().node("ipscan-test");
-		preferences.clear();
+		preferences.node(PREFERENCE_NAME).clear();
 		config = new NamedListConfig(preferences, PREFERENCE_NAME);
 	}
 
@@ -54,7 +54,7 @@ public class NamedListConfigTest {
 		assertEquals(3, config.size());
 	}
 	
-	@Test
+	@Test @SuppressWarnings("unchecked")
 	public void testOrder() throws Exception {
 		preferences.put(PREFERENCE_NAME, "aa###aaa###bb###bbb###cc###ccc");
 		NamedListConfig config = new NamedListConfig(preferences, PREFERENCE_NAME);
@@ -76,7 +76,7 @@ public class NamedListConfigTest {
 		assertEquals("x###y###Buga muga x,1,2,3,4,5###opopo op : , . l ; - # | @@###127.0.0.1###192.168.2.25", preferences.get(PREFERENCE_NAME, ""));
 	}
 	
-	@Test
+	@Test @SuppressWarnings("unchecked")
 	public void testUpdate() {
 		config.add("z", "zzz");
 		config.add("y", "yyy");

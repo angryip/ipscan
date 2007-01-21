@@ -88,7 +88,7 @@ public class InetAddressUtilsTest {
 	
 	@Test
 	public void testGetAddressByName() throws Exception {
-		Enumeration ifaces = NetworkInterface.getNetworkInterfaces();
+		Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces();
 		ifaces.nextElement();
 		if (ifaces.hasMoreElements()) {		
 			// this test depends on the network configuraton of the system

@@ -34,8 +34,8 @@ import org.junit.Test;
  */
 public class ScannerTest {
 	
-	private Set<Class> initCalled = new HashSet<Class>();
-	private Set<Class> cleanupCalled = new HashSet<Class>();
+	private Set<Class<? extends Fetcher>> initCalled = new HashSet<Class<? extends Fetcher>>();
+	private Set<Class<? extends Fetcher>> cleanupCalled = new HashSet<Class<? extends Fetcher>>();
 	private Scanner scanner;
 	private FetcherRegistry fetcherRegistry;
 	

@@ -5,6 +5,7 @@ package net.azib.ipscan.config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -39,6 +40,11 @@ public class OpenersConfigTest {
 	}
 	
 	@Test
+	public void testDefaultValues() throws Exception {
+		assertTrue(config.size() > 0);
+	}
+	
+	@Test
 	public void testAddNoStrings() {
 		try {
 			config.add("aa", "b");
@@ -49,6 +55,9 @@ public class OpenersConfigTest {
 	
 	@Test
 	public void testAdd() {
+		// clear default values
+		config.update(new String[] {});
+		
 		config.add("Mega favorite", new OpenersConfig.Opener("a@@@0@@@c"));
 		assertEquals("a", config.getOpener("Mega favorite").execString);
 		assertEquals(false, config.getOpener("Mega favorite").inTerminal);
@@ -79,7 +88,7 @@ public class OpenersConfigTest {
 		assertEquals(2, config.size());
 	}
 	
-	@Test
+	@Test @SuppressWarnings("unchecked")
 	public void testOrder() throws Exception {
 		preferences.put(PREFERENCE_NAME, "aa###aaa@@@1@@@###bb###bbb@@@1@@@");
 		OpenersConfig config = new OpenersConfig(preferences);
@@ -92,6 +101,9 @@ public class OpenersConfigTest {
 	
 	@Test
 	public void testStore() throws Exception {
+		// clear default values
+		config.update(new String[] {});
+		
 		config.add("x", new OpenersConfig.Opener("aa", true, null));
 		config.add("x y z", new OpenersConfig.Opener("a a", true, new File("zzz z")));
 		config.store();
@@ -99,7 +111,7 @@ public class OpenersConfigTest {
 		assertEquals("x###aa@@@1@@@###x y z###a a@@@1@@@zzz z", preferences.get(PREFERENCE_NAME, ""));
 	}
 	
-	@Test
+	@Test @SuppressWarnings("unchecked")
 	public void testUpdate() {
 		config.add("x", new OpenersConfig.Opener("aa", true, null));
 		config.add("y", new OpenersConfig.Opener("bb", false, null));

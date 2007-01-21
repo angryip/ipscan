@@ -20,7 +20,7 @@ public class ExporterRegistryTest {
 	
 	@Test
 	public void testIterator() {
-		for (Iterator i = exporterRegistry.iterator(); i.hasNext(); ) {
+		for (Iterator<?> i = exporterRegistry.iterator(); i.hasNext(); ) {
 			Exporter exporter = (Exporter) i.next();
 			assertNotNull(exporter);
 			assertNotNull(exporter.getFilenameExtension());

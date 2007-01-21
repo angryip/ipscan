@@ -68,7 +68,7 @@ public class FetcherRegistryImplTest {
 		preferences.put(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, hostnameFetcher.getLabel() + "###" + commentFetcher.getLabel());
 		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences);
 		assertEquals(2, fetcherRegistry.getSelectedFetchers().size());
-		Iterator iterator = fetcherRegistry.getSelectedFetchers().iterator();
+		Iterator<?> iterator = fetcherRegistry.getSelectedFetchers().iterator();
 		assertSame(hostnameFetcher, iterator.next());
 		assertSame(commentFetcher, iterator.next());
 	}
@@ -78,7 +78,7 @@ public class FetcherRegistryImplTest {
 		// retain only one selected fetcher
 		fetcherRegistry.updateSelectedFetchers(new String[] {ipFetcher.getLabel()});
 		assertEquals(1, fetcherRegistry.getSelectedFetchers().size());
-		Iterator iterator = fetcherRegistry.getSelectedFetchers().iterator();
+		Iterator<?> iterator = fetcherRegistry.getSelectedFetchers().iterator();
 		assertEquals(ipFetcher.getLabel(), ((Fetcher)iterator.next()).getLabel());
 		assertEquals(ipFetcher.getLabel(), preferences.get(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, null));
 		

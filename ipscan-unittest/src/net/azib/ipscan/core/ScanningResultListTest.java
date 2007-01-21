@@ -64,7 +64,7 @@ public class ScanningResultListTest {
 	public void testIterator() throws Exception {
 		assertFalse(scanningResults.iterator().hasNext());
 		scanningResults.add(InetAddress.getLocalHost());
-		Iterator i = scanningResults.iterator();
+		Iterator<?> i = scanningResults.iterator();
 		assertTrue(i.hasNext());
 		assertTrue(i.next() instanceof ScanningResult);
 		assertFalse(i.hasNext());
@@ -95,7 +95,7 @@ public class ScanningResultListTest {
 		scanningResults.add(InetAddress.getByName("127.9.9.4"));
 		scanningResults.remove(new int[] {i2,i3});
 		
-		Iterator i = scanningResults.iterator();
+		Iterator<?> i = scanningResults.iterator();
 		assertTrue(i.hasNext());
 		assertEquals(InetAddress.getByName("127.9.9.1"), ((ScanningResult)i.next()).getAddress());
 		assertTrue(i.hasNext());
@@ -116,7 +116,7 @@ public class ScanningResultListTest {
 		
 		scanningResults.sort(1);
 		
-		Iterator i = scanningResults.iterator();
+		Iterator<?> i = scanningResults.iterator();
 		assertEquals(InetAddress.getByName("127.9.9.2"), ((ScanningResult)i.next()).getAddress());
 		assertEquals(InetAddress.getByName("127.9.9.4"), ((ScanningResult)i.next()).getAddress());
 		assertEquals(InetAddress.getByName("127.9.9.1"), ((ScanningResult)i.next()).getAddress());
@@ -124,9 +124,9 @@ public class ScanningResultListTest {
 		assertFalse(i.hasNext());
 	}
 	
-	@Test
+	@Test @SuppressWarnings("unchecked")
 	public void testGetResultsAsString() throws Exception {
-		List fetchers = scanningResults.getFetchers();
+		List<Fetcher> fetchers = scanningResults.getFetchers();
 		int index = scanningResults.add(InetAddress.getByName("172.28.43.55"));
 		ScanningResult result = scanningResults.getResult(index);
 		result.setValue(1, "123");
@@ -136,10 +136,10 @@ public class ScanningResultListTest {
 		String s = scanningResults.getResultsAsString(index);
 		String ln = System.getProperty("line.separator");
 		assertTrue(s.endsWith(ln));
-		assertTrue(s.indexOf(Labels.getLabel(((Fetcher)fetchers.get(0)).getLabel()) + ":\t172.28.43.55" + ln) >= 0);
-		assertTrue(s.indexOf(Labels.getLabel(((Fetcher)fetchers.get(1)).getLabel()) + ":\t123" + ln) >= 0);
-		assertTrue(s.indexOf(Labels.getLabel(((Fetcher)fetchers.get(2)).getLabel()) + ":\txxxxx" + ln) >= 0);
-		assertTrue(s.indexOf(Labels.getLabel(((Fetcher)fetchers.get(3)).getLabel()) + ":\t" + ln) >= 0);
+		assertTrue(s.indexOf(Labels.getLabel(fetchers.get(0).getLabel()) + ":\t172.28.43.55" + ln) >= 0);
+		assertTrue(s.indexOf(Labels.getLabel(fetchers.get(1).getLabel()) + ":\t123" + ln) >= 0);
+		assertTrue(s.indexOf(Labels.getLabel(fetchers.get(2).getLabel()) + ":\txxxxx" + ln) >= 0);
+		assertTrue(s.indexOf(Labels.getLabel(fetchers.get(3).getLabel()) + ":\t" + ln) >= 0);
 	}
 	
 	@Test

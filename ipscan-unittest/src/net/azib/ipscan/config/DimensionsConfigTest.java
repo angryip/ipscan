@@ -25,6 +25,7 @@ public class DimensionsConfigTest {
 	@Before
 	public void setUp() throws Exception {
 		preferences = Preferences.userRoot().node("ipscan-test");
+		preferences.clear();
 		config = new DimensionsConfig(preferences);
 	}
 

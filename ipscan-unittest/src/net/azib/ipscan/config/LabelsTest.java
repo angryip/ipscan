@@ -63,9 +63,10 @@ public class LabelsTest {
 	public void testImageAsStream() throws IOException {
 		InputStream stream = Labels.getInstance().getImageAsStream("button.start.img");
 		// Now check the first bytes of GIF image header
+		stream.read();
+		assertEquals((int)'P', stream.read());
+		assertEquals((int)'N', stream.read());
 		assertEquals((int)'G', stream.read());
-		assertEquals((int)'I', stream.read());
-		assertEquals((int)'F', stream.read());
 		stream.close();
 	}
 	
@@ -75,7 +76,7 @@ public class LabelsTest {
 	 */
 	@Test
 	public void testAllLabels() throws IOException {
-		File srcDir = new File("src");
+		File srcDir = new File("../ipscan/src");
 		recurseAndTestLabels(srcDir);
 	}
 
