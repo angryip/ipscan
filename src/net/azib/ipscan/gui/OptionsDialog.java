@@ -9,10 +9,9 @@ import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.net.PingerRegistry;
+import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -83,19 +82,19 @@ public class OptionsDialog extends AbstractModalDialog {
 
 		shell = new Shell(currentDisplay != null ? currentDisplay.getActiveShell() : null, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		shell.setText(Labels.getLabel("title.options"));
-		shell.setSize(new Point(380, 423));
+		shell.setLayout(LayoutHelper.formLayout(10, 10, 4));
+		
+		createTabFolder();
 
 		okButton = new Button(shell, SWT.NONE);
 		okButton.setText(Labels.getLabel("button.OK"));
 		
 		cancelButton = new Button(shell, SWT.NONE);
 		cancelButton.setText(Labels.getLabel("button.cancel"));
-
-		positionButtons(okButton, cancelButton);
 		
-		createTabFolder();
-		Rectangle clientArea = shell.getClientArea();
-		tabFolder.setBounds(new Rectangle(10, 10, clientArea.width - 20, okButton.getLocation().y - 20));
+		positionButtonsInFormLayout(okButton, cancelButton, tabFolder);
+		
+		shell.pack();
 
 		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -115,34 +114,35 @@ public class OptionsDialog extends AbstractModalDialog {
 	 */
 	private void createTabFolder() {
 		tabFolder = new TabFolder(shell, SWT.NONE);
+		
 		createScanningTab();
-		createDisplayTab();
-		createFetchersTab();
-		createPortsTab();
 		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
 		tabItem.setText(Labels.getLabel("title.options.scanning"));
 		tabItem.setControl(scanningTab);
-		TabItem tabItem1 = new TabItem(tabFolder, SWT.NONE);
-		tabItem1.setText(Labels.getLabel("title.options.ports"));
-		tabItem1.setControl(portsTab);
-		TabItem tabItem2 = new TabItem(tabFolder, SWT.NONE);
-		tabItem2.setText(Labels.getLabel("title.options.display"));
-		tabItem2.setControl(displayTab);		
-		TabItem tabItem3 = new TabItem(tabFolder, SWT.NONE);
-		tabItem3.setText(Labels.getLabel("title.options.fetchers"));
-		tabItem3.setControl(fetchersTab);
+		
+		createPortsTab();
+		tabItem = new TabItem(tabFolder, SWT.NONE);
+		tabItem.setText(Labels.getLabel("title.options.ports"));
+		tabItem.setControl(portsTab);
+		
+		createDisplayTab();		
+		tabItem = new TabItem(tabFolder, SWT.NONE);
+		tabItem.setText(Labels.getLabel("title.options.display"));
+		tabItem.setControl(displayTab);		
+
+		createFetchersTab();
+		tabItem = new TabItem(tabFolder, SWT.NONE);
+		tabItem.setText(Labels.getLabel("title.options.fetchers"));
+		tabItem.setControl(fetchersTab);
+		
+		tabFolder.pack();
 	}
 
 	/**
 	 * This method initializes scanningTab	
 	 */
 	private void createScanningTab() {
-		RowLayout rowLayout = new RowLayout();
-		rowLayout.type = org.eclipse.swt.SWT.VERTICAL;
-		rowLayout.marginTop = 9;
-		rowLayout.spacing = 9;
-		rowLayout.marginLeft = 11;
-		rowLayout.fill = true;
+		RowLayout rowLayout = createRowLayout();
 		scanningTab = new Composite(tabFolder, SWT.NONE);
 		scanningTab.setLayout(rowLayout);
 		
@@ -220,12 +220,7 @@ public class OptionsDialog extends AbstractModalDialog {
 	 * This method initializes portsTab	
 	 */
 	private void createPortsTab() {
-		RowLayout rowLayout = new RowLayout();
-		rowLayout.type = org.eclipse.swt.SWT.VERTICAL;
-		rowLayout.marginTop = 9;
-		rowLayout.spacing = 9;
-		rowLayout.marginLeft = 11;
-		rowLayout.fill = true;
+		RowLayout rowLayout = createRowLayout();
 		portsTab = new Composite(tabFolder, SWT.NONE);
 		portsTab.setLayout(rowLayout);
 		
@@ -252,14 +247,16 @@ public class OptionsDialog extends AbstractModalDialog {
 		adaptTimeoutCheckbox.setLayoutData(gridData1);
 		
 		RowLayout portsLayout = new RowLayout(SWT.VERTICAL);
-		portsLayout.fill = true;		
+		portsLayout.fill = true;
+		portsLayout.marginHeight = 2;
+		portsLayout.marginWidth = 2;
 		Group portsGroup = new Group(portsTab, SWT.NONE);
 		portsGroup.setText(Labels.getLabel("options.ports.ports"));
 		portsGroup.setLayout(portsLayout);
 		
 		label = new Label(portsGroup, SWT.WRAP);
 		label.setText(Labels.getLabel("options.ports.portsDescription"));
-		label.setLayoutData(new RowData(300, SWT.DEFAULT));
+		//label.setLayoutData(new RowData(300, SWT.DEFAULT));
 		portsText = new Text(portsGroup, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL);
 		portsText.setLayoutData(new RowData(SWT.DEFAULT, 60));
 		// TODO: ports configuration string validation
@@ -276,6 +273,19 @@ public class OptionsDialog extends AbstractModalDialog {
 		fetchersTab.setLayout(gridLayout);
 		Label label = new Label(fetchersTab, SWT.NONE);
 		label.setText(Labels.getLabel("options.fetchers.info"));
+	}
+
+	/**
+	 * @return a pre-initialized RowLayout suitable for option tabs.
+	 */
+	private RowLayout createRowLayout() {
+		RowLayout rowLayout = new RowLayout();
+		rowLayout.type = org.eclipse.swt.SWT.VERTICAL;
+		rowLayout.spacing = 9;
+		rowLayout.marginHeight = 9;
+		rowLayout.marginWidth = 11;
+		rowLayout.fill = true;
+		return rowLayout;
 	}
 
 	private void loadOptions() {
