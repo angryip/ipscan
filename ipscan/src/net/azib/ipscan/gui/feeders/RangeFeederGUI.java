@@ -138,7 +138,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		formData = new FormData();
 		formData.top = new FormAttachment(endIPText);
 		formData.left = new FormAttachment(hostnameText);
-		formData.bottom = new FormAttachment(hostnameText, 0, SWT.BOTTOM);
+		formData.bottom = new FormAttachment(hostnameText, 1, SWT.BOTTOM);
 		ipUpButton.setLayoutData(formData);
         
         netmaskCombo.setText(getStringLabel("netmask"));

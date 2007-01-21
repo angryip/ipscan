@@ -63,6 +63,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		FormLayout formLayout = new FormLayout();
 		formLayout.marginWidth = 3;
 		formLayout.marginHeight = 3;
+		formLayout.marginBottom = 2;
 		formLayout.spacing = 4;
 		setLayout(formLayout);
 		
@@ -128,7 +129,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		formData = new FormData();
 		formData.top = new FormAttachment(ipPrototypeText);
 		formData.left = new FormAttachment(hostnameText);
-		formData.bottom = new FormAttachment(hostnameText, 0, SWT.BOTTOM);
+		formData.bottom = new FormAttachment(hostnameText, 1, SWT.BOTTOM);
 		ipUpButton.setLayoutData(formData);
 		
 		countLabel.setText(getStringLabel("count"));
