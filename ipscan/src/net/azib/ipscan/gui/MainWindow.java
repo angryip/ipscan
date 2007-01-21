@@ -64,8 +64,14 @@ public class MainWindow {
 
 		// after all controls are initialized, resize and open
 		shell.setBounds(Config.getDimensionsConfig().getWindowBounds());
-		shell.setMaximized(Config.getDimensionsConfig().isWindowMaximized);
-		shell.open();		
+		shell.open();
+		if (Config.getDimensionsConfig().isWindowMaximized) {
+			shell.setMaximized(true);
+		}
+		else {
+			// set bounds twice - a workaround for a bug in SWT GTK + Compiz (otherwise window gets smaller and smaller each time)
+			shell.setBounds(Config.getDimensionsConfig().getWindowBounds());			
+		}
 	}
 
 	/**
