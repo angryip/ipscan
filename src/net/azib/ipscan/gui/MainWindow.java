@@ -9,7 +9,6 @@ import java.util.Iterator;
 
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
@@ -143,16 +142,21 @@ public class MainWindow {
 		
 		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
 		rowLayout.marginLeft = 7;
+		rowLayout.spacing = 3;
 		controlsArea.setLayout(rowLayout);
+		
+		// steal the height from the second child of the FeederGUI - this must be the first edit box.
+		// this results in better visual alignment with FeederGUIs
+		int controlHeight = feederRegistry.current().getChildren()[1].getSize().y + 1;
 				
 		// start/stop button
 		shell.setDefaultButton(startStopButton);
-		startStopButton.setLayoutData(new RowData(SWT.DEFAULT, !Platform.MAC_OS ? 23 : SWT.DEFAULT));
+		startStopButton.setLayoutData(new RowData(SWT.DEFAULT, controlHeight));
 		startStopButton.addSelectionListener(startStopScanningAction);
 		
 		// feeder selection combobox
 		this.feederSelectionCombo = feederSelectionCombo;
-		if (!Platform.MAC_OS) feederSelectionCombo.setLayoutData(new RowData(SWT.DEFAULT, !Platform.MAC_OS ? 23 : SWT.DEFAULT));
+		feederSelectionCombo.setLayoutData(new RowData(SWT.DEFAULT, controlHeight));
 		for (Iterator i = feederRegistry.iterator(); i.hasNext();) {
 			AbstractFeederGUI feederGUI = (AbstractFeederGUI) i.next();
 			feederSelectionCombo.add(feederGUI.getFeederName());	

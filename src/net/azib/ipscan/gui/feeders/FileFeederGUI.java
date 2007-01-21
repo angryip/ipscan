@@ -49,7 +49,7 @@ public class FileFeederGUI extends AbstractFeederGUI {
         fileNameText = new Text(this, SWT.BORDER);
         browseButton = new Button(this, SWT.NONE);
         
-        fileNameLabel.setText(getStringLabel("name") + ":");
+        fileNameLabel.setText(getStringLabel("name"));
         FormData formData = new FormData();
         formData.left = new FormAttachment(0);
         formData.top = new FormAttachment(fileNameText, 0, SWT.CENTER);
@@ -64,8 +64,8 @@ public class FileFeederGUI extends AbstractFeederGUI {
         browseButton.setText(getStringLabel("browse"));
         formData = new FormData();
         formData.top = new FormAttachment(0);
+        formData.bottom = new FormAttachment(fileNameText, 0, SWT.BOTTOM);
         formData.left = new FormAttachment(fileNameText);
-		formData.height = 22;        
         browseButton.setLayoutData(formData);
         browseButton.addSelectionListener(new SelectionListener() {
 
