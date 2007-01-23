@@ -5,7 +5,6 @@
  */
 package net.azib.ipscan.gui;
 
-import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.net.PingerRegistry;
@@ -35,7 +34,8 @@ import org.eclipse.swt.widgets.Text;
 public class OptionsDialog extends AbstractModalDialog {
 	
 	private PingerRegistry pingerRegistry;
-
+	private GlobalConfig globalConfig;
+	
 	private TabFolder tabFolder;
 	private Composite scanningTab;
 	private Composite displayTab;
@@ -53,9 +53,12 @@ public class OptionsDialog extends AbstractModalDialog {
 	private Text portTimeoutText;
 	private Button adaptTimeoutCheckbox;
 	private Text portsText;
+	private Text notAvailableText;
+	private Text notScannedText;
 	
-	public OptionsDialog(PingerRegistry pingerRegistry) {
+	public OptionsDialog(PingerRegistry pingerRegistry, GlobalConfig globalConfig) {
 		this.pingerRegistry = pingerRegistry;
+		this.globalConfig = globalConfig;
 	}
 	
 	public void open() {
@@ -95,6 +98,7 @@ public class OptionsDialog extends AbstractModalDialog {
 		positionButtonsInFormLayout(okButton, cancelButton, tabFolder);
 		
 		shell.pack();
+		okButton.setFocus();
 
 		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -193,11 +197,11 @@ public class OptionsDialog extends AbstractModalDialog {
 		pingingTimeoutText = new Text(pingingGroup, SWT.BORDER);
 		pingingTimeoutText.setLayoutData(gridData);
 		
-		GridData gridData1 = new GridData();
-		gridData1.horizontalSpan = 2;
+		GridData gridDataWithSpan = new GridData();
+		gridDataWithSpan.horizontalSpan = 2;
 		deadHostsCheckbox = new Button(pingingGroup, SWT.CHECK);
 		deadHostsCheckbox.setText(Labels.getLabel("options.pinging.deadHosts"));
-		deadHostsCheckbox.setLayoutData(gridData1);
+		deadHostsCheckbox.setLayoutData(gridDataWithSpan);
 
 		Group broadcastGroup = new Group(scanningTab, SWT.NONE);
 		broadcastGroup.setLayout(groupLayout);
@@ -205,15 +209,55 @@ public class OptionsDialog extends AbstractModalDialog {
 		
 		skipBroadcastsCheckbox = new Button(broadcastGroup, SWT.CHECK);
 		skipBroadcastsCheckbox.setText(Labels.getLabel("options.broadcast.skip"));
-		skipBroadcastsCheckbox.setLayoutData(gridData1);
+		GridData gridDataWithSpan2 = new GridData();
+		gridDataWithSpan2.horizontalSpan = 2;
+		skipBroadcastsCheckbox.setLayoutData(gridDataWithSpan2);
 	}
 
 	/**
 	 * This method initializes displayTab	
 	 */
 	private void createDisplayTab() {
+		RowLayout rowLayout = createRowLayout();
 		displayTab = new Composite(tabFolder, SWT.NONE);
-		displayTab.setLayout(new GridLayout());
+		displayTab.setLayout(rowLayout);
+		
+		GridLayout groupLayout = new GridLayout();
+		groupLayout.numColumns = 1;
+		Group listGroup = new Group(displayTab, SWT.NONE);
+		listGroup.setText(Labels.getLabel("options.display.list"));
+		listGroup.setLayout(groupLayout);
+		listGroup.setLayoutData(new RowData(260, SWT.DEFAULT));
+
+		// TODO: make these options work
+		Button allRadio = new Button(listGroup, SWT.RADIO);
+		allRadio.setText(Labels.getLabel("options.display.list.all"));
+		allRadio.setEnabled(false);
+		Button aliveRadio = new Button(listGroup, SWT.RADIO);
+		aliveRadio.setText(Labels.getLabel("options.display.list.alive"));
+		aliveRadio.setEnabled(false);
+		Button portsRadio = new Button(listGroup, SWT.RADIO);
+		portsRadio.setText(Labels.getLabel("options.display.list.ports"));
+		portsRadio.setEnabled(false);
+		
+		groupLayout = new GridLayout();
+		groupLayout.numColumns = 2;
+		Group labelsGroup = new Group(displayTab, SWT.NONE);
+		labelsGroup.setText(Labels.getLabel("options.display.labels"));
+		labelsGroup.setLayout(groupLayout);
+		
+		GridData gridData = new GridData();
+		gridData.widthHint = 50;
+		
+		Label label = new Label(labelsGroup, SWT.NONE);
+		label.setText(Labels.getLabel("options.display.labels.notAvailable"));
+		notAvailableText = new Text(labelsGroup, SWT.BORDER);
+		notAvailableText.setLayoutData(gridData);
+		
+		label = new Label(labelsGroup, SWT.NONE);
+		label.setText(Labels.getLabel("options.display.labels.notScanned"));
+		notScannedText = new Text(labelsGroup, SWT.BORDER);
+		notScannedText.setLayoutData(gridData);
 	}
 	
 	/**
@@ -289,36 +333,38 @@ public class OptionsDialog extends AbstractModalDialog {
 	}
 
 	private void loadOptions() {
-		GlobalConfig global = Config.getGlobal();
-		maxThreadsText.setText(Integer.toString(global.maxThreads));
-		threadDelayText.setText(Integer.toString(global.threadDelay));
+		maxThreadsText.setText(Integer.toString(globalConfig.maxThreads));
+		threadDelayText.setText(Integer.toString(globalConfig.threadDelay));
 		String[] pingerNames = pingerRegistry.getRegisteredNames();
 		for (int i = 0; i < pingerNames.length; i++) {
-			if (global.selectedPinger.equals(pingerNames[i])) {
+			if (globalConfig.selectedPinger.equals(pingerNames[i])) {
 				pingersCombo.select(i);
 			}
 		}
-		pingingCountText.setText(Integer.toString(global.pingCount));
-		pingingTimeoutText.setText(Integer.toString(global.pingTimeout));
-		deadHostsCheckbox.setSelection(global.scanDeadHosts);
-		skipBroadcastsCheckbox.setSelection(global.skipBroadcastAddresses);
-		portTimeoutText.setText(Integer.toString(global.portTimeout));
-		adaptTimeoutCheckbox.setSelection(global.adaptPortTimeout);
-		portsText.setText(global.portString);
+		pingingCountText.setText(Integer.toString(globalConfig.pingCount));
+		pingingTimeoutText.setText(Integer.toString(globalConfig.pingTimeout));
+		deadHostsCheckbox.setSelection(globalConfig.scanDeadHosts);
+		skipBroadcastsCheckbox.setSelection(globalConfig.skipBroadcastAddresses);
+		portTimeoutText.setText(Integer.toString(globalConfig.portTimeout));
+		adaptTimeoutCheckbox.setSelection(globalConfig.adaptPortTimeout);
+		portsText.setText(globalConfig.portString);
+		notAvailableText.setText(globalConfig.notAvailableText);
+		notScannedText.setText(globalConfig.notScannedText);
 	}
 	
 	private void saveOptions() {
-		GlobalConfig global = Config.getGlobal();
-		global.maxThreads = parseIntValue(maxThreadsText);
-		global.threadDelay = parseIntValue(threadDelayText);
-		global.selectedPinger = (String) pingersCombo.getData(Integer.toString(pingersCombo.getSelectionIndex()));
-		global.pingCount = parseIntValue(pingingCountText);
-		global.pingTimeout = parseIntValue(pingingTimeoutText);
-		global.scanDeadHosts = deadHostsCheckbox.getSelection();
-		global.skipBroadcastAddresses = skipBroadcastsCheckbox.getSelection();
-		global.portTimeout = parseIntValue(portTimeoutText);
-		global.adaptPortTimeout = adaptTimeoutCheckbox.getSelection();
-		global.portString = portsText.getText();
+		globalConfig.maxThreads = parseIntValue(maxThreadsText);
+		globalConfig.threadDelay = parseIntValue(threadDelayText);
+		globalConfig.selectedPinger = (String) pingersCombo.getData(Integer.toString(pingersCombo.getSelectionIndex()));
+		globalConfig.pingCount = parseIntValue(pingingCountText);
+		globalConfig.pingTimeout = parseIntValue(pingingTimeoutText);
+		globalConfig.scanDeadHosts = deadHostsCheckbox.getSelection();
+		globalConfig.skipBroadcastAddresses = skipBroadcastsCheckbox.getSelection();
+		globalConfig.portTimeout = parseIntValue(portTimeoutText);
+		globalConfig.adaptPortTimeout = adaptTimeoutCheckbox.getSelection();
+		globalConfig.portString = portsText.getText();
+		globalConfig.notAvailableText = notAvailableText.getText();
+		globalConfig.notScannedText = notScannedText.getText();
 	}
 
 	/**

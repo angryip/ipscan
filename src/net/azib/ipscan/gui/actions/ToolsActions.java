@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import net.azib.ipscan.gui.OptionsDialog;
+import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.SelectFetchersDialog;
 
 /**
@@ -21,13 +22,19 @@ public class ToolsActions {
 	public static class Options implements Listener {
 		
 		private OptionsDialog optionsDialog;
+		private ResultTable resultTable;
 		
-		public Options(OptionsDialog optionsDialog) {
+		public Options(OptionsDialog optionsDialog, ResultTable resultTable) {
 			this.optionsDialog = optionsDialog;
+			this.resultTable = resultTable;
 		}
 
 		public void handleEvent(Event event) {
+			// show the options dialog
 			optionsDialog.open();
+			
+			// refresh the results in case anything was changed
+			resultTable.updateResults();
 		}
 	}
 

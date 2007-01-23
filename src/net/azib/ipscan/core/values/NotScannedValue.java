@@ -3,7 +3,7 @@
  */
 package net.azib.ipscan.core.values;
 
-import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.Config;
 
 /**
  * The value for displaying in the result list, meaning that the actual value is unknown,
@@ -21,8 +21,7 @@ public class NotScannedValue implements Comparable {
 	 * Displays a user-friendly text string :-)
 	 */
 	public String toString() {
-		// TODO: make this configurable
-		return Labels.getLabel("fetcher.value.notScanned");
+		return Config.getGlobal().notScannedText;
 	}
 	
 	public int compareTo(Object obj) {
