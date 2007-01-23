@@ -126,6 +126,11 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		return index;
 	}
 
+	/**
+	 * Forces the specified element to be redrawn.
+	 * This method can be called from any thread.
+	 * @param index
+	 */
 	public void updateResults(final int index) {
 		if (isDisposed())
 			return;
@@ -135,6 +140,13 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 				ResultTable.this.clear(index);
 			}
 		});
+	}
+	
+	/**
+	 * Forces all elements to be redrawn
+	 */
+	public void updateResults() {
+		clearAll();
 	}
 
 	/**

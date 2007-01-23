@@ -27,6 +27,8 @@ public final class GlobalConfig {
 	public int portTimeout;
 	public boolean adaptPortTimeout;
 	public String portString;
+	public String notAvailableText;
+	public String notScannedText;
 
 	/**
 	 * Package local constructor.
@@ -47,6 +49,8 @@ public final class GlobalConfig {
 		portTimeout = preferences.getInt("portTimeout", 3000);
 		adaptPortTimeout = preferences.getBoolean("adaptPortTimeout", true);
 		portString = preferences.get("portString", "");
+		notAvailableText = preferences.get("notAvailableText", Labels.getLabel("fetcher.value.notAvailable"));
+		notScannedText = preferences.get("notScannedText", Labels.getLabel("fetcher.value.notScanned"));
 	}
 		
 	/**
@@ -64,5 +68,7 @@ public final class GlobalConfig {
 		preferences.putInt("portTimeout", portTimeout);
 		preferences.putBoolean("adaptPortTimeout", adaptPortTimeout);
 		preferences.put("portString", portString);
+		preferences.put("notAvailableText", notAvailableText);
+		preferences.put("notScannedText", notScannedText);
 	}
 }
