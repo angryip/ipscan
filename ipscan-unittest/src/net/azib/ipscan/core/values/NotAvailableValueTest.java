@@ -3,9 +3,9 @@
  */
 package net.azib.ipscan.core.values;
 
-import static org.junit.Assert.*;
-import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.core.values.NotAvailableValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import net.azib.ipscan.config.Config;
 
 import org.junit.Test;
 
@@ -23,7 +23,8 @@ public class NotAvailableValueTest {
 	
 	@Test
 	public void testToString() throws Exception {
-		assertEquals(Labels.getLabel("fetcher.value.notAvailable"), NotAvailableValue.INSTANCE.toString());
+		Config.initialize();
+		assertEquals(Config.getGlobal().notAvailableText, NotAvailableValue.INSTANCE.toString());
 	}
 	
 	@Test
