@@ -37,13 +37,14 @@ public class ScannerThread extends Thread {
 		this.feeder = feeder;
 		this.scanner = scanner;
 		this.scanningResultList = scanningResults;
+		
+		// initialize in the main thread in order to catch exceptions gracefully
+		scanner.init();
 	}
 
 	public void run() {
 		changeStatus(ScanningStateCallback.STATE_SCANNING);
-		
-		scanner.init();
-		
+				
 		while(feeder.hasNext() && state == ScanningStateCallback.STATE_SCANNING) {
 			try {
 				
