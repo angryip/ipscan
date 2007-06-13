@@ -6,26 +6,23 @@ Written by Anton Keks, GPL v2 license
 The source code is in the Subversion repository:
 https://ipscan.svn.sourceforge.net/svnroot/ipscan/trunk/
 
+Note: you will need Java 1.5 for compilation and running
+
 ---------------------------------------------------------------------------
-Under the `trunk' directory you will find the following Eclipse projects:
-
-* ipscan          - the main source tree of Angry IP Scanner (uses Java 1.4)
-* ipscan-unittest - the unittests of the main tree (uses Java 1.5)
-* swt             - the version of Eclipse SWT currently in use (GUI toolkit)
-
-All the directories have preconfigured Eclipse projects in them, so before
-doing a checkout:
+The `trunk' contains the preconfigured Eclipse project, so in order to do
+a checkout:
 
 * Ensure you have Subclipse installed: http://subclipse.tigris.org/
 * Create a new Eclipse workspace
 * Choose File->New->Project
 * Choose SVN->Checkout projects from SVN
-* Repeat the last 2 steps to check all the 3 projects out
+* Select the 'trunk' and check it out as an 'ipscan' project
 
-Under `ipscan' and `ipscan-unittest' you will find subdirectories:
+In the project you will find subdirectories:
 
 * ext       - external libraries used (some with source and other files)
-* src       - Java sources
+* src       - Main Java sources
+* test      - Test sources (JUnit)
 * resources - resources to be put into the jar file
 
 ---------------------------------------------------------------------------
