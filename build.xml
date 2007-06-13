@@ -10,14 +10,23 @@
 	<property name="swt" value="../swt"/>
 	<property name="retroguard.jar" value="${ext}/retroguard/retroguard.jar"/>
 	<property name="ext.src" value="${ext}/rocksaw/src:${ext}/vserv-tcpip/src"/>
+
+	<path id="test.path" path="bin"/>
+	<property name="emma.dir" value="${ext}/emma"/>
 	
 	<taskdef name="obfuscate" classname="COM.rl.ant.RetroGuardTask" classpath="${retroguard.jar}"/>
+	
+	<path id="emma.lib">
+		<pathelement location="${emma.dir}/emma.jar" />
+		<pathelement location="${emma.dir}/emma_ant.jar" />
+	</path>
+	<taskdef resource="emma_ant.properties" classpathref="emma.lib"/>
 	
 	<patternset id="classpath.resources">
 		<exclude name="**/*.java"/>
 	</patternset>
 
-	<target name="all" depends="cleanup,compile,package,cleanup_end"/>
+	<target name="all" depends="cleanup,compile,compile-tests,do-test,package,cleanup_end"/>
 
 	<target name="cleanup">
 		<delete file="retroguard.log"/>
@@ -60,6 +69,42 @@
 
 	<target name="compile">
 		<compile path="${src}" extpath="${ext.src}"/>
+	</target>
+	
+	<target name="compile-tests">
+		<compile path="${src}"/>
+		<emma>
+			<instr instrpathref="test.path" destdir="bin.instr" metadatafile="${testresults}/metadata.emma" merge="false" filter="net.azib.ipscan.*"/>
+		</emma>
+		<copy todir="bin" overwrite="true">
+			<fileset dir="bin.instr" includes="**/*.class"/>
+		</copy>
+		<delete dir="bin.instr"/>
+	</target>
+
+	<target name="do-test">
+		<delete dir="${testresults}"/>
+		<mkdir dir="${testresults}"/>
+		<delete file="coverage.ec"/>
+		<junit haltonfailure="true" showoutput="true" dir="${basedir}" fork="on" forkmode="once">
+			<classpath>
+				<dirset dir="bin"/>
+				<fileset dir="${swt}" includes="*.jar"/>
+				<path refid="emma.lib"/>
+			</classpath>
+			<formatter type="brief"/>
+			<batchtest todir="${testresults}">
+				<fileset dir="bin" includes="**/*Test.class"/>
+			</batchtest>
+		</junit>
+		<emma>
+			<report sourcepath="${src}" encoding="UTF-8">
+				<fileset dir="${basedir}" includes="coverage.ec"/>
+				<fileset dir="${testresults}" includes="*.emma"/>
+				<txt outfile="${testresults}/coverage.txt"/>
+				<html outfile="${testresults}/coverage.html"/>
+			</report>
+		</emma>
 	</target>
 	
 	<condition property="os-linux"><os name="Linux"/></condition>
