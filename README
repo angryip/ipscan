@@ -1,0 +1,55 @@
+This is the source code of Angry IP Scanner 3.x
+http://www.azib.net/ipscan/
+Written by Anton Keks, GPL v2 license
+
+---------------------------------------------------------------------------
+The source code is in the Subversion repository:
+https://ipscan.svn.sourceforge.net/svnroot/ipscan/trunk/
+
+---------------------------------------------------------------------------
+Under the `trunk' directory you will find the following Eclipse projects:
+
+* ipscan          - the main source tree of Angry IP Scanner (uses Java 1.4)
+* ipscan-unittest - the unittests of the main tree (uses Java 1.5)
+* swt             - the version of Eclipse SWT currently in use (GUI toolkit)
+
+All the directories have preconfigured Eclipse projects in them, so before
+doing a checkout:
+
+* Ensure you have Subclipse installed: http://subclipse.tigris.org/
+* Create a new Eclipse workspace
+* Choose File->New->Project
+* Choose SVN->Checkout projects from SVN
+* Repeat the last 2 steps to check all the 3 projects out
+
+Under `ipscan' and `ipscan-unittest' you will find subdirectories:
+
+* ext       - external libraries used (some with source and other files)
+* src       - Java sources
+* resources - resources to be put into the jar file
+
+---------------------------------------------------------------------------
+To build Angry IP Scanner, use ant:
+cd ipscan
+ant all
+
+This will leave jar files in the `dist' directory.
+
+Then, to run:
+./ipscan.sh
+
+---------------------------------------------------------------------------
+Angry IP Scanner is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+Angry IP Scanner is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Gcalctool; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+---------------------------------------------------------------------------
