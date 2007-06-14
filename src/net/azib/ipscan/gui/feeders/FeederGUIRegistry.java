@@ -20,9 +20,9 @@ import net.azib.ipscan.feeders.FeederException;
  *
  * @author anton
  */
-public class FeederGUIRegistry {
+public class FeederGUIRegistry implements Iterable<AbstractFeederGUI> {
 	
-	private List feederGUIList;
+	private List<AbstractFeederGUI> feederGUIList;
 	private Combo feederSelectionCombo;
 	
 	private AbstractFeederGUI currentFeederGUI;
@@ -45,14 +45,14 @@ public class FeederGUIRegistry {
 		currentFeederGUI.setVisible(false);
 
 		// get new feeder
-		currentFeederGUI = (AbstractFeederGUI) feederGUIList.get(newActiveFeeder);
+		currentFeederGUI = feederGUIList.get(newActiveFeeder);
 		Config.getGlobal().activeFeeder = newActiveFeeder;
 
 		// make new feeder visible
 		currentFeederGUI.setVisible(true);
 	}
 	
-	public Iterator iterator() {
+	public Iterator<AbstractFeederGUI> iterator() {
 		return feederGUIList.iterator();
 	}
 

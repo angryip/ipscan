@@ -17,12 +17,12 @@ public interface FetcherRegistry {
 	/**
 	 * @return a List of all registered Fetchers
 	 */
-	public Collection getRegisteredFetchers();
+	public Collection<Fetcher> getRegisteredFetchers();
 	
 	/**
 	 * @return a List of selected Fetchers only
 	 */
-	public Collection getSelectedFetchers();
+	public Collection<Fetcher> getSelectedFetchers();
 
 	/**
 	 * Searches for selected fetcher with the given label

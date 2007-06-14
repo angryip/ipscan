@@ -68,8 +68,8 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		editFieldsGroup = new Group(shell, SWT.NONE);
 
 		openersList.setLayoutData(LayoutHelper.formData(135, 200, null, null, new FormAttachment(messageLabel, 10), new FormAttachment(editFieldsGroup, 0, SWT.BOTTOM)));
-		for (Iterator i = Config.getOpenersConfig().iterateNames(); i.hasNext();) {
-			String name = (String) i.next();
+		for (Iterator<String> i = Config.getOpenersConfig().iterateNames(); i.hasNext();) {
+			String name = i.next();
 			openersList.add(name);
 		}
 		openersList.addListener(SWT.Selection, new ItemSelectListener());
@@ -187,13 +187,13 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		isInTerminalCheckbox.setSelection(opener.inTerminal);
 	}
 
-	private class HintButtonListener implements Listener {
+	class HintButtonListener implements Listener {
 		
 		public void handleEvent(Event event) {
 			// compose the message with all available fetchers
 			StringBuffer message = new StringBuffer(Labels.getLabel("text.openers.hintText"));
-			for (Iterator i = fetcherRegistry.getSelectedFetchers().iterator(); i.hasNext(); ) {
-				String fetcherLabel = ((Fetcher)i.next()).getLabel();
+			for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
+				String fetcherLabel = fetcher.getLabel();
 				message.append("${").append(fetcherLabel).append("}   - ").append(Labels.getLabel(fetcherLabel)).append('\n');
 			}
 			
@@ -204,7 +204,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		}
 	}
 	
-	private class DeleteButtonListener implements Listener {
+	class DeleteButtonListener implements Listener {
 		
 		public void handleEvent(Event event) {
 			int firstIndex = openersList.getSelectionIndex();
@@ -214,7 +214,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		}
 	}
 
-	private class AddButtonListener implements Listener {
+	class AddButtonListener implements Listener {
 		
 		public void handleEvent(Event event) {
 			saveCurrentFields();
@@ -239,7 +239,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		}
 	}
 
-	private class ItemSelectListener implements Listener {
+	class ItemSelectListener implements Listener {
 		
 		public void handleEvent(Event event) {
 			if (openersList.getSelectionCount() == 0)
@@ -250,7 +250,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		}
 	}
 	
-	private class OpenerNameChange implements Listener {
+	class OpenerNameChange implements Listener {
 
 		public void handleEvent(Event event) {
 			String name = openerNameText.getText();

@@ -6,7 +6,6 @@
 package net.azib.ipscan.exporters;
 
 import java.io.FileOutputStream;
-import java.util.Iterator;
 import java.util.List;
 
 import net.azib.ipscan.config.Labels;
@@ -43,17 +42,16 @@ public class ExportProcessor {
 			exporter.start(outputStream, feederInfo);
 	
 			// set fetchers
-			List fetchers = scanningResults.getFetchers();
+			List<Fetcher> fetchers = scanningResults.getFetchers();
 			String[] fetcherNames = new String[fetchers.size()];
 			int i = 0;
-			for (Iterator j = fetchers.iterator(); j.hasNext(); i++) {
-				fetcherNames[i] = Labels.getLabel(((Fetcher)j.next()).getLabel());
+			for (Fetcher fetcher : fetchers) {
+				fetcherNames[i] = Labels.getLabel(fetcher.getLabel());
 			}			
 			exporter.setFetchers(fetcherNames);
 
 			int index = 0;
-			for (Iterator j = scanningResults.iterator(); j.hasNext(); index++) {
-				ScanningResult scanningResult = (ScanningResult) j.next();
+			for (ScanningResult scanningResult : scanningResults) {
 				if (resultSelector == null || resultSelector.isResultSelected(index, scanningResult)) {
 					exporter.nextAdressResults(scanningResult.getValues().toArray());
 				}
@@ -65,10 +63,12 @@ public class ExportProcessor {
 			throw new ExporterException("exporting failed", e);
 		}
 		finally {
-			try {
-				outputStream.close();
+			if (outputStream != null) {
+				try {
+					outputStream.close();
+				}
+				catch (Exception e) {}
 			}
-			catch (Exception e) {}
 		}
 	}
 	

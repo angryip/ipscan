@@ -6,7 +6,6 @@
 package net.azib.ipscan.core;
 
 import java.net.InetAddress;
-import java.util.Iterator;
 
 import net.azib.ipscan.core.values.NotAvailableValue;
 import net.azib.ipscan.core.values.NotScannedValue;
@@ -40,8 +39,7 @@ public class Scanner {
 		
 		// populate results
 		int fetcherIndex = 0;
-		for (Iterator i = fetcherRegistry.getSelectedFetchers().iterator(); i.hasNext();) {
-			Fetcher fetcher = (Fetcher) i.next();
+		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
 			if (!scanningSubject.isScanningAborted()) {
 				Object value = fetcher.scan(scanningSubject);
 				result.setValue(fetcherIndex, value != null ? value : NotAvailableValue.INSTANCE);
@@ -59,8 +57,8 @@ public class Scanner {
 	 * Init everything needed for scanning, including Fetchers
 	 */
 	public void init() {
-		for (Iterator i = fetcherRegistry.getSelectedFetchers().iterator(); i.hasNext();) {
-			((Fetcher)i.next()).init();
+		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
+			fetcher.init();
 		}
 	}
 	
@@ -68,8 +66,8 @@ public class Scanner {
 	 * Cleanup after a scan
 	 */
 	public void cleanup() {
-		for (Iterator i = fetcherRegistry.getSelectedFetchers().iterator(); i.hasNext();) {
-			((Fetcher)i.next()).cleanup();
+		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
+			fetcher.cleanup();
 		}
 	}
 	

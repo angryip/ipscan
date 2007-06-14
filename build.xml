@@ -7,7 +7,7 @@
 			
 	<property name="version" value="2.99a"/>
 	<property name="main.class" value="net.azib.ipscan.Main"/>
-	<property name="swt" value="../swt"/>
+	<property name="swt" value="ext/swt"/>
 	<property name="retroguard.jar" value="${ext}/retroguard/retroguard.jar"/>
 	<property name="ext.src" value="${ext}/rocksaw/src:${ext}/vserv-tcpip/src"/>
 

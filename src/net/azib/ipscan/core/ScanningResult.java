@@ -43,7 +43,7 @@ public class ScanningResult {
 	/**
 	 * @return the scanning results as an unmodifiable List, result of each Fetcher is an element
 	 */
-	public List getValues() {
+	public List<Object> getValues() {
 		return Arrays.asList(values);
 	}
 	

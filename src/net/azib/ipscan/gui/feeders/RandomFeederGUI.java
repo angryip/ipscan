@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class RandomFeederGUI extends AbstractFeederGUI {
 
-	private static final Logger LOG = LoggerFactory.getLogger();
+	static final Logger LOG = LoggerFactory.getLogger();
 
 	private Label ipPrototypeLabel;
 	private Text ipPrototypeText;

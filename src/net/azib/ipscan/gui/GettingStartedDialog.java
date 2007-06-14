@@ -81,7 +81,7 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		displayActivePage();
 	}
 	
-	private void displayActivePage() {
+	void displayActivePage() {
 		String text = Labels.getLabel("text.gettingStarted" + activePage);
 		gettingStartedText.setText(text);
 		

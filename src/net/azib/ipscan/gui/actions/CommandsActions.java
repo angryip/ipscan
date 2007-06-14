@@ -100,7 +100,7 @@ public class CommandsActions {
 	 * Checks that there is at least one item selected in the results list.
 	 * @param mainWindow
 	 */
-	private static void checkSelection(ResultTable resultTable) {
+	static void checkSelection(ResultTable resultTable) {
 		if (resultTable.getItemCount() <= 0) {
 			throw new UserErrorException("commands.noResults");
 		}
@@ -127,9 +127,9 @@ public class CommandsActions {
 			
 			// update menu items
 			int index = 0;
-			for (Iterator i = Config.getOpenersConfig().iterateNames(); i.hasNext();) {
+			for (Iterator<String> i = Config.getOpenersConfig().iterateNames(); i.hasNext();) {
 				MenuItem menuItem = new MenuItem(openersMenu, SWT.CASCADE);
-				String name = (String)i.next();
+				String name = i.next();
 				
 				index++;
 				if (index <= 9) {

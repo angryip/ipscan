@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class RangeFeederGUI extends AbstractFeederGUI {
 	
-	private static final Logger LOG = LoggerFactory.getLogger();
+	static final Logger LOG = LoggerFactory.getLogger();
 
 	private Label ipRangeLabel;
 	private Text startIPText;
@@ -201,7 +201,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		netmaskCombo.setText(getStringLabel("netmask"));
 	}
 
-	private final class EndIPKeyListener implements KeyListener {
+	final class EndIPKeyListener implements KeyListener {
 		public void keyPressed(KeyEvent e) {
 			isEndIPUnedited = false;
 		}
@@ -210,7 +210,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		}
 	}
 
-	private final class StartIPModifyListener implements ModifyListener {
+	final class StartIPModifyListener implements ModifyListener {
 		public void modifyText(ModifyEvent e) {
 			if (isEndIPUnedited) {
 				endIPText.setText(startIPText.getText());
@@ -218,7 +218,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		}
 	}
 
-	private final class NetmaskSelectionListener implements SelectionListener, TraverseListener {
+	final class NetmaskSelectionListener implements SelectionListener, TraverseListener {
 		public void widgetDefaultSelected(SelectionEvent event) {
 			widgetSelected(event);
 		}

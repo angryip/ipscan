@@ -21,7 +21,7 @@ import net.azib.ipscan.gui.UserErrorException;
  */
 public class TerminalLauncher {
 	
-	private static final Logger LOG = LoggerFactory.getLogger();
+	static final Logger LOG = LoggerFactory.getLogger();
 	
 	/**
 	 * Launches the execString in the terminal.

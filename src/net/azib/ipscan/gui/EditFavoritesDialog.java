@@ -49,8 +49,8 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 		
 		favoritesList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		favoritesList.setLayoutData(LayoutHelper.formData(330, 200, new FormAttachment(0), null, new FormAttachment(messageLabel), null));
-		for (Iterator i = Config.getFavoritesConfig().iterateNames(); i.hasNext();) {
-			String name = (String) i.next();
+		for (Iterator<String> i = Config.getFavoritesConfig().iterateNames(); i.hasNext();) {
+			String name = i.next();
 			favoritesList.add(name);
 		}
 		
@@ -100,7 +100,7 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 		favoritesConfig.store();
 	}
 	
-	private class DeleteButtonListener implements Listener {
+	class DeleteButtonListener implements Listener {
 		public void handleEvent(Event event) {
 			favoritesList.remove(favoritesList.getSelectionIndices());			
 		}

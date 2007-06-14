@@ -24,7 +24,7 @@ import net.azib.ipscan.core.values.IntegerWithUnit;
  */
 public class PingFetcher implements Fetcher {
 	
-	private static final Logger LOG = LoggerFactory.getLogger();
+	static final Logger LOG = LoggerFactory.getLogger();
 	
 	public static final String PARAMETER_PINGER = "pinger";
 	

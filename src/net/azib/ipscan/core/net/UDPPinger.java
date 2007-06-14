@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class UDPPinger implements Pinger {
 	
-	private static final Logger LOG = Logger.getLogger(UDPPinger.class.getName());
+	static final Logger LOG = Logger.getLogger(UDPPinger.class.getName());
 	
 	private static final int PROBE_UDP_PORT = 33381;
 	

@@ -13,7 +13,7 @@ import net.azib.ipscan.config.Labels;
  *
  * @author anton
  */
-public class IntegerWithUnit implements Comparable {
+public class IntegerWithUnit implements Comparable<IntegerWithUnit> {
 	
 	private int value;
 	private String unitLabel;
@@ -45,13 +45,12 @@ public class IntegerWithUnit implements Comparable {
 		return false;
 	}
 
-	public int compareTo(Object obj) {
-		if (this == obj)
+	public int compareTo(IntegerWithUnit n) {
+		if (this == n)
 			return 0;
-		if (obj == null)
+		if (n == null)
 			return 1;
-		int other = ((IntegerWithUnit) obj).value;
-		return value == other ? 0 : value > other ? 1 : -1;
+		return value == n.value ? 0 : value > n.value ? 1 : -1;
 	}
 
 }

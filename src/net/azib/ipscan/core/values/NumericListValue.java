@@ -6,7 +6,6 @@
 package net.azib.ipscan.core.values;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * NumericListValue - a value object containing a list of numbers.
@@ -29,12 +28,12 @@ public class NumericListValue {
 	 * @param numbers Collections of Numbers (must be sorted for ranges to work) 
 	 * @param displayAsRanges whether toString() outputs all number or their ranges 
 	 */
-	public NumericListValue(Collection numbers, boolean displayAsRanges) {
+	public NumericListValue(Collection<Integer> numbers, boolean displayAsRanges) {
 		// copy numbers to an array (unfortunately toArray() cannot be used because int[] is not IS-A Object[])
 		this.numbers = new int[numbers.size()];
 		int c = 0;
-		for (Iterator i = numbers.iterator(); i.hasNext();) {			
-			this.numbers[c++] = ((Number)i.next()).intValue();
+		for (Number n : numbers) {			
+			this.numbers[c++] = n.intValue();
 		}
 		
 		this.displayAsRanges = displayAsRanges;

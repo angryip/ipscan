@@ -22,15 +22,15 @@ import net.azib.ipscan.fetchers.FetcherRegistry;
  *
  * @author anton
  */
-public class ScanningResultList {
+public class ScanningResultList implements Iterable<ScanningResult> {
 
 	private static final int RESULT_LIST_INITIAL_SIZE = 1024;
 	
 	private FetcherRegistry fetcherRegistry;
 	// selected fetchers are cached here, because the may be changed in the registry already
-	private List selectedFetchers;
+	private List<Fetcher> selectedFetchers;
 	
-	private List resultList = new ArrayList(1024);
+	private List<ScanningResult> resultList = new ArrayList<ScanningResult>(1024);
 	private ResultsComparator resultsComparator = new ResultsComparator();
 
 	public ScanningResultList(FetcherRegistry fetcherRegistry) {
@@ -42,7 +42,7 @@ public class ScanningResultList {
 	 * @return selected fetchers that were used for the last scan
 	 * Note: they may be different from {@link FetcherRegistry#getSelectedFetchers()}
 	 */
-	public List getFetchers() {
+	public List<Fetcher> getFetchers() {
 		return selectedFetchers;
 	}
 	
@@ -69,11 +69,11 @@ public class ScanningResultList {
 		// cross-platform newline :-)
 		String newLine = System.getProperty("line.separator");
 		
-		ScanningResult scanningResult = (ScanningResult) resultList.get(index);
+		ScanningResult scanningResult = resultList.get(index);
 		StringBuffer details = new StringBuffer(1024);
-		Iterator iterator = scanningResult.getValues().iterator();
+		Iterator<Object> iterator = scanningResult.getValues().iterator();
 		for (int i = 0; iterator.hasNext(); i++) {
-			String fetcherName = Labels.getLabel(((Fetcher)selectedFetchers.get(i)).getLabel());
+			String fetcherName = Labels.getLabel(selectedFetchers.get(i).getLabel());
 			details.append(fetcherName).append(":\t");
 			Object value = iterator.next(); 
 			details.append(value != null ? value : "");
@@ -89,7 +89,7 @@ public class ScanningResultList {
 		// clear the results
 		resultList.clear();
 		// reload currently selected fetchers
-		selectedFetchers = new ArrayList(fetcherRegistry.getSelectedFetchers());
+		selectedFetchers = new ArrayList<Fetcher>(fetcherRegistry.getSelectedFetchers());
 	}
 	
 	/**
@@ -97,7 +97,7 @@ public class ScanningResultList {
 	 * 
 	 * Note: the returned Iterator is not synchronized
 	 */
-	public synchronized Iterator iterator() {
+	public synchronized Iterator<ScanningResult> iterator() {
 		return resultList.iterator();
 	}
 
@@ -106,7 +106,7 @@ public class ScanningResultList {
 	 * @return the results of the IP adress, corresponding to an index
 	 */
 	public synchronized ScanningResult getResult(int index) {
-		return (ScanningResult) resultList.get(index);
+		return resultList.get(index);
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class ScanningResultList {
 	public synchronized void remove(int[] indices) {
 		// this rebuild is faster then a number of calls to remove()
 		// however, a further speedup can be obtained by using a Set instead of binarySearch()
-		List newList = new ArrayList(RESULT_LIST_INITIAL_SIZE);
+		List<ScanningResult> newList = new ArrayList<ScanningResult>(RESULT_LIST_INITIAL_SIZE);
 		for (int i = 0; i < resultList.size(); i++) {
 			if (Arrays.binarySearch(indices, i) < 0)
 				newList.add(resultList.get(i));
@@ -145,9 +145,7 @@ public class ScanningResultList {
 		for (int i = startIndex; i < resultList.size(); i++) {
 			ScanningResult scanningResult = getResult(i);
 			
-			for (Iterator j = scanningResult.getValues().iterator(); j.hasNext();) {
-				Object value = j.next();
-				
+			for (Object value : scanningResult.getValues()) {				
 				// TODO: case-insensitive search
 				if (value != null && value.toString().indexOf(text) >= 0) {						
 					return i;
@@ -158,18 +156,13 @@ public class ScanningResultList {
 		return -1;
 	}
 	
-	private static class ResultsComparator implements Comparator {
+	static class ResultsComparator implements Comparator<ScanningResult> {
 		
 		private int index;
 
-		public int compare(Object o1, Object o2) {
-			if (!(o1 instanceof ScanningResult))
-				return -1;
-			if (!(o2 instanceof ScanningResult))
-				return 1;
-			
-			Object val1 = ((ScanningResult)o1).getValues().get(index);
-			Object val2 = ((ScanningResult)o2).getValues().get(index);
+		public int compare(ScanningResult r1, ScanningResult r2) {
+			Object val1 = r1.getValues().get(index);
+			Object val2 = r2.getValues().get(index);
 			
 			return val1.toString().compareTo(val2.toString());
 		}

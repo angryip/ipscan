@@ -5,8 +5,6 @@
  */
 package net.azib.ipscan.gui;
 
-import java.util.Iterator;
-
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
@@ -163,8 +161,7 @@ public class MainWindow {
 		// feeder selection combobox
 		this.feederSelectionCombo = feederSelectionCombo;
 		feederSelectionCombo.setLayoutData(new RowData(SWT.DEFAULT, controlHeight));
-		for (Iterator i = feederRegistry.iterator(); i.hasNext();) {
-			AbstractFeederGUI feederGUI = (AbstractFeederGUI) i.next();
+		for (AbstractFeederGUI feederGUI : feederRegistry) {
 			feederSelectionCombo.add(feederGUI.getFeederName());	
 		}
 		IPFeederSelectionListener feederSelectionListener = new IPFeederSelectionListener();		
@@ -181,7 +178,7 @@ public class MainWindow {
 	/**
 	 * IP Feeder selection listener. Updates the GUI according to the IP Feeder selection.
 	 */
-	private final class IPFeederSelectionListener implements SelectionListener {
+	final class IPFeederSelectionListener implements SelectionListener {
 		public void widgetDefaultSelected(SelectionEvent e) {
 			widgetSelected(e);
 		}

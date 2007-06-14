@@ -29,7 +29,7 @@ public class ScanningSubject {
 	/** The address being scanned */
 	private InetAddress address;
 	/** Arbitrary parameters for sharing among different (but related) Fetchers */
-	private Map parameters;
+	private Map<String, Object> parameters;
 	/** The result type constant value, can be modified by some Fetchers */
 	private int resultType = RESULT_TYPE_UNKNOWN;
 	/** Whether we need to continue scanning or it can be aborted */
@@ -40,7 +40,7 @@ public class ScanningSubject {
 	 */
 	public ScanningSubject(InetAddress address) {
 		this.address = address;
-		this.parameters = new HashMap();
+		this.parameters = new HashMap<String, Object>();
 	}
 	
 	public InetAddress getIPAddress() {

@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  */
 public class TCPPinger implements Pinger {
 	
-	private static final Logger LOG = Logger.getLogger(UDPPinger.class.getName());
+	static final Logger LOG = Logger.getLogger(UDPPinger.class.getName());
 	
 	private static final int PROBE_TCP_PORT = 80;
 	

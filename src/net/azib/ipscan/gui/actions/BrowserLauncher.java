@@ -29,7 +29,7 @@ public class BrowserLauncher {
 			}
 			else
 			if (Platform.MAC_OS) {
-				Class fileMgr = Class.forName("com.apple.eio.FileManager");
+				Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
 				Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] { String.class });
 				openURL.invoke(null, new Object[] { url });
 			}

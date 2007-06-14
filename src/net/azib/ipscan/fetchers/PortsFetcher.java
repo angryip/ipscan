@@ -50,12 +50,12 @@ public class PortsFetcher implements Fetcher {
 	 * @param subject
 	 */
 	protected void scanPorts(ScanningSubject subject) {
-		SortedSet openPorts = getOpenPorts(subject);
+		SortedSet<Integer> openPorts = getOpenPorts(subject);
 					
 		if (openPorts == null) {
 			// no results are available yet, let's proceed with the scanning
-			openPorts = new TreeSet();
-			SortedSet filteredPorts = new TreeSet();
+			openPorts = new TreeSet<Integer>();
+			SortedSet<Integer> filteredPorts = new TreeSet<Integer>();
 			subject.setParameter(PARAMETER_OPEN_PORTS, openPorts);
 			subject.setParameter(PARAMETER_FILTERED_PORTS, filteredPorts);
 
@@ -78,23 +78,21 @@ public class PortsFetcher implements Fetcher {
 				try {				
 					socket.connect(new InetSocketAddress(subject.getIPAddress(), port), adaptedTimeout);
 					if (socket.isConnected()) {
-						openPorts.add(new Integer(port));
+						openPorts.add(port);
 					}
 				}
 				catch (SocketTimeoutException e) {
-					filteredPorts.add(new Integer(port));
+					filteredPorts.add(port);
 				}
 				catch (IOException e) {
 					// connection refused
 					assert e instanceof ConnectException : e;
 				}
 				finally {
-					if (socket != null) {
-						try {
-							socket.close();
-						}
-						catch (IOException e) {}
+					try {
+						socket.close();
 					}
+					catch (IOException e) {}
 				}
 			}
 		}
@@ -104,16 +102,18 @@ public class PortsFetcher implements Fetcher {
 	 * @param subject
 	 * @return
 	 */
-	protected SortedSet getFilteredPorts(ScanningSubject subject) {
-		return (SortedSet) subject.getParameter(PARAMETER_FILTERED_PORTS);
+	@SuppressWarnings("unchecked")
+	protected SortedSet<Integer> getFilteredPorts(ScanningSubject subject) {
+		return (SortedSet<Integer>) subject.getParameter(PARAMETER_FILTERED_PORTS);
 	}
 
 	/**
 	 * @param subject
 	 * @return
 	 */
-	protected SortedSet getOpenPorts(ScanningSubject subject) {
-		return (SortedSet) subject.getParameter(PARAMETER_OPEN_PORTS);
+	@SuppressWarnings("unchecked")
+	protected SortedSet<Integer> getOpenPorts(ScanningSubject subject) {
+		return (SortedSet<Integer>) subject.getParameter(PARAMETER_OPEN_PORTS);
 	}
 	
 	/*
@@ -121,7 +121,7 @@ public class PortsFetcher implements Fetcher {
 	 */
 	public Object scan(ScanningSubject subject) {
 		scanPorts(subject);
-		SortedSet openPorts = getOpenPorts(subject);
+		SortedSet<Integer> openPorts = getOpenPorts(subject);
 		boolean portsFound = openPorts.size() > 0;
 		if (portsFound) {
 			subject.setResultType(ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO);

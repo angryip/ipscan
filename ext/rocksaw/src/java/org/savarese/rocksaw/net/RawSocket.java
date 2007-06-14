@@ -73,7 +73,7 @@ public class RawSocket {
    * Deallocates any system resources used by the RockSaw library.
    * Really, all it does is call WSACleanup on Win32.
    */
-  private native static void __RockSawShutdown();
+  native static void __RockSawShutdown();
 
   static {
     System.loadLibrary("rocksaw");

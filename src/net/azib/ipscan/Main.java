@@ -122,7 +122,7 @@ public class Main {
 	/**
 	 * @return the short name of a class (without package name)
 	 */
-	static String getClassShortName(Class clazz) {
+	static String getClassShortName(Class<?> clazz) {
 		String className = clazz.getName();
 		return className.substring(className.lastIndexOf('.') + 1);
 	}

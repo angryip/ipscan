@@ -100,9 +100,9 @@ public class FavoritesActions {
 			}
 			
 			// update favorites menu items
-			for (Iterator i = favoritesConfig.iterateNames(); i.hasNext();) {
+			for (Iterator<String> i = favoritesConfig.iterateNames(); i.hasNext();) {
 				MenuItem menuItem = new MenuItem(favoritesMenu, SWT.CASCADE);
-				menuItem.setText((String) i.next());
+				menuItem.setText(i.next());
 				menuItem.addListener(SWT.Selection, favoritesSelectListener);
 			}
 		}

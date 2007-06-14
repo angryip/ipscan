@@ -21,7 +21,7 @@ public class NamedListConfig {
 	
 	protected String preferenceName;
 	protected Preferences preferences; 
-	protected Map namedList = new LinkedHashMap();
+	protected Map<String, Object> namedList = new LinkedHashMap<String, Object>();
 
 	// package local constructor
 	NamedListConfig(Preferences preferences, String preferenceName) {
@@ -55,8 +55,7 @@ public class NamedListConfig {
 	 */
 	public void store() {
 		StringBuffer sb = new StringBuffer(32);
-		for (Iterator i = namedList.entrySet().iterator(); i.hasNext();) {
-			Map.Entry e = (Map.Entry) i.next();
+		for (Map.Entry<String, Object> e : namedList.entrySet()) {
 			sb.append(e.getKey()).append("###").append(e.getValue()).append("###");
 		}
 		if (sb.length() > 3) { 
@@ -84,7 +83,7 @@ public class NamedListConfig {
 	/**
 	 * @return an Iterator for iterating names of available items
 	 */
-	public Iterator iterateNames() {
+	public Iterator<String> iterateNames() {
 		return namedList.keySet().iterator();
 	}
 
@@ -100,7 +99,7 @@ public class NamedListConfig {
 	 */
 	public void update(String[] names) {
 		// rebuild the map (to recreate the new order of elements)
-		Map newList = new LinkedHashMap();
+		Map<String, Object> newList = new LinkedHashMap<String, Object>();
 		for (int i = 0; i < names.length; i++) {
 			newList.put(names[i], namedList.get(names[i]));
 		}

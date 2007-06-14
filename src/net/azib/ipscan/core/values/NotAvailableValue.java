@@ -11,7 +11,7 @@ import net.azib.ipscan.config.Config;
  *
  * @author anton
  */
-public class NotAvailableValue implements Comparable {
+public class NotAvailableValue implements Comparable<Object> {
 	
 	public static final NotAvailableValue INSTANCE = new NotAvailableValue();
 	

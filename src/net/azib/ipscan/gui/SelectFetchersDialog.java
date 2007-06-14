@@ -37,7 +37,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 	
 	private List selectedFetchersList;
 	private List registeredFetchersList;
-	Map registeredFetcherLabelsByNames = new HashMap();
+	Map<String, String> registeredFetcherLabelsByNames = new HashMap<String, String>();
 
 	public SelectFetchersDialog(FetcherRegistry fetcherRegistry) {
 		this.fetcherRegistry = fetcherRegistry;
@@ -69,10 +69,10 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 				
 		selectedFetchersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		selectedFetchersList.setLayoutData(LayoutHelper.formData(140, 200, new FormAttachment(0), new FormAttachment(selectedLabel, 80, SWT.RIGHT), new FormAttachment(selectedLabel), null));
-		Iterator i = fetcherRegistry.getSelectedFetchers().iterator();
+		Iterator<Fetcher> i = fetcherRegistry.getSelectedFetchers().iterator();
 		i.next();	// skip IP
 		while (i.hasNext()) {
-			Fetcher fetcher = (Fetcher) i.next();
+			Fetcher fetcher = i.next();
 			String fetcherName = Labels.getLabel(fetcher.getLabel());
 			selectedFetchersList.add(fetcherName);
 		}
@@ -103,7 +103,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		i = fetcherRegistry.getRegisteredFetchers().iterator();
 		i.next(); // skip IP
 		while (i.hasNext()) {
-			Fetcher fetcher = (Fetcher) i.next();
+			Fetcher fetcher = i.next();
 			String fetcherName = Labels.getLabel(fetcher.getLabel());
 			registeredFetcherLabelsByNames.put(fetcherName, fetcher.getLabel());
 			if (selectedFetchersList.indexOf(fetcherName) < 0)
@@ -157,7 +157,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		fetchersLabelsToRetain[0] = IPFetcher.LABEL; 
 
 		for (int i = 0; i < fetchersNamesToSave.length; i++) {
-			fetchersLabelsToRetain[i+1] = (String) registeredFetcherLabelsByNames.get(fetchersNamesToSave[i]);
+			fetchersLabelsToRetain[i+1] = registeredFetcherLabelsByNames.get(fetchersNamesToSave[i]);
 		}
 		fetcherRegistry.updateSelectedFetchers(fetchersLabelsToRetain);
 	}

@@ -15,13 +15,13 @@ import java.util.Map;
  *
  * @author anton
  */
-public class ExporterRegistry {
+public class ExporterRegistry implements Iterable<Exporter> {
 	
 	/** All available Exporter implementations, Map of Exporter instances (prototypes) */
-	private Map exporters;
+	private Map<String, Exporter> exporters;
 	
 	public ExporterRegistry(Exporter[] registeredExporters) {
-		exporters = new LinkedHashMap();
+		exporters = new LinkedHashMap<String, Exporter>();
 		
 		for (int i = 0; i < registeredExporters.length; i++) {
 			exporters.put(registeredExporters[i].getFilenameExtension(), registeredExporters[i]);
@@ -31,7 +31,7 @@ public class ExporterRegistry {
 	/**
 	 * Iterates Exporter instances within this Registry
 	 */
-	public Iterator iterator() {
+	public Iterator<Exporter> iterator() {
 		return exporters.values().iterator();
 	}
 	
@@ -45,7 +45,7 @@ public class ExporterRegistry {
 		int extensionPos = fileName.lastIndexOf('.') + 1;
 		String extension = fileName.substring(extensionPos);
 		
-		Exporter prototype = (Exporter) exporters.get(extension);
+		Exporter prototype = exporters.get(extension);
 		if (prototype == null) {
 			throw new ExporterException("exporter.unknown");
 		}

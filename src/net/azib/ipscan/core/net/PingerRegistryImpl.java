@@ -19,13 +19,13 @@ import java.util.logging.Logger;
  */
 public class PingerRegistryImpl implements PingerRegistry {
 	
-	private static final Logger LOG = Logger.getLogger(PingerRegistryImpl.class.getName());
+	static final Logger LOG = Logger.getLogger(PingerRegistryImpl.class.getName());
 	
 	/** All available Pinger implementations */
-	private Map pingers;
+	private Map<String, Class<? extends Pinger>> pingers;
 	
 	public PingerRegistryImpl() {
-		pingers = new LinkedHashMap();
+		pingers = new LinkedHashMap<String, Class<? extends Pinger>>();
 		pingers.put("pinger.icmp", ICMPSharedPinger.class);
 		pingers.put("pinger.icmp2", ICMPPinger.class);
 		pingers.put("pinger.udp", UDPPinger.class);
@@ -36,15 +36,15 @@ public class PingerRegistryImpl implements PingerRegistry {
 	}
 	
 	public String[] getRegisteredNames() {
-		return (String[]) pingers.keySet().toArray(new String[pingers.size()]);
+		return pingers.keySet().toArray(new String[pingers.size()]);
 	}
 
 	public Pinger createPinger(String pingerName, int timeout) {
-		Class pingerClass = (Class) pingers.get(pingerName);
-		Constructor constructor;
+		Class<? extends Pinger> pingerClass = pingers.get(pingerName);
+		Constructor<? extends Pinger> constructor;
 		try {
 			constructor = pingerClass.getConstructor(new Class[] {int.class});
-			return (Pinger) constructor.newInstance(new Object[] {new Integer(timeout)});
+			return constructor.newInstance(new Object[] {new Integer(timeout)});
 		}
 		catch (Exception e) {
 			Throwable t = e instanceof InvocationTargetException ? e.getCause() : e; 

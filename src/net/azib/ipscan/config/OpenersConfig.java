@@ -16,7 +16,7 @@ import java.util.prefs.Preferences;
  */
 public class OpenersConfig extends NamedListConfig {
 	
-	private static final Logger LOG = LoggerFactory.getLogger();
+	static final Logger LOG = LoggerFactory.getLogger();
 
 	public OpenersConfig(Preferences preferences) {
 		super(preferences, "openers");

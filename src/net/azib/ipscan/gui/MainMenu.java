@@ -143,7 +143,7 @@ public class MainMenu {
 		return subMenu;
 	}
 	
-	private Listener initListener(Class listenerClass) {
+	private Listener initListener(Class<? extends Listener> listenerClass) {
 		// register the component if it is not registered yet
 		if (container.getComponentAdapter(listenerClass) == null)
 			container.registerComponentImplementation(listenerClass);
@@ -151,7 +151,7 @@ public class MainMenu {
 		return (Listener) container.getComponentInstance(listenerClass);
 	}
 	
-	private static MenuItem initMenuItem(Menu parent, String label, String acceleratorText, Integer accelerator, Listener listener) {
+	static MenuItem initMenuItem(Menu parent, String label, String acceleratorText, Integer accelerator, Listener listener) {
 		MenuItem menuItem = new MenuItem(parent, label == null ? SWT.SEPARATOR : SWT.PUSH);
 		
 		if (label != null) 

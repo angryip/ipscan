@@ -23,7 +23,7 @@ import net.azib.ipscan.gui.UserErrorException;
  */
 public class OpenerLauncher {
 	
-	private static final Logger LOG = LoggerFactory.getLogger();
+	static final Logger LOG = LoggerFactory.getLogger();
 	
 	private FetcherRegistry fetcherRegistry;
 	private ScanningResultList scanningResults;

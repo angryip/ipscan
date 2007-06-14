@@ -31,11 +31,11 @@ import net.azib.ipscan.core.InetAddressUtils;
  */
 public class FileFeeder implements Feeder {
 	
-	private static final Logger LOG = LoggerFactory.getLogger();
+	static final Logger LOG = LoggerFactory.getLogger();
 	
 	/** Found IP address Strings are put here */
-	private List foundIPAddresses;
-	private Iterator foundIPAddressesIterator;
+	private List<String> foundIPAddresses;
+	private Iterator<String> foundIPAddressesIterator;
 	
 	/** Total number of found IP addresses. Equivalent to foundIPAddresses.size(), 
 	 *  which is very ineffective in case of a LinkedList.
@@ -75,7 +75,7 @@ public class FileFeeder implements Feeder {
 		
 		totalAddresses = 0;
 		currentIndex = 0;
-		foundIPAddresses = new LinkedList();
+		foundIPAddresses = new LinkedList<String>();
 		try {
 			String fileLine;
 			while ((fileLine = fileReader.readLine()) != null) {
@@ -115,7 +115,7 @@ public class FileFeeder implements Feeder {
 	public InetAddress next() {
 		try {
 			currentIndex++;
-			return InetAddress.getByName((String) foundIPAddressesIterator.next());
+			return InetAddress.getByName(foundIPAddressesIterator.next());
 		}
 		catch (UnknownHostException e) {
 			LOG.log(Level.WARNING, "malformedIP", e);

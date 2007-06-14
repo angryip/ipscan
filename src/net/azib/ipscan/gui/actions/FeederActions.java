@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class FeederActions {
 	
-	private static final Logger LOG = LoggerFactory.getLogger();
+	static final Logger LOG = LoggerFactory.getLogger();
 
 	public static class HostnameButton implements SelectionListener, TraverseListener {
 		
@@ -115,10 +115,10 @@ public class FeederActions {
 				};
 				
 				
-				for (Enumeration i = NetworkInterface.getNetworkInterfaces(); i.hasMoreElements(); ) {
-					NetworkInterface networkInterface = (NetworkInterface) i.nextElement();
-					for (Enumeration i2 = networkInterface.getInetAddresses(); i2.hasMoreElements();) {
-						InetAddress currentAddress = (InetAddress) i2.nextElement();
+				for (Enumeration<NetworkInterface> i = NetworkInterface.getNetworkInterfaces(); i.hasMoreElements(); ) {
+					NetworkInterface networkInterface = i.nextElement();
+					for (Enumeration<InetAddress> i2 = networkInterface.getInetAddresses(); i2.hasMoreElements();) {
+						InetAddress currentAddress = i2.nextElement();
 						// TODO: we would benefit of Java 1.6 here by automatically initializing the netmask, too
 
 						if (!currentAddress.isLoopbackAddress()) {

@@ -24,7 +24,7 @@ import net.azib.ipscan.config.LoggerFactory;
  */
 public class InetAddressUtils {
 	
-	private static final Logger LOG = LoggerFactory.getLogger();
+	static final Logger LOG = LoggerFactory.getLogger();
 	
 	// Warning! IPv4 specific code
 	public static final Pattern IP_ADDRESS_REGEX = Pattern.compile("\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b");
@@ -145,10 +145,10 @@ public class InetAddressUtils {
 			// by enumeration of network interfaces		
 			try {
 				outer: 
-				for (Enumeration i = NetworkInterface.getNetworkInterfaces(); i.hasMoreElements(); ) {
-					NetworkInterface networkInterface = (NetworkInterface) i.nextElement();
-					for (Enumeration i2 = networkInterface.getInetAddresses(); i2.hasMoreElements();) {
-						InetAddress currentAddress = (InetAddress) i2.nextElement();
+				for (Enumeration<NetworkInterface> i = NetworkInterface.getNetworkInterfaces(); i.hasMoreElements(); ) {
+					NetworkInterface networkInterface = i.nextElement();
+					for (Enumeration<InetAddress> i2 = networkInterface.getInetAddresses(); i2.hasMoreElements();) {
+						InetAddress currentAddress = i2.nextElement();
 						if (!currentAddress.isLoopbackAddress()) {
 							address = currentAddress;
 							break outer;

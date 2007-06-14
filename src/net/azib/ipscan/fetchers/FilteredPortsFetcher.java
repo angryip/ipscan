@@ -28,7 +28,7 @@ public class FilteredPortsFetcher extends PortsFetcher {
 
 	public Object scan(ScanningSubject subject) {
 		scanPorts(subject);
-		SortedSet filteredPorts = getFilteredPorts(subject);
+		SortedSet<Integer> filteredPorts = getFilteredPorts(subject);
 		return filteredPorts.size() > 0 ? new NumericListValue(filteredPorts, displayAsRanges) : null;
 	}
 }

@@ -6,7 +6,6 @@
 package net.azib.ipscan.gui.actions;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import net.azib.ipscan.config.Labels;
@@ -37,13 +36,13 @@ public class FileActions {
 		}
 	}
 
-	private static class SaveResults implements Listener {
+	static class SaveResults implements Listener {
 		private ExporterRegistry exporterRegistry;
 		private ResultTable resultTable;
 		private StatusBar statusBar;
 		private boolean isSelection;
 		
-		private SaveResults(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, boolean isSelection) {
+		SaveResults(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, boolean isSelection) {
 			this.exporterRegistry = exporterRegistry;
 			this.resultTable = resultTable;
 			this.statusBar = statusBar;
@@ -60,15 +59,15 @@ public class FileActions {
 			FileDialog fileDialog = new FileDialog(resultTable.getShell(), SWT.SAVE);
 
 			// gather lists of extensions and exporter names
-			List extensions = new ArrayList();
-			List descriptions = new ArrayList();
+			List<String> extensions = new ArrayList<String>();
+			List<String> descriptions = new ArrayList<String>();
 			StringBuffer labelBuffer = new StringBuffer(Labels.getLabel(isSelection ? "title.saveSelection" : "title.saveAll"));
 			addFileExtensions(extensions, descriptions, labelBuffer);
 			
 			// initialize other stuff
 			fileDialog.setText(labelBuffer.toString());
-			fileDialog.setFilterExtensions((String[]) extensions.toArray(new String[extensions.size()]));
-			fileDialog.setFilterNames((String[]) descriptions.toArray(new String[descriptions.size()]));
+			fileDialog.setFilterExtensions(extensions.toArray(new String[extensions.size()]));
+			fileDialog.setFilterNames(descriptions.toArray(new String[descriptions.size()]));
 			
 			// show the dialog and receive the filename
 			String fileName = fileDialog.open();
@@ -98,12 +97,11 @@ public class FileActions {
 			}
 		}
 
-		private void addFileExtensions(List extensions, List descriptions, StringBuffer sb) {
+		private void addFileExtensions(List<String> extensions, List<String> descriptions, StringBuffer sb) {
 			sb.append(" (");
-			for (Iterator i = exporterRegistry.iterator(); i.hasNext(); ) {
-				Exporter exporter = (Exporter) i.next();
+			for (Exporter exporter : exporterRegistry) {
 				extensions.add("*." + exporter.getFilenameExtension());
-				sb.append(exporter.getFilenameExtension()).append(", ");;
+				sb.append(exporter.getFilenameExtension()).append(", ");
 				descriptions.add(Labels.getLabel(exporter.getLabel()));
 			}
 			// strip the last comma

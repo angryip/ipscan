@@ -28,14 +28,14 @@ import org.savarese.vserv.tcpip.OctetConverter;
  */
 public class ICMPSharedPinger implements Pinger {
 	
-	private static final Logger LOG = Logger.getLogger(ICMPSharedPinger.class.getName());
+	static final Logger LOG = Logger.getLogger(ICMPSharedPinger.class.getName());
 
 	/** a single raw socket for sending of all ICMP packets */
 	private RawSocket sendingSocket;
 	/** a single raw socket for receiving of all ICMP packets */
 	private RawSocket receivingSocket;
 	/** the map with PingResults, keys are InetAddress */
-	private Map results = Collections.synchronizedMap(new HashMap());
+	private Map<InetAddress, PingResult> results = Collections.synchronizedMap(new HashMap<InetAddress, PingResult>());
 	
 	private Thread receiverThread;
 	
@@ -187,7 +187,7 @@ public class ICMPSharedPinger implements Pinger {
 						
 						long endTime = System.currentTimeMillis();
 						
-						PingResult result = (PingResult) results.get(packet.getSourceAsInetAddress());
+						PingResult result = results.get(packet.getSourceAsInetAddress());
 						if (result == null) {
 							LOG.warning("ICMP packet received from an unknown address: " + packet.getSourceAsInetAddress());
 							continue;

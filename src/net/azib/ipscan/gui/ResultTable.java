@@ -6,8 +6,6 @@
 package net.azib.ipscan.gui;
 
 import java.net.InetAddress;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import net.azib.ipscan.config.Config;
@@ -95,9 +93,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		}
 		
 		// add the new selected columns back
-		Collection fetchers = fetcherRegistry.getSelectedFetchers();
-		for (Iterator i = fetchers.iterator(); i.hasNext();) {
-			Fetcher fetcher = (Fetcher) i.next();
+		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
 			TableColumn tableColumn = new TableColumn(this, SWT.NONE);
 			String fetcherName = Labels.getLabel(fetcher.getLabel());
 			tableColumn.setWidth(Config.getDimensionsConfig().getColumnWidth(fetcherName));
@@ -189,14 +185,14 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		return scanningResults;
 	}
 
-	private class SetDataListener implements Listener {
+	class SetDataListener implements Listener {
 
 		public void handleEvent(Event event) {
 			TableItem item = (TableItem)event.item;
 			int tableIndex = ResultTable.this.indexOf(item);
 			
 			ScanningResult scanningResult = scanningResults.getResult(tableIndex);
-			List values = scanningResult.getValues();
+			List<Object> values = scanningResult.getValues();
 			String[] resultStrings = new String[values.size()];
 			for (int i = 0; i < values.size(); i++) {				
 				Object value = values.get(i);
