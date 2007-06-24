@@ -35,6 +35,10 @@ public enum ScanningState {
 		listeners.add(listener);
 	}
 	
+	public void clearListeners() {
+		listeners.clear();
+	}
+	
 	/**
 	 * Notifies all registered listeners of the transition to this state.
 	 */

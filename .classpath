@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="ext/rocksaw/src/java"/>
 	<classpathentry kind="src" path="ext/vserv-tcpip/src/java"/>
 	<classpathentry kind="src" path="resources"/>
@@ -14,5 +15,7 @@
 	<classpathentry kind="lib" path="ext/swt/swt-gtk.jar"/>
 	<classpathentry kind="lib" path="ext/swt/swt-mac.jar"/>
 	<classpathentry kind="lib" path="ext/swt/swt-win32.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="ext/easymock/easymock.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

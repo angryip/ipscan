@@ -21,6 +21,7 @@ import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.exporters.ExportProcessor.ScanningResultSelector;
+import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.IPFetcher;
 
@@ -41,7 +42,7 @@ public class ExportProcessorTest {
 	public void setUp() {
 		fetcherRegistry = createMock(FetcherRegistry.class);
 		expect(fetcherRegistry.getSelectedFetchers())
-			.andReturn(Collections.singletonList(new IPFetcher())).anyTimes();
+			.andReturn(Collections.<Fetcher>singletonList(new IPFetcher())).anyTimes();
 		replay(fetcherRegistry);
 	}
 	

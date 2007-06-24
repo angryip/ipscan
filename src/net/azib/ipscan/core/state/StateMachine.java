@@ -42,8 +42,10 @@ public class StateMachine {
 	 * @param newState
 	 */
 	public void transitionTo(ScanningState newState) {
-		state = newState;
-		state.notifyOnEntry();
+		if (state != newState) {
+			state = newState;
+			state.notifyOnEntry();
+		}
 	}
 
 	/**
