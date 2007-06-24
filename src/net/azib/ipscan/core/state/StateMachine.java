@@ -16,7 +16,7 @@ import net.azib.ipscan.core.ScanningProgressCallback;
 public class StateMachine {
 	
 	private ScanningProgressCallback progressCallback;
-	private ScanningState state;
+	private ScanningState state = ScanningState.IDLE;
 	
 	public void transitionTo(ScanningState newState) {
 		this.state = newState;
@@ -29,6 +29,13 @@ public class StateMachine {
 	 */
 	public boolean isState(ScanningState state) {
 		return this.state == state;
+	}
+	
+	/**
+	 * @return current state
+	 */
+	public ScanningState getState() {
+		return state;
 	}
 
 	public void setScanningProgressCallback(ScanningProgressCallback progressCallback) {

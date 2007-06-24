@@ -44,7 +44,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	
 	private Display display;
 	
-	private ScanningState state = ScanningState.IDLE;
+	private StateMachine stateMachine;
 	
 	public StartStopScanningAction(ScannerThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, Button startStopButton) {
 		this.scannerThreadFactory = scannerThreadFactory;
@@ -54,7 +54,9 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		this.button = startStopButton;
 		this.display = button.getDisplay();
 		
-		stateMachine.setScanningProgressCallback(this);
+		this.stateMachine = stateMachine;
+		// TODO: remove this, use state transition notifications
+		this.stateMachine.setScanningProgressCallback(this);
 		
 		// pre-load button images
 		buttonImages[ScanningState.IDLE.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("button.start.img"));
@@ -69,6 +71,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		buttonTexts[ScanningState.KILLING.ordinal()] = Labels.getLabel("button.kill");
 		
 		// set the defaultimage
+		ScanningState state = stateMachine.getState();
 		button.setImage(buttonImages[state.ordinal()]);
 		button.setText(buttonTexts[state.ordinal()]);
 	}
@@ -78,7 +81,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	}
 
 	public void widgetSelected(SelectionEvent e) {
-		switch (state) {
+		switch (stateMachine.getState()) {
 			case IDLE:
 				// start the scan!
 				resultTable.initNewScan(feederRegistry.current().getInfo());
@@ -99,8 +102,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		}
 	}
 	
-	public void scannerStateChanged(ScanningState newState) {
-		this.state = newState;
+	public void scannerStateChanged(final ScanningState state) {
 		if (display.isDisposed())
 			return;
 		display.asyncExec(new Runnable() {
@@ -144,7 +146,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				statusBar.setProgress(percentageComplete);
 
 				// change button image
-				button.setImage(buttonImages[state.ordinal()]);
+				button.setImage(buttonImages[stateMachine.getState().ordinal()]);
 			}
 		});
 	}
