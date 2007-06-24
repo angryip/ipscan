@@ -6,8 +6,8 @@
 
 package net.azib.ipscan.core.state;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ScanningState enum - all possible states.
@@ -21,7 +21,7 @@ public enum ScanningState {
 	STOPPING,
 	KILLING;
 	
-	private Set<StateTransitionListener> listeners = new HashSet<StateTransitionListener>();
+	private List<StateTransitionListener> listeners = new ArrayList<StateTransitionListener>();
 	
 	/**
 	 * Transitions the state to the next one
@@ -29,6 +29,10 @@ public enum ScanningState {
 	public ScanningState next() {
 		ScanningState[] states = values();
 		return states[ordinal()+1 % states.length];
+	}
+	
+	public void addTransitionListener(StateTransitionListener listener) {
+		listeners.add(listener);
 	}
 	
 	/**

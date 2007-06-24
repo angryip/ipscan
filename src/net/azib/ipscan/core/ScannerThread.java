@@ -38,6 +38,7 @@ public class ScannerThread extends Thread {
 		// this thread is daemon because we want JVM to terminate it
 		// automatically if user closes the program (Main thread, that is)
 		setDaemon(true);
+		
 		this.feeder = feeder;
 		this.scanner = scanner;
 		this.scanningResultList = scanningResults;
@@ -47,11 +48,8 @@ public class ScannerThread extends Thread {
 	}
 
 	public void run() {
-		stateMachine.transitionTo(ScanningState.SCANNING);
-				
-		while(feeder.hasNext() && stateMachine.isState(ScanningState.SCANNING)) {
+		while(feeder.hasNext() && stateMachine.inState(ScanningState.SCANNING)) {
 			try {
-				
 				// make a small delay between thread creation
 				Thread.sleep(config.threadDelay);
 								
@@ -81,13 +79,13 @@ public class ScannerThread extends Thread {
 				// scan each IP in parallel, in a separate thread
 				new IPThread(address, preparationNumber).start();
 			}
-			catch (InterruptedException e) {				
+			catch (InterruptedException e) {
 				return;
 			}
 		}
 		
 		// inform that no more addresses left
-		stateMachine.transitionTo(ScanningState.STOPPING);
+		stateMachine.stop();
 
 		// now wait for all threads, which are still running
 		try {
@@ -104,17 +102,9 @@ public class ScannerThread extends Thread {
 		scanner.cleanup();
 		
 		// finally, the scanning is complete
-		stateMachine.transitionTo(ScanningState.IDLE);
+		stateMachine.complete();
 	}
-		
-	public void forceStop() {
-		stateMachine.transitionTo(ScanningState.STOPPING);
-	}
-	
-	public void abort() {
-		stateMachine.transitionTo(ScanningState.KILLING);
-	}
-	
+			
 	// TODO: remove me and change to constructor injection
 	public void setResultsCallback(ScanningResultsCallback resultsCallback) {
 		this.resultsCallback = resultsCallback;

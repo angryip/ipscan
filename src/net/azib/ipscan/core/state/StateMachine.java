@@ -6,7 +6,10 @@
 
 package net.azib.ipscan.core.state;
 
-import net.azib.ipscan.core.ScanningProgressCallback;
+import java.util.logging.Logger;
+
+import net.azib.ipscan.config.LoggerFactory;
+
 
 /**
  * StateMachine
@@ -15,19 +18,15 @@ import net.azib.ipscan.core.ScanningProgressCallback;
  */
 public class StateMachine {
 	
-	private ScanningProgressCallback progressCallback;
+	private static final Logger LOG = LoggerFactory.getLogger();
+	
 	private ScanningState state = ScanningState.IDLE;
 	
-	public void transitionTo(ScanningState newState) {
-		this.state = newState;
-		progressCallback.scannerStateChanged(newState);
-	}
-
 	/**
 	 * @param state
 	 * @return true if current state is as specified
 	 */
-	public boolean isState(ScanningState state) {
+	public boolean inState(ScanningState state) {
 		return this.state == state;
 	}
 	
@@ -38,8 +37,48 @@ public class StateMachine {
 		return state;
 	}
 
-	public void setScanningProgressCallback(ScanningProgressCallback progressCallback) {
-		this.progressCallback = progressCallback;
+	/**
+	 * Transitions to the specified state, notifying all listeners.
+	 * @param newState
+	 */
+	public void transitionTo(ScanningState newState) {
+		state = newState;
+		state.notifyOnEntry();
 	}
-	
+
+	/**
+	 * Transitions to the next state in the sequence.
+	 * Called when user presses the scan button.
+	 */
+	public void transitionToNext() {
+		// killing state cannot be transitioned from by pressing a button
+		if (state != ScanningState.KILLING) {
+			transitionTo(state.next());
+		}
+	}
+
+	/**
+	 * Transitions to the stopping state
+	 */
+	public void stop() {
+		if (state == ScanningState.SCANNING) {
+			transitionTo(ScanningState.STOPPING);
+		}
+		else {
+			LOG.warning("Attempt to stop from " + state);
+		}
+	}
+
+	/**
+	 * Transitions back to the idle state
+	 */
+	public void complete() {
+		if (state == ScanningState.STOPPING || state == ScanningState.KILLING) {
+			transitionTo(ScanningState.IDLE);
+		}		
+		else {
+			LOG.warning("Attempt to complete from " + state);
+		}
+	}
+
 }

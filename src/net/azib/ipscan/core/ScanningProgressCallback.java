@@ -7,23 +7,13 @@ package net.azib.ipscan.core;
 
 import java.net.InetAddress;
 
-import net.azib.ipscan.core.state.ScanningState;
-
 /**
  * This callback is called on scanning state updates.
  * 
  * @author anton
  */
 public interface ScanningProgressCallback {
-		
-	/**
-	 * This method is called on scanner state changes,
-	 * eg. when scanning is about to stop.
-	 * 
-	 * @param new state
-	 */
-	public void scannerStateChanged(ScanningState state);
-	
+			
 	/**
 	 * This method is called on scanning progress updates.
 	 * There are no guarantees that this method is called on every
