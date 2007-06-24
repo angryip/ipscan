@@ -7,26 +7,22 @@ package net.azib.ipscan.core;
 
 import java.net.InetAddress;
 
+import net.azib.ipscan.core.state.ScanningState;
+
 /**
- * This callback is called on scanning status updates.
+ * This callback is called on scanning state updates.
  * 
  * @author anton
  */
-public interface ScanningStateCallback {
-	
-	public static final int STATE_IDLE = 0;
-	public static final int STATE_SCANNING = 1;
-	public static final int STATE_STOPPING = 2;
-	public static final int STATE_KILLING = 3;
-	
+public interface ScanningProgressCallback {
+		
 	/**
-	 * This method is called on scanner status changes,
+	 * This method is called on scanner state changes,
 	 * eg. when scanning is about to stop.
 	 * 
-	 * @param status integer value of current status, having the 
-	 * 		corresponding STATE_XXX constant
+	 * @param new state
 	 */
-	public void scannerStateChanged(int status);
+	public void scannerStateChanged(ScanningState state);
 	
 	/**
 	 * This method is called on scanning progress updates.

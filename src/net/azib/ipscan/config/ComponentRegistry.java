@@ -10,6 +10,7 @@ import net.azib.ipscan.core.ScannerThreadFactory;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.core.net.PingerRegistryImpl;
+import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.exporters.CSVExporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
 import net.azib.ipscan.exporters.IPListExporter;
@@ -92,6 +93,7 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(PingerRegistry.class, PingerRegistryImpl.class);
 		container.registerComponentImplementation(ScanningResultList.class);
 		container.registerComponentImplementation(Scanner.class);
+		container.registerComponentImplementation(StateMachine.class);
 		container.registerComponentImplementation(ScannerThreadFactory.class);
 		
 		// GUI follows (TODO: move GUI to a separate place)
@@ -157,7 +159,7 @@ public class ComponentRegistry {
 		
 		container.registerComponentImplementation(OptionsDialog.class);
 		container.registerComponentImplementation(SelectFetchersDialog.class);
-
+		
 		// various actions / listener
 		container.registerComponentImplementation(StartStopScanningAction.class);
 		container.registerComponentImplementation(ColumnsActions.SortBy.class);

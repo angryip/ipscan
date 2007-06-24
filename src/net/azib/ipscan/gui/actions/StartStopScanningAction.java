@@ -10,7 +10,9 @@ import java.net.InetAddress;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScannerThread;
 import net.azib.ipscan.core.ScannerThreadFactory;
-import net.azib.ipscan.core.ScanningStateCallback;
+import net.azib.ipscan.core.ScanningProgressCallback;
+import net.azib.ipscan.core.state.ScanningState;
+import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.ScanningResultsConsumer;
 import net.azib.ipscan.gui.StatusBar;
@@ -28,7 +30,7 @@ import org.eclipse.swt.widgets.Display;
  * 
  * @author anton
  */
-public class StartStopScanningAction implements SelectionListener, ScanningStateCallback {
+public class StartStopScanningAction implements SelectionListener, ScanningProgressCallback {
 	
 	private ScannerThreadFactory scannerThreadFactory;
 	private ScannerThread scannerThread;
@@ -37,14 +39,14 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 	private ResultTable resultTable;
 	private FeederGUIRegistry feederRegistry;
 	private Button button;
-	private Image[] buttonImages = new Image[4];
-	private String[] buttonTexts = new String[4];
+	private Image[] buttonImages = new Image[ScanningState.values().length];
+	private String[] buttonTexts = new String[ScanningState.values().length];
 	
 	private Display display;
 	
-	private int state = ScanningStateCallback.STATE_IDLE;
+	private ScanningState state = ScanningState.IDLE;
 	
-	public StartStopScanningAction(ScannerThreadFactory scannerThreadFactory, ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, Button startStopButton) {
+	public StartStopScanningAction(ScannerThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, Button startStopButton) {
 		this.scannerThreadFactory = scannerThreadFactory;
 		this.resultTable = resultTable;
 		this.statusBar = statusBar;
@@ -52,21 +54,23 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 		this.button = startStopButton;
 		this.display = button.getDisplay();
 		
+		stateMachine.setScanningProgressCallback(this);
+		
 		// pre-load button images
-		buttonImages[ScanningStateCallback.STATE_IDLE] = new Image(null, Labels.getInstance().getImageAsStream("button.start.img"));
-		buttonImages[ScanningStateCallback.STATE_SCANNING] = new Image(null, Labels.getInstance().getImageAsStream("button.stop.img"));
-		buttonImages[ScanningStateCallback.STATE_STOPPING] = new Image(null, Labels.getInstance().getImageAsStream("button.kill.img"));
-		buttonImages[ScanningStateCallback.STATE_KILLING] = buttonImages[ScanningStateCallback.STATE_STOPPING];
+		buttonImages[ScanningState.IDLE.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("button.start.img"));
+		buttonImages[ScanningState.SCANNING.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("button.stop.img"));
+		buttonImages[ScanningState.STOPPING.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("button.kill.img"));
+		buttonImages[ScanningState.KILLING.ordinal()] = buttonImages[ScanningState.STOPPING.ordinal()];
 		
 		// pre-load button texts
-		buttonTexts[ScanningStateCallback.STATE_IDLE] = Labels.getLabel("button.start");
-		buttonTexts[ScanningStateCallback.STATE_SCANNING] = Labels.getLabel("button.stop");
-		buttonTexts[ScanningStateCallback.STATE_STOPPING] = Labels.getLabel("button.kill");
-		buttonTexts[ScanningStateCallback.STATE_KILLING] = Labels.getLabel("button.kill");
+		buttonTexts[ScanningState.IDLE.ordinal()] = Labels.getLabel("button.start");
+		buttonTexts[ScanningState.SCANNING.ordinal()] = Labels.getLabel("button.stop");
+		buttonTexts[ScanningState.STOPPING.ordinal()] = Labels.getLabel("button.kill");
+		buttonTexts[ScanningState.KILLING.ordinal()] = Labels.getLabel("button.kill");
 		
 		// set the defaultimage
-		button.setImage(buttonImages[state]);
-		button.setText(buttonTexts[state]);
+		button.setImage(buttonImages[state.ordinal()]);
+		button.setText(buttonTexts[state.ordinal()]);
 	}
 
 	public void widgetDefaultSelected(SelectionEvent e) {
@@ -75,28 +79,28 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 
 	public void widgetSelected(SelectionEvent e) {
 		switch (state) {
-			case ScanningStateCallback.STATE_IDLE:
+			case IDLE:
 				// start the scan!
 				resultTable.initNewScan(feederRegistry.current().getInfo());
 				ScanningResultsConsumer resultsConsumer = new ScanningResultsConsumer(resultTable);
-				scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.current().getFeeder());
+				scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.current().getFeeder(), this);
+				// TODO: fix this: this is needed here to avoid cylic dependencies...
 				scannerThread.setResultsCallback(resultsConsumer);
-				scannerThread.setStatusCallback(this);
 				scannerThread.start();
 				break;
-			case ScanningStateCallback.STATE_SCANNING:
+			case SCANNING:
 				scannerThread.forceStop();
 				break;
-			case ScanningStateCallback.STATE_STOPPING:
+			case STOPPING:
 				scannerThread.abort();
 				break;
-			case ScanningStateCallback.STATE_KILLING:
+			case KILLING:
 				break;
 		}
 	}
 	
-	public void scannerStateChanged(int status) {
-		this.state = status;
+	public void scannerStateChanged(ScanningState newState) {
+		this.state = newState;
 		if (display.isDisposed())
 			return;
 		display.asyncExec(new Runnable() {
@@ -104,22 +108,22 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 				if (statusBar.isDisposed())
 					return;
 				
-				switch (StartStopScanningAction.this.state) {
-					case STATE_IDLE:
+				switch (state) {
+					case IDLE:
 						// reset state text
 						statusBar.setStatusText(null);
 						statusBar.setProgress(0);
 						break;
-					case STATE_STOPPING:
+					case STOPPING:
 						statusBar.setStatusText(Labels.getLabel("state.waitForThreads"));
 						break;
-					case STATE_KILLING:
+					case KILLING:
 						statusBar.setStatusText(Labels.getLabel("state.killingThreads"));
 						break;
 				}
 				// change button image
-				button.setImage(buttonImages[StartStopScanningAction.this.state]);
-				button.setText(buttonTexts[StartStopScanningAction.this.state]);
+				button.setImage(buttonImages[state.ordinal()]);
+				button.setText(buttonTexts[state.ordinal()]);
 			}
 		});
 	}
@@ -140,7 +144,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningState
 				statusBar.setProgress(percentageComplete);
 
 				// change button image
-				button.setImage(buttonImages[StartStopScanningAction.this.state]);
+				button.setImage(buttonImages[state.ordinal()]);
 			}
 		});
 	}

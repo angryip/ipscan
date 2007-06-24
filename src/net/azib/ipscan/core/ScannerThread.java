@@ -8,6 +8,8 @@ package net.azib.ipscan.core;
 import java.net.InetAddress;
 
 import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.core.state.ScanningState;
+import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.feeders.Feeder;
 
 /**
@@ -18,18 +20,20 @@ import net.azib.ipscan.feeders.Feeder;
 public class ScannerThread extends Thread {
 
 	private Scanner scanner;
+	private StateMachine stateMachine;
 	private ScanningResultList scanningResultList;
 	private Feeder feeder;
-	private ScanningStateCallback statusCallback;
+	private ScanningProgressCallback progressCallback;
 	private ScanningResultsCallback resultsCallback;
-	private int state;
 	private int runningThreads;
 	
 	private GlobalConfig config;
 	
-	public ScannerThread(Feeder feeder, Scanner scanner, ScanningResultList scanningResults, GlobalConfig globalConfig) {
+	public ScannerThread(Feeder feeder, Scanner scanner, StateMachine stateMachine, ScanningProgressCallback progressCallback, ScanningResultList scanningResults, GlobalConfig globalConfig) {
 		super("Scanner Thread");
 		this.config = globalConfig;
+		this.stateMachine = stateMachine;
+		this.progressCallback = progressCallback;
 		
 		// this thread is daemon because we want JVM to terminate it
 		// automatically if user closes the program (Main thread, that is)
@@ -43,9 +47,9 @@ public class ScannerThread extends Thread {
 	}
 
 	public void run() {
-		changeStatus(ScanningStateCallback.STATE_SCANNING);
+		stateMachine.transitionTo(ScanningState.SCANNING);
 				
-		while(feeder.hasNext() && state == ScanningStateCallback.STATE_SCANNING) {
+		while(feeder.hasNext() && stateMachine.isState(ScanningState.SCANNING)) {
 			try {
 				
 				// make a small delay between thread creation
@@ -72,7 +76,7 @@ public class ScannerThread extends Thread {
 				int preparationNumber = resultsCallback.prepareForResults(address);
 				
 				// notify listeners of the progress we are doing
-				statusCallback.updateProgress(address, runningThreads, feeder.getPercentageComplete());
+				progressCallback.updateProgress(address, runningThreads, feeder.getPercentageComplete());
 				
 				// scan each IP in parallel, in a separate thread
 				new IPThread(address, preparationNumber).start();
@@ -83,14 +87,14 @@ public class ScannerThread extends Thread {
 		}
 		
 		// inform that no more addresses left
-		changeStatus(ScanningStateCallback.STATE_STOPPING);
+		stateMachine.transitionTo(ScanningState.STOPPING);
 
 		// now wait for all threads, which are still running
 		try {
 			// TODO: make a better and safer implementation
 			while (runningThreads > 0) {
 				Thread.sleep(200);
-				statusCallback.updateProgress(null, runningThreads, 100);
+				progressCallback.updateProgress(null, runningThreads, 100);
 			}
 		} 
 		catch (InterruptedException e) {
@@ -100,28 +104,20 @@ public class ScannerThread extends Thread {
 		scanner.cleanup();
 		
 		// finally, the scanning is complete
-		changeStatus(ScanningStateCallback.STATE_IDLE);
+		stateMachine.transitionTo(ScanningState.IDLE);
 	}
-	
-	private void changeStatus(int status) {
-		this.state = status;
-		statusCallback.scannerStateChanged(status);
-	}
-	
+		
 	public void forceStop() {
-		changeStatus(ScanningStateCallback.STATE_STOPPING);
+		stateMachine.transitionTo(ScanningState.STOPPING);
 	}
 	
 	public void abort() {
-		changeStatus(ScanningStateCallback.STATE_KILLING);
-	}
-
-	public void setResultsCallback(ScanningResultsCallback resultsCallback) {
-		this.resultsCallback = resultsCallback;
+		stateMachine.transitionTo(ScanningState.KILLING);
 	}
 	
-	public void setStatusCallback(ScanningStateCallback statusCallback) {
-		this.statusCallback = statusCallback;
+	// TODO: remove me and change to constructor injection
+	public void setResultsCallback(ScanningResultsCallback resultsCallback) {
+		this.resultsCallback = resultsCallback;
 	}
 	
 	/**

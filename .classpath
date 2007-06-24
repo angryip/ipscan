@@ -10,7 +10,7 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="ipscan/ext/rocksaw/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="ext/picocontainer/picocontainer-1.0.jar" sourcepath="ext/picocontainer/src"/>
+	<classpathentry kind="lib" path="ext/picocontainer/picocontainer-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/swt/swt-gtk.jar"/>
 	<classpathentry kind="lib" path="ext/swt/swt-mac.jar"/>
 	<classpathentry kind="lib" path="ext/swt/swt-win32.jar"/>
