@@ -194,6 +194,7 @@ exception.FeederException.file.notExists=Specified file doesn't exist or you don
 exception.FeederException.file.errorWhileReading=Error while reading the file
 exception.FeederException.file.nothingFound=No IP addresses found in the file
 exception.FetcherException.options.notAvailable=This fetcher doesn't have any options.
+exception.FetcherException.unparseablePortString=The port string is either invalid or incomplete.\nPlease check that it is in the correct format and port numbers are in the correct range (1-65535)
 exception.ExporterException.failed=Exporting failed
 exception.ExporterException.exporter.unknown=Unknown file type, please specify correct extension in the file name.
 exception.ExporterException.xml.noAppend=Appending to XML files is not supported.

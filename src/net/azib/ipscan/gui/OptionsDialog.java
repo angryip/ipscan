@@ -7,10 +7,14 @@ package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.PortIterator;
 import net.azib.ipscan.core.net.PingerRegistry;
+import net.azib.ipscan.fetchers.FetcherException;
 import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -50,6 +54,7 @@ public class OptionsDialog extends AbstractModalDialog {
 	private Button skipBroadcastsCheckbox;
 	private Composite fetchersTab;
 	private Composite portsTab;
+	private TabItem portsTabItem;
 	private Text portTimeoutText;
 	private Button adaptTimeoutCheckbox;
 	private Text portsText;
@@ -74,6 +79,13 @@ public class OptionsDialog extends AbstractModalDialog {
 		createShell();
 		loadOptions();
 		tabFolder.setSelection(tabIndex);
+		
+		// select ports text by default if ports tab is opened
+		// this is needed for PortsFetcher that uses this tab as its options
+		if (tabFolder.getItem(tabIndex) == portsTabItem) {
+			portsText.forceFocus();
+		}
+		
 		super.open();
 	}
 
@@ -128,6 +140,7 @@ public class OptionsDialog extends AbstractModalDialog {
 		tabItem = new TabItem(tabFolder, SWT.NONE);
 		tabItem.setText(Labels.getLabel("title.options.ports"));
 		tabItem.setControl(portsTab);
+		portsTabItem = tabItem;
 		
 		createDisplayTab();		
 		tabItem = new TabItem(tabFolder, SWT.NONE);
@@ -303,8 +316,7 @@ public class OptionsDialog extends AbstractModalDialog {
 		//label.setLayoutData(new RowData(300, SWT.DEFAULT));
 		portsText = new Text(portsGroup, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL);
 		portsText.setLayoutData(new RowData(SWT.DEFAULT, 60));
-		// TODO: ports configuration string validation
-
+		portsText.addKeyListener(new PortsTextValidationListener());
 	}
 
 	/**
@@ -353,6 +365,16 @@ public class OptionsDialog extends AbstractModalDialog {
 	}
 	
 	private void saveOptions() {
+		// validate port string
+		try {
+			new PortIterator(portsText.getText());
+		}
+		catch (Exception e) {
+			tabFolder.setSelection(portsTabItem);
+			portsText.forceFocus();
+			throw new FetcherException("unparseablePortString", e);
+		}
+
 		globalConfig.maxThreads = parseIntValue(maxThreadsText);
 		globalConfig.threadDelay = parseIntValue(threadDelayText);
 		globalConfig.selectedPinger = (String) pingersCombo.getData(Integer.toString(pingersCombo.getSelectionIndex()));
@@ -377,6 +399,39 @@ public class OptionsDialog extends AbstractModalDialog {
 		catch (NumberFormatException e) {
 			text.forceFocus();
 			throw e;
+		}
+	}
+	
+	static class PortsTextValidationListener implements KeyListener {
+		public void keyPressed(KeyEvent e) {
+			// current
+			char c = e.character;
+			if (Character.isISOControl(c) && !Character.isWhitespace(c))
+				return;
+			
+			Text portsText = (Text) e.getSource();
+			
+			e.doit = validateChar(c, portsText.getText(), portsText.getCaretPosition());
+		}
+		
+		boolean validateChar(char c, String text, int caretPos) {
+			// previous
+			char pc = 0;
+			for (int i = caretPos-1; i >= 0; i--) {
+				pc = text.charAt(i);
+				if (!Character.isWhitespace(pc))
+					break;
+			}
+			
+			boolean isCurDigit = c >= '0' && c <= '9';
+			boolean isPrevDigit = pc >= '0' && pc <= '9';
+			return isPrevDigit && (isCurDigit || c == '-' || c == ',') ||
+				   isCurDigit && (pc == '-' || pc == ',' || pc == 0) ||
+				   Character.isWhitespace(c) && pc == ',';
+			
+		}
+
+		public void keyReleased(KeyEvent e) {
 		}
 	}
 }

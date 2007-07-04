@@ -17,12 +17,12 @@ public class PortIteratorTest {
 	@Test
 	public void testBasic() {
 		assertEquals("1 2 3 5 7 ", iterateToString(new PortIterator("1,2,3,5,7")));
+		assertEquals("1 2 3 5 7 ", iterateToString(new PortIterator("1,\n2,   3,\t\t5,7")));
 		assertEquals("27 1 65535 ", iterateToString(new PortIterator("27, 1;65535")));
 		assertEquals("16 ", iterateToString(new PortIterator("16")));
 		assertEquals("", iterateToString(new PortIterator("")));
 		assertEquals("12 ", iterateToString(new PortIterator("   12")));
 		assertEquals("12 ", iterateToString(new PortIterator("12, ")));
-		// TODO assertEquals("", iterateToString(new PortIterator("65536")));
 	}
 	
 	@Test
@@ -37,6 +37,26 @@ public class PortIteratorTest {
 		assertNotNull(new PortIterator("1").copy());
 	}
 	
+	@Test(expected=NumberFormatException.class)
+	public void testBrokenNumber() throws Exception {
+		new PortIterator("foo");
+	}
+	
+	@Test(expected=NumberFormatException.class)
+	public void testTooLarge() throws Exception {
+		new PortIterator("65536");
+	}
+	
+	@Test(expected=NumberFormatException.class)
+	public void testZero() throws Exception {
+		new PortIterator("1,2,0,3");
+	}
+
+	@Test(expected=NumberFormatException.class)
+	public void testNegative() throws Exception {
+		new PortIterator("-3");
+	}
+
 	private static String iterateToString(PortIterator iterator) {
 		StringBuffer sb = new StringBuffer(64);
 		while (iterator.hasNext()) {

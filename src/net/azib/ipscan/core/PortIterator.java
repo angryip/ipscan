@@ -29,7 +29,7 @@ public final class PortIterator implements Cloneable {
 	public PortIterator(String portString) {
 
 		if (portString != null && (portString = portString.trim()).length() > 0) {
-			String[] portRanges = portString.split("[ \t\n\r,;]+");
+			String[] portRanges = portString.split("[\\s\t\n\r,;]+");
 			
 			// initialize storage
 			portRangeStart = new int[portRanges.length+1];	// +1 for optimiation of 'next' method, prevents ArrayIndexOutOfBoundsException
@@ -42,6 +42,9 @@ public final class PortIterator implements Cloneable {
 				int endPort = Integer.parseInt(range.substring(dashPos));
 				portRangeEnd[i] = endPort;
 				portRangeStart[i] = dashPos == 0 ? endPort : Integer.parseInt(range.substring(0, dashPos-1));
+				if (endPort <= 0 || endPort >= 65536) {
+					throw new NumberFormatException(endPort + " port is out of range");
+				}
 			}
 			
 			currentPort = portRangeStart[0];
