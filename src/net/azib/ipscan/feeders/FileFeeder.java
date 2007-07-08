@@ -56,7 +56,7 @@ public class FileFeeder implements Feeder {
 	 * @param params 1 parameter:
 	 * 		params[0] fileName
 	 */
-	public int initialize(String[] params) {
+	public int initialize(String ... params) {
 		initialize(params[0]);
 		return 1;
 	}
@@ -104,7 +104,7 @@ public class FileFeeder implements Feeder {
 		foundIPAddressesIterator = foundIPAddresses.iterator();
 	}
 	
-	public int getPercentageComplete() {
+	public int percentageComplete() {
 		return Math.round((float)currentIndex * 100 / totalAddresses);
 	}
 

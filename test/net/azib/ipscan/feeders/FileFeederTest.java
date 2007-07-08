@@ -89,19 +89,19 @@ public class FileFeederTest {
 		StringReader reader = new StringReader("1.2.3.4, 2.3.4.5, mega cool 0.0.0.0");
 		FileFeeder fileFeeder = new FileFeeder();
 		fileFeeder.initialize(reader);
-		assertEquals(0, fileFeeder.getPercentageComplete());
+		assertEquals(0, fileFeeder.percentageComplete());
 		fileFeeder.next();
-		assertEquals(33, fileFeeder.getPercentageComplete());
+		assertEquals(33, fileFeeder.percentageComplete());
 		fileFeeder.next();
-		assertEquals(67, fileFeeder.getPercentageComplete());
+		assertEquals(67, fileFeeder.percentageComplete());
 		fileFeeder.next();
-		assertEquals(100, fileFeeder.getPercentageComplete());
+		assertEquals(100, fileFeeder.percentageComplete());
 		
 		reader = new StringReader("255.255.255.255");
 		fileFeeder.initialize(reader);
-		assertEquals(0, fileFeeder.getPercentageComplete());
+		assertEquals(0, fileFeeder.percentageComplete());
 		fileFeeder.next();
-		assertEquals(100, fileFeeder.getPercentageComplete());
+		assertEquals(100, fileFeeder.percentageComplete());
 	}	
 	
 	@Test

@@ -43,7 +43,7 @@ public class RandomFeeder implements Feeder {
 	 * 		params[1] mask
 	 * 		params[2] count
 	 */
-	public int initialize(String[] params) {
+	public int initialize(String ... params) {
 		try {
 			initialize(params[0], params[1], Integer.parseInt(params[2]));
 			return 3;
@@ -77,7 +77,7 @@ public class RandomFeeder implements Feeder {
 		this.currentBytes = new byte[prototypeBytes.length];
 	}
 
-	public int getPercentageComplete() {
+	public int percentageComplete() {
 		return Math.round((float)currentNumber * 100 / addressCount);
 	}
 

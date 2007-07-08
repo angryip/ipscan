@@ -43,7 +43,7 @@ public class RangeFeeder implements Feeder {
 	 * 		params[0] - startIP
 	 * 		params[1] - endIP
 	 */
-	public int initialize(String[] params) {
+	public int initialize(String ... params) {
 		initialize(params[0], params[1]);
 		return 2;
 	}
@@ -96,7 +96,7 @@ public class RangeFeeder implements Feeder {
 		return prevIP;
 	}
 
-	public int getPercentageComplete() {
+	public int percentageComplete() {
 		return (int)Math.round(percentageComplete);
 	}
 	

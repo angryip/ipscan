@@ -3,24 +3,22 @@
  * see http://www.azib.net/ for more information.
  * Licensed under GPLv2.
  */
-
 package net.azib.ipscan.core.state;
 
-import java.util.logging.Logger;
-
-import net.azib.ipscan.config.LoggerFactory;
-
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * StateMachine
+ * StateMachine implementation.
+ * It holds the current state and performs transitions with corresponding methods.
  *
  * @author Anton Keks
  */
 public class StateMachine {
 	
-	private static final Logger LOG = LoggerFactory.getLogger();
-	
 	private ScanningState state = ScanningState.IDLE;
+	
+	private List<StateTransitionListener> transitionListeners = new ArrayList<StateTransitionListener>();
 	
 	/**
 	 * @param state
@@ -38,13 +36,24 @@ public class StateMachine {
 	}
 
 	/**
+	 * Registers state transition listener.
+	 * @param listener instance
+	 */
+	public void addTransitionListener(StateTransitionListener listener) {
+		transitionListeners.add(listener);
+	}
+	
+	/**
 	 * Transitions to the specified state, notifying all listeners.
+	 * Note: this method is intentionally not public, use specific methods to make desired transitions.
 	 * @param newState
 	 */
-	public void transitionTo(ScanningState newState) {
+	void transitionTo(ScanningState newState) {
 		if (state != newState) {
 			state = newState;
-			state.notifyOnEntry();
+			for (StateTransitionListener listener : transitionListeners) {
+				listener.transitionTo(state);
+			}
 		}
 	}
 
@@ -67,7 +76,7 @@ public class StateMachine {
 			transitionTo(ScanningState.STOPPING);
 		}
 		else {
-			LOG.warning("Attempt to stop from " + state);
+			throw new IllegalStateException("Attempt to stop from " + state);
 		}
 	}
 
@@ -79,7 +88,31 @@ public class StateMachine {
 			transitionTo(ScanningState.IDLE);
 		}		
 		else {
-			LOG.warning("Attempt to complete from " + state);
+			throw new IllegalStateException("Attempt to complete from " + state);
+		}
+	}
+
+	/**
+	 * Transitions to the RESTARTING state in order to rescan previously scanned results.
+	 */
+	public void rescan() {
+		if (state == ScanningState.IDLE) {
+			transitionTo(ScanningState.RESTARTING);
+		}
+		else {
+			throw new IllegalStateException("Attempt to rescan from " + state);
+		}
+	}
+
+	/**
+	 * Starts the scanning process
+	 */
+	public void startScanning() {
+		if (state == ScanningState.STARTING || state == ScanningState.RESTARTING) {
+			transitionTo(ScanningState.SCANNING);
+		}
+		else {
+			throw new IllegalStateException("Attempt to go scanning from " + state);
 		}
 	}
 

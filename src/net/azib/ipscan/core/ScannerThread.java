@@ -29,11 +29,12 @@ public class ScannerThread extends Thread {
 	
 	private GlobalConfig config;
 	
-	public ScannerThread(Feeder feeder, Scanner scanner, StateMachine stateMachine, ScanningProgressCallback progressCallback, ScanningResultList scanningResults, GlobalConfig globalConfig) {
+	public ScannerThread(Feeder feeder, Scanner scanner, StateMachine stateMachine, ScanningProgressCallback progressCallback, ScanningResultList scanningResults, GlobalConfig globalConfig, ScanningResultsCallback resultsCallback) {
 		super("Scanner Thread");
 		this.config = globalConfig;
 		this.stateMachine = stateMachine;
 		this.progressCallback = progressCallback;
+		this.resultsCallback = resultsCallback;
 		
 		// this thread is daemon because we want JVM to terminate it
 		// automatically if user closes the program (Main thread, that is)
@@ -74,7 +75,7 @@ public class ScannerThread extends Thread {
 				int preparationNumber = resultsCallback.prepareForResults(address);
 				
 				// notify listeners of the progress we are doing
-				progressCallback.updateProgress(address, runningThreads, feeder.getPercentageComplete());
+				progressCallback.updateProgress(address, runningThreads, feeder.percentageComplete());
 				
 				// scan each IP in parallel, in a separate thread
 				new IPThread(address, preparationNumber).start();
@@ -104,12 +105,7 @@ public class ScannerThread extends Thread {
 		// finally, the scanning is complete
 		stateMachine.complete();
 	}
-			
-	// TODO: remove me and change to constructor injection
-	public void setResultsCallback(ScanningResultsCallback resultsCallback) {
-		this.resultsCallback = resultsCallback;
-	}
-	
+				
 	/**
 	 * This thread gets executed for each scanned IP address to do the actual
 	 * scanning.

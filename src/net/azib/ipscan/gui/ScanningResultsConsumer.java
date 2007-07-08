@@ -22,14 +22,14 @@ public class ScanningResultsConsumer implements ScanningResultsCallback {
 		this.resultTable = resultTable;
 	}
 
-	/**
+	/*
 	 * @see net.azib.ipscan.core.ScanningResultsCallback#prepareForResults(InetAddress)
 	 */
 	public int prepareForResults(InetAddress address) {
 		return resultTable.addResultsRow(address);
 	}
 
-	/**
+	/*
 	 * @see net.azib.ipscan.core.ScanningResultsCallback#consumeResults(int, ScanningResult)
 	 */
 	public void consumeResults(int preparationIndex, ScanningResult results) {

@@ -11,9 +11,12 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.TableItem;
 
 import net.azib.ipscan.config.Config;
+import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederException;
+import net.azib.ipscan.feeders.RescanFeeder;
 
 /**
  * FeederGUIRegistry
@@ -71,5 +74,19 @@ public class FeederGUIRegistry implements Iterable<AbstractFeederGUI> {
 		}
 		// if not found
 		throw new FeederException("No such feeder found: " + feederName);
+	}
+
+	/**
+	 * @param items selected table items to derive IP addresses from
+	 * @return initialized instance of RescanFeeder
+	 */
+	public Feeder createRescanFeeder(TableItem[] items) {
+		Feeder feeder = new RescanFeeder();
+		String[] addresses = new String[items.length];
+		for (int i = 0; i < items.length; i++) {
+			addresses[i] = items[i].getText();
+		}
+		feeder.initialize(addresses);
+		return feeder;
 	}
 }

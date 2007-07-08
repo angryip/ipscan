@@ -6,8 +6,6 @@
 
 package net.azib.ipscan.core.state;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * ScanningState enum - all possible states.
@@ -17,35 +15,24 @@ import java.util.List;
 public enum ScanningState {
 	
 	IDLE,
+	STARTING,
 	SCANNING,
 	STOPPING,
-	KILLING;
-	
-	private List<StateTransitionListener> listeners = new ArrayList<StateTransitionListener>();
-	
-	/**
-	 * Transitions the state to the next one
-	 */
-	public ScanningState next() {
-		ScanningState[] states = values();
-		return states[ordinal()+1 % states.length];
-	}
-	
-	public void addTransitionListener(StateTransitionListener listener) {
-		listeners.add(listener);
-	}
-	
-	public void clearListeners() {
-		listeners.clear();
-	}
+	KILLING,
+	RESTARTING;
 	
 	/**
-	 * Notifies all registered listeners of the transition to this state.
+	 * Transitions the state to the next one.
+	 * Note: not all states have the default next state;
 	 */
-	public void notifyOnEntry() {
-		for (StateTransitionListener listener : listeners) {
-			listener.transitionTo(this);
+	ScanningState next() {
+		switch (this) {
+			case IDLE: return STARTING;
+			case STARTING: return SCANNING;
+			case SCANNING: return STOPPING;
+			case STOPPING: return KILLING;
+			case RESTARTING: return SCANNING;
+			default: return null;
 		}
 	}
-
 }

@@ -74,18 +74,18 @@ public class RangeFeederTest {
 	public void testGetPercentageComplete() throws Exception {
 		RangeFeeder rangeFeeder = new RangeFeeder();
 		rangeFeeder.initialize("100.11.12.13", "100.11.12.15");
-		assertEquals(0, rangeFeeder.getPercentageComplete());
+		assertEquals(0, rangeFeeder.percentageComplete());
 		rangeFeeder.next();
-		assertEquals(33, rangeFeeder.getPercentageComplete());
+		assertEquals(33, rangeFeeder.percentageComplete());
 		rangeFeeder.next();
-		assertEquals(67, rangeFeeder.getPercentageComplete());
+		assertEquals(67, rangeFeeder.percentageComplete());
 		rangeFeeder.next();
-		assertEquals(100, rangeFeeder.getPercentageComplete());
+		assertEquals(100, rangeFeeder.percentageComplete());
 		
 		rangeFeeder.initialize("255.255.255.255", "255.255.255.255");
-		assertEquals(0, rangeFeeder.getPercentageComplete());
+		assertEquals(0, rangeFeeder.percentageComplete());
 		rangeFeeder.next();
-		assertEquals(100, rangeFeeder.getPercentageComplete());
+		assertEquals(100, rangeFeeder.percentageComplete());
 	}
 	
 	@Test

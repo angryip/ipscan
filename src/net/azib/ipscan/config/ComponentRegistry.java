@@ -160,7 +160,7 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(OptionsDialog.class);
 		container.registerComponentImplementation(SelectFetchersDialog.class);
 		
-		// various actions / listener
+		// various actions / listeners
 		container.registerComponentImplementation(StartStopScanningAction.class);
 		container.registerComponentImplementation(ColumnsActions.SortBy.class);
 		container.registerComponentImplementation(ColumnsActions.FetcherOptions.class);

@@ -29,7 +29,8 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	private FetcherRegistry fetcherRegistry;
 	// selected fetchers are cached here, because the may be changed in the registry already
 	private List<Fetcher> selectedFetchers;
-	
+
+	/** TODO: use a Map instead of List here and remove all index-based access */
 	private List<ScanningResult> resultList = new ArrayList<ScanningResult>(1024);
 	private ResultsComparator resultsComparator = new ResultsComparator();
 

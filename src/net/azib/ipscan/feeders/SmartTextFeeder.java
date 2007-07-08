@@ -25,7 +25,7 @@ public class SmartTextFeeder implements Feeder {
 		return null;
 	}
 
-	public int initialize(String[] params) {
+	public int initialize(String ... params) {
 		return 0;
 	}
 		
@@ -52,7 +52,7 @@ public class SmartTextFeeder implements Feeder {
 		return null;
 	}
 
-	public int getPercentageComplete() {
+	public int percentageComplete() {
 		return 0;
 	}
 	

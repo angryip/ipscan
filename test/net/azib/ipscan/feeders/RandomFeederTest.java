@@ -119,18 +119,18 @@ public class RandomFeederTest {
 	public void testGetPercentageComplete() throws Exception {
 		RandomFeeder randomFeeder = new RandomFeeder();
 		randomFeeder.initialize("100.11.12.13", "100.11.12.15", 3);
-		assertEquals(0, randomFeeder.getPercentageComplete());
+		assertEquals(0, randomFeeder.percentageComplete());
 		randomFeeder.next();
-		assertEquals(33, randomFeeder.getPercentageComplete());
+		assertEquals(33, randomFeeder.percentageComplete());
 		randomFeeder.next();
-		assertEquals(67, randomFeeder.getPercentageComplete());
+		assertEquals(67, randomFeeder.percentageComplete());
 		randomFeeder.next();
-		assertEquals(100, randomFeeder.getPercentageComplete());
+		assertEquals(100, randomFeeder.percentageComplete());
 		
 		randomFeeder.initialize("255.255.255.255", "255.255.255.255", 1);
-		assertEquals(0, randomFeeder.getPercentageComplete());
+		assertEquals(0, randomFeeder.percentageComplete());
 		randomFeeder.next();
-		assertEquals(100, randomFeeder.getPercentageComplete());
+		assertEquals(100, randomFeeder.percentageComplete());
 	}	
 
 	@Test

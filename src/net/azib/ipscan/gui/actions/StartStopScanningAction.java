@@ -35,19 +35,44 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	
 	private ScannerThreadFactory scannerThreadFactory;
 	private ScannerThread scannerThread;
+	ScanningResultsConsumer resultsConsumer;
 
 	private StatusBar statusBar;
 	private ResultTable resultTable;
 	private FeederGUIRegistry feederRegistry;
 	private Button button;
-	private Image[] buttonImages = new Image[ScanningState.values().length];
-	private String[] buttonTexts = new String[ScanningState.values().length];
+	
+	Image[] buttonImages = new Image[ScanningState.values().length];
+	String[] buttonTexts = new String[ScanningState.values().length];
 	
 	private Display display;
 	
 	private StateMachine stateMachine;
 	
+	/**
+	 * Creates internal stuff independent from all other external dependencies
+	 */
+	StartStopScanningAction() {
+		// pre-load button images
+		buttonImages[ScanningState.IDLE.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("button.start.img"));
+		buttonImages[ScanningState.SCANNING.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("button.stop.img"));
+		buttonImages[ScanningState.STARTING.ordinal()] = buttonImages[ScanningState.SCANNING.ordinal()]; 
+		buttonImages[ScanningState.RESTARTING.ordinal()] = buttonImages[ScanningState.SCANNING.ordinal()];
+		buttonImages[ScanningState.STOPPING.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("button.kill.img"));
+		buttonImages[ScanningState.KILLING.ordinal()] = buttonImages[ScanningState.STOPPING.ordinal()];
+		
+		// pre-load button texts
+		buttonTexts[ScanningState.IDLE.ordinal()] = Labels.getLabel("button.start");
+		buttonTexts[ScanningState.SCANNING.ordinal()] = Labels.getLabel("button.stop");
+		buttonTexts[ScanningState.STARTING.ordinal()] = buttonTexts[ScanningState.SCANNING.ordinal()]; 
+		buttonTexts[ScanningState.RESTARTING.ordinal()] = buttonTexts[ScanningState.SCANNING.ordinal()];
+		buttonTexts[ScanningState.STOPPING.ordinal()] = Labels.getLabel("button.kill");
+		buttonTexts[ScanningState.KILLING.ordinal()] = Labels.getLabel("button.kill");
+	}
+	
 	public StartStopScanningAction(ScannerThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, Button startStopButton) {
+		this();
+
 		this.scannerThreadFactory = scannerThreadFactory;
 		this.resultTable = resultTable;
 		this.statusBar = statusBar;
@@ -55,23 +80,10 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		this.button = startStopButton;
 		this.display = button.getDisplay();
 		this.stateMachine = stateMachine;
+		this.resultsConsumer = new ScanningResultsConsumer(resultTable);
 		
-		// pre-load button images
-		buttonImages[ScanningState.IDLE.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("button.start.img"));
-		buttonImages[ScanningState.SCANNING.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("button.stop.img"));
-		buttonImages[ScanningState.STOPPING.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("button.kill.img"));
-		buttonImages[ScanningState.KILLING.ordinal()] = buttonImages[ScanningState.STOPPING.ordinal()];
-		
-		// pre-load button texts
-		buttonTexts[ScanningState.IDLE.ordinal()] = Labels.getLabel("button.start");
-		buttonTexts[ScanningState.SCANNING.ordinal()] = Labels.getLabel("button.stop");
-		buttonTexts[ScanningState.STOPPING.ordinal()] = Labels.getLabel("button.kill");
-		buttonTexts[ScanningState.KILLING.ordinal()] = Labels.getLabel("button.kill");
-
 		// add listeners to all state changes
-		for (ScanningState state : ScanningState.values()) {
-			state.addTransitionListener(this);
-		}
+		stateMachine.addTransitionListener(this);
 		
 		// set the defaultimage
 		ScanningState state = stateMachine.getState();
@@ -79,10 +91,16 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		button.setText(buttonTexts[state.ordinal()]);
 	}
 
+	/**
+	 * Called when scanning button is clicked
+	 */
 	public void widgetDefaultSelected(SelectionEvent e) {
 		widgetSelected(e);
 	}
 
+	/**
+	 * Called when scanning button is clicked
+	 */
 	public void widgetSelected(SelectionEvent e) {
 		stateMachine.transitionToNext();
 	}
@@ -101,13 +119,19 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 						statusBar.setStatusText(null);
 						statusBar.setProgress(0);
 						break;
-					case SCANNING:
+					case STARTING:
 						// start the scan!
 						resultTable.initNewScan(feederRegistry.current().getInfo());
-						ScanningResultsConsumer resultsConsumer = new ScanningResultsConsumer(resultTable);
-						scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.current().getFeeder(), StartStopScanningAction.this);
-						// TODO: fix this: this is needed here to avoid cylic dependencies...
-						scannerThread.setResultsCallback(resultsConsumer);
+						scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.current().getFeeder(), StartStopScanningAction.this, resultsConsumer);
+						stateMachine.startScanning();
+						break;
+					case RESTARTING:
+						// restart the scanning - rescan
+						resultTable.resetSelection();
+						scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createRescanFeeder(resultTable.getSelection()), StartStopScanningAction.this, resultsConsumer);
+						stateMachine.startScanning();
+						break;
+					case SCANNING:
 						scannerThread.start();
 						break;
 					case STOPPING:

@@ -31,7 +31,7 @@ public interface Feeder {
 	 * @param params the meaning and the number of these Strings depend on the implementation.
 	 * @return the number of consumed parameters
 	 */
-	public int initialize(String[] params);
+	public int initialize(String ... params);
 	
 	/**
 	 * @return true in case there are more IPs left for processing
@@ -46,7 +46,7 @@ public interface Feeder {
 	/**
 	 * @return value from 0 to 100, describing the amount of work already done
 	 */
-	public int getPercentageComplete();
+	public int percentageComplete();
 
 	/**
 	 * @return information about feeder's current settings.

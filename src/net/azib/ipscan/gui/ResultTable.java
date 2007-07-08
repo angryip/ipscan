@@ -116,7 +116,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		final int index = scanningResults.add(address);
 		getDisplay().syncExec(new Runnable() {
 			public void run() {
-				ResultTable.this.setItemCount(index+1);
+				setItemCount(index+1);
 			}
 		});		
 		return index;
@@ -165,6 +165,16 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		scanningResults.clear();
 		super.removeAll();
 	}
+	
+	public void resetSelection() {
+		int columnCount = getColumnCount();
+		for (TableItem item : getSelection()) {
+			for (int i = 1; i < columnCount; i++) {
+				item.setText(i, "");
+			}
+			item.setImage(this.listImages[ScanningSubject.RESULT_TYPE_UNKNOWN]);
+		}
+	}
 
 	/**
 	 * Initializes a new scan.
@@ -185,6 +195,16 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		return scanningResults;
 	}
 
+	/**
+	 * @return the feeder info, which used in this scan
+	 */
+	public String getFeederInfo() {
+		return feederInfo;
+	}
+
+	/**
+	 * This listener is used for displaying the real results in the table, on demand.
+	 */
 	class SetDataListener implements Listener {
 
 		public void handleEvent(Event event) {
@@ -203,13 +223,6 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 			item.setImage(0, listImages[scanningResult.getType()]);
 		}
 		
-	}
-
-	/**
-	 * @return the feeder info, which used in this scan
-	 */
-	public String getFeederInfo() {
-		return feederInfo;
 	}
 
 }
