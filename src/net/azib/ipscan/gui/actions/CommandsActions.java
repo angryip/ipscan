@@ -30,12 +30,25 @@ import org.eclipse.swt.widgets.MenuItem;
 /**
  * Commands and Context menu Actions.
  * All these operate on the items, selected in the results list.
- * TODO: check for selection everywhere
  *
  * @author anton
  */
 public class CommandsActions {
 	
+	/**
+	 * Checks that there is at least one item selected in the results list.
+	 * @param mainWindow
+	 */
+	static void checkSelection(ResultTable resultTable) {
+		if (resultTable.getItemCount() <= 0) {
+			throw new UserErrorException("commands.noResults");
+		}
+		else
+		if (resultTable.getSelectionIndex() < 0) {
+			throw new UserErrorException("commands.noSelection");
+		}
+	}
+
 	public static class Details implements Listener {
 		private ResultTable resultTable;
 		
@@ -110,20 +123,6 @@ public class CommandsActions {
 			Clipboard clipboard = new Clipboard(event.display);
 			clipboard.setContents(new Object[] {resultTable.getIPDetails()}, new Transfer[] {TextTransfer.getInstance()});
 			clipboard.dispose();
-		}
-	}
-
-	/**
-	 * Checks that there is at least one item selected in the results list.
-	 * @param mainWindow
-	 */
-	static void checkSelection(ResultTable resultTable) {
-		if (resultTable.getItemCount() <= 0) {
-			throw new UserErrorException("commands.noResults");
-		}
-		else
-		if (resultTable.getSelectionIndex() < 0) {
-			throw new UserErrorException("commands.noSelection");
 		}
 	}
 	

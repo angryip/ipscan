@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.fetchers.Fetcher;
@@ -30,8 +32,9 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	// selected fetchers are cached here, because the may be changed in the registry already
 	private List<Fetcher> selectedFetchers;
 
-	/** TODO: use a Map instead of List here and remove all index-based access */
-	private List<ScanningResult> resultList = new ArrayList<ScanningResult>(1024);
+	private List<ScanningResult> resultList = new ArrayList<ScanningResult>(RESULT_LIST_INITIAL_SIZE);
+	private Map<InetAddress, Integer> resultIndexes = new HashMap<InetAddress, Integer>(RESULT_LIST_INITIAL_SIZE);
+	
 	private ResultsComparator resultsComparator = new ResultsComparator();
 
 	public ScanningResultList(FetcherRegistry fetcherRegistry) {
@@ -53,8 +56,12 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	 * @return the index of the added address, can be used in calls to other methods
 	 */
 	public synchronized int add(InetAddress address) {
-		int index = resultList.size();
-		resultList.add(new ScanningResult(address, fetcherRegistry.getSelectedFetchers().size()));
+		Integer index = resultIndexes.get(address);
+		if (index == null) {
+			index = resultList.size();
+			resultList.add(new ScanningResult(address, fetcherRegistry.getSelectedFetchers().size()));
+			resultIndexes.put(address, index);
+		}
 		return index;
 	}
 
@@ -89,6 +96,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	public synchronized void clear() {
 		// clear the results
 		resultList.clear();
+		resultIndexes.clear();
 		// reload currently selected fetchers
 		selectedFetchers = new ArrayList<Fetcher>(fetcherRegistry.getSelectedFetchers());
 	}
@@ -117,13 +125,17 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	 */
 	public synchronized void remove(int[] indices) {
 		// this rebuild is faster then a number of calls to remove()
-		// however, a further speedup can be obtained by using a Set instead of binarySearch()
+		// however, a further speedup may be obtained by using a Set instead of binarySearch()
 		List<ScanningResult> newList = new ArrayList<ScanningResult>(RESULT_LIST_INITIAL_SIZE);
+		Map<InetAddress, Integer> newMap = new HashMap<InetAddress, Integer>(RESULT_LIST_INITIAL_SIZE);
 		for (int i = 0; i < resultList.size(); i++) {
-			if (Arrays.binarySearch(indices, i) < 0)
+			if (Arrays.binarySearch(indices, i) < 0) {
 				newList.add(resultList.get(i));
+				newMap.put(resultList.get(i).getAddress(), newList.size()-1);
+			}
 		}
 		resultList = newList;
+		resultIndexes = newMap;
 	}
 	
 	/**
@@ -134,6 +146,11 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	public synchronized void sort(int columnIndex) {
 		resultsComparator.index = columnIndex;
 		Collections.sort(resultList, resultsComparator);
+		// now rebuild indexes
+		resultIndexes = new HashMap<InetAddress, Integer>(RESULT_LIST_INITIAL_SIZE);
+		for (int i = 0; i < resultList.size(); i++) {
+			resultIndexes.put(resultList.get(i).getAddress(), i);
+		}
 	}
 	
 	/**

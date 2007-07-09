@@ -33,7 +33,8 @@ import org.junit.Test;
  */
 public class ScanningResultListTest {
 
-	private List<Fetcher> fetchers = new ArrayList<Fetcher>(Arrays.asList(new Fetcher[] {new DummyFetcher("fetcher.ip"), new DummyFetcher("fetcher.ping"), new DummyFetcher("fetcher.hostname"), new DummyFetcher("fetcher.ping.ttl")}));
+	private List<Fetcher> fetchers = new ArrayList<Fetcher>(
+			Arrays.asList(new DummyFetcher("fetcher.ip"), new DummyFetcher("fetcher.ping"), new DummyFetcher("fetcher.hostname"), new DummyFetcher("fetcher.ping.ttl")));
 
 	private FetcherRegistry fetcherRegistry;
 	private ScanningResultList scanningResults;
@@ -56,21 +57,29 @@ public class ScanningResultListTest {
 	@Test
 	public void testAdd() throws Exception {
 		int index = scanningResults.add(InetAddress.getByName("10.0.0.5"));
+		assertEquals(0, index);
 		assertEquals("10.0.0.5", scanningResults.getResult(index).getAddress().getHostAddress());
 		assertEquals("10.0.0.5", scanningResults.getResult(index).getValues().get(0));
+		
+		index = scanningResults.add(InetAddress.getByName("10.0.0.17"));
+		assertEquals(1, index);
+		assertEquals("10.0.0.17", scanningResults.getResult(index).getAddress().getHostAddress());
+		
+		index = scanningResults.add(InetAddress.getByName("10.0.0.5"));
+		assertEquals("same index should be returned because the element already exists", 0, index);
 	}
 	
 	@Test
 	public void testIterator() throws Exception {
 		assertFalse(scanningResults.iterator().hasNext());
 		scanningResults.add(InetAddress.getLocalHost());
-		Iterator<?> i = scanningResults.iterator();
+		Iterator<ScanningResult> i = scanningResults.iterator();
 		assertTrue(i.hasNext());
-		assertTrue(i.next() instanceof ScanningResult);
+		assertEquals(InetAddress.getLocalHost(), i.next().getAddress());
 		assertFalse(i.hasNext());
 	}
 	
-	@Test @SuppressWarnings("unchecked")
+	@Test 
 	public void testClear() throws Exception {
 		fetcherRegistry.getSelectedFetchers().clear();
 		fetcherRegistry.getSelectedFetchers().add(new DummyFetcher("hello"));
@@ -95,12 +104,18 @@ public class ScanningResultListTest {
 		scanningResults.add(InetAddress.getByName("127.9.9.4"));
 		scanningResults.remove(new int[] {i2,i3});
 		
-		Iterator<?> i = scanningResults.iterator();
+		Iterator<ScanningResult> i = scanningResults.iterator();
 		assertTrue(i.hasNext());
-		assertEquals(InetAddress.getByName("127.9.9.1"), ((ScanningResult)i.next()).getAddress());
+		assertEquals(InetAddress.getByName("127.9.9.1"), i.next().getAddress());
 		assertTrue(i.hasNext());
-		assertEquals(InetAddress.getByName("127.9.9.4"), ((ScanningResult)i.next()).getAddress());
+		assertEquals(InetAddress.getByName("127.9.9.4"), i.next().getAddress());
 		assertFalse(i.hasNext());
+		
+		// now check that there are no forgotten indexes
+		assertEquals(0, scanningResults.add(InetAddress.getByName("127.9.9.1")));
+		assertEquals(1, scanningResults.add(InetAddress.getByName("127.9.9.4")));
+		assertEquals(2, scanningResults.add(InetAddress.getByName("127.9.9.3")));
+		assertEquals(3, scanningResults.add(InetAddress.getByName("127.9.9.2")));
 	}
 	
 	@Test
@@ -116,15 +131,20 @@ public class ScanningResultListTest {
 		
 		scanningResults.sort(1);
 		
-		Iterator<?> i = scanningResults.iterator();
-		assertEquals(InetAddress.getByName("127.9.9.2"), ((ScanningResult)i.next()).getAddress());
-		assertEquals(InetAddress.getByName("127.9.9.4"), ((ScanningResult)i.next()).getAddress());
-		assertEquals(InetAddress.getByName("127.9.9.1"), ((ScanningResult)i.next()).getAddress());
-		assertEquals(InetAddress.getByName("127.9.9.3"), ((ScanningResult)i.next()).getAddress());
+		Iterator<ScanningResult> i = scanningResults.iterator();
+		assertEquals(InetAddress.getByName("127.9.9.2"), i.next().getAddress());
+		assertEquals(InetAddress.getByName("127.9.9.4"), i.next().getAddress());
+		assertEquals(InetAddress.getByName("127.9.9.1"), i.next().getAddress());
+		assertEquals(InetAddress.getByName("127.9.9.3"), i.next().getAddress());
 		assertFalse(i.hasNext());
+		
+		// now check that internal indexes are not broken
+		assertEquals(2, scanningResults.add(InetAddress.getByName("127.9.9.1")));
+		assertEquals(0, scanningResults.add(InetAddress.getByName("127.9.9.2")));
+		assertEquals(4, scanningResults.add(InetAddress.getByName("127.9.9.10")));
 	}
 	
-	@Test @SuppressWarnings("unchecked")
+	@Test 
 	public void testGetResultsAsString() throws Exception {
 		List<Fetcher> fetchers = scanningResults.getFetchers();
 		int index = scanningResults.add(InetAddress.getByName("172.28.43.55"));

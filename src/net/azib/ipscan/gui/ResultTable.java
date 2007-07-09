@@ -116,9 +116,10 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		final int index = scanningResults.add(address);
 		getDisplay().syncExec(new Runnable() {
 			public void run() {
-				setItemCount(index+1);
+				if (index >= getItemCount()) 
+					setItemCount(index+1);
 			}
-		});		
+		});
 		return index;
 	}
 
@@ -209,7 +210,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 
 		public void handleEvent(Event event) {
 			TableItem item = (TableItem)event.item;
-			int tableIndex = ResultTable.this.indexOf(item);
+			int tableIndex = indexOf(item);
 			
 			ScanningResult scanningResult = scanningResults.getResult(tableIndex);
 			List<Object> values = scanningResult.getValues();

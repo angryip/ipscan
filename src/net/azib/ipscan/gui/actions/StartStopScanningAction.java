@@ -113,6 +113,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				if (statusBar.isDisposed())
 					return;
 				
+				// TODO: separate GUI and non-GUI stuff
 				switch (state) {
 					case IDLE:
 						// reset state text
