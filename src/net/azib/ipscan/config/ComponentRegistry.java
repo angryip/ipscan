@@ -144,7 +144,8 @@ public class ComponentRegistry {
 			anyComponentParameter,
 			anyComponentParameter});
 		container.registerComponentImplementation(StatusBar.class, StatusBar.class, new Parameter[] {
-			new ComponentParameter("mainShell")});
+			new ComponentParameter("mainShell"),
+			anyComponentParameter});
 		
 		container.registerComponentImplementation(MainMenu.class, MainMenu.class, new Parameter[] {
 			new ComponentParameter("mainShell"),

@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.gui;
 
+import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.config.Labels;
 
 import org.eclipse.swt.SWT;
@@ -26,11 +27,16 @@ public class StatusBar {
 	
 	private Composite composite;
 	
-	private ProgressBar progressBar;
 	private Label statusText;
+	private Label configText;
 	private Label threadsText;
+	private ProgressBar progressBar;
+	
+	private GlobalConfig globalConfig;
 
-	public StatusBar(Shell shell) {
+	public StatusBar(Shell shell, GlobalConfig globalConfig) {
+		this.globalConfig = globalConfig;
+		
 		composite = new Composite(shell, SWT.NONE);
 		FormData formData = new FormData();
 		formData.left = new FormAttachment(0);
@@ -45,18 +51,25 @@ public class StatusBar {
 		composite.setLayout(/*rowLayout*/ new FillLayout());
 		
 		statusText = new Label(composite, SWT.BORDER);
-		//statusText.setLayoutData(new RowData(150, SWT.DEFAULT));
 		setStatusText(null);
 		
+		configText = new Label(composite, SWT.BORDER);
+		updateConfigText();
+
 		threadsText = new Label(composite, SWT.BORDER);
-		//threadsText.setLayoutData(new RowData(50, SWT.DEFAULT));
 		threadsText.setText(Labels.getLabel("text.threads") + "0");
 		
 		progressBar = new ProgressBar(composite, SWT.BORDER);
-		//progressBar.setLayoutData(new RowData());
 		progressBar.setSelection(0);
 	}
 	
+	/**
+	 * Updates config text according to the latest changes in the GlobalConfig
+	 */
+	public void updateConfigText() {
+		configText.setText(Labels.getLabel("text.display." + globalConfig.displayMethod));
+	}
+
 	/**
 	 * Used for the positioning of the controls in the MainWindow
 	 */

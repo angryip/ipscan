@@ -40,6 +40,7 @@ public class OptionsDialog extends AbstractModalDialog {
 	
 	private PingerRegistry pingerRegistry;
 	private GlobalConfig globalConfig;
+	private StatusBar statusBar;
 	
 	private Button okButton;
 	private Button cancelButton;
@@ -64,9 +65,10 @@ public class OptionsDialog extends AbstractModalDialog {
 	private Text notScannedText;
 	private Button[] displayMethod; 
 	
-	public OptionsDialog(PingerRegistry pingerRegistry, GlobalConfig globalConfig) {
+	public OptionsDialog(PingerRegistry pingerRegistry, GlobalConfig globalConfig, StatusBar statusBar) {
 		this.pingerRegistry = pingerRegistry;
 		this.globalConfig = globalConfig;
+		this.statusBar = statusBar;
 	}
 	
 	public void open() {
@@ -246,13 +248,13 @@ public class OptionsDialog extends AbstractModalDialog {
 		listGroup.setLayoutData(new RowData(260, SWT.DEFAULT));
 		displayMethod = new Button[DisplayMethod.values().length];
 		Button allRadio = new Button(listGroup, SWT.RADIO);
-		allRadio.setText(Labels.getLabel("options.display.list.all"));
+		allRadio.setText(Labels.getLabel("options.display.list." + DisplayMethod.ALL));
 		displayMethod[DisplayMethod.ALL.ordinal()] = allRadio;
 		Button aliveRadio = new Button(listGroup, SWT.RADIO);
-		aliveRadio.setText(Labels.getLabel("options.display.list.alive"));
+		aliveRadio.setText(Labels.getLabel("options.display.list." + DisplayMethod.ALIVE));
 		displayMethod[DisplayMethod.ALIVE.ordinal()] = aliveRadio;
 		Button portsRadio = new Button(listGroup, SWT.RADIO);
-		portsRadio.setText(Labels.getLabel("options.display.list.ports"));
+		portsRadio.setText(Labels.getLabel("options.display.list." +  DisplayMethod.PORTS));
 		displayMethod[DisplayMethod.PORTS.ordinal()] = portsRadio;
 		
 		groupLayout = new GridLayout();
@@ -395,6 +397,7 @@ public class OptionsDialog extends AbstractModalDialog {
 				globalConfig.displayMethod = DisplayMethod.values()[i];
 		}
 		 
+		statusBar.updateConfigText();
 	}
 
 	/**
