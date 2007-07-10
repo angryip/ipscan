@@ -20,7 +20,8 @@ public class ScanningResult {
 	private InetAddress address;
 	/** Scanning results, result of each Fetcher is an element */
 	private Object[] values;
-	/** Scanning result type, see constants in {@link ScanningSubject} */
+	/** Scanning result type, see constants in {@link ScanningSubject} 
+	    TODO: use a type-safe enum here */
 	private int type;
 	
 	/**

@@ -7,15 +7,18 @@ package net.azib.ipscan.gui.actions;
 
 import java.net.InetAddress;
 
+import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScannerThread;
 import net.azib.ipscan.core.ScannerThreadFactory;
 import net.azib.ipscan.core.ScanningProgressCallback;
+import net.azib.ipscan.core.ScanningResult;
+import net.azib.ipscan.core.ScanningResultsCallback;
+import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.ResultTable;
-import net.azib.ipscan.gui.ScanningResultsConsumer;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 
@@ -35,7 +38,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	
 	private ScannerThreadFactory scannerThreadFactory;
 	private ScannerThread scannerThread;
-	ScanningResultsConsumer resultsConsumer;
+	private GlobalConfig globalConfig;
 
 	private StatusBar statusBar;
 	private ResultTable resultTable;
@@ -70,7 +73,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		buttonTexts[ScanningState.KILLING.ordinal()] = Labels.getLabel("button.kill");
 	}
 	
-	public StartStopScanningAction(ScannerThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, Button startStopButton) {
+	public StartStopScanningAction(ScannerThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, Button startStopButton, GlobalConfig globalConfig) {
 		this();
 
 		this.scannerThreadFactory = scannerThreadFactory;
@@ -80,7 +83,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		this.button = startStopButton;
 		this.display = button.getDisplay();
 		this.stateMachine = stateMachine;
-		this.resultsConsumer = new ScanningResultsConsumer(resultTable);
+		this.globalConfig = globalConfig;
 		
 		// add listeners to all state changes
 		stateMachine.addTransitionListener(this);
@@ -117,19 +120,20 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				switch (state) {
 					case IDLE:
 						// reset state text
+						button.setEnabled(true);
 						statusBar.setStatusText(null);
 						statusBar.setProgress(0);
 						break;
 					case STARTING:
 						// start the scan!
 						resultTable.initNewScan(feederRegistry.current().getInfo());
-						scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.current().getFeeder(), StartStopScanningAction.this, resultsConsumer);
+						scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.current().getFeeder(), StartStopScanningAction.this, createResultsCallback());
 						stateMachine.startScanning();
 						break;
 					case RESTARTING:
 						// restart the scanning - rescan
 						resultTable.resetSelection();
-						scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createRescanFeeder(resultTable.getSelection()), StartStopScanningAction.this, resultsConsumer);
+						scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createRescanFeeder(resultTable.getSelection()), StartStopScanningAction.this, createResultsCallback());
 						stateMachine.startScanning();
 						break;
 					case SCANNING:
@@ -139,6 +143,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 						statusBar.setStatusText(Labels.getLabel("state.waitForThreads"));
 						break;
 					case KILLING:
+						button.setEnabled(false);
 						statusBar.setStatusText(Labels.getLabel("state.killingThreads"));
 						break;
 				}
@@ -147,6 +152,40 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				button.setText(buttonTexts[state.ordinal()]);
 			}
 		});
+	}
+	
+	/**
+	 * @return the appropriate ResultsCallback instance, depending on the configured display method.
+	 */
+	private ScanningResultsCallback createResultsCallback() {
+		switch (globalConfig.displayMethod) {
+			default: return new ScanningResultsCallback() {
+				public void prepareForResults(ScanningResult result) {
+					resultTable.addOrUpdateResultRow(result);
+				}
+				public void consumeResults(ScanningResult result) {
+					resultTable.addOrUpdateResultRow(result);
+				}
+			};
+			
+			case ALIVE: return new ScanningResultsCallback() {
+				public void prepareForResults(ScanningResult result) {
+				}
+				public void consumeResults(ScanningResult result) {
+					if (result.getType() == ScanningSubject.RESULT_TYPE_ALIVE)
+						resultTable.addOrUpdateResultRow(result);
+				}
+			};
+			
+			case PORTS: return new ScanningResultsCallback() {
+				public void prepareForResults(ScanningResult result) {
+				}
+				public void consumeResults(ScanningResult result) {
+					if (result.getType() == ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO)
+						resultTable.addOrUpdateResultRow(result);
+				}
+			};
+		}
 	}
 
 	public void updateProgress(final InetAddress currentAddress, final int runningThreads, final int percentageComplete) {

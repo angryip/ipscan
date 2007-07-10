@@ -5,7 +5,6 @@
  */
 package net.azib.ipscan.gui;
 
-import java.net.InetAddress;
 import java.util.List;
 
 import net.azib.ipscan.config.Config;
@@ -34,7 +33,7 @@ import org.eclipse.swt.widgets.TableItem;
  * @author anton
  */
 public class ResultTable extends Table implements FetcherRegistryUpdateListener {
-		
+	
 	private ScanningResultList scanningResults;
 	
 	private Image[] listImages = new Image[4];
@@ -110,31 +109,31 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		// override anything important, so this should be safe (tm)
 	}
 
-	public int addResultsRow(final InetAddress address) {
-		if (isDisposed())
-			return 0;
-		final int index = scanningResults.add(address);
-		getDisplay().syncExec(new Runnable() {
-			public void run() {
-				if (index >= getItemCount()) 
-					setItemCount(index+1);
-			}
-		});
-		return index;
-	}
-
 	/**
-	 * Forces the specified element to be redrawn.
-	 * This method can be called from any thread.
-	 * @param index
+	 * Adds the specified results holder to the table and registers it
+	 * in the ScanningResultList instance or just redraws the corresponding row
+	 * if the result is already present.
+	 * <p/>
+	 * Note: this method may be called from any thread.
+	 * 
+	 * @param result
 	 */
-	public void updateResults(final int index) {
+	public void addOrUpdateResultRow(final ScanningResult result) {
 		if (isDisposed())
 			return;
 		getDisplay().syncExec(new Runnable() {
 			public void run() {
-				// redraw the item
-				ResultTable.this.clear(index);
+				if (scanningResults.isRegistered(result)) {
+					// redraw the item
+					clear(scanningResults.getIndex(result));
+				}
+				else {
+					// first register, then add - otherwise first redraw may fail (the table is virtual)
+					int index = getItemCount();
+					scanningResults.registerAtIndex(index, result);
+					// setItemCount(index+1) - this seems to rebuild TableItems inside, so is slower
+					new TableItem(ResultTable.this, SWT.NONE);
+				}
 			}
 		});
 	}
@@ -152,7 +151,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 	 */
 	public String getIPDetails() {
 		int selectedIndex = getSelectionIndex();
-		return scanningResults.getResultsAsString(selectedIndex);
+		return scanningResults.getResultAsString(selectedIndex);
 	}
 	
 	public void remove(int[] indices) {

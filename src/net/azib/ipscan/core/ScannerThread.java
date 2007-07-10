@@ -72,13 +72,14 @@ public class ScannerThread extends Thread {
 				runningThreads++;
 								
 				// prepare results receiver for upcoming results
-				int preparationNumber = resultsCallback.prepareForResults(address);
+				ScanningResult result = scanningResultList.createResult(address);
+				resultsCallback.prepareForResults(result);
 				
 				// notify listeners of the progress we are doing
 				progressCallback.updateProgress(address, runningThreads, feeder.percentageComplete());
 				
 				// scan each IP in parallel, in a separate thread
-				new IPThread(address, preparationNumber).start();
+				new IPThread(address, result).start();
 			}
 			catch (InterruptedException e) {
 				return;
@@ -90,7 +91,7 @@ public class ScannerThread extends Thread {
 
 		// now wait for all threads, which are still running
 		try {
-			// TODO: make a better and safer implementation
+			// TODO: make a better and safer implementation (synchronization?)
 			while (runningThreads > 0) {
 				Thread.sleep(200);
 				progressCallback.updateProgress(null, runningThreads, 100);
@@ -112,20 +113,19 @@ public class ScannerThread extends Thread {
 	 */
 	private class IPThread extends Thread {
 		private InetAddress address;
-		private int preparationIndex;
+		private ScanningResult result;
 		
-		IPThread(InetAddress address, int preparationIndex) {
+		IPThread(InetAddress address, ScanningResult result) {
 			super("IP Thread: " + address.getHostAddress());
 			setDaemon(true);
 			this.address = address;
-			this.preparationIndex = preparationIndex;
+			this.result = result;
 		}
 
 		public void run() {
 			try {
-				ScanningResult result = scanningResultList.getResult(preparationIndex); 
 				scanner.scan(address, result);
-				resultsCallback.consumeResults(preparationIndex, result);
+				resultsCallback.consumeResults(result);
 			}
 			finally {
 				runningThreads--;

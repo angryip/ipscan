@@ -79,9 +79,20 @@ public class StateMachineTest {
 	
 	@Test
 	public void stop() throws Exception {
+		final int notificationCount[] = {0};
+		stateMachine.addTransitionListener(new StateTransitionListener() {
+			public void transitionTo(ScanningState state) {
+				notificationCount[0]++;
+			}
+		});
 		stateMachine.transitionTo(ScanningState.SCANNING);
+		assertEquals(1, notificationCount[0]);
 		stateMachine.stop();
 		assertEquals(ScanningState.STOPPING, stateMachine.getState());
+		assertEquals(2, notificationCount[0]);
+		stateMachine.stop();
+		assertEquals(ScanningState.STOPPING, stateMachine.getState());
+		assertEquals(3, notificationCount[0]);
 	}
 	
 	@Test

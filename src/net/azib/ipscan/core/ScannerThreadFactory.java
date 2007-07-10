@@ -8,7 +8,6 @@ package net.azib.ipscan.core;
 import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.feeders.Feeder;
-import net.azib.ipscan.gui.ScanningResultsConsumer;
 
 /**
  * ScannerThreadFactory.
@@ -31,7 +30,7 @@ public class ScannerThreadFactory {
 		this.globalConfig = globalConfig;
 	}
 
-	public ScannerThread createScannerThread(Feeder feeder, ScanningProgressCallback progressCallback, ScanningResultsConsumer resultsConsumer) {
-		return new ScannerThread(feeder, scanner, stateMachine, progressCallback, scanningResults, globalConfig, resultsConsumer);
+	public ScannerThread createScannerThread(Feeder feeder, ScanningProgressCallback progressCallback, ScanningResultsCallback resultsCallback) {
+		return new ScannerThread(feeder, scanner, stateMachine, progressCallback, scanningResults, globalConfig, resultsCallback);
 	}
 }

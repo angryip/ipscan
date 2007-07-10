@@ -51,9 +51,13 @@ public class StateMachine {
 	void transitionTo(ScanningState newState) {
 		if (state != newState) {
 			state = newState;
-			for (StateTransitionListener listener : transitionListeners) {
-				listener.transitionTo(state);
-			}
+			notifyAboutTransition();
+		}
+	}
+
+	private void notifyAboutTransition() {
+		for (StateTransitionListener listener : transitionListeners) {
+			listener.transitionTo(state);
 		}
 	}
 
@@ -74,6 +78,10 @@ public class StateMachine {
 	public void stop() {
 		if (state == ScanningState.SCANNING) {
 			transitionTo(ScanningState.STOPPING);
+		}
+		else if (state == ScanningState.STOPPING) {
+			// notify anyway to ensure that manual stopping and automatic stopping work well together
+			notifyAboutTransition();
 		}
 		else {
 			throw new IllegalStateException("Attempt to stop from " + state);

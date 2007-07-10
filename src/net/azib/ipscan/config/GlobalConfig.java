@@ -29,7 +29,10 @@ public final class GlobalConfig {
 	public String portString;
 	public String notAvailableText;
 	public String notScannedText;
+	public DisplayMethod displayMethod;
 
+	public static enum DisplayMethod {ALL, ALIVE, PORTS}
+	
 	/**
 	 * Package local constructor.
 	 * It loads all preferences.
@@ -51,6 +54,7 @@ public final class GlobalConfig {
 		portString = preferences.get("portString", "");
 		notAvailableText = preferences.get("notAvailableText", Labels.getLabel("fetcher.value.notAvailable"));
 		notScannedText = preferences.get("notScannedText", Labels.getLabel("fetcher.value.notScanned"));
+		displayMethod = DisplayMethod.valueOf(preferences.get("displayMethod", DisplayMethod.ALL.toString()));
 	}
 		
 	/**
@@ -70,5 +74,6 @@ public final class GlobalConfig {
 		preferences.put("portString", portString);
 		preferences.put("notAvailableText", notAvailableText);
 		preferences.put("notScannedText", notScannedText);
+		preferences.put("displayMethod", displayMethod.toString());
 	}
 }

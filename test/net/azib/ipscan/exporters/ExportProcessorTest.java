@@ -57,7 +57,7 @@ public class ExportProcessorTest {
 		ExportProcessor exportProcessor = new ExportProcessor(new TXTExporter(), file.getAbsolutePath());
 		
 		ScanningResultList scanningResultList = new ScanningResultList(fetcherRegistry);
-		scanningResultList.add(InetAddress.getByName("192.168.0.13"));
+		scanningResultList.registerAtIndex(0, scanningResultList.createResult(InetAddress.getByName("192.168.0.13")));
 		exportProcessor.process(scanningResultList, "megaFeeder", null);
 		
 		String content = readFileContent(file);
@@ -91,9 +91,9 @@ public class ExportProcessorTest {
 		
 		ScanningResultList scanningResultList = new ScanningResultList(fetcherRegistry);
 		
-		scanningResultList.add(InetAddress.getByName("192.168.13.66"));
-		scanningResultList.add(InetAddress.getByName("192.168.13.67"));
-		scanningResultList.add(InetAddress.getByName("192.168.13.76"));
+		scanningResultList.registerAtIndex(0, scanningResultList.createResult(InetAddress.getByName("192.168.13.66")));
+		scanningResultList.registerAtIndex(1, scanningResultList.createResult(InetAddress.getByName("192.168.13.67")));
+		scanningResultList.registerAtIndex(2, scanningResultList.createResult(InetAddress.getByName("192.168.13.76")));
 		
 		exportProcessor.process(scanningResultList, "feeder2", new ScanningResultSelector() {
 			public boolean isResultSelected(int index, ScanningResult result) {

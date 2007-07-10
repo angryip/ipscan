@@ -25,7 +25,7 @@ import net.azib.ipscan.fetchers.FetcherRegistry;
  * @author anton
  */
 public class ScanningResultList implements Iterable<ScanningResult> {
-
+	
 	private static final int RESULT_LIST_INITIAL_SIZE = 1024;
 	
 	private FetcherRegistry fetcherRegistry;
@@ -51,29 +51,53 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	}
 	
 	/**
-	 * Adds the new scanned IP address
+	 * Creates the new results holder for particular address or returns an existing one.
 	 * @param address
-	 * @return the index of the added address, can be used in calls to other methods
+	 * @return pre-initialized empty ScanningResult
 	 */
-	public synchronized int add(InetAddress address) {
+	public ScanningResult createResult(InetAddress address) {
 		Integer index = resultIndexes.get(address);
 		if (index == null) {
-			index = resultList.size();
-			resultList.add(new ScanningResult(address, fetcherRegistry.getSelectedFetchers().size()));
-			resultIndexes.put(address, index);
+			return new ScanningResult(address, fetcherRegistry.getSelectedFetchers().size());
 		}
-		return index;
+		return resultList.get(index);
+	}
+
+	/**
+	 * Registers the provided results holder at the specified index in this list.
+	 * This index will later be used to retrieve the result when redrawing items.
+	 * TODO: index parameter is not really needed here - add method with index will not work with sparce lists anyway
+	 * @param index
+	 * @param result
+	 */
+	public void registerAtIndex(int index, ScanningResult result) {
+		if (resultIndexes.put(result.getAddress(), index) != null)
+			throw new IllegalStateException(result.getAddress() + " is already registered in the list");
+		resultList.add(index, result);
+	}
+	
+	/**
+	 * @return true if the provided result holder exists in the list.
+	 */
+	public boolean isRegistered(ScanningResult result) {
+		return resultIndexes.containsKey(result.getAddress());
+	}	
+
+	/**
+	 * @return the index of the result in the list, if it is registered
+	 */
+	public int getIndex(ScanningResult result) {
+		return resultIndexes.get(result.getAddress());
 	}
 
 	/**
 	 * Returns all results for a particular IP address as a String.
 	 * This is used in showing the IP Details dialog box.
-	 * TODO: write tests!
 	 * 
 	 * @param index
-	 * @return
+	 * @return human-friendly text representation of results
 	 */
-	public synchronized String getResultsAsString(int index) {
+	public synchronized String getResultAsString(int index) {
 		// cross-platform newline :-)
 		String newLine = System.getProperty("line.separator");
 		
@@ -120,7 +144,6 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 
 	/**
 	 * Removes the elements by the provided indices
-	 * Note: old indices returned by {@link #add(InetAddress)} are no longer valid
 	 * @param indices a sorted list of indices to remove
 	 */
 	public synchronized void remove(int[] indices) {
@@ -140,7 +163,6 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	
 	/**
 	 * Sorts by the specified column index.
-	 * Note: old indices returned by {@link #add(InetAddress)} are no longer valid
 	 * @param columnIndex
 	 */
 	public synchronized void sort(int columnIndex) {

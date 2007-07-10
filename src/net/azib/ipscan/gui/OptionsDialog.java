@@ -7,6 +7,7 @@ package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.GlobalConfig.DisplayMethod;
 import net.azib.ipscan.core.PortIterator;
 import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.fetchers.FetcherException;
@@ -40,13 +41,14 @@ public class OptionsDialog extends AbstractModalDialog {
 	private PingerRegistry pingerRegistry;
 	private GlobalConfig globalConfig;
 	
+	private Button okButton;
+	private Button cancelButton;
+
 	private TabFolder tabFolder;
 	private Composite scanningTab;
 	private Composite displayTab;
 	private Text threadDelayText;
 	private Text maxThreadsText;
-	private Button okButton;
-	private Button cancelButton;
 	private Button deadHostsCheckbox;
 	private Text pingingTimeoutText;
 	private Text pingingCountText;
@@ -60,6 +62,7 @@ public class OptionsDialog extends AbstractModalDialog {
 	private Text portsText;
 	private Text notAvailableText;
 	private Text notScannedText;
+	private Button[] displayMethod; 
 	
 	public OptionsDialog(PingerRegistry pingerRegistry, GlobalConfig globalConfig) {
 		this.pingerRegistry = pingerRegistry;
@@ -241,17 +244,16 @@ public class OptionsDialog extends AbstractModalDialog {
 		listGroup.setText(Labels.getLabel("options.display.list"));
 		listGroup.setLayout(groupLayout);
 		listGroup.setLayoutData(new RowData(260, SWT.DEFAULT));
-
-		// TODO: make these options work
+		displayMethod = new Button[DisplayMethod.values().length];
 		Button allRadio = new Button(listGroup, SWT.RADIO);
 		allRadio.setText(Labels.getLabel("options.display.list.all"));
-		allRadio.setEnabled(false);
+		displayMethod[DisplayMethod.ALL.ordinal()] = allRadio;
 		Button aliveRadio = new Button(listGroup, SWT.RADIO);
 		aliveRadio.setText(Labels.getLabel("options.display.list.alive"));
-		aliveRadio.setEnabled(false);
+		displayMethod[DisplayMethod.ALIVE.ordinal()] = aliveRadio;
 		Button portsRadio = new Button(listGroup, SWT.RADIO);
 		portsRadio.setText(Labels.getLabel("options.display.list.ports"));
-		portsRadio.setEnabled(false);
+		displayMethod[DisplayMethod.PORTS.ordinal()] = portsRadio;
 		
 		groupLayout = new GridLayout();
 		groupLayout.numColumns = 2;
@@ -362,6 +364,7 @@ public class OptionsDialog extends AbstractModalDialog {
 		portsText.setText(globalConfig.portString);
 		notAvailableText.setText(globalConfig.notAvailableText);
 		notScannedText.setText(globalConfig.notScannedText);
+		displayMethod[globalConfig.displayMethod.ordinal()].setSelection(true);
 	}
 	
 	private void saveOptions() {
@@ -387,6 +390,11 @@ public class OptionsDialog extends AbstractModalDialog {
 		globalConfig.portString = portsText.getText();
 		globalConfig.notAvailableText = notAvailableText.getText();
 		globalConfig.notScannedText = notScannedText.getText();
+		for (int i = 0; i < displayMethod.length; i++) {
+			if (displayMethod[i].getSelection())
+				globalConfig.displayMethod = DisplayMethod.values()[i];
+		}
+		 
 	}
 
 	/**

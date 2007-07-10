@@ -5,8 +5,6 @@
  */
 package net.azib.ipscan.core;
 
-import java.net.InetAddress;
-
 /**
  * This callback is called to consume scanning results.
  *  
@@ -17,16 +15,15 @@ public interface ScanningResultsCallback {
 	/**
 	 * This method is called just before starting to retrieve
 	 * scanning results for the specified address.
-	 * @param address
+	 * @param result empty results holder for a single address
 	 * @return the method should return an int
 	 */
-	public int prepareForResults(InetAddress address);
+	public void prepareForResults(ScanningResult result);
 	
 	/**
 	 * This method is called when scanning results are ready.
-	 * @param preparationNumber the number, which was previously returned by prepareForResults().
-	 * @param results the List of Strings, each String corresponds to a Fetcher
+	 * @param results filled results holder for a single address
 	 */
-	public void consumeResults(int preparationNumber, ScanningResult results);
+	public void consumeResults(ScanningResult results);
 	
 }
