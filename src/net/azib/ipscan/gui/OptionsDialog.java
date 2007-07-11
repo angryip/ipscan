@@ -40,7 +40,6 @@ public class OptionsDialog extends AbstractModalDialog {
 	
 	private PingerRegistry pingerRegistry;
 	private GlobalConfig globalConfig;
-	private StatusBar statusBar;
 	
 	private Button okButton;
 	private Button cancelButton;
@@ -65,10 +64,9 @@ public class OptionsDialog extends AbstractModalDialog {
 	private Text notScannedText;
 	private Button[] displayMethod; 
 	
-	public OptionsDialog(PingerRegistry pingerRegistry, GlobalConfig globalConfig, StatusBar statusBar) {
+	public OptionsDialog(PingerRegistry pingerRegistry, GlobalConfig globalConfig) {
 		this.pingerRegistry = pingerRegistry;
 		this.globalConfig = globalConfig;
-		this.statusBar = statusBar;
 	}
 	
 	public void open() {
@@ -396,8 +394,6 @@ public class OptionsDialog extends AbstractModalDialog {
 			if (displayMethod[i].getSelection())
 				globalConfig.displayMethod = DisplayMethod.values()[i];
 		}
-		 
-		statusBar.updateConfigText();
 	}
 
 	/**

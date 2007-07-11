@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Listener;
 import net.azib.ipscan.gui.OptionsDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.SelectFetchersDialog;
+import net.azib.ipscan.gui.StatusBar;
 
 /**
  * ToolsActions
@@ -23,18 +24,21 @@ public class ToolsActions {
 		
 		private OptionsDialog optionsDialog;
 		private ResultTable resultTable;
+		private StatusBar statusBar;
 		
-		public Options(OptionsDialog optionsDialog, ResultTable resultTable) {
+		public Options(OptionsDialog optionsDialog, ResultTable resultTable, StatusBar statusBar) {
 			this.optionsDialog = optionsDialog;
 			this.resultTable = resultTable;
+			this.statusBar = statusBar;
 		}
 
 		public void handleEvent(Event event) {
 			// show the options dialog
 			optionsDialog.open();
 			
-			// refresh the results in case anything was changed
+			// refresh the results and status bar in case anything was changed
 			resultTable.updateResults();
+			statusBar.updateConfigText();
 		}
 	}
 
