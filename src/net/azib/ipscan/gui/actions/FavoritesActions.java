@@ -10,6 +10,7 @@ import java.util.Iterator;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.NamedListConfig;
+import net.azib.ipscan.config.Version;
 import net.azib.ipscan.gui.EditFavoritesDialog;
 import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.UserErrorException;
@@ -49,6 +50,7 @@ public class FavoritesActions {
 				}
 				String serializedFeeder = feederRegistry.current().getFeederName() + '\t' + feederRegistry.current().serialize();				
 				favoritesConfig.add(favoriteName, serializedFeeder);
+				event.display.getActiveShell().setText(favoriteName + " - " + Version.NAME);
 			}
 		}
 	}
@@ -70,6 +72,7 @@ public class FavoritesActions {
 			
 			feederRegistry.select(feederName);
 			feederRegistry.current().unserialize(serializedFeeder);
+			event.display.getActiveShell().setText(menuItem.getText() + " - " + Version.NAME);
 		}
 	}
 	

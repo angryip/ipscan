@@ -80,7 +80,6 @@ public class MainWindow {
 		
 		FormLayout formLayout = new FormLayout();
 		shell.setLayout(formLayout);
-		shell.setText(Version.FULL_NAME);
 		
 		// load and set icon
 		Image image = new Image(shell.getDisplay(), Labels.getInstance().getImageAsStream("icon"));
@@ -193,6 +192,9 @@ public class MainWindow {
 			feederAreaLayoutData.height = bounds.height;
 			feederAreaLayoutData.width = bounds.width;
 			shell.layout();
+			
+			// reset main window title
+			shell.setText(feederRegistry.current().getFeederName() + " - " + Version.NAME);
 		}
 	}
 
