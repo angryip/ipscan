@@ -172,7 +172,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				public void prepareForResults(ScanningResult result) {
 				}
 				public void consumeResults(ScanningResult result) {
-					if (result.getType() == ScanningSubject.RESULT_TYPE_ALIVE)
+					if (result.getType() == ScanningSubject.RESULT_TYPE_ALIVE || result.getType() == ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO)
 						resultTable.addOrUpdateResultRow(result);
 				}
 			};
