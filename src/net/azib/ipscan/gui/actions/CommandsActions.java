@@ -96,6 +96,10 @@ public class CommandsActions {
 		}
 	}
 	
+	/**
+	 * Copies currently selected IP to the clipboard.
+	 * Used as both menu item listener and keydown listener.
+	 */
 	public static class CopyIP implements Listener {
 		private ResultTable resultTable;
 		
@@ -104,7 +108,15 @@ public class CommandsActions {
 		}
 
 		public void handleEvent(Event event) {
-			checkSelection(resultTable);
+			if (event.type == SWT.KeyDown) {
+				// if this is not Ctrl+C or nothing is selected, then simply do nothing
+				if ((event.keyCode != 'c' && event.stateMask != SWT.MOD1) || resultTable.getSelectionIndex() < 0)
+					return;
+			}
+			else {
+				// if selected from the menu, check selection
+				checkSelection(resultTable);
+			}
 			Clipboard clipboard = new Clipboard(event.display);
 			clipboard.setContents(new Object[] {resultTable.getItem(resultTable.getSelectionIndex()).getText()}, new Transfer[] {TextTransfer.getInstance()});
 			clipboard.dispose();

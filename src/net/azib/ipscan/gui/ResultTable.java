@@ -65,16 +65,19 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		Listener detailsListener = new Listener() {
 			CommandsActions.Details detailsListener = new CommandsActions.Details(ResultTable.this);
 			public void handleEvent(Event e) {
-				if (e.type == SWT.MouseDoubleClick || e.detail == SWT.TRAVERSE_RETURN) {
-					detailsListener.handleEvent(e);
+				// activate only if something is selected
+				if (getSelectionIndex() >= 0 && (e.type == SWT.MouseDoubleClick || e.detail == SWT.TRAVERSE_RETURN)) {
 					e.doit = false;
+					detailsListener.handleEvent(e);					
 				}
 			}
 		};
 		addListener(SWT.Traverse, detailsListener);
 		addListener(SWT.MouseDoubleClick, detailsListener);
 		addListener(SWT.KeyDown, new CommandsActions.Delete(this));
+		addListener(SWT.KeyDown, new CommandsActions.CopyIP(this));
 		
+		// this one populates table dynamically, taking data from ScanningResultList
 		addListener(SWT.SetData, new SetDataListener());
 	}
 
