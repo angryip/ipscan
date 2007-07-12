@@ -66,8 +66,8 @@ public class Main {
 				// display a nice error message
 				String localizedMessage = getLocalizedMessage(e);
 				Shell parent = display.getActiveShell();
-				MessageBox messageBox = new MessageBox(parent != null ? parent : mainWindow.getShell(), SWT.OK | SWT.ICON_ERROR);
-				messageBox.setText("Error");
+				MessageBox messageBox = new MessageBox(parent != null ? parent : mainWindow.getShell(), SWT.OK | (e instanceof UserErrorException ? SWT.ICON_WARNING : SWT.ICON_ERROR));
+				messageBox.setText(Labels.getLabel(e instanceof UserErrorException ? "text.userError" : "text.error"));
 				messageBox.setMessage(localizedMessage);
 				messageBox.open();
 			}
