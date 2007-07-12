@@ -29,6 +29,7 @@ import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.OptionsDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.SelectFetchersDialog;
+import net.azib.ipscan.gui.StatisticsDialog;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.ColumnsActions;
@@ -160,6 +161,7 @@ public class ComponentRegistry {
 		
 		container.registerComponentImplementation(OptionsDialog.class);
 		container.registerComponentImplementation(SelectFetchersDialog.class);
+		container.registerComponentImplementation(StatisticsDialog.class);
 		
 		// various actions / listeners
 		container.registerComponentImplementation(StartStopScanningAction.class);

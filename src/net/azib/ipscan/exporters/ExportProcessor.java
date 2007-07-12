@@ -31,15 +31,14 @@ public class ExportProcessor {
 	/**
 	 * Called to execute the actual scanning process.
 	 * @param scanningResults the scanning results, which are available
-	 * @param feederInfo info about the Feeder configuration as String
 	 * @param resultSelector optional (can be null) - determines results for saving or skipping
 	 */
-	public void process(ScanningResultList scanningResults, String feederInfo, ScanningResultSelector resultSelector) {
+	public void process(ScanningResultList scanningResults, ScanningResultSelector resultSelector) {
 		FileOutputStream outputStream = null;
 		try {
 			outputStream = new FileOutputStream(fileName);
 			
-			exporter.start(outputStream, feederInfo);
+			exporter.start(outputStream, scanningResults.getFeederInfo());
 	
 			// set fetchers
 			List<Fetcher> fetchers = scanningResults.getFetchers();

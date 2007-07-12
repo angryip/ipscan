@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Listener;
 import net.azib.ipscan.gui.OptionsDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.SelectFetchersDialog;
+import net.azib.ipscan.gui.StatisticsDialog;
 import net.azib.ipscan.gui.StatusBar;
 
 /**
@@ -54,5 +55,19 @@ public class ToolsActions {
 			selectFetchersDialog.open();
 		}
 
+	}
+
+	public static class LastInfo implements Listener {
+		
+		private StatisticsDialog statisticsDialog;
+		
+		public LastInfo(StatisticsDialog statisticsDialog) {
+			this.statisticsDialog = statisticsDialog;
+		}
+
+		public void handleEvent(Event event) {
+			statisticsDialog.open();
+		}
+		
 	}
 }

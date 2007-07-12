@@ -69,6 +69,7 @@ public class OptionsDialog extends AbstractModalDialog {
 		this.globalConfig = globalConfig;
 	}
 	
+	@Override
 	public void open() {
 		openTab(0);
 	}
@@ -246,13 +247,13 @@ public class OptionsDialog extends AbstractModalDialog {
 		listGroup.setLayoutData(new RowData(260, SWT.DEFAULT));
 		displayMethod = new Button[DisplayMethod.values().length];
 		Button allRadio = new Button(listGroup, SWT.RADIO);
-		allRadio.setText(Labels.getLabel("options.display.list." + DisplayMethod.ALL));
+		allRadio.setText(Labels.getLabel("options.display.list" + '.' + DisplayMethod.ALL));
 		displayMethod[DisplayMethod.ALL.ordinal()] = allRadio;
 		Button aliveRadio = new Button(listGroup, SWT.RADIO);
-		aliveRadio.setText(Labels.getLabel("options.display.list." + DisplayMethod.ALIVE));
+		aliveRadio.setText(Labels.getLabel("options.display.list" + '.' + DisplayMethod.ALIVE));
 		displayMethod[DisplayMethod.ALIVE.ordinal()] = aliveRadio;
 		Button portsRadio = new Button(listGroup, SWT.RADIO);
-		portsRadio.setText(Labels.getLabel("options.display.list." +  DisplayMethod.PORTS));
+		portsRadio.setText(Labels.getLabel("options.display.list" + '.' +  DisplayMethod.PORTS));
 		displayMethod[DisplayMethod.PORTS.ordinal()] = portsRadio;
 		
 		groupLayout = new GridLayout();

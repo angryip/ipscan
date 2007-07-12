@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.gui;
 
+import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.gui.util.LayoutHelper;
 
@@ -84,7 +85,7 @@ public abstract class AbstractModalDialog {
 			okButton.setLocation(clientArea.width - size.x - 10, clientArea.height - size.y - 10);
 		}
 	}
-	
+		
 	/**
 	 * Positions 2 buttons at the bottom-right part of the shell in the FormLayout.
 	 * On MacOS also changes ok and cancel button order.
@@ -104,6 +105,33 @@ public abstract class AbstractModalDialog {
 		// both buttons
 		cancelButton.setLayoutData(LayoutHelper.formData(85, SWT.DEFAULT, null, new FormAttachment(control, 0, SWT.RIGHT), new FormAttachment(control, 8), null));
 		okButton.setLayoutData(LayoutHelper.formData(85, SWT.DEFAULT, null, new FormAttachment(cancelButton, -10), new FormAttachment(control, 8), null));
+	}
+	
+	/**
+	 * Adds an optional close button, depending on the platform.
+	 */
+	protected Button createCloseButton() {
+		Button button = new Button(shell, SWT.NONE);
+		button.setText(Labels.getLabel("button.close"));
+		positionButtons(button, null);
+		
+		button.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				shell.close();
+				shell.dispose();
+			}
+		});
+		
+		if (Platform.MAC_OS) {
+			// no button on Mac
+			Point size = shell.getSize();
+			shell.setSize(size.x, size.y - button.getSize().y);
+			button.setVisible(false);
+		}
+		else {
+			button.setFocus();
+		}		
+		return button;
 	}
 
 	// common listeners follow

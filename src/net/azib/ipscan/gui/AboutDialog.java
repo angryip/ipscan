@@ -4,7 +4,6 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.gui.actions.HelpActions;
 
@@ -12,10 +11,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -63,9 +60,7 @@ public class AboutDialog extends AbstractModalDialog {
 		textLabel.addListener(SWT.Selection, new HelpActions.Website());
 		textLabel.pack();
 		
-		Button button = new Button(shell, SWT.NONE);
-		button.setText(Labels.getLabel("button.close"));
-		positionButtons(button, null);
+		Button button = createCloseButton();
 		
 		Text licenseText = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
 		licenseText.setBounds(leftBound, 140, shell.getClientArea().width - leftBound - 10, button.getLocation().y - 150);
@@ -83,24 +78,7 @@ public class AboutDialog extends AbstractModalDialog {
 							"along with this program; if not, write to the Free Software " +
 							"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA " +
 							"02110-1301, USA, or visit http://www.fsf.org/");
-		
-		button.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
-				shell.close();
-				shell.dispose();
-			}
-		});
-		
-		if (Platform.MAC_OS) {
-			// no button on Mac
-			Point size = shell.getSize();
-			shell.setSize(size.x, size.y - button.getSize().y);
-			button.setVisible(false);
-			licenseText.setFocus();
-		}
-		else {
-			button.setFocus();
-		}
+
 	}
 	
 }

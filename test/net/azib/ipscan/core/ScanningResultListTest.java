@@ -9,6 +9,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -20,6 +21,7 @@ import java.util.List;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.values.NotScannedValue;
+import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 
@@ -35,7 +37,7 @@ import org.junit.Test;
 public class ScanningResultListTest {
 
 	private List<Fetcher> fetchers = new ArrayList<Fetcher>(
-			Arrays.asList(new DummyFetcher("fetcher.ip"), new DummyFetcher("fetcher.ping"), new DummyFetcher("fetcher.hostname"), new DummyFetcher("fetcher.ping.ttl")));
+			Arrays.asList(createMockFetcher("fetcher.ip"), createMockFetcher("fetcher.ping"), createMockFetcher("fetcher.hostname"), createMockFetcher("fetcher.ping.ttl")));
 
 	private FetcherRegistry fetcherRegistry;
 	private ScanningResultList scanningResults;
@@ -98,21 +100,44 @@ public class ScanningResultListTest {
 		assertTrue(i.hasNext());
 		assertEquals(InetAddress.getLocalHost(), i.next().getAddress());
 		assertFalse(i.hasNext());
+		assertEquals(1, scanningResults.getResultsCount());
 	}
 	
 	@Test 
 	public void testClear() throws Exception {
-		fetcherRegistry.getSelectedFetchers().clear();
-		fetcherRegistry.getSelectedFetchers().add(new DummyFetcher("hello"));
 		scanningResults.registerAtIndex(0, scanningResults.createResult(InetAddress.getLocalHost()));
+		scanningResults.setScanningFinished(true);
 		scanningResults.clear();
-		
 		assertFalse("Results must be empty", scanningResults.iterator().hasNext());
-		assertEquals("Cached Fetchers must be re-initilized", 1, scanningResults.getFetchers().size());
+		assertFalse(scanningResults.areResultsAvailable());
+		assertFalse(scanningResults.isScanningFinished());
+		assertNull(scanningResults.getFeederInfo());
+		assertNull(scanningResults.getFetchers());
+		assertEquals(0, scanningResults.getResultsCount());
 	}
 	
+	@Test 
+	public void testInitNewScan() throws Exception {
+		fetcherRegistry.getSelectedFetchers().clear();
+		fetcherRegistry.getSelectedFetchers().add(createMockFetcher("hello"));
+		scanningResults.registerAtIndex(0, scanningResults.createResult(InetAddress.getLocalHost()));
+		
+		Feeder feeder = createMockFeeder("I am the best Feeder in the World!");
+		
+		scanningResults.initNewScan(feeder);
+		
+		verify(feeder);
+		assertFalse("Results must be empty", scanningResults.iterator().hasNext());
+		assertEquals("Cached Fetchers must be re-initilized", 1, scanningResults.getFetchers().size());
+		assertEquals("I am the best Feeder in the World!", scanningResults.getFeederInfo());
+		assertTrue(scanningResults.areResultsAvailable());
+		assertFalse(scanningResults.isScanningFinished());
+		assertEquals(0, scanningResults.getResultsCount());
+	}
+
 	@Test
 	public void testCachedFetchers() throws Exception {
+		scanningResults.initNewScan(createMockFeeder("aaa"));
 		fetcherRegistry.getSelectedFetchers().clear();
 		assertEquals("Fetchers should be cached from the last scan", 4, scanningResults.getFetchers().size());
 	}
@@ -123,7 +148,10 @@ public class ScanningResultListTest {
 		scanningResults.registerAtIndex(1, scanningResults.createResult(InetAddress.getByName("127.9.9.2")));
 		scanningResults.registerAtIndex(2, scanningResults.createResult(InetAddress.getByName("127.9.9.3")));
 		scanningResults.registerAtIndex(3, scanningResults.createResult(InetAddress.getByName("127.9.9.4")));
+		
+		assertEquals(4, scanningResults.getResultsCount());
 		scanningResults.remove(new int[] {1, 2});
+		assertEquals(2, scanningResults.getResultsCount());
 		
 		Iterator<ScanningResult> i = scanningResults.iterator();
 		assertTrue(i.hasNext());
@@ -167,6 +195,7 @@ public class ScanningResultListTest {
 	
 	@Test 
 	public void testGetResultAsString() throws Exception {
+		scanningResults.initNewScan(createMockFeeder("abc"));
 		List<Fetcher> fetchers = scanningResults.getFetchers();
 		ScanningResult result = scanningResults.createResult(InetAddress.getByName("172.28.43.55"));
 		scanningResults.registerAtIndex(0, result);
@@ -205,26 +234,17 @@ public class ScanningResultListTest {
 		assertEquals(5, scanningResults.findText("0.0.", 2));
 	}
 	
-	private static class DummyFetcher implements Fetcher {
-		private String label;
-		
-		public DummyFetcher(String label) {
-			this.label = label;
-		}
-
-		public String getLabel() {
-			return label;
-		}
-
-		public Object scan(ScanningSubject subject) {
-			return null;
-		}
-
-		public void cleanup() {
-		}
-
-		public void init() {
-		}		
+	private Fetcher createMockFetcher(String label) {
+		Fetcher fetcher = createMock(Fetcher.class);
+		expect(fetcher.getLabel()).andReturn(label).anyTimes();
+		replay(fetcher);
+		return fetcher;
 	}
 	
+	private Feeder createMockFeeder(String feederInfo) {
+		Feeder feeder = createMock(Feeder.class);
+		expect(feeder.getInfo()).andReturn(feederInfo);
+		replay(feeder);
+		return feeder;
+	}
 }

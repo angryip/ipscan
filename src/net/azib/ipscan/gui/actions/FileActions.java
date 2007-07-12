@@ -91,7 +91,7 @@ public class FileActions {
 					};
 				}
 				
-				exportProcessor.process(resultTable.getScanningResults(), resultTable.getFeederInfo(), scanningResultSelector);
+				exportProcessor.process(resultTable.getScanningResults(), scanningResultSelector);
 				
 				statusBar.setStatusText(null);
 			}

@@ -43,6 +43,7 @@ public class ScannerThread extends Thread {
 		this.feeder = feeder;
 		this.scanner = scanner;
 		this.scanningResultList = scanningResults;
+		this.scanningResultList.initNewScan(feeder);
 		
 		// initialize in the main thread in order to catch exceptions gracefully
 		scanner.init();
@@ -88,7 +89,7 @@ public class ScannerThread extends Thread {
 		
 		// inform that no more addresses left
 		stateMachine.stop();
-
+		
 		// now wait for all threads, which are still running
 		try {
 			// TODO: make a better and safer implementation (synchronization?)
@@ -104,7 +105,8 @@ public class ScannerThread extends Thread {
 		scanner.cleanup();
 		
 		// finally, the scanning is complete
-		stateMachine.complete();
+		scanningResultList.setScanningFinished(true);
+		stateMachine.complete();		
 	}
 				
 	/**

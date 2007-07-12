@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 
@@ -29,8 +30,16 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	private static final int RESULT_LIST_INITIAL_SIZE = 1024;
 	
 	private FetcherRegistry fetcherRegistry;
-	// selected fetchers are cached here, because the may be changed in the registry already
+	// selected fetchers are cached here, because they may be changed in the registry already
 	private List<Fetcher> selectedFetchers;
+	
+	/** Feeder information that was used for this scan */
+	private String feederInfo;
+	/** true if scanning was finsihed (not aborted) */
+	private boolean isScanningFinsished;
+
+	private long scanStartTime;
+	private long scanEndTime;
 
 	private List<ScanningResult> resultList = new ArrayList<ScanningResult>(RESULT_LIST_INITIAL_SIZE);
 	private Map<InetAddress, Integer> resultIndexes = new HashMap<InetAddress, Integer>(RESULT_LIST_INITIAL_SIZE);
@@ -39,7 +48,6 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 
 	public ScanningResultList(FetcherRegistry fetcherRegistry) {
 		this.fetcherRegistry = fetcherRegistry;
-		clear();
 	}
 
 	/**
@@ -51,11 +59,46 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	}
 	
 	/**
+	 * @return feeder information that was used for the last scan
+	 */
+	public String getFeederInfo() {
+		return feederInfo;
+	}
+	
+	/**
+	 * @return true if scanning results are available and can be used
+	 */
+	public boolean areResultsAvailable() {
+		return feederInfo != null;
+	}
+
+	/**
+	 * @return true is scanning has been finished (not aborted)
+	 */
+	public boolean isScanningFinished() {
+		return isScanningFinsished;
+	}
+	
+	public void setScanningFinished(boolean finished) {
+		this.isScanningFinsished = finished;
+		if (finished) {
+			this.scanEndTime = System.currentTimeMillis();
+		}
+	}
+	
+	/**
+	 * @return total scan time, in milliseconds
+	 */
+	public long getScanTime() {
+		return scanEndTime - scanStartTime;
+	}
+
+	/**
 	 * Creates the new results holder for particular address or returns an existing one.
 	 * @param address
 	 * @return pre-initialized empty ScanningResult
 	 */
-	public ScanningResult createResult(InetAddress address) {
+	public synchronized ScanningResult createResult(InetAddress address) {
 		Integer index = resultIndexes.get(address);
 		if (index == null) {
 			return new ScanningResult(address, fetcherRegistry.getSelectedFetchers().size());
@@ -70,7 +113,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	 * @param index
 	 * @param result
 	 */
-	public void registerAtIndex(int index, ScanningResult result) {
+	public synchronized void registerAtIndex(int index, ScanningResult result) {
 		if (resultIndexes.put(result.getAddress(), index) != null)
 			throw new IllegalStateException(result.getAddress() + " is already registered in the list");
 		resultList.add(index, result);
@@ -79,14 +122,14 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	/**
 	 * @return true if the provided result holder exists in the list.
 	 */
-	public boolean isRegistered(ScanningResult result) {
+	public synchronized boolean isRegistered(ScanningResult result) {
 		return resultIndexes.containsKey(result.getAddress());
 	}	
 
 	/**
 	 * @return the index of the result in the list, if it is registered
 	 */
-	public int getIndex(ScanningResult result) {
+	public synchronized int getIndex(ScanningResult result) {
 		return resultIndexes.get(result.getAddress());
 	}
 
@@ -121,8 +164,31 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		// clear the results
 		resultList.clear();
 		resultIndexes.clear();
+		selectedFetchers = null;
+		feederInfo = null;
+		isScanningFinsished = false;
+	}
+
+	/**
+	 * Clears previous scanning results, prepares for a new scan.
+	 * @param feeder the feeder that will be used for the scan
+	 */
+	public synchronized void initNewScan(Feeder feeder) {
+		// first clear
+		clear();
 		// reload currently selected fetchers
 		selectedFetchers = new ArrayList<Fetcher>(fetcherRegistry.getSelectedFetchers());
+		// store feeder info for later
+		this.feederInfo = feeder.getInfo();
+		
+		this.scanStartTime = System.currentTimeMillis();
+	}
+	
+	/**
+	 * @return number of results stored in the list so far
+	 */
+	public int getResultsCount() {
+		return resultList.size();
 	}
 	
 	/**
@@ -207,5 +273,4 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 			return val1.toString().compareTo(val2.toString());
 		}
 	}
-
 }

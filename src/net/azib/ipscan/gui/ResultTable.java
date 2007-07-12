@@ -38,8 +38,6 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 	
 	private Image[] listImages = new Image[4];
 
-	private String feederInfo;
-
 	private Listener columnClickListener;
 
 	private Listener columnResizeListener;
@@ -169,6 +167,10 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		super.removeAll();
 	}
 	
+	/**
+	 * Resets selected items as if they were just added to the table.
+	 * This is used for removing of any scanned data for rescanning of items.
+	 */
 	public void resetSelection() {
 		int columnCount = getColumnCount();
 		for (TableItem item : getSelection()) {
@@ -184,9 +186,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 	 * (clears all elments, etc)
 	 * @param newFeederInfo feeder info of the new feeder/settings
 	 */
-	public void initNewScan(String newFeederInfo) {
-		// initialize new feeder info
-		this.feederInfo = newFeederInfo; 
+	public void initNewScan() {
 		// remove all items from the table
 		removeAll();
 	}
@@ -196,13 +196,6 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 	 */
 	public ScanningResultList getScanningResults() {
 		return scanningResults;
-	}
-
-	/**
-	 * @return the feeder info, which used in this scan
-	 */
-	public String getFeederInfo() {
-		return feederInfo;
 	}
 
 	/**
