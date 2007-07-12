@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.NoRouteToHostException;
 import java.net.PortUnreachableException;
 import java.net.SocketTimeoutException;
 import java.util.logging.Level;
@@ -50,12 +51,15 @@ public class UDPPinger implements Pinger {
 			}
 			catch (SocketTimeoutException e) {
 			}
+			catch (NoRouteToHostException e) {
+				// TODO: this means that the host is down
+			}
 			catch (IOException e) {
-				LOG.log(Level.FINER, null, e);
+				LOG.log(Level.FINER, address.toString(), e);
 			}
 		}
 		
-		socket.disconnect();
+		socket.close();
 		
 		return result;
 	}

@@ -53,8 +53,7 @@ public class TCPPinger implements Pinger {
 			// TODO: this means that the host is down
 		}
 		catch (IOException e) {
-			LOG.setLevel(Level.ALL);
-			LOG.log(Level.FINER, null, e);
+			LOG.log(Level.FINER, address.toString(), e);
 		}
 
 		try {
