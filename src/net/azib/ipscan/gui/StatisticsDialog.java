@@ -12,6 +12,7 @@ import java.util.List;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResultList;
+import net.azib.ipscan.core.ScanningResultList.ScanInfo;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.PortsFetcher;
 
@@ -73,22 +74,26 @@ public class StatisticsDialog extends AbstractModalDialog {
 		FontData sysFontData = currentDisplay.getSystemFont().getFontData()[0];
 		titleLabel.setLocation(leftBound, 10);
 		titleLabel.setFont(new Font(null, sysFontData.getName(), sysFontData.getHeight()+3, sysFontData.getStyle() | SWT.BOLD));
-		titleLabel.setText(Labels.getLabel(scanningResults.isScanningFinished() ? "text.scan.finished" : "text.scan.incomplete"));
+		titleLabel.setText(Labels.getLabel(scanningResults.getScanInfo().isFinished() ? "text.scan.finished" : "text.scan.incomplete"));
 		titleLabel.pack();
 		
 		Button button = createCloseButton();
 		
+		ScanInfo scanInfo = scanningResults.getScanInfo();
+		
 		String ln = System.getProperty("line.separator");
 		StringBuilder text = new StringBuilder();
-		text.append(Labels.getLabel("text.scan.time.total")).append(timeToText(scanningResults.getScanTime())).append(ln);
-		text.append(Labels.getLabel("text.scan.time.average")).append(timeToText((double)scanningResults.getScanTime()/scanningResults.getResultsCount())).append(Labels.getLabel("text.scan.perHost")).append(ln);
+		text.append(Labels.getLabel("text.scan.time.total"))
+			.append(timeToText(scanInfo.getScanTime())).append(ln);
+		text.append(Labels.getLabel("text.scan.time.average"))
+			.append(timeToText((double)scanInfo.getScanTime() / scanInfo.getHostCount())).append(ln);
 		
 		text.append(ln).append(scanningResults.getFeederInfo()).append(ln).append(ln);
 		
-		text.append(Labels.getLabel("text.scan.hosts.total")).append(scanningResults.getResultsCount()).append(ln);
-		text.append(Labels.getLabel("text.scan.hosts.alive")).append("xxx").append(ln);
+		text.append(Labels.getLabel("text.scan.hosts.total")).append(scanInfo.getHostCount()).append(ln);
+		text.append(Labels.getLabel("text.scan.hosts.alive")).append(scanInfo.getAliveCount()).append(ln);
 		if (isPortsFetcherPresent(scanningResults.getFetchers())) {
-			text.append(Labels.getLabel("text.scan.hosts.ports")).append("xxx").append(ln);
+			text.append(Labels.getLabel("text.scan.hosts.ports")).append(scanInfo.getWithPortsCount()).append(ln);
 		}
 		
 		Text statsText = new Text(shell, SWT.MULTI | SWT.READ_ONLY);

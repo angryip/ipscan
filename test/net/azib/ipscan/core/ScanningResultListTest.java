@@ -9,6 +9,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -19,7 +20,11 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.ScanningResultList.ScanInfo;
+import net.azib.ipscan.core.state.ScanningState;
+import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.values.NotScannedValue;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
@@ -50,11 +55,25 @@ public class ScanningResultListTest {
 		replay(fetcherRegistry);
 		
 		scanningResults =  new ScanningResultList(fetcherRegistry);
+		scanningResults.initNewScan(createMockFeeder("someFeeder"));
 	}
 	
 	@After
 	public void tearDown() {
 		verify(fetcherRegistry);
+	}
+	
+	@Test
+	public void testConstructor() throws Exception {
+		StateMachine stateMachine = new StateMachine();
+		scanningResults = new ScanningResultList(fetcherRegistry, stateMachine);
+		scanningResults.initNewScan(createMockFeeder("inff"));
+		assertFalse(scanningResults.getScanInfo().isFinished());
+		stateMachine.transitionToNext();
+		stateMachine.startScanning();
+		stateMachine.stop();
+		stateMachine.complete();
+		assertTrue(scanningResults.getScanInfo().isFinished());
 	}
 	
 	@Test
@@ -70,20 +89,33 @@ public class ScanningResultListTest {
 		assertFalse(scanningResults.isRegistered(result));
 		
 		assertFalse(scanningResults.iterator().hasNext());
+		
+		assertEquals(2, scanningResults.getScanInfo().getHostCount());
+		assertEquals(0, scanningResults.getScanInfo().getAliveCount());
+		assertEquals(0, scanningResults.getScanInfo().getWithPortsCount());
 	}
 	
 	@Test
 	public void testRegisterResult() throws Exception {
-		scanningResults.registerAtIndex(0, scanningResults.createResult(InetAddress.getByName("10.0.0.0")));
-		scanningResults.registerAtIndex(1, scanningResults.createResult(InetAddress.getByName("10.0.0.1")));
+		ScanningResult result = scanningResults.createResult(InetAddress.getByName("10.0.0.0"));
+		result.setType(ScanningSubject.RESULT_TYPE_DEAD);
+		scanningResults.registerAtIndex(0, result);
+		result = scanningResults.createResult(InetAddress.getByName("10.0.0.1"));
+		result.setType(ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO);
+		scanningResults.registerAtIndex(1, result);
 
-		ScanningResult result = scanningResults.createResult(InetAddress.getByName("10.0.0.5"));		
+		result = scanningResults.createResult(InetAddress.getByName("10.0.0.5"));
+		result.setType(ScanningSubject.RESULT_TYPE_ALIVE);
 		scanningResults.registerAtIndex(2, result);
 		
 		assertTrue(scanningResults.isRegistered(result));
 		assertEquals(2, scanningResults.getIndex(result));
 		assertSame(result, scanningResults.getResult(2));
 		assertSame(result, scanningResults.createResult(InetAddress.getByName("10.0.0.5")));
+		
+		assertEquals(3, scanningResults.getScanInfo().getHostCount());
+		assertEquals(2, scanningResults.getScanInfo().getAliveCount());
+		assertEquals(1, scanningResults.getScanInfo().getWithPortsCount());
 	}
 	
 	@Test(expected=IllegalStateException.class)
@@ -100,39 +132,39 @@ public class ScanningResultListTest {
 		assertTrue(i.hasNext());
 		assertEquals(InetAddress.getLocalHost(), i.next().getAddress());
 		assertFalse(i.hasNext());
-		assertEquals(1, scanningResults.getResultsCount());
+		assertEquals(1, scanningResults.getScanInfo().getHostCount());
 	}
 	
 	@Test 
 	public void testClear() throws Exception {
 		scanningResults.registerAtIndex(0, scanningResults.createResult(InetAddress.getLocalHost()));
-		scanningResults.setScanningFinished(true);
 		scanningResults.clear();
 		assertFalse("Results must be empty", scanningResults.iterator().hasNext());
 		assertFalse(scanningResults.areResultsAvailable());
-		assertFalse(scanningResults.isScanningFinished());
-		assertNull(scanningResults.getFeederInfo());
+		assertFalse(scanningResults.getScanInfo().isFinished());
 		assertNull(scanningResults.getFetchers());
-		assertEquals(0, scanningResults.getResultsCount());
 	}
 	
 	@Test 
 	public void testInitNewScan() throws Exception {
 		fetcherRegistry.getSelectedFetchers().clear();
 		fetcherRegistry.getSelectedFetchers().add(createMockFetcher("hello"));
+
 		scanningResults.registerAtIndex(0, scanningResults.createResult(InetAddress.getLocalHost()));
 		
 		Feeder feeder = createMockFeeder("I am the best Feeder in the World!");
-		
 		scanningResults.initNewScan(feeder);
 		
 		verify(feeder);
 		assertFalse("Results must be empty", scanningResults.iterator().hasNext());
 		assertEquals("Cached Fetchers must be re-initilized", 1, scanningResults.getFetchers().size());
 		assertEquals("I am the best Feeder in the World!", scanningResults.getFeederInfo());
-		assertTrue(scanningResults.areResultsAvailable());
-		assertFalse(scanningResults.isScanningFinished());
-		assertEquals(0, scanningResults.getResultsCount());
+		assertNotNull(scanningResults.getScanInfo());
+		assertFalse("No results are available yet", scanningResults.areResultsAvailable());
+		assertFalse("Scanning is not yet finished", scanningResults.getScanInfo().isFinished());
+		assertEquals(0, scanningResults.getScanInfo().getHostCount());
+		assertEquals(0, scanningResults.getScanInfo().getAliveCount());
+		assertEquals(0, scanningResults.getScanInfo().getWithPortsCount());
 	}
 
 	@Test
@@ -149,9 +181,7 @@ public class ScanningResultListTest {
 		scanningResults.registerAtIndex(2, scanningResults.createResult(InetAddress.getByName("127.9.9.3")));
 		scanningResults.registerAtIndex(3, scanningResults.createResult(InetAddress.getByName("127.9.9.4")));
 		
-		assertEquals(4, scanningResults.getResultsCount());
 		scanningResults.remove(new int[] {1, 2});
-		assertEquals(2, scanningResults.getResultsCount());
 		
 		Iterator<ScanningResult> i = scanningResults.iterator();
 		assertTrue(i.hasNext());
@@ -214,6 +244,8 @@ public class ScanningResultListTest {
 	
 	@Test
 	public void testFindText() throws Exception {
+		Config.initialize();
+		
 		scanningResults.registerAtIndex(0, scanningResults.createResult(InetAddress.getByName("127.9.9.1")));
 		scanningResults.getResult(0).setValue(1, NotScannedValue.INSTANCE);
 		scanningResults.registerAtIndex(1, scanningResults.createResult(InetAddress.getByName("127.9.9.2")));
@@ -232,6 +264,24 @@ public class ScanningResultListTest {
 		assertEquals(-1, scanningResults.findText("345", 2));
 		assertEquals(3, scanningResults.findText("m", 2));
 		assertEquals(5, scanningResults.findText("0.0.", 2));
+	}
+	
+	@Test
+	public void testScanTime() throws Exception {
+		ScanInfo scanInfo = scanningResults.getScanInfo();
+
+		assertFalse(scanInfo.isFinished());
+		long scanTime1 = scanInfo.getScanTime();
+		assertTrue("Scanning has just begun", scanTime1 >= 0 && scanTime1 <= 10);
+		
+		Thread.sleep(10);
+		scanningResults.new StopScanningListener().transitionTo(ScanningState.IDLE);
+		assertTrue(scanInfo.isFinished());
+		long scanTime2 = scanInfo.getScanTime();
+		assertTrue("Scanning has just finished", scanTime2 >= 10 && scanTime1 <= 20);
+		assertTrue(scanTime1 != scanTime2);
+		Thread.sleep(10);
+		assertEquals(scanTime2, scanInfo.getScanTime());
 	}
 	
 	private Fetcher createMockFetcher(String label) {

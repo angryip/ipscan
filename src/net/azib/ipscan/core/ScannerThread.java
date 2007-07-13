@@ -105,7 +105,6 @@ public class ScannerThread extends Thread {
 		scanner.cleanup();
 		
 		// finally, the scanning is complete
-		scanningResultList.setScanningFinished(true);
 		stateMachine.complete();		
 	}
 				

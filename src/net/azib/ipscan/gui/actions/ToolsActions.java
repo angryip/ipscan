@@ -57,11 +57,11 @@ public class ToolsActions {
 
 	}
 
-	public static class LastInfo implements Listener {
+	public static class ScanInfo implements Listener {
 		
 		private StatisticsDialog statisticsDialog;
 		
-		public LastInfo(StatisticsDialog statisticsDialog) {
+		public ScanInfo(StatisticsDialog statisticsDialog) {
 			this.statisticsDialog = statisticsDialog;
 		}
 

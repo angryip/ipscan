@@ -90,7 +90,7 @@ public class MainMenu {
 		initMenuItem(subMenu, "menu.tools.fetchers", "Ctrl+Shift+O", new Integer(SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.SelectFetchers.class));
 		initMenuItem(subMenu, null, null, null, null);
 		initMenuItem(subMenu, "menu.tools.delete", null, null, null);
-		initMenuItem(subMenu, "menu.tools.lastInfo", "Ctrl+I", new Integer(SWT.MOD1 | 'I'), initListener(ToolsActions.LastInfo.class));
+		initMenuItem(subMenu, "menu.tools.scanInfo", "Ctrl+I", new Integer(SWT.MOD1 | 'I'), initListener(ToolsActions.ScanInfo.class));
 		
 		subMenu = initMenu(menu, "menu.help");
 		initMenuItem(subMenu, "menu.help.gettingStarted", !Platform.MAC_OS ? "F1" : null, new Integer(Platform.MAC_OS ? SWT.HELP : SWT.F1), initListener(HelpActions.GettingStarted.class));
