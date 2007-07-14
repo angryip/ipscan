@@ -18,6 +18,8 @@ import net.azib.ipscan.feeders.RandomFeeder;
 import net.azib.ipscan.gui.actions.FeederActions;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -146,6 +148,15 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		formData.top = new FormAttachment(ipUpButton, 0, SWT.CENTER);
 		formData.right = new FormAttachment(ipMaskCombo, 0, SWT.RIGHT);
 		countSpinner.setLayoutData(formData);
+		countSpinner.addTraverseListener(new TraverseListener() {
+			public void keyTraversed(TraverseEvent e) {
+				// this due to a bug either in SWT or GTK:
+				// spinner getText() returns the new value only if
+				// it has lost the focus first
+				ipPrototypeText.forceFocus();
+				countSpinner.forceFocus();
+			}
+		});
 		
 		// do this stuff asynchronously (to show GUI faster)
 		getDisplay().asyncExec(new Runnable() {

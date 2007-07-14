@@ -103,7 +103,7 @@ public class RandomFeeder implements Feeder {
 	 */
 	public String getInfo() {
 		try {
-			return InetAddress.getByAddress(prototypeBytes).getHostAddress() + " / " + InetAddress.getByAddress(maskBytes).getHostAddress() + ": " + addressCount;
+			return addressCount + ": " + InetAddress.getByAddress(prototypeBytes).getHostAddress() + " / " + InetAddress.getByAddress(maskBytes).getHostAddress();
 		}
 		catch (UnknownHostException e) {
 			assert false : e;

@@ -137,8 +137,8 @@ public class RandomFeederTest {
 	public void testGetInfo() {
 		RandomFeeder randomFeeder = new RandomFeeder();
 		randomFeeder.initialize("100.11.12.13", "100.11.12.15", 3);
-		assertEquals("100.11.12.13 / 100.11.12.15: 3", randomFeeder.getInfo());
+		assertEquals("3: 100.11.12.13 / 100.11.12.15", randomFeeder.getInfo());
 		randomFeeder.initialize("0.0.0.0", "255.255.255.255", 129876);
-		assertEquals("0.0.0.0 / 255.255.255.255: 129876", randomFeeder.getInfo());
+		assertEquals("129876: 0.0.0.0 / 255.255.255.255", randomFeeder.getInfo());
 	}
 }
