@@ -159,6 +159,7 @@ public class ScanningResultListTest {
 		assertFalse("Results must be empty", scanningResults.iterator().hasNext());
 		assertEquals("Cached Fetchers must be re-initilized", 1, scanningResults.getFetchers().size());
 		assertEquals("I am the best Feeder in the World!", scanningResults.getFeederInfo());
+		assertEquals(Labels.getLabel("feeder.range"), scanningResults.getFeederName());
 		assertNotNull(scanningResults.getScanInfo());
 		assertFalse("No results are available yet", scanningResults.areResultsAvailable());
 		assertFalse("Scanning is not yet finished", scanningResults.getScanInfo().isFinished());
@@ -294,6 +295,7 @@ public class ScanningResultListTest {
 	private Feeder createMockFeeder(String feederInfo) {
 		Feeder feeder = createMock(Feeder.class);
 		expect(feeder.getInfo()).andReturn(feederInfo);
+		expect(feeder.getLabel()).andReturn("feeder.range");
 		replay(feeder);
 		return feeder;
 	}

@@ -86,7 +86,8 @@ public class StatisticsDialog extends AbstractModalDialog {
 		text.append(Labels.getLabel("text.scan.time.average"))
 			.append(timeToText((double)scanInfo.getScanTime() / scanInfo.getHostCount())).append(ln);
 		
-		text.append(ln).append(scanningResults.getFeederInfo()).append(ln).append(ln);
+		text.append(ln).append(scanningResults.getFeederName()).append(ln)
+			.append(scanningResults.getFeederInfo()).append(ln).append(ln);
 		
 		text.append(Labels.getLabel("text.scan.hosts.total")).append(scanInfo.getHostCount()).append(ln);
 		text.append(Labels.getLabel("text.scan.hosts.alive")).append(scanInfo.getAliveCount()).append(ln);

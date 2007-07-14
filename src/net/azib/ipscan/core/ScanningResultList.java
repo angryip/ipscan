@@ -41,6 +41,8 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		
 	/** Feeder information that was used for this scan */
 	private String feederInfo;
+	/** Feeder name that was used for this scan */
+	private String feederName;
 
 	private ScanInfo info;
 	
@@ -71,12 +73,19 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	}
 	
 	/**
-	 * @return feeder information that was used for the last scan
+	 * @return feeder configuration information that was used for the last scan
 	 */
 	public String getFeederInfo() {
 		return feederInfo;
 	}
 	
+	/**
+	 * @return feeder name that was used for the last scan
+	 */
+	public String getFeederName() {
+		return feederName;
+	}
+
 	/**
 	 * Creates the new results holder for particular address or returns an existing one.
 	 * @param address
@@ -173,6 +182,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		selectedFetchers = new ArrayList<Fetcher>(fetcherRegistry.getSelectedFetchers());		
 		// store feeder info for later
 		this.feederInfo = feeder.getInfo();
+		this.feederName = Labels.getLabel(feeder.getLabel());
 		// recreate info
 		this.info = new ScanInfo();
 	}
