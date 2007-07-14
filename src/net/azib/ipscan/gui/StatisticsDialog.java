@@ -55,7 +55,7 @@ public class StatisticsDialog extends AbstractModalDialog {
 	 */
 	private void createShell() {
 		Display currentDisplay = Display.getCurrent();
-		Shell parent = currentDisplay.getActiveShell();
+		Shell parent = currentDisplay.getShells()[0];
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(Labels.getLabel("title.statistics"));
@@ -63,10 +63,8 @@ public class StatisticsDialog extends AbstractModalDialog {
 		
 		Label iconLabel = new Label(shell, SWT.ICON);
 		iconLabel.setLocation(10, 10);
-		if (parent != null) {
-			iconLabel.setImage(parent.getImage());
-			shell.setImage(parent.getImage());
-		}		
+		iconLabel.setImage(parent.getImage());
+		shell.setImage(parent.getImage());
 		iconLabel.pack();
 		int leftBound = iconLabel.getBounds().width + 25;
 		

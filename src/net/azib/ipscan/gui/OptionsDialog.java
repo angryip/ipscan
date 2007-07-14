@@ -62,7 +62,8 @@ public class OptionsDialog extends AbstractModalDialog {
 	private Text portsText;
 	private Text notAvailableText;
 	private Text notScannedText;
-	private Button[] displayMethod; 
+	private Button[] displayMethod;
+	private Button showStatisticsCheckbox;
 	
 	public OptionsDialog(PingerRegistry pingerRegistry, GlobalConfig globalConfig) {
 		this.pingerRegistry = pingerRegistry;
@@ -274,6 +275,16 @@ public class OptionsDialog extends AbstractModalDialog {
 		label.setText(Labels.getLabel("options.display.labels.notScanned"));
 		notScannedText = new Text(labelsGroup, SWT.BORDER);
 		notScannedText.setLayoutData(gridData);
+
+		Group showStatsGroup = new Group(displayTab, SWT.NONE);
+		showStatsGroup.setLayout(groupLayout);
+		showStatsGroup.setText(Labels.getLabel("options.display.stats"));
+		
+		showStatisticsCheckbox = new Button(showStatsGroup, SWT.CHECK);
+		showStatisticsCheckbox.setText(Labels.getLabel("options.display.stats.show"));
+		GridData gridDataWithSpan2 = new GridData();
+		gridDataWithSpan2.horizontalSpan = 2;
+		showStatisticsCheckbox.setLayoutData(gridDataWithSpan2);
 	}
 	
 	/**
@@ -366,6 +377,7 @@ public class OptionsDialog extends AbstractModalDialog {
 		notAvailableText.setText(globalConfig.notAvailableText);
 		notScannedText.setText(globalConfig.notScannedText);
 		displayMethod[globalConfig.displayMethod.ordinal()].setSelection(true);
+		showStatisticsCheckbox.setSelection(globalConfig.showScanStats);
 	}
 	
 	private void saveOptions() {
@@ -395,6 +407,7 @@ public class OptionsDialog extends AbstractModalDialog {
 			if (displayMethod[i].getSelection())
 				globalConfig.displayMethod = DisplayMethod.values()[i];
 		}
+		globalConfig.showScanStats = showStatisticsCheckbox.getSelection();
 	}
 
 	/**
