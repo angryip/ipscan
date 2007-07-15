@@ -64,7 +64,6 @@ public class PortsFetcher implements Fetcher {
 			// now try to adapt timeout if it is enabled and pinging results are availbale
 			PingResult pingResult = (PingResult) subject.getParameter(PingFetcher.PARAMETER_PINGER);
 			if (config.adaptPortTimeout && pingResult.getReplyCount() > 2) {
-				// TODO: use longest time istead of the average one for adapting
 				adaptedTimeout = Math.min(Math.max(pingResult.getLongestTime() * 4, 50), config.portTimeout);
 			}
 			
@@ -75,8 +74,17 @@ public class PortsFetcher implements Fetcher {
 				// TODO: reuse sockets?
 				socket = new Socket();
 				int port = i.next();
-				try {				
+				try {			
+					// set some optimization options
+					socket.setReuseAddress(true);
+					socket.setReceiveBufferSize(32);
+					// now connect
 					socket.connect(new InetSocketAddress(subject.getIPAddress(), port), adaptedTimeout);
+					// some more options
+					socket.setSoLinger(true, 0);
+					socket.setSendBufferSize(16);
+					socket.setTcpNoDelay(true);
+					
 					if (socket.isConnected()) {
 						openPorts.add(port);
 					}
