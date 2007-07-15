@@ -41,7 +41,7 @@ public class DetailsDialog extends AbstractModalDialog {
 		fillLayout.marginWidth = 3;
 		shell.setLayout(fillLayout);
 		
-		Text detailsText = new Text(shell, SWT.BORDER | SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL);
+		Text detailsText = new Text(shell, SWT.BORDER | SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
 		detailsText.setText(resultTable.getIPDetails());
 		detailsText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		detailsText.setTabs(32);
