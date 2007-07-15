@@ -9,6 +9,7 @@ package net.azib.ipscan.fetchers;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -75,7 +76,11 @@ public class PortTextFetcher implements Fetcher {
 				}
 			}
 		}
+		catch (ConnectException e) {
+			// no connection
+		}
 		catch (SocketTimeoutException e) {
+			// no information
 		}
 		catch (IOException e) {
 			LOG.log(Level.FINE, subject.getIPAddress().toString(), e);
