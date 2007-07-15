@@ -27,7 +27,7 @@ import net.azib.ipscan.core.ScanningSubject;
  *
  * @author Anton Keks
  */
-public class PortTextFetcher implements Fetcher {
+public abstract class PortTextFetcher implements Fetcher {
 	private static final Logger LOG = LoggerFactory.getLogger();
 	
 	private GlobalConfig globalConfig;
@@ -44,10 +44,6 @@ public class PortTextFetcher implements Fetcher {
 	}
 
 	public void cleanup() {
-	}
-
-	public String getLabel() {
-		return "fetcher.webDetect";
 	}
 
 	public void init() {

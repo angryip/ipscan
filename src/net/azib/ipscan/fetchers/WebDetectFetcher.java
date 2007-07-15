@@ -19,4 +19,8 @@ public class WebDetectFetcher extends PortTextFetcher {
 		super(globalConfig, 80, "HEAD /robots.txt HTTP/1.0\r\n\r\n", "^[Ss]erver:\\s+(.*)$");
 	}
 	
+	public String getLabel() {
+		return "fetcher.webDetect";
+	}
+	
 }
