@@ -43,7 +43,7 @@ public class ScanningSubject {
 		this.parameters = new HashMap<String, Object>();
 	}
 	
-	public InetAddress getIPAddress() {
+	public InetAddress getAddress() {
 		return address;
 	}
 	
@@ -88,14 +88,14 @@ public class ScanningSubject {
 	/**
 	 * @return true if a fetcher has instructed to abort scanning 
 	 */
-	public boolean isScanningAborted() {
+	public boolean isAddressScanningAborted() {
 		return isScanningAborted;
 	}
 
 	/**
 	 * Can be used to inform the scanner to abort scanning
 	 */
-	public void abortScanning() {
+	public void abortAddressScanning() {
 		this.isScanningAborted = true;
 	}
 	

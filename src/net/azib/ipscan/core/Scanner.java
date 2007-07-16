@@ -40,7 +40,7 @@ public class Scanner {
 		// populate results
 		int fetcherIndex = 0;
 		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
-			if (!scanningSubject.isScanningAborted()) {
+			if (!scanningSubject.isAddressScanningAborted()) {
 				Object value = fetcher.scan(scanningSubject);
 				result.setValue(fetcherIndex, value != null ? value : NotAvailableValue.INSTANCE);
 			}

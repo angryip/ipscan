@@ -98,7 +98,7 @@ public class ScannerTest {
 		public Object scan(ScanningSubject subject) {
 			try {
 				// check that the IP is correct
-				assertEquals(InetAddress.getLocalHost(), subject.getIPAddress());
+				assertEquals(InetAddress.getLocalHost(), subject.getAddress());
 				
 				// set the result type to check after scanning
 				subject.setResultType(ScanningSubject.RESULT_TYPE_ALIVE);
@@ -133,7 +133,7 @@ public class ScannerTest {
 	
 	private class AbortingFetcher extends FakeFetcher {
 		public Object scan(ScanningSubject subject) {
-			subject.abortScanning();
+			subject.abortAddressScanning();
 			return "666 ms";
 		}
 	}

@@ -54,13 +54,13 @@ public class PingFetcher implements Fetcher {
 		}
 		else {
 			try {
-				result = pinger.ping(subject.getIPAddress(), config.pingCount);
+				result = pinger.ping(subject.getAddress(), config.pingCount);
 			}
 			catch (IOException e) {
 				// if this is not a timeout
 				LOG.log(Level.WARNING, "Pinging failed", e);
 				// return an empty ping result
-				result = new PingResult(subject.getIPAddress());
+				result = new PingResult(subject.getAddress());
 			}
 			// remember the result for other fetchers to use
 			subject.setParameter(PARAMETER_PINGER, result);
@@ -74,7 +74,7 @@ public class PingFetcher implements Fetcher {
 		
 		if (!result.isAlive() && !config.scanDeadHosts) {
 			// the host is dead, we are not going to continue...
-			subject.abortScanning();
+			subject.abortAddressScanning();
 		}
 		
 		return result.isAlive() ? new IntegerWithUnit(result.getAverageTime(), "fetcher.value.ms") : null;

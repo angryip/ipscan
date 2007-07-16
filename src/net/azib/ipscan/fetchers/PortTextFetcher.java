@@ -54,7 +54,7 @@ public abstract class PortTextFetcher implements Fetcher {
 		try {
 			// TODO: support multiple ports and check them sequentially
 			// TODO: use adapted port timeout if it is configured to do so			
-			socket.connect(new InetSocketAddress(subject.getIPAddress(), port), globalConfig.portTimeout);
+			socket.connect(new InetSocketAddress(subject.getAddress(), port), globalConfig.portTimeout);
 			socket.setTcpNoDelay(true);
 			socket.setSoTimeout(globalConfig.portTimeout);
 			socket.setSoLinger(true, 0);
@@ -80,7 +80,7 @@ public abstract class PortTextFetcher implements Fetcher {
 			// no information
 		}
 		catch (IOException e) {
-			LOG.log(Level.FINE, subject.getIPAddress().toString(), e);
+			LOG.log(Level.FINE, subject.getAddress().toString(), e);
 		}
 		finally {
 			try {

@@ -24,9 +24,9 @@ public class HostnameFetcher implements Fetcher {
 	 * @see net.azib.ipscan.fetchers.Fetcher#scan(net.azib.ipscan.core.ScanningSubject)
 	 */
 	public Object scan(ScanningSubject subject) {
-		String hostname = subject.getIPAddress().getCanonicalHostName();
+		String hostname = subject.getAddress().getCanonicalHostName();
 		// return the returned hostname only if it is not the same as the IP address (this is how the above method works)
-		return subject.getIPAddress().getHostAddress().equals(hostname) ? null : hostname;
+		return subject.getAddress().getHostAddress().equals(hostname) ? null : hostname;
 	}
 
 	public void init() {

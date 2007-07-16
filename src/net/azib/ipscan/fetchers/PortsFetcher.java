@@ -79,7 +79,7 @@ public class PortsFetcher implements Fetcher {
 					socket.setReuseAddress(true);
 					socket.setReceiveBufferSize(32);
 					// now connect
-					socket.connect(new InetSocketAddress(subject.getIPAddress(), port), adaptedTimeout);
+					socket.connect(new InetSocketAddress(subject.getAddress(), port), adaptedTimeout);
 					// some more options
 					socket.setSoLinger(true, 0);
 					socket.setSendBufferSize(16);
