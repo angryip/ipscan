@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.net.PingResult;
 import net.azib.ipscan.core.net.Pinger;
 import net.azib.ipscan.core.net.PingerRegistry;
@@ -70,7 +71,7 @@ public class PingFetcher implements Fetcher {
 
 	public Object scan(ScanningSubject subject) {
 		PingResult result = executePing(subject);
-		subject.setResultType(result.isAlive() ? ScanningSubject.RESULT_TYPE_ALIVE : ScanningSubject.RESULT_TYPE_DEAD);
+		subject.setResultType(result.isAlive() ? ResultType.ALIVE : ResultType.DEAD);
 		
 		if (!result.isAlive() && !config.scanDeadHosts) {
 			// the host is dead, we are not going to continue...

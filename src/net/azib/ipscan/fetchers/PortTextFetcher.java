@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.core.ScanningResult.ResultType;
 
 /**
  * PortTextFetcher - generic configurable fetcher to read some particular information from a port.
@@ -67,7 +68,7 @@ public abstract class PortTextFetcher implements Fetcher {
 				Matcher matcher = matchingRegexp.matcher(line);
 				if (matcher.matches()) {
 					// mark that additional info is available
-					subject.setResultType(ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO);
+					subject.setResultType(ResultType.WITH_PORTS);
 					// return the required contents
 					return matcher.group(1);
 				}

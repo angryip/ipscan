@@ -11,7 +11,7 @@ import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
-import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
@@ -55,10 +55,10 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		handleUpdateOfSelectedFetchers(fetcherRegistry);
 		
 		// pre-load button images
-		listImages[ScanningSubject.RESULT_TYPE_UNKNOWN] = new Image(null, Labels.getInstance().getImageAsStream("list.unknown.img"));
-		listImages[ScanningSubject.RESULT_TYPE_DEAD] = new Image(null, Labels.getInstance().getImageAsStream("list.dead.img"));
-		listImages[ScanningSubject.RESULT_TYPE_ALIVE] = new Image(null, Labels.getInstance().getImageAsStream("list.alive.img"));
-		listImages[ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO] = new Image(null, Labels.getInstance().getImageAsStream("list.addinfo.img"));
+		listImages[ResultType.UNKNOWN.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.unknown.img"));
+		listImages[ResultType.DEAD.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.dead.img"));
+		listImages[ResultType.ALIVE.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.alive.img"));
+		listImages[ResultType.WITH_PORTS.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.addinfo.img"));
 		
 		Listener detailsListener = new Listener() {
 			CommandsActions.Details detailsListener = new CommandsActions.Details(ResultTable.this);
@@ -207,7 +207,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 					resultStrings[i] = value.toString();
 			}			 
 			item.setText(resultStrings);
-			item.setImage(0, listImages[scanningResult.getType()]);
+			item.setImage(0, listImages[scanningResult.getType().ordinal()]);
 		}
 		
 	}

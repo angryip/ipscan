@@ -10,6 +10,8 @@ import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.azib.ipscan.core.ScanningResult.ResultType;
+
 /**
  * Scanning subject represents a single scanned
  * IP address and any additional arbitrary parameters,
@@ -20,18 +22,12 @@ import java.util.Map;
  */
 public class ScanningSubject {
 
-	// constants for result type (they can be modified by some Fetchers)
-	public static final int RESULT_TYPE_UNKNOWN = 0;
-	public static final int RESULT_TYPE_DEAD = 1;
-	public static final int RESULT_TYPE_ALIVE = 2;
-	public static final int RESULT_TYPE_ADDITIONAL_INFO = 3;
-
 	/** The address being scanned */
 	private InetAddress address;
 	/** Arbitrary parameters for sharing among different (but related) Fetchers */
 	private Map<String, Object> parameters;
 	/** The result type constant value, can be modified by some Fetchers */
-	private int resultType = RESULT_TYPE_UNKNOWN;
+	private ResultType resultType = ResultType.UNKNOWN;
 	/** Whether we need to continue scanning or it can be aborted */
 	private boolean isScanningAborted = false;
 	
@@ -73,15 +69,15 @@ public class ScanningSubject {
 	/**
 	 * @return the result type constant value, possibly modified by Fetchers
 	 */
-	public int getResultType() {
+	public ResultType getResultType() {
 		return resultType;
 	}
 
 	/**
 	 * Provides an ability for Fetchers to determine the result type of scanning this particular address
-	 * @param resultType constant value
+	 * @param resultType enum value
 	 */
-	public void setResultType(int resultType) {
+	public void setResultType(ResultType resultType) {
 		this.resultType = resultType;
 	}
 	

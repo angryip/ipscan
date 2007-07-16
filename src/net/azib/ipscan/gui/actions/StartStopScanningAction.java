@@ -14,7 +14,7 @@ import net.azib.ipscan.core.ScannerThreadFactory;
 import net.azib.ipscan.core.ScanningProgressCallback;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultsCallback;
-import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
@@ -172,7 +172,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				public void prepareForResults(ScanningResult result) {
 				}
 				public void consumeResults(ScanningResult result) {
-					if (result.getType() == ScanningSubject.RESULT_TYPE_ALIVE || result.getType() == ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO)
+					if (result.getType().ordinal() >= ResultType.ALIVE.ordinal())
 						resultTable.addOrUpdateResultRow(result);
 				}
 			};
@@ -181,7 +181,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				public void prepareForResults(ScanningResult result) {
 				}
 				public void consumeResults(ScanningResult result) {
-					if (result.getType() == ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO)
+					if (result.getType() == ResultType.WITH_PORTS)
 						resultTable.addOrUpdateResultRow(result);
 				}
 			};

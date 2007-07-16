@@ -16,6 +16,7 @@ import java.util.TreeSet;
 import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.core.PortIterator;
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.net.PingResult;
 import net.azib.ipscan.core.values.NumericListValue;
 
@@ -132,7 +133,7 @@ public class PortsFetcher implements Fetcher {
 		SortedSet<Integer> openPorts = getOpenPorts(subject);
 		boolean portsFound = openPorts.size() > 0;
 		if (portsFound) {
-			subject.setResultType(ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO);
+			subject.setResultType(ResultType.WITH_PORTS);
 		}
 		return portsFound ? new NumericListValue(openPorts, displayAsRanges) : null;
 	}

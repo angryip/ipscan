@@ -15,14 +15,15 @@ import java.util.List;
  * @author anton
  */
 public class ScanningResult {
+	
+	public enum ResultType {UNKNOWN, DEAD, ALIVE, WITH_PORTS}
 
 	/** The scanned IP address */
 	private InetAddress address;
 	/** Scanning results, result of each Fetcher is an element */
 	private Object[] values;
-	/** Scanning result type, see constants in {@link ScanningSubject} 
-	    TODO: use a type-safe enum here */
-	private int type;
+	/** Scanning result type */ 
+	private ResultType type;
 	
 	/**
 	 * Creates a new instance, initializing the first value to the 
@@ -34,7 +35,7 @@ public class ScanningResult {
 		this.address = address;
 		values = new Object[numberOfFetchers];
 		values[0] = address.getHostAddress();
-		type = ScanningSubject.RESULT_TYPE_UNKNOWN;
+		type = ResultType.UNKNOWN;
 	}
 	
 	/**
@@ -44,7 +45,7 @@ public class ScanningResult {
 	public void reset() {
 		values = new Object[values.length];
 		values[0] = address.getHostAddress();
-		type = ScanningSubject.RESULT_TYPE_UNKNOWN;
+		type = ResultType.UNKNOWN;
 	}
 
 	public InetAddress getAddress() {
@@ -55,7 +56,7 @@ public class ScanningResult {
 	 * @return true if the result is ready (completely scanned)
 	 */
 	public boolean isReady() {
-		return type != ScanningSubject.RESULT_TYPE_UNKNOWN;
+		return type != ResultType.UNKNOWN;
 	}
 	
 	/**
@@ -66,16 +67,16 @@ public class ScanningResult {
 	}
 	
 	/**
-	 * Sets scanning result type, see constants in {@link ScanningSubject}
+	 * Sets scanning result type
 	 */	
-	void setType(int type) {
+	void setType(ResultType type) {
 		this.type = type;
 	}
 
 	/**
-	 * @return the scanning result type, see constants in {@link ScanningSubject}
+	 * @return the scanning result type
 	 */
-	public int getType() {
+	public ResultType getType() {
 		return type;
 	}
 

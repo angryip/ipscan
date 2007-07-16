@@ -8,7 +8,7 @@ package net.azib.ipscan.gui.actions;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
-import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
@@ -29,9 +29,9 @@ public class GotoActions {
 	private static class NextHost implements Listener {
 
 		private ResultTable resultTable;
-		private int whatToSearchFor;
+		private ResultType whatToSearchFor;
 		
-		NextHost(ResultTable resultTable, int whatToSearchFor) {
+		NextHost(ResultTable resultTable, ResultType whatToSearchFor) {
 			this.resultTable = resultTable;
 			this.whatToSearchFor = whatToSearchFor;
 		}
@@ -45,7 +45,7 @@ public class GotoActions {
 			for (int i = startElement; i < numElements; i++) {
 				ScanningResult scanningResult = results.getResult(i);
 				
-				if (scanningResult.getType() >= whatToSearchFor) {
+				if (scanningResult.getType().ordinal() >= whatToSearchFor.ordinal()) {
 					resultTable.setSelection(i);
 					resultTable.setFocus();
 					return;
@@ -63,19 +63,19 @@ public class GotoActions {
 	
 	public static class NextAliveHost extends NextHost {
 		public NextAliveHost(ResultTable resultTable) {
-			super(resultTable, ScanningSubject.RESULT_TYPE_ALIVE);
+			super(resultTable, ResultType.ALIVE);
 		}
 	}
 	
 	public static class NextDeadHost extends NextHost {
 		public NextDeadHost(ResultTable resultTable) {
-			super(resultTable, ScanningSubject.RESULT_TYPE_DEAD);
+			super(resultTable, ResultType.DEAD);
 		}
 	}
 	
 	public static class NextHostWithInfo extends NextHost {
 		public NextHostWithInfo(ResultTable resultTable) {
-			super(resultTable, ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO);
+			super(resultTable, ResultType.WITH_PORTS);
 		}
 	}
 	

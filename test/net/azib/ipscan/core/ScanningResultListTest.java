@@ -22,6 +22,7 @@ import java.util.List;
 
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.ScanningResultList.ScanInfo;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
@@ -84,7 +85,7 @@ public class ScanningResultListTest {
 		assertFalse(scanningResults.isRegistered(result));
 		scanningResults.registerAtIndex(0, result);
 		
-		result.setType(ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO);
+		result.setType(ResultType.WITH_PORTS);
 		assertTrue(result.isReady());
 		assertTrue(scanningResults.isRegistered(result));
 		assertEquals(0, scanningResults.update(result));
@@ -94,7 +95,7 @@ public class ScanningResultListTest {
 		
 		// display method: alive - register only when ready
 		result = scanningResults.createResult(InetAddress.getByName("7.7.7.7"));
-		result.setType(ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO);
+		result.setType(ResultType.WITH_PORTS);
 		assertTrue(result.isReady());
 		assertFalse(scanningResults.isRegistered(result));
 		scanningResults.registerAtIndex(1, result);
@@ -106,13 +107,13 @@ public class ScanningResultListTest {
 		// rescan: result is already registered, thus updated twice
 		scanningResults.info = new ScanInfo();
 		result = scanningResults.createResult(InetAddress.getByName("6.6.6.6"));
-		result.setType(ScanningSubject.RESULT_TYPE_ALIVE);
+		result.setType(ResultType.ALIVE);
 		result.reset();
 		assertFalse(result.isReady());
 		assertTrue(scanningResults.isRegistered(result));
 		assertEquals(0, scanningResults.update(result));
 		
-		result.setType(ScanningSubject.RESULT_TYPE_ALIVE);
+		result.setType(ResultType.ALIVE);
 		assertTrue(result.isReady());
 		assertTrue(scanningResults.isRegistered(result));
 		assertEquals(0, scanningResults.update(result));
@@ -122,10 +123,19 @@ public class ScanningResultListTest {
 	}
 	
 	@Test
+	public void testResultType() throws Exception {
+		// in some places this kind of greater/lower than comparisions are used
+		// so we need to ensure that they are in the correct order
+		assertTrue(ResultType.UNKNOWN.ordinal() < ResultType.DEAD.ordinal());
+		assertTrue(ResultType.DEAD.ordinal() < ResultType.ALIVE.ordinal());
+		assertTrue(ResultType.ALIVE.ordinal() < ResultType.WITH_PORTS.ordinal());
+	}
+	
+	@Test
 	public void testCreateResult() throws Exception {
 		ScanningResult result = scanningResults.createResult(InetAddress.getByName("10.0.0.5"));
 		assertEquals("10.0.0.5", result.getAddress().getHostAddress());
-		assertEquals(ScanningSubject.RESULT_TYPE_UNKNOWN, result.getType());
+		assertEquals(ResultType.UNKNOWN, result.getType());
 		assertEquals(4, result.getValues().size());		
 		assertFalse(scanningResults.isRegistered(result));
 
@@ -143,14 +153,14 @@ public class ScanningResultListTest {
 	@Test
 	public void testRegisterResult() throws Exception {
 		ScanningResult result = scanningResults.createResult(InetAddress.getByName("10.0.0.0"));
-		result.setType(ScanningSubject.RESULT_TYPE_DEAD);
+		result.setType(ResultType.DEAD);
 		scanningResults.registerAtIndex(0, result);
 		result = scanningResults.createResult(InetAddress.getByName("10.0.0.1"));
-		result.setType(ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO);
+		result.setType(ResultType.WITH_PORTS);
 		scanningResults.registerAtIndex(1, result);
 
 		result = scanningResults.createResult(InetAddress.getByName("10.0.0.5"));
-		result.setType(ScanningSubject.RESULT_TYPE_ALIVE);
+		result.setType(ResultType.ALIVE);
 		scanningResults.registerAtIndex(2, result);
 		
 		assertTrue(scanningResults.isRegistered(result));

@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import net.azib.ipscan.config.Config;
+import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.values.NotAvailableValue;
 import net.azib.ipscan.core.values.NotScannedValue;
 import net.azib.ipscan.fetchers.Fetcher;
@@ -63,7 +64,7 @@ public class ScannerTest {
 		ScanningResult scanningResult = new ScanningResult(InetAddress.getLocalHost(), 4);
 		scanner.scan(InetAddress.getLocalHost(), scanningResult);
 		
-		assertEquals(ScanningSubject.RESULT_TYPE_ALIVE, scanningResult.getType());
+		assertEquals(ResultType.ALIVE, scanningResult.getType());
 		assertEquals(InetAddress.getLocalHost(), scanningResult.getAddress());
 		assertEquals(4, scanningResult.getValues().size());
 		assertEquals("blah", scanningResult.getValues().get(0));
@@ -101,7 +102,7 @@ public class ScannerTest {
 				assertEquals(InetAddress.getLocalHost(), subject.getAddress());
 				
 				// set the result type to check after scanning
-				subject.setResultType(ScanningSubject.RESULT_TYPE_ALIVE);
+				subject.setResultType(ResultType.ALIVE);
 				
 				// try to set parameter here and read from another Fetcher
 				subject.setParameter("megaParam", new Long(211082));

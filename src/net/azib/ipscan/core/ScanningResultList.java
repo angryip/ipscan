@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
@@ -266,10 +267,10 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	}
 	
 	private void updateStatistics(ScanningResult result) {
-		if (result.getType() == ScanningSubject.RESULT_TYPE_ALIVE) {
+		if (result.getType() == ResultType.ALIVE) {
 			info.numAlive++;
 		}
-		else if (result.getType() == ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO) {
+		else if (result.getType() == ResultType.WITH_PORTS) {
 			info.numAlive++;
 			info.numWithPorts++;
 		}
