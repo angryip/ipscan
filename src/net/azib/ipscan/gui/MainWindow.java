@@ -12,6 +12,7 @@ import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.feeders.AbstractFeederGUI;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
+import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -111,22 +112,14 @@ public class MainWindow {
 	 * This method initializes resultTable	
 	 */
 	private void initTableAndStatusBar(ResultTable resultTable, CommandsMenu resultsContextMenu, StatusBar statusBar) {
-		FormData formData = new FormData();
-		formData.top = new FormAttachment(feederArea);
-		formData.left = new FormAttachment(0);
-		formData.right = new FormAttachment(100);
-		formData.bottom = new FormAttachment(statusBar.getComposite(), -3);
-		resultTable.setLayoutData(formData);
+		resultTable.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), new FormAttachment(feederArea), new FormAttachment(statusBar.getComposite(), -2)));
 		resultTable.setMenu(resultsContextMenu);
 	}
 
 	private void initFeederArea(Composite feederArea, FeederGUIRegistry feederRegistry) {
 		// feederArea is the placeholder for the visible feeder
 		this.feederArea = feederArea;
-		FormData formData = new FormData();
-		formData.top = new FormAttachment(0);
-		formData.left = new FormAttachment(0);
-		feederArea.setLayoutData(formData);
+		feederArea.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, new FormAttachment(0), null));
 
 		this.feederRegistry = feederRegistry;		
 	}
@@ -135,13 +128,7 @@ public class MainWindow {
 	 * This method initializes main controls of the main window	
 	 */
 	private void initControlsArea(Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction) {
-		
-		FormData formData = new FormData();
-		formData.top = new FormAttachment(0);
-		formData.left = new FormAttachment(feederArea);
-		formData.right = new FormAttachment(100);
-		formData.bottom = new FormAttachment(feederArea, 0, SWT.BOTTOM);
-		controlsArea.setLayoutData(formData);
+		controlsArea.setLayoutData(LayoutHelper.formData(new FormAttachment(feederArea), new FormAttachment(100), new FormAttachment(0), new FormAttachment(feederArea, 0, SWT.BOTTOM)));
 		
 		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
 		rowLayout.marginLeft = 7;
