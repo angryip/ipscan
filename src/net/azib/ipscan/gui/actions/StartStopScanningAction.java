@@ -22,11 +22,13 @@ import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.MessageBox;
 
 /**
  * Start/Stop button action class.
@@ -105,6 +107,15 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	 * Called when scanning button is clicked
 	 */
 	public void widgetSelected(SelectionEvent e) {
+		// ask for confirmation before erasing scanning results
+		if (stateMachine.inState(ScanningState.IDLE) && globalConfig.askScanConfirmation && resultTable.getItemCount() > 0) {
+			MessageBox box = new MessageBox(e.display.getActiveShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+			box.setText(Labels.getLabel("text.scan.new"));
+			box.setMessage(Labels.getLabel("text.scan.confirmation"));
+			if (box.open() != SWT.YES) {
+				return;
+			}
+		}
 		stateMachine.transitionToNext();
 	}
 	

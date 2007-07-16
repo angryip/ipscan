@@ -31,6 +31,7 @@ public final class GlobalConfig {
 	public String notScannedText;
 	public DisplayMethod displayMethod;
 	public boolean showScanStats;
+	public boolean askScanConfirmation;
 
 	public static enum DisplayMethod {ALL, ALIVE, PORTS}
 	
@@ -57,6 +58,7 @@ public final class GlobalConfig {
 		notScannedText = preferences.get("notScannedText", Labels.getLabel("fetcher.value.notScanned"));
 		displayMethod = DisplayMethod.valueOf(preferences.get("displayMethod", DisplayMethod.ALL.toString()));
 		showScanStats = preferences.getBoolean("showScanStats", true);
+		askScanConfirmation = preferences.getBoolean("askScanConfirmation", true);
 	}
 		
 	/**
@@ -77,6 +79,7 @@ public final class GlobalConfig {
 		preferences.put("notAvailableText", notAvailableText);
 		preferences.put("notScannedText", notScannedText);
 		preferences.put("displayMethod", displayMethod.toString());
-		preferences.putBoolean("showScanStats", showScanStats); 
+		preferences.putBoolean("showScanStats", showScanStats);
+		preferences.putBoolean("askScanConfirmation", askScanConfirmation);
 	}
 }

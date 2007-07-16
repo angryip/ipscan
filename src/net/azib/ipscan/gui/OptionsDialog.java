@@ -63,7 +63,8 @@ public class OptionsDialog extends AbstractModalDialog {
 	private Text notAvailableText;
 	private Text notScannedText;
 	private Button[] displayMethod;
-	private Button showStatisticsCheckbox;
+	private Button showInfoCheckbox;
+	private Button askConfirmationCheckbox;
 	
 	public OptionsDialog(PingerRegistry pingerRegistry, GlobalConfig globalConfig) {
 		this.pingerRegistry = pingerRegistry;
@@ -276,15 +277,16 @@ public class OptionsDialog extends AbstractModalDialog {
 		notScannedText = new Text(labelsGroup, SWT.BORDER);
 		notScannedText.setLayoutData(gridData);
 
+		groupLayout = new GridLayout();
+		groupLayout.numColumns = 1;
 		Group showStatsGroup = new Group(displayTab, SWT.NONE);
 		showStatsGroup.setLayout(groupLayout);
-		showStatsGroup.setText(Labels.getLabel("options.display.stats"));
+		showStatsGroup.setText(Labels.getLabel("options.display.confirmation"));
 		
-		showStatisticsCheckbox = new Button(showStatsGroup, SWT.CHECK);
-		showStatisticsCheckbox.setText(Labels.getLabel("options.display.stats.show"));
-		GridData gridDataWithSpan2 = new GridData();
-		gridDataWithSpan2.horizontalSpan = 2;
-		showStatisticsCheckbox.setLayoutData(gridDataWithSpan2);
+		askConfirmationCheckbox = new Button(showStatsGroup, SWT.CHECK);
+		askConfirmationCheckbox.setText(Labels.getLabel("options.display.confirmation.newScan"));
+		showInfoCheckbox = new Button(showStatsGroup, SWT.CHECK);
+		showInfoCheckbox.setText(Labels.getLabel("options.display.confirmation.showInfo"));
 	}
 	
 	/**
@@ -377,7 +379,8 @@ public class OptionsDialog extends AbstractModalDialog {
 		notAvailableText.setText(globalConfig.notAvailableText);
 		notScannedText.setText(globalConfig.notScannedText);
 		displayMethod[globalConfig.displayMethod.ordinal()].setSelection(true);
-		showStatisticsCheckbox.setSelection(globalConfig.showScanStats);
+		showInfoCheckbox.setSelection(globalConfig.showScanStats);
+		askConfirmationCheckbox.setSelection(globalConfig.askScanConfirmation);
 	}
 	
 	private void saveOptions() {
@@ -407,7 +410,8 @@ public class OptionsDialog extends AbstractModalDialog {
 			if (displayMethod[i].getSelection())
 				globalConfig.displayMethod = DisplayMethod.values()[i];
 		}
-		globalConfig.showScanStats = showStatisticsCheckbox.getSelection();
+		globalConfig.showScanStats = showInfoCheckbox.getSelection();
+		globalConfig.askScanConfirmation = askConfirmationCheckbox.getSelection();
 	}
 
 	/**
