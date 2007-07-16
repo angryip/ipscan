@@ -125,8 +125,9 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		getDisplay().syncExec(new Runnable() {
 			public void run() {
 				if (scanningResults.isRegistered(result)) {
-					// redraw the item
-					clear(scanningResults.getIndex(result));
+					// just redraw the item
+					int index = scanningResults.update(result);
+					clear(index);
 				}
 				else {
 					// first register, then add - otherwise first redraw may fail (the table is virtual)
@@ -172,25 +173,15 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 	 * This is used for removing of any scanned data for rescanning of items.
 	 */
 	public void resetSelection() {
-		int columnCount = getColumnCount();
-		for (TableItem item : getSelection()) {
-			for (int i = 1; i < columnCount; i++) {
-				item.setText(i, "");
-			}
-			item.setImage(this.listImages[ScanningSubject.RESULT_TYPE_UNKNOWN]);
+		int[] selectionIndices = getSelectionIndices();
+		// clear scanning results
+		for (int itemNum : selectionIndices) {
+			scanningResults.getResult(itemNum).reset();
 		}
+		// redraw items in the table
+		clear(selectionIndices);
 	}
 
-	/**
-	 * Initializes a new scan.
-	 * (clears all elments, etc)
-	 * @param newFeederInfo feeder info of the new feeder/settings
-	 */
-	public void initNewScan() {
-		// remove all items from the table
-		removeAll();
-	}
-		
 	/**
 	 * @return the internal ScanningResultList instance, containing the results.
 	 */

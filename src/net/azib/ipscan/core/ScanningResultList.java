@@ -44,7 +44,8 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	/** Feeder name that was used for this scan */
 	private String feederName;
 
-	private ScanInfo info;
+	/** Information and statistics about the last scan */
+	ScanInfo info;
 	
 	private ResultsComparator resultsComparator = new ResultsComparator();
 	
@@ -92,9 +93,9 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	 * @return pre-initialized empty ScanningResult
 	 */
 	public synchronized ScanningResult createResult(InetAddress address) {
+		info.numScanned++;
 		Integer index = resultIndexes.get(address);
 		if (index == null) {
-			info.numScanned++;
 			return new ScanningResult(address, fetcherRegistry.getSelectedFetchers().size());
 		}
 		return resultList.get(index);
@@ -103,7 +104,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	/**
 	 * Registers the provided results holder at the specified index in this list.
 	 * This index will later be used to retrieve the result when redrawing items.
-	 * TODO: index parameter is not really needed here - add method with index will not work with sparce lists anyway
+	 * TODO: index parameter is not really needed here - add method with index will not work with sparse lists anyway
 	 * @param index
 	 * @param result
 	 */
@@ -112,15 +113,11 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 			throw new IllegalStateException(result.getAddress() + " is already registered in the list");
 		
 		resultList.add(index, result);
-		
-		// update statistics
-		if (result.getType() == ScanningSubject.RESULT_TYPE_ALIVE) {
-			info.numAlive++;
-		}
-		else if (result.getType() == ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO) {
-			info.numAlive++;
-			info.numWithPorts++;
-		}
+
+		// if the result is already ready, then update statistics right away
+		// otherwise it will be done later
+		if (result.isReady())
+			updateStatistics(result);
 	}
 	
 	/**
@@ -131,9 +128,14 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	}	
 
 	/**
-	 * @return the index of the result in the list, if it is registered
+	 * Updates statistics.
+	 * @return the index of the result in the list, if it is registered.
 	 */
-	public synchronized int getIndex(ScanningResult result) {
+	public synchronized int update(ScanningResult result) {
+		// if now the result is ready, we need to update statistics
+		if (result.isReady())
+			updateStatistics(result);
+	
 		return resultIndexes.get(result.getAddress());
 	}
 
@@ -172,12 +174,10 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	}
 
 	/**
-	 * Clears previous scanning results, prepares for a new scan.
+	 * Prepares for a new scan. Note: previous results are not automatically cleared.
 	 * @param feeder the feeder that will be used for the scan
 	 */
 	public synchronized void initNewScan(Feeder feeder) {
-		// first clear
-		clear();
 		// reload currently selected fetchers
 		selectedFetchers = new ArrayList<Fetcher>(fetcherRegistry.getSelectedFetchers());		
 		// store feeder info for later
@@ -265,6 +265,16 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		return -1;
 	}
 	
+	private void updateStatistics(ScanningResult result) {
+		if (result.getType() == ScanningSubject.RESULT_TYPE_ALIVE) {
+			info.numAlive++;
+		}
+		else if (result.getType() == ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO) {
+			info.numAlive++;
+			info.numWithPorts++;
+		}
+	}
+
 	/**
 	 * Additional information about the last scan
 	 */

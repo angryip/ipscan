@@ -37,8 +37,25 @@ public class ScanningResult {
 		type = ScanningSubject.RESULT_TYPE_UNKNOWN;
 	}
 	
+	/**
+	 * Resets scanned data: returns the result to the "just created" state. 
+	 * Used for rescanning.
+	 */
+	public void reset() {
+		values = new Object[values.length];
+		values[0] = address.getHostAddress();
+		type = ScanningSubject.RESULT_TYPE_UNKNOWN;
+	}
+
 	public InetAddress getAddress() {
 		return address;
+	}
+	
+	/**
+	 * @return true if the result is ready (completely scanned)
+	 */
+	public boolean isReady() {
+		return type != ScanningSubject.RESULT_TYPE_UNKNOWN;
 	}
 	
 	/**

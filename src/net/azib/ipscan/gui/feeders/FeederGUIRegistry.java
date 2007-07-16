@@ -81,7 +81,8 @@ public class FeederGUIRegistry implements Iterable<AbstractFeederGUI> {
 	 * @return initialized instance of RescanFeeder
 	 */
 	public Feeder createRescanFeeder(TableItem[] items) {
-		Feeder feeder = new RescanFeeder();
+		// TODO: passing of currentFeederGUI.getFeeder() is probably wrong - we need to have the "real" feeder that was used for the previous scan 
+		Feeder feeder = new RescanFeeder(currentFeederGUI.getFeeder());
 		String[] addresses = new String[items.length];
 		for (int i = 0; i < items.length; i++) {
 			addresses[i] = items[i].getText();

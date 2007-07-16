@@ -8,13 +8,10 @@ package net.azib.ipscan.gui;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.List;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.ScanningResultList.ScanInfo;
-import net.azib.ipscan.fetchers.Fetcher;
-import net.azib.ipscan.fetchers.PortsFetcher;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
@@ -90,10 +87,10 @@ public class StatisticsDialog extends AbstractModalDialog {
 			.append(scanningResults.getFeederInfo()).append(ln).append(ln);
 		
 		text.append(Labels.getLabel("text.scan.hosts.total")).append(scanInfo.getHostCount()).append(ln);
-		text.append(Labels.getLabel("text.scan.hosts.alive")).append(scanInfo.getAliveCount()).append(ln);
-		if (isPortsFetcherPresent(scanningResults.getFetchers())) {
+		if (scanInfo.getAliveCount() > 0) 
+			text.append(Labels.getLabel("text.scan.hosts.alive")).append(scanInfo.getAliveCount()).append(ln);
+		if (scanInfo.getWithPortsCount() > 0) 
 			text.append(Labels.getLabel("text.scan.hosts.ports")).append(scanInfo.getWithPortsCount()).append(ln);
-		}
 		
 		Text statsText = new Text(shell, SWT.MULTI | SWT.READ_ONLY);
 		statsText.setBackground(currentDisplay.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
@@ -101,15 +98,6 @@ public class StatisticsDialog extends AbstractModalDialog {
 		statsText.setText(text.toString());
 	}
 	
-	static boolean isPortsFetcherPresent(List<Fetcher> fetchers) {
-		for (Fetcher f : fetchers) {
-			if (f instanceof PortsFetcher) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	/**
 	 * @param scanTime in milliseconds
 	 * @return provided time in human-readable form

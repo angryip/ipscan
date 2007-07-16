@@ -77,6 +77,51 @@ public class ScanningResultListTest {
 	}
 	
 	@Test
+	public void testStatisticsInCaseOfNormalFlow() throws Exception {
+		// display method: all - first register, then update
+		ScanningResult result = scanningResults.createResult(InetAddress.getByName("6.6.6.6"));
+		assertFalse(result.isReady());
+		assertFalse(scanningResults.isRegistered(result));
+		scanningResults.registerAtIndex(0, result);
+		
+		result.setType(ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO);
+		assertTrue(result.isReady());
+		assertTrue(scanningResults.isRegistered(result));
+		assertEquals(0, scanningResults.update(result));
+		assertEquals(1, scanningResults.getScanInfo().getHostCount());
+		assertEquals(1, scanningResults.getScanInfo().getAliveCount());
+		assertEquals(1, scanningResults.getScanInfo().getWithPortsCount());
+		
+		// display method: alive - register only when ready
+		result = scanningResults.createResult(InetAddress.getByName("7.7.7.7"));
+		result.setType(ScanningSubject.RESULT_TYPE_ADDITIONAL_INFO);
+		assertTrue(result.isReady());
+		assertFalse(scanningResults.isRegistered(result));
+		scanningResults.registerAtIndex(1, result);
+		assertTrue(scanningResults.isRegistered(result));
+		assertEquals(2, scanningResults.getScanInfo().getHostCount());
+		assertEquals(2, scanningResults.getScanInfo().getAliveCount());
+		assertEquals(2, scanningResults.getScanInfo().getWithPortsCount());
+		
+		// rescan: result is already registered, thus updated twice
+		scanningResults.info = new ScanInfo();
+		result = scanningResults.createResult(InetAddress.getByName("6.6.6.6"));
+		result.setType(ScanningSubject.RESULT_TYPE_ALIVE);
+		result.reset();
+		assertFalse(result.isReady());
+		assertTrue(scanningResults.isRegistered(result));
+		assertEquals(0, scanningResults.update(result));
+		
+		result.setType(ScanningSubject.RESULT_TYPE_ALIVE);
+		assertTrue(result.isReady());
+		assertTrue(scanningResults.isRegistered(result));
+		assertEquals(0, scanningResults.update(result));
+		assertEquals(1, scanningResults.getScanInfo().getHostCount());
+		assertEquals(1, scanningResults.getScanInfo().getAliveCount());
+		assertEquals(0, scanningResults.getScanInfo().getWithPortsCount());
+	}
+	
+	@Test
 	public void testCreateResult() throws Exception {
 		ScanningResult result = scanningResults.createResult(InetAddress.getByName("10.0.0.5"));
 		assertEquals("10.0.0.5", result.getAddress().getHostAddress());
@@ -109,13 +154,11 @@ public class ScanningResultListTest {
 		scanningResults.registerAtIndex(2, result);
 		
 		assertTrue(scanningResults.isRegistered(result));
-		assertEquals(2, scanningResults.getIndex(result));
+		assertEquals(2, scanningResults.update(result));
 		assertSame(result, scanningResults.getResult(2));
 		assertSame(result, scanningResults.createResult(InetAddress.getByName("10.0.0.5")));
 		
-		assertEquals(3, scanningResults.getScanInfo().getHostCount());
-		assertEquals(2, scanningResults.getScanInfo().getAliveCount());
-		assertEquals(1, scanningResults.getScanInfo().getWithPortsCount());
+		assertEquals(4, scanningResults.getScanInfo().getHostCount());
 	}
 	
 	@Test(expected=IllegalStateException.class)
@@ -156,12 +199,11 @@ public class ScanningResultListTest {
 		scanningResults.initNewScan(feeder);
 		
 		verify(feeder);
-		assertFalse("Results must be empty", scanningResults.iterator().hasNext());
+		assertTrue("initNewScan() must not clear results - otherwise rescanning will be broken", scanningResults.areResultsAvailable());
 		assertEquals("Cached Fetchers must be re-initilized", 1, scanningResults.getFetchers().size());
 		assertEquals("I am the best Feeder in the World!", scanningResults.getFeederInfo());
 		assertEquals(Labels.getLabel("feeder.range"), scanningResults.getFeederName());
 		assertNotNull(scanningResults.getScanInfo());
-		assertFalse("No results are available yet", scanningResults.areResultsAvailable());
 		assertFalse("Scanning is not yet finished", scanningResults.getScanInfo().isFinished());
 		assertEquals(0, scanningResults.getScanInfo().getHostCount());
 		assertEquals(0, scanningResults.getScanInfo().getAliveCount());
@@ -192,8 +234,8 @@ public class ScanningResultListTest {
 		assertFalse(i.hasNext());
 		
 		// now check that there are no forgotten indexes
-		assertEquals(0, scanningResults.getIndex(scanningResults.createResult(InetAddress.getByName("127.9.9.1"))));
-		assertEquals(1, scanningResults.getIndex(scanningResults.createResult(InetAddress.getByName("127.9.9.4"))));
+		assertEquals(0, scanningResults.update(scanningResults.createResult(InetAddress.getByName("127.9.9.1"))));
+		assertEquals(1, scanningResults.update(scanningResults.createResult(InetAddress.getByName("127.9.9.4"))));
 		assertFalse(scanningResults.isRegistered(scanningResults.createResult(InetAddress.getByName("127.9.9.3"))));
 		assertFalse(scanningResults.isRegistered(scanningResults.createResult(InetAddress.getByName("127.9.9.2"))));
 	}

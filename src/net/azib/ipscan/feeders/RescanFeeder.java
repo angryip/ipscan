@@ -17,16 +17,24 @@ import java.util.List;
  */
 public class RescanFeeder implements Feeder {
 
+	private Feeder oldFeeder;
 	private List<InetAddress> addresses;
 
 	int current;
 	
 	/**
-	 * @see Feeder#getLabel()
+	 * Initializes the RescanFeeder using the old feeder used for the real scan to delegate some calls to.
+	 * @param oldFeeder
+	 */
+	public RescanFeeder(Feeder oldFeeder) {
+		this.oldFeeder = oldFeeder;
+	}
+
+	/**
+	 * @return the label of the "old" feeder
 	 */
 	public String getLabel() {
-		// this feeder is not a regular one
-		return null;
+		return oldFeeder.getLabel();
 	}
 
 	/**
@@ -69,10 +77,9 @@ public class RescanFeeder implements Feeder {
 	}
 	
 	/**
-	 * @see net.azib.ipscan.feeders.Feeder#getInfo()
+	 * @return the info of the "old" feeder
 	 */
 	public String getInfo() {
-		// this is a non-standard feeder
-		return null;
+		return oldFeeder.getInfo();
 	}
 }

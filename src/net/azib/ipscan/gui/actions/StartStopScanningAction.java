@@ -125,8 +125,8 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 						statusBar.setProgress(0);
 						break;
 					case STARTING:
-						// start the scan!
-						resultTable.initNewScan();
+						// start the scan from scratch!
+						resultTable.removeAll();
 						scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.current().getFeeder(), StartStopScanningAction.this, createResultsCallback());
 						stateMachine.startScanning();
 						break;
