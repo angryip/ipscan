@@ -35,7 +35,7 @@ public class Main {
 	
 	static final Logger LOG = LoggerFactory.getLogger();
 
-	public static void main(String[] args) {
+	public static void main(String ... args) {
 		
 		long startTime = System.currentTimeMillis();
 		

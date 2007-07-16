@@ -63,6 +63,8 @@ public class MainMenu {
 	private void createMainMenuItems(Menu menu) {
 		
 		Menu subMenu = initMenu(menu, "menu.file");
+//		initMenuItem(subMenu, "menu.file.newWindow", "Ctrl+N", new Integer(SWT.MOD1 | 'N'), initListener(FileActions.NewWindow.class));
+//		initMenuItem(subMenu, null, null, null, null);
 		initMenuItem(subMenu, "menu.file.saveAll", "Ctrl+S", new Integer(SWT.MOD1 | 'S'), initListener(FileActions.SaveAll.class));
 		initMenuItem(subMenu, "menu.file.saveSelection", null, null, initListener(FileActions.SaveSelection.class));
 		initMenuItem(subMenu, null, null, null, null);

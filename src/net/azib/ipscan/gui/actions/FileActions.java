@@ -8,6 +8,7 @@ package net.azib.ipscan.gui.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.azib.ipscan.Main;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.exporters.ExportProcessor;
@@ -121,4 +122,17 @@ public class FileActions {
 			super(exporterRegistry, resultTable, statusBar, true);
 		}
 	}
+	
+	public static class NewWindow implements Listener {
+		public void handleEvent(Event event) {
+			// start another instance in a new thread
+			// doesn't currently work...
+			new Thread("main") {
+				public void run() {					
+					Main.main();
+				}
+			}.start();
+		}
+	}
+
 }
