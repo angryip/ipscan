@@ -6,7 +6,7 @@ package net.azib.ipscan.config;
 /**
  * Class with accessors to version information of the program.
  *
- * @author anton
+ * @author Anton Keks
  * @version $Id: Version.java,v 1.2 2005/11/20 14:08:28 angryziber Exp $
  */
 public class Version {

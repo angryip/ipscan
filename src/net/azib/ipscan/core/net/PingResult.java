@@ -10,7 +10,7 @@ import java.net.InetAddress;
 /**
  * The result of pinging
  *
- * @author anton
+ * @author Anton Keks
  */
 public class PingResult {
 

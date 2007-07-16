@@ -10,7 +10,7 @@ import java.util.prefs.Preferences;
 /**
  * FavoritesConfig
  *
- * @author anton
+ * @author Anton Keks
  */
 public class FavoritesConfig extends NamedListConfig {
 

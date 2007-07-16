@@ -8,7 +8,7 @@ package net.azib.ipscan.feeders;
 /**
  * Exception for throwing in case of problems with Feeders.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class FeederException extends IllegalArgumentException {
 	

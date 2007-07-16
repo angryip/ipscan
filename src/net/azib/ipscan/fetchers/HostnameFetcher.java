@@ -9,7 +9,7 @@ import net.azib.ipscan.core.ScanningSubject;
 /**
  * HostnameFetcher retrieves hostnames of IP addresses by reverse DNS lookups.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class HostnameFetcher implements Fetcher {
 

@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * This is the base of a modal dialog window
  *
- * @author anton
+ * @author Anton Keks
  */
 public abstract class AbstractModalDialog {
 

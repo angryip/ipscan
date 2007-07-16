@@ -14,7 +14,7 @@ import org.junit.Test;
 /**
  * IntegerWithUnitTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class IntegerWithUnitTest {
 	

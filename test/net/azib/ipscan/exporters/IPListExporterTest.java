@@ -17,7 +17,7 @@ import net.azib.ipscan.config.Labels;
 /**
  * IP List Exporter Test
  *
- * @author anton
+ * @author Anton Keks
  */
 public class IPListExporterTest extends AbstractExporterTestCase {
 	

@@ -15,7 +15,7 @@ import org.junit.Test;
 /**
  * StartStopScanningActionTest
  *
- * @author Anton Keks
+ * @author Anton Keks Keks
  */
 public class StartStopScanningActionTest {
 	

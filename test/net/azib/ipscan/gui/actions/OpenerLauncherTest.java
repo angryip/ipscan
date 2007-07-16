@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * OpenerLauncherTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class OpenerLauncherTest {
 

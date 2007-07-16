@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * The status bar of the main window.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class StatusBar {
 	

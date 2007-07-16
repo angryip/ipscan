@@ -15,7 +15,7 @@ import java.util.prefs.Preferences;
  * Can be used for storing favorites, openers, and other 
  * user-defined configurations.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class NamedListConfig {
 	

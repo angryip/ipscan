@@ -10,7 +10,7 @@ import java.util.Collection;
 /**
  * FetcherRegistry
  *
- * @author anton
+ * @author Anton Keks
  */
 public interface FetcherRegistry {
 

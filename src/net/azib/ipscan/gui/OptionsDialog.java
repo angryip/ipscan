@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Options Dialog
  *
- * @author anton
+ * @author Anton Keks
  */
 public class OptionsDialog extends AbstractModalDialog {
 	

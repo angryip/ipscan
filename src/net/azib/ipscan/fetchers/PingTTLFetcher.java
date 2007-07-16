@@ -14,7 +14,7 @@ import net.azib.ipscan.core.net.PingerRegistry;
  * PingTTLFetcher shares pinging results with PingFetcher
  * and returns the TTL field of the last received packet.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class PingTTLFetcher extends PingFetcher {
 	

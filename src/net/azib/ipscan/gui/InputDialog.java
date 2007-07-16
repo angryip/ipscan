@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Button;
 /**
  * Customizable InputDialog
  *
- * @author anton
+ * @author Anton Keks
  */
 public class InputDialog extends AbstractModalDialog {
 

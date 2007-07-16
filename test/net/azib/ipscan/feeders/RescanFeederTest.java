@@ -14,7 +14,7 @@ import org.junit.Test;
 /**
  * RescanFeederTest
  *
- * @author Anton Keks
+ * @author Anton Keks Keks
  */
 public class RescanFeederTest {
 	

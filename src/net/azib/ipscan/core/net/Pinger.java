@@ -11,7 +11,7 @@ import java.net.InetAddress;
 /**
  * Pinger
  *
- * @author anton
+ * @author Anton Keks
  */
 public interface Pinger {
 

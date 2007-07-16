@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * StatisticsDialog - shows statistical information about the last scan
  *
- * @author Anton Keks
+ * @author Anton Keks Keks
  */
 public class StatisticsDialog extends AbstractModalDialog {
 	

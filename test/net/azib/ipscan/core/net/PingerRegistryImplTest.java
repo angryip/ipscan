@@ -12,7 +12,7 @@ import org.junit.Test;
 /**
  * PingerRegistryImplTest
  *
- * @author Anton Keks
+ * @author Anton Keks Keks
  */
 public class PingerRegistryImplTest {
 	

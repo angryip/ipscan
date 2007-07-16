@@ -10,7 +10,7 @@ import org.junit.Test;
 /**
  * PortIteratorTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class PortIteratorTest {
 

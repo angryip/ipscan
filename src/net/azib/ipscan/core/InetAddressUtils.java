@@ -20,7 +20,7 @@ import net.azib.ipscan.config.LoggerFactory;
  * This class provides various utility static methods,
  * useful for transforming InetAddress objects.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class InetAddressUtils {
 	

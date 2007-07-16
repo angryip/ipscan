@@ -10,7 +10,7 @@ import org.junit.Before;
 /**
  * PortsFetcherTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class PortsFetcherTest extends AbstractFetcherTestCase {
 

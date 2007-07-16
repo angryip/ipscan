@@ -31,7 +31,7 @@ import org.junit.Test;
 /**
  * ScannerTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class ScannerTest {
 	

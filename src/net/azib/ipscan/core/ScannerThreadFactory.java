@@ -14,7 +14,7 @@ import net.azib.ipscan.feeders.Feeder;
  * 
  * Note: setter injection is used for this class to avoid cyclic dependency conflicts.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class ScannerThreadFactory {
 	

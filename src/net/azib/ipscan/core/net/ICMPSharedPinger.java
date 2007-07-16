@@ -24,7 +24,7 @@ import org.savarese.vserv.tcpip.OctetConverter;
 /**
  * Shared multithreaded pinger.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class ICMPSharedPinger implements Pinger {
 	

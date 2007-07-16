@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.MessageBox;
 /**
  * HelpActions
  *
- * @author anton
+ * @author Anton Keks
  */
 public class HelpActions {
 	

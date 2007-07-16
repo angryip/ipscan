@@ -16,7 +16,7 @@ import net.azib.ipscan.core.ScanningSubject;
 /**
  * IPFetcherTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class IPFetcherTest extends AbstractFetcherTestCase {
 

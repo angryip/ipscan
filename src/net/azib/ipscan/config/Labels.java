@@ -19,7 +19,7 @@ import java.util.PropertyResourceBundle;
  * 
  * Use initialize() to create an instance of this class.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public final class Labels {
 	

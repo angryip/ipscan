@@ -8,7 +8,7 @@ package net.azib.ipscan.core;
 /**
  * This callback is called to consume scanning results.
  *  
- * @author anton
+ * @author Anton Keks
  */
 public interface ScanningResultsCallback {
 

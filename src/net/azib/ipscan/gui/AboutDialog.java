@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * About Dialog
  *
- * @author anton
+ * @author Anton Keks
  */
 public class AboutDialog extends AbstractModalDialog {
 

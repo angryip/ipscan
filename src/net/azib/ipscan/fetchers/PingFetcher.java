@@ -21,7 +21,7 @@ import net.azib.ipscan.core.values.IntegerWithUnit;
  * PingFetcher is able to ping IP addresses.
  * It returns the average round trip time of all pings sent.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class PingFetcher implements Fetcher {
 	

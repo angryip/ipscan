@@ -8,7 +8,7 @@ package net.azib.ipscan.exporters;
 /**
  * Exception for throwing in case of problems in Exporters.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class ExporterException extends IllegalArgumentException {
 	

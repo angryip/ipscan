@@ -33,7 +33,7 @@ import org.junit.Test;
 /**
  * ExportProcessorTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class ExportProcessorTest {
 	

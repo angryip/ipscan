@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.MenuItem;
 /**
  * FavoritesActions
  *
- * @author anton
+ * @author Anton Keks
  */
 public class FavoritesActions {
 

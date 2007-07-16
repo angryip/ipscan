@@ -9,7 +9,7 @@ import junit.framework.Assert;
 /**
  * FeederTestUtils
  *
- * @author anton
+ * @author Anton Keks
  */
 public class FeederTestUtils {
 	

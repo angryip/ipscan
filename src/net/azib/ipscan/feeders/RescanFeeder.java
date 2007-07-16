@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * A Feeder for rescanning - takes a predefined list of IP addresses.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class RescanFeeder implements Feeder {
 

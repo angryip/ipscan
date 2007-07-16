@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * SelectFetchersDialog
  *
- * @author Anton Keks
+ * @author Anton Keks Keks
  */
 public class SelectFetchersDialog extends AbstractModalDialog {
 	

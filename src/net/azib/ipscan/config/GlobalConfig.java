@@ -10,7 +10,7 @@ import java.util.prefs.Preferences;
 /**
  * Global configuration holder.
  *
- * @author anton
+ * @author Anton Keks
  */
 public final class GlobalConfig {
 	

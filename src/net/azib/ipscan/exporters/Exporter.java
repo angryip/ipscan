@@ -20,7 +20,7 @@ import java.io.OutputStream;
  * 
  * Exporters are created by cloning (prototype pattern).
  *
- * @author anton
+ * @author Anton Keks
  */
 public interface Exporter extends Cloneable {
 	

@@ -17,7 +17,7 @@ import org.junit.Test;
 /**
  * StatisticsDialogTest
  *
- * @author Anton Keks
+ * @author Anton Keks Keks
  */
 public class StatisticsDialogTest {
 	

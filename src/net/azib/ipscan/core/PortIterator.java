@@ -9,7 +9,7 @@ package net.azib.ipscan.core;
  * A class for iteration of ports, specified in special format, like:
  * 1,5-7,35-40
  *
- * @author anton
+ * @author Anton Keks
  */
 public final class PortIterator implements Cloneable {
 	

@@ -15,7 +15,7 @@ import net.azib.ipscan.feeders.Feeder;
 /**
  * Scanning thread.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class ScannerThread extends Thread {
 

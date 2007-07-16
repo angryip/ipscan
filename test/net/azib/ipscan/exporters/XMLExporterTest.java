@@ -22,7 +22,7 @@ import net.azib.ipscan.config.Version;
 /**
  * XML Exporter Test
  *
- * @author anton
+ * @author Anton Keks
  */
 public class XMLExporterTest extends AbstractExporterTestCase {
 

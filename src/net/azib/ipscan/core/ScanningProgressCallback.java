@@ -10,7 +10,7 @@ import java.net.InetAddress;
 /**
  * This callback is called on scanning state updates.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public interface ScanningProgressCallback {
 			

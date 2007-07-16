@@ -21,7 +21,7 @@ import net.azib.ipscan.feeders.RescanFeeder;
 /**
  * FeederGUIRegistry
  *
- * @author anton
+ * @author Anton Keks
  */
 public class FeederGUIRegistry implements Iterable<AbstractFeederGUI> {
 	

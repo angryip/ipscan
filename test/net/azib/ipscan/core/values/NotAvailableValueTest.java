@@ -12,7 +12,7 @@ import org.junit.Test;
 /**
  * NotAvailableValueTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class NotAvailableValueTest {
 

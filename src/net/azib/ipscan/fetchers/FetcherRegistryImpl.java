@@ -17,7 +17,7 @@ import java.util.prefs.Preferences;
  * Fetcher Registry singleton class.
  * Actually, it registers both plugins and builtins.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class FetcherRegistryImpl implements FetcherRegistry {
 	

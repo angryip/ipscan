@@ -16,7 +16,7 @@ import net.azib.ipscan.core.ScanningSubject;
 /**
  * HostnameFetcherTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class HostnameFetcherTest extends AbstractFetcherTestCase {
 

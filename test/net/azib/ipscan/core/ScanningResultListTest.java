@@ -38,7 +38,7 @@ import org.junit.Test;
 /**
  * ScanningResultListTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class ScanningResultListTest {
 

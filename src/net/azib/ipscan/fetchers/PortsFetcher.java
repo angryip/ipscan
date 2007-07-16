@@ -24,7 +24,7 @@ import net.azib.ipscan.core.values.NumericListValue;
  * PortsFetcher scans TCP ports.
  * Port list is obtained using the {@link net.azib.ipscan.core.PortIterator}.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class PortsFetcher implements Fetcher {
 	

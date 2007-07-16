@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Text;
  * FeederActions
  * TODO: tests
  *
- * @author anton
+ * @author Anton Keks
  */
 public class FeederActions {
 	

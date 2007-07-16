@@ -8,7 +8,7 @@ import org.junit.Test;
 /**
  * Test of RangeFeeder 
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class RangeFeederTest {
 

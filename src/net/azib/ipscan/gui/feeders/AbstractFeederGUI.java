@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * Base class of feeder GUI classes.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public abstract class AbstractFeederGUI extends Composite {
 	

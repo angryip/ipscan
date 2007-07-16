@@ -13,7 +13,7 @@ import net.azib.ipscan.gui.UserErrorException;
 /**
  * The cross-platform browser launcher
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class BrowserLauncher {
 	

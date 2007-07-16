@@ -9,7 +9,7 @@ import java.util.prefs.Preferences;
  * This class encapsulates configuration options of the program.
  * It is a singleton class.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public final class Config {
 	

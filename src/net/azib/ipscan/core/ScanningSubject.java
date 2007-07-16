@@ -18,7 +18,7 @@ import net.azib.ipscan.core.ScanningResult.ResultType;
  * which may be used to cache some intermediate data
  * among different Fetchers. 
  *
- * @author anton
+ * @author Anton Keks
  */
 public class ScanningSubject {
 

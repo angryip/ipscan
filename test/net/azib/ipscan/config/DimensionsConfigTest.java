@@ -15,7 +15,7 @@ import org.junit.Test;
 /**
  * DimensionsConfigTest
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class DimensionsConfigTest {
 

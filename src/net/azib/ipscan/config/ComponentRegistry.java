@@ -58,7 +58,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  * This class is the dependency injection configuration
  * using the Pico Container.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class ComponentRegistry {
 	

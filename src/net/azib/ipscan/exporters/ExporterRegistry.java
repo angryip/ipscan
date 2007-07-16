@@ -13,7 +13,7 @@ import java.util.Map;
  * The registry of all Exporters.
  * It registers both plugins and builtins.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class ExporterRegistry implements Iterable<Exporter> {
 	

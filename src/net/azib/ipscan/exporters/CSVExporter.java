@@ -11,7 +11,7 @@ import java.io.Writer;
 /**
  * CSV Exporter
  *
- * @author anton
+ * @author Anton Keks
  */
 public class CSVExporter implements Exporter {
 

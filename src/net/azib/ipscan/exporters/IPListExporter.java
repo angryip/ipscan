@@ -16,7 +16,7 @@ import net.azib.ipscan.core.PortIterator;
  * <p/>
  * Exports only IP:port info, outputting each distinct IP:port pair on separate line.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class IPListExporter implements Exporter {
 

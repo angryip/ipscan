@@ -21,7 +21,7 @@ import net.azib.ipscan.core.values.NotScannedValue;
  * Instances of this classes are shared among all the threads,
  * so implementations must be thread safe and stateless.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public interface Fetcher extends Cloneable {
 

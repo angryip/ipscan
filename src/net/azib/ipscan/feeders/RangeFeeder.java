@@ -17,7 +17,7 @@ import org.savarese.vserv.tcpip.OctetConverter;
  * It contains the starting and ending values, which
  * are then iterated sequentially.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class RangeFeeder implements Feeder {
 	

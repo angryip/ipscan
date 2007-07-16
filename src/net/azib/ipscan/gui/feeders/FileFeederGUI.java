@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * GUI for initialization of FileFeeder.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class FileFeederGUI extends AbstractFeederGUI {
 

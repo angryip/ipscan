@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * The holder of scanning result for a single IP address.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class ScanningResult {
 	

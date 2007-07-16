@@ -8,7 +8,7 @@ package net.azib.ipscan.fetchers;
 /**
  * FetcherException
  *
- * @author anton
+ * @author Anton Keks
  */
 public class FetcherException extends RuntimeException {
 

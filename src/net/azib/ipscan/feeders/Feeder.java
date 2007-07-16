@@ -14,7 +14,7 @@ import java.net.InetAddress;
  * All subsequent calls to the {@link #initialize(String[])} should reset the state of
  * the Feeder and begin a new "feeding" process.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public interface Feeder {
 	

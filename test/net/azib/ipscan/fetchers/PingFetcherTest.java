@@ -10,7 +10,7 @@ import org.junit.Before;
 /**
  * PingFetcherTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class PingFetcherTest extends AbstractFetcherTestCase {
 

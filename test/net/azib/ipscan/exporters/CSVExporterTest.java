@@ -13,7 +13,7 @@ import org.junit.Test;
 /**
  * CSV Exporter Test
  *
- * @author anton
+ * @author Anton Keks
  */
 public class CSVExporterTest extends AbstractExporterTestCase {
 	

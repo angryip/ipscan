@@ -12,7 +12,7 @@ import java.util.prefs.Preferences;
 /**
  * OpenersConfig
  *
- * @author anton
+ * @author Anton Keks
  */
 public class OpenersConfig extends NamedListConfig {
 	

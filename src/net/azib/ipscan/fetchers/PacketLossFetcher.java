@@ -11,7 +11,7 @@ import net.azib.ipscan.core.net.PingerRegistry;
 /**
  * TODO: write PacketLossFetcher
  *
- * @author anton
+ * @author Anton Keks
  */
 public class PacketLossFetcher extends PingFetcher {
 

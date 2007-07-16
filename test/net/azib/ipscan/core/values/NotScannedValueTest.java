@@ -12,7 +12,7 @@ import org.junit.Test;
 /**
  * NotScannedValueTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class NotScannedValueTest {
 	

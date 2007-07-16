@@ -27,7 +27,7 @@ import net.azib.ipscan.fetchers.FetcherRegistry;
 /**
  * The holder of scanning results.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class ScanningResultList implements Iterable<ScanningResult> {
 	

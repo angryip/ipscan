@@ -16,7 +16,7 @@ import net.azib.ipscan.fetchers.FetcherRegistry;
  * Scanner functionality is encapsulated in this class.
  * It uses a list of fetchers to perform the actual scanning.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class Scanner {
 	

@@ -13,7 +13,7 @@ import org.junit.Test;
 /**
  * SharedPingerTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class ICMPSharedPingerTest {
 	

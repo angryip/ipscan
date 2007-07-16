@@ -14,7 +14,7 @@ import net.azib.ipscan.config.Version;
 /**
  * TXT Exporter Test
  *
- * @author anton
+ * @author Anton Keks
  */
 public class TXTExporterTest extends AbstractExporterTestCase {
 	

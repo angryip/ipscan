@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * GotoActions
  *
- * @author anton
+ * @author Anton Keks
  */
 public class GotoActions {
 

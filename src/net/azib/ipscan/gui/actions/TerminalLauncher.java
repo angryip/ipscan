@@ -17,7 +17,7 @@ import net.azib.ipscan.gui.UserErrorException;
 /**
  * The cross-platform terminal launcher
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class TerminalLauncher {
 	

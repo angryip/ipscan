@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 /**
  * TCP Pinger. Uses a TCP port to ping, doesn't require root privileges.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class TCPPinger implements Pinger {
 	

@@ -10,7 +10,7 @@ import org.junit.Test;
 /**
  * Test of FileFeeder
  *
- * @author anton
+ * @author Anton Keks
  */
 public class FileFeederTest {
 

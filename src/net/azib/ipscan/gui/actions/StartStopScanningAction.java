@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.MessageBox;
  * Start/Stop button action class.
  * It listens to presses on the buttons as well as updates gui statuses
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class StartStopScanningAction implements SelectionListener, ScanningProgressCallback, StateTransitionListener {
 	

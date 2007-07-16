@@ -30,7 +30,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 /**
  * MainMenu
  *
- * @author anton
+ * @author Anton Keks
  */
 public class MainMenu {
 	

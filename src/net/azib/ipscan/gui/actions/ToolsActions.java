@@ -22,7 +22,7 @@ import net.azib.ipscan.gui.StatusBar;
 /**
  * ToolsActions
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class ToolsActions {
 

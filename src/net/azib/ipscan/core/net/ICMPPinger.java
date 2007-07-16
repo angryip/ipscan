@@ -21,7 +21,7 @@ import org.savarese.vserv.tcpip.OctetConverter;
 /**
  * Pinging code is encapsulated here.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class ICMPPinger implements Pinger {
 	

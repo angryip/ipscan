@@ -12,7 +12,7 @@ import org.junit.Test;
 /**
  * ExporterRegistryTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class ExporterRegistryTest {
 	

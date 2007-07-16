@@ -13,7 +13,7 @@ import org.junit.Test;
 /**
  * StateMachineTest
  *
- * @author Anton Keks
+ * @author Anton Keks Keks
  */
 public class StateMachineTest {
 	

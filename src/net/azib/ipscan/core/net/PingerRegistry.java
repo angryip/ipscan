@@ -8,7 +8,7 @@ package net.azib.ipscan.core.net;
 /**
  * PingerRegistry
  *
- * @author Anton Keks
+ * @author Anton Keks Keks
  */
 public interface PingerRegistry {
 

@@ -12,7 +12,7 @@ import org.eclipse.swt.graphics.Rectangle;
 /**
  * DimensionsConfig
  *
- * @author anton
+ * @author Anton Keks
  */
 public class DimensionsConfig {
 

@@ -29,7 +29,7 @@ import net.azib.ipscan.gui.UserErrorException;
  * All Exceptions, which are thrown out of the program, are catched and logged
  * using the java.util.logging facilities.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class Main {
 	

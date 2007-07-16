@@ -17,7 +17,7 @@ import java.net.InetAddress;
  * 
  * Warning: IPv4-specific!
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class SmartTextFeeder implements Feeder {
 	

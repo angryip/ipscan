@@ -9,7 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * @author anton
+ * @author Anton Keks
  */
 public class ConfigTest {
 	

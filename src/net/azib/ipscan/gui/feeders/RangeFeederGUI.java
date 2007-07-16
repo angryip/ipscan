@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Text;
  * 
  * TODO: delete button doesn't work well in edit fields
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class RangeFeederGUI extends AbstractFeederGUI {
 	

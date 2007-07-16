@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * About Window
  *
- * @author anton
+ * @author Anton Keks
  */
 public class GettingStartedDialog extends AbstractModalDialog {
 

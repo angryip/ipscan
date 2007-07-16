@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.MenuItem;
  * Commands and Context menu Actions.
  * All these operate on the items, selected in the results list.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class CommandsActions {
 	

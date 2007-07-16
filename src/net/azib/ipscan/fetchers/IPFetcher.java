@@ -10,7 +10,7 @@ import net.azib.ipscan.core.ScanningSubject;
  * Dummy fetcher, which is able to return the textual representation 
  * of the passed IP address.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class IPFetcher implements Fetcher {
 

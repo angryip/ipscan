@@ -14,7 +14,7 @@ import net.azib.ipscan.core.InetAddressUtils;
 /**
  * A feeder, that generates random IP addresses.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class RandomFeeder implements Feeder {
 	

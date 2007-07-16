@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * EditFavoritesDialog
  *
- * @author anton
+ * @author Anton Keks
  */
 public class EditFavoritesDialog extends AbstractModalDialog {
 

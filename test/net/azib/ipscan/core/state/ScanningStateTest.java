@@ -13,7 +13,7 @@ import org.junit.Test;
 /**
  * ScanningStateTest
  *
- * @author Anton Keks
+ * @author Anton Keks Keks
  */
 public class ScanningStateTest {
 	

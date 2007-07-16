@@ -16,7 +16,7 @@ import net.azib.ipscan.fetchers.Fetcher;
 /**
  * Export Processor controls the actual exporting using the provided Exporter.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class ExportProcessor {
 

@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Listener;
 /**
  * FileActions
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class FileActions {
 

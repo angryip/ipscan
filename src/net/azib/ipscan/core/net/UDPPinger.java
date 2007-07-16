@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 /**
  * UDP Pinger. Uses an UDP port to ping, doesn't require root privileges.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class UDPPinger implements Pinger {
 	

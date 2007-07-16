@@ -8,7 +8,7 @@ import org.junit.Test;
 /**
  * Test of RandomFeeder
  *
- * @author anton
+ * @author Anton Keks
  */
 public class RandomFeederTest {
 

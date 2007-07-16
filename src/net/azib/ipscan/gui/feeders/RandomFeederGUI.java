@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * GUI for initialization of RandomFeeder
  *
- * @author anton
+ * @author Anton Keks
  */
 public class RandomFeederGUI extends AbstractFeederGUI {
 

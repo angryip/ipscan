@@ -11,7 +11,7 @@ import net.azib.ipscan.config.Labels;
  * IntegerWithUnit - an Integer value together with a unit, e.g. "10 ms".
  * TODO: IntegerWithUnitTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class IntegerWithUnit implements Comparable<IntegerWithUnit> {
 	

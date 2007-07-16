@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * The "Show IP Details" Window
  *
- * @author anton
+ * @author Anton Keks
  */
 public class DetailsDialog extends AbstractModalDialog {
 

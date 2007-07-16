@@ -14,7 +14,7 @@ import java.util.Collection;
  * 
  * TODO: add parsing functionality here.
  *
- * @author Anton Keks
+ * @author Anton Keks Keks
  */
 public class NumericListValue {
 	

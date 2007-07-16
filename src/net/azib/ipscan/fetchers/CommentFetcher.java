@@ -12,7 +12,7 @@ import net.azib.ipscan.core.ScanningSubject;
  * TODO: implement CommentFetcher
  * TODO: make an editor for comments
  *
- * @author anton
+ * @author Anton Keks
  */
 public class CommentFetcher implements Fetcher {
 

@@ -16,7 +16,7 @@ import net.azib.ipscan.config.Version;
 /**
  * TXT Exporter
  *
- * @author anton
+ * @author Anton Keks
  */
 public class TXTExporter implements Exporter {
 	

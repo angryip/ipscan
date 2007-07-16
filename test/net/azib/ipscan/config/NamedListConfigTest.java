@@ -16,7 +16,7 @@ import org.junit.Test;
 /**
  * NamedListConfigTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class NamedListConfigTest {
 	

@@ -9,7 +9,7 @@ import net.azib.ipscan.config.Config;
  * The value for displaying in the result list, meaning that the actual value is unknown,
  * because it wasn't resolved successfully.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class NotAvailableValue implements Comparable<Object> {
 	

@@ -20,7 +20,7 @@ import org.junit.Test;
  * TestCase for Exporters.
  * It contains initialization and generic tests for any Exporter.
  *
- * @author anton
+ * @author Anton Keks
  */
 public abstract class AbstractExporterTestCase {
 	

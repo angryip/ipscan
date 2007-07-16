@@ -11,7 +11,7 @@ import net.azib.ipscan.config.Labels;
  * Exception for throwing in case of user errors.
  * These generally result in showing an error message.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class UserErrorException extends RuntimeException {
 	

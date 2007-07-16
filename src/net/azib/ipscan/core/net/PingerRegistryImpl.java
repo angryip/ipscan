@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 /**
  * PingerRegistryImpl
  *
- * @author Anton Keks
+ * @author Anton Keks Keks
  */
 public class PingerRegistryImpl implements PingerRegistry {
 	

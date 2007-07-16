@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author Anton Keks
+ * @author Anton Keks Keks
  */
 public class FetcherRegistryImplTest {
 	

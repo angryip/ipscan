@@ -19,7 +19,7 @@ import org.junit.Test;
 /**
  * OpenersConfigTest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class OpenersConfigTest {
 	

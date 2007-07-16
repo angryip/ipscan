@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import junit.framework.TestCase;
 
 /**
- * @author Anton Keks
+ * @author Anton Keks Keks
  */
 public class LoggerFactoryTest extends TestCase {
 	

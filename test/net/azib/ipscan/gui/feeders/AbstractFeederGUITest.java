@@ -17,7 +17,7 @@ import org.junit.Test;
 /**
  * AbstractFeederGUITest
  *
- * @author anton
+ * @author Anton Keks
  */
 public class AbstractFeederGUITest {
 	

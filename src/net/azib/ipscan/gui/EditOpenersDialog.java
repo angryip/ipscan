@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * EditOpenersDialog
  *
- * @author anton
+ * @author Anton Keks
  */
 public class EditOpenersDialog extends AbstractModalDialog {
 

@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Shell;
  * a Composite area, which can be substituted dynamically based on
  * the selected feeder.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class MainWindow {
 	

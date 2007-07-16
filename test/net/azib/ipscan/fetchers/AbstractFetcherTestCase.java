@@ -15,7 +15,7 @@ import org.junit.Test;
  * TestCase for Fetchers.
  * It contains initialization and generic tests for any Fetcher.
  *
- * @author anton
+ * @author Anton Keks
  */
 public abstract class AbstractFetcherTestCase {
 	

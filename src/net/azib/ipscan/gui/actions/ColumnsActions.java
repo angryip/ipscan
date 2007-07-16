@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.TableColumn;
 /**
  * ColumnsActions
  *
- * @author anton
+ * @author Anton Keks
  */
 public class ColumnsActions {
 	

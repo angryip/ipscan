@@ -19,7 +19,7 @@ import net.azib.ipscan.gui.UserErrorException;
 /**
  * OpenerLauncher
  *
- * @author anton
+ * @author Anton Keks
  */
 public class OpenerLauncher {
 	

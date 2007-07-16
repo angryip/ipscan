@@ -14,7 +14,7 @@ import net.azib.ipscan.core.values.NumericListValue;
 /**
  * FilteredPortsFetcher uses the scanning results of PortsFetcher to display filtered ports.
  *
- * @author anton
+ * @author Anton Keks
  */
 public class FilteredPortsFetcher extends PortsFetcher {
 

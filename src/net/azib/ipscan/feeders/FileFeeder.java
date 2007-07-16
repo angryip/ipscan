@@ -27,7 +27,7 @@ import net.azib.ipscan.core.InetAddressUtils;
  * It uses regular expressions for matching of IP addresses.
  * TODO: tests!!! 
  *
- * @author anton
+ * @author Anton Keks
  */
 public class FileFeeder implements Feeder {
 	
