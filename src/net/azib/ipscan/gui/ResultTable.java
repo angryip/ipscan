@@ -17,14 +17,11 @@ import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsActions;
-import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -33,13 +30,13 @@ import org.eclipse.swt.widgets.TableItem;
 /**
  * Table of scanning results.
  * 
- * @author anton
+ * @author Anton Keks
  */
 public class ResultTable extends Table implements FetcherRegistryUpdateListener {
 	
 	private ScanningResultList scanningResults;
 	
-	private Image[] listImages = new Image[4];
+	private Image[] listImages = new Image[ResultType.values().length];
 
 	private Listener columnClickListener;
 
