@@ -123,4 +123,15 @@ public class StateMachineTest {
 		stateMachine.startScanning();
 		assertEquals(ScanningState.SCANNING, stateMachine.getState());
 	}
+	
+	@Test
+	public void reset() throws Exception {
+		stateMachine.transitionTo(ScanningState.STARTING);
+		stateMachine.reset();
+		assertEquals(ScanningState.IDLE, stateMachine.getState());
+		
+		stateMachine.transitionTo(ScanningState.KILLING);
+		stateMachine.reset();
+		assertEquals(ScanningState.IDLE, stateMachine.getState());
+	}
 }

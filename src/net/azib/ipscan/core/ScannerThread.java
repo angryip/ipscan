@@ -43,10 +43,16 @@ public class ScannerThread extends Thread {
 		this.feeder = feeder;
 		this.scanner = scanner;
 		this.scanningResultList = scanningResults;
-		this.scanningResultList.initNewScan(feeder);
+		try {
+			this.scanningResultList.initNewScan(feeder);
 		
-		// initialize in the main thread in order to catch exceptions gracefully
-		scanner.init();
+			// initialize in the main thread in order to catch exceptions gracefully
+			scanner.init();
+		}
+		catch (RuntimeException e) {
+			stateMachine.reset();
+			throw e;
+		}
 	}
 
 	public void run() {

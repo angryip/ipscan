@@ -124,4 +124,12 @@ public class StateMachine {
 		}
 	}
 
+	/**
+	 * Resets the machine to the initial state
+	 */
+	public void reset() {
+		// no transition notifications
+		state = ScanningState.IDLE;
+	}
+
 }

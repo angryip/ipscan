@@ -46,6 +46,7 @@ public class OptionsDialog extends AbstractModalDialog {
 
 	private TabFolder tabFolder;
 	private Composite scanningTab;
+	private TabItem scanningTabItem;
 	private Composite displayTab;
 	private Text threadDelayText;
 	private Text maxThreadsText;
@@ -141,6 +142,7 @@ public class OptionsDialog extends AbstractModalDialog {
 		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
 		tabItem.setText(Labels.getLabel("title.options.scanning"));
 		tabItem.setControl(scanningTab);
+		scanningTabItem = tabItem;
 		
 		createPortsTab();
 		tabItem = new TabItem(tabFolder, SWT.NONE);
@@ -394,9 +396,15 @@ public class OptionsDialog extends AbstractModalDialog {
 			throw new FetcherException("unparseablePortString", e);
 		}
 
+		globalConfig.selectedPinger = (String) pingersCombo.getData(Integer.toString(pingersCombo.getSelectionIndex()));
+		if (!pingerRegistry.checkSelectedPinger()) {
+			tabFolder.setSelection(scanningTabItem);
+			pingersCombo.forceFocus();
+			throw new FetcherException("unsupportedPinger");
+		}
+
 		globalConfig.maxThreads = parseIntValue(maxThreadsText);
 		globalConfig.threadDelay = parseIntValue(threadDelayText);
-		globalConfig.selectedPinger = (String) pingersCombo.getData(Integer.toString(pingersCombo.getSelectionIndex()));
 		globalConfig.pingCount = parseIntValue(pingingCountText);
 		globalConfig.pingTimeout = parseIntValue(pingingTimeoutText);
 		globalConfig.scanDeadHosts = deadHostsCheckbox.getSelection();

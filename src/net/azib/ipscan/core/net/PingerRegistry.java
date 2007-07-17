@@ -5,6 +5,8 @@
  */
 package net.azib.ipscan.core.net;
 
+import net.azib.ipscan.fetchers.FetcherException;
+
 /**
  * PingerRegistry
  *
@@ -16,12 +18,19 @@ public interface PingerRegistry {
 	 * @return a String array of pinger names (labels)
 	 */
 	public String[] getRegisteredNames();
-
+	
 	/**
 	 * Creates a new instance of currently selected Pinger
-	 * @param timeout
 	 * @return the instance
+	 * @throws FetcherException in case the pinger cannot be created
 	 */
-	public Pinger createPinger(String pingerName, int timeout);
+	public Pinger createPinger() throws FetcherException;
+	
+	/**
+	 * Checks that the currently configured pinger is supported.
+	 * If not, then another approperiate pinger is selected.
+	 * @return false if not supported.
+	 */
+	public boolean checkSelectedPinger();
 
 }

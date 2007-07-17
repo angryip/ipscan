@@ -82,13 +82,8 @@ public class PingFetcher implements Fetcher {
 	}
 
 	public void init() {
-		try {
-			if (pinger == null) {
-				pinger = pingerRegistry.createPinger(config.selectedPinger, config.pingTimeout);
-			}
-		}
-		catch (Exception e) {
-			throw new FetcherException(e);
+		if (pinger == null) {
+			pinger = pingerRegistry.createPinger();
 		}
 	}
 

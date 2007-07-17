@@ -15,6 +15,7 @@ import net.azib.ipscan.core.ScanningProgressCallback;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultsCallback;
 import net.azib.ipscan.core.ScanningResult.ResultType;
+import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
@@ -41,6 +42,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	private ScannerThreadFactory scannerThreadFactory;
 	private ScannerThread scannerThread;
 	private GlobalConfig globalConfig;
+	private PingerRegistry pingerRegistry;
 
 	private StatusBar statusBar;
 	private ResultTable resultTable;
@@ -75,13 +77,14 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		buttonTexts[ScanningState.KILLING.ordinal()] = Labels.getLabel("button.kill");
 	}
 	
-	public StartStopScanningAction(ScannerThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, Button startStopButton, GlobalConfig globalConfig) {
+	public StartStopScanningAction(ScannerThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, PingerRegistry pingerRegistry, Button startStopButton, GlobalConfig globalConfig) {
 		this();
 
 		this.scannerThreadFactory = scannerThreadFactory;
 		this.resultTable = resultTable;
 		this.statusBar = statusBar;
 		this.feederRegistry = feederRegistry;
+		this.pingerRegistry = pingerRegistry;
 		this.button = startStopButton;
 		this.display = button.getDisplay();
 		this.stateMachine = stateMachine;
@@ -106,17 +109,30 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	/**
 	 * Called when scanning button is clicked
 	 */
-	public void widgetSelected(SelectionEvent e) {
+	public void widgetSelected(SelectionEvent event) {
 		// ask for confirmation before erasing scanning results
-		if (stateMachine.inState(ScanningState.IDLE) && globalConfig.askScanConfirmation && resultTable.getItemCount() > 0) {
-			MessageBox box = new MessageBox(e.display.getActiveShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+		if (stateMachine.inState(ScanningState.IDLE)) {
+			if (!preScanChecks())
+				return;
+		}
+		stateMachine.transitionToNext();
+	}
+
+	private boolean preScanChecks() {
+		// autodetect usable pingers and silently ignore any changes - 
+		// user must see any errors only if they have explicitly selected a pinger
+		pingerRegistry.checkSelectedPinger();
+		
+		// ask user for confirmation if needed
+		if (globalConfig.askScanConfirmation && resultTable.getItemCount() > 0) {
+			MessageBox box = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 			box.setText(Labels.getLabel("text.scan.new"));
 			box.setMessage(Labels.getLabel("text.scan.confirmation"));
 			if (box.open() != SWT.YES) {
-				return;
+				return false;
 			}
 		}
-		stateMachine.transitionToNext();
+		return true;
 	}
 	
 	public void transitionTo(final ScanningState state) {
