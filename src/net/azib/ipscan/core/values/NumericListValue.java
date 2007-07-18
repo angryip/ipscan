@@ -14,7 +14,7 @@ import java.util.Collection;
  * 
  * TODO: add parsing functionality here.
  *
- * @author Anton Keks Keks
+ * @author Anton Keks
  */
 public class NumericListValue {
 	
@@ -29,7 +29,7 @@ public class NumericListValue {
 	 * @param displayAsRanges whether toString() outputs all number or their ranges 
 	 */
 	public NumericListValue(Collection<Integer> numbers, boolean displayAsRanges) {
-		// copy numbers to an array (unfortunately toArray() cannot be used because int[] is not IS-A Object[])
+		// copy numbers to an array (unfortunately toArray() cannot be used because int[] is not an Object[])
 		this.numbers = new int[numbers.size()];
 		int c = 0;
 		for (Number n : numbers) {			
@@ -45,33 +45,38 @@ public class NumericListValue {
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		
-		int prevPort = Integer.MAX_VALUE;
+		int prevNumber = Integer.MAX_VALUE;
+		int rangeStartNumber = 0;
 		boolean isRange = false;		
 		int i = 0;
 		
 		if (numbers.length > 0) {
-			prevPort = numbers[0];
-			sb.append(prevPort);
+			prevNumber = numbers[0];
+			sb.append(prevNumber);
 		}
 		
 		while (++i < numbers.length) {
-			int port = numbers[i];
+			int curNumber = numbers[i];
 			
-			if (displayAsRanges && prevPort + 1 == port) {
-				isRange = true;
+			if (displayAsRanges && prevNumber + 1 == curNumber) {
+				if (!isRange) {
+					isRange = true;
+					rangeStartNumber = prevNumber;
+				}
 			}
 			else {
 				if (isRange) {
-					sb.append('-').append(prevPort);
+					// display short ranges with comma, long ranges with dash
+					sb.append(rangeStartNumber+1 == prevNumber ? ',' : '-').append(prevNumber);
 					isRange = false;
 				}
-				sb.append(',').append(port);
+				sb.append(',').append(curNumber);
 			}
-			prevPort = port;
+			prevNumber = curNumber;
 		}
 		
 		if (isRange) {
-			sb.append('-').append(prevPort);
+			sb.append(rangeStartNumber+1 == prevNumber ? ',' : '-').append(prevNumber);
 		}
 		
 		return sb.toString();
