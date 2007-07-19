@@ -1,0 +1,17 @@
+Before 3.0 beta:
+
+* default fetchers
+* sorting by columns
+* check all exporters
+* tooltips
+* getting started message
+* export/import of settings
+* tools->delete menus
+
+Before 3.0:
+
+* fetcher-specific options
+* multiple port support web-detect
+* add new fetchers by configuration of PortTextFetcher
+* startup as root option
+* compile librocksaw for mac

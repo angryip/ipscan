@@ -12,9 +12,9 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="ext/picocontainer/picocontainer-1.0.jar"/>
-	<classpathentry kind="lib" path="ext/swt/swt-gtk.jar"/>
-	<classpathentry kind="lib" path="ext/swt/swt-mac.jar"/>
-	<classpathentry kind="lib" path="ext/swt/swt-win32.jar"/>
+	<classpathentry kind="lib" path="ext/swt/swt-linux.jar" sourcepath="ext/swt/src-linux"/>
+	<classpathentry kind="lib" path="ext/swt/swt-mac.jar" sourcepath="ext/swt/src-mac"/>
+	<classpathentry kind="lib" path="ext/swt/swt-win32.jar" sourcepath="ext/swt/src-win32"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="ext/easymock/easymock.jar"/>
 	<classpathentry kind="output" path="bin"/>
