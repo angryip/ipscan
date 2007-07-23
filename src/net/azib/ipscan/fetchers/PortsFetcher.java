@@ -28,6 +28,8 @@ import net.azib.ipscan.core.values.NumericListValue;
  */
 public class PortsFetcher implements Fetcher {
 	
+	static final String LABEL = "fetcher.ports";
+	
 	private static final String PARAMETER_OPEN_PORTS = "openPorts";
 	private static final String PARAMETER_FILTERED_PORTS = "filteredPorts";
 	
@@ -42,7 +44,7 @@ public class PortsFetcher implements Fetcher {
 	}
 
 	public String getLabel() {
-		return "fetcher.ports";
+		return LABEL;
 	}
 
 	/**

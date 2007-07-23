@@ -13,14 +13,16 @@ import net.azib.ipscan.core.ScanningSubject;
  */
 public class HostnameFetcher implements Fetcher {
 
-	/**
+	static final String LABEL = "fetcher.hostname";
+
+	/*
 	 * @see net.azib.ipscan.fetchers.Fetcher#getLabel()
 	 */
 	public String getLabel() {
-		return "fetcher.hostname";
+		return LABEL;
 	}
 
-	/**
+	/*
 	 * @see net.azib.ipscan.fetchers.Fetcher#scan(net.azib.ipscan.core.ScanningSubject)
 	 */
 	public Object scan(ScanningSubject subject) {

@@ -48,15 +48,19 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 		String fetcherPrefValue = preferences.get(PREFERENCE_SELECTED_FETCHERS, null);
 		if (fetcherPrefValue == null) {
 			// no preferences previously saved, use these default values
-			this.selectedFetchers = new LinkedHashMap<String, Fetcher>(this.registeredFetchers);
+			selectedFetchers = new LinkedHashMap<String, Fetcher>();
+			selectedFetchers.put(IPFetcher.LABEL, registeredFetchers.get(IPFetcher.LABEL));
+			selectedFetchers.put(PingFetcher.LABEL, registeredFetchers.get(PingFetcher.LABEL));
+			selectedFetchers.put(HostnameFetcher.LABEL, registeredFetchers.get(HostnameFetcher.LABEL));
+			selectedFetchers.put(PortsFetcher.LABEL, registeredFetchers.get(PortsFetcher.LABEL));
 		}
 		else {
 			String[] fetcherPrefs = fetcherPrefValue.split("###");
-			this.selectedFetchers = new LinkedHashMap<String, Fetcher>(this.registeredFetchers.size());
+			selectedFetchers = new LinkedHashMap<String, Fetcher>(registeredFetchers.size());
 			// initialize saved selected fetchers
 			for (int i = 0; i < fetcherPrefs.length; i++) {
 				if (fetcherPrefs[i].length() > 0) {
-					this.selectedFetchers.put(fetcherPrefs[i], this.registeredFetchers.get(fetcherPrefs[i]));
+					selectedFetchers.put(fetcherPrefs[i], registeredFetchers.get(fetcherPrefs[i]));
 				}
 			}
 		}

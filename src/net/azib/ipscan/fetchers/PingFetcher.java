@@ -25,7 +25,9 @@ import net.azib.ipscan.core.values.IntegerWithUnit;
  */
 public class PingFetcher implements Fetcher {
 	
-	static final Logger LOG = LoggerFactory.getLogger();
+	static final String LABEL = "fetcher.ping";
+
+	private static final Logger LOG = LoggerFactory.getLogger();
 	
 	public static final String PARAMETER_PINGER = "pinger";
 	
@@ -43,7 +45,7 @@ public class PingFetcher implements Fetcher {
 	}
 
 	public String getLabel() {
-		return "fetcher.ping";
+		return LABEL;
 	}
 	
 	protected PingResult executePing(ScanningSubject subject) {
