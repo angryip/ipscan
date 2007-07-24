@@ -30,7 +30,7 @@ all: $(LIBWINPING)
 	$(CC) -nologo $(CFLAGS) $(CPPFLAGS) -c $< -o $(DEST)\$@
 
 $(LIBWINPING): $(OBJ)
-	$(CC) -nologo -MD -LD -o $(DEST)\$@ $** 
+	$(CC) -nologo -LD -o $(DEST)\$@ $** 
 
 clean:
 	del $(CLEAN_EXTENSIONS)

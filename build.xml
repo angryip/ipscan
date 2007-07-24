@@ -148,7 +148,8 @@
 				</fileset>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/browser"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/ole"/>
-				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/ole"/>
+				<!-- This is needed for clipboard access to work 
+				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/ole"/>-->
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/opengl"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/opengl"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/cairo"/>
