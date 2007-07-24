@@ -5,17 +5,14 @@
 	<classpathentry kind="src" path="ext/rocksaw/src/java"/>
 	<classpathentry kind="src" path="ext/vserv-tcpip/src/java"/>
 	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="src" path="ext/rocksaw/lib"/>
+	<classpathentry kind="src" path="ext/winping/lib"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="ext/rocksaw/lib/tmp.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="ipscan/ext/rocksaw/lib"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="ext/picocontainer/picocontainer-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/swt/swt-linux.jar" sourcepath="ext/swt/src-linux"/>
-	<classpathentry kind="lib" path="ext/swt/swt-mac.jar" sourcepath="ext/swt/src-mac"/>
 	<classpathentry kind="lib" path="ext/swt/swt-win32.jar" sourcepath="ext/swt/src-win32"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="ext/swt/swt-mac.jar" sourcepath="ext/swt/src-mac"/>
 	<classpathentry kind="lib" path="ext/easymock/easymock.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

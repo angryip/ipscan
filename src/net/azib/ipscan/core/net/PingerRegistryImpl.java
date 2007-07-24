@@ -14,12 +14,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.fetchers.FetcherException;
 
 /**
  * PingerRegistryImpl
  *
- * @author Anton Keks Keks
+ * @author Anton Keks
  */
 public class PingerRegistryImpl implements PingerRegistry {
 	
@@ -34,6 +35,10 @@ public class PingerRegistryImpl implements PingerRegistry {
 		this.globalConfig = globalConfig;
 		
 		pingers = new LinkedHashMap<String, Class<? extends Pinger>>();
+		if (Platform.WINDOWS) {
+			// this will be the preferred choice for Windows users
+			pingers.put("pinger.windows", WindowsPinger.class);
+		}
 		pingers.put("pinger.icmp", ICMPSharedPinger.class);
 		pingers.put("pinger.icmp2", ICMPPinger.class);
 		pingers.put("pinger.udp", UDPPinger.class);

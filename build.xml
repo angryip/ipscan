@@ -126,6 +126,7 @@
 			<unzip src="${ext}/picocontainer/picocontainer-1.0.jar" dest="${bin}"/>
 			<unzip src="${swt}/swt-@{platform}.jar" dest="${bin}.@{platform}"/>
 			<copy file="${ext}/rocksaw/lib/@{librocksaw}" todir="${bin}.@{platform}"/>
+			<copy file="${ext}/winping/lib/winping.dll" todir="${bin}.win32"/>
 			<delete includeemptydirs="true" failonerror="false">
 				<fileset dir="${bin}/META-INF"/>
 				<fileset dir="${bin}/images" includes="**/*.svg"/>

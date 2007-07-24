@@ -134,6 +134,7 @@ list.alive.img=images/list/alive.png
 list.addinfo.img=images/list/addinfo.png
 pinger.icmp=ICMP Echo
 pinger.icmp2=ICMP Echo (Alternative)
+pinger.windows=Windows ICMP.DLL
 pinger.udp=UDP packet
 pinger.tcp=TCP port probe
 opener.web=Web Browser

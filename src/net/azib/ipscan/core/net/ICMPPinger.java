@@ -25,7 +25,7 @@ import org.savarese.vserv.tcpip.OctetConverter;
  */
 public class ICMPPinger implements Pinger {
 	
-	static final Logger LOG = Logger.getLogger(ICMPPinger.class.getName());
+	private static final Logger LOG = Logger.getLogger(ICMPPinger.class.getName());
 
 	private int timeout;
 	

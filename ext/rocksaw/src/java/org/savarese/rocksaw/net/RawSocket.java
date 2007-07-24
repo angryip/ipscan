@@ -19,13 +19,12 @@
 
 package org.savarese.rocksaw.net;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InterruptedIOException;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.SocketException;
+
+import net.azib.ipscan.core.LibraryLoader;
 
 /**
  * <p>The RawSocket class provides a strictly utilitarian API for
@@ -79,8 +78,8 @@ public class RawSocket {
   native static void __RockSawShutdown();
 
   static {
-	// modified to reuse SWT's loading of jni libs from jar file
-    loadLibrary("rocksaw");
+	// modified to load jni libs from jar file
+    LibraryLoader.loadLibrary("rocksaw");
     
     if(__RockSawStartup() != 0)
       throw new UnsatisfiedLinkError(__getErrorMessage());
@@ -151,41 +150,7 @@ public class RawSocket {
       setUseSelectTimeout(false);
   }
 
-
-  private static void loadLibrary(String library) {
-	String filename = System.mapLibraryName(library);
-	String fullFilename = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + filename;
-	try {
-	  System.load(fullFilename);
-	}
-	catch (UnsatisfiedLinkError e) {
-		try {
-			// try to extract
-			InputStream is = RawSocket.class.getClassLoader().getResourceAsStream(filename);
-			byte[] buffer = new byte[4096];
-			OutputStream os = new FileOutputStream(fullFilename);
-			int read;
-			while ((read = is.read(buffer)) != -1) {
-				os.write(buffer, 0, read);
-			}
-			os.close();
-			is.close();
-			if (!net.azib.ipscan.config.Platform.WINDOWS) {
-				// TODO: change this to new File(fullFilename).setExecutable(true) in case of Java 1.6
-				try {
-					Runtime.getRuntime ().exec (new String []{"chmod", "755", fullFilename}).waitFor();
-				} catch (Throwable t) {}
-			}
-			System.load(fullFilename);
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException("Unable to extract native library: " + library, ioe);
-		}
-	}
-	
-  }
-
-/**
+  /**
    * Tests if the socket has been opened.
    *
    * @return True if the socket is open.
