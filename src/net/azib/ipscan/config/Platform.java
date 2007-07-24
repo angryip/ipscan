@@ -9,7 +9,7 @@ package net.azib.ipscan.config;
  * This class provides constants for distingushing between various platforms.
  * However, platform-specific behaviour must be kept at minimum.
  *
- * @author Anton Keks Keks
+ * @author Anton Keks
  */
 public class Platform {
 	/** Mac OS detection :-) */

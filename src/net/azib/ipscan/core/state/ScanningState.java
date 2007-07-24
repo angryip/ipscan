@@ -10,7 +10,7 @@ package net.azib.ipscan.core.state;
 /**
  * ScanningState enum - all possible states.
  *
- * @author Anton Keks Keks
+ * @author Anton Keks
  */
 public enum ScanningState {
 	

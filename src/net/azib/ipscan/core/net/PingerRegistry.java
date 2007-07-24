@@ -10,7 +10,7 @@ import net.azib.ipscan.fetchers.FetcherException;
 /**
  * PingerRegistry
  *
- * @author Anton Keks Keks
+ * @author Anton Keks
  */
 public interface PingerRegistry {
 

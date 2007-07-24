@@ -23,7 +23,7 @@ import org.junit.Test;
 /**
  * ScannerThreadTest
  *
- * @author Anton Keks Keks
+ * @author Anton Keks
  */
 public class ScannerThreadTest {
 	

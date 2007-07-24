@@ -12,7 +12,7 @@ import java.util.List;
  * StateMachine implementation.
  * It holds the current state and performs transitions with corresponding methods.
  *
- * @author Anton Keks Keks
+ * @author Anton Keks
  */
 public class StateMachine {
 	

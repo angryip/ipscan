@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 /**
  * LoggerFactory is an easy way to obtain Logger instances.
  *
- * @author Anton Keks Keks
+ * @author Anton Keks
  */
 public class LoggerFactory {
 	

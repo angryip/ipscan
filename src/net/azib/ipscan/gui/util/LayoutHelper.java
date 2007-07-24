@@ -14,7 +14,7 @@ import org.eclipse.swt.layout.FormLayout;
 /**
  * A helper class to create FormLayout and FormData object more conveniently.
  *
- * @author Anton Keks Keks
+ * @author Anton Keks
  */
 public class LayoutHelper {
 

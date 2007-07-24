@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.TableItem;
 /**
  * Table of scanning results.
  * 
- * @author Anton Keks Keks
+ * @author Anton Keks
  */
 public class ResultTable extends Table implements FetcherRegistryUpdateListener {
 	

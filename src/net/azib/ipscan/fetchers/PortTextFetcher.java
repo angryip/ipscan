@@ -26,7 +26,7 @@ import net.azib.ipscan.core.ScanningResult.ResultType;
 /**
  * PortTextFetcher - generic configurable fetcher to read some particular information from a port.
  *
- * @author Anton Keks Keks
+ * @author Anton Keks
  */
 public abstract class PortTextFetcher implements Fetcher {
 	private static final Logger LOG = LoggerFactory.getLogger();

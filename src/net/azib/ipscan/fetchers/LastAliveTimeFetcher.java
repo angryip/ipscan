@@ -13,7 +13,7 @@ import net.azib.ipscan.core.ScanningSubject;
  *
  * TODO: implement LastAliveTimeFetcher
  *
- * @author Anton Keks Keks
+ * @author Anton Keks
  */
 public class LastAliveTimeFetcher implements Fetcher {
 

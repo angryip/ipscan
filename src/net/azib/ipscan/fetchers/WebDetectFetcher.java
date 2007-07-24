@@ -11,7 +11,7 @@ import net.azib.ipscan.config.GlobalConfig;
 /**
  * WebDetectFetcher - detects the Web server software running on scanned hosts.
  *
- * @author Anton Keks Keks
+ * @author Anton Keks
  */
 public class WebDetectFetcher extends PortTextFetcher {
 

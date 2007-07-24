@@ -9,7 +9,7 @@ package net.azib.ipscan.core.state;
 /**
  * StateTransitionListener
  *
- * @author Anton Keks Keks
+ * @author Anton Keks
  */
 public interface StateTransitionListener {
 

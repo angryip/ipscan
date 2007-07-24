@@ -10,7 +10,7 @@ import net.azib.ipscan.fetchers.FetcherRegistry;
 import org.junit.Test;
 
 /**
- * @author Anton Keks Keks
+ * @author Anton Keks
  *
  */
 public class SelectFetchersDialogTest {

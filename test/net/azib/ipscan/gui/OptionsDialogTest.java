@@ -19,7 +19,7 @@ import org.junit.Test;
 /**
  * OptionsDialogTest
  *
- * @author Anton Keks Keks
+ * @author Anton Keks
  */
 public class OptionsDialogTest {
 	
