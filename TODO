@@ -4,6 +4,7 @@ Before 3.0 beta:
 * check all exporters
 * tooltips
 * export/import of settings
+* disabling of buttons/menus during scanning
 * tools->delete menus
 
 Before 3.0:
