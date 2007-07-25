@@ -147,11 +147,23 @@
 					<!-- Mac stuff -->
 					<include name="libswt-agl-*.jnilib"/>
 				</fileset>
+				<fileset dir="${bin}.@{platform}/org/eclipse/swt/dnd">
+					<include name="D*"/>
+					<include name="H*"/>
+					<include name="F*"/>
+					<include name="N*"/>
+					<include name="R*"/>
+					<include name="S*"/>
+					<include name="Table*"/>
+					<include name="Tree*"/>
+				</fileset>
+				<fileset dir="${bin}.@{platform}/org/eclipse/swt/accessibility"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/browser"/>
-				<fileset dir="${bin}.@{platform}/org/eclipse/swt/gdip"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/ole"/>
-				<!-- This is needed for clipboard access to work 
-				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/ole"/>-->
+				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/ole/win32" includes="I*"/>
+				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/ole/win32" includes="O*"/>
+				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/gdip"/>
+				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/accessibility"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/opengl"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/opengl"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/cairo"/>
@@ -181,11 +193,9 @@
 					<include name="DateTime*"/>
 					<include name="Sash*"/>
 				</fileset>
-				<!-- GIJ doesn't start without this one, however Sun's java has no problems...
-				<fileset dir="${bin}.@{platform}/org/eclipse/swt/dnd"/>-->
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/awt"/>
 			</delete>
-			<jar destfile="${dist}.@{platform}/${ant.project.name}.jar" >
+			<jar destfile="${dist}.@{platform}/${ant.project.name}-orig.jar" >
 				<manifest>
 					<attribute name="Main-Class" value="${main.class}"/>
 					<attribute name="AngryIPScanner" value="${version}"/>
@@ -193,12 +203,12 @@
 				<fileset dir="${bin}" includes="**/*"/>
 				<fileset dir="${bin}.@{platform}" includes="**/*"/>
 			</jar>
+			<obfuscate infile="${dist}.@{platform}/${ant.project.name}-orig.jar" outfile="${dist}.@{platform}/${ant.project.name}.jar" rgsfile="${ext}/retroguard/retroguard.conf"/>
 		</sequential>
 	</macrodef>
 	
 	<target name="package-linux">
 		<package-for platform="linux" librocksaw="librocksaw.so"/>
-		<obfuscate infile="${dist}.linux/${ant.project.name}.jar" outfile="${dist}.linux/${ant.project.name}-obf.jar" rgsfile="${ext}/retroguard/retroguard.conf"/>
 	</target>
 
 	<target name="package-win32">
