@@ -143,10 +143,12 @@
 					<!-- Win32 stuff -->
 					<include name="swt-awt-*.dll"/>
 					<include name="swt-wgl-*.dll"/>
+					<include name="swt-gdip-*.dll"/>
 					<!-- Mac stuff -->
 					<include name="libswt-agl-*.jnilib"/>
 				</fileset>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/browser"/>
+				<fileset dir="${bin}.@{platform}/org/eclipse/swt/gdip"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/ole"/>
 				<!-- This is needed for clipboard access to work 
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/ole"/>-->
