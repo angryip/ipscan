@@ -55,7 +55,7 @@ public class TXTExporter implements Exporter {
 		output = new OutputStreamWriter(outputStream, Labels.getLabel("encoding"));
 		if (!isAppend) {
 			output.write(Labels.getLabel("exporter.txt.generated"));
-			println(Version.FULL_NAME);
+			println(Version.getFullName());
 			println(Version.WEBSITE);
 			output.write(NEWLINE);
 			

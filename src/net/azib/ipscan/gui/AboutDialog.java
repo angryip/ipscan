@@ -51,7 +51,8 @@ public class AboutDialog extends AbstractModalDialog {
 		Link textLabel = new Link(shell, SWT.NONE);
 		String text = Labels.getLabel("text.about");
 		text = text.replaceAll("%NAME", Version.NAME);
-		text = text.replaceAll("%VERSION", Version.VERSION);
+		text = text.replaceAll("%VERSION", Version.getVersion());
+		text = text.replaceAll("%BUILD", Version.getBuildNumber());
 		text = text.replaceAll("%COPYLEFT", Version.COPYLEFT);
 		text = text.replaceAll("%WEBSITE", Version.WEBSITE);
 		text = text.replaceAll("%MAILTO", Version.MAILTO);

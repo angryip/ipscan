@@ -7,7 +7,7 @@
 	<property name="resources" value="resources"/>
 	<property name="testresults" value="testresults"/>
 			
-	<property name="version" value="2.99a"/>
+	<property name="version" value="3.0-alpha1"/>
 	<property name="main.class" value="net.azib.ipscan.Main"/>
 	<property name="swt" value="ext/swt"/>
 	<property name="retroguard.jar" value="${ext}/retroguard/retroguard.jar"/>
@@ -113,7 +113,14 @@
 		</emma>
 	</target>
 	
-	<target name="package" depends="package-linux,package-win32,package-mac"/>
+	<target name="package" depends="svn-info,package-linux,package-win32,package-mac"/>
+	
+	<target name="svn-info">
+		<!-- TODO: make this more cross-platform (most likely this will fail on windows) -->
+		<exec command="svn info --xml" output="svn-info.xml"/>
+		<xmlproperty file="svn-info.xml" prefix="svn"/>
+		<delete file="svn-info.xml"/>
+	</target>
 	
 	<macrodef name="package-for">
 		<attribute name="platform"/>
@@ -157,13 +164,14 @@
 					<include name="Table*"/>
 					<include name="Tree*"/>
 				</fileset>
+				<!-- About dialog doesn't work without these
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/accessibility"/>
+				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/accessibility"/>-->
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/browser"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/ole"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/ole/win32" includes="I*"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/ole/win32" includes="O*"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/gdip"/>
-				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/accessibility"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/opengl"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/opengl"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/cairo"/>
@@ -198,7 +206,10 @@
 			<jar destfile="${dist}.@{platform}/${ant.project.name}-orig.jar" >
 				<manifest>
 					<attribute name="Main-Class" value="${main.class}"/>
-					<attribute name="AngryIPScanner" value="${version}"/>
+					<attribute name="Title" value="Angry IP Scanner"/>
+					<attribute name="Version" value="${version}"/>
+					<attribute name="Build" value="${svn.info.entry(revision)}"/>
+					<attribute name="URL" value="http://www.azib.net/"/>
 				</manifest>
 				<fileset dir="${bin}" includes="**/*"/>
 				<fileset dir="${bin}.@{platform}" includes="**/*"/>

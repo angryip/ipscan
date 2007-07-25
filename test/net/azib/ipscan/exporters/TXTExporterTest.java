@@ -35,7 +35,7 @@ public class TXTExporterTest extends AbstractExporterTestCase {
 	public void testHeaderWithoutAppend() throws IOException {
 		exporter.start(outputStream, "feederstuff");
 		exporter.end();
-		assertContains(Version.FULL_NAME);
+		assertContains(Version.NAME);
 		assertContains(Version.WEBSITE);
 	}
 
@@ -44,7 +44,7 @@ public class TXTExporterTest extends AbstractExporterTestCase {
 		exporter.setAppend(true);
 		exporter.start(outputStream, "feederstuff");
 		exporter.end();
-		assertNotContains(Version.FULL_NAME);
+		assertNotContains(Version.NAME);
 		assertNotContains(Version.WEBSITE);
 	}
 

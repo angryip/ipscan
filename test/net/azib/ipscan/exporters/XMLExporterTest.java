@@ -40,7 +40,7 @@ public class XMLExporterTest extends AbstractExporterTestCase {
 	public void testHeaderWithoutAppend() throws IOException {
 		exporter.start(outputStream, "feederstuff");
 		exporter.end();
-		assertContains(Version.FULL_NAME);
+		assertContains(Version.NAME);
 		assertContains(Version.WEBSITE);
 	}
 

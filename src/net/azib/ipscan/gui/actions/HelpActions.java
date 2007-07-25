@@ -82,12 +82,12 @@ public class HelpActions {
 				reader.close();
 				
 				MessageBox messageBox = new MessageBox(event.display.getActiveShell(), SWT.ICON_INFORMATION);
-				messageBox.setText(Version.FULL_NAME);
+				messageBox.setText(Version.getFullName());
 				
-				if (!Version.VERSION.equals(latestVersion)) {
+				if (!Version.getVersion().equals(latestVersion)) {
 					String message = Labels.getLabel("text.version.old");
 					message = message.replaceFirst("%LATEST", latestVersion);
-					message = message.replaceFirst("%VERSION", Version.VERSION);
+					message = message.replaceFirst("%VERSION", Version.getVersion());
 					messageBox.setMessage(message);
 				}
 				else {
