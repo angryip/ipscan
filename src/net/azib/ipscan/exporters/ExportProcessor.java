@@ -45,7 +45,7 @@ public class ExportProcessor {
 			String[] fetcherNames = new String[fetchers.size()];
 			int i = 0;
 			for (Fetcher fetcher : fetchers) {
-				fetcherNames[i] = Labels.getLabel(fetcher.getLabel());
+				fetcherNames[i++] = Labels.getLabel(fetcher.getLabel());
 			}			
 			exporter.setFetchers(fetcherNames);
 
