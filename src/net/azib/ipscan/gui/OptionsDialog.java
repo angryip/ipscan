@@ -155,10 +155,10 @@ public class OptionsDialog extends AbstractModalDialog {
 		tabItem.setText(Labels.getLabel("title.options.display"));
 		tabItem.setControl(displayTab);		
 
-		createFetchersTab();
-		tabItem = new TabItem(tabFolder, SWT.NONE);
-		tabItem.setText(Labels.getLabel("title.options.fetchers"));
-		tabItem.setControl(fetchersTab);
+//		createFetchersTab();
+//		tabItem = new TabItem(tabFolder, SWT.NONE);
+//		tabItem.setText(Labels.getLabel("title.options.fetchers"));
+//		tabItem.setControl(fetchersTab);
 		
 		tabFolder.pack();
 	}

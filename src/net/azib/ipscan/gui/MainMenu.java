@@ -91,7 +91,7 @@ public class MainMenu {
 		initMenuItem(subMenu, "menu.tools.options", "Ctrl+O", new Integer(SWT.MOD1 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.Options.class));
 		initMenuItem(subMenu, "menu.tools.fetchers", "Ctrl+Shift+O", new Integer(SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.SelectFetchers.class));
 		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.tools.delete", null, null, null);
+//		initMenuItem(subMenu, "menu.tools.delete", null, null, null);
 		initMenuItem(subMenu, "menu.tools.scanInfo", "Ctrl+I", new Integer(SWT.MOD1 | 'I'), initListener(ToolsActions.ScanInfo.class));
 		
 		subMenu = initMenu(menu, "menu.help");
@@ -101,8 +101,8 @@ public class MainMenu {
 		initMenuItem(subMenu, "menu.help.forum", null, null, initListener(HelpActions.Forum.class));
 		initMenuItem(subMenu, "menu.help.plugins", null, null, initListener(HelpActions.Plugins.class));
 		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.help.cmdLine", null, null, null);
-		initMenuItem(subMenu, null, null, null, null);
+//		initMenuItem(subMenu, "menu.help.cmdLine", null, null, null);
+//		initMenuItem(subMenu, null, null, null, null);
 		initMenuItem(subMenu, "menu.help.checkVersion", null, null, initListener(HelpActions.CheckVersion.class));
 		initMenuItem(subMenu, null, null, null, null);
 		initMenuItem(subMenu, "menu.help.about", null, null, initListener(HelpActions.About.class));
