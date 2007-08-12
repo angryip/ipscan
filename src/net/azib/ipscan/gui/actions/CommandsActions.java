@@ -10,13 +10,13 @@ import java.util.Iterator;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.OpenersConfig.Opener;
+import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.DetailsDialog;
 import net.azib.ipscan.gui.EditOpenersDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
-import net.azib.ipscan.gui.UserErrorException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;

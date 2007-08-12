@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.config.Platform;
-import net.azib.ipscan.gui.UserErrorException;
+import net.azib.ipscan.core.UserErrorException;
 
 /**
  * The cross-platform terminal launcher

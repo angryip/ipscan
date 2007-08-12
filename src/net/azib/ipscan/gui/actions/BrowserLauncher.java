@@ -8,7 +8,7 @@ package net.azib.ipscan.gui.actions;
 import java.lang.reflect.Method;
 
 import net.azib.ipscan.config.Platform;
-import net.azib.ipscan.gui.UserErrorException;
+import net.azib.ipscan.core.UserErrorException;
 
 /**
  * The cross-platform browser launcher

@@ -19,8 +19,8 @@ import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.ComponentRegistry;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.LoggerFactory;
+import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.gui.MainWindow;
-import net.azib.ipscan.gui.UserErrorException;
 
 /**
  * The main executable class.

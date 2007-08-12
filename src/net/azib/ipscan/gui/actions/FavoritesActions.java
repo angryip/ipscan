@@ -11,9 +11,9 @@ import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.NamedListConfig;
 import net.azib.ipscan.config.Version;
+import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.gui.EditFavoritesDialog;
 import net.azib.ipscan.gui.InputDialog;
-import net.azib.ipscan.gui.UserErrorException;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 
 import org.eclipse.swt.SWT;

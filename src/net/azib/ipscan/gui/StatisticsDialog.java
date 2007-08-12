@@ -11,6 +11,7 @@ import java.text.NumberFormat;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResultList;
+import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.ScanningResultList.ScanInfo;
 
 import org.eclipse.swt.SWT;

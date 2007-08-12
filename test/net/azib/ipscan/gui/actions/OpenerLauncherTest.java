@@ -11,8 +11,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.fetchers.FetcherRegistry;
-import net.azib.ipscan.gui.UserErrorException;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -13,10 +13,10 @@ import java.net.URLConnection;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
+import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.gui.AboutDialog;
 import net.azib.ipscan.gui.GettingStartedDialog;
 import net.azib.ipscan.gui.StatusBar;
-import net.azib.ipscan.gui.UserErrorException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;

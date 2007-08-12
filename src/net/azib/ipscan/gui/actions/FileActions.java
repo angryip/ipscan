@@ -11,13 +11,13 @@ import java.util.List;
 import net.azib.ipscan.Main;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
+import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.exporters.ExportProcessor;
 import net.azib.ipscan.exporters.Exporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
 import net.azib.ipscan.exporters.ExportProcessor.ScanningResultSelector;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
-import net.azib.ipscan.gui.UserErrorException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;

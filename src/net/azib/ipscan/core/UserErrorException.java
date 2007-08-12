@@ -3,7 +3,7 @@
  * see http://www.azib.net/ for more information.
  * Licensed under GPLv2.
  */
-package net.azib.ipscan.gui;
+package net.azib.ipscan.core;
 
 import net.azib.ipscan.config.Labels;
 

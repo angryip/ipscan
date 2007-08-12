@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.config.OpenersConfig.Opener;
 import net.azib.ipscan.core.ScanningResultList;
+import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.fetchers.FetcherRegistry;
-import net.azib.ipscan.gui.UserErrorException;
 
 /**
  * OpenerLauncher
