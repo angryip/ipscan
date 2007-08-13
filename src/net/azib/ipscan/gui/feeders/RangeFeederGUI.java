@@ -24,9 +24,6 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -34,13 +31,13 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 /**
  * GUI for initialization of RangeFeeder.
- * 
- * TODO: delete button doesn't work well in edit fields
  * 
  * @author Anton Keks
  */
@@ -143,20 +140,18 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         
         netmaskCombo.setText(getStringLabel("netmask"));
 		netmaskCombo.setVisibleItemCount(10);
-		// Warning: IPv4 specific netmasks
-		netmaskCombo.add("/16");	// TODO: implement these
+		netmaskCombo.add("/16");
 		netmaskCombo.add("/24");
 		netmaskCombo.add("/28");
-		netmaskCombo.add("255...240");
-		netmaskCombo.add("255...224");
+		// Warning: IPv4 specific netmasks
 		netmaskCombo.add("255...192");
 		netmaskCombo.add("255...128");
 		netmaskCombo.add("255...0");
 		netmaskCombo.add("255..0.0");
 		netmaskCombo.add("255.0.0.0");
-		NetmaskSelectionListener netmaskSelectionListener = new NetmaskSelectionListener();
-		netmaskCombo.addSelectionListener(netmaskSelectionListener);
-		netmaskCombo.addTraverseListener(netmaskSelectionListener);
+		NetmaskListener netmaskSelectionListener = new NetmaskListener();
+		netmaskCombo.addListener(SWT.Selection, netmaskSelectionListener);
+		netmaskCombo.addListener(SWT.Traverse, netmaskSelectionListener);
 		formData = new FormData();
 		formData.top = new FormAttachment(startIPText);
 		formData.left = new FormAttachment(ipUpButton, 5);
@@ -218,12 +213,22 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		}
 	}
 
-	final class NetmaskSelectionListener implements SelectionListener, TraverseListener {
-		public void widgetDefaultSelected(SelectionEvent event) {
-			widgetSelected(event);
-		}
-
-		public void widgetSelected(SelectionEvent event) {
+	final class NetmaskListener implements Listener {
+		public void handleEvent(Event event) {
+			if (event.type == SWT.Traverse) {
+				// skip any other traversal besides RETURN
+				if (event.detail != SWT.TRAVERSE_RETURN) 
+					return;
+				event.doit = false;
+			}
+			if (event.type == SWT.Selection) {
+				// this is a workaround for a strange bug: if text is just typed in the combo,
+				// then this event is sent after each keypress, but we want it to be fired
+				// only if something is selected from the drop down
+				if (netmaskCombo.indexOf(netmaskCombo.getText()) < 0)
+					return;
+			}
+			
 			try {
 				String netmaskString = netmaskCombo.getText();
 				InetAddress netmask = InetAddressUtils.parseNetmask(netmaskString);
@@ -232,16 +237,11 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 				startIPText.setText(InetAddressUtils.startRangeByNetmask(startIP, netmask).getHostAddress());
 				endIPText.setText(InetAddressUtils.endRangeByNetmask(startIP, netmask).getHostAddress());
 				isEndIPUnedited = false;
+				
+				netmaskCombo.forceFocus();
 			}
 			catch (UnknownHostException e) {
 				throw new FeederException("invalidNetmask");
-			}
-		}
-
-		public void keyTraversed(TraverseEvent e) {
-			if (e.detail == SWT.TRAVERSE_RETURN) {
-				widgetSelected(null);
-				e.doit = false;
 			}
 		}
 	}

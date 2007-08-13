@@ -62,6 +62,14 @@ public class InetAddressUtilsTest {
 		assertEquals("255.255.255.192", InetAddressUtils.parseNetmask("255...192").getHostAddress());
 		assertEquals("255.0.255.0", InetAddressUtils.parseNetmask("255.0..0").getHostAddress());
 		assertEquals("0.0.0.0", InetAddressUtils.parseNetmask("0.0.0.0").getHostAddress());
+
+		assertEquals("0.0.0.0", InetAddressUtils.parseNetmask("/0").getHostAddress());
+		assertEquals("128.0.0.0", InetAddressUtils.parseNetmask("/1").getHostAddress());
+		assertEquals("255.255.0.0", InetAddressUtils.parseNetmask("/16").getHostAddress());
+		assertEquals("255.255.255.0", InetAddressUtils.parseNetmask("/24").getHostAddress());
+		assertEquals("255.255.255.128", InetAddressUtils.parseNetmask("/25").getHostAddress());
+		assertEquals("255.255.255.248", InetAddressUtils.parseNetmask("/29").getHostAddress());
+		assertEquals("255.255.255.255", InetAddressUtils.parseNetmask("/32").getHostAddress());
 	}
 	
 	@Test

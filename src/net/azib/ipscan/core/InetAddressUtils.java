@@ -99,14 +99,31 @@ public class InetAddressUtils {
 	/**
 	 * Parses the netmask string provided in special text format:
 	 * A.B.C.D, where each term is 0-255 or empty. If any term is empty, it is the same as 255.
+	 * Another supported format is CIDR ("/24").
+	 * <p/>
+	 * Only IPv4 is supported.
+	 * 
 	 * @param netmaskString
 	 * @throws UnknownHostException
 	 */
 	public static InetAddress parseNetmask(String netmaskString) throws UnknownHostException {
+		if (netmaskString.startsWith("/")) {
+			// CIDR netmask, e.g. "/24" - number of bits set from the left
+			int totalBits = Integer.parseInt(netmaskString.substring(1)); 
+			byte[] mask = new byte[4]; // Warning: assume IPv4 here
+			for (int i = 0; i < mask.length; i++) {
+				int curByteBits = totalBits >= 8 ? 8 : totalBits;
+				totalBits -= curByteBits;				
+				mask[i] = (byte)((((1 << curByteBits)-1)<<(8-curByteBits)) & 0xFF); 
+				
+			}
+			return InetAddress.getByAddress(mask);
+		} 
+
+		// IP-like netmask (IPv4)
 		netmaskString = netmaskString.replaceAll("\\.\\.", ".255.");
 		netmaskString = netmaskString.replaceAll("\\.\\.", ".255.");
-		InetAddress netmask = InetAddress.getByName(netmaskString);
-		return netmask;
+		return InetAddress.getByName(netmaskString);
 	}
 
 	/**
