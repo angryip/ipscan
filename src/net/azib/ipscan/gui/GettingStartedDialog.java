@@ -28,9 +28,14 @@ public class GettingStartedDialog extends AbstractModalDialog {
 	private Button nextButton;
 
 	public GettingStartedDialog() {
-		createShell();		
 	}
 	
+	@Override
+	public void open() {
+		createShell();
+		super.open();
+	}
+
 	/**
 	 * This method initializes shell
 	 */

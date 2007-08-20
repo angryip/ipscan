@@ -16,6 +16,7 @@ public final class GlobalConfig {
 	
 	private Preferences preferences;
 
+	public boolean isFirstRun;
 	public int maxThreads;
 	public int threadDelay;
 	public int activeFeeder;
@@ -43,6 +44,7 @@ public final class GlobalConfig {
 	GlobalConfig(Preferences preferences) {
 		this.preferences = preferences;
 		
+		isFirstRun = preferences.getBoolean("firstRun", true);
 		maxThreads = preferences.getInt("maxThreads", 100);
 		threadDelay = preferences.getInt("threadDelay", 20);
 		activeFeeder = preferences.getInt("activeFeeder", 0);
@@ -65,6 +67,7 @@ public final class GlobalConfig {
 	 * Stores all the internal properties to the storage media
 	 */
 	public void store() {
+		preferences.putBoolean("firstRun", isFirstRun);
 		preferences.putInt("maxThreads", maxThreads);
 		preferences.putInt("threadDelay", threadDelay);
 		preferences.putInt("activeFeeder", activeFeeder);

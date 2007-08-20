@@ -25,6 +25,7 @@ import net.azib.ipscan.fetchers.PingFetcher;
 import net.azib.ipscan.fetchers.PingTTLFetcher;
 import net.azib.ipscan.fetchers.PortsFetcher;
 import net.azib.ipscan.fetchers.WebDetectFetcher;
+import net.azib.ipscan.gui.ConfigDetectorDialog;
 import net.azib.ipscan.gui.MainMenu;
 import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.OptionsDialog;
@@ -77,6 +78,7 @@ public class ComponentRegistry {
 		container.registerComponentInstance(Config.getOpenersConfig());
 		container.registerComponentInstance(Config.getFavoritesConfig());
 		container.registerComponentInstance(Labels.getInstance());
+		container.registerComponentImplementation(ConfigDetector.class);
 		
 		container.registerComponentImplementation(ExporterRegistry.class);
 		container.registerComponentImplementation(TXTExporter.class);
@@ -131,10 +133,12 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(OpenerLauncher.class);
 		container.registerComponentImplementation(MainWindow.class, MainWindow.class, new Parameter[] {
 			new ComponentParameter("mainShell"), 
+			anyComponentParameter,
 			new ComponentParameter("feederArea"),
 			new ComponentParameter("controlsArea"),
 			new ComponentParameter("feederSelectionCombo"),
 			new ComponentParameter("startStopButton"),
+			anyComponentParameter,
 			anyComponentParameter,
 			anyComponentParameter,
 			anyComponentParameter,
@@ -162,6 +166,7 @@ public class ComponentRegistry {
 			anyComponentParameter});
 		
 		container.registerComponentImplementation(OptionsDialog.class);
+		container.registerComponentImplementation(ConfigDetectorDialog.class);
 		container.registerComponentImplementation(SelectFetchersDialog.class);
 		container.registerComponentImplementation(StatisticsDialog.class);
 		

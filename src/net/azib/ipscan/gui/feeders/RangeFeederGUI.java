@@ -142,7 +142,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		netmaskCombo.setVisibleItemCount(10);
 		netmaskCombo.add("/16");
 		netmaskCombo.add("/24");
-		netmaskCombo.add("/28");
+		netmaskCombo.add("/26");
 		// Warning: IPv4 specific netmasks
 		netmaskCombo.add("255...192");
 		netmaskCombo.add("255...128");

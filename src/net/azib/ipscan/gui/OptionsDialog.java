@@ -24,8 +24,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
@@ -40,6 +42,7 @@ public class OptionsDialog extends AbstractModalDialog {
 	
 	private PingerRegistry pingerRegistry;
 	private GlobalConfig globalConfig;
+	private ConfigDetectorDialog configDetectorDialog;
 	
 	private Button okButton;
 	private Button cancelButton;
@@ -67,9 +70,10 @@ public class OptionsDialog extends AbstractModalDialog {
 	private Button showInfoCheckbox;
 	private Button askConfirmationCheckbox;
 	
-	public OptionsDialog(PingerRegistry pingerRegistry, GlobalConfig globalConfig) {
+	public OptionsDialog(PingerRegistry pingerRegistry, GlobalConfig globalConfig, ConfigDetectorDialog configDetectorDialog) {
 		this.pingerRegistry = pingerRegistry;
 		this.globalConfig = globalConfig;
+		this.configDetectorDialog = configDetectorDialog;
 	}
 	
 	@Override
@@ -177,8 +181,7 @@ public class OptionsDialog extends AbstractModalDialog {
 		threadsGroup.setText(Labels.getLabel("options.threads"));
 		threadsGroup.setLayout(groupLayout);
 
-		GridData gridData = new GridData();
-		gridData.widthHint = 80;
+		GridData gridData = new GridData(80, SWT.DEFAULT);
 		
 		Label label;
 		
@@ -191,6 +194,11 @@ public class OptionsDialog extends AbstractModalDialog {
 		label.setText(Labels.getLabel("options.threads.maxThreads"));
 		maxThreadsText = new Text(threadsGroup, SWT.BORDER);
 		maxThreadsText.setLayoutData(gridData);
+		new Label(threadsGroup, SWT.NONE);
+		Button detectButton = new Button(threadsGroup, SWT.NONE);
+		detectButton.setText(Labels.getLabel("button.check"));
+		detectButton.setLayoutData(gridData);
+		detectButton.addListener(SWT.Selection, new CheckButtonListener());
 
 		Group pingingGroup = new Group(scanningTab, SWT.NONE);
 		pingingGroup.setLayout(groupLayout);
@@ -465,6 +473,14 @@ public class OptionsDialog extends AbstractModalDialog {
 		}
 
 		public void keyReleased(KeyEvent e) {
+		}
+	}
+	
+	class CheckButtonListener implements Listener {
+		public void handleEvent(Event event) {
+			globalConfig.maxThreads = Integer.parseInt(maxThreadsText.getText());
+			configDetectorDialog.open();
+			loadOptions();
 		}
 	}
 }

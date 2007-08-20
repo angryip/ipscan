@@ -6,6 +6,7 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
@@ -42,6 +43,7 @@ import org.eclipse.swt.widgets.Shell;
 public class MainWindow {
 	
 	private Shell shell;
+	private GlobalConfig globalConfig;
 	
 	private Composite feederArea;
 	
@@ -51,7 +53,8 @@ public class MainWindow {
 	/**
 	 * Creates and initializes the main window.
 	 */
-	public MainWindow(Shell shell, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry) {
+	public MainWindow(Shell shell, GlobalConfig globalConfig, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry, ConfigDetectorDialog configDetectorDialog) {
+		this.globalConfig = globalConfig;
 		
 		initShell(shell);
 		
@@ -70,6 +73,12 @@ public class MainWindow {
 		else {
 			// set bounds twice - a workaround for a bug in SWT GTK + Compiz (otherwise window gets smaller and smaller each time)
 			shell.setBounds(Config.getDimensionsConfig().getWindowBounds());			
+		}
+		
+		if (globalConfig.isFirstRun) {
+			configDetectorDialog.open();
+			new GettingStartedDialog().open();
+			globalConfig.isFirstRun = false;
 		}
 	}
 
@@ -153,7 +162,7 @@ public class MainWindow {
 		IPFeederSelectionListener feederSelectionListener = new IPFeederSelectionListener();		
 		feederSelectionCombo.addSelectionListener(feederSelectionListener);
 		// initialize the selected feeder GUI 
-		feederSelectionCombo.select(Config.getGlobal().activeFeeder);
+		feederSelectionCombo.select(globalConfig.activeFeeder);
 		feederSelectionCombo.setToolTipText(Labels.getLabel("combobox.feeder.tooltip"));
 		feederSelectionListener.widgetSelected(null);
 		

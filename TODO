@@ -1,15 +1,13 @@
 Before 3.0 beta:
 
 * sorting by columns
-* check all exporters
-* tooltips
 * export/import of settings
 * disabling of buttons/menus during scanning
 * tools->delete menus
+* Mac build
 
 Before 3.0:
 
-* getting started message
 * fetcher-specific options
 * multiple port support web-detect
 * add new fetchers by configuration of PortTextFetcher
