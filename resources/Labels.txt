@@ -50,6 +50,7 @@ state.searching=Searching...
 state.opening=Opening 
 state.retrievingVersion=Retrieving the latest version...
 title.about=About
+title.configDetect=Configuration Detection
 title.statistics=Scan Statistics
 title.options=Options
 title.options.scanning=&Scanning
@@ -77,6 +78,12 @@ text.favorite.edit=Below you can rearrange or delete favorites
 text.find=Enter the text to search for
 text.find.notFound=Nothing was found.
 text.find.restart=Would you like to start from the beginning?
+text.configDetect.firstRun=This is the first run of Angry IP Scanner.\n\n
+text.configDetect=We will try to detect the number of threads that works reliably on this machine by listening on a local free port and then connecting to it using the configured port timeout.
+text.configDetect.tries=Initiated connections:
+text.configDetect.successes=Successful connections:
+text.configDetect.setMaxThreads=Do you want to set maximum number of threads to %d?\n\nThis is the detected number and should provide reliable scanning results on your machine.
+text.configDetect.setMaxThreads.firstRun=You will be able to play more with it later, just select Tools->Options from the menu.
 text.scan.new=New scan
 text.scan.confirmation=Discard previous scanning results?
 text.scan.finished=Scanning completed
@@ -104,9 +111,6 @@ text.fetchers.availableList=Available fetchers
 text.fetchers.info=Fetcher information: 
 text.fetchers.info.notAvailable=Unfortunately, no additional information about this fetcher is available.
 text.about=%NAME\n\nVersion: %VERSION\nBuild: %BUILD\n\n%COPYLEFT\nVisit <a>%WEBSITE</a>\n\nJRE: %JAVA
-text.gettingStarted=Dummy
-text.gettingStarted1=Angry IP Scanner is an IP address scanner tool.\n\nIt is used for scanning IP addresses for finding alive hosts, gathering any kind of needed information about each host.
-text.gettingStarted2=Main terminology:\n\nFeeder - generator of IP addresses for scanning. Angry IP Scanner provides various kinds of feeders: IP Range, Random, and IP List File. You can select a feeder using the combo box next to the "Start" button.\n\nFetcher - gathers specific information about a host, e.g. ping time, hostname, open ports. Feeders usually represent columns in the scanning results list.
 button.OK=OK
 button.cancel=Cancel
 button.close=Close
@@ -163,7 +167,7 @@ fetcher.ip.info=Displays the scanned IP address.\nThis fetcher is mandatory and 
 fetcher.ping=Ping
 fetcher.ping.info=Shows whether the host replies to ping requests and shows average packet roundtrip time to the host and back if it was detected (depending on the pinging method selected in the Options dialog).
 fetcher.ping.ttl=TTL
-fetcher.ping.ttl.info=Shows the TTL (Time To Live) value in response IP packets to pings.\n\nThis value is usually decremented by each node in the network that forwards the packet, so if initial value is guessable (usually 64, 128, or 255), then the difference shows the distance to the host (in number of hosts).
+fetcher.ping.ttl.info=Shows the TTL (Time To Live) value in ping reply packets (works only with ICMP pinging).\n\nThis value is usually decremented by each node in the network that forwards the packet, so if initial value is guessable (usually 64, 128, or 255), then the difference shows the distance to the host (in number of nodes).
 fetcher.hostname=Hostname
 fetcher.hostname.info=Shows the hostname of the host obtained by the reverse DNS lookup.\n\nThis is the registered host name on the DNS server and may be different from the host name configured on the machine itself.
 fetcher.ports=Ports
@@ -236,3 +240,27 @@ exception.UserErrorException.commands.noResults=No scanning results are availabl
 exception.UserErrorException.favorite.alreadyExists=A favorite with the same name already exists, please try a different one
 exception.UserErrorException.version.latestFailed=Failed to retrieve the latest version. Please visit the website manually.
 exception.OutOfMemoryError=Out Of Memory. The amount of available to the program heap memory has been exceeded.\nPlease increase the maximum heap size for this program.
+
+text.gettingStarted=Dummy
+
+text.gettingStarted1=Angry IP Scanner is an IP address scanner tool.\n\n\
+It is used for scanning of IP addresses with the goal of finding alive hosts and gathering interesting information about each of them.\n\n\
+You can start by specifying the IP addresses to scan (your local IP is entered by default) and clicking the Start button.
+
+text.gettingStarted2=Main terminology:\n\n\
+Feeder - generator of IP addresses for scanning. Angry IP Scanner provides various kinds of feeders: IP Range, Random, and IP List File. You can select a feeder using the combo box next to the Start button.\n\n\
+Fetcher - gathers specific information about a host, e.g. ping time, hostname, open ports. Feeders usually represent columns in the scanning results list. You can select additional fetchers by choosing "Tools->Select fetchers" from the menu.
+
+text.gettingStarted3=Main terminology (continued):\n\n\
+Alive host - is the host, responding to pinging. These are blue in the results list.\n\n\
+Dead host - is the host, not responding to pinging (red in the list). However, it may still have ports open (if firewall blocks pings). In order to scan these hosts fully, check "scan dead hosts" in the Tools->Options dialog.\n\n\
+Open port - a TCP port, responding to connection attempts. Hosts with open ports are green in the results list.\n\n\
+Filtered port - a TCP port, not responding that it is closed (no RST packet). These ports are usually specifically blocked by firewalls for some reason.
+
+text.gettingStarted4=Pinging (checking if hosts are alive):\n\n\
+Angry IP Scanner can use different methods for pinging hosts. You can choose between them in the Options dialog.\n\n\
+ICMP echo - is the standard method used by the 'ping' program. This one requires administrator or root privileges on most platforms. Note that some firewall software disables sending of ICMP echo reply packets, making alive hosts appear like dead.\n\n\
+UDP - sends UDP packets (datagrams) to one of the host's ports and sees if there is any response (either positive or negative). This is non-standard, but works without special privileges.\n\n\
+TCP - tries to connect to port 80 (http) on the host. This may work better than UDP for some networks, but usually it is worse.\n\n\
+UDP and TCP pinging most often doesn't properly detect routers or other network equipment.\n\n\
+TTL (time to live) - this fetcher works only with ICMP pinging method. Its initial value is usually 64 or 128, and the difference represents the distance to the host in number of nodes it has travelled.
