@@ -82,8 +82,8 @@ text.configDetect.firstRun=This is the first run of Angry IP Scanner.\n\n
 text.configDetect=We will try to detect the number of threads that works reliably on this machine by listening on a local free port and then connecting to it using the configured port timeout.
 text.configDetect.tries=Initiated connections:
 text.configDetect.successes=Successful connections:
-text.configDetect.setMaxThreads=Do you want to set maximum number of threads to %d?\n\nThis is the detected number and should provide reliable scanning results on your machine.
-text.configDetect.setMaxThreads.firstRun=You will be able to play more with it later, just select Tools->Options from the menu.
+text.configDetect.setMaxThreads=Do you want to set maximum number of threads to %d?\n\nThis is the detected number and should provide reliable scanning results on your machine.\n\nAlternatively, you can manually increase port timeout to make detection more reliable.
+text.configDetect.setMaxThreads.firstRun=\n\nYou will be able to play more with these settings later, just select Tools->Options from the menu.
 text.scan.new=New scan
 text.scan.confirmation=Discard previous scanning results?
 text.scan.finished=Scanning completed
@@ -265,3 +265,12 @@ UDP - sends UDP packets (datagrams) to one of the host's ports and sees if there
 TCP - tries to connect to port 80 (http) on the host. This may work better than UDP for some networks, but usually it is worse.\n\n\
 UDP and TCP pinging most often doesn't properly detect routers or other network equipment.\n\n\
 TTL (time to live) - this fetcher works only with ICMP pinging method. Its initial value is usually 64 or 128, and the difference represents the distance to the host in number of nodes it has travelled.
+
+text.gettingStarted5=The results list displays the scanning results, one line per each scanned address.\n\n\
+Using the Options dialog, you may configure to display:\n\
+- all scanned hosts\n\
+- only alive hosts\n\
+- only hosts with any ports open\n\n\
+Special values (also configurable):\n\
+[n/s] - not scanned value that wasn't scanned at all (eg if the host is dead)\n\
+[n/a] - the value is not available, but was scanned

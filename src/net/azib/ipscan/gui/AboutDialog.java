@@ -36,7 +36,7 @@ public class AboutDialog extends AbstractModalDialog {
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(Labels.getLabel("title.about"));
-		shell.setSize(new Point(400, 363));
+		shell.setSize(new Point(400, 373));
 		
 		Label iconLabel = new Label(shell, SWT.ICON);
 		iconLabel.setLocation(10, 10);
@@ -53,7 +53,7 @@ public class AboutDialog extends AbstractModalDialog {
 		text = text.replaceAll("%NAME", Version.NAME);
 		text = text.replaceAll("%VERSION", Version.getVersion());
 		text = text.replaceAll("%BUILD", Version.getBuildNumber());
-		text = text.replaceAll("%JAVA", System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.version") + ", " + System.getProperty("os.name"));
+		text = text.replaceAll("%JAVA", System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.version") + "\n" + System.getProperty("os.name") + " " + System.getProperty("os.version"));
 		text = text.replaceAll("%COPYLEFT", Version.COPYLEFT);
 		text = text.replaceAll("%WEBSITE", Version.WEBSITE);
 		text = text.replaceAll("%MAILTO", Version.MAILTO);
@@ -65,7 +65,7 @@ public class AboutDialog extends AbstractModalDialog {
 		Button button = createCloseButton();
 		
 		Text licenseText = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
-		licenseText.setBounds(leftBound, textLabel.getBounds().y+textLabel.getBounds().height+10, shell.getClientArea().width - leftBound - 10, button.getLocation().y - 150);
+		licenseText.setBounds(leftBound, textLabel.getBounds().y+textLabel.getBounds().height+10, shell.getClientArea().width - leftBound - 10, button.getLocation().y - 160);
 		licenseText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		licenseText.setText("Licensed under the GNU General Public License Version 2\n\n" +
 							Version.NAME + " is free software; you can redistribute it and/or " +
