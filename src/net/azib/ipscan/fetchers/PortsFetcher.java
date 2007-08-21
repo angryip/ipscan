@@ -67,7 +67,7 @@ public class PortsFetcher implements Fetcher {
 			// now try to adapt timeout if it is enabled and pinging results are availbale
 			PingResult pingResult = (PingResult) subject.getParameter(PingFetcher.PARAMETER_PINGER);
 			if (config.adaptPortTimeout && pingResult.getReplyCount() > 2) {
-				adaptedTimeout = Math.min(Math.max(pingResult.getLongestTime() * 4, 50), config.portTimeout);
+				adaptedTimeout = Math.min(Math.max(pingResult.getLongestTime() * 3, config.minPortTimeout), config.portTimeout);
 			}
 			
 			Socket socket = null;

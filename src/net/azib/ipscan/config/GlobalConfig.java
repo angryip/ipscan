@@ -27,6 +27,7 @@ public final class GlobalConfig {
 	public boolean skipBroadcastAddresses;
 	public int portTimeout;
 	public boolean adaptPortTimeout;
+	public int minPortTimeout;
 	public String portString;
 	public String notAvailableText;
 	public String notScannedText;
@@ -55,6 +56,7 @@ public final class GlobalConfig {
 		skipBroadcastAddresses = preferences.getBoolean("skipBroadcastAddresses", true);
 		portTimeout = preferences.getInt("portTimeout", 3000);
 		adaptPortTimeout = preferences.getBoolean("adaptPortTimeout", true);
+		minPortTimeout = preferences.getInt("minPortTimeout", 500);
 		portString = preferences.get("portString", "");
 		notAvailableText = preferences.get("notAvailableText", Labels.getLabel("fetcher.value.notAvailable"));
 		notScannedText = preferences.get("notScannedText", Labels.getLabel("fetcher.value.notScanned"));
@@ -78,6 +80,7 @@ public final class GlobalConfig {
 		preferences.putBoolean("skipBroadcastAddresses", skipBroadcastAddresses);
 		preferences.putInt("portTimeout", portTimeout);
 		preferences.putBoolean("adaptPortTimeout", adaptPortTimeout);
+		preferences.putInt("minPortTimeout", minPortTimeout);
 		preferences.put("portString", portString);
 		preferences.put("notAvailableText", notAvailableText);
 		preferences.put("notScannedText", notScannedText);

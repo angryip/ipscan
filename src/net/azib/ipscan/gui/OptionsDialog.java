@@ -63,6 +63,7 @@ public class OptionsDialog extends AbstractModalDialog {
 	private TabItem portsTabItem;
 	private Text portTimeoutText;
 	private Button adaptTimeoutCheckbox;
+	private Text minPortTimeoutText;
 	private Text portsText;
 	private Text notAvailableText;
 	private Text notScannedText;
@@ -316,9 +317,7 @@ public class OptionsDialog extends AbstractModalDialog {
 		GridData gridData = new GridData();
 		gridData.widthHint = 50;
 		
-		Label label;
-		
-		label = new Label(timingGroup, SWT.NONE);
+		Label label = new Label(timingGroup, SWT.NONE);
 		label.setText(Labels.getLabel("options.ports.timing.timeout"));
 		portTimeoutText = new Text(timingGroup, SWT.BORDER);
 		portTimeoutText.setLayoutData(gridData);
@@ -328,7 +327,17 @@ public class OptionsDialog extends AbstractModalDialog {
 		adaptTimeoutCheckbox = new Button(timingGroup, SWT.CHECK);
 		adaptTimeoutCheckbox.setText(Labels.getLabel("options.ports.timing.adaptTimeout"));
 		adaptTimeoutCheckbox.setLayoutData(gridData1);
-		
+		adaptTimeoutCheckbox.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				minPortTimeoutText.setEnabled(adaptTimeoutCheckbox.getSelection());
+			}
+		});
+
+		label = new Label(timingGroup, SWT.NONE);
+		label.setText(Labels.getLabel("options.ports.timing.minTimeout"));
+		minPortTimeoutText = new Text(timingGroup, SWT.BORDER);
+		minPortTimeoutText.setLayoutData(gridData);
+
 		RowLayout portsLayout = new RowLayout(SWT.VERTICAL);
 		portsLayout.fill = true;
 		portsLayout.marginHeight = 2;
@@ -385,6 +394,8 @@ public class OptionsDialog extends AbstractModalDialog {
 		skipBroadcastsCheckbox.setSelection(globalConfig.skipBroadcastAddresses);
 		portTimeoutText.setText(Integer.toString(globalConfig.portTimeout));
 		adaptTimeoutCheckbox.setSelection(globalConfig.adaptPortTimeout);
+		minPortTimeoutText.setText(Integer.toString(globalConfig.minPortTimeout));
+		minPortTimeoutText.setEnabled(globalConfig.adaptPortTimeout);
 		portsText.setText(globalConfig.portString);
 		notAvailableText.setText(globalConfig.notAvailableText);
 		notScannedText.setText(globalConfig.notScannedText);
@@ -419,6 +430,7 @@ public class OptionsDialog extends AbstractModalDialog {
 		globalConfig.skipBroadcastAddresses = skipBroadcastsCheckbox.getSelection();
 		globalConfig.portTimeout = parseIntValue(portTimeoutText);
 		globalConfig.adaptPortTimeout = adaptTimeoutCheckbox.getSelection();
+		globalConfig.minPortTimeout = parseIntValue(minPortTimeoutText);
 		globalConfig.portString = portsText.getText();
 		globalConfig.notAvailableText = notAvailableText.getText();
 		globalConfig.notScannedText = notScannedText.getText();

@@ -1,7 +1,6 @@
 Before 3.0 beta:
 
 * host:port for detection
-* min port timeout (for adaptation)
 * sorting by columns
 * export/import of settings
 * disabling of buttons/menus during scanning
