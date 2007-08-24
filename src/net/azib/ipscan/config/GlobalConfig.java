@@ -46,7 +46,7 @@ public final class GlobalConfig {
 		this.preferences = preferences;
 		
 		isFirstRun = preferences.getBoolean("firstRun", true);
-		maxThreads = preferences.getInt("maxThreads", 100);
+		maxThreads = preferences.getInt("maxThreads", Platform.CRIPPLED_WINDOWS ? 10 : 100);
 		threadDelay = preferences.getInt("threadDelay", 20);
 		activeFeeder = preferences.getInt("activeFeeder", 0);
 		scanDeadHosts = preferences.getBoolean("scanDeadHosts", false);
@@ -55,7 +55,7 @@ public final class GlobalConfig {
 		pingCount = preferences.getInt("pingCount", 3);
 		skipBroadcastAddresses = preferences.getBoolean("skipBroadcastAddresses", true);
 		portTimeout = preferences.getInt("portTimeout", 2000);
-		adaptPortTimeout = preferences.getBoolean("adaptPortTimeout", true);
+		adaptPortTimeout = preferences.getBoolean("adaptPortTimeout", !Platform.CRIPPLED_WINDOWS);
 		minPortTimeout = preferences.getInt("minPortTimeout", 100);
 		portString = preferences.get("portString", "");
 		notAvailableText = preferences.get("notAvailableText", Labels.getLabel("fetcher.value.notAvailable"));

@@ -276,3 +276,7 @@ Using the Options dialog, you may configure to display:\n\
 Special values (also configurable):\n\
 [n/s] - not scanned value that wasn't scanned at all (eg if the host is dead)\n\
 [n/a] - the value is not available, but was scanned
+
+text.crippledWindowsInfo=Thank you for trying Angry IP Scanner!\n\n\
+However, keep in mind that consumer versions of Windows (e.g. Windows XP SP2, Windows Vista) have limited ability to be hosts for scanning, due to removed RawSocket support and TCP connection rate limiting.\n\n\
+Because of that, some configuration options were changed for you, making scanning a lot slower than on full-featured operating systems. See the FAQ on Angry IP Scanner homepage.

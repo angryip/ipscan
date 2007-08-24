@@ -8,6 +8,7 @@ package net.azib.ipscan.gui;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
@@ -30,6 +31,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -76,6 +78,13 @@ public class MainWindow {
 		}
 		
 		if (globalConfig.isFirstRun) {
+			if (Platform.CRIPPLED_WINDOWS) {
+				// inform crippled windows owners of configuration changes
+				MessageBox box = new MessageBox(shell, SWT.ICON_WARNING | SWT.OK);
+				box.setText(Version.NAME);
+				box.setMessage(Labels.getLabel("text.crippledWindowsInfo"));
+				box.open();
+			}
 			new GettingStartedDialog().open();
 			globalConfig.isFirstRun = false;
 		}
