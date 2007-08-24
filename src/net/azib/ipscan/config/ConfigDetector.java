@@ -6,14 +6,13 @@
 package net.azib.ipscan.config;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.SocketTimeoutException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,11 +24,14 @@ import java.util.logging.Logger;
  */
 public class ConfigDetector {
 	
+	private static final int CONNECTS_PER_THREAD = 16;
+	private static final double SUCCESS_PROBABILITY = 0.2;
+	
 	private static Logger logger;
 	private GlobalConfig config;
 	private DetectorCallback callback;
-	private int numConnects;
-	private int numCorrectReads;
+	private AtomicInteger expectedConnects;
+	private AtomicInteger actualConnects;
 	
 	public ConfigDetector(GlobalConfig config) {
 		this.config = config;
@@ -39,128 +41,100 @@ public class ConfigDetector {
 		this.callback = callback;
 	}
 
-	public void detectMaxThreads() {
+	public void detectMaxThreads(InetSocketAddress socketAddress) {
 		// init it here to reduce stuff needed to do in constructor
 		logger = LoggerFactory.getLogger();
 		
-		numConnects = 0;
-		numCorrectReads = 0;
-		
-		final DetectionServerThread serverThread = new DetectionServerThread();
-		serverThread.setDaemon(true);
-		serverThread.start();
-		synchronized (serverThread) {
-			try {
-				// wait for port value to become available
-				serverThread.wait(10000);
-			}
-			catch (InterruptedException e) {
-			}
-		}
-		
+		expectedConnects = new AtomicInteger();
+		actualConnects = new AtomicInteger();
+				
 		List<Thread> threads = new LinkedList<Thread>();
 
-		try {
-			final InetSocketAddress socketAddress = new InetSocketAddress(InetAddress.getLocalHost(), serverThread.port);
+		// first ensure that successful connections can be opened 
+		for (int i = 0; i < config.maxThreads; i++) {
+			Thread t = new SocketThread(socketAddress);
+			threads.add(t);
+			t.start();
+		}
+		join(threads);
+	}
 
-			for (int i = 0; i < config.maxThreads; i++) {
-				if (callback != null)
-					callback.onDetectorTry();
-				Thread t = new Thread() {
-					public void run() {
-						Socket s = new Socket();
-						try {
-							s.setSoTimeout(config.portTimeout);
-							s.setTcpNoDelay(true);
-							s.setSoLinger(true, 0);
-							s.connect(socketAddress, config.portTimeout);
-							numConnects++;
-							byte[] buf = new byte[64];
-							s.getInputStream().read(buf);
-							if (buf[0] == 'H') {
-								numCorrectReads++;
-								if (callback != null)
-									callback.onDetectorSuccess();
-							}
-							s.close();						
-						}
-						catch (Exception e) {
-							logger.log(Level.FINE, "Failure on local port " + s.getLocalPort());
-						}
-					}
-				};
-				threads.add(t);
-				t.start();
-			}
-		}
-		catch (UnknownHostException e1) {
-			// getLocalHost should not fail
-			LoggerFactory.getLogger().log(Level.WARNING, "", e1);
-		}
-		
-		// by this time, all the thread must be finished
+	private void join(List<Thread> threads) {
 		try {
 			for (Thread t : threads) {
 				t.join();
 			}
+			threads.clear();
 		}
 		catch (InterruptedException e) {
 		}
-		serverThread.interrupt();
 	}
 	
-	public int getSuccessfulConnectCount() {
-		return numConnects;
+	public int getInitialConnectCount() {
+		return config.maxThreads * CONNECTS_PER_THREAD;
 	}
 	
-	public int getSuccessfulDataReadCount() {
-		return numCorrectReads;
+	public int getInitialSuccessCount() {
+		return (int)(getInitialConnectCount() * SUCCESS_PROBABILITY);
 	}
 	
-	static class DetectionServerThread extends Thread {
-		int port;
-		
-		public void run() {
-			try {
-				ServerSocket server = new ServerSocket(0);
-				//server.setSoTimeout();
-				port = server.getLocalPort();
-				synchronized (this) {
-					// tell the other thread that port value is now available
-					this.notify();
-				}
-				if (logger.isLoggable(Level.FINE)) {
-					logger.log(Level.FINE, "Started fake server on port " + port);
-				}
-				while (!interrupted()) {
-					final Socket s = server.accept();
-					new Thread() {
-						public void run() {
-							try {
-								s.setTcpNoDelay(true);
-								s.setSoLinger(true, 0);
-								OutputStream stream = s.getOutputStream();
-								stream.write(("Hello " + s.getPort()).getBytes());
-								stream.flush();
-								sleep(10000);
-								s.close();
-							}
-							catch (Exception e) {
-								logger.log(Level.FINER, "On port " + s.getPort(), e);
-							}
-						}
-					}.start();
-				}
-				logger.log(Level.FINE, "Stopped fake server");
-			}
-			catch (IOException e) {
-				logger.log(Level.FINE, null, e);
-			}
-		}
+	public int getExpectedSuccessfulConnectCount() {
+		return expectedConnects.intValue();
 	}
 	
+	public int getActualSuccessfulConnectCount() {
+		return actualConnects.intValue();
+	}
+			
 	public interface DetectorCallback {
 		void onDetectorTry();
 		void onDetectorSuccess();
+	}
+	
+	class SocketThread extends Thread {
+		private InetSocketAddress socketAddress;
+		
+		public SocketThread(InetSocketAddress socketAddress) {
+			this.socketAddress = socketAddress;
+		}
+
+		public void run() {
+			for (int i = 0; i < CONNECTS_PER_THREAD; i++) {
+				if (callback != null)
+					callback.onDetectorTry();
+				Socket s = new Socket();
+				try {
+					s.setSoTimeout(config.portTimeout);
+					s.setTcpNoDelay(true);
+					s.setSoLinger(true, 0);
+					if (Math.random() > (1.0 - SUCCESS_PROBABILITY)) {
+						expectedConnects.incrementAndGet();
+						s.connect(socketAddress, config.portTimeout);
+					}
+					else {
+						s.connect(new InetSocketAddress(InetAddress.getByAddress(new byte[] {(byte)192, (byte)168, (byte)(Math.random()*255), (byte)(Math.random()*255)}), 61493+(int)(Math.random()*200)), config.portTimeout);
+					}
+					
+					actualConnects.incrementAndGet();
+					if (callback != null) {
+						callback.onDetectorSuccess();
+					}
+					sleep(10000);										
+				}
+				catch (SocketTimeoutException e) {
+					// ignore
+				}
+				catch (Exception e) {
+					logger.log(Level.FINE, "Failure: " + e);
+				}
+				finally {
+					try {
+						s.close();
+					}
+					catch (IOException e) {					
+					}
+				}
+			}
+		}
 	}
 }

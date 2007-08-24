@@ -142,7 +142,6 @@ public class ComponentRegistry {
 			anyComponentParameter,
 			anyComponentParameter,
 			anyComponentParameter,
-			anyComponentParameter,
 			anyComponentParameter});
 		container.registerComponentImplementation(ResultTable.class, ResultTable.class, new Parameter[] {
 			new ComponentParameter("mainShell"),

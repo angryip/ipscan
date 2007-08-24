@@ -16,6 +16,8 @@ import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -124,14 +126,14 @@ public class OptionsDialog extends AbstractModalDialog {
 		shell.pack();
 		okButton.setFocus();
 
-		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		okButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
 				saveOptions();
 				shell.close();
 			}
 		});
-		cancelButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		cancelButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
 				shell.close();
 			}
 		});
@@ -196,10 +198,10 @@ public class OptionsDialog extends AbstractModalDialog {
 		maxThreadsText = new Text(threadsGroup, SWT.BORDER);
 		maxThreadsText.setLayoutData(gridData);
 		new Label(threadsGroup, SWT.NONE);
-		Button detectButton = new Button(threadsGroup, SWT.NONE);
-		detectButton.setText(Labels.getLabel("button.check"));
-		detectButton.setLayoutData(gridData);
-		detectButton.addListener(SWT.Selection, new CheckButtonListener());
+		Button checkButton = new Button(threadsGroup, SWT.NONE);
+		checkButton.setText(Labels.getLabel("button.check"));
+		checkButton.setLayoutData(gridData);
+		checkButton.addListener(SWT.Selection, new CheckButtonListener());
 
 		Group pingingGroup = new Group(scanningTab, SWT.NONE);
 		pingingGroup.setLayout(groupLayout);
@@ -492,7 +494,6 @@ public class OptionsDialog extends AbstractModalDialog {
 		public void handleEvent(Event event) {
 			globalConfig.maxThreads = Integer.parseInt(maxThreadsText.getText());
 			configDetectorDialog.open();
-			loadOptions();
 		}
 	}
 }

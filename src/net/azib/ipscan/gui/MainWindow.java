@@ -53,7 +53,7 @@ public class MainWindow {
 	/**
 	 * Creates and initializes the main window.
 	 */
-	public MainWindow(Shell shell, GlobalConfig globalConfig, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry, ConfigDetectorDialog configDetectorDialog) {
+	public MainWindow(Shell shell, GlobalConfig globalConfig, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry) {
 		this.globalConfig = globalConfig;
 		
 		initShell(shell);
@@ -76,7 +76,6 @@ public class MainWindow {
 		}
 		
 		if (globalConfig.isFirstRun) {
-			configDetectorDialog.open();
 			new GettingStartedDialog().open();
 			globalConfig.isFirstRun = false;
 		}
