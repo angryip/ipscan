@@ -47,7 +47,6 @@ public class AboutDialog extends AbstractModalDialog {
 		iconLabel.pack();
 		int leftBound = iconLabel.getBounds().width + 20;
 
-		// TODO: make clicking on links work
 		Link textLabel = new Link(shell, SWT.NONE);
 		String text = Labels.getLabel("text.about");
 		text = text.replaceAll("%NAME", Version.NAME);

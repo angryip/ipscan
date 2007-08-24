@@ -12,3 +12,4 @@ Before 3.0:
 * add new fetchers by configuration of PortTextFetcher
 * startup as root option
 * compile librocksaw for mac
+* NetBIOS fetchers (like in 2.x)
