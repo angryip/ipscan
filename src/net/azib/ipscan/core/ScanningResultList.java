@@ -153,7 +153,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		
 		ScanningResult scanningResult = resultList.get(index);
 		StringBuffer details = new StringBuffer(1024);
-		Iterator<Object> iterator = scanningResult.getValues().iterator();
+		Iterator<?> iterator = scanningResult.getValues().iterator();
 		for (int i = 0; iterator.hasNext(); i++) {
 			String fetcherName = Labels.getLabel(selectedFetchers.get(i).getLabel());
 			details.append(fetcherName).append(":\t");
@@ -234,9 +234,11 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	/**
 	 * Sorts by the specified column index.
 	 * @param columnIndex
+	 * @param ascending
 	 */
-	public synchronized void sort(int columnIndex) {
+	public synchronized void sort(int columnIndex, boolean ascending) {
 		resultsComparator.index = columnIndex;
+		resultsComparator.ascending = ascending;
 		Collections.sort(resultList, resultsComparator);
 		// now rebuild indexes
 		resultIndexes = new HashMap<InetAddress, Integer>(RESULT_LIST_INITIAL_SIZE);
@@ -341,13 +343,25 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	
 	static class ResultsComparator implements Comparator<ScanningResult> {
 		
-		private int index;
+		int index;
+		boolean ascending;
 
+		@SuppressWarnings("unchecked")
 		public int compare(ScanningResult r1, ScanningResult r2) {
 			Object val1 = r1.getValues().get(index);
 			Object val2 = r2.getValues().get(index);
 			
-			return val1.toString().compareTo(val2.toString());
+			int result;
+			if (val1.getClass() == val2.getClass() && val1 instanceof Comparable) {
+				// both are the same type and Comparable
+				result = ((Comparable)val1).compareTo(val2);
+			}
+			else {
+				// otherwise compare String representations
+				result = val1.toString().compareTo(val2.toString());
+			}
+			
+			return result * (ascending ? 1 : -1);
 		}
 	}
 }

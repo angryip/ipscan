@@ -10,11 +10,13 @@ import java.util.MissingResourceException;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
+import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherException;
 import net.azib.ipscan.fetchers.PingFetcher;
 import net.azib.ipscan.fetchers.PortsFetcher;
 import net.azib.ipscan.gui.OptionsDialog;
+import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.MainMenu.ColumnsMenu;
 
 import org.eclipse.swt.SWT;
@@ -76,6 +78,12 @@ public class ColumnsActions {
 
 	public static class SortBy implements Listener {
 		
+		private ScanningResultList scanningResultList;
+		
+		public SortBy(ScanningResultList scanningResultList) {
+			this.scanningResultList = scanningResultList;
+		}
+
 		public void handleEvent(Event event) {
 			// retrieve the clicked column (see ColumnClick above)
 			TableColumn tableColumn = (TableColumn) ((MenuItem)event.widget).getParent().getData();
@@ -89,8 +97,9 @@ public class ColumnsActions {
 			else {
 				table.setSortDirection(table.getSortDirection() == SWT.UP ? SWT.DOWN : SWT.UP);
 			}
-			
-			// TODO: execute ScanningResultList.sort() here!!!
+
+			scanningResultList.sort(table.indexOf(tableColumn), table.getSortDirection() == SWT.UP);
+			((ResultTable)table).updateResults();
 		}
 	}
 	

@@ -261,7 +261,7 @@ public class ScanningResultListTest {
 		scanningResults.registerAtIndex(3, scanningResults.createResult(InetAddress.getByName("127.9.9.4")));
 		scanningResults.getResult(3).setValue(1, "m");
 		
-		scanningResults.sort(1);
+		scanningResults.sort(1, true);
 		
 		Iterator<ScanningResult> i = scanningResults.iterator();
 		assertEquals(InetAddress.getByName("127.9.9.2"), i.next().getAddress());

@@ -146,7 +146,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 	public void updateResults() {
 		clearAll();
 	}
-
+	
 	/**
 	 * Returns the details about the currently selected IP address
 	 * @return
@@ -199,7 +199,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 			int tableIndex = indexOf(item);
 			
 			ScanningResult scanningResult = scanningResults.getResult(tableIndex);
-			List<Object> values = scanningResult.getValues();
+			List<?> values = scanningResult.getValues();
 			String[] resultStrings = new String[values.size()];
 			for (int i = 0; i < values.size(); i++) {				
 				Object value = values.get(i);
