@@ -51,12 +51,12 @@ public final class GlobalConfig {
 		activeFeeder = preferences.getInt("activeFeeder", 0);
 		scanDeadHosts = preferences.getBoolean("scanDeadHosts", false);
 		selectedPinger = preferences.get("selectedPinger", "pinger.icmp");
-		pingTimeout = preferences.getInt("pingTimeout", 3000);
+		pingTimeout = preferences.getInt("pingTimeout", 2000);
 		pingCount = preferences.getInt("pingCount", 3);
 		skipBroadcastAddresses = preferences.getBoolean("skipBroadcastAddresses", true);
-		portTimeout = preferences.getInt("portTimeout", 3000);
+		portTimeout = preferences.getInt("portTimeout", 2000);
 		adaptPortTimeout = preferences.getBoolean("adaptPortTimeout", true);
-		minPortTimeout = preferences.getInt("minPortTimeout", 500);
+		minPortTimeout = preferences.getInt("minPortTimeout", 100);
 		portString = preferences.get("portString", "");
 		notAvailableText = preferences.get("notAvailableText", Labels.getLabel("fetcher.value.notAvailable"));
 		notScannedText = preferences.get("notScannedText", Labels.getLabel("fetcher.value.notScanned"));
