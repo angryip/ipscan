@@ -1,6 +1,5 @@
 Before 3.0 beta:
 
-* special GlobalConfig defaults for Windows
 * export/import of settings
 * disabling of buttons/menus during scanning
 * Mac build

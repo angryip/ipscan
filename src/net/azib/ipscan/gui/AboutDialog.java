@@ -53,6 +53,7 @@ public class AboutDialog extends AbstractModalDialog {
 		text = text.replaceAll("%NAME", Version.NAME);
 		text = text.replaceAll("%VERSION", Version.getVersion());
 		text = text.replaceAll("%BUILD", Version.getBuildNumber());
+		text = text.replaceAll("%DATE", Version.getBuildDate());
 		text = text.replaceAll("%JAVA", System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.version") + "\n" + System.getProperty("os.name") + " " + System.getProperty("os.version"));
 		text = text.replaceAll("%COPYLEFT", Version.COPYLEFT);
 		text = text.replaceAll("%WEBSITE", Version.WEBSITE);
@@ -65,7 +66,7 @@ public class AboutDialog extends AbstractModalDialog {
 		Button button = createCloseButton();
 		
 		Text licenseText = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
-		licenseText.setBounds(leftBound, textLabel.getBounds().y+textLabel.getBounds().height+10, shell.getClientArea().width - leftBound - 10, button.getLocation().y - 160);
+		licenseText.setBounds(leftBound, textLabel.getBounds().y+textLabel.getBounds().height+10, shell.getClientArea().width - leftBound - 10, button.getLocation().y - 174);
 		licenseText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		licenseText.setText("Licensed under the GNU General Public License Version 2\n\n" +
 							Version.NAME + " is free software; you can redistribute it and/or " +

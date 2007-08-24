@@ -31,6 +31,7 @@ public class Version {
 	
 	private static String version;
 	private static String build;
+	private static String buildDate;
 	
 	/**
 	 * @return version of currently running Angry IP Scanner (retrieved from the jar file)
@@ -52,6 +53,16 @@ public class Version {
 		return build;
 	}
 
+	/**
+	 * @return build date of currently running Angry IP Scanner  (retrieved from the jar file)
+	 */
+	public static String getBuildDate() {
+		if (buildDate == null) {
+			loadVersionFromJar();
+		}
+		return buildDate;
+	}
+
 	private static void loadVersionFromJar() {
 		String path = Version.class.getClassLoader().getResource(Version.class.getName().replace('.', '/') + ".class").toString();
 		if (path.startsWith("jar:file:")) {
@@ -61,14 +72,16 @@ public class Version {
 				Attributes attrs = jarFile.getManifest().getMainAttributes();
 				version = attrs.getValue("Version");
 				build = attrs.getValue("Build");
+				buildDate = new StringBuilder(attrs.getValue("Build-Date")).insert(4, '-').insert(7, '-').toString();
 				return;
 			}
 			catch (Exception e) {
 				LoggerFactory.getLogger().log(Level.WARNING, "Cannot obtain version", e);
 			}
 		}
-		version = "Current";
+		version = "current";
 		build = "unknown";
+		buildDate = "today";
 	}
 	
 	public static String getFullName() {
