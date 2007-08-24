@@ -60,7 +60,7 @@ public class OptionsDialog extends AbstractModalDialog {
 	private Text pingingCountText;
 	private Combo pingersCombo;
 	private Button skipBroadcastsCheckbox;
-	private Composite fetchersTab;
+//	private Composite fetchersTab;
 	private Composite portsTab;
 	private TabItem portsTabItem;
 	private Text portTimeoutText;
@@ -162,10 +162,10 @@ public class OptionsDialog extends AbstractModalDialog {
 		tabItem.setText(Labels.getLabel("title.options.display"));
 		tabItem.setControl(displayTab);		
 
-		createFetchersTab();
-		tabItem = new TabItem(tabFolder, SWT.NONE);
-		tabItem.setText(Labels.getLabel("title.options.fetchers"));
-		tabItem.setControl(fetchersTab);
+//		createFetchersTab();
+//		tabItem = new TabItem(tabFolder, SWT.NONE);
+//		tabItem.setText(Labels.getLabel("title.options.fetchers"));
+//		tabItem.setControl(fetchersTab);
 		
 		tabFolder.pack();
 	}
@@ -197,11 +197,11 @@ public class OptionsDialog extends AbstractModalDialog {
 		label.setText(Labels.getLabel("options.threads.maxThreads"));
 		maxThreadsText = new Text(threadsGroup, SWT.BORDER);
 		maxThreadsText.setLayoutData(gridData);
-		new Label(threadsGroup, SWT.NONE);
-		Button checkButton = new Button(threadsGroup, SWT.NONE);
-		checkButton.setText(Labels.getLabel("button.check"));
-		checkButton.setLayoutData(gridData);
-		checkButton.addListener(SWT.Selection, new CheckButtonListener());
+//		new Label(threadsGroup, SWT.NONE);
+//		Button checkButton = new Button(threadsGroup, SWT.NONE);
+//		checkButton.setText(Labels.getLabel("button.check"));
+//		checkButton.setLayoutData(gridData);
+//		checkButton.addListener(SWT.Selection, new CheckButtonListener());
 
 		Group pingingGroup = new Group(scanningTab, SWT.NONE);
 		pingingGroup.setLayout(groupLayout);
@@ -359,14 +359,14 @@ public class OptionsDialog extends AbstractModalDialog {
 	/**
 	 * This method initializes fetchersTab	
 	 */
-	private void createFetchersTab() {
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 1;
-		fetchersTab = new Composite(tabFolder, SWT.NONE);
-		fetchersTab.setLayout(gridLayout);
-		Label label = new Label(fetchersTab, SWT.NONE);
-		label.setText(Labels.getLabel("options.fetchers.info"));
-	}
+//	private void createFetchersTab() {
+//		GridLayout gridLayout = new GridLayout();
+//		gridLayout.numColumns = 1;
+//		fetchersTab = new Composite(tabFolder, SWT.NONE);
+//		fetchersTab.setLayout(gridLayout);
+//		Label label = new Label(fetchersTab, SWT.NONE);
+//		label.setText(Labels.getLabel("options.fetchers.info"));
+//	}
 
 	/**
 	 * @return a pre-initialized RowLayout suitable for option tabs.
