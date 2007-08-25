@@ -72,7 +72,7 @@ public class Version {
 				Attributes attrs = jarFile.getManifest().getMainAttributes();
 				version = attrs.getValue("Version");
 				build = attrs.getValue("Build");
-				buildDate = new StringBuilder(attrs.getValue("Build-Date")).insert(4, '-').insert(7, '-').toString();
+				buildDate = attrs.getValue("Build-Date");
 				return;
 			}
 			catch (Exception e) {

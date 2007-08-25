@@ -7,22 +7,23 @@
 	<property name="resources" value="resources"/>
 	<property name="testresults" value="testresults"/>
 			
+	<property name="name" value="Angry IP Scanner"/>
 	<property name="version" value="3.0-alpha2"/>
 	<property name="main.class" value="net.azib.ipscan.Main"/>
 	<property name="swt" value="ext/swt"/>
-	<property name="retroguard.jar" value="${ext}/retroguard/retroguard.jar"/>
 	<property name="ext.src" value="${ext}/rocksaw/src:${ext}/vserv-tcpip/src"/>
 
 	<path id="test.path" path="${bin}"/>
 	<property name="emma.dir" value="${ext}/emma"/>
-	
-	<taskdef name="obfuscate" classname="COM.rl.ant.RetroGuardTask" classpath="${retroguard.jar}"/>
-	
+		
 	<path id="emma.lib">
 		<pathelement location="${emma.dir}/emma.jar" />
 		<pathelement location="${emma.dir}/emma_ant.jar" />
 	</path>
 	<taskdef resource="emma_ant.properties" classpathref="emma.lib"/>
+	
+	<taskdef name="obfuscate" classname="COM.rl.ant.RetroGuardTask" classpath="${ext}/retroguard/retroguard.jar"/>	
+	<taskdef name="mac-jarbundler" classname="net.sourceforge.jarbundler.JarBundler" classpath="${ext}/mac-jarbundler/jarbundler.jar"/>
 	
 	<patternset id="classpath.resources">
 		<exclude name="**/*.java"/>
@@ -120,7 +121,9 @@
 		<exec command="svn info . --xml" output="svn-info.xml"/>
 		<xmlproperty file="svn-info.xml" prefix="svn"/>
 		<delete file="svn-info.xml"/>
+		<property name="build.number" value="${svn.info.entry(revision)}"/>
 		<tstamp/>
+		<property name="build.date" value="${TODAY}"/>
 	</target>
 	
 	<macrodef name="package-for">
@@ -207,16 +210,17 @@
 			<jar destfile="${dist}.@{platform}/${ant.project.name}-orig.jar" >
 				<manifest>
 					<attribute name="Main-Class" value="${main.class}"/>
-					<attribute name="Title" value="Angry IP Scanner"/>
+					<attribute name="Title" value="${name}"/>
 					<attribute name="Version" value="${version}"/>
-					<attribute name="Build" value="${svn.info.entry(revision)}"/>
-					<attribute name="Build-Date" value="${DSTAMP}"/>
-					<attribute name="URL" value="http://www.azib.net/"/>
+					<attribute name="Build" value="${build.number}"/>
+					<attribute name="Build-Date" value="${build.date}"/>
+					<attribute name="Built-By" value="${user.name}"/>
+					<attribute name="URL" value="http://www.azib.net/ipscan/"/>
 				</manifest>
 				<fileset dir="${bin}" includes="**/*"/>
 				<fileset dir="${bin}.@{platform}" includes="**/*"/>
 			</jar>
-			<obfuscate infile="${dist}.@{platform}/${ant.project.name}-orig.jar" outfile="${dist}.@{platform}/${ant.project.name}.jar" rgsfile="${ext}/retroguard/retroguard.conf"/>
+			<obfuscate infile="${dist}.@{platform}/${ant.project.name}-orig.jar" outfile="${dist}.@{platform}/${ant.project.name}-@{platform}-${version}.jar" rgsfile="${ext}/retroguard/retroguard.conf"/>
 		</sequential>
 	</macrodef>
 	
@@ -228,8 +232,27 @@
 		<package-for platform="win32" librocksaw="rocksaw.dll"/>
 	</target>
 
+	<!-- Note: this task was tested only on Linux -->
 	<target name="package-mac">
 		<package-for platform="mac" librocksaw="todo-librocksaw.jnilib"/>
+		<!-- TODO: mac icon -->
+		<mac-jarbundler dir="${dist}.mac" name="${name}" 
+			mainclass="${main.class}" jar="${dist}.mac/${ant.project.name}-mac-${version}.jar" jvmversion="1.5+"
+			version="${version}" vmoptions="-XstartOnFirstThread -Xdock:name='Angry IP Scanner'"
+			bundleid="net.azib.ipscan" build="${build.number}"
+			stubfile="${ext}/mac-jarbundler/ipscan"/>
+		<delete file="${dist}.mac/${name}.app/Contents/MacOS/ipscan"/>
+		<exec executable="ln">
+			<arg line="-s /System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub"/>
+			<arg value="${dist}.mac/${name}.app/Contents/MacOS/ipscan"/>
+		</exec>
+		<!-- this will preserve symlinks (that zip task cannot do) -->
+		<exec executable="zip" dir="${dist}.mac">
+			<arg value="-ry9"/>
+			<arg value="${ant.project.name}-mac-${version}.zip"/>
+			<arg value="${name}.app"/>
+		</exec>
+		<delete dir="${dist}.mac/${name}.app"/>
 	</target>
 
 </project>
