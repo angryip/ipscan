@@ -83,6 +83,7 @@ public class OpenerLauncher {
 				matcher.appendReplacement(sb, scannedValue);
 			}
 			catch (Exception e) {
+				LOG.log(Level.INFO, "opener.nullFetcherValue", e);
 				throw new UserErrorException("opener.nullFetcherValue", fetcherName);					
 			}
 		}
@@ -91,6 +92,7 @@ public class OpenerLauncher {
 	}
 
 	String getScannedValue(int selectedItem, int fetcherIndex) {
-		return (String) scanningResults.getResult(selectedItem).getValues().get(fetcherIndex);
+		Object value = scanningResults.getResult(selectedItem).getValues().get(fetcherIndex); 
+		return value != null ? value.toString() : null;
 	}
 }
