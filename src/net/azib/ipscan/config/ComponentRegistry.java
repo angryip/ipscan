@@ -173,7 +173,7 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(StartStopScanningAction.class);
 		container.registerComponentImplementation(ColumnsActions.SortBy.class);
 		container.registerComponentImplementation(ColumnsActions.FetcherPreferences.class);
-		container.registerComponentImplementation(ColumnsActions.FetcherInfo.class);
+		container.registerComponentImplementation(ColumnsActions.AboutFetcher.class);
 		container.registerComponentImplementation(ColumnsActions.ColumnClick.class);
 		container.registerComponentImplementation(ColumnsActions.ColumnResize.class);
 	}

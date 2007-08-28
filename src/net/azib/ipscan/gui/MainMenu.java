@@ -221,12 +221,12 @@ public class MainMenu {
 	 * This is the menu when clicking on a column header.
 	 */
 	public static class ColumnsMenu extends Menu {
-		public ColumnsMenu(Decorations parent, ColumnsActions.SortBy sortByListener, ColumnsActions.FetcherInfo infoListener, ColumnsActions.FetcherPreferences preferencesListener) {
+		public ColumnsMenu(Decorations parent, ColumnsActions.SortBy sortByListener, ColumnsActions.AboutFetcher aboutListener, ColumnsActions.FetcherPreferences preferencesListener) {
 			super(parent, SWT.POP_UP);
 			
 			initMenuItem(this, "menu.columns.sortBy", null, null, sortByListener);
 			initMenuItem(this, "menu.columns.preferences", null, null, preferencesListener);
-			initMenuItem(this, "menu.columns.info", null, null, infoListener);
+			initMenuItem(this, "menu.columns.about", null, null, aboutListener);
 		}
 		protected void checkSubclass() { } // allow extending of Menu class
 	}

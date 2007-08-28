@@ -67,7 +67,10 @@ public class ColumnsActions {
 				sortMenuItem.setText(Labels.getLabel("menu.columns.sortBy") + tableColumn.getText());
 			}
 			
-			// remember the clicked column (see SortBy, FetcherPreferences, and FetcherInfo below)
+			MenuItem aboutMenuItem = columnsMenu.getItem(2);
+			aboutMenuItem.setText(Labels.getLabel("menu.columns.about") + tableColumn.getText());
+			
+			// remember the clicked column (see SortBy, FetcherPreferences, and AboutFetcher below)
 			columnsMenu.setData(tableColumn);
 			
 			// show the menu
@@ -131,7 +134,7 @@ public class ColumnsActions {
 		}
 	}
 	
-	public static class FetcherInfo implements Listener {
+	public static class AboutFetcher implements Listener {
 		
 		public void handleEvent(Event event) {
 			// retrieve the clicked column (see ColumnClick above)
