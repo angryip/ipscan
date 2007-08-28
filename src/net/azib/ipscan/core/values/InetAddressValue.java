@@ -32,7 +32,7 @@ public class InetAddressValue implements Comparable<InetAddressValue> {
 			if (b1[i] == b2[i])
 				continue;
 			else
-			if (b1[i] > b2[i])
+			if ((b1[i]&0xFF) > (b2[i]&0xFF))
 				return 1;
 			else
 				return -1;

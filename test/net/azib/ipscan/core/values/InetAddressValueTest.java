@@ -28,8 +28,15 @@ public class InetAddressValueTest {
 	public void testCompareTo() throws Exception {
 		InetAddressValue av2 = new InetAddressValue(InetAddress.getByName("192.168.0.2"));
 		InetAddressValue av10 = new InetAddressValue(InetAddress.getByName("192.168.0.10"));
+		InetAddressValue av127 = new InetAddressValue(InetAddress.getByName("192.168.0.127"));
+		InetAddressValue av253 = new InetAddressValue(InetAddress.getByName("192.168.0.253"));
 		assertEquals(-1, av2.compareTo(av10));
 		assertEquals(1, av10.compareTo(av2));
 		assertEquals(0, av2.compareTo(av2));
+		assertEquals(-1, av10.compareTo(av253));
+		assertEquals(-1, av127.compareTo(av253));
+		assertEquals(1, av253.compareTo(av127));
+		assertEquals(1, av253.compareTo(av2));
+		assertEquals(0, av253.compareTo(av253));
 	}
 }
