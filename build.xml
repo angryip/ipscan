@@ -23,14 +23,13 @@
 	<taskdef resource="emma_ant.properties" classpathref="emma.lib"/>
 	
 	<taskdef name="obfuscate" classname="COM.rl.ant.RetroGuardTask" classpath="${ext}/retroguard/retroguard.jar"/>	
-	<taskdef name="mac-jarbundler" classname="net.sourceforge.jarbundler.JarBundler" classpath="${ext}/mac-jarbundler/jarbundler.jar"/>
 	
 	<patternset id="classpath.resources">
 		<exclude name="**/*.java"/>
 	</patternset>
 
 	<target name="all" depends="cleanup,compile,package,cleanup_end"/>
-<!--	<target name="all" depends="cleanup,compile,compile-tests,do-test,package,cleanup_end"/>-->
+<!--<target name="all" depends="cleanup,compile,compile-tests,do-test,package,cleanup_end"/>-->
 
 	<target name="cleanup">
 		<delete dir="${bin}"/>
@@ -236,16 +235,25 @@
 	<target name="package-mac">
 		<package-for platform="mac" librocksaw="todo-librocksaw.jnilib"/>
 		<!-- TODO: mac icon -->
-		<mac-jarbundler dir="${dist}.mac" name="${name}" 
-			mainclass="${main.class}" jar="${dist}.mac/${ant.project.name}-mac-${version}.jar" jvmversion="1.5+"
-			version="${version}" vmoptions="-XstartOnFirstThread -Xdock:name='Angry IP Scanner'"
-			bundleid="net.azib.ipscan" build="${build.number}"
-			stubfile="${ext}/mac-jarbundler/ipscan"/>
-		<delete file="${dist}.mac/${name}.app/Contents/MacOS/ipscan"/>
+		<copy todir="${dist}.mac">
+			<fileset dir="${ext}/mac-bundle"/>
+		</copy>
+		
+		<copy file="${dist}.mac/${ant.project.name}-mac-${version}.jar" todir="${dist}.mac/${name}.app/Contents/Resources/Java"/>
+		
 		<exec executable="ln">
 			<arg line="-s /System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub"/>
 			<arg value="${dist}.mac/${name}.app/Contents/MacOS/ipscan"/>
 		</exec>
+		
+		<replace file="${dist}.mac/${name}.app/Contents/Info.plist">
+			<replacefilter token="APPNAME" value="${name}"/>
+			<replacefilter token="VERSION" value="${version}"/>
+			<replacefilter token="BUILD" value="${build.number}"/>
+			<replacefilter token="JARFILE" value="${ant.project.name}-mac-${version}.jar"/>
+			<replacefilter token="MAINCLASS" value="${main.class}"/>
+		</replace>
+		
 		<!-- this will preserve symlinks (that zip task cannot do) -->
 		<exec executable="zip" dir="${dist}.mac">
 			<arg value="-ry9"/>

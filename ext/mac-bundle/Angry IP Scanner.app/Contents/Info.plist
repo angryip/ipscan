@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>APPNAME</string>
+    
+    <key>CFBundleShortVersionString</key>
+    <string>VERSION</string>
+
+    <key>CFBundleGetInfoString</key>
+    <string>VERSION</string>
+
+    <key>CFBundleAllowMixedLocalizations</key>
+    <string>false</string>
+
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+
+    <key>CFBundleExecutable</key>
+    <string>ipscan</string>
+
+    <key>CFBundleDevelopmentRegion</key>
+    <string>English</string>
+
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+
+    <key>CFBundleSignature</key>
+    <string>????</string>
+
+    <key>CFBundleVersion</key>
+    <string>BUILD</string>
+
+    <key>CFBundleIdentifier</key>
+    <string>net.azib.ipscan</string>
+
+    <key>Java</key>
+    <dict>
+	<key>MainClass</key>
+	<string>MAINCLASS</string>
+
+	<key>JVMVersion</key>
+	<string>1.5+</string>
+
+	<key>ClassPath</key>
+	<array>	
+    	    <string>$JAVAROOT/JARFILE</string>
+	</array>
+
+	<key>StartOnMainThread</key>
+	<true/>
+
+	<key>VMOptions</key>
+	<string>-XstartOnFirstThread</string>
+    </dict>
+</dict>
+</plist>
