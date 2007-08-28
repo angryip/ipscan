@@ -17,15 +17,15 @@ import org.junit.Test;
 
 
 /**
- * OptionsDialogTest
+ * PreferencesDialogTest
  *
  * @author Anton Keks
  */
-public class OptionsDialogTest {
+public class PreferencesDialogTest {
 	
 	@Test
 	public void testPortsTextValidationListenerKeyPressed() throws Exception {
-		KeyListener listener = new OptionsDialog.PortsTextValidationListener();
+		KeyListener listener = new PreferencesDialog.PortsTextValidationListener();
 		Event ev = new Event();
 		ev.widget = new Shell();
 		ev.doit = true;
@@ -38,7 +38,7 @@ public class OptionsDialogTest {
 	
 	@Test
 	public void testPortsTextValidationListenerLogic() throws Exception {
-		OptionsDialog.PortsTextValidationListener listener = new OptionsDialog.PortsTextValidationListener();
+		PreferencesDialog.PortsTextValidationListener listener = new PreferencesDialog.PortsTextValidationListener();
 		assertFalse(listener.validateChar('-', "", 0));
 		assertFalse(listener.validateChar('-', "-", 0));
 		assertFalse(listener.validateChar('-', ",", 0));

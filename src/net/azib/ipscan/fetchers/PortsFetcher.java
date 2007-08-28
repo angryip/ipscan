@@ -35,7 +35,7 @@ public class PortsFetcher implements Fetcher {
 	
 	private GlobalConfig config;
 	
-	// initialize options for this scan
+	// initialize preferences for this scan
 	private PortIterator portIteratorPrototype;
 	protected boolean displayAsRanges = true;	// TODO: make configurable
 	

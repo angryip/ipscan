@@ -28,7 +28,7 @@ import net.azib.ipscan.fetchers.WebDetectFetcher;
 import net.azib.ipscan.gui.ConfigDetectorDialog;
 import net.azib.ipscan.gui.MainMenu;
 import net.azib.ipscan.gui.MainWindow;
-import net.azib.ipscan.gui.OptionsDialog;
+import net.azib.ipscan.gui.PreferencesDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.SelectFetchersDialog;
 import net.azib.ipscan.gui.StatisticsDialog;
@@ -164,7 +164,7 @@ public class ComponentRegistry {
 			anyComponentParameter,
 			anyComponentParameter});
 		
-		container.registerComponentImplementation(OptionsDialog.class);
+		container.registerComponentImplementation(PreferencesDialog.class);
 		container.registerComponentImplementation(ConfigDetectorDialog.class);
 		container.registerComponentImplementation(SelectFetchersDialog.class);
 		container.registerComponentImplementation(StatisticsDialog.class);
@@ -172,7 +172,7 @@ public class ComponentRegistry {
 		// various actions / listeners
 		container.registerComponentImplementation(StartStopScanningAction.class);
 		container.registerComponentImplementation(ColumnsActions.SortBy.class);
-		container.registerComponentImplementation(ColumnsActions.FetcherOptions.class);
+		container.registerComponentImplementation(ColumnsActions.FetcherPreferences.class);
 		container.registerComponentImplementation(ColumnsActions.FetcherInfo.class);
 		container.registerComponentImplementation(ColumnsActions.ColumnClick.class);
 		container.registerComponentImplementation(ColumnsActions.ColumnResize.class);

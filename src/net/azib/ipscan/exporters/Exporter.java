@@ -43,7 +43,7 @@ public interface Exporter extends Cloneable {
 	/**
 	 * Called on start of the exporting.
 	 * @param outputStream this OutputStream should be used to output exported data.
-	 * @param feederInfo summary of feeder options, which were used for this scan
+	 * @param feederInfo summary of feeder preferences, which were used for this scan
 	 * @throws IOException 
 	 */
 	public void start(OutputStream outputStream, String feederInfo) throws IOException;

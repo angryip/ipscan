@@ -15,7 +15,7 @@ import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherException;
 import net.azib.ipscan.fetchers.PingFetcher;
 import net.azib.ipscan.fetchers.PortsFetcher;
-import net.azib.ipscan.gui.OptionsDialog;
+import net.azib.ipscan.gui.PreferencesDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.MainMenu.ColumnsMenu;
 
@@ -67,7 +67,7 @@ public class ColumnsActions {
 				sortMenuItem.setText(Labels.getLabel("menu.columns.sortBy") + tableColumn.getText());
 			}
 			
-			// remember the clicked column (see SortBy, FetcherOptions, and FetcherInfo below)
+			// remember the clicked column (see SortBy, FetcherPreferences, and FetcherInfo below)
 			columnsMenu.setData(tableColumn);
 			
 			// show the menu
@@ -103,12 +103,12 @@ public class ColumnsActions {
 		}
 	}
 	
-	public static class FetcherOptions implements Listener {
+	public static class FetcherPreferences implements Listener {
 		
-		private OptionsDialog optionsDialog;
+		private PreferencesDialog preferencesDialog;
 		
-		public FetcherOptions(OptionsDialog optionsDialog) {
-			this.optionsDialog = optionsDialog;
+		public FetcherPreferences(PreferencesDialog preferencesDialog) {
+			this.preferencesDialog = preferencesDialog;
 		}
 
 		public void handleEvent(Event event) {
@@ -119,14 +119,14 @@ public class ColumnsActions {
 			
 			// some hardcodes here for 'special' fetchers
 			if (fetcher instanceof PingFetcher) {
-				optionsDialog.open();
+				preferencesDialog.open();
 			}
 			else
 			if (fetcher instanceof PortsFetcher) {
-				optionsDialog.openTab(1);
+				preferencesDialog.openTab(1);
 			}
 			else {
-				throw new FetcherException("options.notAvailable");
+				throw new FetcherException("preferences.notAvailable");
 			}
 		}
 	}

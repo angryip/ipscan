@@ -12,7 +12,7 @@ package net.azib.ipscan.gui.mac;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.gui.AboutDialog;
-import net.azib.ipscan.gui.OptionsDialog;
+import net.azib.ipscan.gui.PreferencesDialog;
 
 import org.eclipse.swt.internal.Callback;
 import org.eclipse.swt.internal.carbon.*;
@@ -30,11 +30,11 @@ public class CarbonUIEnhancer {
 	private static final int kHICommandAbout = ('a' << 24) + ('b' << 16) + ('o' << 8) + 'u';
 
 	private final AboutDialog aboutDialog;
-	private final OptionsDialog optionsDialog;
+	private final PreferencesDialog preferencesDialog;
 
-	public CarbonUIEnhancer(AboutDialog aboutDialog, OptionsDialog optionsDialog) {
+	public CarbonUIEnhancer(AboutDialog aboutDialog, PreferencesDialog preferencesDialog) {
 		this.aboutDialog = aboutDialog;
-		this.optionsDialog = optionsDialog;
+		this.preferencesDialog = preferencesDialog;
 	}
 
 	public void startup() {
@@ -61,7 +61,7 @@ public class CarbonUIEnhancer {
 					OS.GetEventParameter(theEvent, OS.kEventParamDirectObject, OS.typeHICommand, null, HICommand.sizeof, null, command);
 					switch (command.commandID) {
 						case kHICommandPreferences: {
-							optionsDialog.open();
+							preferencesDialog.open();
 							return OS.noErr;
 						}
 						case kHICommandAbout:

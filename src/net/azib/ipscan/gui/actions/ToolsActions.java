@@ -13,7 +13,7 @@ import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
-import net.azib.ipscan.gui.OptionsDialog;
+import net.azib.ipscan.gui.PreferencesDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.SelectFetchersDialog;
 import net.azib.ipscan.gui.StatisticsDialog;
@@ -26,21 +26,21 @@ import net.azib.ipscan.gui.StatusBar;
  */
 public class ToolsActions {
 
-	public static class Options implements Listener {
+	public static class Preferences implements Listener {
 		
-		private OptionsDialog optionsDialog;
+		private PreferencesDialog preferencesDialog;
 		private ResultTable resultTable;
 		private StatusBar statusBar;
 		
-		public Options(OptionsDialog optionsDialog, ResultTable resultTable, StatusBar statusBar) {
-			this.optionsDialog = optionsDialog;
+		public Preferences(PreferencesDialog preferencesDialog, ResultTable resultTable, StatusBar statusBar) {
+			this.preferencesDialog = preferencesDialog;
 			this.resultTable = resultTable;
 			this.statusBar = statusBar;
 		}
 
 		public void handleEvent(Event event) {
-			// show the options dialog
-			optionsDialog.open();
+			// show the preferences dialog
+			preferencesDialog.open();
 			
 			// refresh the results and status bar in case anything was changed
 			resultTable.updateResults();

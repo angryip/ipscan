@@ -53,7 +53,8 @@ public class AboutDialog extends AbstractModalDialog {
 		text = text.replaceAll("%VERSION", Version.getVersion());
 		text = text.replaceAll("%BUILD", Version.getBuildNumber());
 		text = text.replaceAll("%DATE", Version.getBuildDate());
-		text = text.replaceAll("%JAVA", System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.version") + "\n" + System.getProperty("os.name") + " " + System.getProperty("os.version"));
+		text = text.replaceAll("%JAVA", System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.version"));
+		text = text.replaceAll("%OS", System.getProperty("os.name") + " " + System.getProperty("os.version"));
 		text = text.replaceAll("%COPYLEFT", Version.COPYLEFT);
 		text = text.replaceAll("%WEBSITE", Version.WEBSITE);
 		text = text.replaceAll("%MAILTO", Version.MAILTO);

@@ -6,7 +6,7 @@ package net.azib.ipscan.config;
 import java.util.prefs.Preferences;
 
 /**
- * This class encapsulates configuration options of the program.
+ * This class encapsulates preferences of the program.
  * It is a singleton class.
  * 
  * @author Anton Keks

@@ -68,8 +68,8 @@ public class MainMenu {
 		initMenuItem(subMenu, "menu.file.saveAll", "Ctrl+S", new Integer(SWT.MOD1 | 'S'), initListener(FileActions.SaveAll.class));
 		initMenuItem(subMenu, "menu.file.saveSelection", null, null, initListener(FileActions.SaveSelection.class));
 		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.file.exportOptions", null, null, null);
-		initMenuItem(subMenu, "menu.file.importOptions", null, null, null);
+		initMenuItem(subMenu, "menu.file.exportPreferences", null, null, null);
+		initMenuItem(subMenu, "menu.file.importPreferences", null, null, null);
 		if (!Platform.MAC_OS) {
 			initMenuItem(subMenu, null, null, null, null);
 			initMenuItem(subMenu, "menu.file.exit", !Platform.MAC_OS ? "Alt+F4" : null, null, initListener(FileActions.Exit.class));
@@ -88,7 +88,7 @@ public class MainMenu {
 		createFavoritesMenu(menu);
 		
 		subMenu = initMenu(menu, "menu.tools");
-		initMenuItem(subMenu, "menu.tools.options", "Ctrl+O", new Integer(SWT.MOD1 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.Options.class));
+		initMenuItem(subMenu, "menu.tools.preferences", "Ctrl+O", new Integer(SWT.MOD1 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.Preferences.class));
 		initMenuItem(subMenu, "menu.tools.fetchers", "Ctrl+Shift+O", new Integer(SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.SelectFetchers.class));
 		initMenuItem(subMenu, null, null, null, null);
 		initMenuItem(subMenu, "menu.tools.delete", null, null, null);
@@ -221,11 +221,11 @@ public class MainMenu {
 	 * This is the menu when clicking on a column header.
 	 */
 	public static class ColumnsMenu extends Menu {
-		public ColumnsMenu(Decorations parent, ColumnsActions.SortBy sortByListener, ColumnsActions.FetcherInfo infoListener, ColumnsActions.FetcherOptions optionsListener) {
+		public ColumnsMenu(Decorations parent, ColumnsActions.SortBy sortByListener, ColumnsActions.FetcherInfo infoListener, ColumnsActions.FetcherPreferences preferencesListener) {
 			super(parent, SWT.POP_UP);
 			
 			initMenuItem(this, "menu.columns.sortBy", null, null, sortByListener);
-			initMenuItem(this, "menu.columns.options", null, null, optionsListener);
+			initMenuItem(this, "menu.columns.preferences", null, null, preferencesListener);
 			initMenuItem(this, "menu.columns.info", null, null, infoListener);
 		}
 		protected void checkSubclass() { } // allow extending of Menu class
