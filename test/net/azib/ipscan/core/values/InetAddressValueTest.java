@@ -39,4 +39,14 @@ public class InetAddressValueTest {
 		assertEquals(1, av253.compareTo(av2));
 		assertEquals(0, av253.compareTo(av253));
 	}
+	
+	@Test
+	public void testEqualsHashCode() throws Exception {
+		InetAddressValue av1 = new InetAddressValue(InetAddress.getByName("192.168.0.2"));
+		InetAddressValue av2 = new InetAddressValue(InetAddress.getByAddress(new byte[] {(byte)192, (byte)168, 0, 2}));
+		assertEquals(av1, av2);
+		assertEquals(av1.hashCode(), av2.hashCode());
+		assertFalse(av1.equals(null));
+		assertFalse(av1.equals(""));
+	}
 }

@@ -35,8 +35,8 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 		this.preferences = preferences;
 		
 		this.registeredFetchers = new LinkedHashMap<String, Fetcher>(registeredFetchers.length);
-		for (int i = 0; i < registeredFetchers.length; i++) {
-			this.registeredFetchers.put(registeredFetchers[i].getLabel(), registeredFetchers[i]);
+		for (Fetcher fetcher : registeredFetchers) {
+			this.registeredFetchers.put(fetcher.getLabel(), fetcher);
 		}
 		this.registeredFetchers = Collections.unmodifiableMap(this.registeredFetchers);
 		
@@ -93,7 +93,7 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 	public int getSelectedFetcherIndex(String label) {
 		int index = 0;
 		for (Fetcher fetcher : selectedFetchers.values()) {
-			if (fetcher.getLabel().equals(label)) {
+			if (label.equals(fetcher.getLabel())) {
 				return index;
 			}
 			index++;

@@ -15,12 +15,14 @@ import net.azib.ipscan.core.ScanningSubject;
  * @author Anton Keks
  */
 public class CommentFetcher implements Fetcher {
+	
+	static final String LABEL = "fetcher.comment";
 
 	/**
 	 * @see net.azib.ipscan.fetchers.Fetcher#getLabel()
 	 */
 	public String getLabel() {
-		return "fetcher.comment";
+		return LABEL;
 	}
 
 	/**

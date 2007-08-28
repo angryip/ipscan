@@ -3,15 +3,15 @@
  */
 package net.azib.ipscan.fetchers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import net.azib.ipscan.core.ScanningSubject;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import net.azib.ipscan.core.ScanningSubject;
 
 /**
  * IPFetcherTest
@@ -27,8 +27,8 @@ public class IPFetcherTest extends AbstractFetcherTestCase {
 	
 	@Test
 	public void testScan() throws UnknownHostException {
-		assertEquals(InetAddress.getLocalHost().getHostAddress(), fetcher.scan(new ScanningSubject(InetAddress.getLocalHost())));
-		assertEquals("255.255.255.255", fetcher.scan(new ScanningSubject(InetAddress.getByName("255.255.255.255"))));
+		assertEquals(InetAddress.getLocalHost().getHostAddress(), fetcher.scan(new ScanningSubject(InetAddress.getLocalHost())).toString());
+		assertEquals("255.255.255.255", fetcher.scan(new ScanningSubject(InetAddress.getByName("255.255.255.255"))).toString());
 	}
 
 }

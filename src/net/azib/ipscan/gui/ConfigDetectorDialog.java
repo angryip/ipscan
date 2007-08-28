@@ -68,7 +68,7 @@ public class ConfigDetectorDialog extends AbstractModalDialog implements ConfigD
 		shell.setText(Labels.getLabel("title.configDetect"));
 		
 		Label infoLabel = new Label(shell, SWT.WRAP);
-		infoLabel.setText((config.isFirstRun ? Labels.getLabel("text.configDetect.firstRun") : "") + Labels.getLabel("text.configDetect"));
+		infoLabel.setText(Labels.getLabel("text.configDetect"));
 		infoLabel.setLayoutData(LayoutHelper.formData(340, SWT.DEFAULT, new FormAttachment(0), new FormAttachment(100), new FormAttachment(0), null));
 		
 		Label hostLabel = new Label(shell, SWT.WRAP);

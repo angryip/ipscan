@@ -20,8 +20,10 @@ public class FetcherRegistryImplTest {
 	private Preferences preferences;
 	
 	private Fetcher ipFetcher;
+	private PingFetcher pingFetcher;
 	private HostnameFetcher hostnameFetcher;
 	private CommentFetcher commentFetcher;
+	private PortsFetcher portsFetcher;
 	private FetcherRegistry fetcherRegistry;
 
 	@Before
@@ -30,9 +32,11 @@ public class FetcherRegistryImplTest {
 		preferences.clear();
 		
 		ipFetcher = new IPFetcher();
+		pingFetcher = new PingFetcher(null, null);
 		hostnameFetcher = new HostnameFetcher();
 		commentFetcher = new CommentFetcher();
-		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences);
+		portsFetcher = new PortsFetcher(null);
+		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, pingFetcher, hostnameFetcher, commentFetcher, portsFetcher}, preferences);
 	}
 	
 	@After
@@ -42,8 +46,10 @@ public class FetcherRegistryImplTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		assertEquals(3, fetcherRegistry.getRegisteredFetchers().size());
-		assertEquals(3, fetcherRegistry.getSelectedFetchers().size());
+		// specified values
+		assertEquals(5, fetcherRegistry.getRegisteredFetchers().size());
+		// default values
+		assertEquals(4, fetcherRegistry.getSelectedFetchers().size());
 	}
 	
 	@Test(expected=UnsupportedOperationException.class)
@@ -54,16 +60,17 @@ public class FetcherRegistryImplTest {
 	@Test
 	public void testGetSelectedFetcherIndex() throws Exception {
 		assertEquals(0, fetcherRegistry.getSelectedFetcherIndex(ipFetcher.getLabel()));
-		assertEquals(1, fetcherRegistry.getSelectedFetcherIndex(hostnameFetcher.getLabel()));
-		assertEquals(2, fetcherRegistry.getSelectedFetcherIndex(commentFetcher.getLabel()));
-		assertEquals(-1, fetcherRegistry.getSelectedFetcherIndex("blah-blah"));
+		assertEquals(1, fetcherRegistry.getSelectedFetcherIndex(pingFetcher.getLabel()));
+		assertEquals(2, fetcherRegistry.getSelectedFetcherIndex(hostnameFetcher.getLabel()));
+		assertEquals(3, fetcherRegistry.getSelectedFetcherIndex(portsFetcher.getLabel()));
+		assertEquals(-1, fetcherRegistry.getSelectedFetcherIndex(commentFetcher.getLabel()));
 	}
 	
 	@Test
 	public void testLoadPreferences() throws Exception {
 		preferences.remove(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS);
 		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences);
-		assertEquals(3, fetcherRegistry.getSelectedFetchers().size());
+		assertEquals(4, fetcherRegistry.getSelectedFetchers().size());
 		
 		preferences.put(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, hostnameFetcher.getLabel() + "###" + commentFetcher.getLabel());
 		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences);
