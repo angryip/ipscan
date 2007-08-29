@@ -9,6 +9,9 @@
 
     <key>CFBundleGetInfoString</key>
     <string>VERSION</string>
+    
+    <key>CFBundleIconFile</key>
+    <string>ipscan.icns</string>
 
     <key>CFBundleAllowMixedLocalizations</key>
     <string>false</string>
