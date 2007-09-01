@@ -39,45 +39,53 @@ public class Main {
 		
 		long startTime = System.currentTimeMillis();
 		
-		initSystemProperties();
+		try {
+			initSystemProperties();
 		
-		Display display = Display.getDefault();		
-		LOG.finer("SWT initialized after " + (System.currentTimeMillis() - startTime));
-
-		// initalize Labels instance
-		Labels.initialize(new Locale("en"));	// TODO: retrieve locale normally				
-		// initialize Config instance
-		Config.initialize();		
-		LOG.finer("Labels and Config initialized after " + (System.currentTimeMillis() - startTime));
-		
-		ComponentRegistry componentRegistry = new ComponentRegistry();
-		LOG.finer("ComponentRegistry initialized after " + (System.currentTimeMillis() - startTime));
-		
-		// create the main window using dependency injection
-		MainWindow mainWindow = componentRegistry.createMainWindow();		
-		LOG.fine("Startup time: " + (System.currentTimeMillis() - startTime));
-		
-		while (!mainWindow.isDisposed()) {
-			try {
-				if (!display.readAndDispatch())
-					display.sleep();
+			Display display = Display.getDefault();
+			LOG.finer("SWT initialized after " + (System.currentTimeMillis() - startTime));
+	
+			// initalize Labels instance
+			Labels.initialize(new Locale("en"));	// TODO: retrieve locale normally				
+			// initialize Config instance
+			Config.initialize();		
+			LOG.finer("Labels and Config initialized after " + (System.currentTimeMillis() - startTime));
+			
+			ComponentRegistry componentRegistry = new ComponentRegistry();
+			LOG.finer("ComponentRegistry initialized after " + (System.currentTimeMillis() - startTime));
+			
+			// create the main window using dependency injection
+			MainWindow mainWindow = componentRegistry.createMainWindow();		
+			LOG.fine("Startup time: " + (System.currentTimeMillis() - startTime));
+			
+			while (!mainWindow.isDisposed()) {
+				try {
+					if (!display.readAndDispatch())
+						display.sleep();
+				}
+				catch (Throwable e) {
+					// display a nice error message
+					String localizedMessage = getLocalizedMessage(e);
+					Shell parent = display.getActiveShell();
+					MessageBox messageBox = new MessageBox(parent != null ? parent : mainWindow.getShell(), SWT.OK | (e instanceof UserErrorException ? SWT.ICON_WARNING : SWT.ICON_ERROR));
+					messageBox.setText(Labels.getLabel(e instanceof UserErrorException ? "text.userError" : "text.error"));
+					messageBox.setMessage(localizedMessage);
+					messageBox.open();
+				}
 			}
-			catch (Throwable e) {
-				// display a nice error message
-				String localizedMessage = getLocalizedMessage(e);
-				Shell parent = display.getActiveShell();
-				MessageBox messageBox = new MessageBox(parent != null ? parent : mainWindow.getShell(), SWT.OK | (e instanceof UserErrorException ? SWT.ICON_WARNING : SWT.ICON_ERROR));
-				messageBox.setText(Labels.getLabel(e instanceof UserErrorException ? "text.userError" : "text.error"));
-				messageBox.setMessage(localizedMessage);
-				messageBox.open();
-			}
+			
+			// save config on exit
+			Config.store();
+			
+			// dispose the native objects
+			display.dispose();
 		}
-		
-		// save config on exit
-		Config.store();
-		
-		// dispose the native objects
-		display.dispose();
+		catch (UnsatisfiedLinkError e) {
+			// probably we were unable to load SWT - let's try to display an error message using Swing
+			e.printStackTrace();
+			javax.swing.JOptionPane.showMessageDialog(null, Labels.getLabel("exception.UnsatisfiedLinkError"), Labels.getLabel("text.error"), javax.swing.JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		}
 	}
 
 	private static void initSystemProperties() {

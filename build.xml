@@ -215,6 +215,7 @@
 					<attribute name="Build-Date" value="${build.date}"/>
 					<attribute name="Built-By" value="${user.name}"/>
 					<attribute name="URL" value="http://www.azib.net/ipscan/"/>
+					<attribute name="Platform" value="@{platform}"/>
 				</manifest>
 				<fileset dir="${bin}" includes="**/*"/>
 				<fileset dir="${bin}.@{platform}" includes="**/*"/>

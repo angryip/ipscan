@@ -242,7 +242,8 @@ exception.UserErrorException.commands.noSelection=No IP address selected
 exception.UserErrorException.commands.noResults=No scanning results are available, please perform a scan first
 exception.UserErrorException.favorite.alreadyExists=A favorite with the same name already exists, please try a different one
 exception.UserErrorException.version.latestFailed=Failed to retrieve the latest version. Please visit the website manually.
-exception.OutOfMemoryError=Out Of Memory. The amount of available to the program heap memory has been exceeded.\nPlease increase the maximum heap size for this program.
+exception.UnsatisfiedLinkError=Cannot load the required native libraries.\n\nProbably you are trying to run Angry IP Scanner binary built for another platform.\nMake sure that you have downloaded the correct version for your operating system.
+exception.OutOfMemoryError=Out Of Memory. The amount of available to the program heap memory has been exceeded.\nPlease increase the maximum heap size for this program using the -Xmx option of the Java executable.
 
 text.gettingStarted=Dummy
 
