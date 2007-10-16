@@ -78,10 +78,8 @@ public class InputDialog extends AbstractModalDialog {
 	}
 	
 	private void setText(String text) {
-		if (text != null) {
-			this.text.setText(text);
-			this.text.setSelection(0, -1);
-		}
+		this.text.setText(text);
+		this.text.setSelection(0, -1);
 	}
 
 	/**

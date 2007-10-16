@@ -4,7 +4,6 @@
  */
 package net.azib.ipscan.fetchers;
 
-import net.azib.ipscan.config.CommentsConfig;
 import net.azib.ipscan.core.ScanningSubject;
 
 /**
@@ -17,13 +16,7 @@ import net.azib.ipscan.core.ScanningSubject;
  */
 public class CommentFetcher implements Fetcher {
 	
-	public static final String LABEL = "fetcher.comment";
-	
-	private CommentsConfig commentsConfig;
-	
-	public CommentFetcher(CommentsConfig commentsConfig) {
-		this.commentsConfig = commentsConfig;
-	}
+	static final String LABEL = "fetcher.comment";
 
 	/**
 	 * @see net.azib.ipscan.fetchers.Fetcher#getLabel()
@@ -36,7 +29,7 @@ public class CommentFetcher implements Fetcher {
 	 * @see net.azib.ipscan.fetchers.Fetcher#scan(net.azib.ipscan.core.ScanningSubject)
 	 */
 	public Object scan(ScanningSubject subject) {
-		return commentsConfig.getComment(subject.getAddress());
+		return "a dummy comment!!!";
 	}
 
 	public void init() {

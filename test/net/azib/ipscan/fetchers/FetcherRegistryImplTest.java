@@ -34,7 +34,7 @@ public class FetcherRegistryImplTest {
 		ipFetcher = new IPFetcher();
 		pingFetcher = new PingFetcher(null, null);
 		hostnameFetcher = new HostnameFetcher();
-		commentFetcher = new CommentFetcher(null);
+		commentFetcher = new CommentFetcher();
 		portsFetcher = new PortsFetcher(null);
 		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, pingFetcher, hostnameFetcher, commentFetcher, portsFetcher}, preferences);
 	}
