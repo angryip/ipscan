@@ -16,6 +16,7 @@ import net.azib.ipscan.exporters.ExporterRegistry;
 import net.azib.ipscan.exporters.IPListExporter;
 import net.azib.ipscan.exporters.TXTExporter;
 import net.azib.ipscan.exporters.XMLExporter;
+import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.FetcherRegistryImpl;
 import net.azib.ipscan.fetchers.FilteredPortsFetcher;
@@ -78,6 +79,7 @@ public class ComponentRegistry {
 		container.registerComponentInstance(Config.getOpenersConfig());
 		container.registerComponentInstance(Config.getFavoritesConfig());
 		container.registerComponentInstance(Labels.getInstance());
+		container.registerComponentImplementation(CommentsConfig.class);
 		container.registerComponentImplementation(ConfigDetector.class);
 		
 		container.registerComponentImplementation(ExporterRegistry.class);
@@ -94,6 +96,7 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(PortsFetcher.class);
 		container.registerComponentImplementation(FilteredPortsFetcher.class);
 		container.registerComponentImplementation(WebDetectFetcher.class);
+		container.registerComponentImplementation(CommentFetcher.class);
 		
 		container.registerComponentImplementation(PingerRegistry.class, PingerRegistryImpl.class);
 		container.registerComponentImplementation(ScanningResultList.class);
