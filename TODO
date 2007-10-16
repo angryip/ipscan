@@ -1,15 +1,28 @@
 Before 3.0 beta:
 
-* test Mac build 
-* export/import of settings
+* test Mac build (icon)
+* export/import of settings (profiles?)
 * disabling of buttons/menus during scanning
 
 Before 3.0:
 
-* tools->delete menus
+* command-line scanning start
+* tools->delete menus (maybe tools->select?)
 * fetcher-specific options
 * multiple port support web-detect
 * add new fetchers by configuration of PortTextFetcher
 * startup as root option
-* compile librocksaw for mac
 * NetBIOS fetchers (like in 2.x)
+* compile librocksaw for mac
+* preferences & select fetchers buttons in the toolbar
+
+Later:
+
+* preferences profiles (maybe even save with favorites)
+* offer installation on Windows
+* free text (advanced) feeder
+* comments fetcher
+* saving and restoring of results together with all options
+* plugin loader
+* advanced find (firefox-like)
+* use jpcap for raw packet injection and ARP scanning
