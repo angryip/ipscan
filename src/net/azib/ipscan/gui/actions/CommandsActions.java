@@ -5,16 +5,21 @@
  */
 package net.azib.ipscan.gui.actions;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Iterator;
 
+import net.azib.ipscan.config.CommentsConfig;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.OpenersConfig.Opener;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.StateMachine;
+import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.DetailsDialog;
 import net.azib.ipscan.gui.EditOpenersDialog;
+import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
 
@@ -170,6 +175,41 @@ public class CommandsActions {
 				menuItem.addListener(SWT.Selection, openersSelectListener);
 			}
 
+		}
+	}
+	
+	public static class EditComment implements Listener {
+		private ResultTable resultTable;
+		private CommentsConfig commentsConfig;
+		private FetcherRegistry fetcherRegistry;
+		
+		public EditComment(ResultTable resultTable, CommentsConfig commentsConfig, FetcherRegistry fetcherRegistry) {
+			this.resultTable = resultTable;
+			this.commentsConfig = commentsConfig;
+			this.fetcherRegistry = fetcherRegistry;
+		}
+
+		public void handleEvent(Event event) {
+			checkSelection(resultTable);
+			try {
+				int index = resultTable.getSelectionIndex();
+				InetAddress address = InetAddress.getByName(resultTable.getItem(index).getText());
+				String comment = commentsConfig.getComment(address);
+				String newComment = new InputDialog(Labels.getLabel("title.editComment"), Labels.getLabel("text.editComment")).open(comment);
+				if (newComment != null) {
+					commentsConfig.setComment(address, newComment);
+					// now update the result table for user to immediately see the change
+					int fetcherIndex = fetcherRegistry.getSelectedFetcherIndex(CommentFetcher.LABEL);
+					if (fetcherIndex >= 0) {
+						// we have comment fetcher in the table
+						// TODO: update the value in the results list, otherwise old values will be exported
+						resultTable.getItem(index).setText(fetcherIndex, newComment);
+					}
+				}
+			}
+			catch (UnknownHostException e) {
+				// should not happen
+			}
 		}
 	}
 	
