@@ -1,0 +1,20 @@
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>0</headerType>
+  <jar>ipscan.jar</jar>
+  <outfile>ipscan.exe</outfile>
+  <errTitle>Angry IP Scanner</errTitle>
+  <jarArgs></jarArgs>
+  <chdir></chdir>
+  <customProcName>true</customProcName>
+  <stayAlive>false</stayAlive>
+  <icon>../resources/images/icon.ico</icon>
+  <jre>
+    <path></path>
+    <minVersion>1.5.0</minVersion>
+    <maxVersion></maxVersion>
+    <initialHeapSize>0</initialHeapSize>
+    <maxHeapSize>0</maxHeapSize>
+    <args></args>
+  </jre>
+</launch4jConfig>

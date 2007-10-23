@@ -24,8 +24,12 @@
 	
 	<taskdef name="obfuscate" classname="COM.rl.ant.RetroGuardTask" classpath="${ext}/retroguard/retroguard.jar"/>	
 	
+	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${ext}/launch4j/launch4j.jar:${ext}/launch4j/xstream.jar"/>
+
 	<patternset id="classpath.resources">
 		<exclude name="**/*.java"/>
+		<exclude name="**/*.ico"/>
+		<exclude name="**/icon?*.png"/>
 	</patternset>
 
 	<target name="all" depends="cleanup,compile,package,cleanup_end"/>
@@ -57,7 +61,6 @@
 				<src path="@{extpath}"/>				
 				<classpath>
 					<fileset dir="${ext}" includes="**/*.jar"/>
-					<fileset dir="${swt}" includes="*.jar"/>
 				</classpath>
 			</javac>
 			<copy todir="${bin}">
@@ -229,12 +232,21 @@
 
 	<target name="package-win32">
 		<package-for platform="win32" librocksaw="rocksaw.dll"/>
+		
+		<!-- now create a windows exe file (currently works only on Linux) -->
+		<copy file="${ext}/launch4j/ipscan.xml" todir="${dist}.win32"/>
+		<replace file="${dist}.win32/ipscan.xml">
+			<replacefilter token="ipscan.jar" value="${ant.project.name}-win32-${version}.jar"/>
+			<replacefilter token="ipscan.exe" value="${ant.project.name}-win32-${version}.exe"/>
+		</replace>
+		<launch4j configFile="${dist}.win32/ipscan.xml"/>
+		<delete file="${dist}.win32/ipscan.xml"/>
+		<delete file="${ant.project.name}-win32-${version}.jar"/>
 	</target>
 
 	<!-- Note: this task was tested only on Linux -->
 	<target name="package-mac">
 		<package-for platform="mac" librocksaw="todo-librocksaw.jnilib"/>
-		<!-- TODO: mac icon -->
 		<copy todir="${dist}.mac">
 			<fileset dir="${ext}/mac-bundle"/>
 		</copy>
@@ -261,6 +273,7 @@
 			<arg value="${name}.app"/>
 		</exec>
 		<delete dir="${dist}.mac/${name}.app"/>
+		<delete file="${ant.project.name}-mac-${version}.jar"/>
 	</target>
 
 </project>
