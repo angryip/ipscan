@@ -13,12 +13,13 @@
    height="64px"
    id="svg2832"
    sodipodi:version="0.32"
-   inkscape:version="0.44.1"
-   sodipodi:docbase="/mnt/work/svn_sf/ipscan/resources/images"
+   inkscape:version="0.45.1"
+   sodipodi:docbase="/home/anton/workspaces/ipscan/ipscan/resources/images"
    sodipodi:docname="icon.svg"
-   inkscape:export-filename="/mnt/work/svn_sf/ipscan/resources/images/icon.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-filename="/home/anton/workspaces/ipscan/ipscan/resources/images/icon32.png"
+   inkscape:export-xdpi="44.860001"
+   inkscape:export-ydpi="44.860001"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
   <defs
      id="defs2834">
     <linearGradient
