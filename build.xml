@@ -22,7 +22,7 @@
 	</path>
 	<taskdef resource="emma_ant.properties" classpathref="emma.lib"/>
 	
-	<taskdef name="obfuscate" classname="COM.rl.ant.RetroGuardTask" classpath="${ext}/retroguard/retroguard.jar"/>	
+	<taskdef resource="proguard/ant/task.properties" classpath="${ext}/proguard/proguard.jar"/>
 	
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${ext}/launch4j/launch4j.jar:${ext}/launch4j/xstream.jar"/>
 
@@ -222,7 +222,32 @@
 				<fileset dir="${bin}" includes="**/*"/>
 				<fileset dir="${bin}.@{platform}" includes="**/*"/>
 			</jar>
-			<obfuscate infile="${dist}.@{platform}/${ant.project.name}-orig.jar" outfile="${dist}.@{platform}/${ant.project.name}-@{platform}-${version}.jar" rgsfile="${ext}/retroguard/retroguard.conf"/>
+			<proguard>
+				-injars ${dist}.@{platform}/${ant.project.name}-orig.jar
+				-outjars ${dist}.@{platform}/${ant.project.name}-@{platform}-${version}.jar
+				-libraryjars ${java.home}/lib/rt.jar
+				#-printseeds
+				-keepclasseswithmembers public class * {
+				    public static void main(java.lang.String[]);
+				}
+				-keepclasseswithmembernames class * {
+				    native &lt;methods&gt;;
+				}
+		    	-keepclassmembers class * extends java.lang.Enum {
+		    	    public static **[] values();
+		    	    public static ** valueOf(java.lang.String);
+				}
+		    	-keep public class * {
+		    	    public protected *;
+		    	}
+		    	-keep public class org.eclipse.swt.widgets.Display {
+		    	    &lt;methods&gt;;
+		    	}
+		    	-keep class org.eclipse.swt.internal.image.*FileFormat
+		    	-keep class org.eclipse.swt.accessibility.** {
+		    	    static &lt;methods&gt;;
+		    	}
+			</proguard>
 		</sequential>
 	</macrodef>
 	
