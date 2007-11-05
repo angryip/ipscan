@@ -170,9 +170,8 @@
 					<include name="Table*"/>
 					<include name="Tree*"/>
 				</fileset>
-				<!-- About dialog doesn't work without these
-				<fileset dir="${bin}.@{platform}/org/eclipse/swt/accessibility"/>
-				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/accessibility"/>-->
+				<!--fileset dir="${bin}.@{platform}/org/eclipse/swt/accessibility"/-->
+				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/accessibility"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/browser"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/ole"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/ole/win32" includes="I*"/>
@@ -199,6 +198,7 @@
 					<include name="Expand*"/>
 					<include name="Font*"/>
 					<include name="Color*"/>
+					<include name="Link*"/>
 					<include name="ToolBar*"/>				
 					<include name="ToolItem*"/>
 					<include name="Tracker*"/>
