@@ -18,7 +18,8 @@ public class CommentsConfig {
 	private Preferences preferences;
 
 	public CommentsConfig(Preferences preferences) {
-		this.preferences = preferences;
+		// use a separate node for comments - they can get large
+		this.preferences = preferences.node("comments");
 	}
 	
 	public String getComment(InetAddress address) {
