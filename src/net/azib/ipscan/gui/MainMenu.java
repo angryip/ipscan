@@ -7,6 +7,9 @@ package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
+import net.azib.ipscan.core.state.ScanningState;
+import net.azib.ipscan.core.state.StateMachine;
+import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsActions;
 import net.azib.ipscan.gui.actions.FavoritesActions;
@@ -36,7 +39,7 @@ public class MainMenu {
 	
 	private MutablePicoContainer container;
 	
-	public MainMenu(Shell shell, Menu mainMenu, CommandsMenu resultsContextMenu, PicoContainer parentContainer) {
+	public MainMenu(Shell shell, Menu mainMenu, CommandsMenu resultsContextMenu, StateMachine stateMachine, PicoContainer parentContainer) {
 		
 		// create the menu-specific child container
 		container = new DefaultPicoContainer(parentContainer);
@@ -58,6 +61,9 @@ public class MainMenu {
 		createMainMenuItems(mainMenu);
 				
 		createCommandsMenuItems(resultsContextMenu);
+		
+		stateMachine.addTransitionListener(new MenuEnablerDisabler(mainMenu));
+		stateMachine.addTransitionListener(new MenuEnablerDisabler(resultsContextMenu));
 	}
 
 	private void createMainMenuItems(Menu menu) {
@@ -65,8 +71,8 @@ public class MainMenu {
 		Menu subMenu = initMenu(menu, "menu.file");
 //		initMenuItem(subMenu, "menu.file.newWindow", "Ctrl+N", new Integer(SWT.MOD1 | 'N'), initListener(FileActions.NewWindow.class));
 //		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.file.saveAll", "Ctrl+S", new Integer(SWT.MOD1 | 'S'), initListener(FileActions.SaveAll.class));
-		initMenuItem(subMenu, "menu.file.saveSelection", null, null, initListener(FileActions.SaveSelection.class));
+		initMenuItem(subMenu, "menu.file.saveAll", "Ctrl+S", new Integer(SWT.MOD1 | 'S'), initListener(FileActions.SaveAll.class), true);
+		initMenuItem(subMenu, "menu.file.saveSelection", null, null, initListener(FileActions.SaveSelection.class), true);
 		initMenuItem(subMenu, null, null, null, null);
 		initMenuItem(subMenu, "menu.file.exportPreferences", null, null, null);
 		initMenuItem(subMenu, "menu.file.importPreferences", null, null, null);
@@ -88,8 +94,8 @@ public class MainMenu {
 		createFavoritesMenu(menu);
 		
 		subMenu = initMenu(menu, "menu.tools");
-		initMenuItem(subMenu, "menu.tools.preferences", "Ctrl+O", new Integer(SWT.MOD1 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.Preferences.class));
-		initMenuItem(subMenu, "menu.tools.fetchers", "Ctrl+Shift+O", new Integer(SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.SelectFetchers.class));
+		initMenuItem(subMenu, "menu.tools.preferences", "Ctrl+O", new Integer(SWT.MOD1 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.Preferences.class), true);
+		initMenuItem(subMenu, "menu.tools.fetchers", "Ctrl+Shift+O", new Integer(SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.SelectFetchers.class), true);
 		initMenuItem(subMenu, null, null, null, null);
 		initMenuItem(subMenu, "menu.tools.delete", null, null, null);
 		initMenuItem(subMenu, "menu.tools.scanInfo", "Ctrl+I", new Integer(SWT.MOD1 | 'I'), initListener(ToolsActions.ScanInfo.class));
@@ -111,8 +117,8 @@ public class MainMenu {
 	private void createCommandsMenuItems(Menu menu) {
 		initMenuItem(menu, "menu.commands.details", null, null, initListener(CommandsActions.Details.class));
 		initMenuItem(menu, null, null, null, null);
-		initMenuItem(menu, "menu.commands.rescan", "Ctrl+R", new Integer(SWT.MOD1 | 'R'), initListener(CommandsActions.Rescan.class));
-		initMenuItem(menu, "menu.commands.delete", "Del", /* this is not a global key binding */ null, initListener(CommandsActions.Delete.class));
+		initMenuItem(menu, "menu.commands.rescan", "Ctrl+R", new Integer(SWT.MOD1 | 'R'), initListener(CommandsActions.Rescan.class), true);
+		initMenuItem(menu, "menu.commands.delete", "Del", /* this is not a global key binding */ null, initListener(CommandsActions.Delete.class), true);
 		initMenuItem(menu, null, null, null, null);
 		initMenuItem(menu, "menu.commands.copy", "Ctrl+C", /* this is not a global key binding */ null, initListener(CommandsActions.CopyIP.class));
 		initMenuItem(menu, "menu.commands.copyDetails", null, null, initListener(CommandsActions.CopyIPDetails.class));
@@ -156,6 +162,10 @@ public class MainMenu {
 	}
 	
 	static MenuItem initMenuItem(Menu parent, String label, String acceleratorText, Integer accelerator, Listener listener) {
+		return initMenuItem(parent, label, acceleratorText, accelerator, listener, false);
+	}
+	
+	static MenuItem initMenuItem(Menu parent, String label, String acceleratorText, Integer accelerator, Listener listener, boolean disableDuringScanning) {
 		MenuItem menuItem = new MenuItem(parent, label == null ? SWT.SEPARATOR : SWT.PUSH);
 		
 		if (label != null) 
@@ -169,6 +179,10 @@ public class MainMenu {
 		else
 			menuItem.setEnabled(false);
 		
+		if (disableDuringScanning) {
+			menuItem.setData("disableDuringScanning", Boolean.TRUE);
+		}
+		
 		return menuItem;
 	}
 			
@@ -179,6 +193,7 @@ public class MainMenu {
 		public CommandsMenu(Decorations parent) {
 			super(parent, SWT.POP_UP);
 		}
+		
 		protected void checkSubclass() { } // allow extending of Menu class
 	}
 	
@@ -232,5 +247,41 @@ public class MainMenu {
 		}
 		protected void checkSubclass() { } // allow extending of Menu class
 	}
-	
+
+	/**
+	 * State transition listener in order to enable/disable menu items of the 
+	 * specified menu.
+	 */
+	public static class MenuEnablerDisabler implements StateTransitionListener {
+		private Menu menu;
+		
+		public MenuEnablerDisabler(Menu menu) {
+			this.menu = menu;
+		}
+
+		public void transitionTo(final ScanningState state) {
+			if (state != ScanningState.SCANNING && state !=  ScanningState.IDLE)
+				return;
+			
+			menu.getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					processMenu(menu);
+				}
+				
+				public void processMenu(Menu menu) {
+					// processes menu items recursively
+					for (MenuItem item : menu.getItems()) {
+						if (item.getData("disableDuringScanning") == Boolean.TRUE) {
+							item.setEnabled(state == ScanningState.IDLE);
+						}
+						else 
+						if (item.getMenu() != null) {
+							processMenu(item.getMenu());
+						}
+					}
+				}
+			});
+		}
+	}
+
 }

@@ -145,6 +145,7 @@ public class ComponentRegistry {
 			anyComponentParameter,
 			anyComponentParameter,
 			anyComponentParameter,
+			anyComponentParameter,
 			anyComponentParameter});
 		container.registerComponentImplementation(ResultTable.class, ResultTable.class, new Parameter[] {
 			new ComponentParameter("mainShell"),
@@ -160,6 +161,7 @@ public class ComponentRegistry {
 			new ComponentParameter("mainShell"),
 			new ComponentParameter("mainMenu"),
 			new ComponentParameter("commandsMenu"),
+			anyComponentParameter,
 			new ConstantParameter(container)});
 		container.registerComponentImplementation(MainMenu.ColumnsMenu.class, MainMenu.ColumnsMenu.class, new Parameter[] {
 			new ComponentParameter("mainShell"),

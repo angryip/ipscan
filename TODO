@@ -1,7 +1,7 @@
 Before 3.0 beta:
 
 * export/import of settings (profiles?)
-* disabling of buttons/menus during scanning
+* NetBIOS fetchers (like in 2.x)
 
 Before 3.0:
 
@@ -11,7 +11,6 @@ Before 3.0:
 * multiple port support web-detect
 * add new fetchers by configuration of PortTextFetcher
 * startup as root option
-* NetBIOS fetchers (like in 2.x)
 * compile librocksaw for mac
 * preferences & select fetchers buttons in the toolbar
 

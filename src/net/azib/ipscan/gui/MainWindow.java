@@ -10,6 +10,9 @@ import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
+import net.azib.ipscan.core.state.ScanningState;
+import net.azib.ipscan.core.state.StateMachine;
+import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.feeders.AbstractFeederGUI;
@@ -55,7 +58,7 @@ public class MainWindow {
 	/**
 	 * Creates and initializes the main window.
 	 */
-	public MainWindow(Shell shell, GlobalConfig globalConfig, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry) {
+	public MainWindow(Shell shell, GlobalConfig globalConfig, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry, StateMachine stateMachine) {
 		this.globalConfig = globalConfig;
 		
 		initShell(shell);
@@ -73,7 +76,8 @@ public class MainWindow {
 			shell.setMaximized(true);
 		}
 		else {
-			// set bounds twice - a workaround for a bug in SWT GTK + Compiz (otherwise window gets smaller and smaller each time)
+			// set bounds twice - a workaround for a bug in SWT GTK + Compiz 
+			// (otherwise window gets smaller and smaller each time)
 			shell.setBounds(Config.getDimensionsConfig().getWindowBounds());			
 		}
 		
@@ -88,6 +92,8 @@ public class MainWindow {
 			new GettingStartedDialog().open();
 			globalConfig.isFirstRun = false;
 		}
+
+		stateMachine.addTransitionListener(new EnablerDisabler());
 	}
 
 	/**
@@ -190,7 +196,7 @@ public class MainWindow {
 			feederRegistry.select(feederSelectionCombo.getSelectionIndex());
 						
 			// all this 'magic' is needed in order to resize everything properly
-			// and accomodate feeders with different sizes
+			// and accommodate feeders with different sizes
 			Rectangle bounds = feederRegistry.current().getBounds();
 			FormData feederAreaLayoutData = ((FormData)feederArea.getLayoutData());
 			feederAreaLayoutData.height = bounds.height;
@@ -199,6 +205,19 @@ public class MainWindow {
 			
 			// reset main window title
 			shell.setText(feederRegistry.current().getFeederName() + " - " + Version.NAME);
+		}
+	}
+	
+	class EnablerDisabler implements StateTransitionListener {
+		public void transitionTo(final ScanningState state) {
+			if (state != ScanningState.SCANNING && state !=  ScanningState.IDLE)
+				return;
+			
+			shell.getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					feederSelectionCombo.setEnabled(state == ScanningState.IDLE);
+				}
+			});
 		}
 	}
 

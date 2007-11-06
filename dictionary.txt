@@ -26,3 +26,5 @@ xml
 lst
 clipboard
 ctrl
+compiz
+placeholder
