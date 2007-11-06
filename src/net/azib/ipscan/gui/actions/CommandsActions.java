@@ -13,6 +13,7 @@ import net.azib.ipscan.config.CommentsConfig;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.OpenersConfig.Opener;
+import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.fetchers.CommentFetcher;
@@ -103,7 +104,7 @@ public class CommandsActions {
 	
 	/**
 	 * Copies currently selected IP to the clipboard.
-	 * Used as both menu item listener and keydown listener.
+	 * Used as both menu item listener and key down listener.
 	 */
 	public static class CopyIP implements Listener {
 		private ResultTable resultTable;
@@ -180,11 +181,13 @@ public class CommandsActions {
 	
 	public static class EditComment implements Listener {
 		private ResultTable resultTable;
+		private ScanningResultList results;
 		private CommentsConfig commentsConfig;
 		private FetcherRegistry fetcherRegistry;
 		
-		public EditComment(ResultTable resultTable, CommentsConfig commentsConfig, FetcherRegistry fetcherRegistry) {
+		public EditComment(ResultTable resultTable, ScanningResultList results, CommentsConfig commentsConfig, FetcherRegistry fetcherRegistry) {
 			this.resultTable = resultTable;
+			this.results = results;
 			this.commentsConfig = commentsConfig;
 			this.fetcherRegistry = fetcherRegistry;
 		}
@@ -201,9 +204,10 @@ public class CommandsActions {
 					// now update the result table for user to immediately see the change
 					int fetcherIndex = fetcherRegistry.getSelectedFetcherIndex(CommentFetcher.LABEL);
 					if (fetcherIndex >= 0) {
-						// we have comment fetcher in the table
-						// TODO: update the value in the results list, otherwise old values will be exported
-						resultTable.getItem(index).setText(fetcherIndex, newComment);
+						// update the value in the results
+						results.getResult(index).setValue(fetcherIndex, newComment);
+						// update visual representation
+						resultTable.clear(index);
 					}
 				}
 			}

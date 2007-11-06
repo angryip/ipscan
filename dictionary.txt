@@ -24,3 +24,5 @@ txt
 csv
 xml
 lst
+clipboard
+ctrl
