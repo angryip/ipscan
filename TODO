@@ -5,7 +5,6 @@ Before 3.0 beta:
 Before 3.0:
 
 * command-line scanning start
-* tools->delete menus (maybe tools->select?)
 * fetcher-specific options
 * multiple port support web-detect
 * add new fetchers by configuration of PortTextFetcher

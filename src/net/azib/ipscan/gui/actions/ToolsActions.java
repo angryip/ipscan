@@ -5,11 +5,10 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-
 import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.ScanningResultList;
+import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
@@ -18,6 +17,11 @@ import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.SelectFetchersDialog;
 import net.azib.ipscan.gui.StatisticsDialog;
 import net.azib.ipscan.gui.StatusBar;
+
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Table;
 
 /**
  * ToolsActions
@@ -48,11 +52,11 @@ public class ToolsActions {
 		}
 	}
 
-	public static class SelectFetchers implements Listener {
+	public static class ChooseFetchers implements Listener {
 		
 		private SelectFetchersDialog selectFetchersDialog;
 		
-		public SelectFetchers(SelectFetchersDialog selectFetchersDialog) {
+		public ChooseFetchers(SelectFetchersDialog selectFetchersDialog) {
 			this.selectFetchersDialog = selectFetchersDialog;
 		}
 
@@ -88,6 +92,96 @@ public class ToolsActions {
 				});				
 			}
 		}
+	}
+	
+	/**
+	 * This listener updates the status bar when user selects many items in the result table
+	 */
+	public static final class TableSelection implements Listener {
+		private final StatusBar statusBar;
+		private final StateMachine stateMachine;
+
+		public TableSelection(StatusBar statusBar, StateMachine stateMachine) {
+			this.statusBar = statusBar;
+			this.stateMachine = stateMachine;
+		}
+
+		public void handleEvent(Event event) {
+			if (stateMachine.inState(ScanningState.IDLE)) {
+				Table resultTable = (Table) event.widget;
+				int selectionCount = resultTable.getSelectionCount();
+				if (selectionCount > 1) 
+					statusBar.setStatusText(selectionCount + Labels.getLabel("text.hostsSelected"));
+				else
+					statusBar.setStatusText(null);
+			}
+		}
+	}
+	
+	abstract static class SelectDesired implements Listener {
 		
+		private final ResultTable resultTable;
+		private final ScanningResultList results;
+		private final TableSelection tableSelectionListener;
+
+		public SelectDesired(ResultTable resultTable, ScanningResultList results, TableSelection tableSelectionListener) {
+			this.resultTable = resultTable;
+			this.results = results;
+			this.tableSelectionListener = tableSelectionListener;
+		}
+
+		public void handleEvent(Event event) {
+			int count = resultTable.getItemCount();
+			resultTable.deselectAll();
+			for (int i = 0; i < count; i++) {
+				if (isDesired(results.getResult(i).getType())) {
+					resultTable.select(i);
+				}
+			}
+			event.widget = resultTable;
+			tableSelectionListener.handleEvent(event);
+		}
+
+		abstract boolean isDesired(ResultType type);
+	}
+	
+	public static class SelectAlive extends SelectDesired {
+		public SelectAlive(ResultTable resultTable, ScanningResultList results, TableSelection tableSelectionListener) {
+			super(resultTable, results, tableSelectionListener);
+		}
+
+		boolean isDesired(ResultType type) {
+			return type.ordinal() >= ResultType.ALIVE.ordinal();
+		}
+	}
+
+	public static class SelectDead extends SelectDesired {
+		public SelectDead(ResultTable resultTable, ScanningResultList results, TableSelection tableSelectionListener) {
+			super(resultTable, results, tableSelectionListener);
+		}
+
+		boolean isDesired(ResultType type) {
+			return type == ResultType.DEAD;
+		}
+	}
+	
+	public static class SelectWithPorts extends SelectDesired {
+		public SelectWithPorts(ResultTable resultTable, ScanningResultList results, TableSelection tableSelectionListener) {
+			super(resultTable, results, tableSelectionListener);
+		}
+
+		boolean isDesired(ResultType type) {
+			return type == ResultType.WITH_PORTS;
+		}
+	}
+	
+	public static class SelectWithoutPorts extends SelectDesired {
+		public SelectWithoutPorts(ResultTable resultTable, ScanningResultList results, TableSelection tableSelectionListener) {
+			super(resultTable, results, tableSelectionListener);
+		}
+
+		boolean isDesired(ResultType type) {
+			return type == ResultType.ALIVE;
+		}
 	}
 }

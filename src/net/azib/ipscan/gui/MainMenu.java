@@ -95,10 +95,15 @@ public class MainMenu {
 		
 		subMenu = initMenu(menu, "menu.tools");
 		initMenuItem(subMenu, "menu.tools.preferences", "Ctrl+O", new Integer(SWT.MOD1 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.Preferences.class), true);
-		initMenuItem(subMenu, "menu.tools.fetchers", "Ctrl+Shift+O", new Integer(SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.SelectFetchers.class), true);
+		initMenuItem(subMenu, "menu.tools.fetchers", "Ctrl+Shift+O", new Integer(SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.ChooseFetchers.class), true);
 		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.tools.delete", null, null, null);
+		Menu selectMenu = initMenu(subMenu, "menu.tools.select");
 		initMenuItem(subMenu, "menu.tools.scanInfo", "Ctrl+I", new Integer(SWT.MOD1 | 'I'), initListener(ToolsActions.ScanInfo.class));
+
+		initMenuItem(selectMenu, "menu.tools.select.alive", null, null, initListener(ToolsActions.SelectAlive.class), true);
+		initMenuItem(selectMenu, "menu.tools.select.dead", null, null, initListener(ToolsActions.SelectDead.class), true);
+		initMenuItem(selectMenu, "menu.tools.select.withPorts", null, null, initListener(ToolsActions.SelectWithPorts.class), true);
+		initMenuItem(selectMenu, "menu.tools.select.withoutPorts", null, null, initListener(ToolsActions.SelectWithoutPorts.class), true);
 		
 		subMenu = initMenu(menu, "menu.help");
 		initMenuItem(subMenu, "menu.help.gettingStarted", !Platform.MAC_OS ? "F1" : null, new Integer(Platform.MAC_OS ? SWT.HELP : SWT.F1), initListener(HelpActions.GettingStarted.class));
@@ -129,9 +134,9 @@ public class MainMenu {
 		// initMenuItem(subMenu, "menu.commands.show", null, initListener());
 	}
 
-	private void createOpenersMenu(Menu subMenu) {
+	private void createOpenersMenu(Menu parentMenu) {
 		OpenersMenu openersMenu = (OpenersMenu) container.getComponentInstance(OpenersMenu.class);
-		MenuItem openersMenuItem = new MenuItem(subMenu, SWT.CASCADE);
+		MenuItem openersMenuItem = new MenuItem(parentMenu, SWT.CASCADE);
 		openersMenuItem.setText(Labels.getLabel("menu.commands.open"));
 		openersMenuItem.setMenu(openersMenu);
 	}

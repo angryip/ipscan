@@ -12,11 +12,13 @@ import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.ScanningResult.ResultType;
+import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsActions;
+import net.azib.ipscan.gui.actions.ToolsActions;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -42,7 +44,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 
 	private Listener columnResizeListener;
 
-	public ResultTable(Composite parent, FetcherRegistry fetcherRegistry, ScanningResultList scanningResultList, ColumnsActions.ColumnClick columnClickListener, ColumnsActions.ColumnResize columnResizeListener) {
+	public ResultTable(Composite parent, FetcherRegistry fetcherRegistry, ScanningResultList scanningResultList, StateMachine stateMachine, ColumnsActions.ColumnClick columnClickListener, ColumnsActions.ColumnResize columnResizeListener, ToolsActions.TableSelection selectionListener) {
 		super(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		this.scanningResults = scanningResultList;
 		
@@ -54,25 +56,17 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		fetcherRegistry.addListener(this);
 		handleUpdateOfSelectedFetchers(fetcherRegistry);
 		
-		// pre-load button images
+		// load button images
 		listImages[ResultType.UNKNOWN.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.unknown.img"));
 		listImages[ResultType.DEAD.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.dead.img"));
 		listImages[ResultType.ALIVE.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.alive.img"));
 		listImages[ResultType.WITH_PORTS.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.addinfo.img"));
 		
-		Listener detailsListener = new Listener() {
-			CommandsActions.Details detailsListener = new CommandsActions.Details(ResultTable.this);
-			public void handleEvent(Event e) {
-				// activate only if something is selected
-				if (getSelectionIndex() >= 0 && (e.type == SWT.MouseDoubleClick || e.detail == SWT.TRAVERSE_RETURN)) {
-					e.doit = false;
-					detailsListener.handleEvent(e);					
-				}
-			}
-		};
+		Listener detailsListener = new DetailsListener();
 		addListener(SWT.Traverse, detailsListener);
 		addListener(SWT.MouseDoubleClick, detailsListener);
-		addListener(SWT.KeyDown, new CommandsActions.Delete(this));
+		addListener(SWT.Selection, selectionListener);
+		addListener(SWT.KeyDown, new CommandsActions.Delete(this, stateMachine));
 		addListener(SWT.KeyDown, new CommandsActions.CopyIP(this));
 		
 		// this one populates table dynamically, taking data from ScanningResultList
@@ -190,9 +184,27 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 	}
 
 	/**
+	 * This listener shows the details window
+	 */
+	final class DetailsListener extends CommandsActions.Details {
+
+		public DetailsListener() {
+			super(ResultTable.this);
+		}
+
+		public void handleEvent(Event e) {
+			// activate only if something is selected
+			if (getSelectionIndex() >= 0 && (e.type == SWT.MouseDoubleClick || e.detail == SWT.TRAVERSE_RETURN)) {
+				e.doit = false;
+				super.handleEvent(e);					
+			}
+		}
+	}
+
+	/**
 	 * This listener is used for displaying the real results in the table, on demand.
 	 */
-	class SetDataListener implements Listener {
+	final class SetDataListener implements Listener {
 
 		public void handleEvent(Event event) {
 			TableItem item = (TableItem)event.item;

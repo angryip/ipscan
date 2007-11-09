@@ -15,6 +15,7 @@ import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.OpenersConfig.Opener;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
+import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
@@ -69,17 +70,23 @@ public class CommandsActions {
 	}
 	
 	public static class Delete implements Listener {
-		private ResultTable resultTable;
+		private final ResultTable resultTable;
+		private final StateMachine stateMachine;
 		
-		public Delete(ResultTable resultTable) {
+		public Delete(ResultTable resultTable, StateMachine stateMachine) {
 			this.resultTable = resultTable;
+			this.stateMachine = stateMachine;
 		}
 
 		public void handleEvent(Event event) {
 			// ignore other keys if this is a KeyDown event - 
 			// the same listener is used for several events
 			if (event.type == SWT.KeyDown && event.keyCode != SWT.DEL)
-				return;			
+				return;
+			// deletion now allowed when scanning
+			if (!stateMachine.inState(ScanningState.IDLE))
+				return;
+			
 			checkSelection(resultTable);
 			int firstSelection = resultTable.getSelectionIndex();
 			resultTable.remove(resultTable.getSelectionIndices());

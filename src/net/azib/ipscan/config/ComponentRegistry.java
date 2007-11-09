@@ -39,6 +39,7 @@ import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.OpenerLauncher;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
+import net.azib.ipscan.gui.actions.ToolsActions;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import net.azib.ipscan.gui.feeders.FileFeederGUI;
 import net.azib.ipscan.gui.feeders.RandomFeederGUI;
@@ -154,6 +155,8 @@ public class ComponentRegistry {
 			anyComponentParameter,
 			anyComponentParameter,
 			anyComponentParameter,
+			anyComponentParameter,
+			anyComponentParameter,
 			anyComponentParameter});
 		container.registerComponentImplementation(StatusBar.class, StatusBar.class, new Parameter[] {
 			new ComponentParameter("mainShell"),
@@ -183,6 +186,7 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(ColumnsActions.AboutFetcher.class);
 		container.registerComponentImplementation(ColumnsActions.ColumnClick.class);
 		container.registerComponentImplementation(ColumnsActions.ColumnResize.class);
+		container.registerComponentImplementation(ToolsActions.TableSelection.class);
 	}
 	
 	public MainWindow createMainWindow() {
