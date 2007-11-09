@@ -22,6 +22,7 @@ import net.azib.ipscan.fetchers.FetcherRegistryImpl;
 import net.azib.ipscan.fetchers.FilteredPortsFetcher;
 import net.azib.ipscan.fetchers.HostnameFetcher;
 import net.azib.ipscan.fetchers.IPFetcher;
+import net.azib.ipscan.fetchers.NetBIOSInfoFetcher;
 import net.azib.ipscan.fetchers.PingFetcher;
 import net.azib.ipscan.fetchers.PingTTLFetcher;
 import net.azib.ipscan.fetchers.PortsFetcher;
@@ -97,6 +98,7 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(FilteredPortsFetcher.class);
 		container.registerComponentImplementation(WebDetectFetcher.class);
 		container.registerComponentImplementation(CommentFetcher.class);
+		container.registerComponentImplementation(NetBIOSInfoFetcher.class);
 		
 		container.registerComponentImplementation(PingerRegistry.class, PingerRegistryImpl.class);
 		container.registerComponentImplementation(ScanningResultList.class);

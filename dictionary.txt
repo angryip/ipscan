@@ -28,3 +28,4 @@ clipboard
 ctrl
 compiz
 placeholder
+firewall
