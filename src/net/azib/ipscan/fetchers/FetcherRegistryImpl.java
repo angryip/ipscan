@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.prefs.Preferences;
 
 /**
- * Fetcher Registry singleton class.
- * Actually, it registers both plugins and builtins.
+ * Fetcher registry singleton class.
+ * It registers both plugins and builtins.
  *
  * @author Anton Keks
  */
@@ -59,8 +59,10 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 			selectedFetchers = new LinkedHashMap<String, Fetcher>(registeredFetchers.size());
 			// initialize saved selected fetchers
 			for (int i = 0; i < fetcherPrefs.length; i++) {
-				if (fetcherPrefs[i].length() > 0) {
-					selectedFetchers.put(fetcherPrefs[i], registeredFetchers.get(fetcherPrefs[i]));
+				Fetcher fetcher = registeredFetchers.get(fetcherPrefs[i]);
+				// make sure that this fetcher is registered
+				if (fetcher != null) {
+					selectedFetchers.put(fetcherPrefs[i], fetcher);
 				}
 			}
 		}
@@ -109,7 +111,7 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 		}
 		selectedFetchers = newList;
 		
-		// invorm observers
+		// inform observers
 		for (FetcherRegistryUpdateListener listener : updateListeners) {
 			listener.handleUpdateOfSelectedFetchers(this);
 		}

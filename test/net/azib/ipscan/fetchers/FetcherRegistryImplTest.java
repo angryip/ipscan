@@ -78,6 +78,10 @@ public class FetcherRegistryImplTest {
 		Iterator<?> iterator = fetcherRegistry.getSelectedFetchers().iterator();
 		assertSame(hostnameFetcher, iterator.next());
 		assertSame(commentFetcher, iterator.next());
+		
+		preferences.put(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, "not-existing-fetcher###" + hostnameFetcher.getLabel());
+		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher}, preferences);
+		assertEquals(1, fetcherRegistry.getSelectedFetchers().size());
 	}
 	
 	@Test
