@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Table;
  */
 public class ToolsActions {
 
-	public static class Preferences implements Listener {
+	public static final class Preferences implements Listener {
 		
 		private PreferencesDialog preferencesDialog;
 		private ResultTable resultTable;
@@ -52,7 +52,7 @@ public class ToolsActions {
 		}
 	}
 
-	public static class ChooseFetchers implements Listener {
+	public static final class ChooseFetchers implements Listener {
 		
 		private SelectFetchersDialog selectFetchersDialog;
 		
@@ -66,7 +66,7 @@ public class ToolsActions {
 
 	}
 
-	public static class ScanInfo implements Listener, StateTransitionListener {
+	public static final class ScanInfo implements Listener, StateTransitionListener {
 		
 		private StatisticsDialog statisticsDialog;
 		private GlobalConfig globalConfig;
@@ -118,7 +118,7 @@ public class ToolsActions {
 		}
 	}
 	
-	abstract static class SelectDesired implements Listener {
+	static abstract class SelectDesired implements Listener {
 		
 		private final ResultTable resultTable;
 		private final ScanningResultList results;
@@ -145,7 +145,7 @@ public class ToolsActions {
 		abstract boolean isDesired(ResultType type);
 	}
 	
-	public static class SelectAlive extends SelectDesired {
+	public static final class SelectAlive extends SelectDesired {
 		public SelectAlive(ResultTable resultTable, ScanningResultList results, TableSelection tableSelectionListener) {
 			super(resultTable, results, tableSelectionListener);
 		}
@@ -155,7 +155,7 @@ public class ToolsActions {
 		}
 	}
 
-	public static class SelectDead extends SelectDesired {
+	public static final class SelectDead extends SelectDesired {
 		public SelectDead(ResultTable resultTable, ScanningResultList results, TableSelection tableSelectionListener) {
 			super(resultTable, results, tableSelectionListener);
 		}
@@ -165,7 +165,7 @@ public class ToolsActions {
 		}
 	}
 	
-	public static class SelectWithPorts extends SelectDesired {
+	public static final class SelectWithPorts extends SelectDesired {
 		public SelectWithPorts(ResultTable resultTable, ScanningResultList results, TableSelection tableSelectionListener) {
 			super(resultTable, results, tableSelectionListener);
 		}
@@ -175,7 +175,7 @@ public class ToolsActions {
 		}
 	}
 	
-	public static class SelectWithoutPorts extends SelectDesired {
+	public static final class SelectWithoutPorts extends SelectDesired {
 		public SelectWithoutPorts(ResultTable resultTable, ScanningResultList results, TableSelection tableSelectionListener) {
 			super(resultTable, results, tableSelectionListener);
 		}

@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.TableColumn;
  */
 public class ColumnsActions {
 	
-	public static class ColumnResize implements Listener {
+	public static final class ColumnResize implements Listener {
 		public void handleEvent(Event event) {
 			TableColumn column = (TableColumn) event.widget;
 			// do not save the width of the last column on Linux, because in GTK 
@@ -48,7 +48,7 @@ public class ColumnsActions {
 		}
 	}
 
-	public static class ColumnClick implements Listener {
+	public static final class ColumnClick implements Listener {
 		
 		private Menu columnsMenu;
 		
@@ -79,7 +79,7 @@ public class ColumnsActions {
 		}
 	}
 
-	public static class SortBy implements Listener {
+	public static final class SortBy implements Listener {
 		
 		private ScanningResultList scanningResultList;
 		
@@ -106,7 +106,7 @@ public class ColumnsActions {
 		}
 	}
 	
-	public static class FetcherPreferences implements Listener {
+	public static final class FetcherPreferences implements Listener {
 		
 		private PreferencesDialog preferencesDialog;
 		
@@ -134,7 +134,7 @@ public class ColumnsActions {
 		}
 	}
 	
-	public static class AboutFetcher implements Listener {
+	public static final class AboutFetcher implements Listener {
 		
 		public void handleEvent(Event event) {
 			// retrieve the clicked column (see ColumnClick above)

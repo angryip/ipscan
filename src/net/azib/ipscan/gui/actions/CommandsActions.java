@@ -69,7 +69,7 @@ public class CommandsActions {
 		}
 	}
 	
-	public static class Delete implements Listener {
+	public static final class Delete implements Listener {
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
 		
@@ -94,7 +94,7 @@ public class CommandsActions {
 		}
 	}
 	
-	public static class Rescan implements Listener {
+	public static final class Rescan implements Listener {
 		private ResultTable resultTable;
 		private StateMachine stateMachine;
 		
@@ -113,7 +113,7 @@ public class CommandsActions {
 	 * Copies currently selected IP to the clipboard.
 	 * Used as both menu item listener and key down listener.
 	 */
-	public static class CopyIP implements Listener {
+	public static final class CopyIP implements Listener {
 		private ResultTable resultTable;
 		
 		public CopyIP(ResultTable resultTable) {
@@ -136,7 +136,7 @@ public class CommandsActions {
 		}
 	}
 	
-	public static class CopyIPDetails implements Listener {
+	public static final class CopyIPDetails implements Listener {
 		private ResultTable resultTable;
 		
 		public CopyIPDetails(ResultTable resultTable) {
@@ -151,7 +151,7 @@ public class CommandsActions {
 		}
 	}
 	
-	public static class ShowOpenersMenu implements Listener {
+	public static final class ShowOpenersMenu implements Listener {
 		
 		private Listener openersSelectListener;
 
@@ -186,7 +186,7 @@ public class CommandsActions {
 		}
 	}
 	
-	public static class EditComment implements Listener {
+	public static final class EditComment implements Listener {
 		private ResultTable resultTable;
 		private ScanningResultList results;
 		private CommentsConfig commentsConfig;
@@ -224,7 +224,7 @@ public class CommandsActions {
 		}
 	}
 	
-	public static class EditOpeners implements Listener {
+	public static final class EditOpeners implements Listener {
 		
 		FetcherRegistry fetcherRegistry;
 
@@ -237,7 +237,7 @@ public class CommandsActions {
 		}
 	}
 	
-	public static class SelectOpener implements Listener {
+	public static final class SelectOpener implements Listener {
 		
 		private StatusBar statusBar;
 		private ResultTable resultTable;

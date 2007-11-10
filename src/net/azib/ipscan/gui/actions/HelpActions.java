@@ -30,37 +30,37 @@ import org.eclipse.swt.widgets.MessageBox;
  */
 public class HelpActions {
 	
-	public static class GettingStarted implements Listener {
+	public static final class GettingStarted implements Listener {
 		public void handleEvent(Event event) {
 			new GettingStartedDialog().open();
 		}
 	}
 
-	public static class About implements Listener { 		
+	public static final class About implements Listener { 		
 		public void handleEvent(Event event) { 
 			new AboutDialog().open(); 
 		}
 	}
 
-	public static class Website implements Listener { 		
+	public static final class Website implements Listener { 		
 		public void handleEvent(Event event) {
 			BrowserLauncher.openURL(Version.WEBSITE);
 		}
 	}
 
-	public static class Forum implements Listener { 		
+	public static final class Forum implements Listener { 		
 		public void handleEvent(Event event) {
 			BrowserLauncher.openURL(Version.FORUM_URL);
 		}
 	}
 
-	public static class Plugins implements Listener { 		
+	public static final class Plugins implements Listener { 		
 		public void handleEvent(Event event) {
 			BrowserLauncher.openURL(Version.PLUGINS_URL);
 		}
 	}
 	
-	public static class CheckVersion implements Listener {
+	public static final class CheckVersion implements Listener {
 		private StatusBar statusBar;
 		
 		public CheckVersion(StatusBar statusBar) {

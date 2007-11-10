@@ -31,13 +31,13 @@ import org.eclipse.swt.widgets.Listener;
  */
 public class FileActions {
 
-	public static class Exit implements Listener {
+	public static final class Exit implements Listener {
 		public void handleEvent(Event event) {
 			event.display.getActiveShell().close();
 		}
 	}
 
-	static class SaveResults implements Listener {
+	static abstract class SaveResults implements Listener {
 		private ExporterRegistry exporterRegistry;
 		private ResultTable resultTable;
 		private StatusBar statusBar;
@@ -111,19 +111,19 @@ public class FileActions {
 		}
 	}
 	
-	public static class SaveAll extends SaveResults {
+	public static final class SaveAll extends SaveResults {
 		public SaveAll(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar) {
 			super(exporterRegistry, resultTable, statusBar, false);
 		}
 	}
 
-	public static class SaveSelection extends SaveResults {
+	public static final class SaveSelection extends SaveResults {
 		public SaveSelection(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar) {
 			super(exporterRegistry, resultTable, statusBar, true);
 		}
 	}
 	
-	public static class NewWindow implements Listener {
+	public static final class NewWindow implements Listener {
 		public void handleEvent(Event event) {
 			// start another instance in a new thread
 			// doesn't currently work...

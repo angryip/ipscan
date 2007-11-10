@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class GotoActions {
 
-	private static class NextHost implements Listener {
+	static class NextHost implements Listener {
 
 		private ResultTable resultTable;
 		private ResultType whatToSearchFor;
@@ -61,25 +61,25 @@ public class GotoActions {
 
 	}
 	
-	public static class NextAliveHost extends NextHost {
+	public static final class NextAliveHost extends NextHost {
 		public NextAliveHost(ResultTable resultTable) {
 			super(resultTable, ResultType.ALIVE);
 		}
 	}
 	
-	public static class NextDeadHost extends NextHost {
+	public static final class NextDeadHost extends NextHost {
 		public NextDeadHost(ResultTable resultTable) {
 			super(resultTable, ResultType.DEAD);
 		}
 	}
 	
-	public static class NextHostWithInfo extends NextHost {
+	public static final class NextHostWithInfo extends NextHost {
 		public NextHostWithInfo(ResultTable resultTable) {
 			super(resultTable, ResultType.WITH_PORTS);
 		}
 	}
 	
-	public static class Find implements Listener {
+	public static final class Find implements Listener {
 
 		private ResultTable resultTable;
 		private StatusBar statusBar;

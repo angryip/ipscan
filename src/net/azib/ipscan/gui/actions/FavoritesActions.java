@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.MenuItem;
  */
 public class FavoritesActions {
 
-	public static class Add implements Listener {
+	public static final class Add implements Listener {
 		private FeederGUIRegistry feederRegistry;
 		
 		public Add(FeederGUIRegistry feederRegistry) {
@@ -55,7 +55,7 @@ public class FavoritesActions {
 		}
 	}
 	
-	public static class Select implements Listener {
+	public static final class Select implements Listener {
 		private FeederGUIRegistry feederRegistry;
 		
 		public Select(FeederGUIRegistry feederRegistry) {
@@ -76,13 +76,13 @@ public class FavoritesActions {
 		}
 	}
 	
-	public static class Edit implements Listener {
+	public static final class Edit implements Listener {
 		public void handleEvent(Event event) {
 			new EditFavoritesDialog().open();
 		}
 	}
 
-	public static class ShowMenu implements Listener {
+	public static final class ShowMenu implements Listener {
 		private Listener favoritesSelectListener;
 		
 		public ShowMenu(Select favoritesSelectListener) {
