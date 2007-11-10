@@ -32,9 +32,9 @@ public class ToolsActions {
 
 	public static final class Preferences implements Listener {
 		
-		private PreferencesDialog preferencesDialog;
-		private ResultTable resultTable;
-		private StatusBar statusBar;
+		private final PreferencesDialog preferencesDialog;
+		private final ResultTable resultTable;
+		private final StatusBar statusBar;
 		
 		public Preferences(PreferencesDialog preferencesDialog, ResultTable resultTable, StatusBar statusBar) {
 			this.preferencesDialog = preferencesDialog;
@@ -54,7 +54,7 @@ public class ToolsActions {
 
 	public static final class ChooseFetchers implements Listener {
 		
-		private SelectFetchersDialog selectFetchersDialog;
+		private final SelectFetchersDialog selectFetchersDialog;
 		
 		public ChooseFetchers(SelectFetchersDialog selectFetchersDialog) {
 			this.selectFetchersDialog = selectFetchersDialog;
@@ -68,8 +68,8 @@ public class ToolsActions {
 
 	public static final class ScanInfo implements Listener, StateTransitionListener {
 		
-		private StatisticsDialog statisticsDialog;
-		private GlobalConfig globalConfig;
+		private final StatisticsDialog statisticsDialog;
+		private final GlobalConfig globalConfig;
 		
 		public ScanInfo(GlobalConfig globalConfig, StatisticsDialog statisticsDialog, StateMachine stateMachine) {
 			this.globalConfig = globalConfig;

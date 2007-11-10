@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.MenuItem;
 public class FavoritesActions {
 
 	public static final class Add implements Listener {
-		private FeederGUIRegistry feederRegistry;
+		private final FeederGUIRegistry feederRegistry;
 		
 		public Add(FeederGUIRegistry feederRegistry) {
 			this.feederRegistry = feederRegistry;
@@ -56,7 +56,7 @@ public class FavoritesActions {
 	}
 	
 	public static final class Select implements Listener {
-		private FeederGUIRegistry feederRegistry;
+		private final FeederGUIRegistry feederRegistry;
 		
 		public Select(FeederGUIRegistry feederRegistry) {
 			this.feederRegistry = feederRegistry;
@@ -83,7 +83,7 @@ public class FavoritesActions {
 	}
 
 	public static final class ShowMenu implements Listener {
-		private Listener favoritesSelectListener;
+		private final Listener favoritesSelectListener;
 		
 		public ShowMenu(Select favoritesSelectListener) {
 			// the listener for favorites selections from the menu

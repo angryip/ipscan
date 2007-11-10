@@ -50,7 +50,7 @@ public class ColumnsActions {
 
 	public static final class ColumnClick implements Listener {
 		
-		private Menu columnsMenu;
+		private final Menu columnsMenu;
 		
 		public ColumnClick(ColumnsMenu columnsMenu) {
 			this.columnsMenu = columnsMenu;
@@ -81,7 +81,7 @@ public class ColumnsActions {
 
 	public static final class SortBy implements Listener {
 		
-		private ScanningResultList scanningResultList;
+		private final ScanningResultList scanningResultList;
 		
 		public SortBy(ScanningResultList scanningResultList) {
 			this.scanningResultList = scanningResultList;
@@ -108,7 +108,7 @@ public class ColumnsActions {
 	
 	public static final class FetcherPreferences implements Listener {
 		
-		private PreferencesDialog preferencesDialog;
+		private final PreferencesDialog preferencesDialog;
 		
 		public FetcherPreferences(PreferencesDialog preferencesDialog) {
 			this.preferencesDialog = preferencesDialog;

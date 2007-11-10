@@ -53,7 +53,6 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	String[] buttonTexts = new String[ScanningState.values().length];
 	
 	private Display display;
-	
 	private StateMachine stateMachine;
 	
 	/**
@@ -118,7 +117,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		stateMachine.transitionToNext();
 	}
 
-	private boolean preScanChecks() {
+	private final boolean preScanChecks() {
 		// autodetect usable pingers and silently ignore any changes - 
 		// user must see any errors only if they have explicitly selected a pinger
 		pingerRegistry.checkSelectedPinger();
@@ -184,7 +183,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	/**
 	 * @return the appropriate ResultsCallback instance, depending on the configured display method.
 	 */
-	private ScanningResultsCallback createResultsCallback() {
+	private final ScanningResultsCallback createResultsCallback() {
 		switch (globalConfig.displayMethod) {
 			default: return new ScanningResultsCallback() {
 				public void prepareForResults(ScanningResult result) {

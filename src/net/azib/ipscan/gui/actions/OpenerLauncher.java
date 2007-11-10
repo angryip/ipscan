@@ -25,8 +25,8 @@ public class OpenerLauncher {
 	
 	static final Logger LOG = LoggerFactory.getLogger();
 	
-	private FetcherRegistry fetcherRegistry;
-	private ScanningResultList scanningResults;
+	private final FetcherRegistry fetcherRegistry;
+	private final ScanningResultList scanningResults;
 	
 	public OpenerLauncher(FetcherRegistry fetcherRegistry, ScanningResultList scanningResults) {
 		this.fetcherRegistry = fetcherRegistry;

@@ -40,8 +40,8 @@ public class FeederActions {
 	public static class HostnameButton implements SelectionListener, TraverseListener {
 		
 		private String localHostname;
-		private Text hostnameText;
-		private Text ipText;
+		private final Text hostnameText;
+		private final Text ipText;
 
 		public HostnameButton(Text hostnameText, Text ipText) {
 			this.hostnameText = hostnameText;
@@ -102,7 +102,7 @@ public class FeederActions {
 		/**
 		 * Asks user which local IP address they want to use 
 		 */
-		private void askLocalIPAddress() {
+		private final void askLocalIPAddress() {
 			try {
 				Menu popupMenu = new Menu(Display.getCurrent().getActiveShell(), SWT.POP_UP);
 				Listener menuItemListener = new Listener() {

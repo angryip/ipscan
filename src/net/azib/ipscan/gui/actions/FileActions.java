@@ -38,10 +38,10 @@ public class FileActions {
 	}
 
 	static abstract class SaveResults implements Listener {
-		private ExporterRegistry exporterRegistry;
-		private ResultTable resultTable;
-		private StatusBar statusBar;
-		private boolean isSelection;
+		private final ExporterRegistry exporterRegistry;
+		private final ResultTable resultTable;
+		private final StatusBar statusBar;
+		private final boolean isSelection;
 		
 		SaveResults(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, boolean isSelection) {
 			this.exporterRegistry = exporterRegistry;
@@ -98,7 +98,7 @@ public class FileActions {
 			}
 		}
 
-		private void addFileExtensions(List<String> extensions, List<String> descriptions, StringBuffer sb) {
+		private final void addFileExtensions(List<String> extensions, List<String> descriptions, StringBuffer sb) {
 			sb.append(" (");
 			for (Exporter exporter : exporterRegistry) {
 				extensions.add("*." + exporter.getFilenameExtension());

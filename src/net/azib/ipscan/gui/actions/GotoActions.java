@@ -28,8 +28,8 @@ public class GotoActions {
 
 	static class NextHost implements Listener {
 
-		private ResultTable resultTable;
-		private ResultType whatToSearchFor;
+		private final ResultTable resultTable;
+		private final ResultType whatToSearchFor;
 		
 		NextHost(ResultTable resultTable, ResultType whatToSearchFor) {
 			this.resultTable = resultTable;
@@ -81,8 +81,8 @@ public class GotoActions {
 	
 	public static final class Find implements Listener {
 
-		private ResultTable resultTable;
-		private StatusBar statusBar;
+		private final ResultTable resultTable;
+		private final StatusBar statusBar;
 		private String lastText = "";
 		
 		public Find(StatusBar statusBar, ResultTable resultTable) {
@@ -107,7 +107,7 @@ public class GotoActions {
 			}
 		}
 
-		private void findText(String text, Shell activeShell) {
+		private final void findText(String text, Shell activeShell) {
 			ScanningResultList results = resultTable.getScanningResults();
 			
 			int startIndex = resultTable.getSelectionIndex() + 1;

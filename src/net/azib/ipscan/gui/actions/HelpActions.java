@@ -61,7 +61,7 @@ public class HelpActions {
 	}
 	
 	public static final class CheckVersion implements Listener {
-		private StatusBar statusBar;
+		private final StatusBar statusBar;
 		
 		public CheckVersion(StatusBar statusBar) {
 			this.statusBar = statusBar;

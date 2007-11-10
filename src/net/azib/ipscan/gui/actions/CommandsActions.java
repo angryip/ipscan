@@ -57,7 +57,7 @@ public class CommandsActions {
 	}
 
 	public static class Details implements Listener {
-		private ResultTable resultTable;
+		private final ResultTable resultTable;
 		
 		public Details(ResultTable resultTable) {
 			this.resultTable = resultTable;
@@ -95,8 +95,8 @@ public class CommandsActions {
 	}
 	
 	public static final class Rescan implements Listener {
-		private ResultTable resultTable;
-		private StateMachine stateMachine;
+		private final ResultTable resultTable;
+		private final StateMachine stateMachine;
 		
 		public Rescan(ResultTable resultTable, StateMachine stateMachine) {
 			this.resultTable = resultTable;
@@ -114,7 +114,7 @@ public class CommandsActions {
 	 * Used as both menu item listener and key down listener.
 	 */
 	public static final class CopyIP implements Listener {
-		private ResultTable resultTable;
+		private final ResultTable resultTable;
 		
 		public CopyIP(ResultTable resultTable) {
 			this.resultTable = resultTable;
@@ -137,7 +137,7 @@ public class CommandsActions {
 	}
 	
 	public static final class CopyIPDetails implements Listener {
-		private ResultTable resultTable;
+		private final ResultTable resultTable;
 		
 		public CopyIPDetails(ResultTable resultTable) {
 			this.resultTable = resultTable;
@@ -153,7 +153,7 @@ public class CommandsActions {
 	
 	public static final class ShowOpenersMenu implements Listener {
 		
-		private Listener openersSelectListener;
+		private final Listener openersSelectListener;
 
 		public ShowOpenersMenu(SelectOpener selectOpener) {
 			this.openersSelectListener = selectOpener;
@@ -187,10 +187,10 @@ public class CommandsActions {
 	}
 	
 	public static final class EditComment implements Listener {
-		private ResultTable resultTable;
-		private ScanningResultList results;
-		private CommentsConfig commentsConfig;
-		private FetcherRegistry fetcherRegistry;
+		private final ResultTable resultTable;
+		private final ScanningResultList results;
+		private final CommentsConfig commentsConfig;
+		private final FetcherRegistry fetcherRegistry;
 		
 		public EditComment(ResultTable resultTable, ScanningResultList results, CommentsConfig commentsConfig, FetcherRegistry fetcherRegistry) {
 			this.resultTable = resultTable;
@@ -239,9 +239,9 @@ public class CommandsActions {
 	
 	public static final class SelectOpener implements Listener {
 		
-		private StatusBar statusBar;
-		private ResultTable resultTable;
-		private OpenerLauncher openerLauncher;
+		private final StatusBar statusBar;
+		private final ResultTable resultTable;
+		private final OpenerLauncher openerLauncher;
 		
 		public SelectOpener(StatusBar statusBar, ResultTable resultTable, OpenerLauncher openerLauncher) {
 			this.statusBar = statusBar;
