@@ -32,3 +32,6 @@ firewall
 registry
 combo
 config
+traceroute
+geolocate
+geo
