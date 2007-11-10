@@ -15,6 +15,7 @@ import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
+import net.azib.ipscan.gui.actions.ToolsActions;
 import net.azib.ipscan.gui.feeders.AbstractFeederGUI;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import net.azib.ipscan.gui.util.LayoutHelper;
@@ -32,6 +33,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
@@ -54,18 +56,20 @@ public class MainWindow {
 	
 	private Combo feederSelectionCombo;
 	private FeederGUIRegistry feederRegistry;
+	private Button prefsButton;
+	private Button fetchersButton;
 		
 	/**
 	 * Creates and initializes the main window.
 	 */
-	public MainWindow(Shell shell, GlobalConfig globalConfig, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry, StateMachine stateMachine) {
+	public MainWindow(Shell shell, GlobalConfig globalConfig, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry, StateMachine stateMachine, ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListsner) {
 		this.globalConfig = globalConfig;
 		
 		initShell(shell);
 		
 		initFeederArea(feederArea, feederGUIRegistry);
 		
-		initControlsArea(controlsArea, feederSelectionCombo, startStopButton, startStopScanningAction);
+		initControlsArea(controlsArea, feederSelectionCombo, startStopButton, startStopScanningAction, preferencesListener, chooseFetchersListsner);
 		
 		initTableAndStatusBar(resultTable, resultsContextMenu, statusBar);
 
@@ -83,7 +87,7 @@ public class MainWindow {
 		
 		if (globalConfig.isFirstRun) {
 			if (Platform.CRIPPLED_WINDOWS) {
-				// inform crippled windows owners of configuration changes
+				// inform crippled windows owners of their default configuration
 				MessageBox box = new MessageBox(shell, SWT.ICON_WARNING | SWT.OK);
 				box.setText(Version.NAME);
 				box.setMessage(Labels.getLabel("text.crippledWindowsInfo"));
@@ -150,7 +154,7 @@ public class MainWindow {
 	/**
 	 * This method initializes main controls of the main window	
 	 */
-	private void initControlsArea(Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction) {
+	private void initControlsArea(final Composite controlsArea, final Combo feederSelectionCombo, final Button startStopButton, final StartStopScanningAction startStopScanningAction, final ToolsActions.Preferences preferencesListener, final ToolsActions.ChooseFetchers chooseFetchersListsner) {
 		controlsArea.setLayoutData(LayoutHelper.formData(new FormAttachment(feederArea), new FormAttachment(100), new FormAttachment(0), new FormAttachment(feederArea, 0, SWT.BOTTOM)));
 		
 		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
@@ -182,6 +186,31 @@ public class MainWindow {
 		
 		((RowData)startStopButton.getLayoutData()).height = feederSelectionCombo.getBounds().height;
 		((RowData)startStopButton.getLayoutData()).width = feederSelectionCombo.getBounds().width;
+		
+		// traverse the button before the combo (and don't traverse other buttons at all)
+		controlsArea.setTabList(new Control[] {startStopButton, feederSelectionCombo});
+		
+		prefsButton = new Button(controlsArea, SWT.NONE);
+		prefsButton.setImage(new Image(null, Labels.getInstance().getImageAsStream("button.preferences.img")));
+		prefsButton.setToolTipText(Labels.getLabel("title.preferences"));
+		prefsButton.setLayoutData(new RowData(controlHeight, controlHeight));
+		prefsButton.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				startStopButton.forceFocus();
+				preferencesListener.handleEvent(event);
+			}
+		});
+		
+		fetchersButton = new Button(controlsArea, SWT.NONE);
+		fetchersButton.setImage(new Image(null, Labels.getInstance().getImageAsStream("button.fetchers.img")));
+		fetchersButton.setToolTipText(Labels.getLabel("title.fetchers.select"));
+		fetchersButton.setLayoutData(new RowData(controlHeight, controlHeight));
+		fetchersButton.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				startStopButton.forceFocus();
+				chooseFetchersListsner.handleEvent(event);
+			}
+		});
 	}
 			
 	/**
@@ -215,7 +244,10 @@ public class MainWindow {
 			
 			shell.getDisplay().asyncExec(new Runnable() {
 				public void run() {
-					feederSelectionCombo.setEnabled(state == ScanningState.IDLE);
+					boolean enabled = state == ScanningState.IDLE;
+					feederSelectionCombo.setEnabled(enabled);
+					prefsButton.setEnabled(enabled);
+					fetchersButton.setEnabled(enabled);
 				}
 			});
 		}

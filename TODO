@@ -1,7 +1,3 @@
-Before 3.0 beta:
-
-* export/import of settings (profiles?)
-
 Before 3.0:
 
 * command-line scanning start
@@ -10,8 +6,8 @@ Before 3.0:
 * add new fetchers by configuration of PortTextFetcher
 * startup as root option
 * compile librocksaw for mac
-* preferences & select fetchers buttons in the toolbar
 * plugin loader
+* export/import of settings (profiles?)
 
 Later:
 

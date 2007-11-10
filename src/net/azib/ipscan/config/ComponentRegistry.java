@@ -149,6 +149,8 @@ public class ComponentRegistry {
 			anyComponentParameter,
 			anyComponentParameter,
 			anyComponentParameter,
+			anyComponentParameter,
+			anyComponentParameter,
 			anyComponentParameter});
 		container.registerComponentImplementation(ResultTable.class, ResultTable.class, new Parameter[] {
 			new ComponentParameter("mainShell"),
@@ -186,6 +188,8 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(ColumnsActions.AboutFetcher.class);
 		container.registerComponentImplementation(ColumnsActions.ColumnClick.class);
 		container.registerComponentImplementation(ColumnsActions.ColumnResize.class);
+		container.registerComponentImplementation(ToolsActions.Preferences.class);
+		container.registerComponentImplementation(ToolsActions.ChooseFetchers.class);
 		container.registerComponentImplementation(ToolsActions.TableSelection.class);
 	}
 	
