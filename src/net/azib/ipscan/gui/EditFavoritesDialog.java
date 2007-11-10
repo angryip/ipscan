@@ -3,11 +3,8 @@
  */
 package net.azib.ipscan.gui;
 
-import java.util.Iterator;
-
-import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.FavoritesConfig;
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.NamedListConfig;
 import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
@@ -27,9 +24,11 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class EditFavoritesDialog extends AbstractModalDialog {
 
+	private final FavoritesConfig favoritesConfig;
 	private List favoritesList;
 	
-	public EditFavoritesDialog() {
+	public EditFavoritesDialog(FavoritesConfig favoritesConfig) {
+		this.favoritesConfig = favoritesConfig;
 		createShell();
 	}
 	
@@ -49,8 +48,7 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 		
 		favoritesList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		favoritesList.setLayoutData(LayoutHelper.formData(330, 200, new FormAttachment(0), null, new FormAttachment(messageLabel), null));
-		for (Iterator<String> i = Config.getFavoritesConfig().iterateNames(); i.hasNext();) {
-			String name = i.next();
+		for (String name : favoritesConfig) {
 			favoritesList.add(name);
 		}
 		
@@ -91,11 +89,9 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 				shell.close();
 			}
 		});
-		
 	}
 	
 	private void saveFavorites() {
-		NamedListConfig favoritesConfig = Config.getFavoritesConfig();
 		favoritesConfig.update(favoritesList.getItems());
 		favoritesConfig.store();
 	}

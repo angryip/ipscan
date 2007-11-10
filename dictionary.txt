@@ -31,3 +31,4 @@ placeholder
 firewall
 registry
 combo
+config

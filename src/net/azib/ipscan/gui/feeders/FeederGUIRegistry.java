@@ -73,7 +73,7 @@ public class FeederGUIRegistry implements Iterable<AbstractFeederGUI> {
 			}
 		}
 		// if not found
-		throw new FeederException("No such feeder found: " + feederName);
+		throw new FeederException("Feeder not found: " + feederName);
 	}
 
 	/**

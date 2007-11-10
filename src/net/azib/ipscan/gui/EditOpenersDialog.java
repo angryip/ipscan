@@ -4,9 +4,7 @@
 package net.azib.ipscan.gui;
 
 import java.io.File;
-import java.util.Iterator;
 
-import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.OpenersConfig;
 import net.azib.ipscan.config.Platform;
@@ -36,7 +34,9 @@ import org.eclipse.swt.widgets.Text;
  */
 public class EditOpenersDialog extends AbstractModalDialog {
 
-	private FetcherRegistry fetcherRegistry;
+	private final FetcherRegistry fetcherRegistry;
+	private final OpenersConfig openersConfig;
+
 	private List openersList;
 	private Group editFieldsGroup;
 	private Text openerNameText;
@@ -45,8 +45,9 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	private Button isInTerminalCheckbox;
 	private int currentSelectionIndex;
 	
-	public EditOpenersDialog(FetcherRegistry fetcherRegistry) {
+	public EditOpenersDialog(FetcherRegistry fetcherRegistry, OpenersConfig openersConfig) {
 		this.fetcherRegistry = fetcherRegistry;
+		this.openersConfig = openersConfig;
 		createShell();
 	}
 	
@@ -68,8 +69,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		editFieldsGroup = new Group(shell, SWT.NONE);
 
 		openersList.setLayoutData(LayoutHelper.formData(135, 200, null, null, new FormAttachment(messageLabel, 10), new FormAttachment(editFieldsGroup, 0, SWT.BOTTOM)));
-		for (Iterator<String> i = Config.getOpenersConfig().iterateNames(); i.hasNext();) {
-			String name = i.next();
+		for (String name : openersConfig) {
 			openersList.add(name);
 		}
 		openersList.addListener(SWT.Selection, new ItemSelectListener());
@@ -161,7 +161,6 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		saveCurrentFields();			
 
 		// now save everything else (order, etc)
-		OpenersConfig openersConfig = Config.getOpenersConfig();
 		openersConfig.update(openersList.getItems());
 		openersConfig.store();
 	}
@@ -172,7 +171,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 			return;
 		
 		File workingDir = workingDirText.getText().length() > 0 ? new File(workingDirText.getText()) : null;
-		Config.getOpenersConfig().add(openerName, new OpenersConfig.Opener(openerStringText.getText(), isInTerminalCheckbox.getSelection(), workingDir));
+		openersConfig.add(openerName, new OpenersConfig.Opener(openerStringText.getText(), isInTerminalCheckbox.getSelection(), workingDir));
 		openersList.setItem(currentSelectionIndex, openerName);
 	}
 	
@@ -180,7 +179,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		currentSelectionIndex = openersList.getSelectionIndex();
 		String openerName = openersList.getItem(currentSelectionIndex);
 		editFieldsGroup.setText(openerName);
-		Opener opener = Config.getOpenersConfig().getOpener(openerName);
+		Opener opener = openersConfig.getOpener(openerName);
 		openerNameText.setText(openerName);
 		openerStringText.setText(opener.execString);
 		workingDirText.setText(opener.workingDir != null ? opener.workingDir.toString() : "");

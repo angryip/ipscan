@@ -59,7 +59,7 @@ public class NamedListConfigTest {
 		preferences.put(PREFERENCE_NAME, "aa###aaa###bb###bbb###cc###ccc");
 		NamedListConfig config = new NamedListConfig(preferences, PREFERENCE_NAME);
 
-		Iterator namesIterator = config.iterateNames();
+		Iterator namesIterator = config.iterator();
 		assertEquals("aa", namesIterator.next());
 		assertEquals("bb", namesIterator.next());
 		assertEquals("cc", namesIterator.next());
@@ -84,7 +84,7 @@ public class NamedListConfigTest {
 		
 		config.update(new String[] {"x", "z"});
 		
-		Iterator i = config.iterateNames();
+		Iterator i = config.iterator();
 		assertEquals("xxx", config.get((String)i.next()));
 		assertEquals("zzz", config.get((String)i.next()));
 		assertFalse(i.hasNext());

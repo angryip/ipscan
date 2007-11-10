@@ -57,16 +57,16 @@ public final class Config {
 	}
 	
 	/**
-	 * @return Favorites config (quick access);
+	 * @return Favorites config (only local access)
 	 */
-	public static NamedListConfig getFavoritesConfig() {
+	static NamedListConfig getFavoritesConfig() {
 		return favoritesConfig;
 	}
 
 	/**
-	 * @return Openers config (quick access);
+	 * @return Openers config (only local access);
 	 */
-	public static OpenersConfig getOpenersConfig() {
+	static OpenersConfig getOpenersConfig() {
 		return openersConfig;
 	}
 	

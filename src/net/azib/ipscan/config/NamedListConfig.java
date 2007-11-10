@@ -17,7 +17,7 @@ import java.util.prefs.Preferences;
  *
  * @author Anton Keks
  */
-public class NamedListConfig {
+public class NamedListConfig implements Iterable<String> {
 	
 	protected String preferenceName;
 	protected Preferences preferences; 
@@ -83,7 +83,7 @@ public class NamedListConfig {
 	/**
 	 * @return an Iterator for iterating names of available items
 	 */
-	public Iterator<String> iterateNames() {
+	public Iterator<String> iterator() {
 		return namedList.keySet().iterator();
 	}
 

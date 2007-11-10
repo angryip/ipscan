@@ -5,11 +5,8 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import java.util.Iterator;
-
-import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.FavoritesConfig;
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.NamedListConfig;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.gui.EditFavoritesDialog;
@@ -31,8 +28,10 @@ public class FavoritesActions {
 
 	public static final class Add implements Listener {
 		private final FeederGUIRegistry feederRegistry;
+		private final FavoritesConfig favoritesConfig;
 		
-		public Add(FeederGUIRegistry feederRegistry) {
+		public Add(FavoritesConfig favoritesConfig, FeederGUIRegistry feederRegistry) {
+			this.favoritesConfig = favoritesConfig;
 			this.feederRegistry = feederRegistry;
 		}
 		
@@ -44,7 +43,6 @@ public class FavoritesActions {
 			String favoriteName = inputDialog.open(feederInfo);
 			
 			if (favoriteName != null) {
-				NamedListConfig favoritesConfig = Config.getFavoritesConfig();
 				if (favoritesConfig.get(favoriteName) != null) {
 					throw new UserErrorException("favorite.alreadyExists");
 				}
@@ -57,14 +55,16 @@ public class FavoritesActions {
 	
 	public static final class Select implements Listener {
 		private final FeederGUIRegistry feederRegistry;
+		private final FavoritesConfig favoritesConfig;
 		
-		public Select(FeederGUIRegistry feederRegistry) {
+		public Select(FavoritesConfig favoritesConfig, FeederGUIRegistry feederRegistry) {
+			this.favoritesConfig = favoritesConfig;
 			this.feederRegistry = feederRegistry;
 		}
 
 		public void handleEvent(Event event) {
 			MenuItem menuItem = (MenuItem) event.widget;
-			String serializedFeeder = Config.getFavoritesConfig().get(menuItem.getText());
+			String serializedFeeder = favoritesConfig.get(menuItem.getText());
 			
 			int indexOf = serializedFeeder.indexOf('\t');
 			String feederName = serializedFeeder.substring(0, indexOf);
@@ -77,25 +77,32 @@ public class FavoritesActions {
 	}
 	
 	public static final class Edit implements Listener {
+		private final FavoritesConfig favoritesConfig;
+		
+		public Edit(FavoritesConfig favoritesConfig) {
+			this.favoritesConfig = favoritesConfig;
+		}
+
 		public void handleEvent(Event event) {
-			new EditFavoritesDialog().open();
+			new EditFavoritesDialog(favoritesConfig).open();
 		}
 	}
 
 	public static final class ShowMenu implements Listener {
 		private final Listener favoritesSelectListener;
+		private final FavoritesConfig favoritesConfig;
 		
-		public ShowMenu(Select favoritesSelectListener) {
+		public ShowMenu(FavoritesConfig favoritesConfig, Select favoritesSelectListener) {
+			this.favoritesConfig = favoritesConfig;
 			// the listener for favorites selections from the menu
 			this.favoritesSelectListener = favoritesSelectListener;
 		}
 
 		public void handleEvent(Event event) {
 			Menu favoritesMenu = (Menu) event.widget;
-			// populate favorites in the menu
-			NamedListConfig favoritesConfig = Config.getFavoritesConfig();
-			
+			// populate favorites in the menu			
 			// note: 3 is the number of items in the menu when no favorites exist
+			
 			// dispose old favorites
 			MenuItem[] menuItems = favoritesMenu.getItems();
 			for (int i = 3; i < menuItems.length; i++) {
@@ -103,9 +110,9 @@ public class FavoritesActions {
 			}
 			
 			// update favorites menu items
-			for (Iterator<String> i = favoritesConfig.iterateNames(); i.hasNext();) {
+			for (String name : favoritesConfig) {
 				MenuItem menuItem = new MenuItem(favoritesMenu, SWT.CASCADE);
-				menuItem.setText(i.next());
+				menuItem.setText(name);
 				menuItem.addListener(SWT.Selection, favoritesSelectListener);
 			}
 		}

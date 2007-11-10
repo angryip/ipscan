@@ -93,7 +93,7 @@ public class OpenersConfigTest {
 		preferences.put(PREFERENCE_NAME, "aa###aaa@@@1@@@###bb###bbb@@@1@@@");
 		OpenersConfig config = new OpenersConfig(preferences);
 
-		Iterator namesIterator = config.iterateNames();
+		Iterator namesIterator = config.iterator();
 		assertEquals("aa", namesIterator.next());
 		assertEquals("bb", namesIterator.next());
 		assertFalse(namesIterator.hasNext());
@@ -119,7 +119,7 @@ public class OpenersConfigTest {
 		
 		config.update(new String[] {"x", "z"});
 		
-		Iterator i = config.iterateNames();
+		Iterator i = config.iterator();
 		assertEquals("x", i.next());
 		assertEquals("z", i.next());
 		assertFalse(i.hasNext());

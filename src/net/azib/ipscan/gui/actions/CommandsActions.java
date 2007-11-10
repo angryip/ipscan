@@ -7,11 +7,10 @@ package net.azib.ipscan.gui.actions;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Iterator;
 
 import net.azib.ipscan.config.CommentsConfig;
-import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.OpenersConfig;
 import net.azib.ipscan.config.OpenersConfig.Opener;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
@@ -154,8 +153,10 @@ public class CommandsActions {
 	public static final class ShowOpenersMenu implements Listener {
 		
 		private final Listener openersSelectListener;
+		private final OpenersConfig openersConfig;
 
-		public ShowOpenersMenu(SelectOpener selectOpener) {
+		public ShowOpenersMenu(OpenersConfig openersConfig, SelectOpener selectOpener) {
+			this.openersConfig = openersConfig;
 			this.openersSelectListener = selectOpener;
 		}
 
@@ -168,9 +169,8 @@ public class CommandsActions {
 			
 			// update menu items
 			int index = 0;
-			for (Iterator<String> i = Config.getOpenersConfig().iterateNames(); i.hasNext();) {
+			for (String name : openersConfig) {
 				MenuItem menuItem = new MenuItem(openersMenu, SWT.CASCADE);
-				String name = i.next();
 				
 				index++;
 				if (index <= 9) {
@@ -226,14 +226,16 @@ public class CommandsActions {
 	
 	public static final class EditOpeners implements Listener {
 		
-		FetcherRegistry fetcherRegistry;
+		private final FetcherRegistry fetcherRegistry;
+		private final OpenersConfig openersConfig;
 
-		public EditOpeners(FetcherRegistry fetcherRegistry) {
+		public EditOpeners(FetcherRegistry fetcherRegistry, OpenersConfig openersConfig) {
 			this.fetcherRegistry = fetcherRegistry;
+			this.openersConfig = openersConfig;
 		}
 
 		public void handleEvent(Event event) {
-			new EditOpenersDialog(fetcherRegistry).open(); 
+			new EditOpenersDialog(fetcherRegistry, openersConfig).open(); 
 		}
 	}
 	
@@ -242,8 +244,10 @@ public class CommandsActions {
 		private final StatusBar statusBar;
 		private final ResultTable resultTable;
 		private final OpenerLauncher openerLauncher;
+		private final OpenersConfig openersConfig;
 		
-		public SelectOpener(StatusBar statusBar, ResultTable resultTable, OpenerLauncher openerLauncher) {
+		public SelectOpener(OpenersConfig openersConfig, StatusBar statusBar, ResultTable resultTable, OpenerLauncher openerLauncher) {
+			this.openersConfig = openersConfig;
 			this.statusBar = statusBar;
 			this.resultTable = resultTable;
 			this.openerLauncher = openerLauncher;
@@ -256,7 +260,7 @@ public class CommandsActions {
 			if (indexOf >= 0) {
 				name = name.substring(0, indexOf);
 			}
-			Opener opener = Config.getOpenersConfig().getOpener(name);
+			Opener opener = openersConfig.getOpener(name);
 			
 			int selectedItem = resultTable.getSelectionIndex();
 			if (selectedItem < 0) {
