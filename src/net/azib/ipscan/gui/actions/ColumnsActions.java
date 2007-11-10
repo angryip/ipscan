@@ -11,6 +11,8 @@ import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.core.ScanningResultList;
+import net.azib.ipscan.core.state.ScanningState;
+import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherException;
 import net.azib.ipscan.fetchers.PingFetcher;
@@ -51,23 +53,31 @@ public class ColumnsActions {
 	public static final class ColumnClick implements Listener {
 		
 		private final Menu columnsMenu;
+		private final StateMachine stateMachine;
 		
-		public ColumnClick(ColumnsMenu columnsMenu) {
+		public ColumnClick(ColumnsMenu columnsMenu, StateMachine stateMachine) {
 			this.columnsMenu = columnsMenu;
+			this.stateMachine = stateMachine;
 		}
 
 		public void handleEvent(Event e) {
 			// modify menu text a bit
 			TableColumn tableColumn = (TableColumn) e.widget;
 			MenuItem sortMenuItem = columnsMenu.getItem(0);
+			MenuItem preferencesMenuItem = columnsMenu.getItem(1);
+			MenuItem aboutMenuItem = columnsMenu.getItem(2);
+
 			if (tableColumn.getParent().getSortColumn() == tableColumn) {
 				sortMenuItem.setText(Labels.getLabel("menu.columns.sortDirection"));
 			}
 			else {
 				sortMenuItem.setText(Labels.getLabel("menu.columns.sortBy") + tableColumn.getText());
 			}
-			
-			MenuItem aboutMenuItem = columnsMenu.getItem(2);
+
+			// disable these menu items if scanning
+			sortMenuItem.setEnabled(stateMachine.inState(ScanningState.IDLE));
+			preferencesMenuItem.setEnabled(stateMachine.inState(ScanningState.IDLE));
+
 			aboutMenuItem.setText(Labels.getLabel("menu.columns.about") + tableColumn.getText());
 			
 			// remember the clicked column (see SortBy, FetcherPreferences, and AboutFetcher below)
