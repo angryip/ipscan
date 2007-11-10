@@ -223,6 +223,7 @@
 				<fileset dir="${bin}.@{platform}" includes="**/*"/>
 			</jar>
 			<proguard>
+				<!-- -printseeds -->
 				-injars ${dist}.@{platform}/${ant.project.name}-orig.jar
 				-outjars ${dist}.@{platform}/${ant.project.name}-@{platform}-${version}.jar
 				-libraryjars ${java.home}/lib/rt.jar
@@ -243,9 +244,15 @@
 		    	    &lt;methods&gt;;
 		    	}
 		    	-keep class org.eclipse.swt.internal.image.*FileFormat
-		    	-keep class org.eclipse.swt.accessibility.** {
-		    	    static &lt;methods&gt;;
-		    	}
+				-keep class * {
+					% *Proc(int);
+				}
+				-keep class * {
+					% *Proc(int, int);
+				}
+				-keep class * {
+					% *Proc(int, int, int);
+				}
 			</proguard>
 		</sequential>
 	</macrodef>
