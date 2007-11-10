@@ -190,10 +190,13 @@ public class MainWindow {
 		// traverse the button before the combo (and don't traverse other buttons at all)
 		controlsArea.setTabList(new Control[] {startStopButton, feederSelectionCombo});
 		
+		// this needs to be like this for win32 version to look decent
+		int toolbarSize = feederSelectionCombo.getBounds().height;
+		
 		prefsButton = new Button(controlsArea, SWT.NONE);
 		prefsButton.setImage(new Image(null, Labels.getInstance().getImageAsStream("button.preferences.img")));
 		prefsButton.setToolTipText(Labels.getLabel("title.preferences"));
-		prefsButton.setLayoutData(new RowData(controlHeight, controlHeight));
+		prefsButton.setLayoutData(new RowData(toolbarSize, toolbarSize));
 		prefsButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				startStopButton.forceFocus();
@@ -204,7 +207,7 @@ public class MainWindow {
 		fetchersButton = new Button(controlsArea, SWT.NONE);
 		fetchersButton.setImage(new Image(null, Labels.getInstance().getImageAsStream("button.fetchers.img")));
 		fetchersButton.setToolTipText(Labels.getLabel("title.fetchers.select"));
-		fetchersButton.setLayoutData(new RowData(controlHeight, controlHeight));
+		fetchersButton.setLayoutData(new RowData(toolbarSize, toolbarSize));
 		fetchersButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				startStopButton.forceFocus();
