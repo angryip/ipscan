@@ -8,7 +8,7 @@
 	<property name="testresults" value="testresults"/>
 			
 	<property name="name" value="Angry IP Scanner"/>
-	<property name="version" value="3.0-beta1"/>
+	<property name="version" value="3.0-svn"/>
 	<property name="main.class" value="net.azib.ipscan.Main"/>
 	<property name="swt" value="ext/swt"/>
 	<property name="ext.src" value="${ext}/rocksaw/src:${ext}/vserv-tcpip/src"/>
