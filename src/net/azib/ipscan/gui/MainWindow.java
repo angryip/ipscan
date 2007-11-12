@@ -191,12 +191,14 @@ public class MainWindow {
 		controlsArea.setTabList(new Control[] {startStopButton, feederSelectionCombo});
 		
 		// this needs to be like this for win32 version to look decent
-		int toolbarSize = feederSelectionCombo.getBounds().height;
+		int toolbarHeight = feederSelectionCombo.getBounds().height;
+		// mac needs buttons to be wider, as usual
+		int toolbarWidth = toolbarHeight + (Platform.MAC_OS ? 30 : 0);
 		
 		prefsButton = new Button(controlsArea, SWT.NONE);
 		prefsButton.setImage(new Image(null, Labels.getInstance().getImageAsStream("button.preferences.img")));
 		prefsButton.setToolTipText(Labels.getLabel("title.preferences"));
-		prefsButton.setLayoutData(new RowData(toolbarSize, toolbarSize));
+		prefsButton.setLayoutData(new RowData(toolbarWidth, toolbarHeight));
 		prefsButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				startStopButton.forceFocus();
@@ -207,7 +209,7 @@ public class MainWindow {
 		fetchersButton = new Button(controlsArea, SWT.NONE);
 		fetchersButton.setImage(new Image(null, Labels.getInstance().getImageAsStream("button.fetchers.img")));
 		fetchersButton.setToolTipText(Labels.getLabel("title.fetchers.select"));
-		fetchersButton.setLayoutData(new RowData(toolbarSize, toolbarSize));
+		fetchersButton.setLayoutData(new RowData(toolbarWidth, toolbarHeight));
 		fetchersButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				startStopButton.forceFocus();
