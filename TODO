@@ -1,5 +1,7 @@
 Before 3.0:
 
+* top-level exception handler for NoClassDefFoundErrors, etc
+* set height of buttons to the same as of Start button
 * remember size of details window
 * command-line scanning start
 * fetcher-specific options
