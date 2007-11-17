@@ -12,7 +12,7 @@ import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
 
@@ -37,9 +37,9 @@ public class NetBIOSInfoFetcher implements Fetcher {
 	private static final int NAME_TYPE_DOMAIN = 0x00;
 	private static final int NAME_TYPE_MESSENGER = 0x03;
 	
-	private GlobalConfig config;
+	private ScannerConfig config;
 	
-	public NetBIOSInfoFetcher(GlobalConfig config) {
+	public NetBIOSInfoFetcher(ScannerConfig config) {
 		this.config = config;
 	}
 

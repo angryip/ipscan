@@ -28,12 +28,12 @@ public class ConfigDetector {
 	private static final double SUCCESS_PROBABILITY = 0.2;
 	
 	private static Logger logger;
-	private GlobalConfig config;
+	private ScannerConfig config;
 	private DetectorCallback callback;
 	private AtomicInteger expectedConnects;
 	private AtomicInteger actualConnects;
 	
-	public ConfigDetector(GlobalConfig config) {
+	public ConfigDetector(ScannerConfig config) {
 		this.config = config;
 	}
 	

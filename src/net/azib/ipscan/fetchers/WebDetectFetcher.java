@@ -6,7 +6,7 @@
 
 package net.azib.ipscan.fetchers;
 
-import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.ScannerConfig;
 
 /**
  * WebDetectFetcher - detects the Web server software running on scanned hosts.
@@ -15,8 +15,8 @@ import net.azib.ipscan.config.GlobalConfig;
  */
 public class WebDetectFetcher extends PortTextFetcher {
 
-	public WebDetectFetcher(GlobalConfig globalConfig) {
-		super(globalConfig, 80, "HEAD /robots.txt HTTP/1.0\r\n\r\n", "^[Ss]erver:\\s+(.*)$");
+	public WebDetectFetcher(ScannerConfig scannerConfig) {
+		super(scannerConfig, 80, "HEAD /robots.txt HTTP/1.0\r\n\r\n", "^[Ss]erver:\\s+(.*)$");
 	}
 	
 	public String getLabel() {

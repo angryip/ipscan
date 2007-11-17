@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.ScanningResult.ResultType;
@@ -31,14 +31,14 @@ import net.azib.ipscan.core.ScanningResult.ResultType;
 public abstract class PortTextFetcher implements Fetcher {
 	private static final Logger LOG = LoggerFactory.getLogger();
 	
-	private GlobalConfig globalConfig;
+	private ScannerConfig scannerConfig;
 
 	private int port;
 	private String textToSend;
 	private Pattern matchingRegexp;
 	
-	public PortTextFetcher(GlobalConfig globalConfig, int port, String textToSend, String matchingRegexp) {
-		this.globalConfig = globalConfig;
+	public PortTextFetcher(ScannerConfig scannerConfig, int port, String textToSend, String matchingRegexp) {
+		this.scannerConfig = scannerConfig;
 		this.port = port;
 		this.textToSend = textToSend;
 		this.matchingRegexp = Pattern.compile(matchingRegexp);
@@ -55,9 +55,9 @@ public abstract class PortTextFetcher implements Fetcher {
 		try {
 			// TODO: support multiple ports and check them sequentially
 			// TODO: use adapted port timeout if it is configured to do so			
-			socket.connect(new InetSocketAddress(subject.getAddress(), port), globalConfig.portTimeout);
+			socket.connect(new InetSocketAddress(subject.getAddress(), port), scannerConfig.portTimeout);
 			socket.setTcpNoDelay(true);
-			socket.setSoTimeout(globalConfig.portTimeout);
+			socket.setSoTimeout(scannerConfig.portTimeout);
 			socket.setSoLinger(true, 0);
 			
 			socket.getOutputStream().write(textToSend.getBytes());

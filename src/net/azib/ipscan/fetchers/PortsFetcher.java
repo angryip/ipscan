@@ -13,7 +13,7 @@ import java.net.SocketTimeoutException;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.PortIterator;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.ScanningResult.ResultType;
@@ -34,14 +34,14 @@ public class PortsFetcher implements Fetcher {
 	private static final String PARAMETER_OPEN_PORTS = "openPorts";
 	private static final String PARAMETER_FILTERED_PORTS = "filteredPorts";
 	
-	private GlobalConfig config;
+	private ScannerConfig config;
 	
 	// initialize preferences for this scan
 	private PortIterator portIteratorPrototype;
 	protected boolean displayAsRanges = true;	// TODO: make configurable
 	
-	public PortsFetcher(GlobalConfig globalConfig) {
-		this.config = globalConfig;
+	public PortsFetcher(ScannerConfig scannerConfig) {
+		this.config = scannerConfig;
 	}
 
 	public String getLabel() {

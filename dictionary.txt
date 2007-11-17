@@ -37,3 +37,10 @@ geolocate
 geo
 mac
 linux
+pico
+autodetect
+pingers
+preload
+tm
+locale
+int

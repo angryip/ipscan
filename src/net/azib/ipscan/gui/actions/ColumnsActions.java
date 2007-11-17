@@ -7,7 +7,7 @@ package net.azib.ipscan.gui.actions;
 
 import java.util.MissingResourceException;
 
-import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.core.ScanningResultList;
@@ -38,6 +38,12 @@ import org.eclipse.swt.widgets.TableColumn;
 public class ColumnsActions {
 	
 	public static final class ColumnResize implements Listener {
+		private GUIConfig guiConfig;
+		
+		public ColumnResize(GUIConfig guiConfig) {
+			this.guiConfig = guiConfig;
+		}
+
 		public void handleEvent(Event event) {
 			TableColumn column = (TableColumn) event.widget;
 			// do not save the width of the last column on Linux, because in GTK 
@@ -46,7 +52,7 @@ public class ColumnsActions {
 				return;
 
 			// save column width
-			Config.getDimensionsConfig().setColumnWidth(column.getText(), column.getWidth());
+			guiConfig.setColumnWidth(column.getText(), column.getWidth());
 		}
 	}
 

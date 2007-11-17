@@ -13,68 +13,75 @@ import java.util.prefs.Preferences;
  */
 public final class Config {
 	
-	private static Preferences preferences;
+	/** Singleton instance */
+	private static Config globalConfig;
 	
-	/** easily accessible global configuration */
-	private static GlobalConfig globalConfig;
+	private Preferences preferences;
+	
+	/** easily accessible scanner configuration */
+	private ScannerConfig scannerConfig;
+	/** various GUI preferences and dimensions are stored here */
+	private GUIConfig guiConfig;
 	/** favorites are stored here */
-	private static NamedListConfig favoritesConfig;
+	private NamedListConfig favoritesConfig;
 	/** openers are stored here */
-	private static OpenersConfig openersConfig;
-	/** various dimensions are stored here */
-	private static DimensionsConfig dimensionsConfig;
+	private OpenersConfig openersConfig;
 	
 	private Config() {
+		preferences = Preferences.userRoot().node("ipscan");
+		scannerConfig = new ScannerConfig(preferences);
+		guiConfig = new GUIConfig(preferences);
+		favoritesConfig = new FavoritesConfig(preferences);
+		openersConfig = new OpenersConfig(preferences);
 	}
 	
 	/**
 	 * Initializes the singleton instance
 	 */
-	public static void initialize() {
-		preferences = Preferences.userRoot().node("ipscan");
-		globalConfig = new GlobalConfig(preferences);
-		favoritesConfig = new FavoritesConfig(preferences);
-		openersConfig = new OpenersConfig(preferences);
-		dimensionsConfig = new DimensionsConfig(preferences);
+	public static Config getConfig() {
+		if (globalConfig == null) {
+			globalConfig = new Config();
+		}
+		return globalConfig;
 	}
 
-	public static void store() {
-		globalConfig.store();
+	public void store() {
+		scannerConfig.store();
+		guiConfig.store();
 		favoritesConfig.store();
 		openersConfig.store();
-		dimensionsConfig.store();
 	}
 
-	public static Preferences getPreferences() {
+	public Preferences getPreferences() {
 		return preferences;
 	}
 
 	/** 
 	 * @return GlobalConfig instance (quick access)
 	 */
-	public static GlobalConfig getGlobal() {
-		return globalConfig;
+	public ScannerConfig getScanner() {
+		return scannerConfig;
 	}
 	
 	/**
 	 * @return Favorites config (only local access)
 	 */
-	static NamedListConfig getFavoritesConfig() {
+	NamedListConfig getFavorites() {
 		return favoritesConfig;
 	}
 
 	/**
 	 * @return Openers config (only local access);
 	 */
-	static OpenersConfig getOpenersConfig() {
+	OpenersConfig getOpeners() {
 		return openersConfig;
 	}
 	
 	/**
 	 * @return Dimensions config (quick access);
 	 */
-	public static DimensionsConfig getDimensionsConfig() {
-		return dimensionsConfig;
+	public GUIConfig getGUI() {
+		return guiConfig;
 	}
 	
 }

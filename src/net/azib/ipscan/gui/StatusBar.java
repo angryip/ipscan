@@ -5,7 +5,7 @@
  */
 package net.azib.ipscan.gui;
 
-import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.gui.util.LayoutHelper;
 
@@ -31,10 +31,10 @@ public class StatusBar {
 	private Label threadsText;
 	private ProgressBar progressBar;
 	
-	private GlobalConfig globalConfig;
+	private GUIConfig guiConfig;
 
-	public StatusBar(Shell shell, GlobalConfig globalConfig) {
-		this.globalConfig = globalConfig;
+	public StatusBar(Shell shell, GUIConfig guiConfig) {
+		this.guiConfig = guiConfig;
 		
 		composite = new Composite(shell, SWT.NONE);
 		FormData formData = new FormData();
@@ -67,7 +67,7 @@ public class StatusBar {
 	 * Updates config text according to the latest changes in the GlobalConfig
 	 */
 	public void updateConfigText() {
-		configText.setText(Labels.getLabel("text.display." + globalConfig.displayMethod));
+		configText.setText(Labels.getLabel("text.display." + guiConfig.displayMethod));
 	}
 
 	/**

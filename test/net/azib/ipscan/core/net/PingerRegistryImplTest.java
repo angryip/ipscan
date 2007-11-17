@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 
 import net.azib.ipscan.config.Config;
-import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.fetchers.FetcherException;
 
@@ -55,8 +55,7 @@ public class PingerRegistryImplTest {
 	}
 	
 	public void testCreateDefaultPinger() throws Exception {
-		Config.initialize();
-		GlobalConfig config = Config.getGlobal();
+		ScannerConfig config = Config.getConfig().getScanner();
 		PingerRegistry registry = new PingerRegistryImpl(config);
 		config.selectedPinger = "pinger.udp";
 		assertTrue(registry.createPinger() instanceof UDPPinger);
@@ -64,8 +63,7 @@ public class PingerRegistryImplTest {
 	
 	@Test
 	public void checkSelectedPinger() throws Exception {
-		Config.initialize();
-		GlobalConfig config = Config.getGlobal();
+		ScannerConfig config = Config.getConfig().getScanner();
 		PingerRegistryImpl registry = new PingerRegistryImpl(config);
 		
 		config.selectedPinger = "pinger.udp";

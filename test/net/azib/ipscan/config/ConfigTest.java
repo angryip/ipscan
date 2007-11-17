@@ -5,7 +5,6 @@ package net.azib.ipscan.config;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -13,14 +12,13 @@ import org.junit.Test;
  */
 public class ConfigTest {
 	
-	@BeforeClass
-	public static void globalSetUp() throws Exception {
-		Config.initialize();
-	}
-
 	@Test
-	public void testInitialize() {
-		assertNotNull(Config.getPreferences());
-		assertNotNull(Config.getGlobal());
+	public void testGetters() {
+		Config config = Config.getConfig();
+		assertNotNull(config.getPreferences());
+		assertNotNull(config.getScanner());
+		assertNotNull(config.getGUI());
+		assertNotNull(config.getFavorites());
+		assertNotNull(config.getOpeners());
 	}
 }

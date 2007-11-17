@@ -16,7 +16,7 @@ public class PortsFetcherTest extends AbstractFetcherTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		fetcher = new PortsFetcher(Config.getGlobal());
+		fetcher = new PortsFetcher(Config.getConfig().getScanner());
 	}
 
 }

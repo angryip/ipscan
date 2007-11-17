@@ -44,10 +44,10 @@ public class Main {
 		Display display = Display.getDefault();		
 		LOG.finer("SWT initialized after " + (System.currentTimeMillis() - startTime));
 
-		// initalize Labels instance
+		// initialize Labels instance
 		Labels.initialize(new Locale("en"));	// TODO: retrieve locale normally				
 		// initialize Config instance
-		Config.initialize();		
+		Config globalConfig = Config.getConfig();		
 		LOG.finer("Labels and Config initialized after " + (System.currentTimeMillis() - startTime));
 		
 		ComponentRegistry componentRegistry = new ComponentRegistry();
@@ -74,7 +74,7 @@ public class Main {
 		}
 		
 		// save config on exit
-		Config.store();
+		globalConfig.store();
 		
 		// dispose the native objects
 		display.dispose();

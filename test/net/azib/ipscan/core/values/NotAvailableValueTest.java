@@ -23,8 +23,7 @@ public class NotAvailableValueTest {
 	
 	@Test
 	public void testToString() throws Exception {
-		Config.initialize();
-		assertEquals(Config.getGlobal().notAvailableText, NotAvailableValue.INSTANCE.toString());
+		assertEquals(Config.getConfig().getScanner().notAvailableText, NotAvailableValue.INSTANCE.toString());
 	}
 	
 	@Test

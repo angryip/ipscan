@@ -3,12 +3,10 @@
  */
 package net.azib.ipscan.fetchers;
 
-import static org.junit.Assert.*;
-import net.azib.ipscan.config.Config;
+import static org.junit.Assert.assertNotNull;
 import net.azib.ipscan.config.Labels;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -20,12 +18,6 @@ import org.junit.Test;
 public abstract class AbstractFetcherTestCase {
 	
 	Fetcher fetcher;
-	
-	@BeforeClass
-	public static void globalSetUp() {
-		// some fetchers are Configurable and therefore need an initialized Config
-		Config.initialize();
-	}
 	
 	@Before
 	public abstract void setUp() throws Exception;

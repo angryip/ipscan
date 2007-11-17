@@ -17,7 +17,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.azib.ipscan.config.Config;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.values.NotAvailableValue;
 import net.azib.ipscan.core.values.NotScannedValue;
@@ -42,8 +41,6 @@ public class ScannerTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		Config.initialize();
-		
 		fetcherRegistry = createMock(FetcherRegistry.class);
 		expect(fetcherRegistry.getSelectedFetchers()).andReturn(
 			Arrays.asList(new Fetcher[] {new FakeFetcher(), new AnotherFakeFetcher(), new AbortingFetcher(), new FailingFetcher()})

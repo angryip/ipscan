@@ -7,7 +7,7 @@ package net.azib.ipscan.gui.actions;
 
 import java.net.InetAddress;
 
-import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScannerThread;
 import net.azib.ipscan.core.ScannerThreadFactory;
@@ -41,7 +41,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	
 	private ScannerThreadFactory scannerThreadFactory;
 	private ScannerThread scannerThread;
-	private GlobalConfig globalConfig;
+	private GUIConfig guiConfig;
 	private PingerRegistry pingerRegistry;
 
 	private StatusBar statusBar;
@@ -59,7 +59,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	 * Creates internal stuff independent from all other external dependencies
 	 */
 	StartStopScanningAction() {
-		// pre-load button images
+		// preload button images
 		buttonImages[ScanningState.IDLE.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("button.start.img"));
 		buttonImages[ScanningState.SCANNING.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("button.stop.img"));
 		buttonImages[ScanningState.STARTING.ordinal()] = buttonImages[ScanningState.SCANNING.ordinal()]; 
@@ -67,7 +67,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		buttonImages[ScanningState.STOPPING.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("button.kill.img"));
 		buttonImages[ScanningState.KILLING.ordinal()] = buttonImages[ScanningState.STOPPING.ordinal()];
 		
-		// pre-load button texts
+		// preload button texts
 		buttonTexts[ScanningState.IDLE.ordinal()] = Labels.getLabel("button.start");
 		buttonTexts[ScanningState.SCANNING.ordinal()] = Labels.getLabel("button.stop");
 		buttonTexts[ScanningState.STARTING.ordinal()] = buttonTexts[ScanningState.SCANNING.ordinal()]; 
@@ -76,7 +76,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		buttonTexts[ScanningState.KILLING.ordinal()] = Labels.getLabel("button.kill");
 	}
 	
-	public StartStopScanningAction(ScannerThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, PingerRegistry pingerRegistry, Button startStopButton, GlobalConfig globalConfig) {
+	public StartStopScanningAction(ScannerThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, PingerRegistry pingerRegistry, Button startStopButton, GUIConfig guiConfig) {
 		this();
 
 		this.scannerThreadFactory = scannerThreadFactory;
@@ -87,12 +87,12 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		this.button = startStopButton;
 		this.display = button.getDisplay();
 		this.stateMachine = stateMachine;
-		this.globalConfig = globalConfig;
+		this.guiConfig = guiConfig;
 		
 		// add listeners to all state changes
 		stateMachine.addTransitionListener(this);
 		
-		// set the defaultimage
+		// set the default image
 		ScanningState state = stateMachine.getState();
 		button.setImage(buttonImages[state.ordinal()]);
 		button.setText(buttonTexts[state.ordinal()]);
@@ -123,7 +123,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		pingerRegistry.checkSelectedPinger();
 		
 		// ask user for confirmation if needed
-		if (globalConfig.askScanConfirmation && resultTable.getItemCount() > 0) {
+		if (guiConfig.askScanConfirmation && resultTable.getItemCount() > 0) {
 			MessageBox box = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 			box.setText(Labels.getLabel("text.scan.new"));
 			box.setMessage(Labels.getLabel("text.scan.confirmation"));
@@ -196,7 +196,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	 * @return the appropriate ResultsCallback instance, depending on the configured display method.
 	 */
 	private final ScanningResultsCallback createResultsCallback() {
-		switch (globalConfig.displayMethod) {
+		switch (guiConfig.displayMethod) {
 			default: return new ScanningResultsCallback() {
 				public void prepareForResults(ScanningResult result) {
 					resultTable.addOrUpdateResultRow(result);

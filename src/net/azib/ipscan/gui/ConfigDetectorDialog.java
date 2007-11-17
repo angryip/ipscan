@@ -8,7 +8,7 @@ package net.azib.ipscan.gui;
 import java.net.InetSocketAddress;
 
 import net.azib.ipscan.config.ConfigDetector;
-import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.gui.util.LayoutHelper;
 
@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class ConfigDetectorDialog extends AbstractModalDialog implements ConfigDetector.DetectorCallback {
 	
-	private GlobalConfig config;
+	private ScannerConfig config;
 	private ConfigDetector configDetector;
 	private ProgressBar tryProgressBar;
 	private int tryCount;
@@ -44,7 +44,7 @@ public class ConfigDetectorDialog extends AbstractModalDialog implements ConfigD
 	private Text hostText;
 	private Text portText;
 	
-	public ConfigDetectorDialog(GlobalConfig config, ConfigDetector configDetector) {
+	public ConfigDetectorDialog(ScannerConfig config, ConfigDetector configDetector) {
 		this.config = config;
 		this.configDetector = configDetector;
 		this.configDetector.setCallback(this);

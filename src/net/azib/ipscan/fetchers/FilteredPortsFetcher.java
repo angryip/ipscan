@@ -7,7 +7,7 @@ package net.azib.ipscan.fetchers;
 
 import java.util.SortedSet;
 
-import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.values.NotScannedValue;
 import net.azib.ipscan.core.values.NumericListValue;
@@ -19,8 +19,8 @@ import net.azib.ipscan.core.values.NumericListValue;
  */
 public class FilteredPortsFetcher extends PortsFetcher {
 
-	public FilteredPortsFetcher(GlobalConfig globalConfig) {
-		super(globalConfig);
+	public FilteredPortsFetcher(ScannerConfig scannerConfig) {
+		super(scannerConfig);
 	}
 
 	public String getLabel() {

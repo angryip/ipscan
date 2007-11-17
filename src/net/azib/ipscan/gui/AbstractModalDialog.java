@@ -66,7 +66,7 @@ public abstract class AbstractModalDialog {
 		Rectangle clientArea = shell.getClientArea();
 		
 		Point size = okButton.computeSize(85, SWT.DEFAULT);
-		size.y = Math.max(size.y, Config.getDimensionsConfig().standardButtonHeight);
+		size.y = Math.max(size.y, Config.getConfig().getGUI().standardButtonHeight);
 		
 		okButton.setSize(size);
 		
@@ -107,7 +107,7 @@ public abstract class AbstractModalDialog {
 			cancelButton = fooButton;
 		}
 		// both buttons
-		int height = Math.max(okButton.computeSize(SWT.DEFAULT, SWT.DEFAULT).y, Config.getDimensionsConfig().standardButtonHeight);
+		int height = Math.max(okButton.computeSize(SWT.DEFAULT, SWT.DEFAULT).y, Config.getConfig().getGUI().standardButtonHeight);
 		int distance = height/2;
 		cancelButton.setLayoutData(LayoutHelper.formData(85,  height, null, new FormAttachment(control, 0, SWT.RIGHT), new FormAttachment(control, 8), null));
 		okButton.setLayoutData(LayoutHelper.formData(85, height, null, new FormAttachment(cancelButton, -distance), new FormAttachment(control, 8), null));

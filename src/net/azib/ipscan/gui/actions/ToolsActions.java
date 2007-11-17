@@ -5,7 +5,7 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.ScanningResult.ResultType;
@@ -69,10 +69,10 @@ public class ToolsActions {
 	public static final class ScanInfo implements Listener, StateTransitionListener {
 		
 		private final StatisticsDialog statisticsDialog;
-		private final GlobalConfig globalConfig;
+		private final GUIConfig guiConfig;
 		
-		public ScanInfo(GlobalConfig globalConfig, StatisticsDialog statisticsDialog, StateMachine stateMachine) {
-			this.globalConfig = globalConfig;
+		public ScanInfo(GUIConfig guiConfig, StatisticsDialog statisticsDialog, StateMachine stateMachine) {
+			this.guiConfig = guiConfig;
 			this.statisticsDialog = statisticsDialog;
 			// register for state changes
 			stateMachine.addTransitionListener(this);
@@ -84,7 +84,7 @@ public class ToolsActions {
 
 		public void transitionTo(ScanningState state) {
 			// switching to IDLE means the end of scanning
-			if (state == ScanningState.IDLE && globalConfig.showScanStats) {
+			if (state == ScanningState.IDLE && guiConfig.showScanStats) {
 				Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
 						handleEvent(null);						

@@ -17,16 +17,16 @@ import org.junit.Test;
  * 
  * @author Anton Keks
  */
-public class DimensionsConfigTest {
+public class GUIConfigTest {
 
 	private Preferences preferences;
-	private DimensionsConfig config;
+	private GUIConfig config;
 
 	@Before
 	public void setUp() throws Exception {
 		preferences = Preferences.userRoot().node("ipscan-test");
 		preferences.clear();
-		config = new DimensionsConfig(preferences);
+		config = new GUIConfig(preferences);
 	}
 
 	@After

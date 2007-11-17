@@ -75,11 +75,12 @@ public class ComponentRegistry {
 		ComponentParameter anyComponentParameter = new ComponentParameter();
 		
 		// non-GUI
-		container.registerComponentInstance(Config.getPreferences());
-		container.registerComponentInstance(Config.getGlobal());
-		container.registerComponentInstance(Config.getDimensionsConfig());
-		container.registerComponentInstance(Config.getOpenersConfig());
-		container.registerComponentInstance(Config.getFavoritesConfig());
+		Config globalConfig = Config.getConfig();
+		container.registerComponentInstance(globalConfig.getPreferences());
+		container.registerComponentInstance(globalConfig.getScanner());
+		container.registerComponentInstance(globalConfig.getGUI());
+		container.registerComponentInstance(globalConfig.getOpeners());
+		container.registerComponentInstance(globalConfig.getFavorites());
 		container.registerComponentInstance(Labels.getInstance());
 		container.registerComponentImplementation(CommentsConfig.class);
 		container.registerComponentImplementation(ConfigDetector.class);
@@ -140,7 +141,6 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(MainWindow.class, MainWindow.class, new Parameter[] {
 			new ComponentParameter("mainShell"), 
 			anyComponentParameter,
-			anyComponentParameter,
 			new ComponentParameter("feederArea"),
 			new ComponentParameter("controlsArea"),
 			new ComponentParameter("feederSelectionCombo"),
@@ -155,6 +155,7 @@ public class ComponentRegistry {
 			anyComponentParameter});
 		container.registerComponentImplementation(ResultTable.class, ResultTable.class, new Parameter[] {
 			new ComponentParameter("mainShell"),
+			anyComponentParameter,
 			anyComponentParameter,
 			anyComponentParameter,
 			anyComponentParameter,

@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.ScanningResult.ResultType;
@@ -31,7 +31,7 @@ public class PingFetcher implements Fetcher {
 	
 	public static final String PARAMETER_PINGER = "pinger";
 	
-	private GlobalConfig config;
+	private ScannerConfig config;
 
 	/** The shared pinger - this one must be static, because PingTTLFetcher will use it as well */
 	private static Pinger pinger;
@@ -39,9 +39,9 @@ public class PingFetcher implements Fetcher {
 	/** The registry used for creation of Pinger instances */
 	private PingerRegistry pingerRegistry;
 	
-	public PingFetcher(PingerRegistry pingerRegistry, GlobalConfig globalConfig) {
+	public PingFetcher(PingerRegistry pingerRegistry, ScannerConfig scannerConfig) {
 		this.pingerRegistry = pingerRegistry;
-		this.config = globalConfig;
+		this.config = scannerConfig;
 	}
 
 	public String getLabel() {

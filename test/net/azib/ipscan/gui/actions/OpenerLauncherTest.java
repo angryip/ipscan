@@ -14,7 +14,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Collections;
 
-import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
@@ -25,7 +24,6 @@ import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -34,11 +32,6 @@ import org.junit.Test;
  * @author Anton Keks
  */
 public class OpenerLauncherTest {
-
-	@Before
-	public void setUp() {
-		Config.initialize();
-	}
 
 	@Test
 	public void testReplaceValues() throws UnknownHostException {

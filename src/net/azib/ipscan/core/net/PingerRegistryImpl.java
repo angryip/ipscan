@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.fetchers.FetcherException;
 
@@ -26,13 +26,13 @@ public class PingerRegistryImpl implements PingerRegistry {
 	
 	private static final Logger LOG = Logger.getLogger(PingerRegistryImpl.class.getName());
 	
-	private GlobalConfig globalConfig;
+	private ScannerConfig scannerConfig;
 	
 	/** All available Pinger implementations */
 	Map<String, Class<? extends Pinger>> pingers;
 	
-	public PingerRegistryImpl(GlobalConfig globalConfig) {
-		this.globalConfig = globalConfig;
+	public PingerRegistryImpl(ScannerConfig scannerConfig) {
+		this.scannerConfig = scannerConfig;
 		
 		pingers = new LinkedHashMap<String, Class<? extends Pinger>>();
 		if (Platform.WINDOWS) {
@@ -54,7 +54,7 @@ public class PingerRegistryImpl implements PingerRegistry {
 	 * Creates the configured pinger with configured timeout
 	 */
 	public Pinger createPinger() throws FetcherException {
-		return createPinger(globalConfig.selectedPinger, globalConfig.pingTimeout);
+		return createPinger(scannerConfig.selectedPinger, scannerConfig.pingTimeout);
 	}
 
 	/**
@@ -80,15 +80,15 @@ public class PingerRegistryImpl implements PingerRegistry {
 	public boolean checkSelectedPinger() {
 		// this method must be fast, so we are not checking all the implementations		
 		// currently only icmp pingers may not be supported, so let's check them
-		if (globalConfig.selectedPinger.startsWith("pinger.icmp")) {
+		if (scannerConfig.selectedPinger.startsWith("pinger.icmp")) {
 			try {
-				Pinger icmpPinger = createPinger(globalConfig.selectedPinger, 250);
+				Pinger icmpPinger = createPinger(scannerConfig.selectedPinger, 250);
 				icmpPinger.ping(InetAddress.getLocalHost(), 1);
 			}
 			catch (Exception e) {
 				LOG.info("ICMP pingers fail: " + e);
 				// udp should be supported in all configurations
-				globalConfig.selectedPinger = "pinger.udp";
+				scannerConfig.selectedPinger = "pinger.udp";
 				return false;
 			}
 		}

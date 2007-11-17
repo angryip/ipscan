@@ -7,7 +7,7 @@ package net.azib.ipscan.gui;
 
 import java.util.List;
 
-import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.TableItem;
 public class ResultTable extends Table implements FetcherRegistryUpdateListener {
 	
 	private ScanningResultList scanningResults;
+	private GUIConfig guiConfig;
 	
 	private Image[] listImages = new Image[ResultType.values().length];
 
@@ -44,8 +45,9 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 
 	private Listener columnResizeListener;
 
-	public ResultTable(Composite parent, FetcherRegistry fetcherRegistry, ScanningResultList scanningResultList, StateMachine stateMachine, ColumnsActions.ColumnClick columnClickListener, ColumnsActions.ColumnResize columnResizeListener, ToolsActions.TableSelection selectionListener) {
+	public ResultTable(Composite parent, GUIConfig guiConfig, FetcherRegistry fetcherRegistry, ScanningResultList scanningResultList, StateMachine stateMachine, ColumnsActions.ColumnClick columnClickListener, ColumnsActions.ColumnResize columnResizeListener, ToolsActions.TableSelection selectionListener) {
 		super(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL);
+		this.guiConfig = guiConfig;
 		this.scanningResults = scanningResultList;
 		
 		setHeaderVisible(true);
@@ -90,7 +92,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
 			TableColumn tableColumn = new TableColumn(this, SWT.NONE);
 			String fetcherName = Labels.getLabel(fetcher.getLabel());
-			tableColumn.setWidth(Config.getDimensionsConfig().getColumnWidth(fetcherName));
+			tableColumn.setWidth(guiConfig.getColumnWidth(fetcherName));
 			tableColumn.setText(fetcherName);
 			tableColumn.setData(fetcher);	// this is used in some listeners in ColumnsActions
 			tableColumn.addListener(SWT.Selection, columnClickListener);
@@ -99,7 +101,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 	}
 
 	protected void checkSubclass() {
-		// This method is overriden and does nothing in order to
+		// This method is overridden and does nothing in order to
 		// be able to subclass the Table. We are not going to 
 		// override anything important, so this should be safe (tm)
 	}

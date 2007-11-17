@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.ScanningResultList.ScanInfo;
@@ -297,8 +296,6 @@ public class ScanningResultListTest {
 	
 	@Test
 	public void testFindText() throws Exception {
-		Config.initialize();
-		
 		scanningResults.registerAtIndex(0, scanningResults.createResult(InetAddress.getByName("127.9.9.1")));
 		scanningResults.getResult(0).setValue(1, NotScannedValue.INSTANCE);
 		scanningResults.registerAtIndex(1, scanningResults.createResult(InetAddress.getByName("127.9.9.2")));

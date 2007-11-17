@@ -5,7 +5,7 @@
  */
 package net.azib.ipscan.fetchers;
 
-import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.net.PingerRegistry;
 
 /**
@@ -15,8 +15,8 @@ import net.azib.ipscan.core.net.PingerRegistry;
  */
 public class PacketLossFetcher extends PingFetcher {
 
-	public PacketLossFetcher(PingerRegistry pingerRegistry, GlobalConfig globalConfig) {
-		super(pingerRegistry, globalConfig);
+	public PacketLossFetcher(PingerRegistry pingerRegistry, ScannerConfig scannerConfig) {
+		super(pingerRegistry, scannerConfig);
 	}
 
 }

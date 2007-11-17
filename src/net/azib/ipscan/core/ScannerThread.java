@@ -7,7 +7,7 @@ package net.azib.ipscan.core;
 
 import java.net.InetAddress;
 
-import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.feeders.Feeder;
@@ -27,11 +27,11 @@ public class ScannerThread extends Thread {
 	private ScanningResultsCallback resultsCallback;
 	private int runningThreads;
 	
-	private GlobalConfig config;
+	private ScannerConfig config;
 	
-	public ScannerThread(Feeder feeder, Scanner scanner, StateMachine stateMachine, ScanningProgressCallback progressCallback, ScanningResultList scanningResults, GlobalConfig globalConfig, ScanningResultsCallback resultsCallback) {
+	public ScannerThread(Feeder feeder, Scanner scanner, StateMachine stateMachine, ScanningProgressCallback progressCallback, ScanningResultList scanningResults, ScannerConfig scannerConfig, ScanningResultsCallback resultsCallback) {
 		super("Scanner Thread");
-		this.config = globalConfig;
+		this.config = scannerConfig;
 		this.stateMachine = stateMachine;
 		this.progressCallback = progressCallback;
 		this.resultsCallback = resultsCallback;

@@ -9,14 +9,14 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.TableItem;
-
-import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederException;
 import net.azib.ipscan.feeders.RescanFeeder;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.TableItem;
 
 /**
  * FeederGUIRegistry
@@ -25,14 +25,16 @@ import net.azib.ipscan.feeders.RescanFeeder;
  */
 public class FeederGUIRegistry implements Iterable<AbstractFeederGUI> {
 	
-	private List<AbstractFeederGUI> feederGUIList;
-	private Combo feederSelectionCombo;
+	private final List<AbstractFeederGUI> feederGUIList;
+	private final Combo feederSelectionCombo;	
+	private final GUIConfig guiConfig;
 	
 	private AbstractFeederGUI currentFeederGUI;
 	
-	public FeederGUIRegistry(AbstractFeederGUI[] allTheFeeders, Combo feederSelectionCombo) {
+	public FeederGUIRegistry(AbstractFeederGUI[] allTheFeeders, Combo feederSelectionCombo, GUIConfig guiConfig) {
 		this.feederGUIList = Arrays.asList(allTheFeeders);
 		this.feederSelectionCombo = feederSelectionCombo;
+		this.guiConfig = guiConfig;
 		this.currentFeederGUI = allTheFeeders[0];
 	}
 	
@@ -49,7 +51,7 @@ public class FeederGUIRegistry implements Iterable<AbstractFeederGUI> {
 
 		// get new feeder
 		currentFeederGUI = feederGUIList.get(newActiveFeeder);
-		Config.getGlobal().activeFeeder = newActiveFeeder;
+		guiConfig.activeFeeder = newActiveFeeder;
 
 		// make new feeder visible
 		currentFeederGUI.setVisible(true);

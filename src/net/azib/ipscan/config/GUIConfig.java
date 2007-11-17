@@ -14,9 +14,15 @@ import org.eclipse.swt.graphics.Rectangle;
  *
  * @author Anton Keks
  */
-public class DimensionsConfig {
+public class GUIConfig {
 
 	private Preferences preferences;
+	
+	public boolean isFirstRun;
+	public int activeFeeder;
+	public DisplayMethod displayMethod;
+	public boolean showScanStats;
+	public boolean askScanConfirmation;
 	
 	public int windowHeight;
 	public int windowWidth;
@@ -26,28 +32,42 @@ public class DimensionsConfig {
 	/** this one is not saved, just a globally accessed parameter */
 	public int standardButtonHeight = 22;
 	
+	public static enum DisplayMethod {ALL, ALIVE, PORTS}
+
 	// package local constructor
-	DimensionsConfig(Preferences preferences) {
+	GUIConfig(Preferences preferences) {
 		this.preferences = preferences;
 		load();
 	}
 	
 	private void load() {
+		isFirstRun = preferences.getBoolean("firstRun", true);
+		activeFeeder = preferences.getInt("activeFeeder", 0);
+		displayMethod = DisplayMethod.valueOf(preferences.get("displayMethod", DisplayMethod.ALL.toString()));
+		showScanStats = preferences.getBoolean("showScanStats", true);
+		askScanConfirmation = preferences.getBoolean("askScanConfirmation", true);
+
+		isWindowMaximized = preferences.getBoolean("windowMaximized", false);		
 		windowHeight = preferences.getInt("windowHeight", 350);
 		windowWidth = preferences.getInt("windowWidth", 560);
 		windowTop = preferences.getInt("windowTop", 100);
 		windowLeft = preferences.getInt("windowLeft", 100);
-		isWindowMaximized = preferences.getBoolean("windowMaximized", false);		
 	}
 
 	public void store() {
+		preferences.putBoolean("firstRun", isFirstRun);
+		preferences.putInt("activeFeeder", activeFeeder);
+		preferences.put("displayMethod", displayMethod.toString());
+		preferences.putBoolean("showScanStats", showScanStats);
+		preferences.putBoolean("askScanConfirmation", askScanConfirmation);
+
+		preferences.putBoolean("windowMaximized", isWindowMaximized);
 		if (!isWindowMaximized) {
 			preferences.putInt("windowHeight", windowHeight);
 			preferences.putInt("windowWidth", windowWidth);
 			preferences.putInt("windowTop", windowTop);
 			preferences.putInt("windowLeft", windowLeft);
 		}
-		preferences.putBoolean("windowMaximized", isWindowMaximized);
 	}
 
 	/**

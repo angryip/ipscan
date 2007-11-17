@@ -5,9 +5,10 @@
  */
 package net.azib.ipscan.gui;
 
-import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.GUIConfig;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.GlobalConfig.DisplayMethod;
+import net.azib.ipscan.config.GUIConfig.DisplayMethod;
 import net.azib.ipscan.core.PortIterator;
 import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.fetchers.FetcherException;
@@ -43,7 +44,8 @@ import org.eclipse.swt.widgets.Text;
 public class PreferencesDialog extends AbstractModalDialog {
 	
 	private PingerRegistry pingerRegistry;
-	private GlobalConfig globalConfig;
+	private ScannerConfig scannerConfig;
+	private GUIConfig guiConfig;
 	private ConfigDetectorDialog configDetectorDialog;
 	
 	private Button okButton;
@@ -73,9 +75,10 @@ public class PreferencesDialog extends AbstractModalDialog {
 	private Button showInfoCheckbox;
 	private Button askConfirmationCheckbox;
 	
-	public PreferencesDialog(PingerRegistry pingerRegistry, GlobalConfig globalConfig, ConfigDetectorDialog configDetectorDialog) {
+	public PreferencesDialog(PingerRegistry pingerRegistry, ScannerConfig scannerConfig, GUIConfig guiConfig, ConfigDetectorDialog configDetectorDialog) {
 		this.pingerRegistry = pingerRegistry;
-		this.globalConfig = globalConfig;
+		this.scannerConfig = scannerConfig;
+		this.guiConfig = guiConfig;
 		this.configDetectorDialog = configDetectorDialog;
 	}
 	
@@ -382,28 +385,28 @@ public class PreferencesDialog extends AbstractModalDialog {
 	}
 
 	private void loadPreferences() {
-		maxThreadsText.setText(Integer.toString(globalConfig.maxThreads));
-		threadDelayText.setText(Integer.toString(globalConfig.threadDelay));
+		maxThreadsText.setText(Integer.toString(scannerConfig.maxThreads));
+		threadDelayText.setText(Integer.toString(scannerConfig.threadDelay));
 		String[] pingerNames = pingerRegistry.getRegisteredNames();
 		for (int i = 0; i < pingerNames.length; i++) {
-			if (globalConfig.selectedPinger.equals(pingerNames[i])) {
+			if (scannerConfig.selectedPinger.equals(pingerNames[i])) {
 				pingersCombo.select(i);
 			}
 		}
-		pingingCountText.setText(Integer.toString(globalConfig.pingCount));
-		pingingTimeoutText.setText(Integer.toString(globalConfig.pingTimeout));
-		deadHostsCheckbox.setSelection(globalConfig.scanDeadHosts);
-		skipBroadcastsCheckbox.setSelection(globalConfig.skipBroadcastAddresses);
-		portTimeoutText.setText(Integer.toString(globalConfig.portTimeout));
-		adaptTimeoutCheckbox.setSelection(globalConfig.adaptPortTimeout);
-		minPortTimeoutText.setText(Integer.toString(globalConfig.minPortTimeout));
-		minPortTimeoutText.setEnabled(globalConfig.adaptPortTimeout);
-		portsText.setText(globalConfig.portString);
-		notAvailableText.setText(globalConfig.notAvailableText);
-		notScannedText.setText(globalConfig.notScannedText);
-		displayMethod[globalConfig.displayMethod.ordinal()].setSelection(true);
-		showInfoCheckbox.setSelection(globalConfig.showScanStats);
-		askConfirmationCheckbox.setSelection(globalConfig.askScanConfirmation);
+		pingingCountText.setText(Integer.toString(scannerConfig.pingCount));
+		pingingTimeoutText.setText(Integer.toString(scannerConfig.pingTimeout));
+		deadHostsCheckbox.setSelection(scannerConfig.scanDeadHosts);
+		skipBroadcastsCheckbox.setSelection(scannerConfig.skipBroadcastAddresses);
+		portTimeoutText.setText(Integer.toString(scannerConfig.portTimeout));
+		adaptTimeoutCheckbox.setSelection(scannerConfig.adaptPortTimeout);
+		minPortTimeoutText.setText(Integer.toString(scannerConfig.minPortTimeout));
+		minPortTimeoutText.setEnabled(scannerConfig.adaptPortTimeout);
+		portsText.setText(scannerConfig.portString);
+		notAvailableText.setText(scannerConfig.notAvailableText);
+		notScannedText.setText(scannerConfig.notScannedText);
+		displayMethod[guiConfig.displayMethod.ordinal()].setSelection(true);
+		showInfoCheckbox.setSelection(guiConfig.showScanStats);
+		askConfirmationCheckbox.setSelection(guiConfig.askScanConfirmation);
 	}
 	
 	private void savePreferences() {
@@ -417,31 +420,31 @@ public class PreferencesDialog extends AbstractModalDialog {
 			throw new FetcherException("unparseablePortString", e);
 		}
 
-		globalConfig.selectedPinger = (String) pingersCombo.getData(Integer.toString(pingersCombo.getSelectionIndex()));
+		scannerConfig.selectedPinger = (String) pingersCombo.getData(Integer.toString(pingersCombo.getSelectionIndex()));
 		if (!pingerRegistry.checkSelectedPinger()) {
 			tabFolder.setSelection(scanningTabItem);
 			pingersCombo.forceFocus();
 			throw new FetcherException("unsupportedPinger");
 		}
 
-		globalConfig.maxThreads = parseIntValue(maxThreadsText);
-		globalConfig.threadDelay = parseIntValue(threadDelayText);
-		globalConfig.pingCount = parseIntValue(pingingCountText);
-		globalConfig.pingTimeout = parseIntValue(pingingTimeoutText);
-		globalConfig.scanDeadHosts = deadHostsCheckbox.getSelection();
-		globalConfig.skipBroadcastAddresses = skipBroadcastsCheckbox.getSelection();
-		globalConfig.portTimeout = parseIntValue(portTimeoutText);
-		globalConfig.adaptPortTimeout = adaptTimeoutCheckbox.getSelection();
-		globalConfig.minPortTimeout = parseIntValue(minPortTimeoutText);
-		globalConfig.portString = portsText.getText();
-		globalConfig.notAvailableText = notAvailableText.getText();
-		globalConfig.notScannedText = notScannedText.getText();
+		scannerConfig.maxThreads = parseIntValue(maxThreadsText);
+		scannerConfig.threadDelay = parseIntValue(threadDelayText);
+		scannerConfig.pingCount = parseIntValue(pingingCountText);
+		scannerConfig.pingTimeout = parseIntValue(pingingTimeoutText);
+		scannerConfig.scanDeadHosts = deadHostsCheckbox.getSelection();
+		scannerConfig.skipBroadcastAddresses = skipBroadcastsCheckbox.getSelection();
+		scannerConfig.portTimeout = parseIntValue(portTimeoutText);
+		scannerConfig.adaptPortTimeout = adaptTimeoutCheckbox.getSelection();
+		scannerConfig.minPortTimeout = parseIntValue(minPortTimeoutText);
+		scannerConfig.portString = portsText.getText();
+		scannerConfig.notAvailableText = notAvailableText.getText();
+		scannerConfig.notScannedText = notScannedText.getText();
 		for (int i = 0; i < displayMethod.length; i++) {
 			if (displayMethod[i].getSelection())
-				globalConfig.displayMethod = DisplayMethod.values()[i];
+				guiConfig.displayMethod = DisplayMethod.values()[i];
 		}
-		globalConfig.showScanStats = showInfoCheckbox.getSelection();
-		globalConfig.askScanConfirmation = askConfirmationCheckbox.getSelection();
+		guiConfig.showScanStats = showInfoCheckbox.getSelection();
+		guiConfig.askScanConfirmation = askConfirmationCheckbox.getSelection();
 	}
 
 	/**
@@ -492,7 +495,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 	
 	class CheckButtonListener implements Listener {
 		public void handleEvent(Event event) {
-			globalConfig.maxThreads = Integer.parseInt(maxThreadsText.getText());
+			scannerConfig.maxThreads = Integer.parseInt(maxThreadsText.getText());
 			configDetectorDialog.open();
 		}
 	}

@@ -5,8 +5,7 @@
  */
 package net.azib.ipscan.gui;
 
-import net.azib.ipscan.config.DimensionsConfig;
-import net.azib.ipscan.config.GlobalConfig;
+import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
@@ -51,8 +50,7 @@ import org.eclipse.swt.widgets.Shell;
 public class MainWindow {
 	
 	private final Shell shell;
-	private final GlobalConfig globalConfig;
-	private final DimensionsConfig dimensionsConfig;
+	private final GUIConfig guiConfig;
 	
 	private Composite feederArea;
 	
@@ -64,10 +62,9 @@ public class MainWindow {
 	/**
 	 * Creates and initializes the main window.
 	 */
-	public MainWindow(Shell shell, GlobalConfig globalConfig, DimensionsConfig dimensionsConfig, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry, StateMachine stateMachine, ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListsner) {
+	public MainWindow(Shell shell, GUIConfig guiConfig, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry, StateMachine stateMachine, ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListsner) {
 		this.shell = shell;
-		this.globalConfig = globalConfig;
-		this.dimensionsConfig = dimensionsConfig;
+		this.guiConfig = guiConfig;
 		
 		initShell(shell);
 		
@@ -78,18 +75,18 @@ public class MainWindow {
 		initTableAndStatusBar(resultTable, resultsContextMenu, statusBar);
 
 		// after all controls are initialized, resize and open
-		shell.setBounds(dimensionsConfig.getWindowBounds());
+		shell.setBounds(guiConfig.getWindowBounds());
 		shell.open();
-		if (dimensionsConfig.isWindowMaximized) {
+		if (guiConfig.isWindowMaximized) {
 			shell.setMaximized(true);
 		}
 		else {
 			// set bounds twice - a workaround for a bug in SWT GTK + Compiz 
 			// (otherwise window gets smaller and smaller each time)
-			shell.setBounds(dimensionsConfig.getWindowBounds());			
+			shell.setBounds(guiConfig.getWindowBounds());			
 		}
 		
-		if (globalConfig.isFirstRun) {
+		if (guiConfig.isFirstRun) {
 			if (Platform.CRIPPLED_WINDOWS) {
 				// inform crippled windows owners of their default configuration
 				MessageBox box = new MessageBox(shell, SWT.ICON_WARNING | SWT.OK);
@@ -98,7 +95,7 @@ public class MainWindow {
 				box.open();
 			}
 			new GettingStartedDialog().open();
-			globalConfig.isFirstRun = false;
+			guiConfig.isFirstRun = false;
 		}
 
 		stateMachine.addTransitionListener(new EnablerDisabler());
@@ -118,7 +115,7 @@ public class MainWindow {
 		shell.addListener(SWT.Close, new Listener() {
 			public void handleEvent(Event event) {
 				// save dimensions!
-				dimensionsConfig.setWindowBounds(shell.getBounds(), shell.getMaximized());
+				guiConfig.setWindowBounds(shell.getBounds(), shell.getMaximized());
 			}
 		});
 	}
@@ -182,7 +179,7 @@ public class MainWindow {
 		IPFeederSelectionListener feederSelectionListener = new IPFeederSelectionListener();		
 		feederSelectionCombo.addSelectionListener(feederSelectionListener);
 		// initialize the selected feeder GUI 
-		feederSelectionCombo.select(globalConfig.activeFeeder);
+		feederSelectionCombo.select(guiConfig.activeFeeder);
 		feederSelectionCombo.setToolTipText(Labels.getLabel("combobox.feeder.tooltip"));
 		feederSelectionListener.widgetSelected(null);
 		
@@ -193,9 +190,9 @@ public class MainWindow {
 		controlsArea.setTabList(new Control[] {startStopButton, feederSelectionCombo});
 		
 		// initialize global standard button height
-		dimensionsConfig.standardButtonHeight = feederSelectionCombo.getBounds().height;
+		guiConfig.standardButtonHeight = feederSelectionCombo.getBounds().height;
 		
-		int toolbarHeight = dimensionsConfig.standardButtonHeight;
+		int toolbarHeight = guiConfig.standardButtonHeight;
 		int toolbarWidth = toolbarHeight;
 		
 		prefsButton = new Label(controlsArea, SWT.CENTER);
