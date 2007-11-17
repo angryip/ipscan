@@ -64,9 +64,6 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		listImages[ResultType.ALIVE.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.alive.img"));
 		listImages[ResultType.WITH_PORTS.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.addinfo.img"));
 		
-		Listener detailsListener = new DetailsListener();
-		addListener(SWT.Traverse, detailsListener);
-		addListener(SWT.MouseDoubleClick, detailsListener);
 		addListener(SWT.Selection, selectionListener);
 		addListener(SWT.KeyDown, new CommandsActions.Delete(this, stateMachine, selectionListener));
 		addListener(SWT.KeyDown, new CommandsActions.CopyIP(this));
@@ -183,24 +180,6 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 	 */
 	public ScanningResultList getScanningResults() {
 		return scanningResults;
-	}
-
-	/**
-	 * This listener shows the details window
-	 */
-	final class DetailsListener extends CommandsActions.Details {
-
-		public DetailsListener() {
-			super(ResultTable.this);
-		}
-
-		public void handleEvent(Event e) {
-			// activate only if something is selected
-			if (getSelectionIndex() >= 0 && (e.type == SWT.MouseDoubleClick || e.detail == SWT.TRAVERSE_RETURN)) {
-				e.doit = false;
-				super.handleEvent(e);					
-			}
-		}
 	}
 
 	/**

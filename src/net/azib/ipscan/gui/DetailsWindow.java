@@ -3,10 +3,10 @@
  */
 package net.azib.ipscan.gui;
 
+import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -18,22 +18,29 @@ import org.eclipse.swt.widgets.Text;
  *
  * @author Anton Keks
  */
-public class DetailsDialog extends AbstractModalDialog {
+public class DetailsWindow extends AbstractModalDialog {
 
+	private GUIConfig guiConfig;
 	private ResultTable resultTable;
 		
-	public DetailsDialog(ResultTable resultTable) {
+	public DetailsWindow(GUIConfig guiConfig, ResultTable resultTable) {
+		this.guiConfig = guiConfig;
 		this.resultTable = resultTable;
-		createShell(resultTable.getShell());
 	}
 	
+	@Override
+	public void open() {
+		createShell(resultTable.getShell());
+		super.open();
+	}
+
 	/**
 	 * This method initializes shell
 	 */
 	private void createShell(Shell parent) {
 		shell = new Shell(parent, SWT.TOOL | SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
 		shell.setText(Labels.getLabel("title.details"));
-		shell.setSize(new Point(300, 200));
+		shell.setSize(guiConfig.detailsWindowSize);
 		shell.setImage(parent.getImage());
 		FillLayout fillLayout = new FillLayout();
 		fillLayout.spacing = 3;
@@ -45,12 +52,16 @@ public class DetailsDialog extends AbstractModalDialog {
 		detailsText.setText(resultTable.getIPDetails());
 		detailsText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		detailsText.setTabs(32);
-		
+
+		shell.addListener(SWT.Close, new Listener() {
+			public void handleEvent(Event event) {
+				guiConfig.detailsWindowSize = shell.getSize();				
+			}
+		});
 		detailsText.addListener(SWT.Traverse, new Listener() {
 			public void handleEvent(Event e) {
 				if (e.detail == SWT.TRAVERSE_RETURN) {
 					shell.close();
-					shell.dispose();
 				}
 			}
 		});

@@ -4,6 +4,8 @@
 package net.azib.ipscan.config;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.prefs.Preferences;
 
@@ -35,21 +37,25 @@ public class GUIConfigTest {
 	}
 
 	@Test
-	public void getWindowDimensions() throws Exception {
-		config.windowHeight = 1;
-		config.windowWidth = 2;
-		config.windowTop = 3;
-		config.windowLeft = 4;
-		assertEquals(new Rectangle(4, 3, 2, 1), config.getWindowBounds());
+	public void setMainWindowDimensions() throws Exception {
+		Rectangle bounds1 = new Rectangle(4, 3, 2, 1);
+		config.setMainWindowBounds(bounds1, false);
+		assertFalse(config.isMainWindowMaximized);
+		assertEquals(bounds1, config.getMainWindowBounds());
+		
+		Rectangle bounds2 = new Rectangle(1, 2, 3, 4);
+		config.setMainWindowBounds(bounds2, true);
+		assertTrue(config.isMainWindowMaximized);
+		assertEquals(bounds1, config.getMainWindowBounds());
 	}
 
 	@Test
 	public void store() throws Exception {
-		config.setWindowBounds(new Rectangle(11, 22, 33, 44), false);
+		config.setMainWindowBounds(new Rectangle(11, 22, 33, 44), false);
 		config.store();
 		assertEquals(11, preferences.getInt("windowLeft", 0));
 
-		config.setWindowBounds(new Rectangle(77, 22, 33, 44), true);
+		config.setMainWindowBounds(new Rectangle(77, 22, 33, 44), true);
 		config.store();
 		assertEquals(11, preferences.getInt("windowLeft", 0));
 	}

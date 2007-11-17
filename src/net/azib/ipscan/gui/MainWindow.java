@@ -75,15 +75,15 @@ public class MainWindow {
 		initTableAndStatusBar(resultTable, resultsContextMenu, statusBar);
 
 		// after all controls are initialized, resize and open
-		shell.setBounds(guiConfig.getWindowBounds());
+		shell.setBounds(guiConfig.getMainWindowBounds());
 		shell.open();
-		if (guiConfig.isWindowMaximized) {
+		if (guiConfig.isMainWindowMaximized) {
 			shell.setMaximized(true);
 		}
 		else {
 			// set bounds twice - a workaround for a bug in SWT GTK + Compiz 
 			// (otherwise window gets smaller and smaller each time)
-			shell.setBounds(guiConfig.getWindowBounds());			
+			shell.setBounds(guiConfig.getMainWindowBounds());			
 		}
 		
 		if (guiConfig.isFirstRun) {
@@ -115,7 +115,7 @@ public class MainWindow {
 		shell.addListener(SWT.Close, new Listener() {
 			public void handleEvent(Event event) {
 				// save dimensions!
-				guiConfig.setWindowBounds(shell.getBounds(), shell.getMaximized());
+				guiConfig.setMainWindowBounds(shell.getBounds(), shell.getMaximized());
 			}
 		});
 	}

@@ -18,7 +18,7 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
-import net.azib.ipscan.gui.DetailsDialog;
+import net.azib.ipscan.gui.DetailsWindow;
 import net.azib.ipscan.gui.EditOpenersDialog;
 import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.ResultTable;
@@ -58,14 +58,22 @@ public class CommandsActions {
 
 	public static class Details implements Listener {
 		private final ResultTable resultTable;
+		private final DetailsWindow detailsWindow;
 		
-		public Details(ResultTable resultTable) {
+		public Details(ResultTable resultTable, DetailsWindow detailsWindow) {
 			this.resultTable = resultTable;
+			this.detailsWindow = detailsWindow;
+			resultTable.addListener(SWT.Traverse, this);
+			resultTable.addListener(SWT.MouseDoubleClick, this);
 		}
 
 		public void handleEvent(Event event) {
-			checkSelection(resultTable);
-			new DetailsDialog(resultTable).open(); 
+			// activate only if something is selected
+			if (resultTable.getSelectionIndex() >= 0 && (event.type == SWT.MouseDoubleClick || event.detail == SWT.TRAVERSE_RETURN)) {
+				event.doit = false;
+				checkSelection(resultTable);
+				detailsWindow.open(); 
+			}
 		}
 	}
 	

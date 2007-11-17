@@ -7,6 +7,7 @@ package net.azib.ipscan.config;
 
 import java.util.prefs.Preferences;
 
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
 /**
@@ -24,11 +25,11 @@ public class GUIConfig {
 	public boolean showScanStats;
 	public boolean askScanConfirmation;
 	
-	public int windowHeight;
-	public int windowWidth;
-	public int windowTop;
-	public int windowLeft;
-	public boolean isWindowMaximized;
+	public Rectangle mainWindowBounds;
+	public boolean isMainWindowMaximized;
+	
+	public Point detailsWindowSize;
+	
 	/** this one is not saved, just a globally accessed parameter */
 	public int standardButtonHeight = 22;
 	
@@ -47,11 +48,16 @@ public class GUIConfig {
 		showScanStats = preferences.getBoolean("showScanStats", true);
 		askScanConfirmation = preferences.getBoolean("askScanConfirmation", true);
 
-		isWindowMaximized = preferences.getBoolean("windowMaximized", false);		
-		windowHeight = preferences.getInt("windowHeight", 350);
-		windowWidth = preferences.getInt("windowWidth", 560);
-		windowTop = preferences.getInt("windowTop", 100);
-		windowLeft = preferences.getInt("windowLeft", 100);
+		isMainWindowMaximized = preferences.getBoolean("windowMaximized", false);
+		mainWindowBounds = new Rectangle(
+			preferences.getInt("windowLeft", 100),
+			preferences.getInt("windowTop", 100),
+			preferences.getInt("windowWidth", 560),
+			preferences.getInt("windowHeight", 350));
+		
+		detailsWindowSize = new Point(
+			preferences.getInt("detailsWidth", 300),
+			preferences.getInt("detailsHeight", 200));
 	}
 
 	public void store() {
@@ -61,34 +67,31 @@ public class GUIConfig {
 		preferences.putBoolean("showScanStats", showScanStats);
 		preferences.putBoolean("askScanConfirmation", askScanConfirmation);
 
-		preferences.putBoolean("windowMaximized", isWindowMaximized);
-		if (!isWindowMaximized) {
-			preferences.putInt("windowHeight", windowHeight);
-			preferences.putInt("windowWidth", windowWidth);
-			preferences.putInt("windowTop", windowTop);
-			preferences.putInt("windowLeft", windowLeft);
+		preferences.putBoolean("windowMaximized", isMainWindowMaximized);
+		if (!isMainWindowMaximized) {
+			preferences.putInt("windowLeft", mainWindowBounds.x);
+			preferences.putInt("windowTop", mainWindowBounds.y);
+			preferences.putInt("windowWidth", mainWindowBounds.width);
+			preferences.putInt("windowHeight", mainWindowBounds.height);
 		}
+		
+		preferences.putInt("detailsWidth", detailsWindowSize.x);
+		preferences.putInt("detailsHeight", detailsWindowSize.y);
 	}
 
-	/**
-	 * @return
-	 */
-	public Rectangle getWindowBounds() {
-		return new Rectangle(windowLeft, windowTop, windowWidth, windowHeight);
+	public Rectangle getMainWindowBounds() {
+		return mainWindowBounds;
 	}
 
 	/**
 	 * @param bounds
 	 * @param isMaximized 
 	 */
-	public void setWindowBounds(Rectangle bounds, boolean isMaximized) {
+	public void setMainWindowBounds(Rectangle bounds, boolean isMaximized) {
 		if (!isMaximized) {
-			windowTop = bounds.y;
-			windowLeft = bounds.x;
-			windowHeight = bounds.height;
-			windowWidth = bounds.width;
+			mainWindowBounds = bounds;
 		}
-		isWindowMaximized = isMaximized;
+		isMainWindowMaximized = isMaximized;
 	}
 
 	/**

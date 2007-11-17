@@ -1,7 +1,6 @@
 Before 3.0:
 
 * top-level exception handler for NoClassDefFoundErrors, etc
-* remember size of details window
 * command-line scanning start
 * fetcher-specific options
 * multiple port support web-detect
