@@ -5,7 +5,7 @@
  */
 package net.azib.ipscan.gui;
 
-import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.DimensionsConfig;
 import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
@@ -50,8 +50,9 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class MainWindow {
 	
-	private Shell shell;
-	private GlobalConfig globalConfig;
+	private final Shell shell;
+	private final GlobalConfig globalConfig;
+	private final DimensionsConfig dimensionsConfig;
 	
 	private Composite feederArea;
 	
@@ -63,8 +64,10 @@ public class MainWindow {
 	/**
 	 * Creates and initializes the main window.
 	 */
-	public MainWindow(Shell shell, GlobalConfig globalConfig, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry, StateMachine stateMachine, ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListsner) {
+	public MainWindow(Shell shell, GlobalConfig globalConfig, DimensionsConfig dimensionsConfig, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry, StateMachine stateMachine, ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListsner) {
+		this.shell = shell;
 		this.globalConfig = globalConfig;
+		this.dimensionsConfig = dimensionsConfig;
 		
 		initShell(shell);
 		
@@ -75,15 +78,15 @@ public class MainWindow {
 		initTableAndStatusBar(resultTable, resultsContextMenu, statusBar);
 
 		// after all controls are initialized, resize and open
-		shell.setBounds(Config.getDimensionsConfig().getWindowBounds());
+		shell.setBounds(dimensionsConfig.getWindowBounds());
 		shell.open();
-		if (Config.getDimensionsConfig().isWindowMaximized) {
+		if (dimensionsConfig.isWindowMaximized) {
 			shell.setMaximized(true);
 		}
 		else {
 			// set bounds twice - a workaround for a bug in SWT GTK + Compiz 
 			// (otherwise window gets smaller and smaller each time)
-			shell.setBounds(Config.getDimensionsConfig().getWindowBounds());			
+			shell.setBounds(dimensionsConfig.getWindowBounds());			
 		}
 		
 		if (globalConfig.isFirstRun) {
@@ -105,8 +108,6 @@ public class MainWindow {
 	 * This method initializes shell
 	 */
 	private void initShell(final Shell shell) {
-		this.shell = shell;
-		
 		FormLayout formLayout = new FormLayout();
 		shell.setLayout(formLayout);
 		
@@ -117,7 +118,7 @@ public class MainWindow {
 		shell.addListener(SWT.Close, new Listener() {
 			public void handleEvent(Event event) {
 				// save dimensions!
-				Config.getDimensionsConfig().setWindowBounds(shell.getBounds(), shell.getMaximized());
+				dimensionsConfig.setWindowBounds(shell.getBounds(), shell.getMaximized());
 			}
 		});
 	}
@@ -191,7 +192,10 @@ public class MainWindow {
 		// traverse the button before the combo (and don't traverse other buttons at all)
 		controlsArea.setTabList(new Control[] {startStopButton, feederSelectionCombo});
 		
-		int toolbarHeight = feederSelectionCombo.getBounds().height;
+		// initialize global standard button height
+		dimensionsConfig.standardButtonHeight = feederSelectionCombo.getBounds().height;
+		
+		int toolbarHeight = dimensionsConfig.standardButtonHeight;
 		int toolbarWidth = toolbarHeight;
 		
 		prefsButton = new Label(controlsArea, SWT.CENTER);

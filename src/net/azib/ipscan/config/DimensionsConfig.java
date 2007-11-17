@@ -23,6 +23,8 @@ public class DimensionsConfig {
 	public int windowTop;
 	public int windowLeft;
 	public boolean isWindowMaximized;
+	/** this one is not saved, just a globally accessed parameter */
+	public int standardButtonHeight = 22;
 	
 	// package local constructor
 	DimensionsConfig(Preferences preferences) {

@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.gui;
 
+import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.gui.util.LayoutHelper;
@@ -28,7 +29,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 public abstract class AbstractModalDialog {
 
-	protected Shell shell = null;
+	protected Shell shell;
 
 	public void open() {
 		// center dialog box according to the parent window
@@ -64,13 +65,13 @@ public abstract class AbstractModalDialog {
 		shell.setDefaultButton(okButton);
 		Rectangle clientArea = shell.getClientArea();
 		
-		Point size = okButton.computeSize(85, SWT.DEFAULT);
+		Point size = okButton.computeSize(85, Config.getDimensionsConfig().standardButtonHeight);
 		okButton.setSize(size);
 		
 		if (cancelButton != null) {
 			cancelButton.setSize(size);
 		
-			if (Platform.MAC_OS) {
+			if (Platform.MAC_OS || Platform.LINUX) {
 				// Mac OS users expect button order to be reverse
 				Button fooButton = okButton;
 				okButton = cancelButton;
@@ -96,15 +97,16 @@ public abstract class AbstractModalDialog {
 	protected void positionButtonsInFormLayout(Button okButton, Button cancelButton, Control control) {
 		shell.setDefaultButton(okButton);
 		
-		if (Platform.MAC_OS) {
+		if (Platform.MAC_OS || Platform.LINUX) {
 			// Mac OS users expect button order to be reverse
 			Button fooButton = okButton;
 			okButton = cancelButton;
 			cancelButton = fooButton;
 		}
 		// both buttons
-		cancelButton.setLayoutData(LayoutHelper.formData(85, SWT.DEFAULT, null, new FormAttachment(control, 0, SWT.RIGHT), new FormAttachment(control, 8), null));
-		okButton.setLayoutData(LayoutHelper.formData(85, SWT.DEFAULT, null, new FormAttachment(cancelButton, -10), new FormAttachment(control, 8), null));
+		int height = Config.getDimensionsConfig().standardButtonHeight;
+		cancelButton.setLayoutData(LayoutHelper.formData(85,  height, null, new FormAttachment(control, 0, SWT.RIGHT), new FormAttachment(control, 8), null));
+		okButton.setLayoutData(LayoutHelper.formData(85, height, null, new FormAttachment(cancelButton, -10), new FormAttachment(control, 8), null));
 	}
 	
 	/**

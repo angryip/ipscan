@@ -140,6 +140,7 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(MainWindow.class, MainWindow.class, new Parameter[] {
 			new ComponentParameter("mainShell"), 
 			anyComponentParameter,
+			anyComponentParameter,
 			new ComponentParameter("feederArea"),
 			new ComponentParameter("controlsArea"),
 			new ComponentParameter("feederSelectionCombo"),
