@@ -9,6 +9,7 @@ import java.util.SortedSet;
 
 import net.azib.ipscan.config.GlobalConfig;
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.core.values.NotScannedValue;
 import net.azib.ipscan.core.values.NumericListValue;
 
 /**
@@ -27,7 +28,10 @@ public class FilteredPortsFetcher extends PortsFetcher {
 	}
 
 	public Object scan(ScanningSubject subject) {
-		scanPorts(subject);
+		boolean portsScanned = scanPorts(subject);
+		if (!portsScanned)
+			return NotScannedValue.INSTANCE;
+
 		SortedSet<Integer> filteredPorts = getFilteredPorts(subject);
 		return filteredPorts.size() > 0 ? new NumericListValue(filteredPorts, displayAsRanges) : null;
 	}

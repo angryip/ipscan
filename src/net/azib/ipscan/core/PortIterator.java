@@ -32,7 +32,7 @@ public final class PortIterator implements Cloneable {
 			String[] portRanges = portString.split("[\\s\t\n\r,;]+");
 			
 			// initialize storage
-			portRangeStart = new int[portRanges.length+1];	// +1 for optimiation of 'next' method, prevents ArrayIndexOutOfBoundsException
+			portRangeStart = new int[portRanges.length+1];	// +1 for optimization of 'next' method, prevents ArrayIndexOutOfBoundsException
 			portRangeEnd = new int[portRanges.length];
 	
 			// parse ints

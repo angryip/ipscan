@@ -18,6 +18,7 @@ import net.azib.ipscan.core.PortIterator;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.net.PingResult;
+import net.azib.ipscan.core.values.NotScannedValue;
 import net.azib.ipscan.core.values.NumericListValue;
 
 /**
@@ -50,9 +51,10 @@ public class PortsFetcher implements Fetcher {
 	/**
 	 * This method does the actual port scanning.
 	 * It then remembers the results for other extending fetchers to use, like FilteredPortsFetcher.
-	 * @param subject
+	 * @param subject the address to scan
+	 * @return true if any ports were scanned, false otherwise
 	 */
-	protected void scanPorts(ScanningSubject subject) {
+	protected boolean scanPorts(ScanningSubject subject) {
 		SortedSet<Integer> openPorts = getOpenPorts(subject);
 					
 		if (openPorts == null) {
@@ -72,7 +74,13 @@ public class PortsFetcher implements Fetcher {
 			
 			Socket socket = null;
 			// clone port iterator for performance instead of creating for every thread
-			for (PortIterator i = portIteratorPrototype.copy(); i.hasNext(); ) {
+			PortIterator i = portIteratorPrototype.copy();
+			if (!i.hasNext()) {
+				// no ports are configured for scanning
+				return false;
+			}
+			
+			while (i.hasNext()) {
 				// TODO: UDP ports?
 				// TODO: reuse sockets?
 				socket = new Socket();
@@ -107,6 +115,7 @@ public class PortsFetcher implements Fetcher {
 				}
 			}
 		}
+		return true;
 	}
 
 	/**
@@ -131,7 +140,10 @@ public class PortsFetcher implements Fetcher {
 	 * @see net.azib.ipscan.fetchers.Fetcher#scan(net.azib.ipscan.core.ScanningSubject)
 	 */
 	public Object scan(ScanningSubject subject) {
-		scanPorts(subject);
+		boolean portsScanned = scanPorts(subject);
+		if (!portsScanned)
+			return NotScannedValue.INSTANCE;
+		
 		SortedSet<Integer> openPorts = getOpenPorts(subject);
 		boolean portsFound = openPorts.size() > 0;
 		if (portsFound) {
