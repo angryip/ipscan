@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -56,8 +57,8 @@ public class MainWindow {
 	
 	private Combo feederSelectionCombo;
 	private FeederGUIRegistry feederRegistry;
-	private Button prefsButton;
-	private Button fetchersButton;
+	private Label prefsButton;
+	private Label fetchersButton;
 		
 	/**
 	 * Creates and initializes the main window.
@@ -190,32 +191,22 @@ public class MainWindow {
 		// traverse the button before the combo (and don't traverse other buttons at all)
 		controlsArea.setTabList(new Control[] {startStopButton, feederSelectionCombo});
 		
-		// this needs to be like this for win32 version to look decent
 		int toolbarHeight = feederSelectionCombo.getBounds().height;
-		// mac needs buttons to be wider, as usual
-		int toolbarWidth = toolbarHeight + (Platform.MAC_OS ? 30 : 0);
+		int toolbarWidth = toolbarHeight;
 		
-		prefsButton = new Button(controlsArea, SWT.NONE);
+		prefsButton = new Label(controlsArea, SWT.CENTER);
 		prefsButton.setImage(new Image(null, Labels.getInstance().getImageAsStream("button.preferences.img")));
 		prefsButton.setToolTipText(Labels.getLabel("title.preferences"));
 		prefsButton.setLayoutData(new RowData(toolbarWidth, toolbarHeight));
-		prefsButton.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
-				startStopButton.forceFocus();
-				preferencesListener.handleEvent(event);
-			}
-		});
+		prefsButton.setCursor(prefsButton.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
+		prefsButton.addListener(SWT.MouseDown, preferencesListener);
 		
-		fetchersButton = new Button(controlsArea, SWT.NONE);
+		fetchersButton = new Label(controlsArea, SWT.CENTER);
 		fetchersButton.setImage(new Image(null, Labels.getInstance().getImageAsStream("button.fetchers.img")));
 		fetchersButton.setToolTipText(Labels.getLabel("title.fetchers.select"));
 		fetchersButton.setLayoutData(new RowData(toolbarWidth, toolbarHeight));
-		fetchersButton.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
-				startStopButton.forceFocus();
-				chooseFetchersListsner.handleEvent(event);
-			}
-		});
+		fetchersButton.setCursor(fetchersButton.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
+		fetchersButton.addListener(SWT.MouseDown, chooseFetchersListsner);
 	}
 			
 	/**
