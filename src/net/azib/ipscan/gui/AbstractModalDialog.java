@@ -57,7 +57,7 @@ public abstract class AbstractModalDialog {
 	
 	/**
 	 * Positions 2 buttons at the bottom-right part of the shell.
-	 * On MacOS also changes ok and cancel button order.
+	 * On MacOS also changes OK and cancel button order.
 	 * @param okButton
 	 * @param cancelButton can be null
 	 */
@@ -65,21 +65,24 @@ public abstract class AbstractModalDialog {
 		shell.setDefaultButton(okButton);
 		Rectangle clientArea = shell.getClientArea();
 		
-		Point size = okButton.computeSize(85, Config.getDimensionsConfig().standardButtonHeight);
+		Point size = okButton.computeSize(85, SWT.DEFAULT);
+		size.y = Math.max(size.y, Config.getDimensionsConfig().standardButtonHeight);
+		
 		okButton.setSize(size);
 		
 		if (cancelButton != null) {
 			cancelButton.setSize(size);
 		
 			if (Platform.MAC_OS || Platform.LINUX) {
-				// Mac OS users expect button order to be reverse
+				// Mac OS and Linux users expect button order to be reverse
 				Button fooButton = okButton;
 				okButton = cancelButton;
 				cancelButton = fooButton;
 			}
 			// both buttons
+			int distance = size.y / 2 + 3;
 			cancelButton.setLocation(clientArea.width - size.x - 10, clientArea.height - size.y - 10);
-			okButton.setLocation(clientArea.width - size.x * 2 - 20, clientArea.height - size.y - 10);	
+			okButton.setLocation(clientArea.width - size.x * 2 - 10 - distance, clientArea.height - size.y - 10);	
 		}
 		else {
 			// only one button
@@ -89,7 +92,7 @@ public abstract class AbstractModalDialog {
 		
 	/**
 	 * Positions 2 buttons at the bottom-right part of the shell in the FormLayout.
-	 * On MacOS also changes ok and cancel button order.
+	 * On MacOS also changes OK and cancel button order.
 	 * @param okButton
 	 * @param cancelButton 
 	 * @param control the bottom-right widget, used as a guide
@@ -98,15 +101,16 @@ public abstract class AbstractModalDialog {
 		shell.setDefaultButton(okButton);
 		
 		if (Platform.MAC_OS || Platform.LINUX) {
-			// Mac OS users expect button order to be reverse
+			// Mac OS and Linux users expect button order to be reverse
 			Button fooButton = okButton;
 			okButton = cancelButton;
 			cancelButton = fooButton;
 		}
 		// both buttons
-		int height = Config.getDimensionsConfig().standardButtonHeight;
+		int height = Math.max(okButton.computeSize(SWT.DEFAULT, SWT.DEFAULT).y, Config.getDimensionsConfig().standardButtonHeight);
+		int distance = height/2;
 		cancelButton.setLayoutData(LayoutHelper.formData(85,  height, null, new FormAttachment(control, 0, SWT.RIGHT), new FormAttachment(control, 8), null));
-		okButton.setLayoutData(LayoutHelper.formData(85, height, null, new FormAttachment(cancelButton, -10), new FormAttachment(control, 8), null));
+		okButton.setLayoutData(LayoutHelper.formData(85, height, null, new FormAttachment(cancelButton, -distance), new FormAttachment(control, 8), null));
 	}
 	
 	/**
