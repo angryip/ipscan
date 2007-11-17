@@ -44,3 +44,4 @@ preload
 tm
 locale
 int
+keypress

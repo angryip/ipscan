@@ -140,6 +140,7 @@ public class ToolsActions {
 			}
 			event.widget = resultTable;
 			tableSelectionListener.handleEvent(event);
+			resultTable.forceFocus();
 		}
 
 		abstract boolean isDesired(ResultType type);

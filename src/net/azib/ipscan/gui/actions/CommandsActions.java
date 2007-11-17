@@ -23,6 +23,7 @@ import net.azib.ipscan.gui.EditOpenersDialog;
 import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
+import net.azib.ipscan.gui.actions.ToolsActions.TableSelection;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
@@ -71,10 +72,12 @@ public class CommandsActions {
 	public static final class Delete implements Listener {
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
+		private final TableSelection selectionListener;
 		
-		public Delete(ResultTable resultTable, StateMachine stateMachine) {
+		public Delete(ResultTable resultTable, StateMachine stateMachine, TableSelection selectionListener) {
 			this.resultTable = resultTable;
 			this.stateMachine = stateMachine;
+			this.selectionListener = selectionListener;
 		}
 
 		public void handleEvent(Event event) {
@@ -90,6 +93,9 @@ public class CommandsActions {
 			int firstSelection = resultTable.getSelectionIndex();
 			resultTable.remove(resultTable.getSelectionIndices());
 			resultTable.setSelection(firstSelection);
+			// reset status text about multiple selection
+			event.widget = resultTable;
+			selectionListener.handleEvent(event);
 		}
 	}
 	

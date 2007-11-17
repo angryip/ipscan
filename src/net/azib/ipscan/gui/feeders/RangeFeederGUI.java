@@ -140,9 +140,9 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         
         netmaskCombo.setText(getStringLabel("netmask"));
 		netmaskCombo.setVisibleItemCount(10);
-		netmaskCombo.add("/16");
-		netmaskCombo.add("/24");
 		netmaskCombo.add("/26");
+		netmaskCombo.add("/24");
+		netmaskCombo.add("/16");
 		// Warning: IPv4 specific netmasks
 		netmaskCombo.add("255...192");
 		netmaskCombo.add("255...128");
@@ -222,7 +222,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 				event.doit = false;
 			}
 			if (event.type == SWT.Selection) {
-				// this is a workaround for a strange bug: if text is just typed in the combo,
+				// this is a workaround for a strange bug in GTK: if text is just typed in the combo,
 				// then this event is sent after each keypress, but we want it to be fired
 				// only if something is selected from the drop down
 				if (netmaskCombo.indexOf(netmaskCombo.getText()) < 0)
@@ -237,13 +237,19 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 				startIPText.setText(InetAddressUtils.startRangeByNetmask(startIP, netmask).getHostAddress());
 				endIPText.setText(InetAddressUtils.endRangeByNetmask(startIP, netmask).getHostAddress());
 				isEndIPUnedited = false;
-				
-				netmaskCombo.forceFocus();
 			}
 			catch (UnknownHostException e) {
 				throw new FeederException("invalidNetmask");
 			}
+			
+			if (event.type == SWT.Traverse) {
+				// try to focus the start button
+				getParent().forceFocus();
+			} 
+			else {
+				netmaskCombo.forceFocus();
+			}
 		}
 	}
 
-}  //  @jve:decl-index=0:visual-constraint="10,10"
+} 
