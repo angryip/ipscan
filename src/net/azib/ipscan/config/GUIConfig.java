@@ -52,8 +52,8 @@ public class GUIConfig {
 		mainWindowBounds = new Rectangle(
 			preferences.getInt("windowLeft", 100),
 			preferences.getInt("windowTop", 100),
-			preferences.getInt("windowWidth", 560),
-			preferences.getInt("windowHeight", 350));
+			preferences.getInt("windowWidth", 600),
+			preferences.getInt("windowHeight", 360));
 		
 		detailsWindowSize = new Point(
 			preferences.getInt("detailsWidth", 300),
