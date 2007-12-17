@@ -56,8 +56,8 @@ public class MainWindow {
 	
 	private Combo feederSelectionCombo;
 	private FeederGUIRegistry feederRegistry;
-	private Label prefsButton;
-	private Label fetchersButton;
+	private Control prefsButton;
+	private Control fetchersButton;
 		
 	/**
 	 * Creates and initializes the main window.
@@ -193,17 +193,30 @@ public class MainWindow {
 		guiConfig.standardButtonHeight = feederSelectionCombo.getBounds().height;
 		
 		int toolbarHeight = guiConfig.standardButtonHeight;
-		int toolbarWidth = toolbarHeight;
+		int toolbarWidth = guiConfig.standardButtonHeight + (Platform.MAC_OS ? 20 : 0);
 		
-		prefsButton = new Label(controlsArea, SWT.CENTER);
-		prefsButton.setImage(new Image(null, Labels.getInstance().getImageAsStream("button.preferences.img")));
+		Image imagePrefs = new Image(null, Labels.getInstance().getImageAsStream("button.preferences.img"));
+		Image imageFetchers = new Image(null, Labels.getInstance().getImageAsStream("button.fetchers.img"));
+		
+		if (!Platform.MAC_OS) {
+			prefsButton = new Label(controlsArea, SWT.CENTER);
+			((Label) prefsButton).setImage(imagePrefs);
+			fetchersButton = new Label(controlsArea, SWT.CENTER);
+			((Label) fetchersButton).setImage(imageFetchers);
+		}
+		else {
+			// Mac has buttons - labels with images don't look good in this layout
+			prefsButton = new Button(controlsArea, SWT.CENTER);
+			((Button) prefsButton).setImage(imagePrefs);
+			fetchersButton = new Button(controlsArea, SWT.CENTER);
+			((Button) fetchersButton).setImage(imageFetchers);
+		}
+		
 		prefsButton.setToolTipText(Labels.getLabel("title.preferences"));
 		prefsButton.setLayoutData(new RowData(toolbarWidth, toolbarHeight));
 		prefsButton.setCursor(prefsButton.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
 		prefsButton.addListener(SWT.MouseDown, preferencesListener);
 		
-		fetchersButton = new Label(controlsArea, SWT.CENTER);
-		fetchersButton.setImage(new Image(null, Labels.getInstance().getImageAsStream("button.fetchers.img")));
 		fetchersButton.setToolTipText(Labels.getLabel("title.fetchers.select"));
 		fetchersButton.setLayoutData(new RowData(toolbarWidth, toolbarHeight));
 		fetchersButton.setCursor(fetchersButton.getDisplay().getSystemCursor(SWT.CURSOR_HAND));

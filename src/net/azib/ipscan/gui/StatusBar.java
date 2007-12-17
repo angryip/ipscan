@@ -7,11 +7,13 @@ package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.Platform;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
@@ -29,20 +31,18 @@ public class StatusBar {
 	private Label statusText;
 	private Label configText;
 	private Label threadsText;
+	private boolean maxThreadsReached;
 	private ProgressBar progressBar;
 	
+	private ScannerConfig scannerConfig;
 	private GUIConfig guiConfig;
 
-	public StatusBar(Shell shell, GUIConfig guiConfig) {
+	public StatusBar(Shell shell, GUIConfig guiConfig, ScannerConfig scannerConfig) {
 		this.guiConfig = guiConfig;
+		this.scannerConfig = scannerConfig;
 		
 		composite = new Composite(shell, SWT.NONE);
-		FormData formData = new FormData();
-		formData.left = new FormAttachment(0);
-		formData.right = new FormAttachment(100);
-		formData.height = 19;
-		formData.bottom = new FormAttachment(100);
-		composite.setLayoutData(formData);
+		composite.setLayoutData(LayoutHelper.formData(SWT.DEFAULT, 19, new FormAttachment(0), new FormAttachment(100), null, new FormAttachment(100)));
 		
 		composite.setLayout(LayoutHelper.formLayout(1, 1, 2));
 		
@@ -59,7 +59,7 @@ public class StatusBar {
 		threadsText.setText(Labels.getLabel("text.threads") + "0");
 		
 		progressBar = new ProgressBar(composite, SWT.BORDER);
-		progressBar.setLayoutData(LayoutHelper.formData(new FormAttachment(threadsText), new FormAttachment(100), new FormAttachment(0), new FormAttachment(100)));
+		progressBar.setLayoutData(LayoutHelper.formData(new FormAttachment(threadsText), new FormAttachment(100, Platform.MAC_OS ? -20 : 0), new FormAttachment(0), new FormAttachment(100)));
 		progressBar.setSelection(0);
 	}
 	
@@ -97,9 +97,17 @@ public class StatusBar {
 	}
 
 	public void setRunningThreads(int runningThreads) {
-		if (!threadsText.isDisposed()) 
+		if (!threadsText.isDisposed()) { 
 			// TODO: make this more efficient
+			
+			if (maxThreadsReached || runningThreads == scannerConfig.maxThreads) {
+				Color newColor = threadsText.getDisplay().getSystemColor(maxThreadsReached ? SWT.COLOR_WIDGET_FOREGROUND : SWT.COLOR_DARK_RED);
+				threadsText.setForeground(newColor);
+			}
+			maxThreadsReached = runningThreads == scannerConfig.maxThreads;
+			
 			threadsText.setText(Labels.getLabel("text.threads") + runningThreads);
+		}
 	}
 	
 	public void setProgress(int progress) {
