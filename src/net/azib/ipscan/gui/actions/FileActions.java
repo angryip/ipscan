@@ -78,7 +78,7 @@ public class FileActions {
 				// create exporter instance
 				Exporter exporter = exporterRegistry.createExporter(fileName);
 				
-				statusBar.setStatusText(Labels.getLabel("state.saving"));
+				statusBar.setStatusText(Labels.getLabel("state.exporting"));
 				
 				ExportProcessor exportProcessor = new ExportProcessor(exporter, fileName);
 				
