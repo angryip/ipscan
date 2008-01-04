@@ -1,4 +1,4 @@
-<project basedir="." name="ipscan" default="all">
+<project basedir="." name="ipscan" default="info">
 
 	<property name="bin" value="ant-bin"/>
 	<property name="dist" value="dist"/>
@@ -32,8 +32,20 @@
 		<exclude name="**/icon?*.png"/>
 	</patternset>
 
+	<!--<target name="all" depends="cleanup,compile,compile-tests,do-test,package,cleanup_end"/>-->
 	<target name="all" depends="cleanup,compile,package,cleanup_end"/>
-<!--<target name="all" depends="cleanup,compile,compile-tests,do-test,package,cleanup_end"/>-->
+	<target name="linux" depends="cleanup,compile,package-linux,cleanup_end"/>
+	<target name="mac" depends="cleanup,compile,package-mac,cleanup_end"/>
+	<target name="win32" depends="cleanup,compile,package-win32,cleanup_end"/>
+	
+	<target name="info">
+		<echo message="This script will build ${name} ${version}"/>
+		<echo message="Targets (some may work only on Linux):"/>
+		<echo message="  all - builds binaries for all OSs"/>
+		<echo message="  linux - builds only Linux binary"/>
+		<echo message="  mac - builds only Mac binary"/>
+		<echo message="  win32 - builds only Windows binary"/>
+	</target>
 
 	<target name="cleanup">
 		<delete dir="${bin}"/>
@@ -116,13 +128,19 @@
 		</emma>
 	</target>
 	
-	<target name="package" depends="svn-info,package-linux,package-win32,package-mac"/>
+	<condition property="isRunningOnLinux">
+		<os name="Linux"/>
+	</condition>
+	
+	<target name="package" depends="package-linux,package-win32,package-mac"/>
 	
 	<target name="svn-info">
 		<!-- TODO: make this more cross-platform (most likely this will fail on windows) -->
-		<exec command="svn info . --xml" output="svn-info.xml"/>
+		<exec executable="svn" output="svn-info.xml" failonerror="false">
+			<arg line="info . --xml"/>
+		</exec>
 		<xmlproperty file="svn-info.xml" prefix="svn"/>
-		<delete file="svn-info.xml"/>
+		<delete file="svn-info.xml" failonerror="false"/>
 		<property name="build.number" value="${svn.info.entry(revision)}"/>
 		<tstamp/>
 		<property name="build.date" value="${TODAY}"/>
@@ -260,14 +278,18 @@
 		</sequential>
 	</macrodef>
 	
-	<target name="package-linux">
+	<target name="package-linux" depends="svn-info">
 		<package-for platform="linux" librocksaw="librocksaw.so"/>
 	</target>
 
-	<target name="package-win32">
+	<target name="package-win32" depends="svn-info">
 		<package-for platform="win32" librocksaw="rocksaw.dll"/>
 		
 		<!-- now create a windows exe file (currently works only on Linux) -->
+		<antcall target="package-win32-exe"/>
+	</target>
+	
+	<target name="package-win32-exe" if="isRunningOnLinux">
 		<copy file="${ext}/launch4j/ipscan.xml" todir="${dist}.win32"/>
 		<replace file="${dist}.win32/ipscan.xml">
 			<replacefilter token="ipscan.jar" value="${ant.project.name}-win32-${version}.jar"/>
@@ -279,7 +301,7 @@
 	</target>
 
 	<!-- Note: this task was tested only on Linux -->
-	<target name="package-mac">
+	<target name="package-mac" depends="svn-info">
 		<package-for platform="mac" librocksaw="todo-librocksaw.jnilib"/>
 		<copy todir="${dist}.mac">
 			<fileset dir="${ext}/mac-bundle"/>
