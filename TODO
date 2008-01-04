@@ -13,9 +13,12 @@ Before 3.0:
 
 Later:
 
+* find not-null for column
 * preferences profiles (tied to favorites?)
 * offer installation on Windows
 * free text (advanced) feeder
 * saving and restoring of results together with all options
 * advanced find (firefox-like)
 * use jpcap for raw packet injection and ARP scanning
+* save/restore results
+* diff with saved
