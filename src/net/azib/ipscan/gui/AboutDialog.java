@@ -84,7 +84,9 @@ public class AboutDialog extends AbstractModalDialog {
 		Button button = createCloseButton();
 		
 		Text licenseText = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
-		licenseText.setBounds(leftBound, systemLabel.getBounds().y + systemLabel.getBounds().height + 10, shell.getClientArea().width - leftBound - 10, button.getLocation().y - 174);
+		licenseText.setBounds(leftBound, systemLabel.getBounds().y + systemLabel.getBounds().height + 10, 
+							  shell.getClientArea().width - leftBound - 10, 
+							  button.getLocation().y - systemLabel.getBounds().y - systemLabel.getBounds().height - 20);
 		licenseText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		licenseText.setText("Licensed under the GNU General Public License Version 2\n\n" +
 							Version.NAME + " is free software; you can redistribute it and/or " +
@@ -99,7 +101,6 @@ public class AboutDialog extends AbstractModalDialog {
 							"along with this program; if not, write to the Free Software " +
 							"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA " +
 							"02110-1301, USA, or visit http://www.fsf.org/");
-
 	}
 	
 }
