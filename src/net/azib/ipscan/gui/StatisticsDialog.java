@@ -13,11 +13,13 @@ import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.ScanningResultList.ScanInfo;
+import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -57,26 +59,34 @@ public class StatisticsDialog extends AbstractModalDialog {
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(Labels.getLabel("title.statistics"));
-		shell.setSize(new Point(360, 240));
+		shell.setLayout(LayoutHelper.formLayout(10, 10, 15));
 		
 		Label iconLabel = new Label(shell, SWT.ICON);
-		iconLabel.setLocation(10, 10);
+		iconLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, new FormAttachment(0), null));
 		iconLabel.setImage(parent.getImage());
 		shell.setImage(parent.getImage());
-		iconLabel.pack();
-		int leftBound = iconLabel.getBounds().width + 25;
 		
 		Label titleLabel = new Label(shell, SWT.NONE);
 		FontData sysFontData = currentDisplay.getSystemFont().getFontData()[0];
-		titleLabel.setLocation(leftBound, 10);
+		titleLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(iconLabel), null, new FormAttachment(0), null));
 		titleLabel.setFont(new Font(null, sysFontData.getName(), sysFontData.getHeight()+3, sysFontData.getStyle() | SWT.BOLD));
 		titleLabel.setText(Labels.getLabel(scanningResults.getScanInfo().isFinished() ? "text.scan.finished" : "text.scan.incomplete"));
-		titleLabel.pack();
+			
+		Text statsText = new Text(shell, SWT.MULTI | SWT.READ_ONLY);
+		statsText.setBackground(currentDisplay.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+		statsText.setLayoutData(LayoutHelper.formData(new FormAttachment(iconLabel), null, new FormAttachment(titleLabel), null));
+		statsText.setText(prepareText(scanningResults.getScanInfo()));
+		statsText.pack();
 		
 		Button button = createCloseButton();
+		Point buttonSize = button.getSize();
+		button.setLayoutData(LayoutHelper.formData(buttonSize.x, buttonSize.y, null, new FormAttachment(statsText, 30, SWT.RIGHT), new FormAttachment(statsText), null));
 		
-		ScanInfo scanInfo = scanningResults.getScanInfo();
-		
+		shell.layout();
+		shell.pack();
+	}
+
+	private String prepareText(ScanInfo scanInfo) {
 		String ln = System.getProperty("line.separator");
 		StringBuilder text = new StringBuilder();
 		text.append(Labels.getLabel("text.scan.time.total"))
@@ -92,11 +102,7 @@ public class StatisticsDialog extends AbstractModalDialog {
 			text.append(Labels.getLabel("text.scan.hosts.alive")).append(scanInfo.getAliveCount()).append(ln);
 		if (scanInfo.getWithPortsCount() > 0) 
 			text.append(Labels.getLabel("text.scan.hosts.ports")).append(scanInfo.getWithPortsCount()).append(ln);
-		
-		Text statsText = new Text(shell, SWT.MULTI | SWT.READ_ONLY);
-		statsText.setBackground(currentDisplay.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
-		statsText.setBounds(leftBound, titleLabel.getBounds().y + 30, shell.getClientArea().width - leftBound - 10, button.getLocation().y - 50);
-		statsText.setText(text.toString());
+		return text.toString();
 	}
 	
 	/**
