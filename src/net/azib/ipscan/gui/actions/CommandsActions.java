@@ -69,7 +69,7 @@ public class CommandsActions {
 
 		public void handleEvent(Event event) {
 			// activate only if something is selected
-			if (resultTable.getSelectionIndex() >= 0 && (event.type == SWT.MouseDoubleClick || event.type == SWT.Selection || event.detail == SWT.TRAVERSE_RETURN)) {
+			if (event.type == SWT.Selection || (resultTable.getSelectionIndex() >= 0 && (event.type == SWT.MouseDoubleClick || event.detail == SWT.TRAVERSE_RETURN))) {
 				event.doit = false;
 				checkSelection(resultTable);
 				detailsWindow.open(); 
