@@ -43,7 +43,6 @@ public class PingerRegistryImpl implements PingerRegistry {
 		pingers.put("pinger.icmp2", ICMPPinger.class);
 		pingers.put("pinger.udp", UDPPinger.class);
 		pingers.put("pinger.tcp", TCPPinger.class);
-		// TODO: implement a windows-specific ICMP pinger for XP SP2 and beyond that uses ping.dll
 	}
 	
 	public String[] getRegisteredNames() {
@@ -88,7 +87,7 @@ public class PingerRegistryImpl implements PingerRegistry {
 			catch (Exception e) {
 				LOG.info("ICMP pingers fail: " + e);
 				// udp should be supported in all configurations
-				scannerConfig.selectedPinger = "pinger.udp";
+				scannerConfig.selectedPinger = Platform.WINDOWS ? "pinger.windows" : "pinger.udp";
 				return false;
 			}
 		}
