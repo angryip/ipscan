@@ -46,13 +46,12 @@ public abstract class AbstractModalDialog {
 		
 		// create a separate event loop
 		Display display = Display.getCurrent();
-		while (!shell.isDisposed()) {
+		while (shell != null && !shell.isDisposed()) {
 			if (!display.readAndDispatch()) 
 				display.sleep();
 		}
-		
-		// destroy the window
-		shell.dispose();
+		// forget the reference to the shell (this class is reused in the container)
+		shell = null;
 	}
 	
 	/**

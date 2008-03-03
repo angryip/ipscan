@@ -54,6 +54,12 @@ public class StatisticsDialog extends AbstractModalDialog {
 	 * This method initializes shell
 	 */
 	private void createShell() {
+		if (shell != null) {
+			// close the same window if it is already open ('scanning incomplete')
+			shell.close();
+			shell.dispose();
+		}
+		
 		Display currentDisplay = Display.getCurrent();
 		Shell parent = currentDisplay.getShells()[0];
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
