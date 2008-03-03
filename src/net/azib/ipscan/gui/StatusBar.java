@@ -31,7 +31,7 @@ public class StatusBar {
 	private Label statusText;
 	private Label configText;
 	private Label threadsText;
-	private boolean maxThreadsReached;
+	private boolean maxThreadsReachedBefore;
 	private ProgressBar progressBar;
 	
 	private ScannerConfig scannerConfig;
@@ -42,12 +42,12 @@ public class StatusBar {
 		this.scannerConfig = scannerConfig;
 		
 		composite = new Composite(shell, SWT.NONE);
-		composite.setLayoutData(LayoutHelper.formData(SWT.DEFAULT, 19, new FormAttachment(0), new FormAttachment(100), null, new FormAttachment(100)));
+		composite.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), null, new FormAttachment(100)));
 		
 		composite.setLayout(LayoutHelper.formLayout(1, 1, 2));
 		
 		statusText = new Label(composite, SWT.BORDER);
-		statusText.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(40), new FormAttachment(0), new FormAttachment(100)));
+		statusText.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(35), new FormAttachment(0), new FormAttachment(100)));
 		setStatusText(null);
 		
 		configText = new Label(composite, SWT.BORDER);
@@ -55,7 +55,7 @@ public class StatusBar {
 		updateConfigText();
 
 		threadsText = new Label(composite, SWT.BORDER);
-		threadsText.setLayoutData(LayoutHelper.formData(85, SWT.DEFAULT, new FormAttachment(configText), null, new FormAttachment(0), new FormAttachment(100)));
+		threadsText.setLayoutData(LayoutHelper.formData(120, SWT.DEFAULT, new FormAttachment(configText), null, new FormAttachment(0), new FormAttachment(100)));
 		threadsText.setText(Labels.getLabel("text.threads") + "0");
 		
 		progressBar = new ProgressBar(composite, SWT.BORDER);
@@ -98,15 +98,15 @@ public class StatusBar {
 
 	public void setRunningThreads(int runningThreads) {
 		if (!threadsText.isDisposed()) { 
-			// TODO: make this more efficient
-			
-			if (maxThreadsReached || runningThreads == scannerConfig.maxThreads) {
-				Color newColor = threadsText.getDisplay().getSystemColor(maxThreadsReached ? SWT.COLOR_WIDGET_FOREGROUND : SWT.COLOR_DARK_RED);
+			boolean maxThreadsReached = runningThreads == scannerConfig.maxThreads;
+			if (maxThreadsReachedBefore || maxThreadsReached) {
+				Color newColor = threadsText.getDisplay().getSystemColor(maxThreadsReached ? SWT.COLOR_DARK_RED : SWT.COLOR_WIDGET_FOREGROUND);
 				threadsText.setForeground(newColor);
 			}
-			maxThreadsReached = runningThreads == scannerConfig.maxThreads;
+			maxThreadsReachedBefore = maxThreadsReached;
 			
-			threadsText.setText(Labels.getLabel("text.threads") + runningThreads);
+			threadsText.setText(Labels.getLabel("text.threads") + runningThreads + 
+					(maxThreadsReached ? Labels.getLabel("text.threads.max") : ""));
 		}
 	}
 	

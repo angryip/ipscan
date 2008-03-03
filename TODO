@@ -1,6 +1,5 @@
 Before 3.0:
 
-* display appropriate status message when reached max number of threads
 * top-level exception handler for NoClassDefFoundErrors, etc
 * command-line scanning start
 * fetcher-specific options

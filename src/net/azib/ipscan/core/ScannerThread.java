@@ -66,7 +66,7 @@ public class ScannerThread extends Thread {
 					continue;
 				}
 				
-				// rerieve the next IP address to scan
+				// retrieve the next IP address to scan
 				final InetAddress address = feeder.next();
 				
 				// check if this is a likely broadcast address and needs to be skipped

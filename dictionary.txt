@@ -46,3 +46,4 @@ locale
 int
 keypress
 util
+upcoming
