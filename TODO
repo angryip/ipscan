@@ -1,5 +1,6 @@
 Before 3.0:
 
+* rpm/deb packages (test, especially 64)
 * top-level exception handler for NoClassDefFoundErrors, etc
 * command-line scanning start
 * fetcher-specific options

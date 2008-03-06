@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Angry IP Scanner
+Comment=Fast and friendly network scanner
+Exec=/usr/bin/ipscan
+Terminal=false
+Type=Application
+Icon=/usr/lib/ipscan/icon48.png
+Categories=Application;Network;
