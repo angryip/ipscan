@@ -13,6 +13,7 @@
 	<classpathentry kind="lib" path="ext/swt/swt-win32.jar" sourcepath="ext/swt/src-win32"/>
 	<classpathentry kind="lib" path="ext/swt/swt-mac.jar" sourcepath="ext/swt/src-mac"/>
 	<classpathentry kind="lib" path="ext/easymock/easymock.jar"/>
+	<classpathentry kind="lib" path="ext/junit/junit.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
