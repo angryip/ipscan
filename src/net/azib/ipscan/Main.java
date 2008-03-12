@@ -26,7 +26,7 @@ import net.azib.ipscan.gui.MainWindow;
  * The main executable class.
  * It initializes all the needed stuff and launches the user interface.
  * 
- * All Exceptions, which are thrown out of the program, are catched and logged
+ * All Exceptions, which are thrown out of the program, are caught and logged
  * using the java.util.logging facilities.
  * 
  * @author Anton Keks

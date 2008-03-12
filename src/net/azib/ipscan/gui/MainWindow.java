@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
@@ -87,15 +88,20 @@ public class MainWindow {
 		}
 		
 		if (guiConfig.isFirstRun) {
-			if (Platform.CRIPPLED_WINDOWS) {
-				// inform crippled windows owners of their default configuration
-				MessageBox box = new MessageBox(shell, SWT.ICON_WARNING | SWT.OK);
-				box.setText(Version.NAME);
-				box.setMessage(Labels.getLabel("text.crippledWindowsInfo"));
-				box.open();
-			}
-			new GettingStartedDialog().open();
-			guiConfig.isFirstRun = false;
+			Display.getCurrent().asyncExec(new Runnable() {
+				public void run() {
+					if (Platform.CRIPPLED_WINDOWS) {
+						// inform crippled windows owners of their default configuration
+						MessageBox box = new MessageBox(MainWindow.this.shell, SWT.ICON_WARNING | SWT.OK);
+						box.setText(Version.NAME);
+						box.setMessage(Labels.getLabel("text.crippledWindowsInfo"));
+						box.open();
+					}
+					MainWindow.this.shell.forceActive();
+					new GettingStartedDialog().open();
+					MainWindow.this.guiConfig.isFirstRun = false;
+				}
+			});
 		}
 
 		stateMachine.addTransitionListener(new EnablerDisabler());

@@ -55,8 +55,10 @@ public class StatusBar {
 		updateConfigText();
 
 		threadsText = new Label(composite, SWT.BORDER);
-		threadsText.setLayoutData(LayoutHelper.formData(120, SWT.DEFAULT, new FormAttachment(configText), null, new FormAttachment(0), new FormAttachment(100)));
-		threadsText.setText(Labels.getLabel("text.threads") + "0");
+		setRunningThreads(Math.min(scannerConfig.maxThreads, 200)); // this should set the longest possible text		
+		threadsText.pack(); // calculate the width
+		threadsText.setLayoutData(LayoutHelper.formData(threadsText.getBounds().width, SWT.DEFAULT, new FormAttachment(configText), null, new FormAttachment(0), new FormAttachment(100)));
+		setRunningThreads(0); // set back to 0 at startup
 		
 		progressBar = new ProgressBar(composite, SWT.BORDER);
 		progressBar.setLayoutData(LayoutHelper.formData(new FormAttachment(threadsText), new FormAttachment(100, Platform.MAC_OS ? -20 : 0), new FormAttachment(0), new FormAttachment(100)));
