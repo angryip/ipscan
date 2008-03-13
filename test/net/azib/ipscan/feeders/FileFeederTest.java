@@ -3,7 +3,10 @@ package net.azib.ipscan.feeders;
 import static org.junit.Assert.*;
 import static net.azib.ipscan.feeders.FeederTestUtils.*;
 
+import java.io.File;
 import java.io.StringReader;
+
+import net.azib.ipscan.config.LabelsTest;
 
 import org.junit.Test;
 
@@ -32,7 +35,7 @@ public class FileFeederTest {
 	public void testStringParams() {
 		try {
 			FileFeeder fileFeeder = new FileFeeder();
-			assertEquals(1, fileFeeder.initialize(new String[] {"build.xml"}));
+			assertEquals(1, fileFeeder.initialize(new String[] {new File(LabelsTest.findBaseDir(), "build.xml").getPath()}));
 		}
 		catch (FeederException e) {
 			assertEquals("file.nothingFound", e.getMessage());
