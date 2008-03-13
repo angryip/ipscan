@@ -99,6 +99,7 @@
 	
 	<target name="compile-tests">
 		<compile path="${src}" extpath="${test}:${ext.src}" dest="${testbin}" debug="true" optimize="false"/>
+		<!-- coverage is currently broken
 		<emma>
 			<instr instrpath="${testbin}" destdir="${testbin}.instr" metadatafile="${testresults}/metadata.emma" merge="false" filter="net.azib.ipscan.*"/>
 		</emma>
@@ -106,6 +107,7 @@
 			<fileset dir="${testbin}.instr" includes="**/*.class"/>
 		</copy>
 		<delete dir="${testbin}.instr"/>
+		-->
 	</target>
 
 	<target name="do-test">
