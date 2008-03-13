@@ -44,7 +44,7 @@ public class RandomFeederTest {
 	@Test
 	public void testMalformedIP() {
 		try {
-			new RandomFeeder().initialize("abc", "10.11.12.10", 1);
+			new RandomFeeder().initialize("{123}", "10.11.12.10", 1);
 			fail();
 		}
 		catch (FeederException e) {
@@ -55,7 +55,7 @@ public class RandomFeederTest {
 	@Test
 	public void testInvalidNetmask() {
 		try {
-			new RandomFeeder().initialize("1.1.1.1", "invalid", 1);
+			new RandomFeeder().initialize("1.1.1.1", "<invalid>", 1);
 			fail();
 		}
 		catch (FeederException e) {

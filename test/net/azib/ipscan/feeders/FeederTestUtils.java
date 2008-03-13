@@ -15,7 +15,7 @@ public class FeederTestUtils {
 	
 	public static void assertFeederException(String message, FeederException e) {
 		// assert that the message is correct
-		Assert.assertEquals(e.getMessage(), message);
+		Assert.assertEquals(message, e.getMessage());
 		// check that corresponding label exists
 		Assert.assertNotNull(Labels.getLabel("exception.FeederException." + message));
 	}

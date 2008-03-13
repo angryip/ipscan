@@ -39,14 +39,14 @@ public class RangeFeederTest {
 	@Test
 	public void testMalformedIP() {
 		try {
-			new RangeFeeder().initialize("10.11.12.abc", "10.11.12.10");
+			new RangeFeeder().initialize("10.11.12.abc.", "10.11.12.10");
 			fail();
 		}
 		catch (FeederException e) {
 			assertFeederException("malformedIP", e);
 		}
 		try {
-			new RangeFeeder().initialize("10.11.12.1", "ziga");
+			new RangeFeeder().initialize("10.11.12.1", "ziga,");
 			fail();
 		}
 		catch (FeederException e) {
