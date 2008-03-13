@@ -77,9 +77,13 @@ public class LabelsTest {
 	 */
 	@Test
 	public void testAllLabels() throws IOException {
-		URL resources = getClass().getClassLoader().getResource("Labels.txt");
-		File srcDir = new File(new File(resources.getPath()).getParentFile().getParentFile(), "src");
+		File srcDir = new File(findBaseDir(), "src");
 		recurseAndTestLabels(srcDir);
+	}
+	
+	public static File findBaseDir() {
+		URL url = LabelsTest.class.getClassLoader().getResource("Labels.txt");
+		return new File(url.getPath()).getParentFile().getParentFile();	
 	}
 
 	private void recurseAndTestLabels(File dir) throws IOException {
