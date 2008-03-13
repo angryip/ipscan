@@ -7,7 +7,7 @@
 	<property name="src" value="src"/>
 	<property name="test" value="test"/>
 	<property name="resources" value="resources"/>
-	<property name="testresults" value="testresults"/>
+	<property name="testresults" value="test-results"/>
 			
 	<property name="name" value="Angry IP Scanner"/>
 	<property name="version" value="3.0-svn"/>
