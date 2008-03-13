@@ -9,11 +9,15 @@ import net.azib.ipscan.config.FavoritesConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.core.UserErrorException;
+import net.azib.ipscan.core.state.ScanningState;
+import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.gui.EditFavoritesDialog;
 import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
@@ -53,16 +57,18 @@ public class FavoritesActions {
 		}
 	}
 	
-	public static final class Select implements Listener {
+	public static final class Select implements SelectionListener {
 		private final FeederGUIRegistry feederRegistry;
 		private final FavoritesConfig favoritesConfig;
+		private final StartStopScanningAction startStopAction;
 		
-		public Select(FavoritesConfig favoritesConfig, FeederGUIRegistry feederRegistry) {
+		public Select(FavoritesConfig favoritesConfig, FeederGUIRegistry feederRegistry, StartStopScanningAction startStopAction) {
 			this.favoritesConfig = favoritesConfig;
 			this.feederRegistry = feederRegistry;
+			this.startStopAction = startStopAction;
 		}
 
-		public void handleEvent(Event event) {
+		public void widgetSelected(SelectionEvent event) {
 			MenuItem menuItem = (MenuItem) event.widget;
 			String serializedFeeder = favoritesConfig.get(menuItem.getText());
 			
@@ -73,6 +79,13 @@ public class FavoritesActions {
 			feederRegistry.select(feederName);
 			feederRegistry.current().unserialize(serializedFeeder);
 			event.display.getActiveShell().setText(menuItem.getText() + " - " + Version.NAME);
+			
+			// try to start scanning immediately
+			startStopAction.widgetSelected(event);
+		}
+
+		public void widgetDefaultSelected(SelectionEvent e) {
+			widgetSelected(e);
 		}
 	}
 	
@@ -89,13 +102,15 @@ public class FavoritesActions {
 	}
 
 	public static final class ShowMenu implements Listener {
-		private final Listener favoritesSelectListener;
+		private final SelectionListener favoritesSelectListener;
 		private final FavoritesConfig favoritesConfig;
+		private final StateMachine stateMachine;
 		
-		public ShowMenu(FavoritesConfig favoritesConfig, Select favoritesSelectListener) {
+		public ShowMenu(FavoritesConfig favoritesConfig, Select favoritesSelectListener, StateMachine stateMachine) {
 			this.favoritesConfig = favoritesConfig;
 			// the listener for favorites selections from the menu
 			this.favoritesSelectListener = favoritesSelectListener;
+			this.stateMachine = stateMachine;
 		}
 
 		public void handleEvent(Event event) {
@@ -113,7 +128,8 @@ public class FavoritesActions {
 			for (String name : favoritesConfig) {
 				MenuItem menuItem = new MenuItem(favoritesMenu, SWT.CASCADE);
 				menuItem.setText(name);
-				menuItem.addListener(SWT.Selection, favoritesSelectListener);
+				menuItem.setEnabled(stateMachine.inState(ScanningState.IDLE));
+				menuItem.addSelectionListener(favoritesSelectListener);
 			}
 		}
 	}
