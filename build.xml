@@ -1,9 +1,11 @@
 <project basedir="." name="ipscan" default="info">
 
 	<property name="bin" value="ant-bin"/>
+	<property name="testbin" value="ant-tests"/>
 	<property name="dist" value="dist"/>
 	<property name="ext" value="ext"/>
 	<property name="src" value="src"/>
+	<property name="test" value="test"/>
 	<property name="resources" value="resources"/>
 	<property name="testresults" value="testresults"/>
 			
@@ -13,7 +15,6 @@
 	<property name="swt" value="ext/swt"/>
 	<property name="ext.src" value="${ext}/rocksaw/src:${ext}/vserv-tcpip/src"/>
 
-	<path id="test.path" path="${bin}"/>
 	<property name="emma.dir" value="${ext}/emma"/>
 		
 	<path id="emma.lib">
@@ -32,23 +33,27 @@
 		<exclude name="**/icon?*.png"/>
 	</patternset>
 
-	<!--<target name="all" depends="cleanup,compile,compile-tests,do-test,package,cleanup_end"/>-->
-	<target name="all" depends="cleanup,compile,package,cleanup_end"/>
-	<target name="linux" depends="cleanup,compile,package-linux,cleanup_end"/>
-	<target name="mac" depends="cleanup,compile,package-mac,cleanup_end"/>
-	<target name="win32" depends="cleanup,compile,package-win32,cleanup_end"/>
+	<!--<target name="all" depends="clean,compile,compile-tests,do-test,package,clean_end"/>-->
+	<target name="all" depends="clean,compile,compile-tests,do-test,package,clean_end"/>
+	<target name="linux" depends="clean,compile,package-linux,clean_end"/>
+	<target name="mac" depends="clean,compile,package-mac,clean_end"/>
+	<target name="win32" depends="clean,compile,package-win32,clean_end"/>
+	
+	<!-- this is run by cruise control continous integration -->
+	<target name="cruise" depends="clean,compile,compile-tests,do-test,package-linux,clean_end"/>
 	
 	<target name="info">
 		<echo message="This script will build ${name} ${version}"/>
 		<echo message="Targets (some may work only on Linux):"/>
-		<echo message="  all - builds binaries for all OSs"/>
+		<echo message="  all - runs tests and builds binaries for all OSs"/>
 		<echo message="  linux - builds only Linux binary"/>
 		<echo message="  mac - builds only Mac binary"/>
 		<echo message="  win32 - builds only Windows binary"/>
 	</target>
 
-	<target name="cleanup">
+	<target name="clean">
 		<delete dir="${bin}"/>
+		<delete dir="${testbin}"/>
 		<delete dir="${bin}.linux"/>
 		<delete dir="${bin}.win32"/>
 		<delete dir="${bin}.mac"/>
@@ -56,31 +61,31 @@
 		<delete file="retroguard.log"/>
 	</target>
 	
-    <target name="cleanup_end">
+    <target name="clean_end">
         <antcall target="cleanup"/>
     </target>
 
 	<macrodef name="compile">
 		<attribute name="path"/>
-		<attribute name="dest" default="@{path}"/>
+		<attribute name="dest" default="${bin}"/>
 		<attribute name="extpath" default=""/>
 		<attribute name="debug" default="false"/>
 		<attribute name="optimize" default="true"/>
 		<sequential>
-			<mkdir dir="${bin}"/>
-			<javac destdir="${bin}" debug="@{debug}" source="1.5" target="1.5" optimize="@{optimize}">
+			<mkdir dir="@{dest}"/>
+			<javac destdir="@{dest}" debug="@{debug}" source="1.5" target="1.5" optimize="@{optimize}">
 				<src path="@{path}"/>
 				<src path="@{extpath}"/>				
 				<classpath>
 					<fileset dir="${ext}" includes="**/*.jar"/>
 				</classpath>
 			</javac>
-			<copy todir="${bin}">
+			<copy todir="@{dest}">
 				<fileset dir="@{path}">
 					<patternset refid="classpath.resources"/>
 				</fileset>
 			</copy>
-			<copy todir="${bin}">
+			<copy todir="@{dest}">
 				<fileset dir="${resources}">
 					<patternset refid="classpath.resources"/>
 				</fileset>
@@ -93,31 +98,35 @@
 	</target>
 	
 	<target name="compile-tests">
-		<compile path="${src}"/>
+		<compile path="${src}" extpath="${test}:${ext.src}" dest="${testbin}" debug="true" optimize="false"/>
 		<emma>
-			<instr instrpathref="test.path" destdir="${bin}.instr" metadatafile="${testresults}/metadata.emma" merge="false" filter="net.azib.ipscan.*"/>
+			<instr instrpath="${testbin}" destdir="${testbin}.instr" metadatafile="${testresults}/metadata.emma" merge="false" filter="net.azib.ipscan.*"/>
 		</emma>
-		<copy todir="${bin}" overwrite="true">
-			<fileset dir="${bin}.instr" includes="**/*.class"/>
+		<copy todir="${testbin}" overwrite="true">
+			<fileset dir="${testbin}.instr" includes="**/*.class"/>
 		</copy>
-		<delete dir="${bin}.instr"/>
+		<delete dir="${testbin}.instr"/>
 	</target>
 
 	<target name="do-test">
 		<delete dir="${testresults}"/>
 		<mkdir dir="${testresults}"/>
 		<delete file="coverage.ec"/>
-		<junit haltonfailure="true" showoutput="true" dir="${basedir}" fork="on" forkmode="once">
+		<junit haltonfailure="true" showoutput="true">
 			<classpath>
-				<dirset dir="${bin}"/>
+				<dirset dir="${testbin}"/>
 				<fileset dir="${swt}" includes="*.jar"/>
+				<fileset dir="${ext}/junit" includes="*.jar"/>
+				<fileset dir="${ext}/easymock" includes="*.jar"/>
 				<path refid="emma.lib"/>
 			</classpath>
-			<formatter type="brief"/>
+			<formatter type="xml"/>
 			<batchtest todir="${testresults}">
-				<fileset dir="${bin}" includes="**/*Test.class"/>
+				<fileset dir="${testbin}" includes="**/*Test.class"/>
 			</batchtest>
 		</junit>
+		<!--
+		report: no valid input data files have been specified
 		<emma>
 			<report sourcepath="${src}" encoding="UTF-8">
 				<fileset dir="${basedir}" includes="coverage.ec"/>
@@ -126,6 +135,7 @@
 				<html outfile="${testresults}/coverage.html"/>
 			</report>
 		</emma>
+		-->
 	</target>
 	
 	<condition property="isRunningOnLinux">
