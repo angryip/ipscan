@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.regex.Matcher;
@@ -76,7 +77,8 @@ public class LabelsTest {
 	 */
 	@Test
 	public void testAllLabels() throws IOException {
-		File srcDir = new File("../ipscan/src");
+		URL resources = getClass().getClassLoader().getResource("Labels.txt");
+		File srcDir = new File(new File(resources.getPath()).getParentFile().getParentFile(), "src");
 		recurseAndTestLabels(srcDir);
 	}
 
