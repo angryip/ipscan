@@ -62,7 +62,7 @@ public class FileActions {
 			// gather lists of extensions and exporter names
 			List<String> extensions = new ArrayList<String>();
 			List<String> descriptions = new ArrayList<String>();
-			StringBuffer labelBuffer = new StringBuffer(Labels.getLabel(isSelection ? "title.saveSelection" : "title.saveAll"));
+			StringBuffer labelBuffer = new StringBuffer(Labels.getLabel(isSelection ? "title.exportSelection" : "title.exportAll"));
 			addFileExtensions(extensions, descriptions, labelBuffer);
 			
 			// initialize other stuff
