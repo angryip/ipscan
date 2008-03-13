@@ -1,7 +1,6 @@
 Before 3.0:
 
-* rpm/deb packages (test, especially 64)
-* Ctrl+Alt get NoSuchMethodError: getFunc
+* rpm/deb packages (test, especially 64 bit)
 * command-line scanning start
 * fetcher-specific options
 * multiple port support web-detect

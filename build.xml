@@ -264,6 +264,9 @@
 				-keep class org.eclipse.swt.internal.ole.win32.COMObject {
 					&lt;methods&gt;;
 				}
+				-keep class org.eclipse.swt.dnd.ClipboardProxy {
+					&lt;methods&gt;;
+				}
 		    	-keep class org.eclipse.swt.internal.image.*FileFormat
 				-keep class * {
 					% *Proc(int);
