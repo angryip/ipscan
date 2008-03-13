@@ -40,7 +40,7 @@
 	<target name="win32" depends="clean,compile,package-win32,clean_end"/>
 	
 	<!-- this is run by cruise control continous integration -->
-	<target name="cruise" depends="clean,compile,compile-tests,do-test,package-linux,clean_end"/>
+	<target name="cruise" depends="clean,compile,compile-tests,package-linux,clean_end"/>
 	
 	<target name="info">
 		<echo message="This script will build ${name} ${version}"/>
