@@ -62,7 +62,7 @@
 	</target>
 	
     <target name="clean_end">
-        <antcall target="cleanup"/>
+        <antcall target="clean"/>
     </target>
 
 	<macrodef name="compile">
