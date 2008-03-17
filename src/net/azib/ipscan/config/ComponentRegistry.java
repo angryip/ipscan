@@ -129,7 +129,8 @@ public class ComponentRegistry {
 			new ComponentParameter("controlsArea"),
 			new ConstantParameter(new Integer(SWT.NONE))});
 		container.registerComponentImplementation("feederSelectionCombo", FeederSelectionCombo.class, new Parameter[] {
-			new ComponentParameter("controlsArea")});		
+			new ComponentParameter("controlsArea"),
+			anyComponentParameter});		
 		
 		// GUI Feeders
 		container.registerComponentImplementation(FeederGUIRegistry.class);

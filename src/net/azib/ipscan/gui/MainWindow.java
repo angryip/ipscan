@@ -170,18 +170,12 @@ public class MainWindow {
 		// steal the height from the second child of the FeederGUI - this must be the first edit box.
 		// this results in better visual alignment with FeederGUIs
 		Control secondControl = feederRegistry.current().getChildren()[1];
-		int controlHeight = secondControl.getSize().y + 1;
-		
-		//System.out.println(((Text)secondControl).getT);
+		// initialize global standard button height
+		guiConfig.standardButtonHeight = secondControl.getSize().y + 1;
 				
-		// start/stop button
-		shell.setDefaultButton(startStopButton);
-		startStopButton.setLayoutData(new RowData(SWT.DEFAULT, controlHeight));
-		startStopButton.addSelectionListener(startStopScanningAction);
-		
 		// feeder selection combobox
 		this.feederSelectionCombo = feederSelectionCombo;
-		feederSelectionCombo.setLayoutData(new RowData(SWT.DEFAULT, controlHeight));
+		feederSelectionCombo.setLayoutData(new RowData(SWT.DEFAULT, guiConfig.standardButtonHeight));
 		for (AbstractFeederGUI feederGUI : feederRegistry) {
 			feederSelectionCombo.add(feederGUI.getFeederName());	
 		}
@@ -192,15 +186,14 @@ public class MainWindow {
 		feederSelectionCombo.setToolTipText(Labels.getLabel("combobox.feeder.tooltip"));
 		feederSelectionListener.widgetSelected(null);
 		
-		//((RowData)startStopButton.getLayoutData()).height = feederSelectionCombo.getBounds().height;
-		((RowData)startStopButton.getLayoutData()).width = feederSelectionCombo.getBounds().width;
-		
+		// start/stop button
+		shell.setDefaultButton(startStopButton);
+		startStopButton.setLayoutData(new RowData(feederSelectionCombo.getBounds().width, guiConfig.standardButtonHeight));
+		startStopButton.addSelectionListener(startStopScanningAction);
+
 		// traverse the button before the combo (and don't traverse other buttons at all)
 		controlsArea.setTabList(new Control[] {startStopButton, feederSelectionCombo});
-		
-		// initialize global standard button height
-		guiConfig.standardButtonHeight = feederSelectionCombo.getBounds().height;
-		
+				
 		int toolbarHeight = guiConfig.standardButtonHeight;
 		int toolbarWidth = guiConfig.standardButtonHeight + (Platform.MAC_OS ? 20 : 0);
 		
@@ -273,14 +266,17 @@ public class MainWindow {
 	}
 	
 	public static class FeederSelectionCombo extends Combo {
-		public FeederSelectionCombo(Composite parent) {
+		private final GUIConfig guiConfig;
+
+		public FeederSelectionCombo(Composite parent, GUIConfig guiConfig) {
 			super(parent, SWT.READ_ONLY);
+			this.guiConfig = guiConfig;
 		}
 
 		@Override
 		public int getTextHeight() {
 			// fixes the problem described here: https://bugs.eclipse.org/bugs/show_bug.cgi?id=223015
-			return super.getTextHeight() + ((getStyle() & SWT.READ_ONLY) > 0 ? 5 : 0);
+			return guiConfig.standardButtonHeight;
 		}
 
 		@Override
