@@ -169,7 +169,10 @@ public class MainWindow {
 		
 		// steal the height from the second child of the FeederGUI - this must be the first edit box.
 		// this results in better visual alignment with FeederGUIs
-		int controlHeight = feederRegistry.current().getChildren()[1].getSize().y + 1;
+		Control secondControl = feederRegistry.current().getChildren()[1];
+		int controlHeight = secondControl.getSize().y + 1;
+		
+		//System.out.println(((Text)secondControl).getT);
 				
 		// start/stop button
 		shell.setDefaultButton(startStopButton);
@@ -189,7 +192,7 @@ public class MainWindow {
 		feederSelectionCombo.setToolTipText(Labels.getLabel("combobox.feeder.tooltip"));
 		feederSelectionListener.widgetSelected(null);
 		
-		((RowData)startStopButton.getLayoutData()).height = feederSelectionCombo.getBounds().height;
+		//((RowData)startStopButton.getLayoutData()).height = feederSelectionCombo.getBounds().height;
 		((RowData)startStopButton.getLayoutData()).width = feederSelectionCombo.getBounds().width;
 		
 		// traverse the button before the combo (and don't traverse other buttons at all)
@@ -266,6 +269,23 @@ public class MainWindow {
 					fetchersButton.setEnabled(enabled);
 				}
 			});
+		}
+	}
+	
+	public static class FeederSelectionCombo extends Combo {
+		public FeederSelectionCombo(Composite parent) {
+			super(parent, SWT.READ_ONLY);
+		}
+
+		@Override
+		public int getTextHeight() {
+			// fixes the problem described here: https://bugs.eclipse.org/bugs/show_bug.cgi?id=223015
+			return super.getTextHeight() + ((getStyle() & SWT.READ_ONLY) > 0 ? 5 : 0);
+		}
+
+		@Override
+		protected void checkSubclass() {
+			// allow subclassing
 		}
 	}
 
