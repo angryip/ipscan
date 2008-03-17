@@ -183,6 +183,8 @@
 					<include name="libswt-mozilla-*.so"/>
 					<include name="libswt-gnome-*.so"/>
 					<include name="libswt-cairo-*.so"/>
+					<include name="libswt-xpcominit-gtk-*.so"/>
+					<include name="libswt-xulrunner-gtk-*.so"/>
 					<!-- Win32 stuff -->
 					<include name="swt-awt-*.dll"/>
 					<include name="swt-wgl-*.dll"/>
