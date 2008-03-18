@@ -27,6 +27,7 @@ import net.azib.ipscan.fetchers.PingFetcher;
 import net.azib.ipscan.fetchers.PingTTLFetcher;
 import net.azib.ipscan.fetchers.PortsFetcher;
 import net.azib.ipscan.fetchers.WebDetectFetcher;
+import net.azib.ipscan.gui.AboutDialog;
 import net.azib.ipscan.gui.ConfigDetectorDialog;
 import net.azib.ipscan.gui.DetailsWindow;
 import net.azib.ipscan.gui.MainMenu;
@@ -40,6 +41,7 @@ import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.MainWindow.FeederSelectionCombo;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsActions;
+import net.azib.ipscan.gui.actions.HelpActions;
 import net.azib.ipscan.gui.actions.OpenerLauncher;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.actions.ToolsActions;
@@ -181,6 +183,7 @@ public class ComponentRegistry {
 			anyComponentParameter,
 			anyComponentParameter});
 		
+		container.registerComponentImplementation(AboutDialog.class);
 		container.registerComponentImplementation(PreferencesDialog.class);
 		container.registerComponentImplementation(ConfigDetectorDialog.class);
 		container.registerComponentImplementation(SelectFetchersDialog.class);
@@ -198,11 +201,17 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(ToolsActions.Preferences.class);
 		container.registerComponentImplementation(ToolsActions.ChooseFetchers.class);
 		container.registerComponentImplementation(ToolsActions.TableSelection.class);
+		container.registerComponentImplementation(HelpActions.CheckVersion.class);
+
+		if (Platform.MAC_OS) {
+			// initialize mac-specific stuff
+			container.registerComponentImplementation(net.azib.ipscan.gui.mac.MacApplicationMenu.class);
+		}
 	}
 	
 	public MainWindow createMainWindow() {
-		// initialize the main menu
-		container.getComponentInstance(MainMenu.class);
+		// initialize all startable components
+		container.start();
 		// initialize and return the main window
 		return (MainWindow) container.getComponentInstance(MainWindow.class);
 	}

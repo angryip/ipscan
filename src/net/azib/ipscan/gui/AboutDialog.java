@@ -26,9 +26,14 @@ import org.eclipse.swt.widgets.Text;
 public class AboutDialog extends AbstractModalDialog {
 
 	public AboutDialog() {
-		createShell();		
 	}
 	
+	@Override
+	public void open() {
+		createShell();		
+		super.open();
+	}
+
 	/**
 	 * This method initializes shell
 	 */

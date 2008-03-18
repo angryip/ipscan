@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.Startable;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
@@ -35,7 +36,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  *
  * @author Anton Keks
  */
-public class MainMenu {
+public class MainMenu implements Startable {
 	
 	private MutablePicoContainer container;
 	
@@ -64,6 +65,13 @@ public class MainMenu {
 		
 		stateMachine.addTransitionListener(new MenuEnablerDisabler(mainMenu));
 		stateMachine.addTransitionListener(new MenuEnablerDisabler(resultsContextMenu));
+	}
+
+	public void start() {
+		// constructor starts everything
+	}
+
+	public void stop() {
 	}
 
 	private void createMainMenuItems(Menu menu) {
@@ -113,10 +121,14 @@ public class MainMenu {
 		initMenuItem(subMenu, "menu.help.plugins", null, null, initListener(HelpActions.Plugins.class));
 		initMenuItem(subMenu, null, null, null, null);
 		initMenuItem(subMenu, "menu.help.cmdLine", null, null, null);
-		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.help.checkVersion", null, null, initListener(HelpActions.CheckVersion.class));
-		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.help.about", null, null, initListener(HelpActions.About.class));
+		
+		if (!Platform.MAC_OS) {
+			// mac will have these in the 'application' menu
+			initMenuItem(subMenu, null, null, null, null);
+			initMenuItem(subMenu, "menu.help.checkVersion", null, null, initListener(HelpActions.CheckVersion.class));
+			initMenuItem(subMenu, null, null, null, null);
+			initMenuItem(subMenu, "menu.help.about", null, null, initListener(HelpActions.About.class));
+		}
 	}
 
 	private void createCommandsMenuItems(Menu menu) {
@@ -288,5 +300,4 @@ public class MainMenu {
 			});
 		}
 	}
-
 }

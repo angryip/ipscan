@@ -37,9 +37,16 @@ public class HelpActions {
 		}
 	}
 
-	public static final class About implements Listener { 		
+	public static final class About implements Listener {
+		private AboutDialog aboutDialog;
+
+		public About(AboutDialog aboutDialog) {
+			super();
+			this.aboutDialog = aboutDialog;
+		}
+
 		public void handleEvent(Event event) { 
-			new AboutDialog().open(); 
+			aboutDialog.open(); 
 		}
 	}
 
@@ -69,10 +76,14 @@ public class HelpActions {
 		}
 
 		public void handleEvent(final Event event) {
+			check();
+		}
+		
+		public void check() {
 			statusBar.setStatusText(Labels.getLabel("state.retrievingVersion"));
 			
 			// prepare message box in advance
-			final MessageBox messageBox = new MessageBox(event.display.getActiveShell(), SWT.ICON_INFORMATION);
+			final MessageBox messageBox = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_INFORMATION);
 			messageBox.setText(Version.getFullName());
 
 			Runnable checkVersionCode = new Runnable() {
