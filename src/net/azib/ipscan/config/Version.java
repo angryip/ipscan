@@ -12,12 +12,11 @@ import java.util.logging.Level;
  * Class with accessors to version information of the program.
  *
  * @author Anton Keks
- * @version $Id: Version.java,v 1.2 2005/11/20 14:08:28 angryziber Exp $
  */
 public class Version {
 	public static final String NAME = "Angry IP Scanner";
 	
-	public static final String COPYLEFT = "\u00A9 2007 Anton Keks";
+	public static final String COPYLEFT = "\u00A9 2008 Anton Keks";
 	
 	public static final String WEBSITE = "http://www.azib.net/ipscan/";
 	
