@@ -67,6 +67,9 @@ public class MainWindow {
 		this.shell = shell;
 		this.guiConfig = guiConfig;
 		
+		// this is particularly important on mac
+		Display.setAppName(Version.NAME);
+
 		initShell(shell);
 		
 		initFeederArea(feederArea, feederGUIRegistry);

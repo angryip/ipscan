@@ -32,6 +32,7 @@ public class MacApplicationMenu implements Startable {
 	private static final int kHICommandPreferences = ('p' << 24) + ('r' << 16) + ('e' << 8) + 'f';
 	private static final int kHICommandFetchers = ('f' << 24) + ('e' << 16) + ('t' << 8) + 'c';
 	private static final int kHICommandCheckVersion = ('v' << 24) + ('e' << 16) + ('r' << 8) + 's';
+	private static final int kHICommandServices = ('s' << 24) + ('e' << 16) + ('r' << 8) + 'v';
 
 	private final AboutDialog aboutDialog;
 	private final PreferencesDialog preferencesDialog;
@@ -134,6 +135,9 @@ public class MacApplicationMenu implements Startable {
 			str = OS.CFStringCreateWithCharacters(OS.kCFAllocatorDefault, buf, buf.length);
 			OS.InsertMenuItemTextWithCFString(menu, str, (short) 5, 0, kHICommandCheckVersion);
 			OS.CFRelease(str);
+
+			// disable services menu
+            OS.DisableMenuCommand(menu, kHICommandServices);
 		}
 
 		// schedule disposal of callback object
