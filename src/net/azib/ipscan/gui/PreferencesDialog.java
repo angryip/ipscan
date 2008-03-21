@@ -6,8 +6,8 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.GUIConfig;
-import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.config.GUIConfig.DisplayMethod;
 import net.azib.ipscan.core.PortIterator;
 import net.azib.ipscan.core.net.PingerRegistry;
@@ -462,14 +462,32 @@ public class PreferencesDialog extends AbstractModalDialog {
 	
 	static class PortsTextValidationListener implements KeyListener {
 		public void keyPressed(KeyEvent e) {
-			// current
-			char c = e.character;
-			if (Character.isISOControl(c) && !Character.isWhitespace(c))
-				return;
-			
 			Text portsText = (Text) e.getSource();
 			
-			e.doit = validateChar(c, portsText.getText(), portsText.getCaretPosition());
+			if (e.keyCode == SWT.TAB) {
+				portsText.getShell().traverse(SWT.TRAVERSE_TAB_NEXT);
+				e.doit = false;
+				return;
+			}
+			else 
+			if (e.keyCode == SWT.CR) {
+				if ((e.stateMask & SWT.MOD1) > 0) {
+					// allow ctrl+enter to insert newlines
+					e.stateMask = 0; 
+				}
+				else {
+					// single-enter will traverse
+					portsText.getShell().traverse(SWT.TRAVERSE_RETURN);
+					e.doit = false;
+					return;
+				}
+			}
+			else 
+			if (Character.isISOControl(e.character)) {
+				return;
+			}
+			
+			e.doit = validateChar(e.character, portsText.getText(), portsText.getCaretPosition());
 		}
 		
 		boolean validateChar(char c, String text, int caretPos) {

@@ -1,12 +1,13 @@
 Before 3.0:
 
-* rpm/deb packages (test, especially 64 bit)
+* Windows: Ctrl+A
+* Bugs in port edit box
 * command-line scanning start
 * fetcher-specific options
 * multiple port support web-detect
 * add new fetchers by configuration of PortTextFetcher
 * startup as root option
-* compile librocksaw for mac
+* compile librocksaw for mac and linux64
 * plugin loader
 * export/import of settings (profiles or tie with Favorites?)
 * top-level exception handler for NoClassDefFoundErrors, etc

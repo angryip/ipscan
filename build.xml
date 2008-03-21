@@ -36,6 +36,7 @@
 	<!--<target name="all" depends="clean,compile,compile-tests,do-test,package,clean_end"/>-->
 	<target name="all" depends="clean,compile,compile-tests,do-test,package,clean_end"/>
 	<target name="linux" depends="clean,compile,package-linux,clean_end"/>
+	<target name="linux64" depends="clean,compile,package-linux64,clean_end"/>
 	<target name="mac" depends="clean,compile,package-mac,clean_end"/>
 	<target name="win32" depends="clean,compile,package-win32,clean_end"/>
 	
@@ -45,10 +46,11 @@
 	<target name="info">
 		<echo message="This script will build ${name} ${version}"/>
 		<echo message="Targets (some may work only on Linux):"/>
-		<echo message="  all - runs tests and builds binaries for all OSs"/>
-		<echo message="  linux - builds only Linux binary"/>
-		<echo message="  mac - builds only Mac binary"/>
-		<echo message="  win32 - builds only Windows binary"/>
+		<echo message="  all     - runs tests and builds binaries for all OSs"/>
+		<echo message="  linux   - builds only Linux 32-bit binary"/>
+		<echo message="  linux64 - builds only Linux 64-bit binary"/>
+		<echo message="  mac     - builds only Mac binary"/>
+		<echo message="  win32   - builds only Windows binary"/>
 	</target>
 
 	<target name="clean">
@@ -302,6 +304,10 @@
 		<antcall target="package-linux-deb-rpm"/>
 	</target>
 	
+	<target name="package-linux64" depends="svn-info">
+		<package-for platform="linux64" librocksaw="librocksaw.so"/>
+	</target>
+	
 	<target name="package-linux-deb-rpm" if="isRunningOnLinux">
 		<mkdir dir="${dist}.linux/deb"/>
 		<copy todir="${dist}.linux/deb">
@@ -316,7 +322,7 @@
 		</replace>
 		
 		<exec executable="chmod" dir="${dist}.linux">
-			<arg line="a+x deb/usr/bin/ipscan deb/usr/lib/${ant.project.name}-linux-${version}.jar"/>
+			<arg line="a+x deb/usr/bin/ipscan deb/usr/lib/ipscan/${ant.project.name}-linux-${version}.jar"/>
 		</exec>
 		<echo message="Trying to build .deb package using dpkg..."/>
 		<exec executable="dpkg" dir="${dist}.linux">
