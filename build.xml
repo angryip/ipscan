@@ -341,11 +341,12 @@
 		<antcall target="package-win32-exe"/>
 	</target>
 	
-	<target name="package-win32-exe" if="isRunningOnLinux">
+	<target name="package-win32-exe">
 		<copy file="${ext}/launch4j/ipscan.xml" todir="${dist}.win32"/>
 		<replace file="${dist}.win32/ipscan.xml">
 			<replacefilter token="ipscan.jar" value="${ant.project.name}-win32-${version}.jar"/>
 			<replacefilter token="ipscan.exe" value="${ant.project.name}-win32-${version}.exe"/>
+			<replacefilter token="VERSION" value="${version}"/>
 		</replace>
 		<launch4j configFile="${dist}.win32/ipscan.xml"/>
 		<delete file="${dist}.win32/ipscan.xml"/>

@@ -1,20 +1,34 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
-  <headerType>0</headerType>
+  <headerType>gui</headerType>
   <jar>ipscan.jar</jar>
   <outfile>ipscan.exe</outfile>
   <errTitle>Angry IP Scanner</errTitle>
-  <jarArgs></jarArgs>
+  <cmdLine></cmdLine>
   <chdir></chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
   <customProcName>true</customProcName>
   <stayAlive>false</stayAlive>
+  <manifest></manifest>
   <icon>../resources/images/icon.ico</icon>
   <jre>
     <path></path>
     <minVersion>1.5.0</minVersion>
     <maxVersion></maxVersion>
-    <initialHeapSize>0</initialHeapSize>
-    <maxHeapSize>0</maxHeapSize>
-    <args></args>
+    <jdkPreference>preferJre</jdkPreference>
   </jre>
+  <versionInfo>
+    <fileVersion>3.0.0.0</fileVersion>
+    <txtFileVersion>VERSION</txtFileVersion>
+    <fileDescription>fast and friendly network scanner</fileDescription>
+    <copyright>Anton Keks</copyright>
+    <productVersion>3.0.0.0</productVersion>
+    <txtProductVersion>VERSION</txtProductVersion>
+    <productName>Angry IP Scanner</productName>
+    <companyName></companyName>
+    <internalName>ipscan</internalName>
+    <originalFilename>ipscan.exe</originalFilename>
+  </versionInfo>
 </launch4jConfig>
