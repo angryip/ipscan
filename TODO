@@ -1,7 +1,5 @@
 Before 3.0:
 
-* Windows: Ctrl+A
-* Bugs in port edit box
 * command-line scanning start
 * fetcher-specific options
 * multiple port support web-detect

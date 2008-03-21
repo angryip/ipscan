@@ -66,6 +66,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		
 		addListener(SWT.Selection, selectionListener);
 		addListener(SWT.KeyDown, new CommandsActions.Delete(this, stateMachine, selectionListener));
+		addListener(SWT.KeyDown, new CommandsActions.SelectAll(this));
 		addListener(SWT.KeyDown, new CommandsActions.CopyIP(this));
 		
 		// this one populates table dynamically, taking data from ScanningResultList
