@@ -41,6 +41,8 @@ public class Main {
 		
 		initSystemProperties();
 		
+		processCommandLine(args);
+		
 		Display display = Display.getDefault();		
 		LOG.finer("SWT initialized after " + (System.currentTimeMillis() - startTime));
 
@@ -86,6 +88,13 @@ public class Main {
 		// disable DNS caches
 		Security.setProperty("networkaddress.cache.ttl", "0");
 		Security.setProperty("networkaddress.cache.negative.ttl", "0");
+	}
+
+	private static void processCommandLine(String[] args) {
+		if (args.length != 0) {
+			// TODO: implement command-line
+			throw new UnsupportedOperationException("Command-line usage is not implemented yet, sorry");
+		}
 	}
 
 	/**
