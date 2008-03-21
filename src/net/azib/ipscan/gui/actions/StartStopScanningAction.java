@@ -58,13 +58,15 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	/**
 	 * Creates internal stuff independent from all other external dependencies
 	 */
-	StartStopScanningAction() {
+	StartStopScanningAction(Display display) {
+		this.display = display;
+		
 		// preload button images
-		buttonImages[ScanningState.IDLE.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("button.start.img"));
-		buttonImages[ScanningState.SCANNING.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("button.stop.img"));
+		buttonImages[ScanningState.IDLE.ordinal()] = new Image(display, Labels.getInstance().getImageAsStream("button.start.img"));
+		buttonImages[ScanningState.SCANNING.ordinal()] = new Image(display, Labels.getInstance().getImageAsStream("button.stop.img"));
 		buttonImages[ScanningState.STARTING.ordinal()] = buttonImages[ScanningState.SCANNING.ordinal()]; 
 		buttonImages[ScanningState.RESTARTING.ordinal()] = buttonImages[ScanningState.SCANNING.ordinal()];
-		buttonImages[ScanningState.STOPPING.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("button.kill.img"));
+		buttonImages[ScanningState.STOPPING.ordinal()] = new Image(display, Labels.getInstance().getImageAsStream("button.kill.img"));
 		buttonImages[ScanningState.KILLING.ordinal()] = buttonImages[ScanningState.STOPPING.ordinal()];
 		
 		// preload button texts
@@ -77,7 +79,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	}
 	
 	public StartStopScanningAction(ScannerThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, PingerRegistry pingerRegistry, Button startStopButton, GUIConfig guiConfig) {
-		this();
+		this(startStopButton.getDisplay());
 
 		this.scannerThreadFactory = scannerThreadFactory;
 		this.resultTable = resultTable;
@@ -85,7 +87,6 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		this.feederRegistry = feederRegistry;
 		this.pingerRegistry = pingerRegistry;
 		this.button = startStopButton;
-		this.display = button.getDisplay();
 		this.stateMachine = stateMachine;
 		this.guiConfig = guiConfig;
 		

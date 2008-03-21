@@ -33,8 +33,8 @@
 		<exclude name="**/icon?*.png"/>
 	</patternset>
 
-	<!--<target name="all" depends="clean,compile,compile-tests,do-test,package,clean_end"/>-->
-	<target name="all" depends="clean,compile,compile-tests,do-test,package,clean_end"/>
+	<!--<target name="all" depends="clean,compile,compile-tests,test,package,clean_end"/>-->
+	<target name="all" depends="clean,compile,compile-tests,test,package,clean_end"/>
 	<target name="linux" depends="clean,compile,package-linux,clean_end"/>
 	<target name="linux64" depends="clean,compile,package-linux64,clean_end"/>
 	<target name="mac" depends="clean,compile,package-mac,clean_end"/>
@@ -112,14 +112,14 @@
 		-->
 	</target>
 
-	<target name="do-test">
+	<target name="test">
 		<delete dir="${testresults}"/>
 		<mkdir dir="${testresults}"/>
 		<delete file="coverage.ec"/>
-		<junit haltonfailure="true" showoutput="true">
+		<junit haltonfailure="true" showoutput="true" fork="yes">
 			<classpath>
 				<dirset dir="${testbin}"/>
-				<fileset dir="${swt}" includes="*.jar"/>
+				<fileset dir="${swt}" includes="swt-linux.jar"/>
 				<fileset dir="${ext}/junit" includes="*.jar"/>
 				<fileset dir="${ext}/easymock" includes="*.jar"/>
 				<path refid="emma.lib"/>
