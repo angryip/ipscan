@@ -25,17 +25,27 @@ import net.azib.ipscan.gui.MainWindow;
 /**
  * The main executable class.
  * It initializes all the needed stuff and launches the user interface.
- * 
+ * <p/>
  * All Exceptions, which are thrown out of the program, are caught and logged
  * using the java.util.logging facilities.
  * 
+ * @see #main(String...)
  * @author Anton Keks
  */
 public class Main {
 	
 	static final Logger LOG = LoggerFactory.getLogger();
 
-	public static void main(String ... args) {
+	/**
+	 * The launching point
+	 * <p/>
+	 * In development, pass the following on the JVM command line:
+	 * <tt>-Djava.util.logging.config.file=config/logging.properties</tt>
+	 * <p/>
+	 * On Mac, add the following (otherwise SWT won't work):
+	 * <tt>-XstartOnFirstThread</tt>
+	 */
+	public static void main(String... args) {
 		
 		long startTime = System.currentTimeMillis();
 		
@@ -93,7 +103,7 @@ public class Main {
 	private static void processCommandLine(String[] args) {
 		if (args.length != 0) {
 			// TODO: implement command-line
-			throw new UnsupportedOperationException("Command-line usage is not implemented yet, sorry");
+			LOG.warning("Command-line usage is not implemented yet, sorry");
 		}
 	}
 
