@@ -79,8 +79,9 @@ public class AboutDialog extends AbstractModalDialog {
 		websiteLabel.pack();
 
 		String systemText = Labels.getLabel("text.about.system");
-		systemText = systemText.replaceAll("%JAVA", System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.version"));
-		systemText = systemText.replaceAll("%OS", System.getProperty("os.name") + " " + System.getProperty("os.version"));
+		System.out.println(System.getProperties());
+		systemText = systemText.replaceAll("%JAVA", System.getProperty("java.vm.vendor") + " " + System.getProperty("java.runtime.version"));
+		systemText = systemText.replaceAll("%OS", System.getProperty("os.name") + " " + System.getProperty("os.version") + " (" + System.getProperty("os.arch") + ")");
 		Label systemLabel = new Label(shell, SWT.NONE);
 		systemLabel.setText(systemText);
 		systemLabel.setLocation(leftBound, 20 + aboutLabel.getBounds().height + websiteLabel.getBounds().height);
