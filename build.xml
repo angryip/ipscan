@@ -35,13 +35,13 @@
 	
 	<!-- detect current platform -->
 	<condition property="platform" value="linux">
-		<os name="Linux"/>
+		<os name="Linux" arch="i386"/>
 	</condition>
 	<condition property="platform" value="linux64">
 		<or>
-			<os name="Linux" arch="x86_64"/>
 			<os name="Linux" arch="amd64"/>
 			<os name="Linux" arch="ia64"/>
+			<os name="Linux" arch="x86_64"/>
 		</or>
 	</condition>
 	<condition property="platform" value="mac">
