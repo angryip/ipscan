@@ -32,17 +32,42 @@
 		<exclude name="**/*.ico"/>
 		<exclude name="**/icon?*.png"/>
 	</patternset>
+	
+	<!-- detect current platform -->
+	<condition property="platform" value="linux">
+		<os name="Linux"/>
+	</condition>
+	<condition property="platform" value="linux64">
+		<or>
+			<os name="Linux" arch="x86_64"/>
+			<os name="Linux" arch="amd64"/>
+			<os name="Linux" arch="ia64"/>
+		</or>
+	</condition>
+	<condition property="platform" value="mac">
+		<os family="mac"/>
+	</condition>
+	<condition property="platform" value="win32">
+		<os family="windows"/>
+	</condition>
+	<condition property="platform" value="unknown">
+		<not>
+			<isset property="platform"/>
+		</not>
+	</condition>
 
-	<!--<target name="all" depends="clean,compile,compile-tests,test,package,clean_end"/>-->
 	<target name="all" depends="clean,compile,compile-tests,test,package,clean_end"/>
 	<target name="linux" depends="clean,compile,package-linux,clean_end"/>
 	<target name="linux64" depends="clean,compile,package-linux64,clean_end"/>
 	<target name="mac" depends="clean,compile,package-mac,clean_end"/>
 	<target name="win32" depends="clean,compile,package-win32,clean_end"/>
+	<target name="current">
+		<antcall target="${platform}"/>
+	</target>
 	
 	<!-- this is run by cruise control continous integration -->
-	<target name="cruise" depends="clean,compile,compile-tests,package-linux,clean_end"/>
-	
+	<target name="cruise" depends="all"/>
+
 	<target name="info">
 		<echo message="This script will build ${name} ${version}"/>
 		<echo message="Targets (some may work only on Linux):"/>
@@ -51,6 +76,7 @@
 		<echo message="  linux64 - builds only Linux 64-bit binary"/>
 		<echo message="  mac     - builds only Mac binary"/>
 		<echo message="  win32   - builds only Windows binary"/>
+		<echo message="  current = ${platform}"/>
 	</target>
 
 	<target name="clean">
@@ -111,15 +137,15 @@
 		<delete dir="${testbin}.instr"/>
 		-->
 	</target>
-
+	
 	<target name="test">
 		<delete dir="${testresults}"/>
 		<mkdir dir="${testresults}"/>
 		<delete file="coverage.ec"/>
 		<junit haltonfailure="true" showoutput="true" fork="yes">
 			<classpath>
-				<dirset dir="${testbin}"/>
-				<fileset dir="${swt}" includes="swt-linux.jar"/>
+				<path location="${testbin}"/>
+				<fileset dir="${swt}" includes="swt-${platform}.jar"/>
 				<fileset dir="${ext}/junit" includes="*.jar"/>
 				<fileset dir="${ext}/easymock" includes="*.jar"/>
 				<path refid="emma.lib"/>
