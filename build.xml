@@ -66,7 +66,7 @@
 	</target>
 	
 	<!-- this is run by cruise control continous integration -->
-	<target name="cruise" depends="all"/>
+	<target name="cruise" depends="clean,compile,compile-tests,package,clean_end"/>
 
 	<target name="info">
 		<echo message="This script will build ${name} ${version}"/>
