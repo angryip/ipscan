@@ -43,6 +43,7 @@ public class PingerRegistryImpl implements PingerRegistry {
 		pingers.put("pinger.icmp2", ICMPPinger.class);
 		pingers.put("pinger.udp", UDPPinger.class);
 		pingers.put("pinger.tcp", TCPPinger.class);
+		pingers.put("pinger.combined", CombinedUnprivilegedPinger.class);
 	}
 	
 	public String[] getRegisteredNames() {
@@ -86,8 +87,8 @@ public class PingerRegistryImpl implements PingerRegistry {
 			}
 			catch (Exception e) {
 				LOG.info("ICMP pingers fail: " + e);
-				// udp should be supported in all configurations
-				scannerConfig.selectedPinger = Platform.WINDOWS ? "pinger.windows" : "pinger.udp";
+				// windows will use native pinger, all others get combined UDP+TCP, which doesn't require special privileges
+				scannerConfig.selectedPinger = Platform.WINDOWS ? "pinger.windows" : "pinger.combined";
 				return false;
 			}
 		}

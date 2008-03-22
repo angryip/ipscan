@@ -155,6 +155,7 @@ pinger.icmp2=ICMP Echo (Alternative)
 pinger.windows=Windows ICMP.DLL
 pinger.udp=UDP packet
 pinger.tcp=TCP port probe
+pinger.combined=Combined UDP+TCP
 opener.web=Web Browser
 opener.ftp=FTP
 opener.telnet=Telnet
