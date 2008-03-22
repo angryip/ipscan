@@ -1,6 +1,5 @@
 Before 3.0:
 
-* combined UDP+TCP pinger
 * command-line scanning start
 * fetcher-specific options
 * multiple port support web-detect
