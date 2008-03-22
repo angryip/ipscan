@@ -6,15 +6,15 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.gui.util.LayoutHelper;
 
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * Customizable InputDialog
@@ -45,10 +45,12 @@ public class InputDialog extends AbstractModalDialog {
 		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-		shell.setSize(new Point(310, 125));
-		shell.setLayout(null);
+		shell.setLayout(LayoutHelper.formLayout(10, 10, 4));
+
 		messageLabel = new Label(shell, SWT.NONE);
-		messageLabel.setBounds(new Rectangle(10, 10, 282, 14));
+		messageLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, new FormAttachment(0), null));
+		
+		text = new Text(shell, SWT.BORDER);
 		
 		okButton = new Button(shell, SWT.NONE);
 		okButton.setText(Labels.getLabel("button.OK"));
@@ -56,11 +58,8 @@ public class InputDialog extends AbstractModalDialog {
 		cancelButton = new Button(shell, SWT.NONE);
 		cancelButton.setText(Labels.getLabel("button.cancel"));
 		
-		positionButtons(okButton, cancelButton);
+		positionButtonsInFormLayout(okButton, cancelButton, text);
 		
-		text = new Text(shell, SWT.BORDER);
-		text.setBounds(new Rectangle(10, 28, shell.getClientArea().width - 20, 24));
-
 		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				message = text.getText();
@@ -73,14 +72,16 @@ public class InputDialog extends AbstractModalDialog {
 				shell.dispose();
 			}
 		});
-		
-		text.setFocus();
 	}
 	
 	private void setText(String text) {
 		if (text != null) {
 			this.text.setText(text);
 			this.text.setSelection(0, -1);
+			this.text.pack();
+			this.text.setLayoutData(LayoutHelper.formData(Math.max(this.text.getSize().x, 310), SWT.DEFAULT, new FormAttachment(0), null, new FormAttachment(messageLabel), null));
+			this.text.setFocus();
+			shell.pack();
 		}
 	}
 
@@ -89,10 +90,19 @@ public class InputDialog extends AbstractModalDialog {
 	 * 
 	 * @return the entered text or null in case of cancel.
 	 */
-	public String open(String text) {
+	public String open(String text, String okButtonText) {
+		okButton.setText(okButtonText);
 		setText(text);
 		super.open();
 		return message;
+	}
+	/**
+	 * Opens the dialog and waits for user to input the data.
+	 * 
+	 * @return the entered text or null in case of cancel.
+	 */
+	public String open(String text) {
+		return open(text, Labels.getLabel("button.OK"));
 	}
 
 }

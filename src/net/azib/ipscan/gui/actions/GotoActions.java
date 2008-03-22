@@ -92,7 +92,7 @@ public class GotoActions {
 		
 		public void handleEvent(Event event) {
 			InputDialog dialog = new InputDialog(Labels.getLabel("title.find"), Labels.getLabel("text.find"));
-			String text = dialog.open(lastText);
+			String text = dialog.open(lastText, Labels.getLabel("button.find.next"));
 			if (text == null) {
 				return;
 			}
