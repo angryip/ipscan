@@ -1,8 +1,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>ipscan.jar</jar>
-  <outfile>ipscan.exe</outfile>
+  <jar>FILENAME.jar</jar>
+  <outfile>FILENAME.exe</outfile>
   <errTitle>Angry IP Scanner</errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
@@ -20,11 +20,11 @@
     <jdkPreference>preferJre</jdkPreference>
   </jre>
   <versionInfo>
-    <fileVersion>3.0.0.0</fileVersion>
+    <fileVersion>3.0.0.BUILD</fileVersion>
     <txtFileVersion>VERSION</txtFileVersion>
-    <fileDescription>fast and friendly network scanner</fileDescription>
+    <fileDescription>Angry IP Scanner - fast and friendly network scanner</fileDescription>
     <copyright>Anton Keks</copyright>
-    <productVersion>3.0.0.0</productVersion>
+    <productVersion>3.0.0.BUILD</productVersion>
     <txtProductVersion>VERSION</txtProductVersion>
     <productName>Angry IP Scanner</productName>
     <companyName></companyName>
