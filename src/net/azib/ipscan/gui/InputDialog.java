@@ -57,9 +57,7 @@ public class InputDialog extends AbstractModalDialog {
 		
 		cancelButton = new Button(shell, SWT.NONE);
 		cancelButton.setText(Labels.getLabel("button.cancel"));
-		
-		positionButtonsInFormLayout(okButton, cancelButton, text);
-		
+				
 		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				message = text.getText();
@@ -81,7 +79,6 @@ public class InputDialog extends AbstractModalDialog {
 			this.text.pack();
 			this.text.setLayoutData(LayoutHelper.formData(Math.max(this.text.getSize().x, 310), SWT.DEFAULT, new FormAttachment(0), null, new FormAttachment(messageLabel), null));
 			this.text.setFocus();
-			shell.pack();
 		}
 	}
 
@@ -93,6 +90,11 @@ public class InputDialog extends AbstractModalDialog {
 	public String open(String text, String okButtonText) {
 		okButton.setText(okButtonText);
 		setText(text);
+		// reposition buttons because of changed text
+		positionButtonsInFormLayout(okButton, cancelButton, this.text);
+		// layout the shell
+		shell.pack();
+		// time to show!
 		super.open();
 		return message;
 	}

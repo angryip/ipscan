@@ -108,8 +108,10 @@ public abstract class AbstractModalDialog {
 		// both buttons
 		int height = Math.max(okButton.computeSize(SWT.DEFAULT, SWT.DEFAULT).y, Config.getConfig().getGUI().standardButtonHeight);
 		int distance = height/3;
-		cancelButton.setLayoutData(LayoutHelper.formData(85,  height, null, new FormAttachment(control, 0, SWT.RIGHT), new FormAttachment(control, 8), null));
-		okButton.setLayoutData(LayoutHelper.formData(85, height, null, new FormAttachment(cancelButton, -distance), new FormAttachment(control, 8), null));
+		cancelButton.pack();
+		cancelButton.setLayoutData(LayoutHelper.formData(Math.max(85, cancelButton.getSize().x),  height, null, new FormAttachment(control, 0, SWT.RIGHT), new FormAttachment(control, 8), null));
+		okButton.pack();
+		okButton.setLayoutData(LayoutHelper.formData(Math.max(85, okButton.getSize().x), height, null, new FormAttachment(cancelButton, -distance), new FormAttachment(control, 8), null));
 	}
 	
 	/**
