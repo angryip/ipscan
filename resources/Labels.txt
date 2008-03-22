@@ -124,6 +124,7 @@ text.about=%NAME\n\nVersion: %VERSION\nBuild: %BUILD\nBuild date: %DATE\n\n%COPY
 text.about.system=Java: %JAVA\nOS: %OS
 button.OK=OK
 button.cancel=Cancel
+button.find.next=Find &Next
 button.close=&Close
 button.next=&Next ->
 button.start=&Start
