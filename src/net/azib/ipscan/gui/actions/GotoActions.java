@@ -100,7 +100,7 @@ public class GotoActions {
 			
 			try {
 				statusBar.setStatusText(Labels.getLabel("state.searching"));
-				findText(text, event.display.getActiveShell());
+				findText(text, statusBar.getShell());
 			}
 			finally {
 				statusBar.setStatusText(null);				

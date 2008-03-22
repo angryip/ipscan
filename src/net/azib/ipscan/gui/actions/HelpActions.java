@@ -83,7 +83,7 @@ public class HelpActions {
 			statusBar.setStatusText(Labels.getLabel("state.retrievingVersion"));
 			
 			// prepare message box in advance
-			final MessageBox messageBox = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_INFORMATION);
+			final MessageBox messageBox = new MessageBox(statusBar.getShell(), SWT.ICON_INFORMATION);
 			messageBox.setText(Version.getFullName());
 
 			Runnable checkVersionCode = new Runnable() {

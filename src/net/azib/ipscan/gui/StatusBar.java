@@ -117,4 +117,7 @@ public class StatusBar {
 			progressBar.setSelection(progress);
 	}
 	
+	public Shell getShell() {
+		return composite.getShell();
+	}
 }
