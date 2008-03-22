@@ -75,12 +75,12 @@ public class PingerRegistryImplTest {
 		registry.pingers.put("pinger.dummy1", DummyPinger1.class);
 		config.selectedPinger = "pinger.icmp.dummy1";
 		assertFalse(registry.checkSelectedPinger());
-		assertEquals("pinger.udp", config.selectedPinger);
+		assertEquals("pinger.combined", config.selectedPinger);
 		
 		registry.pingers.put("pinger.dummy2", DummyPinger2.class);
 		config.selectedPinger = "pinger.icmp.dummy2";
 		assertFalse(registry.checkSelectedPinger());
-		assertEquals("pinger.udp", config.selectedPinger);
+		assertEquals("pinger.combined", config.selectedPinger);
 	}
 	
 	public class DummyPinger1 implements Pinger {
