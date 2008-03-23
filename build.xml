@@ -172,7 +172,7 @@
 		<os name="Linux"/>
 	</condition>
 	
-	<target name="package" depends="package-linux,package-win32,package-mac"/>
+	<target name="package" depends="package-linux,package-linux64,package-win32,package-mac"/>
 	
 	<target name="svn-info">
 		<!-- TODO: make this more cross-platform (most likely this will fail on windows) -->
@@ -269,6 +269,9 @@
 				</fileset>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/awt"/>
 			</delete>
+			<copy todir="${bin}.mac">
+				<fileset dir="${bin}" includes="net/azib/ipscan/gui/mac/*"/>
+			</copy>
 			<jar destfile="${dist}.@{platform}/${ant.project.name}-orig.jar" >
 				<manifest>
 					<attribute name="Main-Class" value="${main.class}"/>
@@ -279,7 +282,7 @@
 					<attribute name="Built-By" value="${user.name}"/>
 					<attribute name="URL" value="http://www.azib.net/ipscan/"/>
 				</manifest>
-				<fileset dir="${bin}" includes="**/*"/>
+				<fileset dir="${bin}" includes="**/*" excludes="net/azib/ipscan/gui/mac/*"/>
 				<fileset dir="${bin}.@{platform}" includes="**/*"/>
 			</jar>
 			<proguard>
