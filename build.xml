@@ -279,6 +279,7 @@
 					<attribute name="Version" value="${version}"/>
 					<attribute name="Build" value="${build.number}"/>
 					<attribute name="Build-Date" value="${build.date}"/>
+					<attribute name="Platform" value="@{platform}"/>
 					<attribute name="Built-By" value="${user.name}"/>
 					<attribute name="URL" value="http://www.azib.net/ipscan/"/>
 				</manifest>
