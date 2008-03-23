@@ -217,8 +217,12 @@
 					<include name="swt-awt-*.dll"/>
 					<include name="swt-wgl-*.dll"/>
 					<include name="swt-gdip-*.dll"/>
+					<include name="swt-xpcominit-*.dll"/>
+					<include name="swt-xulrunner-*.dll"/>
 					<!-- Mac stuff -->
 					<include name="libswt-agl-*.jnilib"/>
+					<include name="libswt-xpcominit-*.jnilib"/>
+					<include name="libswt-xulrunner-*.jnilib"/>
 				</fileset>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/dnd">
 					<include name="D*"/>
