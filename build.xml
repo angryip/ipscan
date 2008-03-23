@@ -83,6 +83,7 @@
 		<delete dir="${bin}"/>
 		<delete dir="${testbin}"/>
 		<delete dir="${bin}.linux"/>
+		<delete dir="${bin}.linux64"/>
 		<delete dir="${bin}.win32"/>
 		<delete dir="${bin}.mac"/>
 		<delete dir="${testresults}"/>
