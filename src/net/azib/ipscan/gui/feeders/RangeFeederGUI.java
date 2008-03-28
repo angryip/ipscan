@@ -17,6 +17,7 @@ import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederException;
 import net.azib.ipscan.feeders.RangeFeeder;
 import net.azib.ipscan.gui.actions.FeederActions;
+import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -26,8 +27,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -51,6 +50,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	private Label toLabel;
 	private Text endIPText;
 	private boolean isEndIPUnedited = true;
+	private boolean modifyListenersDisabled = false;
 		
 	private Label hostnameLabel;
 	private Text hostnameText;
@@ -66,12 +66,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	protected void initialize() {
 		feeder = new RangeFeeder();
 		
-		FormLayout formLayout = new FormLayout();
-		formLayout.marginWidth = 3;
-		formLayout.marginHeight = 3;
-		formLayout.marginBottom = 2;
-		formLayout.spacing = 4;
-		setLayout(formLayout);
+		setLayout(LayoutHelper.formLayout(3, 3, 4));
 		
         ipRangeLabel = new Label(this, SWT.NONE);
         startIPText = new Text(this, SWT.BORDER);
@@ -83,26 +78,15 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         netmaskCombo = new Combo(this, SWT.NONE);
         
         ipRangeLabel.setText(getStringLabel("startIP"));
-        FormData formData = new FormData();
-		formData.right = new FormAttachment(hostnameLabel, 0, SWT.RIGHT);
-        formData.top = new FormAttachment(startIPText, 0, SWT.CENTER);
-        ipRangeLabel.setLayoutData(formData);
+        ipRangeLabel.setLayoutData(LayoutHelper.formData(null, new FormAttachment(hostnameLabel, 0, SWT.RIGHT), new FormAttachment(startIPText, 0, SWT.CENTER), null));
         
-		formData = new FormData(105 + (Platform.MAC_OS ? 35 : 0), SWT.DEFAULT);
-		formData.top = new FormAttachment(0);
-		formData.left = new FormAttachment(ipRangeLabel);
-        startIPText.setLayoutData(formData);
+        startIPText.setLayoutData(LayoutHelper.formData(105 + (Platform.MAC_OS ? 35 : 0), SWT.DEFAULT, new FormAttachment(ipRangeLabel), null, new FormAttachment(0), null));
         startIPText.addModifyListener(new StartIPModifyListener());
         
         toLabel.setText(getStringLabel("endIP"));
-        formData = new FormData();
-        formData.left = new FormAttachment(startIPText);
-        formData.top = new FormAttachment(startIPText, 0, SWT.CENTER);
-        toLabel.setLayoutData(formData);
+        toLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(startIPText), null, new FormAttachment(startIPText, 0, SWT.CENTER), null));
                 
-		formData = new FormData(105 + (Platform.MAC_OS ? 35 : 0), SWT.DEFAULT);
-		formData.left = new FormAttachment(toLabel);
-        endIPText.setLayoutData(formData);
+        endIPText.setLayoutData(LayoutHelper.formData(105 + (Platform.MAC_OS ? 35 : 0), SWT.DEFAULT, new FormAttachment(toLabel), null, null, null));
         endIPText.addKeyListener(new EndIPKeyListener());
         
         FeederActions.HostnameButton hostnameListener = new FeederActions.HostnameButton(hostnameText, startIPText) {
@@ -117,26 +101,20 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         };
         
         hostnameText.addTraverseListener(hostnameListener);
-        formData = new FormData(105, SWT.DEFAULT);
-		formData.top = new FormAttachment(startIPText);
-		formData.left = new FormAttachment(startIPText, 0, SWT.LEFT);
-		hostnameText.setLayoutData(formData);
+		hostnameText.setLayoutData(LayoutHelper.formData(105, SWT.DEFAULT, new FormAttachment(startIPText, 0, SWT.LEFT), null, new FormAttachment(startIPText), null));
 		hostnameText.setToolTipText(Labels.getLabel("feeder.range.hostname.tooltip"));
+		
+		Listener netmaskResetListener = new NetmaskResetListener();
+		startIPText.addListener(SWT.Modify, netmaskResetListener);
+		endIPText.addListener(SWT.Modify, netmaskResetListener);
         
         hostnameLabel.setText(getStringLabel("hostname"));
-        formData = new FormData();
-        formData.left = new FormAttachment(0);
-		formData.top = new FormAttachment(hostnameText, 0, SWT.CENTER);
-		hostnameLabel.setLayoutData(formData);
+		hostnameLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, new FormAttachment(hostnameText, 0, SWT.CENTER), null));
 		
 		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
 		ipUpButton.setText(Labels.getLabel("button.ipUp"));
 		ipUpButton.addSelectionListener(hostnameListener);
-		formData = new FormData();
-		formData.top = new FormAttachment(endIPText);
-		formData.left = new FormAttachment(hostnameText);
-		formData.bottom = new FormAttachment(hostnameText, 1, SWT.BOTTOM);
-		ipUpButton.setLayoutData(formData);
+		ipUpButton.setLayoutData(LayoutHelper.formData(new FormAttachment(hostnameText), null, new FormAttachment(endIPText), new FormAttachment(hostnameText, 1, SWT.BOTTOM)));
         
         netmaskCombo.setText(getStringLabel("netmask"));
 		netmaskCombo.setVisibleItemCount(10);
@@ -152,12 +130,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		NetmaskListener netmaskSelectionListener = new NetmaskListener();
 		netmaskCombo.addListener(SWT.Selection, netmaskSelectionListener);
 		netmaskCombo.addListener(SWT.Traverse, netmaskSelectionListener);
-		formData = new FormData();
-		formData.top = new FormAttachment(startIPText);
-		formData.left = new FormAttachment(ipUpButton, 5);
-		formData.right = new FormAttachment(endIPText, 0, SWT.RIGHT);
-		formData.bottom = new FormAttachment(hostnameText, 0, SWT.BOTTOM);
-		netmaskCombo.setLayoutData(formData);
+		netmaskCombo.setLayoutData(LayoutHelper.formData(new FormAttachment(ipUpButton, 5), new FormAttachment(endIPText, 0, SWT.RIGHT), new FormAttachment(startIPText), new FormAttachment(hostnameText, 0, SWT.BOTTOM)));
 		netmaskCombo.setToolTipText(Labels.getLabel("feeder.range.netmask.tooltip"));
 
 		// do this stuff asynchronously (to show GUI faster)
@@ -204,6 +177,14 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		public void keyReleased(KeyEvent e) {
 		}
 	}
+	
+	final class NetmaskResetListener implements Listener {
+		public void handleEvent(Event event) {
+			// reset the netmask combo
+			if (!modifyListenersDisabled)
+				netmaskCombo.setText(getStringLabel("netmask"));
+		}
+	}
 
 	final class StartIPModifyListener implements ModifyListener {
 		public void modifyText(ModifyEvent e) {
@@ -234,8 +215,10 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 				InetAddress netmask = InetAddressUtils.parseNetmask(netmaskString);
 				InetAddress startIP = InetAddress.getByName(startIPText.getText());
 				
+				modifyListenersDisabled = true;
 				startIPText.setText(InetAddressUtils.startRangeByNetmask(startIP, netmask).getHostAddress());
 				endIPText.setText(InetAddressUtils.endRangeByNetmask(startIP, netmask).getHostAddress());
+				modifyListenersDisabled = false;
 				isEndIPUnedited = false;
 			}
 			catch (UnknownHostException e) {
