@@ -11,19 +11,17 @@ import java.util.logging.Logger;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.LoggerFactory;
-import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.core.InetAddressUtils;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.RandomFeeder;
 import net.azib.ipscan.gui.actions.FeederActions;
+import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -62,12 +60,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 	protected void initialize() {
 		feeder = new RandomFeeder();
 		
-		FormLayout formLayout = new FormLayout();
-		formLayout.marginWidth = 3;
-		formLayout.marginHeight = 3;
-		formLayout.marginBottom = 2;
-		formLayout.spacing = 4;
-		setLayout(formLayout);
+		setLayout(LayoutHelper.formLayout(3, 3, 4));
 		
         ipPrototypeLabel = new Label(this, SWT.NONE);
         ipPrototypeText = new Text(this, SWT.BORDER);
@@ -79,22 +72,17 @@ public class RandomFeederGUI extends AbstractFeederGUI {
         countLabel = new Label(this, SWT.NONE);
         countSpinner = new Spinner(this, SWT.BORDER);
         
-        ipPrototypeLabel.setText(getStringLabel("prototype"));
-        FormData formData = new FormData();
-		formData.right = new FormAttachment(hostnameLabel, 0, SWT.RIGHT);
-        formData.top = new FormAttachment(ipPrototypeText, 0, SWT.CENTER);
-        ipPrototypeLabel.setLayoutData(formData);
+        // the longest possible IP
+        ipPrototypeText.setText("255.255.255.255xx");
+        int textWidth = ipPrototypeText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
         
-		formData = new FormData(105 + (Platform.MAC_OS ? 35 : 0), SWT.DEFAULT);
-		formData.top = new FormAttachment(0);
-		formData.left = new FormAttachment(ipPrototypeLabel);
-        ipPrototypeText.setLayoutData(formData);
+        ipPrototypeLabel.setText(getStringLabel("prototype"));
+        ipPrototypeLabel.setLayoutData(LayoutHelper.formData(null, new FormAttachment(hostnameLabel, 0, SWT.RIGHT), new FormAttachment(ipPrototypeText, 0, SWT.CENTER), null));
+        
+        ipPrototypeText.setLayoutData(LayoutHelper.formData(textWidth, SWT.DEFAULT, new FormAttachment(ipPrototypeLabel), null, new FormAttachment(0), null));
         
         ipMaskLabel.setText(getStringLabel("mask"));
-        formData = new FormData();
-        formData.left = new FormAttachment(ipPrototypeText, 3);
-        formData.top = new FormAttachment(ipPrototypeText, 0, SWT.CENTER);
-        ipMaskLabel.setLayoutData(formData);
+        ipMaskLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(ipPrototypeText, 3), null, new FormAttachment(ipPrototypeText, 0, SWT.CENTER), null));
         
 		ipMaskCombo.setVisibleItemCount(10);
 		// Warning: IPv4 specific netmasks
@@ -106,48 +94,27 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		ipMaskCombo.add("255..0.255");
 		ipMaskCombo.add("255.0.0.255");
 		ipMaskCombo.select(3);
-		formData = new FormData(105 + (Platform.MAC_OS ? 35 : 0), SWT.DEFAULT);
-		formData.top = new FormAttachment(0);
-		formData.left = new FormAttachment(ipMaskLabel);
-		formData.bottom = new FormAttachment(ipPrototypeText, 0, SWT.BOTTOM);
-		ipMaskCombo.setLayoutData(formData);
+		ipMaskCombo.setLayoutData(LayoutHelper.formData(textWidth-15, SWT.DEFAULT, new FormAttachment(ipMaskLabel), null, new FormAttachment(0), new FormAttachment(ipPrototypeText, 0, SWT.BOTTOM)));
         
 		FeederActions.HostnameButton hostnameSelectionListener = new FeederActions.HostnameButton(hostnameText, ipPrototypeText);
         hostnameText.addTraverseListener(hostnameSelectionListener);
-        formData = new FormData(105, SWT.DEFAULT);
-		formData.top = new FormAttachment(ipPrototypeText);
-		formData.left = new FormAttachment(ipPrototypeText, 0, SWT.LEFT);
-		hostnameText.setLayoutData(formData);
+		hostnameText.setLayoutData(LayoutHelper.formData(textWidth, SWT.DEFAULT, new FormAttachment(ipPrototypeText, 0, SWT.LEFT), null, new FormAttachment(ipPrototypeText), null));
         
         hostnameLabel.setText(getStringLabel("hostname"));
-        formData = new FormData();
-        formData.left = new FormAttachment(0);
-		formData.top = new FormAttachment(hostnameText, 0, SWT.CENTER);
-		hostnameLabel.setLayoutData(formData);
+		hostnameLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, new FormAttachment(hostnameText, 0, SWT.CENTER), null));
 		
 		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
 		ipUpButton.setText(Labels.getLabel("button.ipUp"));
 		ipUpButton.addSelectionListener(hostnameSelectionListener);
-		formData = new FormData();
-		formData.top = new FormAttachment(ipPrototypeText);
-		formData.left = new FormAttachment(hostnameText);
-		formData.bottom = new FormAttachment(hostnameText, 1, SWT.BOTTOM);
-		ipUpButton.setLayoutData(formData);
+		ipUpButton.setLayoutData(LayoutHelper.formData(new FormAttachment(hostnameText), null, new FormAttachment(ipPrototypeText), new FormAttachment(hostnameText, 1, SWT.BOTTOM)));
 		
 		countLabel.setText(getStringLabel("count"));
-        formData = new FormData();
-		formData.left = new FormAttachment(ipUpButton, 3);
-		formData.top = new FormAttachment(hostnameLabel, 0, SWT.TOP);
-		countLabel.setLayoutData(formData);
+		countLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(ipUpButton, 3), null, new FormAttachment(hostnameLabel, 0, SWT.TOP), null));
 		
 		countSpinner.setSelection(100);
 		countSpinner.setMaximum(100000);
 		countSpinner.setMinimum(1);
-        formData = new FormData();
-		formData.left = new FormAttachment(countLabel);
-		formData.top = new FormAttachment(ipUpButton, 0, SWT.CENTER);
-		formData.right = new FormAttachment(ipMaskCombo, 0, SWT.RIGHT);
-		countSpinner.setLayoutData(formData);
+		countSpinner.setLayoutData(LayoutHelper.formData(new FormAttachment(countLabel), new FormAttachment(ipMaskCombo, 0, SWT.RIGHT), new FormAttachment(ipUpButton, 0, SWT.CENTER), null));
 		countSpinner.addTraverseListener(new TraverseListener() {
 			public void keyTraversed(TraverseEvent e) {
 				// this due to a bug either in SWT or GTK:

@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.LoggerFactory;
-import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.core.InetAddressUtils;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederException;
@@ -77,16 +76,20 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		ipUpButton = new Button(this, SWT.NONE);
         netmaskCombo = new Combo(this, SWT.NONE);
         
+        // the longest possible IP
+        startIPText.setText("255.255.255.255xx");
+        int textWidth = startIPText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
+        
         ipRangeLabel.setText(getStringLabel("startIP"));
         ipRangeLabel.setLayoutData(LayoutHelper.formData(null, new FormAttachment(hostnameLabel, 0, SWT.RIGHT), new FormAttachment(startIPText, 0, SWT.CENTER), null));
         
-        startIPText.setLayoutData(LayoutHelper.formData(105 + (Platform.MAC_OS ? 35 : 0), SWT.DEFAULT, new FormAttachment(ipRangeLabel), null, new FormAttachment(0), null));
+        startIPText.setLayoutData(LayoutHelper.formData(textWidth, SWT.DEFAULT, new FormAttachment(ipRangeLabel), null, new FormAttachment(0), null));
         startIPText.addModifyListener(new StartIPModifyListener());
         
         toLabel.setText(getStringLabel("endIP"));
         toLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(startIPText), null, new FormAttachment(startIPText, 0, SWT.CENTER), null));
                 
-        endIPText.setLayoutData(LayoutHelper.formData(105 + (Platform.MAC_OS ? 35 : 0), SWT.DEFAULT, new FormAttachment(toLabel), null, null, null));
+        endIPText.setLayoutData(LayoutHelper.formData(textWidth, SWT.DEFAULT, new FormAttachment(toLabel), null, null, null));
         endIPText.addKeyListener(new EndIPKeyListener());
         
         FeederActions.HostnameButton hostnameListener = new FeederActions.HostnameButton(hostnameText, startIPText) {
@@ -101,7 +104,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         };
         
         hostnameText.addTraverseListener(hostnameListener);
-		hostnameText.setLayoutData(LayoutHelper.formData(105, SWT.DEFAULT, new FormAttachment(startIPText, 0, SWT.LEFT), null, new FormAttachment(startIPText), null));
+		hostnameText.setLayoutData(LayoutHelper.formData(textWidth, SWT.DEFAULT, new FormAttachment(startIPText, 0, SWT.LEFT), null, new FormAttachment(startIPText), null));
 		hostnameText.setToolTipText(Labels.getLabel("feeder.range.hostname.tooltip"));
 		
 		Listener netmaskResetListener = new NetmaskResetListener();

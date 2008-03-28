@@ -7,13 +7,13 @@ package net.azib.ipscan.gui.feeders;
 
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FileFeeder;
+import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
@@ -39,11 +39,7 @@ public class FileFeederGUI extends AbstractFeederGUI {
 	protected void initialize() {
 		feeder = new FileFeeder();
 		
-		FormLayout formLayout = new FormLayout();
-		formLayout.marginWidth = 3;
-		formLayout.marginHeight = 3;
-		formLayout.spacing = 3;
-		setLayout(formLayout);
+		setLayout(LayoutHelper.formLayout(3, 3, 4));
 		
         fileNameLabel = new Label(this, SWT.NONE);
         fileNameText = new Text(this, SWT.BORDER);
@@ -56,10 +52,13 @@ public class FileFeederGUI extends AbstractFeederGUI {
         formData.bottom = new FormAttachment(browseButton, 0, SWT.BOTTOM);
         fileNameLabel.setLayoutData(formData);
         
-		formData = new FormData(140, SWT.DEFAULT);
+        // some long text
+        fileNameText.setText("255.255.255.255.xxx.xxx");
+		formData = new FormData(fileNameText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x, SWT.DEFAULT);
 		formData.top = new FormAttachment(0);
 		formData.left = new FormAttachment(fileNameLabel);
         fileNameText.setLayoutData(formData);
+        fileNameText.setText("");
         
         browseButton.setText(getStringLabel("browse"));
         formData = new FormData();
