@@ -3,7 +3,6 @@
  * see http://www.azib.net/ for more information.
  * Licensed under GPLv2.
  */
-
 package net.azib.ipscan.fetchers;
 
 import java.io.BufferedReader;
@@ -28,7 +27,7 @@ import net.azib.ipscan.core.ScanningResult.ResultType;
  *
  * @author Anton Keks
  */
-public abstract class PortTextFetcher implements Fetcher {
+public abstract class PortTextFetcher extends AbstractFetcher {
 	private static final Logger LOG = LoggerFactory.getLogger();
 	
 	private ScannerConfig scannerConfig;
@@ -42,12 +41,6 @@ public abstract class PortTextFetcher implements Fetcher {
 		this.port = port;
 		this.textToSend = textToSend;
 		this.matchingRegexp = Pattern.compile(matchingRegexp);
-	}
-
-	public void cleanup() {
-	}
-
-	public void init() {
 	}
 
 	public Object scan(ScanningSubject subject) {

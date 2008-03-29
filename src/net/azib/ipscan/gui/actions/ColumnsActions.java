@@ -5,8 +5,6 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import java.util.MissingResourceException;
-
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
@@ -52,7 +50,7 @@ public class ColumnsActions {
 				return;
 
 			// save column width
-			guiConfig.setColumnWidth(column.getText(), column.getWidth());
+			guiConfig.setColumnWidth((Fetcher)column.getData(), column.getWidth());
 		}
 	}
 
@@ -69,6 +67,8 @@ public class ColumnsActions {
 		public void handleEvent(Event e) {
 			// modify menu text a bit
 			TableColumn tableColumn = (TableColumn) e.widget;
+			Fetcher fetcher = (Fetcher) tableColumn.getData();
+			
 			MenuItem sortMenuItem = columnsMenu.getItem(0);
 			MenuItem preferencesMenuItem = columnsMenu.getItem(1);
 			MenuItem aboutMenuItem = columnsMenu.getItem(2);
@@ -77,14 +77,14 @@ public class ColumnsActions {
 				sortMenuItem.setText(Labels.getLabel("menu.columns.sortDirection"));
 			}
 			else {
-				sortMenuItem.setText(Labels.getLabel("menu.columns.sortBy") + tableColumn.getText());
+				sortMenuItem.setText(Labels.getLabel("menu.columns.sortBy") + fetcher.getName());
 			}
 
 			// disable these menu items if scanning
 			sortMenuItem.setEnabled(stateMachine.inState(ScanningState.IDLE));
 			preferencesMenuItem.setEnabled(stateMachine.inState(ScanningState.IDLE));
 
-			aboutMenuItem.setText(Labels.getLabel("menu.columns.about") + tableColumn.getText());
+			aboutMenuItem.setText(Labels.getLabel("menu.columns.about") + fetcher.getName());
 			
 			// remember the clicked column (see SortBy, FetcherPreferences, and AboutFetcher below)
 			columnsMenu.setData(tableColumn);
@@ -137,6 +137,7 @@ public class ColumnsActions {
 			Fetcher fetcher = (Fetcher) tableColumn.getData();
 			
 			// some hardcodes here for 'special' fetchers
+			// TODO: implement generic fetcher preferences here
 			if (fetcher instanceof PingFetcher) {
 				preferencesDialog.open();
 			}
@@ -147,6 +148,9 @@ public class ColumnsActions {
 			else {
 				throw new FetcherException("preferences.notAvailable");
 			}
+
+			// update name if preferences changed
+			tableColumn.setText(fetcher.getFullName());
 		}
 	}
 	
@@ -159,13 +163,12 @@ public class ColumnsActions {
 			Fetcher fetcher = (Fetcher) tableColumn.getData();
 
 			MessageBox messageBox = new MessageBox(tableColumn.getParent().getShell(), SWT.ICON_INFORMATION | SWT.OK);
-			messageBox.setText(Labels.getLabel("text.fetchers.info") + Labels.getLabel(fetcher.getLabel()));
-			try {
-				messageBox.setMessage(Labels.getLabel(fetcher.getLabel() + ".info"));
+			messageBox.setText(Labels.getLabel("text.fetchers.info") + fetcher.getName());
+			String info = fetcher.getInfo();
+			if (info == null) {
+				info = Labels.getLabel("text.fetchers.info.notAvailable");
 			}
-			catch (MissingResourceException e) {
-				messageBox.setMessage(Labels.getLabel("text.fetchers.info.notAvailable"));
-			}
+			messageBox.setMessage(info);
 			messageBox.open();
 		}
 	}

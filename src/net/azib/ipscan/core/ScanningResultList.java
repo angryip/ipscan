@@ -155,7 +155,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		StringBuffer details = new StringBuffer(1024);
 		Iterator<?> iterator = scanningResult.getValues().iterator();
 		for (int i = 0; iterator.hasNext(); i++) {
-			String fetcherName = Labels.getLabel(selectedFetchers.get(i).getLabel());
+			String fetcherName = selectedFetchers.get(i).getName();
 			details.append(fetcherName).append(":\t");
 			Object value = iterator.next(); 
 			details.append(value != null ? value : "");

@@ -15,21 +15,11 @@ import net.azib.ipscan.core.ScanningSubject;
  *
  * @author Anton Keks
  */
-public class LastAliveTimeFetcher implements Fetcher {
+public class LastAliveTimeFetcher extends AbstractFetcher {
 
-	public void cleanup() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public String getLabel() {
+	public String getId() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	public void init() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public Object scan(ScanningSubject subject) {

@@ -7,6 +7,8 @@ package net.azib.ipscan.config;
 
 import java.util.prefs.Preferences;
 
+import net.azib.ipscan.fetchers.Fetcher;
+
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
@@ -95,20 +97,20 @@ public class GUIConfig {
 	}
 
 	/**
-	 * @param fetcherName
+	 * @param fetcher
 	 * @return column width corresponding to a fetcher
 	 */
-	public int getColumnWidth(String fetcherName) {
-		return preferences.getInt("columnWidth." + fetcherName, 90);
+	public int getColumnWidth(Fetcher fetcher) {
+		return preferences.getInt("columnWidth." + fetcher.getId(), 90);
 	}
 	
 	/**
 	 * Persist the width of a column corresponding to a fetcher
-	 * @param fetcherName
+	 * @param fetcher
 	 * @param width
 	 */
-	public void setColumnWidth(String fetcherName, int width) {
-		preferences.putInt("columnWidth." + fetcherName, width);
+	public void setColumnWidth(Fetcher fetcher, int width) {
+		preferences.putInt("columnWidth." + fetcher.getId(), width);
 	}
 
 }

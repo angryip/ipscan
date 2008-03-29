@@ -243,7 +243,7 @@ public class CommandsActions {
 				if (newComment != null) {
 					commentsConfig.setComment(address, newComment);
 					// now update the result table for user to immediately see the change
-					int fetcherIndex = fetcherRegistry.getSelectedFetcherIndex(CommentFetcher.LABEL);
+					int fetcherIndex = fetcherRegistry.getSelectedFetcherIndex(CommentFetcher.ID);
 					if (fetcherIndex >= 0) {
 						// update the value in the results
 						results.getResult(index).setValue(fetcherIndex, newComment);

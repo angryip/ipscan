@@ -18,6 +18,7 @@ import net.azib.ipscan.core.PortIterator;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.net.PingResult;
+import net.azib.ipscan.core.values.NotAvailableValue;
 import net.azib.ipscan.core.values.NotScannedValue;
 import net.azib.ipscan.core.values.NumericListValue;
 
@@ -27,9 +28,9 @@ import net.azib.ipscan.core.values.NumericListValue;
  *
  * @author Anton Keks
  */
-public class PortsFetcher implements Fetcher {
+public class PortsFetcher extends AbstractFetcher {
 	
-	static final String LABEL = "fetcher.ports";
+	static final String ID = "fetcher.ports";
 	
 	private static final String PARAMETER_OPEN_PORTS = "openPorts";
 	private static final String PARAMETER_FILTERED_PORTS = "filteredPorts";
@@ -44,8 +45,14 @@ public class PortsFetcher implements Fetcher {
 		this.config = scannerConfig;
 	}
 
-	public String getLabel() {
-		return LABEL;
+	public String getId() {
+		return ID;
+	}
+
+	@Override
+	public String getFullName() {
+		int numPorts = new PortIterator(config.portString).size();
+		return getName() + " " + (numPorts > 0 ? "[" + numPorts + "]" : NotAvailableValue.INSTANCE);
 	}
 
 	/**
@@ -155,9 +162,6 @@ public class PortsFetcher implements Fetcher {
 	public void init() {
 		// rebuild port iterator before each scan
 		this.portIteratorPrototype = new PortIterator(config.portString);
-	}
-
-	public void cleanup() {
 	}
 
 }

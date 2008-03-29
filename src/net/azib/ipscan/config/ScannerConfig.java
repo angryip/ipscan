@@ -12,7 +12,7 @@ import java.util.prefs.Preferences;
  *
  * @author Anton Keks
  */
-public final class ScannerConfig {
+public class ScannerConfig {
 	
 	private Preferences preferences;
 

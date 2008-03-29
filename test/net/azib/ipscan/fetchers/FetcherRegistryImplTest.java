@@ -59,11 +59,11 @@ public class FetcherRegistryImplTest {
 	
 	@Test
 	public void testGetSelectedFetcherIndex() throws Exception {
-		assertEquals(0, fetcherRegistry.getSelectedFetcherIndex(ipFetcher.getLabel()));
-		assertEquals(1, fetcherRegistry.getSelectedFetcherIndex(pingFetcher.getLabel()));
-		assertEquals(2, fetcherRegistry.getSelectedFetcherIndex(hostnameFetcher.getLabel()));
-		assertEquals(3, fetcherRegistry.getSelectedFetcherIndex(portsFetcher.getLabel()));
-		assertEquals(-1, fetcherRegistry.getSelectedFetcherIndex(commentFetcher.getLabel()));
+		assertEquals(0, fetcherRegistry.getSelectedFetcherIndex(ipFetcher.getId()));
+		assertEquals(1, fetcherRegistry.getSelectedFetcherIndex(pingFetcher.getId()));
+		assertEquals(2, fetcherRegistry.getSelectedFetcherIndex(hostnameFetcher.getId()));
+		assertEquals(3, fetcherRegistry.getSelectedFetcherIndex(portsFetcher.getId()));
+		assertEquals(-1, fetcherRegistry.getSelectedFetcherIndex(commentFetcher.getId()));
 	}
 	
 	@Test
@@ -72,14 +72,14 @@ public class FetcherRegistryImplTest {
 		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences);
 		assertEquals(4, fetcherRegistry.getSelectedFetchers().size());
 		
-		preferences.put(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, hostnameFetcher.getLabel() + "###" + commentFetcher.getLabel());
+		preferences.put(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, hostnameFetcher.getId() + "###" + commentFetcher.getId());
 		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences);
 		assertEquals(2, fetcherRegistry.getSelectedFetchers().size());
 		Iterator<?> iterator = fetcherRegistry.getSelectedFetchers().iterator();
 		assertSame(hostnameFetcher, iterator.next());
 		assertSame(commentFetcher, iterator.next());
 		
-		preferences.put(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, "not-existing-fetcher###" + hostnameFetcher.getLabel());
+		preferences.put(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, "not-existing-fetcher###" + hostnameFetcher.getId());
 		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher}, preferences);
 		assertEquals(1, fetcherRegistry.getSelectedFetchers().size());
 	}
@@ -87,19 +87,19 @@ public class FetcherRegistryImplTest {
 	@Test
 	public void testUpdateSelectedFetchers() throws Exception {
 		// retain only one selected fetcher
-		fetcherRegistry.updateSelectedFetchers(new String[] {ipFetcher.getLabel()});
+		fetcherRegistry.updateSelectedFetchers(new String[] {ipFetcher.getId()});
 		assertEquals(1, fetcherRegistry.getSelectedFetchers().size());
 		Iterator<?> iterator = fetcherRegistry.getSelectedFetchers().iterator();
-		assertEquals(ipFetcher.getLabel(), ((Fetcher)iterator.next()).getLabel());
-		assertEquals(ipFetcher.getLabel(), preferences.get(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, null));
+		assertEquals(ipFetcher.getId(), ((Fetcher)iterator.next()).getId());
+		assertEquals(ipFetcher.getId(), preferences.get(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, null));
 		
 		// now return a fetcher back
-		fetcherRegistry.updateSelectedFetchers(new String[] {commentFetcher.getLabel(), ipFetcher.getLabel()});
+		fetcherRegistry.updateSelectedFetchers(new String[] {commentFetcher.getId(), ipFetcher.getId()});
 		assertEquals(2, fetcherRegistry.getSelectedFetchers().size());
 		iterator = fetcherRegistry.getSelectedFetchers().iterator();
-		assertEquals(commentFetcher.getLabel(), ((Fetcher)iterator.next()).getLabel());
-		assertEquals(ipFetcher.getLabel(), ((Fetcher)iterator.next()).getLabel());
-		assertEquals(commentFetcher.getLabel() + "###" + ipFetcher.getLabel(), preferences.get(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, null));
+		assertEquals(commentFetcher.getId(), ((Fetcher)iterator.next()).getId());
+		assertEquals(ipFetcher.getId(), ((Fetcher)iterator.next()).getId());
+		assertEquals(commentFetcher.getId() + "###" + ipFetcher.getId(), preferences.get(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, null));
 	}
 	
 	@Test

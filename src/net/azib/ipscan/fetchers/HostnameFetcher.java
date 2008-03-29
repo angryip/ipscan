@@ -11,30 +11,18 @@ import net.azib.ipscan.core.ScanningSubject;
  * 
  * @author Anton Keks
  */
-public class HostnameFetcher implements Fetcher {
+public class HostnameFetcher extends AbstractFetcher {
 
-	static final String LABEL = "fetcher.hostname";
+	static final String ID = "fetcher.hostname";
 
-	/*
-	 * @see net.azib.ipscan.fetchers.Fetcher#getLabel()
-	 */
-	public String getLabel() {
-		return LABEL;
+	public String getId() {
+		return ID;
 	}
 
-	/*
-	 * @see net.azib.ipscan.fetchers.Fetcher#scan(net.azib.ipscan.core.ScanningSubject)
-	 */
 	public Object scan(ScanningSubject subject) {
 		String hostname = subject.getAddress().getCanonicalHostName();
 		// return the returned hostname only if it is not the same as the IP address (this is how the above method works)
 		return subject.getAddress().getHostAddress().equals(hostname) ? null : hostname;
-	}
-
-	public void init() {
-	}
-
-	public void cleanup() {
 	}
 
 }

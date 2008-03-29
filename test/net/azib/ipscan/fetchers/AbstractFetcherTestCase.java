@@ -4,7 +4,6 @@
 package net.azib.ipscan.fetchers;
 
 import static org.junit.Assert.assertNotNull;
-import net.azib.ipscan.config.Labels;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,8 +22,17 @@ public abstract class AbstractFetcherTestCase {
 	public abstract void setUp() throws Exception;
 
 	@Test
-	public void testLabel() {
-		assertNotNull(Labels.getLabel(fetcher.getLabel()));
+	public void testId() {
+		assertNotNull(fetcher.getId());
 	}
 	
+	@Test
+	public void testName() {
+		assertNotNull(fetcher.getName());
+	}
+
+	@Test
+	public void testFullName() {
+		assertNotNull(fetcher.getFullName());
+	}
 }

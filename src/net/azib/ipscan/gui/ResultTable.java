@@ -89,12 +89,18 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		// add the new selected columns back
 		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
 			TableColumn tableColumn = new TableColumn(this, SWT.NONE);
-			String fetcherName = Labels.getLabel(fetcher.getLabel());
-			tableColumn.setWidth(guiConfig.getColumnWidth(fetcherName));
-			tableColumn.setText(fetcherName);
+			tableColumn.setWidth(guiConfig.getColumnWidth(fetcher));
 			tableColumn.setData(fetcher);	// this is used in some listeners in ColumnsActions
 			tableColumn.addListener(SWT.Selection, columnClickListener);
 			tableColumn.addListener(SWT.Resize, columnResizeListener);
+		}
+		updateFetcherNames(fetcherRegistry);
+	}
+	
+	public void updateFetcherNames(FetcherRegistry fetcherRegistry) {
+		int i = 0;
+		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
+			getColumn(i++).setText(fetcher.getFullName());
 		}
 	}
 

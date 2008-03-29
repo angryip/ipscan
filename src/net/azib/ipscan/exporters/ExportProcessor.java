@@ -8,7 +8,6 @@ package net.azib.ipscan.exporters;
 import java.io.FileOutputStream;
 import java.util.List;
 
-import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.fetchers.Fetcher;
@@ -45,7 +44,7 @@ public class ExportProcessor {
 			String[] fetcherNames = new String[fetchers.size()];
 			int i = 0;
 			for (Fetcher fetcher : fetchers) {
-				fetcherNames[i++] = Labels.getLabel(fetcher.getLabel());
+				fetcherNames[i++] = fetcher.getName();
 			}			
 			exporter.setFetchers(fetcherNames);
 

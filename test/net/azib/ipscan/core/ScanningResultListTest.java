@@ -288,10 +288,10 @@ public class ScanningResultListTest {
 		String s = scanningResults.getResultAsString(0);
 		String ln = System.getProperty("line.separator");
 		assertTrue(s.endsWith(ln));
-		assertTrue(s.indexOf(Labels.getLabel(fetchers.get(0).getLabel()) + ":\t172.28.43.55" + ln) >= 0);
-		assertTrue(s.indexOf(Labels.getLabel(fetchers.get(1).getLabel()) + ":\t123" + ln) >= 0);
-		assertTrue(s.indexOf(Labels.getLabel(fetchers.get(2).getLabel()) + ":\txxxxx" + ln) >= 0);
-		assertTrue(s.indexOf(Labels.getLabel(fetchers.get(3).getLabel()) + ":\t" + ln) >= 0);
+		assertTrue(s.indexOf(fetchers.get(0).getName() + ":\t172.28.43.55" + ln) >= 0);
+		assertTrue(s.indexOf(fetchers.get(1).getName() + ":\t123" + ln) >= 0);
+		assertTrue(s.indexOf(fetchers.get(2).getName() + ":\txxxxx" + ln) >= 0);
+		assertTrue(s.indexOf(fetchers.get(3).getName() + ":\t" + ln) >= 0);
 	}
 	
 	@Test
@@ -334,9 +334,9 @@ public class ScanningResultListTest {
 		assertEquals(scanTime2, scanInfo.getScanTime());
 	}
 	
-	private Fetcher createMockFetcher(String label) {
+	private Fetcher createMockFetcher(String name) {
 		Fetcher fetcher = createMock(Fetcher.class);
-		expect(fetcher.getLabel()).andReturn(label).anyTimes();
+		expect(fetcher.getName()).andReturn(name).anyTimes();
 		replay(fetcher);
 		return fetcher;
 	}

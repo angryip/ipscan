@@ -10,14 +10,11 @@ import net.azib.ipscan.core.ScanningSubject;
 /**
  * A fetcher for displaying of user-defined comments about every IP address.
  * 
- * TODO: implement CommentFetcher
- * TODO: make an editor for comments
- *
  * @author Anton Keks
  */
-public class CommentFetcher implements Fetcher {
+public class CommentFetcher extends AbstractFetcher {
 	
-	public static final String LABEL = "fetcher.comment";
+	public static final String ID = "fetcher.comment";
 	
 	private CommentsConfig commentsConfig;
 	
@@ -25,24 +22,12 @@ public class CommentFetcher implements Fetcher {
 		this.commentsConfig = commentsConfig;
 	}
 
-	/**
-	 * @see net.azib.ipscan.fetchers.Fetcher#getLabel()
-	 */
-	public String getLabel() {
-		return LABEL;
+	public String getId() {
+		return ID;
 	}
 
-	/**
-	 * @see net.azib.ipscan.fetchers.Fetcher#scan(net.azib.ipscan.core.ScanningSubject)
-	 */
 	public Object scan(ScanningSubject subject) {
 		return commentsConfig.getComment(subject.getAddress());
-	}
-
-	public void init() {
-	}
-
-	public void cleanup() {
 	}
 
 }

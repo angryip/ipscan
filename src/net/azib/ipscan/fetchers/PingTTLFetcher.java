@@ -22,7 +22,7 @@ public class PingTTLFetcher extends PingFetcher {
 		super(pingerRegistry, scannerConfig);
 	}
 
-	public String getLabel() {
+	public String getId() {
 		return "fetcher.ping.ttl";
 	}
 

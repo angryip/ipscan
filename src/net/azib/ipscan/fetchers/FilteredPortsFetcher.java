@@ -23,7 +23,7 @@ public class FilteredPortsFetcher extends PortsFetcher {
 		super(scannerConfig);
 	}
 
-	public String getLabel() {
+	public String getId() {
 		return "fetcher.ports.filtered";
 	}
 

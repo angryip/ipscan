@@ -36,7 +36,7 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 		
 		this.registeredFetchers = new LinkedHashMap<String, Fetcher>(registeredFetchers.length);
 		for (Fetcher fetcher : registeredFetchers) {
-			this.registeredFetchers.put(fetcher.getLabel(), fetcher);
+			this.registeredFetchers.put(fetcher.getId(), fetcher);
 		}
 		this.registeredFetchers = Collections.unmodifiableMap(this.registeredFetchers);
 		
@@ -49,10 +49,10 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 		if (fetcherPrefValue == null) {
 			// no preferences previously saved, use these default values
 			selectedFetchers = new LinkedHashMap<String, Fetcher>();
-			selectedFetchers.put(IPFetcher.LABEL, registeredFetchers.get(IPFetcher.LABEL));
-			selectedFetchers.put(PingFetcher.LABEL, registeredFetchers.get(PingFetcher.LABEL));
-			selectedFetchers.put(HostnameFetcher.LABEL, registeredFetchers.get(HostnameFetcher.LABEL));
-			selectedFetchers.put(PortsFetcher.LABEL, registeredFetchers.get(PortsFetcher.LABEL));
+			selectedFetchers.put(IPFetcher.ID, registeredFetchers.get(IPFetcher.ID));
+			selectedFetchers.put(PingFetcher.ID, registeredFetchers.get(PingFetcher.ID));
+			selectedFetchers.put(HostnameFetcher.ID, registeredFetchers.get(HostnameFetcher.ID));
+			selectedFetchers.put(PortsFetcher.ID, registeredFetchers.get(PortsFetcher.ID));
 		}
 		else {
 			String[] fetcherPrefs = fetcherPrefValue.split("###");
@@ -92,10 +92,10 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 		return selectedFetchers.values();
 	}
 
-	public int getSelectedFetcherIndex(String label) {
+	public int getSelectedFetcherIndex(String id) {
 		int index = 0;
 		for (Fetcher fetcher : selectedFetchers.values()) {
-			if (label.equals(fetcher.getLabel())) {
+			if (id.equals(fetcher.getId())) {
 				return index;
 			}
 			index++;

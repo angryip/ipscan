@@ -20,6 +20,7 @@ import java.util.Set;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.values.NotAvailableValue;
 import net.azib.ipscan.core.values.NotScannedValue;
+import net.azib.ipscan.fetchers.AbstractFetcher;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 
@@ -88,8 +89,8 @@ public class ScannerTest {
 		assertTrue(cleanupCalled.contains(AbortingFetcher.class));
 	}
 
-	private class FakeFetcher implements Fetcher {
-		public String getLabel() {
+	private class FakeFetcher extends AbstractFetcher {
+		public String getId() {
 			return null;
 		}
 
@@ -117,7 +118,6 @@ public class ScannerTest {
 		public void cleanup() {
 			cleanupCalled.add(getClass());
 		}
-
 	}
 	
 	private class AnotherFakeFetcher extends FakeFetcher {

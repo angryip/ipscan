@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Collections;
 
-import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.exporters.ExportProcessor.ScanningResultSelector;
@@ -65,7 +64,7 @@ public class ExportProcessorTest {
 		String content = readFileContent(file);
 		
 		assertTrue(content.indexOf("megaFeeder") > 0);
-		assertTrue(content.indexOf(Labels.getLabel(new IPFetcher().getLabel())) > 0);
+		assertTrue(content.indexOf(new IPFetcher().getName()) > 0);
 		assertTrue(content.indexOf("fooBar") < 0);		
 		assertTrue(content.indexOf("192.168.0.13") > 0);		
 	}

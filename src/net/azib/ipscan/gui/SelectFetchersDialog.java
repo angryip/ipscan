@@ -73,8 +73,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		i.next();	// skip IP
 		while (i.hasNext()) {
 			Fetcher fetcher = i.next();
-			String fetcherName = Labels.getLabel(fetcher.getLabel());
-			selectedFetchersList.add(fetcherName);
+			selectedFetchersList.add(fetcher.getName());
 		}
 		
 		Button upButton = new Button(shell, SWT.NONE);
@@ -104,8 +103,8 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		i.next(); // skip IP
 		while (i.hasNext()) {
 			Fetcher fetcher = i.next();
-			String fetcherName = Labels.getLabel(fetcher.getLabel());
-			registeredFetcherLabelsByNames.put(fetcherName, fetcher.getLabel());
+			String fetcherName = Labels.getLabel(fetcher.getId());
+			registeredFetcherLabelsByNames.put(fetcherName, fetcher.getId());
 			if (selectedFetchersList.indexOf(fetcherName) < 0)
 				registeredFetchersList.add(fetcherName);
 		}
@@ -154,7 +153,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 	void saveFetchersToRegistry(String[] fetchersNamesToSave) {
 		// IPFetcher must be implicitly there
 		String[] fetchersLabelsToRetain = new String[fetchersNamesToSave.length+1];
-		fetchersLabelsToRetain[0] = IPFetcher.LABEL; 
+		fetchersLabelsToRetain[0] = IPFetcher.ID; 
 
 		for (int i = 0; i < fetchersNamesToSave.length; i++) {
 			fetchersLabelsToRetain[i+1] = registeredFetcherLabelsByNames.get(fetchersNamesToSave[i]);

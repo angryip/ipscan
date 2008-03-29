@@ -33,6 +33,14 @@ public class PortIteratorTest {
 	}
 	
 	@Test
+	public void testSize() throws Exception {
+		assertEquals(0, new PortIterator("").size());
+		assertEquals(1, new PortIterator("80").size());
+		assertEquals(5, new PortIterator("5,10-12,1").size());
+		assertEquals(65000, new PortIterator("1-65000").size());
+	}
+	
+	@Test
 	public void testCopy() {
 		assertNotNull(new PortIterator("1").copy());
 	}

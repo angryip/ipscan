@@ -3,11 +3,16 @@
  */
 package net.azib.ipscan.config;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.prefs.Preferences;
+
+import net.azib.ipscan.fetchers.Fetcher;
 
 import org.eclipse.swt.graphics.Rectangle;
 import org.junit.After;
@@ -62,9 +67,13 @@ public class GUIConfigTest {
 
 	@Test
 	public void columnWidths() throws Exception {
-		config.setColumnWidth("ABC", 35);
-		assertEquals(35, config.getColumnWidth("ABC"));
-		assertEquals(35, preferences.getInt("columnWidth.ABC", 0));
+		Fetcher fetcher = createMock(Fetcher.class);
+		expect(fetcher.getId()).andReturn("fetcher.abc").anyTimes();
+		replay(fetcher);
+		
+		config.setColumnWidth(fetcher, 35);
+		assertEquals(35, config.getColumnWidth(fetcher));
+		assertEquals(35, preferences.getInt("columnWidth." + fetcher.getId(), 0));
 	}
 
 }

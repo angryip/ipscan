@@ -13,25 +13,16 @@ import net.azib.ipscan.core.values.InetAddressValue;
  *
  * @author Anton Keks
  */
-public class IPFetcher implements Fetcher {
+public class IPFetcher extends AbstractFetcher {
 
-	public static final String LABEL = "fetcher.ip";
+	public static final String ID = "fetcher.ip";
 
-	/**
-	 * @see net.azib.ipscan.fetchers.Fetcher#getLabel()
-	 */
-	public String getLabel() {
-		return LABEL;
+	public String getId() {
+		return ID;
 	}
 
 	public Object scan(ScanningSubject subject) {
 		return new InetAddressValue(subject.getAddress());
-	}
-
-	public void init() {
-	}
-
-	public void cleanup() {
 	}
 
 }

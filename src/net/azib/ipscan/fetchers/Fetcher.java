@@ -26,9 +26,25 @@ import net.azib.ipscan.core.values.NotScannedValue;
 public interface Fetcher extends Cloneable {
 
 	/**
-	 * @return label ID, representing the name of this fetcher
+	 * @return fetcher unique ID
 	 */
-	public String getLabel();
+	public String getId();
+	
+	/**
+	 * @return fetcher's localized short name
+	 */
+	public String getName();
+	
+	/**
+	 * @return full name to be displayed in the result table column. 
+	 * It may contain a suffix useful to inform users about the fetcher's preferences.
+	 */
+	public String getFullName();
+	
+	/**
+	 * @return localized help text about the fetcher
+	 */
+	public String getInfo();
 	
 	/**
 	 * Does the actual fetching.

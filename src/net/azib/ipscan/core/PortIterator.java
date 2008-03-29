@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.core;
 
+
 /**
  * A class for iteration of ports, specified in special format, like:
  * 1,5-7,35-40
@@ -27,7 +28,6 @@ public final class PortIterator implements Cloneable {
 	 * @param portString the port string to parse
 	 */
 	public PortIterator(String portString) {
-
 		if (portString != null && (portString = portString.trim()).length() > 0) {
 			String[] portRanges = portString.split("[\\s\t\n\r,;]+");
 			
@@ -73,6 +73,16 @@ public final class PortIterator implements Cloneable {
 		}
 		
 		return returnPort;
+	}
+	
+	public int size() {
+		int size = 0;
+		if (portRangeStart != null) {
+			for (int i = 0; i <= rangeCountMinus1; i++) {
+				size += portRangeEnd[i] - portRangeStart[i] + 1;
+			}
+		}
+		return size;
 	}
 
 	/**

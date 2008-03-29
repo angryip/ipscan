@@ -22,7 +22,7 @@ import net.azib.ipscan.core.ScanningSubject;
  *
  * @author Anton Keks
  */
-public class NetBIOSInfoFetcher implements Fetcher {
+public class NetBIOSInfoFetcher extends AbstractFetcher {
 	
 	private static final Logger LOG = LoggerFactory.getLogger();
 	
@@ -43,7 +43,7 @@ public class NetBIOSInfoFetcher implements Fetcher {
 		this.config = config;
 	}
 
-	public String getLabel() {
+	public String getId() {
 		return "fetcher.netbios";
 	}
 
@@ -135,12 +135,6 @@ public class NetBIOSInfoFetcher implements Fetcher {
 
 	private static int nameType(byte[] response, int i) {
 		return response[RESPONSE_BASE_LEN + RESPONSE_NAME_BLOCK_LEN * i + RESPONSE_NAME_LEN] & 0xFF;
-	}
-
-	public void init() {
-	}
-
-	public void cleanup() {
 	}
 
 }
