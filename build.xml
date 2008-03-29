@@ -264,9 +264,8 @@
 					<include name="Font*"/>
 					<include name="Color*"/>
 					<include name="Link*"/>
-					<include name="ToolBar*"/>				
-					<include name="ToolItem*"/>
 					<include name="Tracker*"/>
+					<include name="Date*"/>
 					<include name="Tray*"/>
 					<include name="Tree*"/>
 					<include name="DateTime*"/>

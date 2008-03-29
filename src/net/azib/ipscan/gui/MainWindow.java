@@ -27,18 +27,17 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 
 /**
  * Main window of Angry IP Scanner.
@@ -55,10 +54,12 @@ public class MainWindow {
 	
 	private Composite feederArea;
 	
+	private Button startStopButton;
 	private Combo feederSelectionCombo;
 	private FeederGUIRegistry feederRegistry;
-	private Control prefsButton;
-	private Control fetchersButton;
+	
+	private ToolBar prefsButton;
+	private ToolBar fetchersButton;
 		
 	/**
 	 * Creates and initializes the main window.
@@ -164,12 +165,8 @@ public class MainWindow {
 	 */
 	private void initControlsArea(final Composite controlsArea, final Combo feederSelectionCombo, final Button startStopButton, final StartStopScanningAction startStopScanningAction, final ToolsActions.Preferences preferencesListener, final ToolsActions.ChooseFetchers chooseFetchersListsner) {
 		controlsArea.setLayoutData(LayoutHelper.formData(new FormAttachment(feederArea), new FormAttachment(100), new FormAttachment(0), new FormAttachment(feederArea, 0, SWT.BOTTOM)));
-		
-		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
-		rowLayout.marginLeft = 7;
-		rowLayout.spacing = 3;
-		controlsArea.setLayout(rowLayout);
-		
+		controlsArea.setLayout(LayoutHelper.formLayout(7, 3, 3));
+
 		// steal the height from the second child of the FeederGUI - this must be the first edit box.
 		// this results in better visual alignment with FeederGUIs
 		Control secondControl = feederRegistry.current().getChildren()[1];
@@ -178,54 +175,55 @@ public class MainWindow {
 				
 		// feeder selection combobox
 		this.feederSelectionCombo = feederSelectionCombo;
-		feederSelectionCombo.setLayoutData(new RowData(SWT.DEFAULT, guiConfig.standardButtonHeight));
 		for (AbstractFeederGUI feederGUI : feederRegistry) {
 			feederSelectionCombo.add(feederGUI.getFeederName());	
 		}
+		feederSelectionCombo.pack();
 		IPFeederSelectionListener feederSelectionListener = new IPFeederSelectionListener();		
 		feederSelectionCombo.addSelectionListener(feederSelectionListener);
 		// initialize the selected feeder GUI 
 		feederSelectionCombo.select(guiConfig.activeFeeder);
 		feederSelectionCombo.setToolTipText(Labels.getLabel("combobox.feeder.tooltip"));
-		feederSelectionListener.widgetSelected(null);
 		
 		// start/stop button
+		this.startStopButton = startStopButton;
 		shell.setDefaultButton(startStopButton);
-		startStopButton.setLayoutData(new RowData(feederSelectionCombo.getBounds().width, guiConfig.standardButtonHeight));
 		startStopButton.addSelectionListener(startStopScanningAction);
 
 		// traverse the button before the combo (and don't traverse other buttons at all)
 		controlsArea.setTabList(new Control[] {startStopButton, feederSelectionCombo});
 				
-		int toolbarHeight = guiConfig.standardButtonHeight;
-		int toolbarWidth = guiConfig.standardButtonHeight + (Platform.MAC_OS ? 20 : 0);
+		prefsButton = new ToolBar(controlsArea, SWT.FLAT);
+		prefsButton.setCursor(prefsButton.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
+		ToolItem item = new ToolItem(prefsButton, SWT.PUSH);
+		item.setImage(new Image(null, Labels.getInstance().getImageAsStream("button.preferences.img")));
+		item.setToolTipText(Labels.getLabel("title.preferences"));
+		item.addListener(SWT.Selection, preferencesListener);
 		
-		Image imagePrefs = new Image(null, Labels.getInstance().getImageAsStream("button.preferences.img"));
-		Image imageFetchers = new Image(null, Labels.getInstance().getImageAsStream("button.fetchers.img"));
+		fetchersButton = new ToolBar(controlsArea, SWT.FLAT);
+		fetchersButton.setCursor(fetchersButton.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
+		item = new ToolItem(fetchersButton, SWT.PUSH);
+		item.setImage(new Image(null, Labels.getInstance().getImageAsStream("button.fetchers.img")));
+		item.setToolTipText(Labels.getLabel("title.fetchers.select"));
+		item.addListener(SWT.Selection, chooseFetchersListsner);
+
+		feederSelectionListener.widgetSelected(null);
+	}
+	
+	private void relayoutControls() {
+		boolean twoRowToolbar = Math.abs(feederRegistry.current().getSize().y - guiConfig.standardButtonHeight * 2) <= 10;
 		
-		if (!Platform.MAC_OS) {
-			prefsButton = new Label(controlsArea, SWT.CENTER);
-			((Label) prefsButton).setImage(imagePrefs);
-			fetchersButton = new Label(controlsArea, SWT.CENTER);
-			((Label) fetchersButton).setImage(imageFetchers);
+		feederSelectionCombo.setLayoutData(LayoutHelper.formData(SWT.DEFAULT, guiConfig.standardButtonHeight, new FormAttachment(0), null, new FormAttachment(0), null));
+		if (twoRowToolbar) {
+			startStopButton.setLayoutData(LayoutHelper.formData(feederSelectionCombo.getSize().x, guiConfig.standardButtonHeight, new FormAttachment(0), null, new FormAttachment(feederSelectionCombo), null));
+			prefsButton.setLayoutData(LayoutHelper.formData(new FormAttachment(feederSelectionCombo), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
+			fetchersButton.setLayoutData(LayoutHelper.formData(new FormAttachment(startStopButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
 		}
 		else {
-			// Mac has buttons - labels with images don't look good in this layout
-			prefsButton = new Button(controlsArea, SWT.CENTER);
-			((Button) prefsButton).setImage(imagePrefs);
-			fetchersButton = new Button(controlsArea, SWT.CENTER);
-			((Button) fetchersButton).setImage(imageFetchers);
+			startStopButton.setLayoutData(LayoutHelper.formData(feederSelectionCombo.getSize().x, guiConfig.standardButtonHeight, new FormAttachment(feederSelectionCombo), null, new FormAttachment(0), null));
+			prefsButton.setLayoutData(LayoutHelper.formData(new FormAttachment(startStopButton), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
+			fetchersButton.setLayoutData(LayoutHelper.formData(new FormAttachment(prefsButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
 		}
-		
-		prefsButton.setToolTipText(Labels.getLabel("title.preferences"));
-		prefsButton.setLayoutData(new RowData(toolbarWidth, toolbarHeight));
-		prefsButton.setCursor(prefsButton.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
-		prefsButton.addListener(SWT.MouseDown, preferencesListener);
-		
-		fetchersButton.setToolTipText(Labels.getLabel("title.fetchers.select"));
-		fetchersButton.setLayoutData(new RowData(toolbarWidth, toolbarHeight));
-		fetchersButton.setCursor(fetchersButton.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
-		fetchersButton.addListener(SWT.MouseDown, chooseFetchersListsner);
 	}
 			
 	/**
@@ -245,6 +243,7 @@ public class MainWindow {
 			FormData feederAreaLayoutData = ((FormData)feederArea.getLayoutData());
 			feederAreaLayoutData.height = bounds.height;
 			feederAreaLayoutData.width = bounds.width;
+			relayoutControls();
 			shell.layout();
 			
 			// reset main window title
