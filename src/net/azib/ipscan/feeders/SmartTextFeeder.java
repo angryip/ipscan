@@ -21,7 +21,7 @@ import java.net.InetAddress;
  */
 public class SmartTextFeeder implements Feeder {
 	
-	public String getLabel() {
+	public String getId() {
 		return null;
 	}
 

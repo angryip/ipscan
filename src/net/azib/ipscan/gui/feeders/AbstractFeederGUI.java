@@ -38,14 +38,14 @@ public abstract class AbstractFeederGUI extends Composite {
 	 * @return the feeder name
 	 */
 	public String getFeederName() {
-		return Labels.getLabel(feeder.getLabel());
+		return Labels.getLabel(feeder.getId());
 	}
 	
 	/**
 	 * For internal usage, returns the feeder-specific label
 	 */
 	protected String getStringLabel(String name) {
-		return Labels.getLabel(feeder.getLabel() + '.' + name);
+		return Labels.getLabel(feeder.getId() + '.' + name);
 	}
 
 	/**

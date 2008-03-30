@@ -344,7 +344,7 @@ public class ScanningResultListTest {
 	private Feeder createMockFeeder(String feederInfo) {
 		Feeder feeder = createMock(Feeder.class);
 		expect(feeder.getInfo()).andReturn(feederInfo);
-		expect(feeder.getLabel()).andReturn("feeder.range");
+		expect(feeder.getId()).andReturn("feeder.range");
 		replay(feeder);
 		return feeder;
 	}

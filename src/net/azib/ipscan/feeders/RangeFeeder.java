@@ -30,9 +30,9 @@ public class RangeFeeder implements Feeder {
 	double percentageIncrement;
 	
 	/**
-	 * @see Feeder#getLabel()
+	 * @see Feeder#getId()
 	 */
-	public String getLabel() {
+	public String getId() {
 		return "feeder.range";
 	}
 

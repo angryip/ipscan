@@ -29,9 +29,9 @@ public class RandomFeeder implements Feeder {
 	int currentNumber;
 
 	/**
-	 * @see Feeder#getLabel()
+	 * @see Feeder#getId()
 	 */
-	public String getLabel() {
+	public String getId() {
 		return "feeder.random";
 	}
 

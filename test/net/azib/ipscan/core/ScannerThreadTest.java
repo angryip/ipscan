@@ -33,7 +33,7 @@ public class ScannerThreadTest {
 		expect(registry.getSelectedFetchers()).andReturn(Collections.<Fetcher>singleton(new IPFetcher())).anyTimes();
 		Feeder feeder = createMock(Feeder.class);
 		expect(feeder.getInfo()).andReturn("info");
-		expect(feeder.getLabel()).andReturn("text.ip");
+		expect(feeder.getId()).andReturn("text.ip");
 		replay(registry, feeder);
 		
 		ScanningResultList scanningResults = new ScanningResultList(registry);

@@ -19,9 +19,9 @@ import java.net.InetAddress;
 public interface Feeder {
 	
 	/**
-	 * @return label ID, representing the name of this Feeder
+	 * @return feeder unique ID, which can be used for resolving it's name
 	 */	
-	public String getLabel();
+	public String getId();
 	
 	/**
 	 * Initializes the Feeder, passing Strings as initialization parameters.

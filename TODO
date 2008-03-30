@@ -1,5 +1,7 @@
 Before 3.0:
 
+* make proper interruption of threads
+* getLabel() vs getId() + getName() in plugins
 * command-line scanning start
 * fetcher-specific options
 * multiple port support web-detect

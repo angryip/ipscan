@@ -28,7 +28,7 @@ public class RescanFeederTest {
 	@Test
 	public void testDelegatedMethods() {
 		assertEquals("SomeInfo", feeder.getInfo());
-		assertEquals("someLabel", feeder.getLabel());
+		assertEquals("someLabel", feeder.getId());
 	}
 	
 	@Test
@@ -54,7 +54,7 @@ public class RescanFeederTest {
 	private Feeder createMockFeeder() {
 		Feeder feeder = createMock(Feeder.class);
 		expect(feeder.getInfo()).andReturn("SomeInfo");
-		expect(feeder.getLabel()).andReturn("someLabel");
+		expect(feeder.getId()).andReturn("someLabel");
 		replay(feeder);
 		return feeder;
 	}

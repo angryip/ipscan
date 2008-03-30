@@ -44,9 +44,9 @@ public class FileFeeder implements Feeder {
 	private int currentIndex;
 
 	/**
-	 * @see Feeder#getLabel()
+	 * @see Feeder#getId()
 	 */
-	public String getLabel() {
+	public String getId() {
 		return "feeder.file";
 	}
 	

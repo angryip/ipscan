@@ -33,8 +33,8 @@ public class RescanFeeder implements Feeder {
 	/**
 	 * @return the label of the "old" feeder
 	 */
-	public String getLabel() {
-		return oldFeeder.getLabel();
+	public String getId() {
+		return oldFeeder.getId();
 	}
 
 	/**

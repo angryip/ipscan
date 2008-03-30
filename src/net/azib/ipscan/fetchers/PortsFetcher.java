@@ -73,7 +73,7 @@ public class PortsFetcher extends AbstractFetcher {
 
 			int adaptedTimeout = config.portTimeout;
 			
-			// now try to adapt timeout if it is enabled and pinging results are availbale
+			// now try to adapt timeout if it is enabled and pinging results are available
 			PingResult pingResult = (PingResult) subject.getParameter(PingFetcher.PARAMETER_PINGER);
 			if (config.adaptPortTimeout && pingResult.getReplyCount() > 2) {
 				adaptedTimeout = Math.min(Math.max(pingResult.getLongestTime() * 3, config.minPortTimeout), config.portTimeout);
@@ -87,7 +87,7 @@ public class PortsFetcher extends AbstractFetcher {
 				return false;
 			}
 			
-			while (i.hasNext()) {
+			while (i.hasNext() && !Thread.currentThread().isInterrupted()) {
 				// TODO: UDP ports?
 				// TODO: reuse sockets?
 				socket = new Socket();
