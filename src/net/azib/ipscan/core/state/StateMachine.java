@@ -6,6 +6,7 @@
 package net.azib.ipscan.core.state;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class StateMachine {
 	
 	private ScanningState state = ScanningState.IDLE;
 	
-	private List<StateTransitionListener> transitionListeners = new ArrayList<StateTransitionListener>();
+	private List<StateTransitionListener> transitionListeners = Collections.synchronizedList(new ArrayList<StateTransitionListener>());
 	
 	/**
 	 * @param state
@@ -64,8 +65,10 @@ public class StateMachine {
 	}
 
 	private void notifyAboutTransition() {
-		for (StateTransitionListener listener : transitionListeners) {
-			listener.transitionTo(state);
+		synchronized (transitionListeners) {
+			for (StateTransitionListener listener : transitionListeners) {
+				listener.transitionTo(state);
+			}			
 		}
 	}
 
