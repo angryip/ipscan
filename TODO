@@ -12,6 +12,7 @@ Before 3.0:
 * plugin loader
 * export/import of settings (profiles or tie with Favorites?)
 * top-level exception handler for NoClassDefFoundErrors, etc
+* Tools -> Select -> Invert Selection
 
 Later:
 
@@ -22,7 +23,7 @@ Later:
 * offer installation on Windows
 * free text (advanced) feeder
 * saving and restoring of results together with all options
-* advanced find (firefox-like)
+* advanced find (firefox-like) with options Find Next, Find Previoius, Select all matches
 * count occurencies of search (either separate or included)
 * use jpcap for raw packet injection and ARP scanning
 * save/restore results

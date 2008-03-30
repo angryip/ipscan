@@ -22,44 +22,60 @@ import java.util.logging.Logger;
  */
 public class TCPPinger implements Pinger {
 	
-	static final Logger LOG = Logger.getLogger(UDPPinger.class.getName());
+	static final Logger LOG = Logger.getLogger(TCPPinger.class.getName());
 	
-	private static final int PROBE_TCP_PORT = 80;
+	// try different ports in sequence, starting with 80 (which is most probably not filtered)
+	private static final int[] PROBE_TCP_PORTS = {80, 80, 443, 22, 7, 8080};
 	
 	private int timeout;
 	
 	public TCPPinger(int timeout) {
-		// use double timeout, because TCP connect() produces more packets
-		this.timeout = timeout * 2;
+		// use increased timeout, because TCP connect() produces more packets (roundtrips)
+		this.timeout = timeout + timeout/2;
 	}
 
 	public PingResult ping(InetAddress address, int count) throws IOException {
 		PingResult result = new PingResult(address);
+		int workingPort = -1;
 		
-		Socket socket = new Socket();
-		socket.setSoTimeout(timeout);
-		
-		long startTime = System.currentTimeMillis();
-		try {
-			socket.connect(new InetSocketAddress(address, PROBE_TCP_PORT), timeout);
-			result.addReply(System.currentTimeMillis()-startTime);
-		}
-		catch (ConnectException e) {
-			result.addReply(System.currentTimeMillis()-startTime);
-		}
-		catch (SocketTimeoutException e) {
-		}
-		catch (NoRouteToHostException e) {
-			// TODO: this means that the host is down
-		}
-		catch (IOException e) {
-			LOG.log(Level.FINER, address.toString(), e);
-		}
+		for (int i = 0; i < count; i++) {
+			Socket socket = new Socket();
+			socket.setSoTimeout(timeout);
 
-		try {
-			socket.close();
+			long startTime = System.currentTimeMillis();
+			try {
+				// cycle through different ports until a working one is found
+				int probePort = workingPort >= 0 ? workingPort : PROBE_TCP_PORTS[i % PROBE_TCP_PORTS.length];
+				
+				socket.connect(new InetSocketAddress(address, probePort), timeout);
+				result.addReply(System.currentTimeMillis()-startTime);
+				// one positive result is enough for TCP 
+				result.enableTimeoutAdaptation();
+				
+				// it worked! - remember the current port
+				workingPort = probePort;
+			}
+			catch (ConnectException e) {
+				// we've got an RST packet from the host
+				result.addReply(System.currentTimeMillis()-startTime);
+				result.enableTimeoutAdaptation();
+			}
+			catch (SocketTimeoutException e) {
+			}
+			catch (NoRouteToHostException e) {
+				// this means that the host is down
+				break;
+			}
+			catch (IOException e) {
+				LOG.log(Level.FINER, address.toString(), e);
+			}
+			finally {
+				try {
+					socket.close();
+				}
+				catch (Exception e) {}
+			}
 		}
-		catch (Exception e) {}
 		
 		return result;
 	}
