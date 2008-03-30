@@ -9,6 +9,7 @@ package net.azib.ipscan.fetchers;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -73,8 +74,12 @@ public class NetBIOSInfoFetcher extends AbstractFetcher {
 			
 			return extractNames(response, nameCount);
 		}
+		catch (SocketTimeoutException e) {
+			// this is not a derivative of SocketException
+			return null;
+		}
 		catch (SocketException e) {
-			// this includes PortUnreachableException and SocketTimeoutException
+			// this includes PortUnreachableException
 			return null;
 		}
 		catch (Exception e) {
