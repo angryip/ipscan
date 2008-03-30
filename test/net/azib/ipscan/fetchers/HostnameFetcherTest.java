@@ -30,10 +30,16 @@ public class HostnameFetcherTest extends AbstractFetcherTestCase {
 		// Some of these tests are run inside of if's to prevent their failing on certain network configurations
 		if (!InetAddress.getLocalHost().getCanonicalHostName().equals(InetAddress.getLocalHost().getHostAddress()))
 			assertEquals(InetAddress.getLocalHost().getCanonicalHostName(), fetcher.scan(new ScanningSubject(InetAddress.getLocalHost())));
-		InetAddress wwweeAddress = InetAddress.getByName("194.204.33.30");
-		if (!wwweeAddress.equals("194.204.33.30"))
+		
+		try {
+			InetAddress wwweeAddress = InetAddress.getByName("www.ee");
 			assertEquals(wwweeAddress.getCanonicalHostName(), fetcher.scan(new ScanningSubject(wwweeAddress)));
-		assertNull(fetcher.scan(new ScanningSubject(InetAddress.getByName("255.255.255.255"))));
-		assertNull(fetcher.scan(new ScanningSubject(InetAddress.getByName("172.13.66.254"))));
+		}
+		catch (UnknownHostException e) { /* ignore - test is running in off-line environment */ }
+		
+		InetAddress inexistentAddress = InetAddress.getByName("192.168.253.253");
+		if (inexistentAddress.getHostName().equals("192.168.253.253")) {
+			assertNull(fetcher.scan(new ScanningSubject(inexistentAddress)));			
+		}
 	}
 }
