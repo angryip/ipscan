@@ -23,7 +23,7 @@ public class NotScannedValueTest {
 	
 	@Test
 	public void testToString() throws Exception {
-		assertEquals(Config.getConfig().getScanner().notScannedText, NotScannedValue.INSTANCE.toString());
+		assertEquals(Config.getConfig().forScanner().notScannedText, NotScannedValue.INSTANCE.toString());
 	}
 	
 	@Test

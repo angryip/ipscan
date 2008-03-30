@@ -5,12 +5,14 @@
  */
 package net.azib.ipscan.core;
 
-
 import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningResult.ResultType;
+import net.azib.ipscan.core.net.PingResult;
 
 /**
  * Scanning subject represents a single scanned
@@ -21,6 +23,10 @@ import net.azib.ipscan.core.ScanningResult.ResultType;
  * @author Anton Keks
  */
 public class ScanningSubject {
+	
+	public static final String PARAMETER_PING_RESULT = "pinger";
+	
+	ScannerConfig config;
 
 	/** The address being scanned */
 	private InetAddress address;
@@ -30,6 +36,8 @@ public class ScanningSubject {
 	private ResultType resultType = ResultType.UNKNOWN;
 	/** Whether we need to continue scanning or it can be aborted */
 	private boolean isScanningAborted = false;
+	/** Adapted after pinging port timeout - any fetcher can make use of it */
+	int adaptedPortTimeout = -1; 
 	
 	/**
 	 * This constructor should only be used by the Scanner class or unit tests.
@@ -37,6 +45,7 @@ public class ScanningSubject {
 	public ScanningSubject(InetAddress address) {
 		this.address = address;
 		this.parameters = new HashMap<String, Object>();
+		this.config = Config.getConfig().forScanner();
 	}
 	
 	public InetAddress getAddress() {
@@ -93,6 +102,26 @@ public class ScanningSubject {
 	 */
 	public void abortAddressScanning() {
 		this.isScanningAborted = true;
+	}
+
+	/**
+	 * @return adapted port timeout for this host if available
+	 */
+	public int getAdaptedPortTimeout() {
+		// see if it is already computed
+		if (adaptedPortTimeout > 0) 
+			return adaptedPortTimeout;
+		
+		// try to adapt timeout if it is enabled and pinging results are available
+		PingResult pingResult = (PingResult) getParameter(PARAMETER_PING_RESULT);
+		if (pingResult != null) {
+			if (config.adaptPortTimeout && pingResult.isTimeoutAdaptationAllowed()) {
+				adaptedPortTimeout = Math.min(Math.max(pingResult.getLongestTime() * 3, config.minPortTimeout), config.portTimeout);
+				return adaptedPortTimeout;
+			}
+		}
+		// if no pinging results are available yet, return the full timeout
+		return config.portTimeout;
 	}
 	
 }

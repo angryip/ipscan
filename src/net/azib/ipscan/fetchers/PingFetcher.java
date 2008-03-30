@@ -29,8 +29,6 @@ public class PingFetcher extends AbstractFetcher {
 
 	private static final Logger LOG = LoggerFactory.getLogger();
 	
-	public static final String PARAMETER_PINGER = "pinger";
-	
 	private ScannerConfig config;
 
 	/** The shared pinger - this one must be static, because PingTTLFetcher will use it as well */
@@ -52,8 +50,8 @@ public class PingFetcher extends AbstractFetcher {
 		
 		PingResult result = null;
 		
-		if (subject.hasParameter(PARAMETER_PINGER)) {
-			result = (PingResult) subject.getParameter(PARAMETER_PINGER);
+		if (subject.hasParameter(ScanningSubject.PARAMETER_PING_RESULT)) {
+			result = (PingResult) subject.getParameter(ScanningSubject.PARAMETER_PING_RESULT);
 		}
 		else {
 			try {
@@ -66,7 +64,7 @@ public class PingFetcher extends AbstractFetcher {
 				result = new PingResult(subject.getAddress());
 			}
 			// remember the result for other fetchers to use
-			subject.setParameter(PARAMETER_PINGER, result);
+			subject.setParameter(ScanningSubject.PARAMETER_PING_RESULT, result);
 		}
 		return result;
 	}

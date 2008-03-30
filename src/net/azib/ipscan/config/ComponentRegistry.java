@@ -81,10 +81,10 @@ public class ComponentRegistry {
 		// non-GUI
 		Config globalConfig = Config.getConfig();
 		container.registerComponentInstance(globalConfig.getPreferences());
-		container.registerComponentInstance(globalConfig.getScanner());
-		container.registerComponentInstance(globalConfig.getGUI());
-		container.registerComponentInstance(globalConfig.getOpeners());
-		container.registerComponentInstance(globalConfig.getFavorites());
+		container.registerComponentInstance(globalConfig.forScanner());
+		container.registerComponentInstance(globalConfig.forGUI());
+		container.registerComponentInstance(globalConfig.forOpeners());
+		container.registerComponentInstance(globalConfig.forFavorites());
 		container.registerComponentInstance(Labels.getInstance());
 		container.registerComponentImplementation(CommentsConfig.class);
 		container.registerComponentImplementation(ConfigDetector.class);

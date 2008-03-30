@@ -55,7 +55,7 @@ public class PingerRegistryImplTest {
 	}
 	
 	public void testCreateDefaultPinger() throws Exception {
-		ScannerConfig config = Config.getConfig().getScanner();
+		ScannerConfig config = Config.getConfig().forScanner();
 		PingerRegistry registry = new PingerRegistryImpl(config);
 		config.selectedPinger = "pinger.udp";
 		assertTrue(registry.createPinger() instanceof UDPPinger);
@@ -63,7 +63,7 @@ public class PingerRegistryImplTest {
 	
 	@Test
 	public void checkSelectedPinger() throws Exception {
-		ScannerConfig config = Config.getConfig().getScanner();
+		ScannerConfig config = Config.getConfig().forScanner();
 		PingerRegistryImpl registry = new PingerRegistryImpl(config);
 		
 		config.selectedPinger = "pinger.udp";

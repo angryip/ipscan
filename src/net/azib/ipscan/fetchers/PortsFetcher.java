@@ -17,7 +17,6 @@ import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.PortIterator;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.ScanningResult.ResultType;
-import net.azib.ipscan.core.net.PingResult;
 import net.azib.ipscan.core.values.NotAvailableValue;
 import net.azib.ipscan.core.values.NotScannedValue;
 import net.azib.ipscan.core.values.NumericListValue;
@@ -71,13 +70,7 @@ public class PortsFetcher extends AbstractFetcher {
 			subject.setParameter(PARAMETER_OPEN_PORTS, openPorts);
 			subject.setParameter(PARAMETER_FILTERED_PORTS, filteredPorts);
 
-			int adaptedTimeout = config.portTimeout;
-			
-			// now try to adapt timeout if it is enabled and pinging results are available
-			PingResult pingResult = (PingResult) subject.getParameter(PingFetcher.PARAMETER_PINGER);
-			if (config.adaptPortTimeout && pingResult.getReplyCount() > 2) {
-				adaptedTimeout = Math.min(Math.max(pingResult.getLongestTime() * 3, config.minPortTimeout), config.portTimeout);
-			}
+			int portTimeout = subject.getAdaptedPortTimeout();
 			
 			Socket socket = null;
 			// clone port iterator for performance instead of creating for every thread
@@ -97,7 +90,7 @@ public class PortsFetcher extends AbstractFetcher {
 					socket.setReuseAddress(true);
 					socket.setReceiveBufferSize(32);
 					// now connect
-					socket.connect(new InetSocketAddress(subject.getAddress(), port), adaptedTimeout);
+					socket.connect(new InetSocketAddress(subject.getAddress(), port), portTimeout);
 					// some more options
 					socket.setSoLinger(true, 0);
 					socket.setSendBufferSize(16);

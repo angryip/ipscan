@@ -20,9 +20,10 @@ public class PingResult {
 	private long totalTime;
 	private long longestTime;
 	private int replyCount;
+	private boolean timeoutAdaptationAllowed;
 	
 	public PingResult(InetAddress address) {
-		this.address = address;		
+		this.address = address;
 	}
 	
 	public void addReply(long time) {
@@ -30,6 +31,8 @@ public class PingResult {
 		if (time > longestTime)
 			longestTime = time;
 		totalTime += time;
+		// this is for ports fetcher, etc
+		timeoutAdaptationAllowed = replyCount > 2;
 	}
 
 	public int getTTL() {
@@ -59,4 +62,12 @@ public class PingResult {
 		return replyCount > 0;
 	}
 
+	public void enableTimeoutAdaptation() {
+		if (isAlive())
+			timeoutAdaptationAllowed = true;
+	}
+	
+	public boolean isTimeoutAdaptationAllowed() {
+		return timeoutAdaptationAllowed;
+	}
 }

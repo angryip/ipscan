@@ -16,9 +16,9 @@ public class ConfigTest {
 	public void testGetters() {
 		Config config = Config.getConfig();
 		assertNotNull(config.getPreferences());
-		assertNotNull(config.getScanner());
-		assertNotNull(config.getGUI());
-		assertNotNull(config.getFavorites());
-		assertNotNull(config.getOpeners());
+		assertNotNull(config.forScanner());
+		assertNotNull(config.forGUI());
+		assertNotNull(config.forFavorites());
+		assertNotNull(config.forOpeners());
 	}
 }

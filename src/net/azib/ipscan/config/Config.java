@@ -57,30 +57,30 @@ public final class Config {
 	}
 
 	/** 
-	 * @return GlobalConfig instance (quick access)
+	 * @return ScannerConfig instance (quick access)
 	 */
-	public ScannerConfig getScanner() {
+	public ScannerConfig forScanner() {
 		return scannerConfig;
 	}
 	
 	/**
 	 * @return Favorites config (only local access)
 	 */
-	NamedListConfig getFavorites() {
+	NamedListConfig forFavorites() {
 		return favoritesConfig;
 	}
 
 	/**
 	 * @return Openers config (only local access);
 	 */
-	OpenersConfig getOpeners() {
+	OpenersConfig forOpeners() {
 		return openersConfig;
 	}
 	
 	/**
 	 * @return Dimensions config (quick access);
 	 */
-	public GUIConfig getGUI() {
+	public GUIConfig forGUI() {
 		return guiConfig;
 	}
 	

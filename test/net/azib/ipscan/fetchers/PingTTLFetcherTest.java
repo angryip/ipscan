@@ -16,7 +16,7 @@ public class PingTTLFetcherTest extends AbstractFetcherTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		fetcher = new PingTTLFetcher(null, Config.getConfig().getScanner());
+		fetcher = new PingTTLFetcher(null, Config.getConfig().forScanner());
 	}
 
 }

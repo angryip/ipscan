@@ -21,7 +21,7 @@ public class NotAvailableValue implements Comparable<Object> {
 	 * Displays a user-friendly text string :-)
 	 */
 	public String toString() {
-		return Config.getConfig().getScanner().notAvailableText;
+		return Config.getConfig().forScanner().notAvailableText;
 	}
 
 	public int compareTo(Object obj) {

@@ -21,7 +21,7 @@ public class NotScannedValue implements Comparable<Object> {
 	 * Displays a user-friendly text string :-)
 	 */
 	public String toString() {
-		return Config.getConfig().getScanner().notScannedText;
+		return Config.getConfig().forScanner().notScannedText;
 	}
 	
 	public int compareTo(Object obj) {
