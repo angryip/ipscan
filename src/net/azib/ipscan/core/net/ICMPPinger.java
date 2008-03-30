@@ -118,7 +118,7 @@ public class ICMPPinger implements Pinger {
 		
 		try {
 			// send a bunch of packets
-			for (int i = 0; i < count; i++) {
+			for (int i = 0; i < count && !Thread.currentThread().isInterrupted(); i++) {
 				try {
 					sendReceiveEchoPacket(socket, address, i, result);
 				}

@@ -38,7 +38,7 @@ public class TCPPinger implements Pinger {
 		PingResult result = new PingResult(address);
 		int workingPort = -1;
 		
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < count && !Thread.currentThread().isInterrupted(); i++) {
 			Socket socket = new Socket();
 			socket.setSoTimeout(timeout);
 

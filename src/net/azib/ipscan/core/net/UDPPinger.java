@@ -39,7 +39,7 @@ public class UDPPinger implements Pinger {
 		socket.setSoTimeout(timeout);
 		socket.connect(address, PROBE_UDP_PORT);
 		
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < count && !Thread.currentThread().isInterrupted(); i++) {
 			DatagramPacket packet = new DatagramPacket(new byte[]{}, 0);
 			long startTime = System.currentTimeMillis();
 			try {

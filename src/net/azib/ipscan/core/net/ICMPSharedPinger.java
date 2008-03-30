@@ -93,7 +93,7 @@ public class ICMPSharedPinger implements Pinger {
 		try {
 			// send a bunch of packets
 			// note: we send sequence numbers starting from 1 (this is used by the ReceiverThread)
-			for (int i = 1; i <= count; i++) {
+			for (int i = 1; i <= count  && !Thread.currentThread().isInterrupted(); i++) {
 				packet.setSequenceNumber(i);
 				
 				int offset = packet.getIPHeaderByteLength();
@@ -114,7 +114,10 @@ public class ICMPSharedPinger implements Pinger {
 					// a small pause between sending the packets
 					Thread.sleep(15);
 				}
-				catch (InterruptedException e) {}
+				catch (InterruptedException e) {
+					// leave the interrupted flag
+					Thread.currentThread().interrupt();
+				}
 			}
 				
 			int totalTimeout = timeout * count;

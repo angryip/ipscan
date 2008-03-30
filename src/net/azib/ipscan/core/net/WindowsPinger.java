@@ -45,7 +45,7 @@ public class WindowsPinger implements Pinger {
 		try {
 
 			// send a bunch of packets
-			for (int i = 1; i <= count; i++) {
+			for (int i = 1; i <= count && !Thread.currentThread().isInterrupted(); i++) {
 				if (nativeIcmpSendEcho(handle, address.getAddress(), pingData, replyData, timeout) > 0) {
 					int status = replyData[4] + (replyData[5]<<8) + (replyData[6]<<16) + (replyData[7]<<24);
 					if (status == 0) {
