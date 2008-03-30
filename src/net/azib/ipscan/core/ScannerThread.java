@@ -6,9 +6,10 @@
 package net.azib.ipscan.core;
 
 import java.net.InetAddress;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.state.ScanningState;
@@ -17,31 +18,34 @@ import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.feeders.Feeder;
 
 /**
- * Scanning thread.
+ * Main scanning thread that spawns other threads.
  * 
  * @author Anton Keks
  */
-public class ScannerThread extends Thread implements StateTransitionListener {
+public class ScannerThread extends Thread implements ThreadFactory, StateTransitionListener {
 
+	private ScannerConfig config;
 	private Scanner scanner;
 	private StateMachine stateMachine;
 	private ScanningResultList scanningResultList;
 	private Feeder feeder;
+	
+	private volatile int activeThreadCount;
+	private ThreadGroup threadGroup;
+	private ExecutorService threadPool;
+	
 	private ScanningProgressCallback progressCallback;
 	private ScanningResultsCallback resultsCallback;
 	
-	private volatile int runningThreads;
-	private Set<IPThread> threads = Collections.synchronizedSet(new HashSet<IPThread>());
-	
-	private ScannerConfig config;
-	
 	public ScannerThread(Feeder feeder, Scanner scanner, StateMachine stateMachine, ScanningProgressCallback progressCallback, ScanningResultList scanningResults, ScannerConfig scannerConfig, ScanningResultsCallback resultsCallback) {
-		super();
 		setName(getClass().getSimpleName());
 		this.config = scannerConfig;
 		this.stateMachine = stateMachine;
 		this.progressCallback = progressCallback;
 		this.resultsCallback = resultsCallback;
+		
+		this.threadGroup = new ThreadGroup(getName());
+		this.threadPool = Executors.newFixedThreadPool(config.maxThreads, this);
 		
 		// this thread is daemon because we want JVM to terminate it
 		// automatically if user closes the program (Main thread, that is)
@@ -67,12 +71,12 @@ public class ScannerThread extends Thread implements StateTransitionListener {
 			// register this scan specific listener
 			stateMachine.addTransitionListener(this);
 
-			while(feeder.hasNext() && stateMachine.inState(ScanningState.SCANNING)) {
-				try {
+			try {
+				while(feeder.hasNext() && stateMachine.inState(ScanningState.SCANNING)) {
 					// make a small delay between thread creation
 					Thread.sleep(config.threadDelay);
-									
-					if (runningThreads >= config.maxThreads) {
+							
+					if (activeThreadCount >= config.maxThreads) {
 						// skip this iteration until more threads can be created
 						continue;
 					}
@@ -85,35 +89,29 @@ public class ScannerThread extends Thread implements StateTransitionListener {
 						continue;
 					}
 	
-					// now increment the number of active threads, because we are going
-					// to start a new one below
-					runningThreads++;
-									
 					// prepare results receiver for upcoming results
 					ScanningResult result = scanningResultList.createResult(address);
 					resultsCallback.prepareForResults(result);
-					
-					// notify listeners of the progress we are doing
-					progressCallback.updateProgress(address, runningThreads, feeder.percentageComplete());
-					
+										
 					// scan each IP in parallel, in a separate thread
-					IPThread thread = new IPThread(address, result);
-					threads.add(thread);
-					thread.start();
+					IPScanningTask scanningTask = new IPScanningTask(address, result);
+					threadPool.execute(scanningTask);
+
+					// notify listeners of the progress we are doing
+					progressCallback.updateProgress(address, activeThreadCount, feeder.percentageComplete());
 				}
-				catch (InterruptedException e) {
-					return;
-				}
+			}
+			catch (InterruptedException e) {
+				// just end the loop
 			}
 			
 			// inform that no more addresses left
 			stateMachine.stop();
-			
+		
 			try {				
 				// now wait for all threads, which are still running
-				while (runningThreads > 0) {
-					Thread.sleep(200);
-					progressCallback.updateProgress(null, runningThreads, 100);
+				while (!threadPool.awaitTermination(200, TimeUnit.MILLISECONDS)) {
+					progressCallback.updateProgress(null, activeThreadCount, 100);
 				}
 			} 
 			catch (InterruptedException e) {
@@ -136,40 +134,53 @@ public class ScannerThread extends Thread implements StateTransitionListener {
 	 * Currently used to kill all running threads if user says so.
 	 */
 	public void transitionTo(ScanningState state) {
+		if (state == ScanningState.STOPPING) {
+			// request shutdown of the thread pool
+			threadPool.shutdown();
+		}
+		else
 		if (state == ScanningState.KILLING) {
 			// try to interrupt all threads if we get to killing state
-			synchronized (threads) {
-				for (Thread t : threads) {
-					t.interrupt();
-				}
-			}
+			threadGroup.interrupt();
 		}
 	}
-				
+	
+	/**
+	 * This will create threads for the pool
+	 */
+	public Thread newThread(Runnable r) {
+		// create IP threads in the specified group
+		Thread thread = new Thread(threadGroup, r);
+		// IP threads must be daemons, not preventing the JVM to terminate
+		thread.setDaemon(true);
+		
+		return thread;
+	}
+	
 	/**
 	 * This thread gets executed for each scanned IP address to do the actual
 	 * scanning.
 	 */
-	class IPThread extends Thread {
+	class IPScanningTask implements Runnable {
 		private InetAddress address;
 		private ScanningResult result;
 		
-		IPThread(InetAddress address, ScanningResult result) {
-			super();
-			setName(getClass().getSimpleName() + ": " + address.getHostAddress());
-			setDaemon(true);
+		IPScanningTask(InetAddress address, ScanningResult result) {
 			this.address = address;
 			this.result = result;
+			activeThreadCount++;
 		}
 
 		public void run() {
+			// set current thread's name to ease debugging
+			Thread.currentThread().setName(getClass().getSimpleName() + ": " + address.getHostAddress());
+			
 			try {
 				scanner.scan(address, result);
 				resultsCallback.consumeResults(result);
 			}
 			finally {
-				runningThreads--;
-				threads.remove(this);
+				activeThreadCount--;
 			}
 		}
 	}

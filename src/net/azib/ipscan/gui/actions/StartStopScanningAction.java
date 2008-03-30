@@ -148,8 +148,8 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 					case IDLE:
 						// reset state text
 						button.setEnabled(true);
+						updateProgress(null, 0, 0);
 						statusBar.setStatusText(null);
-						statusBar.setProgress(0);
 						break;
 					case STARTING:
 						// start the scan from scratch!
