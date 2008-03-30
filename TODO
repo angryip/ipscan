@@ -13,6 +13,8 @@ Before 3.0:
 * export/import of settings (profiles or tie with Favorites?)
 * top-level exception handler for NoClassDefFoundErrors, etc
 * Tools -> Select -> Invert Selection
+* public XSL for XMLExporter
+* Exporter appending functionality exposed to the user
 
 Later:
 

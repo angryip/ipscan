@@ -29,7 +29,7 @@ import net.azib.ipscan.core.InetAddressUtils;
  *
  * @author Anton Keks
  */
-public class FileFeeder implements Feeder {
+public class FileFeeder extends AbstractFeeder {
 	
 	static final Logger LOG = LoggerFactory.getLogger();
 	
@@ -37,15 +37,14 @@ public class FileFeeder implements Feeder {
 	private List<String> foundIPAddresses;
 	private Iterator<String> foundIPAddressesIterator;
 	
-	/** Total number of found IP addresses. Equivalent to foundIPAddresses.size(), 
-	 *  which is very ineffective in case of a LinkedList.
+	/** 
+	 * Total number of found IP addresses. Equivalent to foundIPAddresses.size(), 
+	 * which is very ineffective in case of a LinkedList.
 	 */ 
 	private int totalAddresses;
+	
 	private int currentIndex;
 
-	/**
-	 * @see Feeder#getId()
-	 */
 	public String getId() {
 		return "feeder.file";
 	}
@@ -123,9 +122,6 @@ public class FileFeeder implements Feeder {
 		}
 	}
 
-	/**
-	 * @see net.azib.ipscan.feeders.Feeder#getInfo()
-	 */
 	public String getInfo() {
 		// let's return the number of found addresses
 		return Integer.toString(totalAddresses);

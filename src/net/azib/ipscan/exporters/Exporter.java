@@ -8,6 +8,8 @@ package net.azib.ipscan.exporters;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import net.azib.ipscan.core.plugins.Pluggable;
+
 /**
  * An Exporter is a class, which is able to export scanning results into a
  * specific output format.
@@ -22,13 +24,8 @@ import java.io.OutputStream;
  *
  * @author Anton Keks
  */
-public interface Exporter extends Cloneable {
-	
-	/**
-	 * @return label ID, representing the name of this exporter
-	 */
-	public String getLabel();
-	
+public interface Exporter extends Cloneable, Pluggable {
+		
 	/**
 	 * @return the filename extension of the file type this Exporter produces (like txt, html, etc)
 	 */

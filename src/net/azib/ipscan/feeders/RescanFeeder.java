@@ -15,7 +15,7 @@ import java.util.List;
  * 
  * @author Anton Keks
  */
-public class RescanFeeder implements Feeder {
+public class RescanFeeder extends AbstractFeeder {
 
 	private Feeder oldFeeder;
 	private List<InetAddress> addresses;
@@ -58,16 +58,10 @@ public class RescanFeeder implements Feeder {
 		return params.length;
 	}
 		
-	/**
-	 * @see net.azib.ipscan.feeders.Feeder#hasNext()
-	 */
 	public boolean hasNext() {
 		return current < addresses.size(); 
 	}
 
-	/**
-	 * @see net.azib.ipscan.feeders.Feeder#next()
-	 */
 	public InetAddress next() {
 		return addresses.get(current++);
 	}

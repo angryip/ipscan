@@ -16,7 +16,7 @@ import net.azib.ipscan.core.InetAddressUtils;
  *
  * @author Anton Keks
  */
-public class RandomFeeder implements Feeder {
+public class RandomFeeder extends AbstractFeeder {
 	
 	SecureRandom random = new SecureRandom();
 	InetAddress currentAddress;
@@ -98,9 +98,6 @@ public class RandomFeeder implements Feeder {
 		}
 	}
 	
-	/**
-	 * @see net.azib.ipscan.feeders.Feeder#getInfo()
-	 */
 	public String getInfo() {
 		try {
 			return addressCount + ": " + InetAddress.getByAddress(prototypeBytes).getHostAddress() + " / " + InetAddress.getByAddress(maskBytes).getHostAddress();

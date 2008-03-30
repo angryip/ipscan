@@ -19,7 +19,7 @@ import org.savarese.vserv.tcpip.OctetConverter;
  * 
  * @author Anton Keks
  */
-public class RangeFeeder implements Feeder {
+public class RangeFeeder extends AbstractFeeder {
 	
 	private InetAddress startIP;
 	private InetAddress endIP;
@@ -78,17 +78,11 @@ public class RangeFeeder implements Feeder {
 		percentageComplete = 0;
 	}
 	
-	/**
-	 * @see net.azib.ipscan.feeders.Feeder#hasNext()
-	 */
 	public boolean hasNext() {
 		// equals() is faster than greaterThan()
 		return !currentIP.equals(endIP); 
 	}
 
-	/**
-	 * @see net.azib.ipscan.feeders.Feeder#next()
-	 */
 	public InetAddress next() {
 		percentageComplete += percentageIncrement;
 		InetAddress prevIP = this.currentIP;
@@ -100,9 +94,6 @@ public class RangeFeeder implements Feeder {
 		return (int)Math.round(percentageComplete);
 	}
 	
-	/**
-	 * @see net.azib.ipscan.feeders.Feeder#getInfo()
-	 */
 	public String getInfo() {
 		// let's return the range
 		return startIP.getHostAddress() + " - " + originalEndIP.getHostAddress();

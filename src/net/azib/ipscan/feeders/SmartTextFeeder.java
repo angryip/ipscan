@@ -8,7 +8,7 @@ package net.azib.ipscan.feeders;
 import java.net.InetAddress;
 
 /**
- * Smart text feeder for advenced users.
+ * Smart text feeder for advanced users.
  * 
  * TODO: implement SmartTextFeeder to accept text, e.g.
  * 127.0.0.1-255
@@ -19,7 +19,7 @@ import java.net.InetAddress;
  * 
  * @author Anton Keks
  */
-public class SmartTextFeeder implements Feeder {
+public class SmartTextFeeder extends AbstractFeeder {
 	
 	public String getId() {
 		return null;

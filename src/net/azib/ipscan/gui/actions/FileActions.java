@@ -103,7 +103,7 @@ public class FileActions {
 			for (Exporter exporter : exporterRegistry) {
 				extensions.add("*." + exporter.getFilenameExtension());
 				sb.append(exporter.getFilenameExtension()).append(", ");
-				descriptions.add(Labels.getLabel(exporter.getLabel()));
+				descriptions.add(Labels.getLabel(exporter.getId()));
 			}
 			// strip the last comma
 			sb.delete(sb.length() - 2, sb.length());

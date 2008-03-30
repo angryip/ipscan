@@ -5,6 +5,8 @@ package net.azib.ipscan.feeders;
 
 import java.net.InetAddress;
 
+import net.azib.ipscan.core.plugins.Pluggable;
+
 /**
  * Interface of a Feeder, which is used to feed scanner with IP addresses.
  * Basically, classes implementing Feeder must provide an algorithm of 
@@ -16,12 +18,7 @@ import java.net.InetAddress;
  * 
  * @author Anton Keks
  */
-public interface Feeder {
-	
-	/**
-	 * @return feeder unique ID, which can be used for resolving it's name
-	 */	
-	public String getId();
+public interface Feeder extends Pluggable {
 	
 	/**
 	 * Initializes the Feeder, passing Strings as initialization parameters.

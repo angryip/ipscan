@@ -83,10 +83,13 @@ public class PortsFetcherTest extends AbstractFetcherTestCase {
 	@Test
 	public void scanWithResults() throws Exception {
 		// start local single-accept server
-		new Thread() {
+		Thread server = new Thread() {
 			public void run() {
 				try {
 					ServerSocket server = new ServerSocket(65431);
+					synchronized (this) {
+						this.notify();
+					}
 					Socket socket = server.accept();
 					socket.close();
 					server.close();
@@ -95,11 +98,15 @@ public class PortsFetcherTest extends AbstractFetcherTestCase {
 					fail("couldn't test creation of server");
 				}
 			}
-		}.start();
+		};
+		server.start();
 		
 		config.portString = "65431";
 		fetcher.init();
 		
+		synchronized (server) {
+			server.wait();
+		}
 		NumericListValue value = (NumericListValue) fetcher.scan(new ScanningSubject(InetAddress.getLocalHost()));
 		assertEquals(config.portString, value.toString());
 		

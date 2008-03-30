@@ -10,7 +10,7 @@ import java.util.MissingResourceException;
 import net.azib.ipscan.config.Labels;
 
 /**
- * Convenience base class for fetchers
+ * Convenience base class for built-in fetchers
  *
  * @author Anton Keks
  */

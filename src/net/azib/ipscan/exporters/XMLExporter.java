@@ -19,40 +19,27 @@ import net.azib.ipscan.config.Version;
  *
  * @author Anton Keks
  */
-public class XMLExporter implements Exporter {
+public class XMLExporter extends AbstractExporter {
 	
 	static final String ENCODING = "UTF-8";
 
-	private PrintWriter output;
 	private int ipFetcherIndex;
 	private String[] fetcherNames;
 	
-	/*
-	 * @see net.azib.ipscan.exporters.Exporter#getLabel()
-	 */
-	public String getLabel() {
+	public String getId() {
 		return "exporter.xml";
 	}
 
-	/*
-	 * @see net.azib.ipscan.exporters.Exporter#getFilenameExtension()
-	 */
 	public String getFilenameExtension() {
 		return "xml";
 	}
 	
-	/*
-	 * @see net.azib.ipscan.exporters.Exporter#setAppend(boolean)
-	 */
 	public void setAppend(boolean append) {
 		if (append) {
 			throw new ExporterException("xml.noAppend");
 		}
 	}
 
-	/*
-	 * @see net.azib.ipscan.exporters.Exporter#start(java.io.OutputStream, java.lang.String)
-	 */
 	public void start(OutputStream outputStream, String feederInfo) throws IOException {
 		output = new PrintWriter(new OutputStreamWriter(outputStream, ENCODING));
 		output.println("<?xml version=\"1.0\" encoding=\"" + ENCODING + "\" standalone=\"yes\"?>");
@@ -77,9 +64,6 @@ public class XMLExporter implements Exporter {
 		output.println("\t<hosts>");
 	}
 
-	/*
-	 * @see net.azib.ipscan.exporters.Exporter#end()
-	 */
 	public void end() throws IOException {
 		output.println("\t</hosts>");
 		output.println("</scanning_report>");
@@ -88,17 +72,11 @@ public class XMLExporter implements Exporter {
 		}
 	}
 
-	/*
-	 * @see net.azib.ipscan.exporters.Exporter#setFetchers(java.lang.String[])
-	 */
 	public void setFetchers(String[] fetcherNames) throws IOException {
 		ipFetcherIndex = IPListExporter.findFetcherByLabel("fetcher.ip", fetcherNames);
 		this.fetcherNames = fetcherNames;
 	}
 
-	/*
-	 * @see net.azib.ipscan.exporters.Exporter#nextAdressResults(java.lang.Object[])
-	 */
 	public void nextAdressResults(Object[] results) throws IOException {		
 		output.println("\t\t<host address=\"" + results[ipFetcherIndex] + "\">");
 		
@@ -110,13 +88,4 @@ public class XMLExporter implements Exporter {
 		
 		output.println("\t\t</host>");
 	}
-
-
-	/*
-	 * @see net.azib.ipscan.exporters.Exporter#clone()
-	 */
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-
 }

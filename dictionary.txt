@@ -47,3 +47,5 @@ int
 keypress
 util
 upcoming
+pluggable
+callback

@@ -5,6 +5,7 @@
 package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.core.plugins.Pluggable;
 import net.azib.ipscan.core.values.NotAvailableValue;
 import net.azib.ipscan.core.values.NotScannedValue;
 
@@ -23,18 +24,8 @@ import net.azib.ipscan.core.values.NotScannedValue;
  * 
  * @author Anton Keks
  */
-public interface Fetcher extends Cloneable {
+public interface Fetcher extends Cloneable, Pluggable {
 
-	/**
-	 * @return fetcher unique ID
-	 */
-	public String getId();
-	
-	/**
-	 * @return fetcher's localized short name
-	 */
-	public String getName();
-	
 	/**
 	 * @return full name to be displayed in the result table column. 
 	 * It may contain a suffix useful to inform users about the fetcher's preferences.

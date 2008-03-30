@@ -4,9 +4,6 @@
 package net.azib.ipscan.exporters;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.PortIterator;
@@ -18,55 +15,22 @@ import net.azib.ipscan.core.PortIterator;
  *
  * @author Anton Keks
  */
-public class IPListExporter implements Exporter {
+public class IPListExporter extends AbstractExporter {
 
-	/* CSV delimeter character */
+	/* CSV delimiter character */
 	static final char DELIMETER = ':';
 	
 	private int ipFetcherIndex;
 	private int portsFetcherIndex;
-	private PrintWriter output;
 
-	/*
-	 * @see net.azib.ipscan.exporters.Exporter#getLabel()
-	 */
-	public String getLabel() {
+	public String getId() {
 		return "exporter.ipList";
 	}
 
-	/*
-	 * @see net.azib.ipscan.exporters.Exporter#getFilenameExtension()
-	 */
 	public String getFilenameExtension() {
 		return "lst";
 	}
-
-	/*
-	 * @see net.azib.ipscan.exporters.Exporter#setAppend(boolean)
-	 */
-	public void setAppend(boolean append) {
-		// no difference in this fetcher
-	}
-
-	/*
-	 * @see net.azib.ipscan.exporters.Exporter#start(java.io.OutputStream, String)
-	 */
-	public void start(OutputStream outputStream, String feederInfo) {
-		output = new PrintWriter(new OutputStreamWriter(outputStream));
-	}
-
-	/*
-	 * @see net.azib.ipscan.exporters.Exporter#end()
-	 */
-	public void end() throws IOException {
-		if (output.checkError()) {
-			throw new IOException();
-		}
-	}
 	
-	/*
-	 * @see net.azib.ipscan.exporters.Exporter#setFetchers(String[])
-	 */
 	public void setFetchers(String[] fetcherNames) throws IOException {
 		ipFetcherIndex = findFetcherByLabel("fetcher.ip", fetcherNames);
 		portsFetcherIndex = findFetcherByLabel("fetcher.ports", fetcherNames);
@@ -90,9 +54,6 @@ public class IPListExporter implements Exporter {
 		throw new ExporterException("fetcher.notFound");
 	}
 
-	/*
-	 * @see net.azib.ipscan.exporters.Exporter#nextAdressResults(InetAddress, Object[])
-	 */
 	public void nextAdressResults(Object[] results) throws IOException {
 		String address = results[ipFetcherIndex].toString(); 
 		String portList;
@@ -109,12 +70,5 @@ public class IPListExporter implements Exporter {
 				output.println(address + DELIMETER + i.next());
 			}
 		}
-	}
-
-	/*
-	 * @see net.azib.ipscan.exporters.Exporter#clone()
-	 */
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
 	}
 }

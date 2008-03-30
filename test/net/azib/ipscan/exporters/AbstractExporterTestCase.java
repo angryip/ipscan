@@ -38,7 +38,7 @@ public abstract class AbstractExporterTestCase {
 
 	@Test
 	public void testLabel() {
-		assertNotNull(Labels.getLabel(exporter.getLabel()));
+		assertNotNull(Labels.getLabel(exporter.getId()));
 	}
 
 	@Test

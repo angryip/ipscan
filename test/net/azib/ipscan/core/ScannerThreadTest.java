@@ -44,7 +44,7 @@ public class ScannerThreadTest {
 
 		assertTrue("ScannerThread should not clear the results - otherwise rescanning will not work", 
 				    scanningResults.areResultsAvailable());
-		assertEquals("Scanner Thread", thread.getName());
+		assertEquals(thread.getClass().getSimpleName(), thread.getName());
 		assertTrue(thread.isDaemon());
 		verify(registry, feeder);
 	}
