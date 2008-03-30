@@ -44,7 +44,7 @@ public class ScannerTest {
 	public void setUp() throws Exception {
 		fetcherRegistry = createMock(FetcherRegistry.class);
 		expect(fetcherRegistry.getSelectedFetchers()).andReturn(
-			Arrays.asList(new Fetcher[] {new FakeFetcher(), new AnotherFakeFetcher(), new AbortingFetcher(), new FailingFetcher()})
+			Arrays.asList(new Fetcher[] {new FakeFetcher(), new AnotherFakeFetcher(), new AddressAbortingFetcher(), new FailingFetcher()})
 		);
 		replay(fetcherRegistry);
 		
@@ -72,12 +72,36 @@ public class ScannerTest {
 	}
 	
 	@Test
+	public void testScanInterrupted() throws Exception {
+		fetcherRegistry = createMock(FetcherRegistry.class);
+		expect(fetcherRegistry.getSelectedFetchers()).andReturn(
+			Arrays.asList(new Fetcher[] {new PlainValueFetcher(), new InterruptedFetcher(), new PlainValueFetcher()})
+		);
+		replay(fetcherRegistry);
+		scanner = new Scanner(fetcherRegistry);
+		
+		// scan the local host
+		ScanningResult scanningResult = new ScanningResult(InetAddress.getLocalHost(), 3);
+		scanner.scan(InetAddress.getLocalHost(), scanningResult);
+		
+		assertEquals(ResultType.UNKNOWN, scanningResult.getType());
+		assertEquals(InetAddress.getLocalHost(), scanningResult.getAddress());
+		assertEquals(3, scanningResult.getValues().size());
+		assertEquals("plainValue", scanningResult.getValues().get(0));
+		assertEquals(NotScannedValue.INSTANCE, scanningResult.getValues().get(1));
+		assertEquals(NotScannedValue.INSTANCE, scanningResult.getValues().get(2));
+		
+		// reset interrupted flag
+		assertTrue(Thread.interrupted());
+	}
+
+	@Test
 	public void testInit() throws Exception {
 		scanner.init();
 		
 		assertTrue(initCalled.contains(FakeFetcher.class));
 		assertTrue(initCalled.contains(AnotherFakeFetcher.class));
-		assertTrue(initCalled.contains(AbortingFetcher.class));
+		assertTrue(initCalled.contains(AddressAbortingFetcher.class));
 	}
 	
 	@Test
@@ -86,7 +110,7 @@ public class ScannerTest {
 		
 		assertTrue(cleanupCalled.contains(FakeFetcher.class));
 		assertTrue(cleanupCalled.contains(AnotherFakeFetcher.class));
-		assertTrue(cleanupCalled.contains(AbortingFetcher.class));
+		assertTrue(cleanupCalled.contains(AddressAbortingFetcher.class));
 	}
 
 	private class FakeFetcher extends AbstractFetcher {
@@ -129,7 +153,7 @@ public class ScannerTest {
 		}
 	}
 	
-	private class AbortingFetcher extends FakeFetcher {
+	private class AddressAbortingFetcher extends FakeFetcher {
 		public Object scan(ScanningSubject subject) {
 			subject.abortAddressScanning();
 			return "666 ms";
@@ -139,6 +163,20 @@ public class ScannerTest {
 	private class FailingFetcher extends FakeFetcher {
 		public Object scan(ScanningSubject subject) {
 			fail("This fetcher should not be reached");
+			return null;
+		}
+	}
+	
+	private class PlainValueFetcher extends FakeFetcher {
+		public Object scan(ScanningSubject subject) {
+			return "plainValue";
+		}
+	}
+	
+	private class InterruptedFetcher extends FakeFetcher {
+		public Object scan(ScanningSubject subject) {
+			// set the interrupt flag (actually this is set from the outside when user wants to kill the threads)
+			Thread.currentThread().interrupt();
 			return null;
 		}
 	}

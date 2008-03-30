@@ -76,7 +76,7 @@ public class StatisticsDialog extends AbstractModalDialog {
 		FontData sysFontData = currentDisplay.getSystemFont().getFontData()[0];
 		titleLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(iconLabel), null, new FormAttachment(0), null));
 		titleLabel.setFont(new Font(null, sysFontData.getName(), sysFontData.getHeight()+3, sysFontData.getStyle() | SWT.BOLD));
-		titleLabel.setText(Labels.getLabel(scanningResults.getScanInfo().isFinished() ? "text.scan.finished" : "text.scan.incomplete"));
+		titleLabel.setText(Labels.getLabel(scanningResults.getScanInfo().isCompletedNormally() ? "text.scan.completed" : "text.scan.incomplete"));
 			
 		Text statsText = new Text(shell, SWT.MULTI | SWT.READ_ONLY);
 		statsText.setBackground(currentDisplay.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));

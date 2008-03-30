@@ -1,6 +1,6 @@
 Before 3.0:
 
-* make proper interruption of threads
+* NAV and NSV -> enum
 * getLabel() vs getId() + getName() in plugins
 * command-line scanning start
 * fetcher-specific options

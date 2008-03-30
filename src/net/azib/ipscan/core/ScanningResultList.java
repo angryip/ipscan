@@ -183,7 +183,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		selectedFetchers = new ArrayList<Fetcher>(fetcherRegistry.getSelectedFetchers());		
 		// store feeder info for later
 		this.feederInfo = feeder.getInfo();
-		this.feederName = Labels.getLabel(feeder.getLabel());
+		this.feederName = Labels.getLabel(feeder.getId());
 		// recreate info
 		this.info = new ScanInfo();
 	}
@@ -284,6 +284,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	public static class ScanInfo {
 		
 		boolean scanFinished;
+		boolean scanAborted;
 
 		long startTime = System.currentTimeMillis();
 		long endTime;
@@ -324,10 +325,10 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		}
 
 		/**
-		 * @return true if the scan is comepleted (not aborted) 
+		 * @return true if the scan is completed (not aborted) 
 		 */
-		public boolean isFinished() {
-			return scanFinished;
+		public boolean isCompletedNormally() {
+			return scanFinished && !scanAborted;
 		}
 	}
 	
@@ -337,6 +338,10 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 			if (state == ScanningState.IDLE) {
 				info.endTime = System.currentTimeMillis();
 				info.scanFinished = true;
+			}
+			else 
+			if (state == ScanningState.KILLING) {
+				info.scanAborted = true;
 			}
 		}
 	}

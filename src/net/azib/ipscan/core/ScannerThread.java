@@ -6,10 +6,14 @@
 package net.azib.ipscan.core;
 
 import java.net.InetAddress;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
+import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.feeders.Feeder;
 
 /**
@@ -25,7 +29,9 @@ public class ScannerThread extends Thread {
 	private Feeder feeder;
 	private ScanningProgressCallback progressCallback;
 	private ScanningResultsCallback resultsCallback;
-	private int runningThreads;
+	
+	private volatile int runningThreads;
+	private Set<IPThread> threads = Collections.synchronizedSet(new HashSet<IPThread>());
 	
 	private ScannerConfig config;
 	
@@ -86,7 +92,9 @@ public class ScannerThread extends Thread {
 				progressCallback.updateProgress(address, runningThreads, feeder.percentageComplete());
 				
 				// scan each IP in parallel, in a separate thread
-				new IPThread(address, result).start();
+				IPThread thread = new IPThread(address, result);
+				threads.add(thread);
+				thread.start();
 			}
 			catch (InterruptedException e) {
 				return;
@@ -96,9 +104,22 @@ public class ScannerThread extends Thread {
 		// inform that no more addresses left
 		stateMachine.stop();
 		
+		StateTransitionListener killHandler = new StateTransitionListener() {
+			public void transitionTo(ScanningState state) {
+				if (state == ScanningState.KILLING) {
+					// try to interrupt all threads if we get to killing state
+					synchronized (threads) {
+						for (Thread t : threads) {
+							t.interrupt();
+						}
+					}
+				}
+			}
+		};
+
 		// now wait for all threads, which are still running
 		try {
-			// TODO: make a better and safer implementation (synchronization?)
+			stateMachine.addTransitionListener(killHandler);
 			while (runningThreads > 0) {
 				Thread.sleep(200);
 				progressCallback.updateProgress(null, runningThreads, 100);
@@ -106,6 +127,9 @@ public class ScannerThread extends Thread {
 		} 
 		catch (InterruptedException e) {
 			// nothing special to do here
+		}
+		finally {
+			stateMachine.removeTransitionListener(killHandler);
 		}
 		
 		scanner.cleanup();
@@ -136,6 +160,7 @@ public class ScannerThread extends Thread {
 			}
 			finally {
 				runningThreads--;
+				threads.remove(this);
 			}
 		}
 	}

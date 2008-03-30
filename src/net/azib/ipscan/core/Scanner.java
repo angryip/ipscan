@@ -39,14 +39,19 @@ public class Scanner {
 		
 		// populate results
 		int fetcherIndex = 0;
+		boolean isScanningInterrupted = false;
 		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
-			if (!scanningSubject.isAddressScanningAborted()) {
-				Object value = fetcher.scan(scanningSubject);
-				result.setValue(fetcherIndex, value != null ? value : NotAvailableValue.INSTANCE);
+			Object value = NotScannedValue.INSTANCE;
+			if (!scanningSubject.isAddressScanningAborted() && !isScanningInterrupted) {
+				// run the fetcher
+				value = fetcher.scan(scanningSubject);
+				// check if scanning was interrupted
+				isScanningInterrupted = Thread.currentThread().isInterrupted();
+				if (value == null)
+					value = isScanningInterrupted ? NotScannedValue.INSTANCE : NotAvailableValue.INSTANCE;
 			}
-			else {
-				result.setValue(fetcherIndex, NotScannedValue.INSTANCE);
-			}
+			// store the value
+			result.setValue(fetcherIndex, value);
 			fetcherIndex++;
 		}
 		

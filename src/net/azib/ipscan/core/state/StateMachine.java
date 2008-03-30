@@ -44,6 +44,14 @@ public class StateMachine {
 	}
 	
 	/**
+	 * Unregisters the listener
+	 * @param killHandler
+	 */
+	public void removeTransitionListener(StateTransitionListener listener) {
+		transitionListeners.remove(listener);
+	}
+
+	/**
 	 * Transitions to the specified state, notifying all listeners.
 	 * Note: this method is intentionally not public, use specific methods to make desired transitions.
 	 * @param newState

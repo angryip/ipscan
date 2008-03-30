@@ -23,6 +23,7 @@ import java.util.List;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.ScanningResultList.ScanInfo;
+import net.azib.ipscan.core.ScanningResultList.StopScanningListener;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.values.NotScannedValue;
@@ -68,12 +69,12 @@ public class ScanningResultListTest {
 		StateMachine stateMachine = new StateMachine();
 		scanningResults = new ScanningResultList(fetcherRegistry, stateMachine);
 		scanningResults.initNewScan(createMockFeeder("inff"));
-		assertFalse(scanningResults.getScanInfo().isFinished());
+		assertFalse(scanningResults.getScanInfo().isCompletedNormally());
 		stateMachine.transitionToNext();
 		stateMachine.startScanning();
 		stateMachine.stop();
 		stateMachine.complete();
-		assertTrue(scanningResults.getScanInfo().isFinished());
+		assertTrue(scanningResults.getScanInfo().isCompletedNormally());
 	}
 	
 	@Test
@@ -193,8 +194,20 @@ public class ScanningResultListTest {
 		scanningResults.clear();
 		assertFalse("Results must be empty", scanningResults.iterator().hasNext());
 		assertFalse(scanningResults.areResultsAvailable());
-		assertFalse(scanningResults.getScanInfo().isFinished());
+		assertFalse(scanningResults.getScanInfo().isCompletedNormally());
 		assertNull(scanningResults.getFetchers());
+	}
+	
+	@Test
+	public void testScanInfoCompletedNormally() throws Exception {
+		StopScanningListener stopListener = scanningResults.new StopScanningListener();
+		assertFalse(scanningResults.getScanInfo().isCompletedNormally());
+		
+		stopListener.transitionTo(ScanningState.IDLE);
+		assertTrue(scanningResults.getScanInfo().isCompletedNormally());
+
+		stopListener.transitionTo(ScanningState.KILLING);
+		assertFalse(scanningResults.getScanInfo().isCompletedNormally());
 	}
 	
 	@Test 
@@ -213,7 +226,7 @@ public class ScanningResultListTest {
 		assertEquals("I am the best Feeder in the World!", scanningResults.getFeederInfo());
 		assertEquals(Labels.getLabel("feeder.range"), scanningResults.getFeederName());
 		assertNotNull(scanningResults.getScanInfo());
-		assertFalse("Scanning is not yet finished", scanningResults.getScanInfo().isFinished());
+		assertFalse("Scanning is not yet finished", scanningResults.getScanInfo().isCompletedNormally());
 		assertEquals(0, scanningResults.getScanInfo().getHostCount());
 		assertEquals(0, scanningResults.getScanInfo().getAliveCount());
 		assertEquals(0, scanningResults.getScanInfo().getWithPortsCount());
@@ -320,13 +333,13 @@ public class ScanningResultListTest {
 	public void testScanTime() throws Exception {
 		ScanInfo scanInfo = scanningResults.getScanInfo();
 
-		assertFalse(scanInfo.isFinished());
+		assertFalse(scanInfo.isCompletedNormally());
 		long scanTime1 = scanInfo.getScanTime();
 		assertTrue("Scanning has just begun", scanTime1 >= 0 && scanTime1 <= 10);
 		
 		Thread.sleep(10);
 		scanningResults.new StopScanningListener().transitionTo(ScanningState.IDLE);
-		assertTrue(scanInfo.isFinished());
+		assertTrue(scanInfo.isCompletedNormally());
 		long scanTime2 = scanInfo.getScanTime();
 		assertTrue("Scanning has just finished", scanTime2 >= 10 && scanTime1 <= 20);
 		assertTrue(scanTime1 != scanTime2);
