@@ -11,8 +11,7 @@ import net.azib.ipscan.config.Config;
  *
  * @author Anton Keks
  */
-public class NotScanned implements Comparable<Object> {
-	
+public class NotScanned extends Empty {
 	public static final NotScanned VALUE = new NotScanned();
 	
 	private NotScanned() {}
@@ -23,14 +22,12 @@ public class NotScanned implements Comparable<Object> {
 	public String toString() {
 		return Config.getConfig().forScanner().notScannedText;
 	}
-	
-	public int compareTo(Object obj) {
-		if (this == obj)
-			return 0;
-		if (obj == null)
-			return 1;
-		// this value is smaller than any other object (except null)
-		return -1;
-	}
 
+	@Override
+	public int compareTo(Object that) {
+		// n/s > n/a
+		if (that == NotAvailable.VALUE)
+			return sortDirection;
+		return super.compareTo(that);
+	}
 }

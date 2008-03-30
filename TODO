@@ -1,5 +1,6 @@
 Before 3.0:
 
+* Empty.NOT_SCANNED & Empty.NOT_AVAILABLE and write sorting tests!!!
 * rename abortScanning() to something else
 * command-line scanning start
 * fetcher-specific options
@@ -13,6 +14,7 @@ Before 3.0:
 * Tools -> Select -> Invert Selection
 * public XSL for XMLExporter
 * Exporter appending functionality exposed to the user
+* make Display: status bar right-clickable
 
 Later:
 

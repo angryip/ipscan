@@ -20,6 +20,8 @@ import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.core.values.Empty;
+import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
@@ -237,9 +239,14 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	 * @param ascending
 	 */
 	public synchronized void sort(int columnIndex, boolean ascending) {
+		// this ensures that all Empty objects are always at the end
+		Empty.setSortDirection(ascending);
+		// setup comparator
 		resultsComparator.index = columnIndex;
 		resultsComparator.ascending = ascending;
+		
 		Collections.sort(resultList, resultsComparator);
+		
 		// now rebuild indexes
 		resultIndexes = new HashMap<InetAddress, Integer>(RESULT_LIST_INITIAL_SIZE);
 		for (int i = 0; i < resultList.size(); i++) {
@@ -357,13 +364,24 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 			Object val2 = r2.getValues().get(index);
 			
 			int result;
+			if (val1 == val2) {
+				result = 0;
+			}
+			else
 			if (val1.getClass() == val2.getClass() && val1 instanceof Comparable) {
 				// both are the same type and Comparable
 				result = ((Comparable)val1).compareTo(val2);
 			}
 			else {
-				// otherwise compare String representations
-				result = val1.toString().compareTo(val2.toString());
+				if (val1 instanceof Empty)
+					result = ((Empty)val1).compareTo(val2);
+				else
+				if (val2 instanceof Empty)
+					result = -((Empty)val2).compareTo(val1);
+				else {
+					// otherwise compare String representations
+					result = val1.toString().compareToIgnoreCase(val2.toString());
+				}
 			}
 			
 			return result * (ascending ? 1 : -1);

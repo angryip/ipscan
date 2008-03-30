@@ -30,7 +30,7 @@ public class NotAvailableTest {
 	public void testCompareTo() throws Exception {
 		assertTrue(Comparable.class.isAssignableFrom(NotAvailable.class));
 		assertEquals(0, NotAvailable.VALUE.compareTo(NotAvailable.VALUE));
-		assertEquals(-1, NotAvailable.VALUE.compareTo("Hello"));
+		assertEquals(1, NotAvailable.VALUE.compareTo("Hello"));
 		assertEquals(1, NotAvailable.VALUE.compareTo(null));
 	}
 }
