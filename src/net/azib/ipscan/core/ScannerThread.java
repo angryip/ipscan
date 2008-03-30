@@ -21,7 +21,7 @@ import net.azib.ipscan.feeders.Feeder;
  * 
  * @author Anton Keks
  */
-public class ScannerThread extends Thread {
+public class ScannerThread extends Thread implements StateTransitionListener {
 
 	private Scanner scanner;
 	private StateMachine stateMachine;
@@ -36,7 +36,8 @@ public class ScannerThread extends Thread {
 	private ScannerConfig config;
 	
 	public ScannerThread(Feeder feeder, Scanner scanner, StateMachine stateMachine, ScanningProgressCallback progressCallback, ScanningResultList scanningResults, ScannerConfig scannerConfig, ScanningResultsCallback resultsCallback) {
-		super("Scanner Thread");
+		super();
+		setName(getClass().getSimpleName());
 		this.config = scannerConfig;
 		this.stateMachine = stateMachine;
 		this.progressCallback = progressCallback;
@@ -62,92 +63,100 @@ public class ScannerThread extends Thread {
 	}
 
 	public void run() {
-		while(feeder.hasNext() && stateMachine.inState(ScanningState.SCANNING)) {
-			try {
-				// make a small delay between thread creation
-				Thread.sleep(config.threadDelay);
-								
-				if (runningThreads >= config.maxThreads) {
-					// skip this iteration until more threads can be created
-					continue;
-				}
-				
-				// retrieve the next IP address to scan
-				final InetAddress address = feeder.next();
-				
-				// check if this is a likely broadcast address and needs to be skipped
-				if (config.skipBroadcastAddresses && InetAddressUtils.isLikelyBroadcast(address)) {
-					continue;
-				}
-
-				// now increment the number of active threads, because we are going
-				// to start a new one below
-				runningThreads++;
-								
-				// prepare results receiver for upcoming results
-				ScanningResult result = scanningResultList.createResult(address);
-				resultsCallback.prepareForResults(result);
-				
-				// notify listeners of the progress we are doing
-				progressCallback.updateProgress(address, runningThreads, feeder.percentageComplete());
-				
-				// scan each IP in parallel, in a separate thread
-				IPThread thread = new IPThread(address, result);
-				threads.add(thread);
-				thread.start();
-			}
-			catch (InterruptedException e) {
-				return;
-			}
-		}
-		
-		// inform that no more addresses left
-		stateMachine.stop();
-		
-		StateTransitionListener killHandler = new StateTransitionListener() {
-			public void transitionTo(ScanningState state) {
-				if (state == ScanningState.KILLING) {
-					// try to interrupt all threads if we get to killing state
-					synchronized (threads) {
-						for (Thread t : threads) {
-							t.interrupt();
-						}
-					}
-				}
-			}
-		};
-
-		// now wait for all threads, which are still running
 		try {
-			stateMachine.addTransitionListener(killHandler);
-			while (runningThreads > 0) {
-				Thread.sleep(200);
-				progressCallback.updateProgress(null, runningThreads, 100);
+			// register this scan specific listener
+			stateMachine.addTransitionListener(this);
+
+			while(feeder.hasNext() && stateMachine.inState(ScanningState.SCANNING)) {
+				try {
+					// make a small delay between thread creation
+					Thread.sleep(config.threadDelay);
+									
+					if (runningThreads >= config.maxThreads) {
+						// skip this iteration until more threads can be created
+						continue;
+					}
+					
+					// retrieve the next IP address to scan
+					final InetAddress address = feeder.next();
+					
+					// check if this is a likely broadcast address and needs to be skipped
+					if (config.skipBroadcastAddresses && InetAddressUtils.isLikelyBroadcast(address)) {
+						continue;
+					}
+	
+					// now increment the number of active threads, because we are going
+					// to start a new one below
+					runningThreads++;
+									
+					// prepare results receiver for upcoming results
+					ScanningResult result = scanningResultList.createResult(address);
+					resultsCallback.prepareForResults(result);
+					
+					// notify listeners of the progress we are doing
+					progressCallback.updateProgress(address, runningThreads, feeder.percentageComplete());
+					
+					// scan each IP in parallel, in a separate thread
+					IPThread thread = new IPThread(address, result);
+					threads.add(thread);
+					thread.start();
+				}
+				catch (InterruptedException e) {
+					return;
+				}
 			}
-		} 
-		catch (InterruptedException e) {
-			// nothing special to do here
+			
+			// inform that no more addresses left
+			stateMachine.stop();
+			
+			try {				
+				// now wait for all threads, which are still running
+				while (runningThreads > 0) {
+					Thread.sleep(200);
+					progressCallback.updateProgress(null, runningThreads, 100);
+				}
+			} 
+			catch (InterruptedException e) {
+				// just end the loop
+			}
+			
+			scanner.cleanup();
+			
+			// finally, the scanning is complete
+			stateMachine.complete();
 		}
 		finally {
-			stateMachine.removeTransitionListener(killHandler);
+			// unregister specific listener
+			stateMachine.removeTransitionListener(this);
 		}
-		
-		scanner.cleanup();
-		
-		// finally, the scanning is complete
-		stateMachine.complete();		
+	}
+	
+	/**
+	 * Local stateMachine transition listener.
+	 * Currently used to kill all running threads if user says so.
+	 */
+	public void transitionTo(ScanningState state) {
+		if (state == ScanningState.KILLING) {
+			// try to interrupt all threads if we get to killing state
+			synchronized (threads) {
+				for (Thread t : threads) {
+					t.interrupt();
+				}
+			}
+		}
 	}
 				
 	/**
 	 * This thread gets executed for each scanned IP address to do the actual
 	 * scanning.
 	 */
-	private class IPThread extends Thread {
+	class IPThread extends Thread {
 		private InetAddress address;
 		private ScanningResult result;
 		
 		IPThread(InetAddress address, ScanningResult result) {
-			super("IP Thread: " + address.getHostAddress());
+			super();
+			setName(getClass().getSimpleName() + ": " + address.getHostAddress());
 			setDaemon(true);
 			this.address = address;
 			this.result = result;

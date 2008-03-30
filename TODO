@@ -1,6 +1,7 @@
 Before 3.0:
 
 * NAV and NSV -> enum
+* rename abortScanning() to something else
 * getLabel() vs getId() + getName() in plugins
 * command-line scanning start
 * fetcher-specific options
