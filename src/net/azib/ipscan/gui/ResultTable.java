@@ -166,6 +166,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		// remove all items from the real storage first
 		scanningResults.clear();
 		super.removeAll();
+		setSortColumn(null);
 	}
 	
 	/**
