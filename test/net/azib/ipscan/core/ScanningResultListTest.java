@@ -26,7 +26,7 @@ import net.azib.ipscan.core.ScanningResultList.ScanInfo;
 import net.azib.ipscan.core.ScanningResultList.StopScanningListener;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
-import net.azib.ipscan.core.values.NotScannedValue;
+import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
@@ -310,7 +310,7 @@ public class ScanningResultListTest {
 	@Test
 	public void testFindText() throws Exception {
 		scanningResults.registerAtIndex(0, scanningResults.createResult(InetAddress.getByName("127.9.9.1")));
-		scanningResults.getResult(0).setValue(1, NotScannedValue.INSTANCE);
+		scanningResults.getResult(0).setValue(1, NotScanned.VALUE);
 		scanningResults.registerAtIndex(1, scanningResults.createResult(InetAddress.getByName("127.9.9.2")));
 		scanningResults.getResult(1).setValue(1, new Long(123456789L));
 		scanningResults.registerAtIndex(2, scanningResults.createResult(InetAddress.getByName("127.9.9.3")));

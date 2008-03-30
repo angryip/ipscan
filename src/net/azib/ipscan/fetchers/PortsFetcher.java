@@ -17,9 +17,9 @@ import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.PortIterator;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.ScanningResult.ResultType;
-import net.azib.ipscan.core.values.NotAvailableValue;
-import net.azib.ipscan.core.values.NotScannedValue;
-import net.azib.ipscan.core.values.NumericListValue;
+import net.azib.ipscan.core.values.NotAvailable;
+import net.azib.ipscan.core.values.NotScanned;
+import net.azib.ipscan.core.values.NumericRangeList;
 
 /**
  * PortsFetcher scans TCP ports.
@@ -51,7 +51,7 @@ public class PortsFetcher extends AbstractFetcher {
 	@Override
 	public String getFullName() {
 		int numPorts = new PortIterator(config.portString).size();
-		return getName() + " " + (numPorts > 0 ? "[" + numPorts + "]" : NotAvailableValue.INSTANCE);
+		return getName() + " " + (numPorts > 0 ? "[" + numPorts + "]" : NotAvailable.VALUE);
 	}
 
 	/**
@@ -142,14 +142,14 @@ public class PortsFetcher extends AbstractFetcher {
 	public Object scan(ScanningSubject subject) {
 		boolean portsScanned = scanPorts(subject);
 		if (!portsScanned)
-			return NotScannedValue.INSTANCE;
+			return NotScanned.VALUE;
 		
 		SortedSet<Integer> openPorts = getOpenPorts(subject);
 		boolean portsFound = openPorts.size() > 0;
 		if (portsFound) {
 			subject.setResultType(ResultType.WITH_PORTS);
 		}
-		return portsFound ? new NumericListValue(openPorts, displayAsRanges) : null;
+		return portsFound ? new NumericRangeList(openPorts, displayAsRanges) : null;
 	}
 
 	public void init() {

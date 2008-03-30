@@ -18,8 +18,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import net.azib.ipscan.core.ScanningResult.ResultType;
-import net.azib.ipscan.core.values.NotAvailableValue;
-import net.azib.ipscan.core.values.NotScannedValue;
+import net.azib.ipscan.core.values.NotAvailable;
+import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.fetchers.AbstractFetcher;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
@@ -66,9 +66,9 @@ public class ScannerTest {
 		assertEquals(InetAddress.getLocalHost(), scanningResult.getAddress());
 		assertEquals(4, scanningResult.getValues().size());
 		assertEquals("blah", scanningResult.getValues().get(0));
-		assertEquals(NotAvailableValue.INSTANCE, scanningResult.getValues().get(1));
+		assertEquals(NotAvailable.VALUE, scanningResult.getValues().get(1));
 		assertEquals("666 ms", scanningResult.getValues().get(2));
-		assertEquals(NotScannedValue.INSTANCE, scanningResult.getValues().get(3));
+		assertEquals(NotScanned.VALUE, scanningResult.getValues().get(3));
 	}
 	
 	@Test
@@ -88,8 +88,8 @@ public class ScannerTest {
 		assertEquals(InetAddress.getLocalHost(), scanningResult.getAddress());
 		assertEquals(3, scanningResult.getValues().size());
 		assertEquals("plainValue", scanningResult.getValues().get(0));
-		assertEquals(NotScannedValue.INSTANCE, scanningResult.getValues().get(1));
-		assertEquals(NotScannedValue.INSTANCE, scanningResult.getValues().get(2));
+		assertEquals(NotScanned.VALUE, scanningResult.getValues().get(1));
+		assertEquals(NotScanned.VALUE, scanningResult.getValues().get(2));
 		
 		// reset interrupted flag
 		assertTrue(Thread.interrupted());

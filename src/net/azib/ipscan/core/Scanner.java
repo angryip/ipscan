@@ -7,8 +7,8 @@ package net.azib.ipscan.core;
 
 import java.net.InetAddress;
 
-import net.azib.ipscan.core.values.NotAvailableValue;
-import net.azib.ipscan.core.values.NotScannedValue;
+import net.azib.ipscan.core.values.NotAvailable;
+import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 
@@ -41,14 +41,14 @@ public class Scanner {
 		int fetcherIndex = 0;
 		boolean isScanningInterrupted = false;
 		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
-			Object value = NotScannedValue.INSTANCE;
+			Object value = NotScanned.VALUE;
 			if (!scanningSubject.isAddressScanningAborted() && !isScanningInterrupted) {
 				// run the fetcher
 				value = fetcher.scan(scanningSubject);
 				// check if scanning was interrupted
 				isScanningInterrupted = Thread.currentThread().isInterrupted();
 				if (value == null)
-					value = isScanningInterrupted ? NotScannedValue.INSTANCE : NotAvailableValue.INSTANCE;
+					value = isScanningInterrupted ? NotScanned.VALUE : NotAvailable.VALUE;
 			}
 			// store the value
 			result.setValue(fetcherIndex, value);

@@ -5,7 +5,7 @@
 package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.core.values.InetAddressValue;
+import net.azib.ipscan.core.values.InetAddressHolder;
 
 /**
  * Dummy fetcher, which is able to return the textual representation 
@@ -22,7 +22,7 @@ public class IPFetcher extends AbstractFetcher {
 	}
 
 	public Object scan(ScanningSubject subject) {
-		return new InetAddressValue(subject.getAddress());
+		return new InetAddressHolder(subject.getAddress());
 	}
 
 }

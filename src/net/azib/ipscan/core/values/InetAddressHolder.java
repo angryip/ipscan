@@ -13,17 +13,17 @@ import java.net.InetAddress;
  *
  * @author Anton Keks
  */
-public class InetAddressValue implements Comparable<InetAddressValue> {
+public class InetAddressHolder implements Comparable<InetAddressHolder> {
 	
 	private String s;
 	private byte[] a;
 
-	public InetAddressValue(InetAddress address) {
+	public InetAddressHolder(InetAddress address) {
 		s = address.getHostAddress();
 		a = address.getAddress();
 	}
 
-	public int compareTo(InetAddressValue that) {
+	public int compareTo(InetAddressHolder that) {
 		byte[] b1 = this.a;
 		byte[] b2 = that.a;
 		
@@ -59,7 +59,7 @@ public class InetAddressValue implements Comparable<InetAddressValue> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final InetAddressValue other = (InetAddressValue) obj;
+		final InetAddressHolder other = (InetAddressHolder) obj;
 		if (s == null) {
 			if (other.s != null)
 				return false;

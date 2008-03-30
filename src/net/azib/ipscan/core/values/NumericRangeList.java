@@ -16,7 +16,7 @@ import java.util.Collection;
  *
  * @author Anton Keks
  */
-public class NumericListValue {
+public class NumericRangeList implements Comparable<NumericRangeList> {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -28,7 +28,7 @@ public class NumericListValue {
 	 * @param numbers Collections of Numbers (must be sorted for ranges to work) 
 	 * @param displayAsRanges whether toString() outputs all number or their ranges 
 	 */
-	public NumericListValue(Collection<Integer> numbers, boolean displayAsRanges) {
+	public NumericRangeList(Collection<Integer> numbers, boolean displayAsRanges) {
 		// copy numbers to an array (unfortunately toArray() cannot be used because int[] is not an Object[])
 		this.numbers = new int[numbers.size()];
 		int c = 0;
@@ -80,5 +80,17 @@ public class NumericListValue {
 		}
 		
 		return sb.toString();
+	}
+
+	public int compareTo(NumericRangeList that) {
+		// compare length
+		int result = this.numbers.length - that.numbers.length;
+		if (result == 0) {
+			// compare contents if length is the same
+			for (int i = 0; i < this.numbers.length && result == 0; i++) {
+				result = this.numbers[i] - that.numbers[i];
+			}
+		}
+		return result;
 	}
 }

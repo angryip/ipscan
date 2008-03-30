@@ -13,8 +13,8 @@ import java.net.Socket;
 
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.core.values.NotAvailableValue;
-import net.azib.ipscan.core.values.NumericListValue;
+import net.azib.ipscan.core.values.NotAvailable;
+import net.azib.ipscan.core.values.NumericRangeList;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +37,7 @@ public class PortsFetcherTest extends AbstractFetcherTestCase {
 	@Test
 	public void numberOfPortsInFullName() throws Exception {
 		config.portString = "";
-		assertEquals(fetcher.getName() + " " + NotAvailableValue.INSTANCE, fetcher.getFullName());
+		assertEquals(fetcher.getName() + " " + NotAvailable.VALUE, fetcher.getFullName());
 
 		config.portString = "1-3";
 		assertEquals(fetcher.getName() + " [3]", fetcher.getFullName());
@@ -107,7 +107,7 @@ public class PortsFetcherTest extends AbstractFetcherTestCase {
 		synchronized (server) {
 			server.wait();
 		}
-		NumericListValue value = (NumericListValue) fetcher.scan(new ScanningSubject(InetAddress.getLocalHost()));
+		NumericRangeList value = (NumericRangeList) fetcher.scan(new ScanningSubject(InetAddress.getLocalHost()));
 		assertEquals(config.portString, value.toString());
 		
 		fetcher.cleanup();

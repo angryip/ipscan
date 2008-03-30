@@ -7,23 +7,23 @@ import net.azib.ipscan.config.Config;
 
 /**
  * The value for displaying in the result list, meaning that the actual value is unknown,
- * because it wasn't resolved successfully.
+ * because it was not scanned.
  *
  * @author Anton Keks
  */
-public class NotAvailableValue implements Comparable<Object> {
+public class NotScanned implements Comparable<Object> {
 	
-	public static final NotAvailableValue INSTANCE = new NotAvailableValue();
+	public static final NotScanned VALUE = new NotScanned();
 	
-	private NotAvailableValue() {}
+	private NotScanned() {}
 
 	/**
 	 * Displays a user-friendly text string :-)
 	 */
 	public String toString() {
-		return Config.getConfig().forScanner().notAvailableText;
+		return Config.getConfig().forScanner().notScannedText;
 	}
-
+	
 	public int compareTo(Object obj) {
 		if (this == obj)
 			return 0;
@@ -32,5 +32,5 @@ public class NotAvailableValue implements Comparable<Object> {
 		// this value is smaller than any other object (except null)
 		return -1;
 	}
-	
+
 }

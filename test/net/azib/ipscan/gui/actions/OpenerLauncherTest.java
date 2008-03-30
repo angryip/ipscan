@@ -18,8 +18,8 @@ import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
-import net.azib.ipscan.core.values.InetAddressValue;
-import net.azib.ipscan.core.values.NotAvailableValue;
+import net.azib.ipscan.core.values.InetAddressHolder;
+import net.azib.ipscan.core.values.NotAvailable;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
@@ -47,9 +47,9 @@ public class OpenerLauncherTest {
 		ScanningResultList scanningResults = new ScanningResultList(fetcherRegistry);
 		scanningResults.initNewScan(createMockFeeder("info"));
 		ScanningResult result = scanningResults.createResult(InetAddress.getByName("127.0.0.1"));
-		result.setValue(0, new InetAddressValue(InetAddress.getByName("127.0.0.1")));
+		result.setValue(0, new InetAddressHolder(InetAddress.getByName("127.0.0.1")));
 		result.setValue(1, "HOSTNAME");
-		result.setValue(2, NotAvailableValue.INSTANCE);
+		result.setValue(2, NotAvailable.VALUE);
 		scanningResults.registerAtIndex(0, result);
 		
 		OpenerLauncher ol = new OpenerLauncher(fetcherRegistry, scanningResults);
@@ -57,7 +57,7 @@ public class OpenerLauncherTest {
 		assertEquals("\\\\127.0.0.1", ol.prepareOpenerStringForItem("\\\\${fetcher.ip}", 0));
 		assertEquals("HOSTNAME$$$127.0.0.1xxx${}", ol.prepareOpenerStringForItem("${fetcher.hostname}$$$${fetcher.ip}xxx${}", 0));
 		assertEquals("http://127.0.0.1:80/www", ol.prepareOpenerStringForItem("http://${fetcher.ip}:80/www", 0));
-		assertEquals(NotAvailableValue.INSTANCE.toString() + ", xx", ol.prepareOpenerStringForItem("${fetcher.ping}, xx", 0));
+		assertEquals(NotAvailable.VALUE.toString() + ", xx", ol.prepareOpenerStringForItem("${fetcher.ping}, xx", 0));
 		
 		try {
 			ol.prepareOpenerStringForItem("${noSuchFetcher}", 0);
