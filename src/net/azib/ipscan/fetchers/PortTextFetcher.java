@@ -48,7 +48,7 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 		try {
 			// TODO: support multiple ports and check them sequentially
 			// TODO: use adapted port timeout if it is configured to do so			
-			socket.connect(new InetSocketAddress(subject.getAddress(), port), scannerConfig.portTimeout);
+			socket.connect(new InetSocketAddress(subject.getAddress(), port), subject.getAdaptedPortTimeout());
 			socket.setTcpNoDelay(true);
 			socket.setSoTimeout(scannerConfig.portTimeout);
 			socket.setSoLinger(true, 0);
