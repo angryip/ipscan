@@ -1,6 +1,5 @@
 Before 3.0:
 
-* bug: setComment() doesn't look good
 * bug: Ctrl+D restars the feeder!!!
 * command-line scanning start
 * fetcher-specific options

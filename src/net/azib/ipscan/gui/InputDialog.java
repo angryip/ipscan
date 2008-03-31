@@ -23,10 +23,10 @@ import org.eclipse.swt.widgets.Text;
  */
 public class InputDialog extends AbstractModalDialog {
 
-	private Label messageLabel = null;
-	private Text text = null;
-	private Button okButton = null;
-	private Button cancelButton = null;
+	Label messageLabel = null;
+	Text text = null;
+	Button okButton = null;
+	Button cancelButton = null;
 	
 	private String message;
 	
@@ -73,13 +73,11 @@ public class InputDialog extends AbstractModalDialog {
 	}
 	
 	private void setText(String text) {
-		if (text != null) {
-			this.text.setText(text);
-			this.text.setSelection(0, -1);
-			this.text.pack();
-			this.text.setLayoutData(LayoutHelper.formData(Math.max(this.text.getSize().x, 310), SWT.DEFAULT, new FormAttachment(0), null, new FormAttachment(messageLabel), null));
-			this.text.setFocus();
-		}
+		this.text.setText(text != null ? text : "");
+		this.text.setSelection(0, -1);
+		this.text.pack();
+		this.text.setLayoutData(LayoutHelper.formData(Math.max(this.text.getSize().x, 310), SWT.DEFAULT, new FormAttachment(0), null, new FormAttachment(messageLabel), null));
+		this.text.setFocus();
 	}
 
 	/**
@@ -95,7 +93,7 @@ public class InputDialog extends AbstractModalDialog {
 		// layout the shell
 		shell.pack();
 		// time to show!
-		super.open();
+		open();
 		return message;
 	}
 	/**
