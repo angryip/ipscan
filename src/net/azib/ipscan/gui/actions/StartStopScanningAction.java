@@ -9,11 +9,11 @@ import java.net.InetAddress;
 
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.core.ScannerThread;
-import net.azib.ipscan.core.ScannerThreadFactory;
+import net.azib.ipscan.core.ScannerDispatcherThread;
+import net.azib.ipscan.core.ScannerDispatcherThreadFactory;
 import net.azib.ipscan.core.ScanningProgressCallback;
 import net.azib.ipscan.core.ScanningResult;
-import net.azib.ipscan.core.ScanningResultsCallback;
+import net.azib.ipscan.core.ScanningResultCallback;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.core.state.ScanningState;
@@ -39,8 +39,8 @@ import org.eclipse.swt.widgets.MessageBox;
  */
 public class StartStopScanningAction implements SelectionListener, ScanningProgressCallback, StateTransitionListener {
 	
-	private ScannerThreadFactory scannerThreadFactory;
-	private ScannerThread scannerThread;
+	private ScannerDispatcherThreadFactory scannerThreadFactory;
+	private ScannerDispatcherThread scannerThread;
 	private GUIConfig guiConfig;
 	private PingerRegistry pingerRegistry;
 
@@ -78,7 +78,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		buttonTexts[ScanningState.KILLING.ordinal()] = Labels.getLabel("button.kill");
 	}
 	
-	public StartStopScanningAction(ScannerThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, PingerRegistry pingerRegistry, Button startStopButton, GUIConfig guiConfig) {
+	public StartStopScanningAction(ScannerDispatcherThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, PingerRegistry pingerRegistry, Button startStopButton, GUIConfig guiConfig) {
 		this(startStopButton.getDisplay());
 
 		this.scannerThreadFactory = scannerThreadFactory;
@@ -196,9 +196,9 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	/**
 	 * @return the appropriate ResultsCallback instance, depending on the configured display method.
 	 */
-	private final ScanningResultsCallback createResultsCallback() {
+	private final ScanningResultCallback createResultsCallback() {
 		switch (guiConfig.displayMethod) {
-			default: return new ScanningResultsCallback() {
+			default: return new ScanningResultCallback() {
 				public void prepareForResults(ScanningResult result) {
 					resultTable.addOrUpdateResultRow(result);
 				}
@@ -207,7 +207,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				}
 			};
 			
-			case ALIVE: return new ScanningResultsCallback() {
+			case ALIVE: return new ScanningResultCallback() {
 				public void prepareForResults(ScanningResult result) {
 				}
 				public void consumeResults(ScanningResult result) {
@@ -216,7 +216,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				}
 			};
 			
-			case PORTS: return new ScanningResultsCallback() {
+			case PORTS: return new ScanningResultCallback() {
 				public void prepareForResults(ScanningResult result) {
 				}
 				public void consumeResults(ScanningResult result) {

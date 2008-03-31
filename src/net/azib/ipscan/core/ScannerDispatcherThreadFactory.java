@@ -16,21 +16,21 @@ import net.azib.ipscan.feeders.Feeder;
  *
  * @author Anton Keks
  */
-public class ScannerThreadFactory {
+public class ScannerDispatcherThreadFactory {
 	
 	private ScanningResultList scanningResults;
 	private Scanner scanner;
 	private StateMachine stateMachine;
 	private ScannerConfig scannerConfig;
 	
-	public ScannerThreadFactory(ScanningResultList scanningResults, Scanner scanner, StateMachine stateMachine, ScannerConfig scannerConfig) {
+	public ScannerDispatcherThreadFactory(ScanningResultList scanningResults, Scanner scanner, StateMachine stateMachine, ScannerConfig scannerConfig) {
 		this.scanningResults = scanningResults;
 		this.scanner = scanner;
 		this.stateMachine = stateMachine;
 		this.scannerConfig = scannerConfig;
 	}
 
-	public ScannerThread createScannerThread(Feeder feeder, ScanningProgressCallback progressCallback, ScanningResultsCallback resultsCallback) {
-		return new ScannerThread(feeder, scanner, stateMachine, progressCallback, scanningResults, scannerConfig, resultsCallback);
+	public ScannerDispatcherThread createScannerThread(Feeder feeder, ScanningProgressCallback progressCallback, ScanningResultCallback resultsCallback) {
+		return new ScannerDispatcherThread(feeder, scanner, stateMachine, progressCallback, scanningResults, scannerConfig, resultsCallback);
 	}
 }

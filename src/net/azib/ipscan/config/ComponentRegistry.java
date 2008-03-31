@@ -6,7 +6,7 @@
 package net.azib.ipscan.config;
 
 import net.azib.ipscan.core.Scanner;
-import net.azib.ipscan.core.ScannerThreadFactory;
+import net.azib.ipscan.core.ScannerDispatcherThreadFactory;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.core.net.PingerRegistryImpl;
@@ -110,7 +110,7 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(ScanningResultList.class);
 		container.registerComponentImplementation(Scanner.class);
 		container.registerComponentImplementation(StateMachine.class);
-		container.registerComponentImplementation(ScannerThreadFactory.class);
+		container.registerComponentImplementation(ScannerDispatcherThreadFactory.class);
 		
 		// GUI follows (TODO: move GUI to a separate place)
 		

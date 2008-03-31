@@ -27,7 +27,7 @@ import org.junit.Test;
  *
  * @author Anton Keks
  */
-public class ScannerThreadTest {
+public class ScannerDispatcherThreadTest {
 	
 	@Test
 	public void testConstruction() throws Exception {
@@ -45,7 +45,7 @@ public class ScannerThreadTest {
 		ScannerConfig config = createMock(ScannerConfig.class);
 		config.maxThreads = 10;
 		
-		ScannerThread thread = new ScannerThread(feeder, new Scanner(registry), null, null, scanningResults, config, null);
+		ScannerDispatcherThread thread = new ScannerDispatcherThread(feeder, new Scanner(registry), null, null, scanningResults, config, null);
 
 		assertTrue("ScannerThread should not clear the results - otherwise rescanning will not work", 
 				    scanningResults.areResultsAvailable());
@@ -60,7 +60,7 @@ public class ScannerThreadTest {
 	
 	@Test
 	public void threadFactoryProducesDaemons() throws Exception {
-		ScannerThread thread = createMock(ScannerThread.class, (Method)null);
+		ScannerDispatcherThread thread = createMock(ScannerDispatcherThread.class, (Method)null);
 		thread.threadGroup = new ThreadGroup("foo");
 		Thread t = thread.newThread(createMock(Runnable.class));
 		assertTrue(t.isDaemon());

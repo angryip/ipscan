@@ -10,7 +10,7 @@ package net.azib.ipscan.core;
  *  
  * @author Anton Keks
  */
-public interface ScanningResultsCallback {
+public interface ScanningResultCallback {
 
 	/**
 	 * This method is called just before starting to retrieve

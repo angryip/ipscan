@@ -23,7 +23,7 @@ import net.azib.ipscan.feeders.Feeder;
  * 
  * @author Anton Keks
  */
-public class ScannerThread extends Thread implements ThreadFactory, StateTransitionListener {
+public class ScannerDispatcherThread extends Thread implements ThreadFactory, StateTransitionListener {
 	
 	private static final long UI_UPDATE_INTERVAL = 100;
 
@@ -38,9 +38,9 @@ public class ScannerThread extends Thread implements ThreadFactory, StateTransit
 	ExecutorService threadPool;
 	
 	private ScanningProgressCallback progressCallback;
-	private ScanningResultsCallback resultsCallback;
+	private ScanningResultCallback resultsCallback;
 	
-	public ScannerThread(Feeder feeder, Scanner scanner, StateMachine stateMachine, ScanningProgressCallback progressCallback, ScanningResultList scanningResults, ScannerConfig scannerConfig, ScanningResultsCallback resultsCallback) {
+	public ScannerDispatcherThread(Feeder feeder, Scanner scanner, StateMachine stateMachine, ScanningProgressCallback progressCallback, ScanningResultList scanningResults, ScannerConfig scannerConfig, ScanningResultCallback resultsCallback) {
 		setName(getClass().getSimpleName());
 		this.config = scannerConfig;
 		this.stateMachine = stateMachine;
@@ -98,7 +98,7 @@ public class ScannerThread extends Thread implements ThreadFactory, StateTransit
 						resultsCallback.prepareForResults(result);
 																
 						// scan each IP in parallel, in a separate thread
-						IPScanningTask scanningTask = new IPScanningTask(address, result);
+						AddressScannerTask scanningTask = new AddressScannerTask(address, result);
 						threadPool.execute(scanningTask);
 					}
 					
@@ -169,11 +169,11 @@ public class ScannerThread extends Thread implements ThreadFactory, StateTransit
 	 * This thread gets executed for each scanned IP address to do the actual
 	 * scanning.
 	 */
-	class IPScanningTask implements Runnable {
+	class AddressScannerTask implements Runnable {
 		private InetAddress address;
 		private ScanningResult result;
 		
-		IPScanningTask(InetAddress address, ScanningResult result) {
+		AddressScannerTask(InetAddress address, ScanningResult result) {
 			this.address = address;
 			this.result = result;
 			numActiveThreads.incrementAndGet();
