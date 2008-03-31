@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.state.ScanningState;
@@ -23,6 +24,8 @@ import net.azib.ipscan.feeders.Feeder;
  * @author Anton Keks
  */
 public class ScannerThread extends Thread implements ThreadFactory, StateTransitionListener {
+	
+	private static final long UI_UPDATE_INTERVAL = 100;
 
 	private ScannerConfig config;
 	private Scanner scanner;
@@ -30,7 +33,7 @@ public class ScannerThread extends Thread implements ThreadFactory, StateTransit
 	private ScanningResultList scanningResultList;
 	private Feeder feeder;
 	
-	private volatile int activeThreadCount;
+	private AtomicInteger numActiveThreads = new AtomicInteger();
 	private ThreadGroup threadGroup;
 	private ExecutorService threadPool;
 	
@@ -70,35 +73,40 @@ public class ScannerThread extends Thread implements ThreadFactory, StateTransit
 		try {
 			// register this scan specific listener
 			stateMachine.addTransitionListener(this);
+			long lastNotifyTime = 0; 
 
 			try {
+				InetAddress address = null;
 				while(feeder.hasNext() && stateMachine.inState(ScanningState.SCANNING)) {
 					// make a small delay between thread creation
 					Thread.sleep(config.threadDelay);
-							
-					if (activeThreadCount >= config.maxThreads) {
-						// skip this iteration until more threads can be created
-						continue;
+					
+					// see if this iteration must be skipped until more threads can be created
+					boolean canStartNewThread = numActiveThreads.intValue() < config.maxThreads;
+					
+					if (canStartNewThread) {					
+						// retrieve the next IP address to scan
+						address = feeder.next();
+						
+						// check if this is a likely broadcast address and needs to be skipped
+						if (config.skipBroadcastAddresses && InetAddressUtils.isLikelyBroadcast(address)) {
+							continue;
+						}
+		
+						// prepare results receiver for upcoming results
+						ScanningResult result = scanningResultList.createResult(address);
+						resultsCallback.prepareForResults(result);
+																
+						// scan each IP in parallel, in a separate thread
+						IPScanningTask scanningTask = new IPScanningTask(address, result);
+						threadPool.execute(scanningTask);
 					}
 					
-					// retrieve the next IP address to scan
-					final InetAddress address = feeder.next();
-					
-					// check if this is a likely broadcast address and needs to be skipped
-					if (config.skipBroadcastAddresses && InetAddressUtils.isLikelyBroadcast(address)) {
-						continue;
+					// notify listeners of the progress we are doing (max 5 times per second)
+					if (System.currentTimeMillis() - lastNotifyTime >= UI_UPDATE_INTERVAL) {
+						lastNotifyTime = System.currentTimeMillis();
+						progressCallback.updateProgress(address, numActiveThreads.intValue(), feeder.percentageComplete());
 					}
-	
-					// prepare results receiver for upcoming results
-					ScanningResult result = scanningResultList.createResult(address);
-					resultsCallback.prepareForResults(result);
-										
-					// scan each IP in parallel, in a separate thread
-					IPScanningTask scanningTask = new IPScanningTask(address, result);
-					threadPool.execute(scanningTask);
-
-					// notify listeners of the progress we are doing
-					progressCallback.updateProgress(address, activeThreadCount, feeder.percentageComplete());
 				}
 			}
 			catch (InterruptedException e) {
@@ -110,8 +118,8 @@ public class ScannerThread extends Thread implements ThreadFactory, StateTransit
 		
 			try {				
 				// now wait for all threads, which are still running
-				while (!threadPool.awaitTermination(200, TimeUnit.MILLISECONDS)) {
-					progressCallback.updateProgress(null, activeThreadCount, 100);
+				while (!threadPool.awaitTermination(UI_UPDATE_INTERVAL, TimeUnit.MILLISECONDS)) {
+					progressCallback.updateProgress(null, numActiveThreads.intValue(), 100);
 				}
 			} 
 			catch (InterruptedException e) {
@@ -168,7 +176,7 @@ public class ScannerThread extends Thread implements ThreadFactory, StateTransit
 		IPScanningTask(InetAddress address, ScanningResult result) {
 			this.address = address;
 			this.result = result;
-			activeThreadCount++;
+			numActiveThreads.incrementAndGet();
 		}
 
 		public void run() {
@@ -180,7 +188,7 @@ public class ScannerThread extends Thread implements ThreadFactory, StateTransit
 				resultsCallback.consumeResults(result);
 			}
 			finally {
-				activeThreadCount--;
+				numActiveThreads.decrementAndGet();
 			}
 		}
 	}
