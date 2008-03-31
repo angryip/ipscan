@@ -31,5 +31,4 @@ public abstract class Empty implements Comparable<Object> {
 		// this value is either smaller or greater than any other object (except null)
 		return sortDirection;
 	}
-	
 }

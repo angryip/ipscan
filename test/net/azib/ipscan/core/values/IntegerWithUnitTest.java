@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.azib.ipscan.core;
+package net.azib.ipscan.core.values;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -27,7 +27,7 @@ public class IntegerWithUnitTest {
 	
 	@Test
 	public void testToString() throws Exception {
-		assertEquals("151" + Labels.getLabel("fetcher.value.ms"), new IntegerWithUnit(151, "fetcher.value.ms").toString());
+		assertEquals("151" + Labels.getLabel("fetcher.unit.ms"), new IntegerWithUnit(151, "ms").toString());
 	}
 
 	@Test

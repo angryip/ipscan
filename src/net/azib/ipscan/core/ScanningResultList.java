@@ -9,7 +9,6 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -20,7 +19,6 @@ import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
-import net.azib.ipscan.core.values.Empty;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
@@ -49,7 +47,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	/** Information and statistics about the last scan */
 	ScanInfo info;
 	
-	private ResultsComparator resultsComparator = new ResultsComparator();
+	private ScanningResultComparator resultsComparator = new ScanningResultComparator();
 	
 	public ScanningResultList(FetcherRegistry fetcherRegistry) {
 		this.fetcherRegistry = fetcherRegistry;
@@ -238,12 +236,8 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	 * @param ascending
 	 */
 	public synchronized void sort(int columnIndex, boolean ascending) {
-		// this ensures that all Empty objects are always at the end
-		Empty.setSortDirection(ascending);
 		// setup comparator
-		resultsComparator.index = columnIndex;
-		resultsComparator.ascending = ascending;
-		
+		resultsComparator.byIndex(columnIndex, ascending);
 		Collections.sort(resultList, resultsComparator);
 		
 		// now rebuild indexes
@@ -349,41 +343,6 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 			if (state == ScanningState.KILLING) {
 				info.scanAborted = true;
 			}
-		}
-	}
-	
-	static class ResultsComparator implements Comparator<ScanningResult> {
-		
-		int index;
-		boolean ascending;
-
-		@SuppressWarnings("unchecked")
-		public int compare(ScanningResult r1, ScanningResult r2) {
-			Object val1 = r1.getValues().get(index);
-			Object val2 = r2.getValues().get(index);
-			
-			int result;
-			if (val1 == val2) {
-				result = 0;
-			}
-			else
-			if (val1.getClass() == val2.getClass() && val1 instanceof Comparable) {
-				// both are the same type and Comparable
-				result = ((Comparable)val1).compareTo(val2);
-			}
-			else {
-				if (val1 instanceof Empty)
-					result = ((Empty)val1).compareTo(val2);
-				else
-				if (val2 instanceof Empty)
-					result = -((Empty)val2).compareTo(val1);
-				else {
-					// otherwise compare String representations
-					result = val1.toString().compareToIgnoreCase(val2.toString());
-				}
-			}
-			
-			return result * (ascending ? 1 : -1);
 		}
 	}
 }

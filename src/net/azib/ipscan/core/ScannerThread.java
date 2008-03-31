@@ -34,8 +34,8 @@ public class ScannerThread extends Thread implements ThreadFactory, StateTransit
 	private Feeder feeder;
 	
 	private AtomicInteger numActiveThreads = new AtomicInteger();
-	private ThreadGroup threadGroup;
-	private ExecutorService threadPool;
+	ThreadGroup threadGroup;
+	ExecutorService threadPool;
 	
 	private ScanningProgressCallback progressCallback;
 	private ScanningResultsCallback resultsCallback;

@@ -78,7 +78,7 @@ public class PingFetcher extends AbstractFetcher {
 			subject.abortAddressScanning();
 		}
 		
-		return result.isAlive() ? new IntegerWithUnit(result.getAverageTime(), "fetcher.value.ms") : null;
+		return result.isAlive() ? new IntegerWithUnit(result.getAverageTime(), "ms") : null;
 	}
 
 	public void init() {

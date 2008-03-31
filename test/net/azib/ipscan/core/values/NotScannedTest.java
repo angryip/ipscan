@@ -30,8 +30,12 @@ public class NotScannedTest {
 	public void testCompareTo() throws Exception {
 		assertTrue(Comparable.class.isAssignableFrom(NotScanned.class));
 		assertEquals(0, NotScanned.VALUE.compareTo(NotScanned.VALUE));
+		Empty.setSortDirection(true);
 		assertEquals(1, NotScanned.VALUE.compareTo("Hello"));
 		assertEquals(1, NotScanned.VALUE.compareTo(null));
+		Empty.setSortDirection(false);
+		assertEquals(-1, NotScanned.VALUE.compareTo("Hello"));
+		Empty.setSortDirection(true);
 	}
 
 }
