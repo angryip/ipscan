@@ -56,7 +56,7 @@ public class PortsFetcherTest extends AbstractFetcherTestCase {
 	}
 	
 	@Test
-	public void scanAbortedOnInterrupt() throws Exception {
+	public void scanInterrupted() throws Exception {
 		// these ports are unlikely to be open :-)
 		config.portString = "65530-65535";
 		fetcher.init();

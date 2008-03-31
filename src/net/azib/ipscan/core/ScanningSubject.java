@@ -35,7 +35,7 @@ public class ScanningSubject {
 	/** The result type constant value, can be modified by some Fetchers */
 	private ResultType resultType = ResultType.UNKNOWN;
 	/** Whether we need to continue scanning or it can be aborted */
-	private boolean isScanningAborted = false;
+	private boolean isAborted = false;
 	/** Adapted after pinging port timeout - any fetcher can make use of it */
 	int adaptedPortTimeout = -1; 
 	
@@ -91,17 +91,17 @@ public class ScanningSubject {
 	}
 	
 	/**
-	 * @return true if a fetcher has instructed to abort scanning 
+	 * @return true if a fetcher has instructed to abort scanning of this address 
 	 */
-	public boolean isAddressScanningAborted() {
-		return isScanningAborted;
+	public boolean isAddressAborted() {
+		return isAborted;
 	}
 
 	/**
-	 * Can be used to inform the scanner to abort scanning
+	 * Can be used to inform the scanner to abort scanning of this address
 	 */
 	public void abortAddressScanning() {
-		this.isScanningAborted = true;
+		this.isAborted = true;
 	}
 
 	/**

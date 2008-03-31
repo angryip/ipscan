@@ -42,7 +42,7 @@ public class Scanner {
 		boolean isScanningInterrupted = false;
 		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
 			Object value = NotScanned.VALUE;
-			if (!scanningSubject.isAddressScanningAborted() && !isScanningInterrupted) {
+			if (!scanningSubject.isAddressAborted() && !isScanningInterrupted) {
 				// run the fetcher
 				value = fetcher.scan(scanningSubject);
 				// check if scanning was interrupted
