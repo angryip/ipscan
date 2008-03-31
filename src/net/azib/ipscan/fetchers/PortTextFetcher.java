@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -72,6 +73,9 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 		}
 		catch (SocketTimeoutException e) {
 			// no information
+		}
+		catch (SocketException e) {
+			// connection reset
 		}
 		catch (IOException e) {
 			LOG.log(Level.FINE, subject.getAddress().toString(), e);
