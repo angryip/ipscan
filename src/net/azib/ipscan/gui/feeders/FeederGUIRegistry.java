@@ -29,7 +29,7 @@ public class FeederGUIRegistry implements Iterable<AbstractFeederGUI> {
 	private final Combo feederSelectionCombo;	
 	private final GUIConfig guiConfig;
 	
-	private Feeder lastScanFeeder;
+	Feeder lastScanFeeder;
 	private AbstractFeederGUI currentFeederGUI;
 	
 	public FeederGUIRegistry(AbstractFeederGUI[] allTheFeeders, Combo feederSelectionCombo, GUIConfig guiConfig) {
