@@ -20,8 +20,7 @@ public class FileFeederTest {
 	@Test
 	public void testHappyPath() throws FeederException {
 		StringReader reader = new StringReader("10.11.12.13 10.11.12.14 10.11.12.15");
-		FileFeeder fileFeeder = new FileFeeder();
-		fileFeeder.initialize(reader);
+		FileFeeder fileFeeder = new FileFeeder(reader);
 		assertTrue(fileFeeder.hasNext());
 		assertEquals("10.11.12.13", fileFeeder.next().getHostAddress());
 		assertTrue(fileFeeder.hasNext());
@@ -34,8 +33,8 @@ public class FileFeederTest {
 	@Test
 	public void testStringParams() {
 		try {
-			FileFeeder fileFeeder = new FileFeeder();
-			assertEquals(1, fileFeeder.initialize(new String[] {new File(LabelsTest.findBaseDir(), "build.xml").getPath()}));
+			new FileFeeder(new File(LabelsTest.findBaseDir(), "build.xml").getPath());
+			fail();
 		}
 		catch (FeederException e) {
 			assertEquals("file.nothingFound", e.getMessage());
@@ -45,7 +44,7 @@ public class FileFeederTest {
 	@Test
 	public void testNoFile() {
 		try {
-			new FileFeeder().initialize("no_such_file.txt");
+			new FileFeeder("no_such_file.txt");
 			fail();
 		}
 		catch (FeederException e) {
@@ -57,7 +56,7 @@ public class FileFeederTest {
 	public void testNothingFound() {
 		try {
 			StringReader reader = new StringReader("no ip addresses here");			
-			new FileFeeder().initialize(reader);
+			new FileFeeder(reader);
 			fail();
 		}
 		catch (FeederException e) {
@@ -67,7 +66,6 @@ public class FileFeederTest {
 	
 	@Test
 	public void testExtractFromDifferentFormats() {
-		
 		assertAddressCount("The 127.0.0.1 is the localhost IP,\n but 192.168.255.255 is probably a broadcast IP", 2);
 		
 		assertAddressCount("1.1.1.,1245\n2.2.2.2:123\n3.3.3.3.3.3\n\n\n9.9.9.9999", 2);
@@ -90,8 +88,7 @@ public class FileFeederTest {
 	@Test
 	public void testGetPercentageComplete() throws Exception {
 		StringReader reader = new StringReader("1.2.3.4, 2.3.4.5, mega cool 0.0.0.0");
-		FileFeeder fileFeeder = new FileFeeder();
-		fileFeeder.initialize(reader);
+		FileFeeder fileFeeder = new FileFeeder(reader);
 		assertEquals(0, fileFeeder.percentageComplete());
 		fileFeeder.next();
 		assertEquals(33, fileFeeder.percentageComplete());
@@ -101,7 +98,7 @@ public class FileFeederTest {
 		assertEquals(100, fileFeeder.percentageComplete());
 		
 		reader = new StringReader("255.255.255.255");
-		fileFeeder.initialize(reader);
+		fileFeeder = new FileFeeder(reader);
 		assertEquals(0, fileFeeder.percentageComplete());
 		fileFeeder.next();
 		assertEquals(100, fileFeeder.percentageComplete());
@@ -109,16 +106,14 @@ public class FileFeederTest {
 	
 	@Test
 	public void testGetInfo() {
-		FileFeeder fileFeeder = new FileFeeder();
 		StringReader reader = new StringReader("255.255.255.255, 2.3.4.5, mega cool 0.0.0.0");
-		fileFeeder.initialize(reader);
+		FileFeeder fileFeeder = new FileFeeder(reader);
 		assertEquals("3", fileFeeder.getInfo());
 	}
 
 	private void assertAddressCount(String s, int addressCount) {
 		StringReader reader = new StringReader(s);			
-		FileFeeder feeder = new FileFeeder();
-		feeder.initialize(reader);
+		FileFeeder feeder = new FileFeeder(reader);
 		int numAddresses = 0;
 		while (feeder.hasNext()) {
 			feeder.next();

@@ -81,7 +81,7 @@ public class OpenerLauncherTest {
 	private Feeder createMockFeeder(String feederInfo) {
 		Feeder feeder = createMock(Feeder.class);
 		expect(feeder.getInfo()).andReturn(feederInfo);
-		expect(feeder.getId()).andReturn("feeder.range");
+		expect(feeder.getName()).andReturn("feeder.range");
 		replay(feeder);
 		return feeder;
 	}

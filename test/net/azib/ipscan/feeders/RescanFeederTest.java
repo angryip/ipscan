@@ -9,6 +9,8 @@ package net.azib.ipscan.feeders;
 import static org.junit.Assert.*;
 import static org.easymock.EasyMock.*;
 
+import net.azib.ipscan.config.Labels;
+
 import org.junit.Test;
 
 /**
@@ -18,22 +20,24 @@ import org.junit.Test;
  */
 public class RescanFeederTest {
 	
-	private Feeder feeder = new RescanFeeder(createMockFeeder());
+	private Feeder feeder;
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testEmpty() throws Exception {
-		feeder.initialize();
+		new RescanFeeder(null);
 	}
 	
 	@Test
 	public void testDelegatedMethods() {
+		feeder = new RescanFeeder(createMockFeeder(), "123");
 		assertEquals("SomeInfo", feeder.getInfo());
 		assertEquals("someLabel", feeder.getId());
+		assertEquals(Labels.getLabel("feeder.rescan.of") + "someName", feeder.getName());
 	}
 	
 	@Test
 	public void testFunctionality() throws Exception {		
-		assertEquals(3, feeder.initialize("127.0.0.15", "127.0.1.35", "127.0.2.2"));
+		feeder = new RescanFeeder(createMockFeeder(), "127.0.0.15", "127.0.1.35", "127.0.2.2");
 		
 		assertTrue(feeder.hasNext());
 		assertEquals(0, feeder.percentageComplete());
@@ -55,6 +59,7 @@ public class RescanFeederTest {
 		Feeder feeder = createMock(Feeder.class);
 		expect(feeder.getInfo()).andReturn("SomeInfo");
 		expect(feeder.getId()).andReturn("someLabel");
+		expect(feeder.getName()).andReturn("someName");
 		replay(feeder);
 		return feeder;
 	}

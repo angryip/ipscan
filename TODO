@@ -1,6 +1,6 @@
 Before 3.0:
 
-* bug: Ctrl+D restars the feeder!!!
+* add requestedPort to ScanningSubject and be able to init it from the IP:Port list files, respect it in the WebDetect and similar fetchers
 * command-line scanning start
 * fetcher-specific options
 * multiple port support web-detect
@@ -21,7 +21,7 @@ Before 3.0:
 * change cursor while scanning
 * show hours in statistics dialog
 * goto prev stuff (alternative shortcuts)
-* cretate Makefile :-)
+* create Makefile :-)
 
 Later:
 

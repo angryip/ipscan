@@ -29,6 +29,7 @@ public class FeederGUIRegistry implements Iterable<AbstractFeederGUI> {
 	private final Combo feederSelectionCombo;	
 	private final GUIConfig guiConfig;
 	
+	private Feeder lastScanFeeder;
 	private AbstractFeederGUI currentFeederGUI;
 	
 	public FeederGUIRegistry(AbstractFeederGUI[] allTheFeeders, Combo feederSelectionCombo, GUIConfig guiConfig) {
@@ -79,17 +80,22 @@ public class FeederGUIRegistry implements Iterable<AbstractFeederGUI> {
 	}
 
 	/**
-	 * @param items selected table items to derive IP addresses from
+	 * @return new Feeder initialized using the currently selected Feeder GUI
+	 */
+	public Feeder createFeeder() {
+		lastScanFeeder = current().createFeeder(); 
+		return lastScanFeeder;
+	}
+
+	/**
+	 * @param selection selected table items to derive IP addresses from
 	 * @return initialized instance of RescanFeeder
 	 */
-	public Feeder createRescanFeeder(TableItem[] items) {
-		// TODO: passing of currentFeederGUI.getFeeder() is probably wrong - we need to have the "real" feeder that was used for the previous scan 
-		Feeder feeder = new RescanFeeder(currentFeederGUI.getFeeder());
-		String[] addresses = new String[items.length];
-		for (int i = 0; i < items.length; i++) {
-			addresses[i] = items[i].getText();
+	public Feeder createRescanFeeder(TableItem[] selection) {
+		String[] addresses = new String[selection.length];
+		for (int i = 0; i < selection.length; i++) {
+			addresses[i] = selection[i].getText();
 		}
-		feeder.initialize(addresses);
-		return feeder;
+		return new RescanFeeder(lastScanFeeder, addresses);
 	}
 }

@@ -143,8 +143,8 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		pack();
 	}
 
-	public Feeder getFeeder() {
-		((RandomFeeder)feeder).initialize(ipPrototypeText.getText(), ipMaskCombo.getText(), countSpinner.getSelection());
+	public Feeder createFeeder() {
+		feeder = new RandomFeeder(ipPrototypeText.getText(), ipMaskCombo.getText(), countSpinner.getSelection());
 		return feeder;
 	}
 	

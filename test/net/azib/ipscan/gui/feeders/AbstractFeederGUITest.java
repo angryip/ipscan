@@ -39,9 +39,8 @@ public class AbstractFeederGUITest {
 				return "Mega Feeder";
 			}
 			
-			public Feeder getFeeder() {
-				feeder = new RangeFeeder();
-				feeder.initialize(new String[] {"127.0.0.1", "127.0.0.2"});
+			public Feeder createFeeder() {
+				feeder = new RangeFeeder("127.0.0.1", "127.0.0.2");
 				return feeder;
 			}
 			

@@ -32,17 +32,18 @@ public abstract class AbstractFeederGUI extends Composite {
 	 * Initializes a Feeder instance using the parameters, provided by the GUI.
 	 * @return initialized feeder instance
 	 */
-	public abstract Feeder getFeeder();
+	public abstract Feeder createFeeder();
 	
 	/**
 	 * @return the feeder name
 	 */
 	public String getFeederName() {
-		return Labels.getLabel(feeder.getId());
+		return feeder.getName();
 	}
 	
 	/**
 	 * For internal usage, returns the feeder-specific label
+	 * TODO: remove this method
 	 */
 	protected String getStringLabel(String name) {
 		return Labels.getLabel(feeder.getId() + '.' + name);
@@ -52,8 +53,7 @@ public abstract class AbstractFeederGUI extends Composite {
 	 * @return the feeder's name and the information about its current settings
 	 */
 	public String getInfo() {
-		// getFeeder() will probably double-initialize the feeder, but it is safer
-		return getFeederName() + ": " + getFeeder().getInfo();
+		return getFeederName() + ": " + createFeeder().getInfo();
 	}
 	
 	/**

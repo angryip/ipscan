@@ -12,23 +12,16 @@ import net.azib.ipscan.core.plugins.Pluggable;
  * Basically, classes implementing Feeder must provide an algorithm of 
  * sequentially generating the list of scanned IP addresses.
  * 
- * Feeders are created with an empty constructor only once in the applications life time.
- * All subsequent calls to the {@link #initialize(String[])} should reset the state of
- * the Feeder and begin a new "feeding" process.
+ * Implementations should be 'immutable', i.e. once created, they should not
+ * change their internal parameters (getInfo() must always return the same value).
+ * 
+ * A new instance of Feeder will be created for each scan, passing the required
+ * parameters to constructor. Default constructor should also be provided in order 
+ * to query name and id of the Feeder.
  * 
  * @author Anton Keks
  */
 public interface Feeder extends Pluggable {
-	
-	/**
-	 * Initializes the Feeder, passing Strings as initialization parameters.
-	 * This method is used for resetting the state of the Feeder (similar to a constructor)
-	 * in both GUI and console interfaces.
-	 * 
-	 * @param params the meaning and the number of these Strings depend on the implementation.
-	 * @return the number of consumed parameters
-	 */
-	public int initialize(String ... params);
 	
 	/**
 	 * @return true in case there are more IPs left for processing

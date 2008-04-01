@@ -155,8 +155,8 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		pack();
 	}
 
-	public Feeder getFeeder() {
-		((RangeFeeder)feeder).initialize(startIPText.getText(), endIPText.getText());
+	public Feeder createFeeder() {
+		feeder = new RangeFeeder(startIPText.getText(), endIPText.getText());
 		return feeder;
 	}
 	

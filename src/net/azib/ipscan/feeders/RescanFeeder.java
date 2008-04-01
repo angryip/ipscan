@@ -10,6 +10,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.azib.ipscan.config.Labels;
+
 /**
  * A Feeder for rescanning - takes a predefined list of IP addresses.
  * 
@@ -17,7 +19,7 @@ import java.util.List;
  */
 public class RescanFeeder extends AbstractFeeder {
 
-	private Feeder oldFeeder;
+	private Feeder originalFeeder;
 	private List<InetAddress> addresses;
 
 	int current;
@@ -26,36 +28,42 @@ public class RescanFeeder extends AbstractFeeder {
 	 * Initializes the RescanFeeder using the old feeder used for the real scan to delegate some calls to.
 	 * @param oldFeeder
 	 */
-	public RescanFeeder(Feeder oldFeeder) {
-		this.oldFeeder = oldFeeder;
+	public RescanFeeder(Feeder oldFeeder, String ... ips) {
+		this.originalFeeder = oldFeeder;
+		initAddresses(ips);
 	}
 
 	/**
 	 * @return the label of the "old" feeder
 	 */
 	public String getId() {
-		return oldFeeder.getId();
+		return originalFeeder.getId();
+	}
+	
+	@Override
+	public String getName() {
+		return Labels.getLabel("feeder.rescan.of") + originalFeeder.getName();
 	}
 
 	/**
 	 * Initializes the RescanFeeder with required parameters
 	 * @see Feeder#initialize(String[])
-	 * @param params an array of IP addresses as Strings
+	 * @param ips an array of IP addresses as Strings
 	 */
-	public int initialize(String ... params) {
-		if (params.length == 0)
+	private int initAddresses(String ... ips) {
+		if (ips.length == 0)
 			throw new IllegalArgumentException("no IP addresses specified");
 		
 		try {
-			addresses = new ArrayList<InetAddress>(params.length);
-			for (String s : params) {
+			addresses = new ArrayList<InetAddress>(ips.length);
+			for (String s : ips) {
 				addresses.add(InetAddress.getByName(s));
 			}
 		}
 		catch (UnknownHostException e) {
 			throw new FeederException("malformedIP");
 		}
-		return params.length;
+		return ips.length;
 	}
 		
 	public boolean hasNext() {
@@ -74,6 +82,6 @@ public class RescanFeeder extends AbstractFeeder {
 	 * @return the info of the "old" feeder
 	 */
 	public String getInfo() {
-		return oldFeeder.getInfo();
+		return originalFeeder.getInfo();
 	}
 }

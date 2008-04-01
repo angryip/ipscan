@@ -25,11 +25,7 @@ public class SmartTextFeeder extends AbstractFeeder {
 		return null;
 	}
 
-	public int initialize(String ... params) {
-		return 0;
-	}
-		
-	public void initialize(String text) {
+	public SmartTextFeeder(String text) {
 		// remove all whitespace
 		text = text.replaceAll("\\w+", "");
 		

@@ -35,20 +35,11 @@ public class RangeFeeder extends AbstractFeeder {
 	public String getId() {
 		return "feeder.range";
 	}
-
-	/**
-	 * Initializes the RangeFeeder with required parameters
-	 * @see Feeder#initialize(String[])
-	 * @param params 2 IP addresses:
-	 * 		params[0] - startIP
-	 * 		params[1] - endIP
-	 */
-	public int initialize(String ... params) {
-		initialize(params[0], params[1]);
-		return 2;
+	
+	public RangeFeeder() {
 	}
-		
-	public void initialize(String startIP, String endIP) {
+	
+	public RangeFeeder(String startIP, String endIP) {
 		try {
 			this.startIP = this.currentIP = InetAddress.getByName(startIP);
 			this.endIP = this.originalEndIP = InetAddress.getByName(endIP);
@@ -70,7 +61,7 @@ public class RangeFeeder extends AbstractFeeder {
 		// Warning: IPv4 specific code! 
 		long rawEndIP = OctetConverter.octetsToInt(this.endIP.getAddress());
 		long rawStartIP = OctetConverter.octetsToInt(this.startIP.getAddress());
-		// make 32-bit usigned values
+		// make 32-bit unsigned values
 		rawEndIP = rawEndIP >= 0 ? rawEndIP : rawEndIP + Integer.MAX_VALUE;
 		rawStartIP = rawStartIP >= 0 ? rawStartIP : rawStartIP + Integer.MAX_VALUE;
 		// compute 1% of the whole range

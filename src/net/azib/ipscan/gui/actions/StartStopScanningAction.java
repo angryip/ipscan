@@ -155,7 +155,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 						// start the scan from scratch!
 						resultTable.removeAll();
 						try {
-							scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.current().getFeeder(), StartStopScanningAction.this, createResultsCallback());
+							scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createFeeder(), StartStopScanningAction.this, createResultsCallback());
 							stateMachine.startScanning();
 						}
 						catch (RuntimeException e) {

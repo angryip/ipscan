@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
@@ -182,7 +181,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		selectedFetchers = new ArrayList<Fetcher>(fetcherRegistry.getSelectedFetchers());		
 		// store feeder info for later
 		this.feederInfo = feeder.getInfo();
-		this.feederName = Labels.getLabel(feeder.getId());
+		this.feederName = feeder.getName();
 		// recreate info
 		this.info = new ScanInfo();
 	}

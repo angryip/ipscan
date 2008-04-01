@@ -182,6 +182,7 @@ feeder.random.prototype=Base IP:
 feeder.random.mask=IP Mask:
 feeder.random.hostname=Hostname:
 feeder.random.count=Count:
+feeder.rescan.of=Rescan of\u0020
 fetcher.ip=IP
 fetcher.ip.info=Displays the scanned IP address.\nThis fetcher is mandatory and cannot be removed from the list.
 fetcher.ping=Ping

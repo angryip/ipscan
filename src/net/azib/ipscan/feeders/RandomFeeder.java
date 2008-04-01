@@ -34,26 +34,11 @@ public class RandomFeeder extends AbstractFeeder {
 	public String getId() {
 		return "feeder.random";
 	}
-
-	/**
-	 * Initializes the RandomFeeder with required parameters
-	 * @see Feeder#initialize(String[])
-	 * @param params 3 parameters:
-	 * 		params[0] prototypeIP
-	 * 		params[1] mask
-	 * 		params[2] count
-	 */
-	public int initialize(String ... params) {
-		try {
-			initialize(params[0], params[1], Integer.parseInt(params[2]));
-			return 3;
-		}
-		catch (NumberFormatException e) {
-			throw new FeederException("random.invalidCount");
-		}
-	}
 	
-	public void initialize(String prototypeIP, String mask, int count) {
+	public RandomFeeder() {
+	}
+
+	public RandomFeeder(String prototypeIP, String mask, int count) {
 		try {
 			this.prototypeBytes = InetAddress.getByName(prototypeIP).getAddress();
 		} 

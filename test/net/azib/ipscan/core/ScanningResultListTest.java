@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.ScanningResultList.ScanInfo;
 import net.azib.ipscan.core.ScanningResultList.StopScanningListener;
@@ -224,7 +223,7 @@ public class ScanningResultListTest {
 		assertTrue("initNewScan() must not clear results - otherwise rescanning will be broken", scanningResults.areResultsAvailable());
 		assertEquals("Cached Fetchers must be re-initilized", 1, scanningResults.getFetchers().size());
 		assertEquals("I am the best Feeder in the World!", scanningResults.getFeederInfo());
-		assertEquals(Labels.getLabel("feeder.range"), scanningResults.getFeederName());
+		assertEquals("feeder.range", scanningResults.getFeederName());
 		assertNotNull(scanningResults.getScanInfo());
 		assertFalse("Scanning is not yet finished", scanningResults.getScanInfo().isCompletedNormally());
 		assertEquals(0, scanningResults.getScanInfo().getHostCount());
@@ -357,7 +356,7 @@ public class ScanningResultListTest {
 	private Feeder createMockFeeder(String feederInfo) {
 		Feeder feeder = createMock(Feeder.class);
 		expect(feeder.getInfo()).andReturn(feederInfo);
-		expect(feeder.getId()).andReturn("feeder.range");
+		expect(feeder.getName()).andReturn("feeder.range");
 		replay(feeder);
 		return feeder;
 	}

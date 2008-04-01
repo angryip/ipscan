@@ -87,8 +87,8 @@ public class FileFeederGUI extends AbstractFeederGUI {
 		pack();
 	}
 
-	public Feeder getFeeder() {
-		((FileFeeder)feeder).initialize(fileNameText.getText());
+	public Feeder createFeeder() {
+		feeder = new FileFeeder(fileNameText.getText());
 		return feeder;
 	}
 	

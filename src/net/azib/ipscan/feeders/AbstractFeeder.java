@@ -18,5 +18,9 @@ public abstract class AbstractFeeder implements Feeder {
 	public String getName() {
 		return Labels.getLabel(getId());
 	}
-	
+
+	@Override
+	public String toString() {
+		return getName() + ": " + getInfo();
+	}
 }

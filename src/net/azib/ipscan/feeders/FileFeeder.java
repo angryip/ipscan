@@ -49,18 +49,10 @@ public class FileFeeder extends AbstractFeeder {
 		return "feeder.file";
 	}
 	
-	/**
-	 * Initializes the FileFeeder with required parameters
-	 * @see Feeder#initialize(String[])
-	 * @param params 1 parameter:
-	 * 		params[0] fileName
-	 */
-	public int initialize(String ... params) {
-		initialize(params[0]);
-		return 1;
+	public FileFeeder() {
 	}
-
-	public void initialize(String fileName) {
+	
+	public FileFeeder(String fileName) {
 		try {
 			initialize(new FileReader(fileName));
 		}
@@ -69,7 +61,11 @@ public class FileFeeder extends AbstractFeeder {
 		}
 	}
 	
-	void initialize(Reader reader) {
+	public FileFeeder(Reader reader) {
+		initialize(reader);
+	}
+	
+	private void initialize(Reader reader) {
 		BufferedReader fileReader = new BufferedReader(reader);
 		
 		totalAddresses = 0;
