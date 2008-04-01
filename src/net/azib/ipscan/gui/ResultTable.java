@@ -124,6 +124,9 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 			return;
 		getDisplay().syncExec(new Runnable() {
 			public void run() {
+				if (isDisposed())
+					return;
+				
 				if (scanningResults.isRegistered(result)) {
 					// just redraw the item
 					int index = scanningResults.update(result);

@@ -259,6 +259,7 @@ public class MainWindow {
 			shell.getDisplay().asyncExec(new Runnable() {
 				public void run() {
 					boolean enabled = state == ScanningState.IDLE;
+					feederArea.setEnabled(enabled);
 					feederSelectionCombo.setEnabled(enabled);
 					prefsButton.setEnabled(enabled);
 					fetchersButton.setEnabled(enabled);
