@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.ScanningSubject;
 
 /**
  * A Feeder for rescanning - takes a predefined list of IP addresses.
@@ -70,8 +71,8 @@ public class RescanFeeder extends AbstractFeeder {
 		return current < addresses.size(); 
 	}
 
-	public InetAddress next() {
-		return addresses.get(current++);
+	public ScanningSubject next() {
+		return new ScanningSubject(addresses.get(current++));
 	}
 
 	public int percentageComplete() {

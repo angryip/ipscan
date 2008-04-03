@@ -1,10 +1,11 @@
 /**
- * 
+ * This file is a part of Angry IP Scanner source code,
+ * see http://www.azib.net/ for more information.
+ * Licensed under GPLv2.
  */
 package net.azib.ipscan.feeders;
 
-import java.net.InetAddress;
-
+import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.plugins.Pluggable;
 
 /**
@@ -31,7 +32,7 @@ public interface Feeder extends Pluggable {
 	/**
 	 * @return the next IP for processing
 	 */
-	public InetAddress next();
+	public ScanningSubject next();
 	
 	/**
 	 * @return value from 0 to 100, describing the amount of work already done

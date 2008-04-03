@@ -9,6 +9,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import net.azib.ipscan.core.InetAddressUtils;
+import net.azib.ipscan.core.ScanningSubject;
 
 import org.savarese.vserv.tcpip.OctetConverter;
 
@@ -74,11 +75,11 @@ public class RangeFeeder extends AbstractFeeder {
 		return !currentIP.equals(endIP); 
 	}
 
-	public InetAddress next() {
+	public ScanningSubject next() {
 		percentageComplete += percentageIncrement;
 		InetAddress prevIP = this.currentIP;
 		this.currentIP = InetAddressUtils.increment(prevIP);
-		return prevIP;
+		return new ScanningSubject(prevIP);
 	}
 
 	public int percentageComplete() {

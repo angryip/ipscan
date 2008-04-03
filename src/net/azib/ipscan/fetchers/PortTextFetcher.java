@@ -33,13 +33,13 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 	
 	private ScannerConfig scannerConfig;
 
-	private int port;
+	private int defaultPort;
 	private String textToSend;
 	private Pattern matchingRegexp;
 	
-	public PortTextFetcher(ScannerConfig scannerConfig, int port, String textToSend, String matchingRegexp) {
+	public PortTextFetcher(ScannerConfig scannerConfig, int defaultPort, String textToSend, String matchingRegexp) {
 		this.scannerConfig = scannerConfig;
-		this.port = port;
+		this.defaultPort = defaultPort;
 		this.textToSend = textToSend;
 		this.matchingRegexp = Pattern.compile(matchingRegexp);
 	}
@@ -48,9 +48,9 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 		Socket socket = new Socket();
 		try {
 			// TODO: support multiple ports and check them sequentially
-			socket.connect(new InetSocketAddress(subject.getAddress(), port), subject.getAdaptedPortTimeout());
+			socket.connect(new InetSocketAddress(subject.getAddress(), subject.getRequestedPort() != null ? subject.getRequestedPort() : defaultPort), subject.getAdaptedPortTimeout());
 			socket.setTcpNoDelay(true);
-			socket.setSoTimeout(scannerConfig.portTimeout);
+			socket.setSoTimeout(scannerConfig.portTimeout*2);
 			socket.setSoLinger(true, 0);
 			
 			socket.getOutputStream().write(textToSend.getBytes());
@@ -59,7 +59,7 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 			String line;
 			while ((line = in.readLine()) != null) {
 				Matcher matcher = matchingRegexp.matcher(line);
-				if (matcher.matches()) {
+				if (matcher.find()) {
 					// mark that additional info is available
 					subject.setResultType(ResultType.WITH_PORTS);
 					// return the required contents

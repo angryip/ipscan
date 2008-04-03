@@ -1,7 +1,11 @@
 package net.azib.ipscan.feeders;
 
-import static org.junit.Assert.*;
-import static net.azib.ipscan.feeders.FeederTestUtils.*;
+import static net.azib.ipscan.feeders.FeederTestUtils.assertFeederException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.StringReader;
@@ -22,11 +26,11 @@ public class FileFeederTest {
 		StringReader reader = new StringReader("10.11.12.13 10.11.12.14 10.11.12.15");
 		FileFeeder fileFeeder = new FileFeeder(reader);
 		assertTrue(fileFeeder.hasNext());
-		assertEquals("10.11.12.13", fileFeeder.next().getHostAddress());
+		assertEquals("10.11.12.13", fileFeeder.next().getAddress().getHostAddress());
 		assertTrue(fileFeeder.hasNext());
-		assertEquals("10.11.12.14", fileFeeder.next().getHostAddress());
+		assertEquals("10.11.12.14", fileFeeder.next().getAddress().getHostAddress());
 		assertTrue(fileFeeder.hasNext());
-		assertEquals("10.11.12.15", fileFeeder.next().getHostAddress());
+		assertEquals("10.11.12.15", fileFeeder.next().getAddress().getHostAddress());
 		assertFalse(fileFeeder.hasNext());
 	}
 	
@@ -109,6 +113,17 @@ public class FileFeederTest {
 		StringReader reader = new StringReader("255.255.255.255, 2.3.4.5, mega cool 0.0.0.0");
 		FileFeeder fileFeeder = new FileFeeder(reader);
 		assertEquals("3", fileFeeder.getInfo());
+	}
+	
+	@Test
+	public void requestedPortsAreDetected() throws Exception {
+		StringReader reader = new StringReader("1.2.3.4:1234\n2.3.4.5:\n 7.6.5.4:789004\n 1.2.3.5:80   ");
+		FileFeeder fileFeeder = new FileFeeder(reader);
+		
+		assertEquals(1234, fileFeeder.next().getRequestedPort());
+		assertNull(fileFeeder.next().getRequestedPort());
+		assertNull(fileFeeder.next().getRequestedPort());
+		assertEquals(80, fileFeeder.next().getRequestedPort());
 	}
 
 	private void assertAddressCount(String s, int addressCount) {

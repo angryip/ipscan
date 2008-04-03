@@ -16,9 +16,9 @@ public class RandomFeederTest {
 	public void testHappyPath() throws FeederException {
 		RandomFeeder randomFeeder = new RandomFeeder("255.255.255.255", "255...0", 2);
 		assertTrue(randomFeeder.hasNext());
-		assertTrue(randomFeeder.next().getHostAddress().startsWith("255.255.255"));
+		assertTrue(randomFeeder.next().getAddress().getHostAddress().startsWith("255.255.255"));
 		assertTrue(randomFeeder.hasNext());
-		assertTrue(randomFeeder.next().getHostAddress().startsWith("255.255.255"));
+		assertTrue(randomFeeder.next().getAddress().getHostAddress().startsWith("255.255.255"));
 		assertFalse(randomFeeder.hasNext());
 	}
 	
@@ -60,7 +60,7 @@ public class RandomFeederTest {
 		RandomFeeder randomFeeder = null; 
 		randomFeeder = new RandomFeeder("1.2.3.45", "255.255.255.255", 1);
 		assertTrue(randomFeeder.hasNext());
-		assertEquals("1.2.3.45", randomFeeder.next().getHostAddress());
+		assertEquals("1.2.3.45", randomFeeder.next().getAddress().getHostAddress());
 		assertFalse(randomFeeder.hasNext());
 	}
 		
@@ -69,7 +69,7 @@ public class RandomFeederTest {
 		RandomFeeder randomFeeder = null; 
 		randomFeeder = new RandomFeeder("1.2.3.45", "0.0.0.0", 1);
 		assertTrue(randomFeeder.hasNext());
-		assertFalse("1.2.3.45".equals(randomFeeder.next().getHostAddress()));
+		assertFalse("1.2.3.45".equals(randomFeeder.next().getAddress().getHostAddress()));
 		assertFalse(randomFeeder.hasNext());
 	}
 	
@@ -78,7 +78,7 @@ public class RandomFeederTest {
 		RandomFeeder randomFeeder = null; 
 		randomFeeder = new RandomFeeder("1.2.3.45", "255.0.0.255", 1);
 		assertTrue(randomFeeder.hasNext());
-		String address = randomFeeder.next().getHostAddress();
+		String address = randomFeeder.next().getAddress().getHostAddress();
 		assertTrue(address.startsWith("1."));
 		assertTrue(address.endsWith(".45"));
 		assertFalse(randomFeeder.hasNext());
@@ -91,15 +91,15 @@ public class RandomFeederTest {
 		
 		randomFeeder = new RandomFeeder("1.2.3.45", "255.0.255.0", 2);
 		assertTrue(randomFeeder.hasNext());
-		address = randomFeeder.next().getHostAddress();
+		address = randomFeeder.next().getAddress().getHostAddress();
 		assertFalse("1.2.3.45".equals(address));
 		assertTrue(randomFeeder.hasNext());
-		assertFalse(address.equals(randomFeeder.next().getHostAddress()));
+		assertFalse(address.equals(randomFeeder.next().getAddress().getHostAddress()));
 		assertFalse(randomFeeder.hasNext());
 
 		randomFeeder = new RandomFeeder("1.2.3.45", "255.0.127.0", 1);
 		assertTrue(randomFeeder.hasNext());
-		assertFalse(address.equals(randomFeeder.next().getHostAddress()));
+		assertFalse(address.equals(randomFeeder.next().getAddress().getHostAddress()));
 		assertFalse(randomFeeder.hasNext());
 	}
 	

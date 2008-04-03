@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 import java.security.SecureRandom;
 
 import net.azib.ipscan.core.InetAddressUtils;
+import net.azib.ipscan.core.ScanningSubject;
 
 /**
  * A feeder, that generates random IP addresses.
@@ -70,12 +71,12 @@ public class RandomFeeder extends AbstractFeeder {
 		return currentNumber < addressCount;
 	}
 
-	public InetAddress next() {
+	public ScanningSubject next() {
 		currentNumber++;
 		random.nextBytes(currentBytes);
 		try {
 			InetAddressUtils.maskPrototypeAddressBytes(currentBytes, maskBytes, prototypeBytes);
-			return InetAddress.getByAddress(currentBytes);
+			return new ScanningSubject(InetAddress.getByAddress(currentBytes));
 		}
 		catch (UnknownHostException e) {
 			// this should never happen

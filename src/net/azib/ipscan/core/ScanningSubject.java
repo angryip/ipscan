@@ -30,6 +30,8 @@ public class ScanningSubject {
 
 	/** The address being scanned */
 	private InetAddress address;
+	/** The requested port that the user wishes to put more attention to, can be null. E.g. port 3128 for scanning of proxy servers. */
+	private Integer requestedPort;
 	/** Arbitrary parameters for sharing among different (but related) Fetchers */
 	private Map<String, Object> parameters;
 	/** The result type constant value, can be modified by some Fetchers */
@@ -103,6 +105,20 @@ public class ScanningSubject {
 	public void abortAddressScanning() {
 		this.isAborted = true;
 	}
+	
+	/**
+	 * @return the port that the user wishes to pay attention to, e.g. 3128 for proxies, or null.
+	 */
+	public Integer getRequestedPort() {
+		return requestedPort;
+	}
+
+	/**
+	 * @param requestedPort the port that user wants to scan
+	 */
+	public void setRequestedPort(Integer requestedPort) {
+		this.requestedPort = requestedPort;
+	}
 
 	/**
 	 * @return adapted port timeout for this host if available
@@ -122,6 +138,11 @@ public class ScanningSubject {
 		}
 		// if no pinging results are available yet, return the full timeout
 		return config.portTimeout;
+	}
+
+	@Override
+	public String toString() {
+		return address.getHostAddress() + requestedPort != null ? ":" + requestedPort : "";
 	}
 	
 }

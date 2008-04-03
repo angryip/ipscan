@@ -41,15 +41,15 @@ public class RescanFeederTest {
 		
 		assertTrue(feeder.hasNext());
 		assertEquals(0, feeder.percentageComplete());
-		assertEquals("127.0.0.15", feeder.next().getHostAddress());
+		assertEquals("127.0.0.15", feeder.next().getAddress().getHostAddress());
 
 		assertTrue(feeder.hasNext());
 		assertEquals(33, feeder.percentageComplete());
-		assertEquals("127.0.1.35", feeder.next().getHostAddress());
+		assertEquals("127.0.1.35", feeder.next().getAddress().getHostAddress());
 		
 		assertTrue(feeder.hasNext());
 		assertEquals(66, feeder.percentageComplete());
-		assertEquals("127.0.2.2", feeder.next().getHostAddress());
+		assertEquals("127.0.2.2", feeder.next().getAddress().getHostAddress());
 
 		assertFalse(feeder.hasNext());
 		assertEquals(100, feeder.percentageComplete());

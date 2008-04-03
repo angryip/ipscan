@@ -5,7 +5,7 @@
  */
 package net.azib.ipscan.feeders;
 
-import java.net.InetAddress;
+import net.azib.ipscan.core.ScanningSubject;
 
 /**
  * Smart text feeder for advanced users.
@@ -44,7 +44,7 @@ public class SmartTextFeeder extends AbstractFeeder {
 		return false; 
 	}
 
-	public InetAddress next() {
+	public ScanningSubject next() {
 		return null;
 	}
 

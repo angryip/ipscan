@@ -5,8 +5,6 @@
  */
 package net.azib.ipscan.core;
 
-import java.net.InetAddress;
-
 import net.azib.ipscan.core.values.NotAvailable;
 import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.fetchers.Fetcher;
@@ -28,15 +26,10 @@ public class Scanner {
 
 	/**
 	 * Executes all registered fetchers for the current IP address.
-	 * @param address the IP address to scan
+	 * @param scanningSubject containing the IP address to scan
 	 * @param result where the results are injected
 	 */
-	public void scan(InetAddress address, ScanningResult result) {
-		
-		// create a scanning subject object, which will be used by fetchers
-		// to cache common information
-		ScanningSubject scanningSubject = new ScanningSubject(address);
-		
+	public void scan(ScanningSubject scanningSubject, ScanningResult result) {
 		// populate results
 		int fetcherIndex = 0;
 		boolean isScanningInterrupted = false;

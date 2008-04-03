@@ -5,7 +5,6 @@
  */
 package net.azib.ipscan.core;
 
-import java.net.InetAddress;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -76,36 +75,33 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 			long lastNotifyTime = 0; 
 
 			try {
-				InetAddress address = null;
+				ScanningSubject subject = null;
 				while(feeder.hasNext() && stateMachine.inState(ScanningState.SCANNING)) {
 					// make a small delay between thread creation
 					Thread.sleep(config.threadDelay);
 					
-					// see if this iteration must be skipped until more threads can be created
-					boolean canStartNewThread = numActiveThreads.intValue() < config.maxThreads;
-					
-					if (canStartNewThread) {					
+					if ((numActiveThreads.intValue() < config.maxThreads)) {					
 						// retrieve the next IP address to scan
-						address = feeder.next();
+						subject = feeder.next();
 						
 						// check if this is a likely broadcast address and needs to be skipped
-						if (config.skipBroadcastAddresses && InetAddressUtils.isLikelyBroadcast(address)) {
+						if (config.skipBroadcastAddresses && InetAddressUtils.isLikelyBroadcast(subject.getAddress())) {
 							continue;
 						}
 		
 						// prepare results receiver for upcoming results
-						ScanningResult result = scanningResultList.createResult(address);
+						ScanningResult result = scanningResultList.createResult(subject.getAddress());
 						resultsCallback.prepareForResults(result);
 																
 						// scan each IP in parallel, in a separate thread
-						AddressScannerTask scanningTask = new AddressScannerTask(address, result);
+						AddressScannerTask scanningTask = new AddressScannerTask(subject, result);
 						threadPool.execute(scanningTask);
 					}
 					
 					// notify listeners of the progress we are doing (max 5 times per second)
 					if (System.currentTimeMillis() - lastNotifyTime >= UI_UPDATE_INTERVAL) {
 						lastNotifyTime = System.currentTimeMillis();
-						progressCallback.updateProgress(address, numActiveThreads.intValue(), feeder.percentageComplete());
+						progressCallback.updateProgress(subject.getAddress(), numActiveThreads.intValue(), feeder.percentageComplete());
 					}
 				}
 			}
@@ -170,21 +166,21 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 	 * scanning.
 	 */
 	class AddressScannerTask implements Runnable {
-		private InetAddress address;
+		private ScanningSubject subject;
 		private ScanningResult result;
 		
-		AddressScannerTask(InetAddress address, ScanningResult result) {
-			this.address = address;
+		AddressScannerTask(ScanningSubject subject, ScanningResult result) {
+			this.subject = subject;
 			this.result = result;
 			numActiveThreads.incrementAndGet();
 		}
 
 		public void run() {
 			// set current thread's name to ease debugging
-			Thread.currentThread().setName(getClass().getSimpleName() + ": " + address.getHostAddress());
+			Thread.currentThread().setName(getClass().getSimpleName() + ": " + subject);
 			
 			try {
-				scanner.scan(address, result);
+				scanner.scan(subject, result);
 				resultsCallback.consumeResults(result);
 			}
 			finally {

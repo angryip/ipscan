@@ -16,11 +16,11 @@ public class RangeFeederTest {
 	public void testHappyPath() throws FeederException {
 		RangeFeeder rangeFeeder = new RangeFeeder("10.11.12.13", "10.11.12.15");
 		assertTrue(rangeFeeder.hasNext());
-		assertEquals("10.11.12.13", rangeFeeder.next().getHostAddress());
+		assertEquals("10.11.12.13", rangeFeeder.next().getAddress().getHostAddress());
 		assertTrue(rangeFeeder.hasNext());
-		assertEquals("10.11.12.14", rangeFeeder.next().getHostAddress());
+		assertEquals("10.11.12.14", rangeFeeder.next().getAddress().getHostAddress());
 		assertTrue(rangeFeeder.hasNext());
-		assertEquals("10.11.12.15", rangeFeeder.next().getHostAddress());
+		assertEquals("10.11.12.15", rangeFeeder.next().getAddress().getHostAddress());
 		assertFalse(rangeFeeder.hasNext());
 	}
 	
@@ -59,12 +59,12 @@ public class RangeFeederTest {
 		
 		rangeFeeder = new RangeFeeder("0.0.0.0", "0.0.0.0");
 		assertTrue(rangeFeeder.hasNext());
-		assertEquals("0.0.0.0", rangeFeeder.next().getHostAddress());
+		assertEquals("0.0.0.0", rangeFeeder.next().getAddress().getHostAddress());
 		assertFalse(rangeFeeder.hasNext());
 		
 		rangeFeeder = new RangeFeeder("255.255.255.255", "255.255.255.255");
 		assertTrue(rangeFeeder.hasNext());
-		assertEquals("255.255.255.255", rangeFeeder.next().getHostAddress());
+		assertEquals("255.255.255.255", rangeFeeder.next().getAddress().getHostAddress());
 		assertFalse(rangeFeeder.hasNext());
 	}
 		

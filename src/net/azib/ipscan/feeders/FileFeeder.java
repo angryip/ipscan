@@ -18,30 +18,27 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.InetAddressUtils;
+import net.azib.ipscan.core.ScanningSubject;
 
 /**
  * Feeder, taking IP addresses from text files in any format.
  * It uses regular expressions for matching of IP addresses.
- * TODO: tests!!! 
  *
  * @author Anton Keks
  */
 public class FileFeeder extends AbstractFeeder {
 	
+	private static final Pattern PORT_REGEX = Pattern.compile("\\d{1,5}\\b");
+	
 	static final Logger LOG = LoggerFactory.getLogger();
 	
 	/** Found IP address Strings are put here */
-	private List<String> foundIPAddresses;
-	private Iterator<String> foundIPAddressesIterator;
-	
-	/** 
-	 * Total number of found IP addresses. Equivalent to foundIPAddresses.size(), 
-	 * which is very ineffective in case of a LinkedList.
-	 */ 
-	private int totalAddresses;
+	private List<ScanningSubject> foundIPAddresses;
+	private Iterator<ScanningSubject> foundIPAddressesIterator;
 	
 	private int currentIndex;
 
@@ -54,7 +51,7 @@ public class FileFeeder extends AbstractFeeder {
 	
 	public FileFeeder(String fileName) {
 		try {
-			initialize(new FileReader(fileName));
+			readAddresses(new FileReader(fileName));
 		}
 		catch (FileNotFoundException e) {
 			throw new FeederException("file.notExists");
@@ -62,25 +59,37 @@ public class FileFeeder extends AbstractFeeder {
 	}
 	
 	public FileFeeder(Reader reader) {
-		initialize(reader);
+		readAddresses(reader);
 	}
 	
-	private void initialize(Reader reader) {
+	private void readAddresses(Reader reader) {
 		BufferedReader fileReader = new BufferedReader(reader);
 		
-		totalAddresses = 0;
 		currentIndex = 0;
-		foundIPAddresses = new LinkedList<String>();
+		foundIPAddresses = new LinkedList<ScanningSubject>();
 		try {
 			String fileLine;
 			while ((fileLine = fileReader.readLine()) != null) {
 				Matcher matcher = InetAddressUtils.IP_ADDRESS_REGEX.matcher(fileLine);
 				while (matcher.find()) {
-					foundIPAddresses.add(matcher.group());
-					totalAddresses++;
+					try {
+						String address = matcher.group();
+						ScanningSubject subject = new ScanningSubject(InetAddress.getByName(address));
+						if (!matcher.hitEnd() && fileLine.charAt(matcher.end()) == ':') {
+							// see if any valid port is requested
+							Matcher portMatcher = PORT_REGEX.matcher(fileLine.substring(matcher.end()+1));
+							if (portMatcher.lookingAt()) {
+								subject.setRequestedPort(Integer.valueOf(portMatcher.group()));
+							}
+						}
+						foundIPAddresses.add(subject);
+					}
+					catch (UnknownHostException e) {
+						LOG.log(Level.WARNING, "malformedIP", e);
+					}
 				}
 			}
-			if (totalAddresses == 0) {
+			if (foundIPAddresses.isEmpty()) {
 				throw new FeederException("file.nothingFound");
 			}
 		}
@@ -100,27 +109,21 @@ public class FileFeeder extends AbstractFeeder {
 	}
 	
 	public int percentageComplete() {
-		return Math.round((float)currentIndex * 100 / totalAddresses);
+		return Math.round((float)currentIndex * 100 / foundIPAddresses.size());
 	}
 
 	public boolean hasNext() {
 		return foundIPAddressesIterator.hasNext();
 	}
 
-	public InetAddress next() {
-		try {
-			currentIndex++;
-			return InetAddress.getByName(foundIPAddressesIterator.next());
-		}
-		catch (UnknownHostException e) {
-			LOG.log(Level.WARNING, "malformedIP", e);
-			throw new FeederException("malformedIP");
-		}
+	public ScanningSubject next() {
+		currentIndex++;
+		return foundIPAddressesIterator.next();
 	}
 
 	public String getInfo() {
 		// let's return the number of found addresses
-		return Integer.toString(totalAddresses);
+		return Integer.toString(foundIPAddresses.size());
 	}
 	
 }

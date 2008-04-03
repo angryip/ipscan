@@ -60,7 +60,7 @@ public class ScannerTest {
 	public void testScan() throws Exception {
 		// scan the local host
 		ScanningResult scanningResult = new ScanningResult(InetAddress.getLocalHost(), 4);
-		scanner.scan(InetAddress.getLocalHost(), scanningResult);
+		scanner.scan(new ScanningSubject(InetAddress.getLocalHost()), scanningResult);
 		
 		assertEquals(ResultType.ALIVE, scanningResult.getType());
 		assertEquals(InetAddress.getLocalHost(), scanningResult.getAddress());
@@ -82,7 +82,7 @@ public class ScannerTest {
 		
 		// scan the local host
 		ScanningResult scanningResult = new ScanningResult(InetAddress.getLocalHost(), 3);
-		scanner.scan(InetAddress.getLocalHost(), scanningResult);
+		scanner.scan(new ScanningSubject(InetAddress.getLocalHost()), scanningResult);
 		
 		assertEquals(ResultType.UNKNOWN, scanningResult.getType());
 		assertEquals(InetAddress.getLocalHost(), scanningResult.getAddress());
