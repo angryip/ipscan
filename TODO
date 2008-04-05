@@ -1,6 +1,6 @@
 Before 3.0:
 
-* multiple requestedPort support, more docs
+* multiple requestedPort support, more docs 
 * command-line scanning start
 * fetcher-specific options
 * multiple port support web-detect
