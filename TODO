@@ -1,6 +1,5 @@
 Before 3.0:
 
-* add requestedPort to ScanningSubject and be able to init it from the IP:Port list files, respect it in the WebDetect and similar fetchers
 * command-line scanning start
 * fetcher-specific options
 * multiple port support web-detect
