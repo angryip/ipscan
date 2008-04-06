@@ -56,6 +56,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		this.columnClickListener = columnClickListener;
 		this.columnResizeListener = columnResizeListener;
 		fetcherRegistry.addListener(this);
+		// add columns according to fetchers
 		handleUpdateOfSelectedFetchers(fetcherRegistry);
 		
 		// load button images

@@ -8,6 +8,9 @@ package net.azib.ipscan.config;
 import java.util.prefs.Preferences;
 
 import net.azib.ipscan.fetchers.Fetcher;
+import net.azib.ipscan.fetchers.HostnameFetcher;
+import net.azib.ipscan.fetchers.IPFetcher;
+import net.azib.ipscan.fetchers.PingFetcher;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -101,7 +104,18 @@ public class GUIConfig {
 	 * @return column width corresponding to a fetcher
 	 */
 	public int getColumnWidth(Fetcher fetcher) {
-		return preferences.getInt("columnWidth." + fetcher.getId(), 90);
+		int width = preferences.getInt("columnWidth." + fetcher.getId(), 0);
+		if (width == 0) {
+			// use different default widths
+			if (fetcher instanceof IPFetcher || fetcher instanceof HostnameFetcher)
+				width = 140;
+			else
+			if (fetcher instanceof PingFetcher)
+				width = 60;
+			else
+				width = 90;
+		}
+		return width;
 	}
 	
 	/**
