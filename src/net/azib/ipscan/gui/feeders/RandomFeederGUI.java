@@ -67,6 +67,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
         // the longest possible IP
         ipPrototypeText.setText("255.255.255.255xx");
         int textWidth = ipPrototypeText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
+        ipPrototypeText.setText("");
         
         ipPrototypeLabel.setText(getStringLabel("prototype"));
         ipPrototypeLabel.setLayoutData(LayoutHelper.formData(null, new FormAttachment(hostnameLabel, 0, SWT.RIGHT), new FormAttachment(ipPrototypeText, 0, SWT.CENTER), null));

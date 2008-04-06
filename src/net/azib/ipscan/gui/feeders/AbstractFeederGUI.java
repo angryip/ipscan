@@ -16,6 +16,7 @@ import net.azib.ipscan.feeders.Feeder;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -76,29 +77,41 @@ public abstract class AbstractFeederGUI extends Composite {
 	 */
 	public abstract void unserialize(String serialized);
 
+	private static Object localResolveLock = new Object();
+	/** Cached name of local host **/
+	private static String localName;
+	/** Cached address of local host **/
+	private static String localAddress;
+	
 	/**
 	 * Asynchronously resolves localhost's name and address and then populates the specified fields.
 	 * The idea is to show GUI faster.
 	 */
-	protected void asyncFillLocalHostInfo(final Text hostnameText, final Text ipText) {
+	protected static void asyncFillLocalHostInfo(final Text hostnameText, final Text ipText) {
 		new Thread() {
 			public void run() {
-				// fill the IP and hostname fields with local hostname and IP addresses
-				try {
-					String localhostName = InetAddress.getLocalHost().getHostName();
-					final InetAddress localhost = InetAddressUtils.getAddressByName(localhostName);
-					getDisplay().asyncExec(new Runnable() {
-						public void run() {
-							if ("".equals(hostnameText.getText()))
-								hostnameText.setText(localhost.getHostName());
-							if ("".equals(ipText.getText()))
-								ipText.setText(localhost.getHostAddress());
+				// this method is called for multiple Feeders simultaneously
+				synchronized (localResolveLock) {
+					try {
+						if (localAddress == null) {
+							localName = InetAddress.getLocalHost().getHostName();
+							InetAddress localhost = InetAddressUtils.getAddressByName(localName);
+							localAddress = localhost.getHostAddress();
 						}
-					});
-				}
-				catch (UnknownHostException e) {
-					// don't report any errors on initialization, leave fields empty
-					LOG.fine(e.toString());
+						Display.getDefault().asyncExec(new Runnable() {
+							public void run() {
+								// fill the IP and hostname fields with local hostname and IP addresses
+								if ("".equals(hostnameText.getText()))
+									hostnameText.setText(localName);
+								if ("".equals(ipText.getText()))
+									ipText.setText(localAddress);
+							}
+						});
+					}
+					catch (UnknownHostException e) {
+						// don't report any errors on initialization, leave fields empty
+						LOG.fine(e.toString());
+					}					
 				}
 			}
 		}.start();		
