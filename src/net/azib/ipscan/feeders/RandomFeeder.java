@@ -9,8 +9,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.SecureRandom;
 
-import net.azib.ipscan.core.InetAddressUtils;
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.util.InetAddressUtils;
 
 /**
  * A feeder, that generates random IP addresses.

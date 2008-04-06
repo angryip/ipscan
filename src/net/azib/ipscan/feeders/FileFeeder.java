@@ -21,8 +21,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.azib.ipscan.config.LoggerFactory;
-import net.azib.ipscan.core.InetAddressUtils;
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.util.InetAddressUtils;
 
 /**
  * Feeder, taking IP addresses from text files in any format.

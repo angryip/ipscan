@@ -3,7 +3,7 @@
  * see http://www.azib.net/ for more information.
  * Licensed under GPLv2.
  */
-package net.azib.ipscan.core;
+package net.azib.ipscan.util;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;

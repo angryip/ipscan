@@ -1,4 +1,4 @@
-package net.azib.ipscan.core;
+package net.azib.ipscan.util;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,8 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
+
+import net.azib.ipscan.util.InetAddressUtils;
 
 import org.junit.Test;
 

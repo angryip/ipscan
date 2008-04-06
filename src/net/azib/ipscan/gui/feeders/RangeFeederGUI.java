@@ -9,12 +9,12 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.core.InetAddressUtils;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederException;
 import net.azib.ipscan.feeders.RangeFeeder;
 import net.azib.ipscan.gui.actions.FeederActions;
 import net.azib.ipscan.gui.util.LayoutHelper;
+import net.azib.ipscan.util.InetAddressUtils;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;

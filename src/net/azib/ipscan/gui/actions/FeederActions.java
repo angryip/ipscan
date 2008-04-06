@@ -12,8 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.azib.ipscan.config.LoggerFactory;
-import net.azib.ipscan.core.InetAddressUtils;
 import net.azib.ipscan.feeders.FeederException;
+import net.azib.ipscan.util.InetAddressUtils;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;

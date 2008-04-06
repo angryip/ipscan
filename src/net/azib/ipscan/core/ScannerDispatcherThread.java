@@ -16,6 +16,7 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.feeders.Feeder;
+import net.azib.ipscan.util.InetAddressUtils;
 
 /**
  * Main scanning thread that spawns other threads.

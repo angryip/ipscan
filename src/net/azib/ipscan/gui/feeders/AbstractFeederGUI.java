@@ -11,8 +11,8 @@ import java.util.logging.Logger;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.LoggerFactory;
-import net.azib.ipscan.core.InetAddressUtils;
 import net.azib.ipscan.feeders.Feeder;
+import net.azib.ipscan.util.InetAddressUtils;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
