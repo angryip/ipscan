@@ -40,7 +40,6 @@ public class TCPPinger implements Pinger {
 		
 		for (int i = 0; i < count && !Thread.currentThread().isInterrupted(); i++) {
 			Socket socket = new Socket();
-			socket.setSoTimeout(timeout);
 
 			long startTime = System.currentTimeMillis();
 			try {
