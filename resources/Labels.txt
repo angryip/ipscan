@@ -199,6 +199,7 @@ fetcher.comment=Comments
 fetcher.comment.info=Allows writing of comments for each host.\nThe comments are persisted and always shown then the host is scanned.
 fetcher.webDetect=Web detect
 fetcher.webDetect.info=Detects the web server software name and version, if possible.\n\nWorks by sending a HEAD request and reading the Server HTTP header from the response.
+fetcher.httpSender=HTTP Sender
 fetcher.netbios=NetBIOS Info
 fetcher.netbios.info=Retrieves the NetBIOS information about Windows machines.\n\nThe response has the following format:\nDOMAIN\\USER@COMPUTER [MAC]\n\nWhere:\nDOMAIN - Windows domain or workgroup\nUSER - currently logged in user\nCOMPUTER - Windows computer name (may be different from DNS name)\nSome parts may be absent, depending on the response.\n\nNote that this won't work with machines that have firewall enabled (which are most modern installations).\nThis fetcher is provided mostly for feature-compatibility with version 2.x.
 fetcher.unit.ms=\u00A0ms
@@ -301,3 +302,10 @@ Special values (also configurable):\n\
 text.crippledWindowsInfo=Thank you for trying Angry IP Scanner!\n\n\
 However, keep in mind that consumer versions of Windows (e.g. Windows XP SP2, Windows Vista) have limited ability to be hosts for scanning, due to removed RawSocket support and TCP connection rate limiting.\n\n\
 Because of that, some preferences were changed for you, making scanning a lot slower than on full-featured operating systems. See the FAQ on Angry IP Scanner homepage.
+
+text.gnuJavaInfo=Thank you for trying Angry IP Scanner!\n\n\
+The program is currently running under GNU Java (GIJ/GCJ) implementation.\n\n\
+Unfortunately, this version of Java contains some bugs and limitations, which affect Angry IP Scanner.\n\n\
+Known issues:\n- Slow startup\n- Preferences are not saved\n- TCP Pinger and port scanning can give false results\n\
+\nPlease consider using Sun Java from http://java.com or OpenJDK/IcedTea\n\n\
+or... help making Angry IP Scanner and GNU Java compatible by contributing to both projects :-)

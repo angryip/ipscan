@@ -96,10 +96,11 @@ public class MainWindow {
 				public void run() {
 					if (Platform.CRIPPLED_WINDOWS) {
 						// inform crippled windows owners of their default configuration
-						MessageBox box = new MessageBox(MainWindow.this.shell, SWT.ICON_WARNING | SWT.OK);
-						box.setText(Version.NAME);
-						box.setMessage(Labels.getLabel("text.crippledWindowsInfo"));
-						box.open();
+						showMessage(Labels.getLabel("text.crippledWindowsInfo"));
+					}
+					if (Platform.GNU_JAVA) {
+						// show a warning if running under GNU Java
+						showMessage(Labels.getLabel("text.gnuJavaInfo"));
 					}
 					MainWindow.this.shell.forceActive();
 					new GettingStartedDialog().open();
@@ -109,6 +110,13 @@ public class MainWindow {
 		}
 
 		stateMachine.addTransitionListener(new EnablerDisabler());
+	}
+	
+	private void showMessage(String text) {
+		MessageBox box = new MessageBox(MainWindow.this.shell, SWT.ICON_WARNING | SWT.OK);
+		box.setText(Version.NAME);
+		box.setMessage(text);
+		box.open();
 	}
 
 	/**
