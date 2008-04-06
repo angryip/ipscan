@@ -7,6 +7,7 @@ Recommends: sun-java6-jre
 Maintainer: Anton Keks <anton@azib.net>
 Provides: ipscan
 Description: Angry IP Scanner - fast and friendly IP Scanner
- Angry IP Scanner is a cross-platform newtork scanner written in Java.
+ Angry IP Scanner is a cross-platform network scanner written in Java.
  It can scan IP-based networks in any range, scan ports, and resolve
  other information.
+ The program provides an easy to use GUI interface and is very extensible.
