@@ -18,6 +18,7 @@ import net.azib.ipscan.gui.SelectFetchersDialog;
 import net.azib.ipscan.gui.StatisticsDialog;
 import net.azib.ipscan.gui.StatusBar;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -184,6 +185,58 @@ public class ToolsActions {
 
 		boolean isDesired(ResultType type) {
 			return type == ResultType.ALIVE;
+		}
+	}
+	
+	/** 
+	 * This cannot be accessed from the menu, but it provides the Ctrl+A
+	 * Select All functionality for Windows (other platforms implement this themselves)
+	 */
+	public static class SelectAll implements Listener {
+		private final ResultTable resultTable;
+		private final TableSelection tableSelectionListener;
+
+		public SelectAll(ResultTable resultTable, TableSelection tableSelectionListener) {
+			this.resultTable = resultTable;
+			this.tableSelectionListener = tableSelectionListener;
+		}
+
+		public void handleEvent(Event event) {
+			// Ctrl+A handler
+			if (event.type == SWT.KeyDown && event.keyCode == 'a' && event.stateMask == SWT.MOD1) {
+				resultTable.selectAll();
+				// update selection status
+				event.widget = resultTable;
+				tableSelectionListener.handleEvent(event);
+				event.doit = false;
+			}
+		}
+	}
+
+	public static final class SelectInvert implements Listener {
+		private final ResultTable resultTable;
+		private final TableSelection tableSelectionListener;
+		
+		public SelectInvert(ResultTable resultTable, TableSelection tableSelectionListener) {
+			this.resultTable = resultTable;
+			this.tableSelectionListener = tableSelectionListener;
+		}
+
+		public void handleEvent(Event event) {
+			int count = resultTable.getItemCount();
+			// the most naive implementation
+			resultTable.setRedraw(false);
+			for (int i = 0; i < count; i++) {
+				if (resultTable.isSelected(i)) 
+					resultTable.deselect(i);
+				else
+					resultTable.select(i);
+			}
+			resultTable.setRedraw(true);
+			resultTable.redraw();
+			event.widget = resultTable;
+			tableSelectionListener.handleEvent(event);
+			resultTable.forceFocus();
 		}
 	}
 }

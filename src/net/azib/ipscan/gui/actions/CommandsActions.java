@@ -107,26 +107,6 @@ public class CommandsActions {
 		}
 	}
 
-	/** 
-	 * This cannot be accessed from the menu, but it provides the Ctrl+A
-	 * Select All functionality for Windows (other platforms implement this themselves)
-	 */
-	public static class SelectAll implements Listener {
-		private final ResultTable resultTable;
-
-		public SelectAll(ResultTable resultTable) {
-			this.resultTable = resultTable;
-		}
-
-		public void handleEvent(Event event) {
-			// Ctrl+A handler
-			if (event.type == SWT.KeyDown && event.keyCode == 'a' && event.stateMask == SWT.MOD1) {
-				resultTable.selectAll();
-				event.doit = false;
-			}
-		}
-	}
-
 	public static final class Rescan implements Listener {
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
