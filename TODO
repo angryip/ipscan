@@ -1,7 +1,6 @@
 Before 3.0:
 
 * multiple requestedPort support, more docs 
-* GIJ + java.util.prefs don't work
 * save default selection of pinger (Combined for non-root users)
 * command-line scanning start
 * fetcher-specific options
@@ -23,7 +22,7 @@ Before 3.0:
 * change cursor while scanning
 * show hours in statistics dialog
 * goto prev stuff (alternative shortcuts)
-* create Makefile :-)
+* GIJ + java.util.prefs don't work
 
 Later:
 
