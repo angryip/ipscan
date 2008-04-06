@@ -103,7 +103,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		i.next(); // skip IP
 		while (i.hasNext()) {
 			Fetcher fetcher = i.next();
-			String fetcherName = Labels.getLabel(fetcher.getId());
+			String fetcherName = fetcher.getName();
 			registeredFetcherLabelsByNames.put(fetcherName, fetcher.getId());
 			if (selectedFetchersList.indexOf(fetcherName) < 0)
 				registeredFetchersList.add(fetcherName);
