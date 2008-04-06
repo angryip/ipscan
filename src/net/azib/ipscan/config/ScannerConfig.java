@@ -27,6 +27,7 @@ public class ScannerConfig {
 	public boolean adaptPortTimeout;
 	public int minPortTimeout;
 	public String portString;
+	public boolean useRequestedPorts;
 	public String notAvailableText;
 	public String notScannedText;
 
@@ -49,6 +50,7 @@ public class ScannerConfig {
 		adaptPortTimeout = preferences.getBoolean("adaptPortTimeout", !Platform.CRIPPLED_WINDOWS);
 		minPortTimeout = preferences.getInt("minPortTimeout", 100);
 		portString = preferences.get("portString", "");
+		useRequestedPorts = preferences.getBoolean("useRequestedPorts", true);
 		notAvailableText = preferences.get("notAvailableText", Labels.getLabel("fetcher.value.notAvailable"));
 		notScannedText = preferences.get("notScannedText", Labels.getLabel("fetcher.value.notScanned"));
 	}
@@ -68,6 +70,7 @@ public class ScannerConfig {
 		preferences.putBoolean("adaptPortTimeout", adaptPortTimeout);
 		preferences.putInt("minPortTimeout", minPortTimeout);
 		preferences.put("portString", portString);
+		preferences.putBoolean("useRequestedPorts", useRequestedPorts);
 		preferences.put("notAvailableText", notAvailableText);
 		preferences.put("notScannedText", notScannedText);
 	}

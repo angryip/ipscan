@@ -13,6 +13,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -45,45 +47,48 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 	}
 
 	public Object scan(ScanningSubject subject) {
-		Socket socket = new Socket();
-		try {
-			// TODO: support multiple ports and check them sequentially
-			socket.connect(new InetSocketAddress(subject.getAddress(), subject.getRequestedPort() != null ? subject.getRequestedPort() : defaultPort), subject.getAdaptedPortTimeout());
-			socket.setTcpNoDelay(true);
-			socket.setSoTimeout(scannerConfig.portTimeout*2);
-			socket.setSoLinger(true, 0);
-			
-			socket.getOutputStream().write(textToSend.getBytes());
-			
-			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			String line;
-			while ((line = in.readLine()) != null) {
-				Matcher matcher = matchingRegexp.matcher(line);
-				if (matcher.find()) {
-					// mark that additional info is available
-					subject.setResultType(ResultType.WITH_PORTS);
-					// return the required contents
-					return matcher.group(1);
+		Iterator<Integer> portIterator = subject.isAnyPortRequested() ? subject.requestedPortsIterator() : Collections.singleton(defaultPort).iterator();
+
+		while (portIterator.hasNext() && !Thread.currentThread().isInterrupted()) {
+			Socket socket = new Socket();
+			try {
+				socket.connect(new InetSocketAddress(subject.getAddress(), portIterator.next()), subject.getAdaptedPortTimeout());
+				socket.setTcpNoDelay(true);
+				socket.setSoTimeout(scannerConfig.portTimeout*2);
+				socket.setSoLinger(true, 0);
+				
+				socket.getOutputStream().write(textToSend.getBytes());
+				
+				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				String line;
+				while ((line = in.readLine()) != null) {
+					Matcher matcher = matchingRegexp.matcher(line);
+					if (matcher.find()) {
+						// mark that additional info is available
+						subject.setResultType(ResultType.WITH_PORTS);
+						// return the required contents
+						return matcher.group(1);
+					}
 				}
 			}
-		}
-		catch (ConnectException e) {
-			// no connection
-		}
-		catch (SocketTimeoutException e) {
-			// no information
-		}
-		catch (SocketException e) {
-			// connection reset
-		}
-		catch (IOException e) {
-			LOG.log(Level.FINE, subject.getAddress().toString(), e);
-		}
-		finally {
-			try {
-				socket.close();
+			catch (ConnectException e) {
+				// no connection
 			}
-			catch (IOException e) {}
+			catch (SocketTimeoutException e) {
+				// no information
+			}
+			catch (SocketException e) {
+				// connection reset
+			}
+			catch (IOException e) {
+				LOG.log(Level.FINE, subject.getAddress().toString(), e);
+			}
+			finally {
+				try {
+					socket.close();
+				}
+				catch (IOException e) {}
+			}
 		}
 		return null;
 	}

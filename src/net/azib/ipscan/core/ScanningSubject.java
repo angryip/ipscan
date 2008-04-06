@@ -6,7 +6,10 @@
 package net.azib.ipscan.core;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import net.azib.ipscan.config.Config;
@@ -30,8 +33,8 @@ public class ScanningSubject {
 
 	/** The address being scanned */
 	private InetAddress address;
-	/** The requested port that the user wishes to put more attention to, can be null. E.g. port 3128 for scanning of proxy servers. */
-	private Integer requestedPort;
+	/** The requested ports that the user wishes to put more attention to, can be null. E.g. port 3128 for scanning of proxy servers. */
+	private List<Integer> requestedPorts;
 	/** Arbitrary parameters for sharing among different (but related) Fetchers */
 	private Map<String, Object> parameters;
 	/** The result type constant value, can be modified by some Fetchers */
@@ -106,18 +109,24 @@ public class ScanningSubject {
 		this.isAborted = true;
 	}
 	
+	public boolean isAnyPortRequested() {
+		return requestedPorts != null;
+	}
+	
 	/**
-	 * @return the port that the user wishes to pay attention to, e.g. 3128 for proxies, or null.
+	 * @return ports that the user wishes to pay attention to, e.g. 3128 for proxies, or null.
 	 */
-	public Integer getRequestedPort() {
-		return requestedPort;
+	public Iterator<Integer> requestedPortsIterator() {
+		return requestedPorts == null ? null : requestedPorts.iterator();
 	}
 
 	/**
 	 * @param requestedPort the port that user wants to scan
 	 */
-	public void setRequestedPort(Integer requestedPort) {
-		this.requestedPort = requestedPort;
+	public void addRequestedPort(Integer requestedPort) {
+		if (requestedPorts == null)
+			requestedPorts = new ArrayList<Integer>();
+		requestedPorts.add(requestedPort);
 	}
 
 	/**
@@ -142,7 +151,15 @@ public class ScanningSubject {
 
 	@Override
 	public String toString() {
-		return address.getHostAddress() + requestedPort != null ? ":" + requestedPort : "";
+		StringBuilder sb = new StringBuilder(address.getHostAddress());
+		if (requestedPorts != null) {
+			sb.append(':');
+			for (Integer port : requestedPorts)
+				sb.append(port).append(',');
+			if (sb.charAt(sb.length()-1) == ',')
+				sb.deleteCharAt(sb.length()-1);
+		}
+		return sb.toString();
 	}
 	
 }

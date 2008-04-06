@@ -3,8 +3,11 @@
  */
 package net.azib.ipscan.fetchers;
 
-import static org.easymock.classextension.EasyMock.*;
-import static org.junit.Assert.*;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -13,7 +16,6 @@ import java.net.Socket;
 
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.core.values.NotAvailable;
 import net.azib.ipscan.core.values.NumericRangeList;
 
 import org.junit.Before;
@@ -36,11 +38,17 @@ public class PortsFetcherTest extends AbstractFetcherTestCase {
 	
 	@Test
 	public void numberOfPortsInFullName() throws Exception {
+		config.useRequestedPorts = false;
+		
 		config.portString = "";
-		assertEquals(fetcher.getName() + " " + NotAvailable.VALUE, fetcher.getFullName());
+		assertEquals(fetcher.getName() + " [0]", fetcher.getFullName());
 
 		config.portString = "1-3";
 		assertEquals(fetcher.getName() + " [3]", fetcher.getFullName());
+		
+		config.useRequestedPorts = true;
+		config.portString = "21-29,40";
+		assertEquals(fetcher.getName() + " [10+]", fetcher.getFullName());
 	}
 	
 	@Test

@@ -13,8 +13,8 @@ import java.io.Reader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -37,7 +37,7 @@ public class FileFeeder extends AbstractFeeder {
 	static final Logger LOG = LoggerFactory.getLogger();
 	
 	/** Found IP address Strings are put here */
-	private List<ScanningSubject> foundIPAddresses;
+	private Map<String, ScanningSubject> foundIPAddresses;
 	private Iterator<ScanningSubject> foundIPAddressesIterator;
 	
 	private int currentIndex;
@@ -66,23 +66,27 @@ public class FileFeeder extends AbstractFeeder {
 		BufferedReader fileReader = new BufferedReader(reader);
 		
 		currentIndex = 0;
-		foundIPAddresses = new LinkedList<ScanningSubject>();
+		foundIPAddresses = new LinkedHashMap<String, ScanningSubject>();
 		try {
 			String fileLine;
 			while ((fileLine = fileReader.readLine()) != null) {
 				Matcher matcher = InetAddressUtils.IP_ADDRESS_REGEX.matcher(fileLine);
 				while (matcher.find()) {
 					try {
-						String address = matcher.group();
-						ScanningSubject subject = new ScanningSubject(InetAddress.getByName(address));
+						String address = matcher.group();						
+						ScanningSubject subject = foundIPAddresses.get(address);
+						if (subject == null)
+							subject = new ScanningSubject(InetAddress.getByName(address));
+						
 						if (!matcher.hitEnd() && fileLine.charAt(matcher.end()) == ':') {
 							// see if any valid port is requested
 							Matcher portMatcher = PORT_REGEX.matcher(fileLine.substring(matcher.end()+1));
 							if (portMatcher.lookingAt()) {
-								subject.setRequestedPort(Integer.valueOf(portMatcher.group()));
+								subject.addRequestedPort(Integer.valueOf(portMatcher.group()));
 							}
 						}
-						foundIPAddresses.add(subject);
+						
+						foundIPAddresses.put(address, subject);
 					}
 					catch (UnknownHostException e) {
 						LOG.log(Level.WARNING, "malformedIP", e);
@@ -100,12 +104,10 @@ public class FileFeeder extends AbstractFeeder {
 			try {
 				fileReader.close();
 			}
-			catch (IOException e) {
-				// ignore, what else to do?
-			}
+			catch (IOException e) {}
 		}
 		
-		foundIPAddressesIterator = foundIPAddresses.iterator();
+		foundIPAddressesIterator = foundIPAddresses.values().iterator();
 	}
 	
 	public int percentageComplete() {

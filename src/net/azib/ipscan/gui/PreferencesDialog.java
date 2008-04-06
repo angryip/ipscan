@@ -67,6 +67,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 	private TabItem portsTabItem;
 	private Text portTimeoutText;
 	private Button adaptTimeoutCheckbox;
+	private Button addRequestedPortsCheckbox;
 	private Text minPortTimeoutText;
 	private Text portsText;
 	private Text notAvailableText;
@@ -357,6 +358,10 @@ public class PreferencesDialog extends AbstractModalDialog {
 		portsText = new Text(portsGroup, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL);
 		portsText.setLayoutData(new RowData(SWT.DEFAULT, 60));
 		portsText.addKeyListener(new PortsTextValidationListener());
+		
+		addRequestedPortsCheckbox = new Button(portsGroup, SWT.CHECK);
+		addRequestedPortsCheckbox.setText(Labels.getLabel("preferences.ports.addRequested"));
+		addRequestedPortsCheckbox.setToolTipText(Labels.getLabel("preferences.ports.addRequested.info"));
 	}
 
 	/**
@@ -402,6 +407,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		minPortTimeoutText.setText(Integer.toString(scannerConfig.minPortTimeout));
 		minPortTimeoutText.setEnabled(scannerConfig.adaptPortTimeout);
 		portsText.setText(scannerConfig.portString);
+		addRequestedPortsCheckbox.setSelection(scannerConfig.useRequestedPorts);
 		notAvailableText.setText(scannerConfig.notAvailableText);
 		notScannedText.setText(scannerConfig.notScannedText);
 		displayMethod[guiConfig.displayMethod.ordinal()].setSelection(true);
@@ -437,6 +443,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		scannerConfig.adaptPortTimeout = adaptTimeoutCheckbox.getSelection();
 		scannerConfig.minPortTimeout = parseIntValue(minPortTimeoutText);
 		scannerConfig.portString = portsText.getText();
+		scannerConfig.useRequestedPorts = addRequestedPortsCheckbox.getSelection();
 		scannerConfig.notAvailableText = notAvailableText.getText();
 		scannerConfig.notScannedText = notScannedText.getText();
 		for (int i = 0; i < displayMethod.length; i++) {

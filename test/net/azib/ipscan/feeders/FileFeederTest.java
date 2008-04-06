@@ -3,14 +3,15 @@ package net.azib.ipscan.feeders;
 import static net.azib.ipscan.feeders.FeederTestUtils.assertFeederException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.StringReader;
+import java.util.Iterator;
 
 import net.azib.ipscan.config.LabelsTest;
+import net.azib.ipscan.core.ScanningSubject;
 
 import org.junit.Test;
 
@@ -117,13 +118,18 @@ public class FileFeederTest {
 	
 	@Test
 	public void requestedPortsAreDetected() throws Exception {
-		StringReader reader = new StringReader("1.2.3.4:1234\n2.3.4.5:\n 7.6.5.4:789004\n 1.2.3.5:80   ");
+		StringReader reader = new StringReader("1.2.3.4:1234\n2.3.4.5:\n 7.6.5.4:789004\n 1.2.3.5:80  1.2.3.5:3128 ");
 		FileFeeder fileFeeder = new FileFeeder(reader);
 		
-		assertEquals(1234, fileFeeder.next().getRequestedPort());
-		assertNull(fileFeeder.next().getRequestedPort());
-		assertNull(fileFeeder.next().getRequestedPort());
-		assertEquals(80, fileFeeder.next().getRequestedPort());
+		assertEquals(1234, fileFeeder.next().requestedPortsIterator().next());
+		assertFalse(fileFeeder.next().isAnyPortRequested());
+		assertFalse(fileFeeder.next().isAnyPortRequested());
+		
+		ScanningSubject lastSubject = fileFeeder.next();
+		assertEquals("1.2.3.5", lastSubject.getAddress().getHostAddress());
+		Iterator<Integer> portIterator = lastSubject.requestedPortsIterator();
+		assertEquals(80, portIterator.next());
+		assertEquals(3128, portIterator.next());
 	}
 
 	private void assertAddressCount(String s, int addressCount) {

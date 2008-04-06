@@ -10,6 +10,7 @@ import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -17,9 +18,9 @@ import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.PortIterator;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.ScanningResult.ResultType;
-import net.azib.ipscan.core.values.NotAvailable;
 import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.core.values.NumericRangeList;
+import net.azib.ipscan.util.SequenceIterator;
 
 /**
  * PortsFetcher scans TCP ports.
@@ -51,7 +52,7 @@ public class PortsFetcher extends AbstractFetcher {
 	@Override
 	public String getFullName() {
 		int numPorts = new PortIterator(config.portString).size();
-		return getName() + " " + (numPorts > 0 ? "[" + numPorts + "]" : NotAvailable.VALUE);
+		return getName() + " [" + numPorts + (config.useRequestedPorts ? "+" : "" ) + "]";
 	}
 
 	/**
@@ -60,6 +61,7 @@ public class PortsFetcher extends AbstractFetcher {
 	 * @param subject the address to scan
 	 * @return true if any ports were scanned, false otherwise
 	 */
+	@SuppressWarnings("unchecked")
 	protected boolean scanPorts(ScanningSubject subject) {
 		SortedSet<Integer> openPorts = getOpenPorts(subject);
 					
@@ -74,17 +76,21 @@ public class PortsFetcher extends AbstractFetcher {
 			
 			Socket socket = null;
 			// clone port iterator for performance instead of creating for every thread
-			PortIterator i = portIteratorPrototype.copy();
-			if (!i.hasNext()) {
+			Iterator<Integer> portsIterator = portIteratorPrototype.copy();
+			if (config.useRequestedPorts && subject.isAnyPortRequested()) {
+				// add requested ports to the iteration
+				portsIterator = new SequenceIterator<Integer>(portsIterator, subject.requestedPortsIterator());
+			}
+			if (!portsIterator.hasNext()) {
 				// no ports are configured for scanning
 				return false;
 			}
 			
-			while (i.hasNext() && !Thread.currentThread().isInterrupted()) {
+			while (portsIterator.hasNext() && !Thread.currentThread().isInterrupted()) {
 				// TODO: UDP ports?
 				// TODO: reuse sockets?
 				socket = new Socket();
-				int port = i.next();
+				int port = portsIterator.next();
 				try {			
 					// set some optimization options
 					socket.setReuseAddress(true);

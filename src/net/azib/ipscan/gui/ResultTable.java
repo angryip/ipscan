@@ -38,6 +38,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 	
 	private ScanningResultList scanningResults;
 	private GUIConfig guiConfig;
+	private FetcherRegistry fetcherRegistry;
 	
 	private Image[] listImages = new Image[ResultType.values().length];
 
@@ -49,6 +50,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		super(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		this.guiConfig = guiConfig;
 		this.scanningResults = scanningResultList;
+		this.fetcherRegistry = fetcherRegistry;
 		
 		setHeaderVisible(true);
 		setLinesVisible(true);
@@ -95,10 +97,10 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 			tableColumn.addListener(SWT.Selection, columnClickListener);
 			tableColumn.addListener(SWT.Resize, columnResizeListener);
 		}
-		updateFetcherNames(fetcherRegistry);
+		updateColumnNames();
 	}
 	
-	public void updateFetcherNames(FetcherRegistry fetcherRegistry) {
+	public void updateColumnNames() {
 		int i = 0;
 		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
 			getColumn(i++).setText(fetcher.getFullName());

@@ -5,6 +5,8 @@
  */
 package net.azib.ipscan.core;
 
+import java.util.Iterator;
+
 
 /**
  * A class for iteration of ports, specified in special format, like:
@@ -12,7 +14,7 @@ package net.azib.ipscan.core;
  *
  * @author Anton Keks
  */
-public final class PortIterator implements Cloneable {
+public final class PortIterator implements Iterator<Integer>, Cloneable {
 	
 	private int[] portRangeStart;
 	private int[] portRangeEnd;
@@ -63,7 +65,7 @@ public final class PortIterator implements Cloneable {
 	/**
 	 * @return next port number
 	 */
-	public int next() {
+	public Integer next() {
 		int returnPort = currentPort++;
 		
 		if (currentPort > portRangeEnd[rangeIndex]) {
@@ -97,6 +99,10 @@ public final class PortIterator implements Cloneable {
 			assert false : "this should never happen";
 			return null;
 		}
+	}
+
+	public void remove() {
+		throw new UnsupportedOperationException();
 	}
 	
 }

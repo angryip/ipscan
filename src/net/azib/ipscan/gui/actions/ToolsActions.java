@@ -48,6 +48,7 @@ public class ToolsActions {
 			
 			// refresh the results and status bar in case anything was changed
 			resultTable.updateResults();
+			resultTable.updateColumnNames();
 			statusBar.updateConfigText();
 		}
 	}
