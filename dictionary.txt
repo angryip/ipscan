@@ -49,3 +49,4 @@ util
 upcoming
 pluggable
 callback
+loopback

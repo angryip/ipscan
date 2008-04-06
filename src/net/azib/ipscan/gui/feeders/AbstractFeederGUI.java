@@ -5,11 +5,18 @@
  */
 package net.azib.ipscan.gui.feeders;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.logging.Logger;
+
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.LoggerFactory;
+import net.azib.ipscan.core.InetAddressUtils;
 import net.azib.ipscan.feeders.Feeder;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * Base class of feeder GUI classes.
@@ -17,6 +24,8 @@ import org.eclipse.swt.widgets.Composite;
  * @author Anton Keks
  */
 public abstract class AbstractFeederGUI extends Composite {
+	
+	static final Logger LOG = LoggerFactory.getLogger();
 	
 	protected Feeder feeder;
 
@@ -66,4 +75,32 @@ public abstract class AbstractFeederGUI extends Composite {
 	 * @param serialized
 	 */
 	public abstract void unserialize(String serialized);
+
+	/**
+	 * Asynchronously resolves localhost's name and address and then populates the specified fields.
+	 * The idea is to show GUI faster.
+	 */
+	protected void asyncFillLocalHostInfo(final Text hostnameText, final Text ipText) {
+		new Thread() {
+			public void run() {
+				// fill the IP and hostname fields with local hostname and IP addresses
+				try {
+					String localhostName = InetAddress.getLocalHost().getHostName();
+					final InetAddress localhost = InetAddressUtils.getAddressByName(localhostName);
+					getDisplay().asyncExec(new Runnable() {
+						public void run() {
+							if ("".equals(hostnameText.getText()))
+								hostnameText.setText(localhost.getHostName());
+							if ("".equals(ipText.getText()))
+								ipText.setText(localhost.getHostAddress());
+						}
+					});
+				}
+				catch (UnknownHostException e) {
+					// don't report any errors on initialization, leave fields empty
+					LOG.fine(e.toString());
+				}
+			}
+		}.start();		
+	}
 }

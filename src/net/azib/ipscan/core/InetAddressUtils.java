@@ -155,7 +155,7 @@ public class InetAddressUtils {
 	 * @return IP address as String
 	 * @throws UnknownHostException 
 	 */
-	public static String getAddressByName(String hostname) throws UnknownHostException {
+	public static InetAddress getAddressByName(String hostname) throws UnknownHostException {
 		InetAddress address = InetAddress.getByName(hostname);
 		if (address.isLoopbackAddress()) {
 			// loopback address (127.0.0.1) was returned, try to find the local address 
@@ -177,7 +177,7 @@ public class InetAddressUtils {
 				LOG.log(Level.FINE, "Cannot enumerate network interfaces", e);
 			}
 		}
-		return address.getHostAddress();
+		return address;
 	}		
 
 }

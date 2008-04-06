@@ -39,19 +39,12 @@ public class FeederActions {
 
 	public static class HostnameButton implements SelectionListener, TraverseListener {
 		
-		private String localHostname;
 		private final Text hostnameText;
 		private final Text ipText;
 
 		public HostnameButton(Text hostnameText, Text ipText) {
 			this.hostnameText = hostnameText;
 			this.ipText = ipText;
-			try {
-				this.localHostname = InetAddress.getLocalHost().getHostName();
-			}
-			catch (UnknownHostException e) {
-				// do nothing...
-			}
 		}
 		
 		public void widgetDefaultSelected(SelectionEvent event) {
@@ -61,34 +54,27 @@ public class FeederActions {
 		public void widgetSelected(SelectionEvent event) {
 			String hostname = hostnameText.getText();
 			
-			String address = null;
-			if (hostname.equals(localHostname)) {
-				// retrieve local address(es)
-				askLocalIPAddress();
-			}
-			else {
-				// resolve remote address
-				try {
-					address = InetAddressUtils.getAddressByName(hostname);
-					
-					// now update the hostname itself using a reverse lookup
-					try {
-						String realHostname = InetAddress.getByName(address).getCanonicalHostName();
-						if (!address.equals(realHostname)) {
-							// if a hostname was returned, not the same IP adress
-							hostnameText.setText(realHostname);
-							hostnameText.setSelection(realHostname.length());
-						}
-					}
-					catch (UnknownHostException e) {
-						// ignore if this one fails
-					}
+			try {				
+				if (hostname.equals(InetAddress.getLocalHost().getHostName())) {
+					// retrieve local addresses
+					askLocalIPAddress();
 				}
-				catch (UnknownHostException e) {
-					throw new FeederException("invalidHostname");
-				}
+				else {
+					// resolve remote address
+					InetAddress address = InetAddressUtils.getAddressByName(hostname);
+					ipText.setText(address.getHostAddress());
 
-				ipText.setText(address);
+					// now update the hostname itself using a reverse lookup
+					String realHostname = address.getCanonicalHostName();
+					if (!address.getHostAddress().equals(realHostname)) {
+						// if a hostname was returned, not the same IP address
+						hostnameText.setText(realHostname);
+						hostnameText.setSelection(realHostname.length());
+					}	
+				}
+			}
+			catch (UnknownHostException e) {
+				throw new FeederException("invalidHostname");
 			}
 		}
 		
@@ -119,7 +105,7 @@ public class FeederActions {
 					NetworkInterface networkInterface = i.nextElement();
 					for (Enumeration<InetAddress> i2 = networkInterface.getInetAddresses(); i2.hasMoreElements();) {
 						InetAddress currentAddress = i2.nextElement();
-						// TODO: we would benefit of Java 1.6 here by automatically initializing the netmask, too
+						// TODO: we would benefit from Java 1.6 here by automatically initializing the netmask, too
 
 						if (!currentAddress.isLoopbackAddress()) {
 							MenuItem menuItem = new MenuItem(popupMenu, 0);

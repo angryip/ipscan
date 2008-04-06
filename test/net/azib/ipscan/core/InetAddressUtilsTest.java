@@ -101,8 +101,8 @@ public class InetAddressUtilsTest {
 		if (ifaces.hasMoreElements()) {		
 			// this test depends on the network configuraton of the system
 			// so we run it only if there are more than 1 network interface in the system (which is a loopback interface) 
-			assertFalse(InetAddress.getByName(InetAddressUtils.getAddressByName(InetAddress.getLocalHost().getHostName())).isLoopbackAddress());
-			assertFalse(InetAddress.getByName(InetAddressUtils.getAddressByName("localhost")).isLoopbackAddress());
+			assertFalse(InetAddress.getByName(InetAddressUtils.getAddressByName(InetAddress.getLocalHost().getHostName()).getHostAddress()).isLoopbackAddress());
+			assertFalse(InetAddress.getByName(InetAddressUtils.getAddressByName("localhost").getHostAddress()).isLoopbackAddress());
 		}
 	}
 	

@@ -1,6 +1,9 @@
 Before 3.0:
 
 * multiple requestedPort support, more docs 
+* add GCJ/GIJ warning on startup
+* GIJ + java.util.prefs don't work
+* save default selection of pinger (Combined for non-root users)
 * command-line scanning start
 * fetcher-specific options
 * multiple port support web-detect

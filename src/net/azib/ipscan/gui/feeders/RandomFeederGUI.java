@@ -5,13 +5,7 @@
  */
 package net.azib.ipscan.gui.feeders;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.logging.Logger;
-
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.LoggerFactory;
-import net.azib.ipscan.core.InetAddressUtils;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.RandomFeeder;
 import net.azib.ipscan.gui.actions.FeederActions;
@@ -35,8 +29,6 @@ import org.eclipse.swt.widgets.Text;
  * @author Anton Keks
  */
 public class RandomFeederGUI extends AbstractFeederGUI {
-
-	static final Logger LOG = LoggerFactory.getLogger();
 
 	private Label ipPrototypeLabel;
 	private Text ipPrototypeText;
@@ -125,22 +117,10 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 			}
 		});
 		
-		// do this stuff asynchronously (to show GUI faster)
-		getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				// fill the IP and hostname fields with local hostname and IP addresses
-				try {
-					hostnameText.setText(InetAddress.getLocalHost().getHostName());
-					ipPrototypeText.setText(InetAddressUtils.getAddressByName(hostnameText.getText()));
-				}
-				catch (UnknownHostException e) {
-					// don't report any errors on initialization, leave fields empty
-					LOG.fine(e.toString());
-				}
-			}
-		});
-		                        
 		pack();
+
+		// do this stuff asynchronously (to show GUI faster)
+		asyncFillLocalHostInfo(hostnameText, ipPrototypeText);
 	}
 
 	public Feeder createFeeder() {

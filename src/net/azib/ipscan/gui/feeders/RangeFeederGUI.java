@@ -7,10 +7,8 @@ package net.azib.ipscan.gui.feeders;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.logging.Logger;
 
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.InetAddressUtils;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederException;
@@ -41,8 +39,6 @@ import org.eclipse.swt.widgets.Text;
  */
 public class RangeFeederGUI extends AbstractFeederGUI {
 	
-	static final Logger LOG = LoggerFactory.getLogger();
-
 	private Label ipRangeLabel;
 	private Text startIPText;
 	
@@ -79,6 +75,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         // the longest possible IP
         startIPText.setText("255.255.255.255xx");
         int textWidth = startIPText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
+        startIPText.setText("");
         
         ipRangeLabel.setText(getStringLabel("startIP"));
         ipRangeLabel.setLayoutData(LayoutHelper.formData(null, new FormAttachment(hostnameLabel, 0, SWT.RIGHT), new FormAttachment(startIPText, 0, SWT.CENTER), null));
@@ -136,23 +133,10 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		netmaskCombo.setLayoutData(LayoutHelper.formData(new FormAttachment(ipUpButton, 5), new FormAttachment(endIPText, 0, SWT.RIGHT), new FormAttachment(startIPText), new FormAttachment(hostnameText, 0, SWT.BOTTOM)));
 		netmaskCombo.setToolTipText(Labels.getLabel("feeder.range.netmask.tooltip"));
 
-		// do this stuff asynchronously (to show GUI faster)
-		getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				// fill the IP and hostname fields with local hostname and IP addresses
-				try {
-					hostnameText.setText(InetAddress.getLocalHost().getHostName());
-					startIPText.setText(InetAddressUtils.getAddressByName(hostnameText.getText()));
-					endIPText.setText(startIPText.getText());
-				}
-				catch (UnknownHostException e) {
-					// don't report any errors on initialization, leave fields empty
-					LOG.fine(e.toString());
-				}
-			}
-		});
-                
 		pack();
+
+		// do this stuff asynchronously (to show GUI faster)
+		asyncFillLocalHostInfo(hostnameText, startIPText);
 	}
 
 	public Feeder createFeeder() {
