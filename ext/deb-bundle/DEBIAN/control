@@ -1,7 +1,9 @@
 Package: ipscan
+Section: net
 Version: VERSION-0
 Architecture: i386
-Depends: sun-java5-jre | sun-java6-jre
+Depends: java5-runtime
+Recommends: sun-java6-jre 
 Maintainer: Anton Keks <anton@azib.net>
 Provides: ipscan
 Description: Angry IP Scanner - fast and friendly IP Scanner
