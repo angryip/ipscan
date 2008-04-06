@@ -45,17 +45,21 @@ public class TCPPinger implements Pinger {
 			try {
 				// cycle through different ports until a working one is found
 				int probePort = workingPort >= 0 ? workingPort : PROBE_TCP_PORTS[i % PROBE_TCP_PORTS.length];
-				
+				// set some optimization options
+				socket.setReuseAddress(true);
+				socket.setReceiveBufferSize(32);
+
 				socket.connect(new InetSocketAddress(address, probePort), timeout);
-				result.addReply(System.currentTimeMillis()-startTime);
-				// one positive result is enough for TCP 
-				result.enableTimeoutAdaptation();
-				
-				// it worked! - remember the current port
-				workingPort = probePort;
+				if (socket.isConnected()) {
+					result.addReply(System.currentTimeMillis()-startTime);
+					// one positive result is enough for TCP 
+					result.enableTimeoutAdaptation();
+					// it worked! - remember the current port
+					workingPort = probePort;
+				}
 			}
 			catch (ConnectException e) {
-				// we've got an RST packet from the host
+				// we've got an RST packet from the host - it is alive
 				result.addReply(System.currentTimeMillis()-startTime);
 				result.enableTimeoutAdaptation();
 			}
