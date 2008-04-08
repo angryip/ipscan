@@ -165,6 +165,7 @@ opener.telnet=Telnet
 opener.ssh=SSH
 opener.ping=Ping
 opener.traceroute=Trace route
+opener.whois=Whois
 opener.geolocate=Geo locate
 opener.netbios=Windows Shares
 opener.email=E-mail sample

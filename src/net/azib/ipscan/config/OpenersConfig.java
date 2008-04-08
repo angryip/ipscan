@@ -31,6 +31,7 @@ public class OpenersConfig extends NamedListConfig {
 			add(labels.get("opener.ping"), new Opener("ping ${fetcher.ip}", true, null));
 			add(labels.get("opener.traceroute"), new Opener((Platform.WINDOWS ? "tracert" : Platform.LINUX ? "tracepath" : "traceroute") + " ${fetcher.ip}", true, null));
 			if (!Platform.WINDOWS) add(labels.get("opener.ssh"), new Opener("ssh ${fetcher.ip}", true, null));
+			if (!Platform.WINDOWS) add(labels.get("opener.whois"), new Opener("whois ${fetcher.ip}", true, null));
 			add(labels.get("opener.geolocate"), new Opener("http://www.azib.net/iplocate.php?ip=${fetcher.ip}", false, null));
 			add(labels.get("opener.email"), new Opener("mailto:somebody@example.com?subject=IP: ${fetcher.ip}", true, null));
 		}
