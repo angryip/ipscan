@@ -12,7 +12,9 @@ import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.ScanningResult.ResultType;
+import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
+import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
@@ -34,7 +36,7 @@ import org.eclipse.swt.widgets.TableItem;
  * 
  * @author Anton Keks
  */
-public class ResultTable extends Table implements FetcherRegistryUpdateListener {
+public class ResultTable extends Table implements FetcherRegistryUpdateListener, StateTransitionListener {
 	
 	private ScanningResultList scanningResults;
 	private GUIConfig guiConfig;
@@ -74,6 +76,9 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 		
 		// this one populates table dynamically, taking data from ScanningResultList
 		addListener(SWT.SetData, new SetDataListener());
+		
+		// listen to state machine events
+		stateMachine.addTransitionListener(this);
 	}
 
 	/**
@@ -217,6 +222,15 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener 
 			item.setImage(0, listImages[scanningResult.getType().ordinal()]);
 		}
 		
+	}
+
+	public void transitionTo(final ScanningState state) {
+		// change cursor while scanning
+		getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				setCursor(getDisplay().getSystemCursor(state == ScanningState.IDLE ? SWT.CURSOR_ARROW : SWT.CURSOR_APPSTARTING));
+			}
+		});
 	}
 
 }
