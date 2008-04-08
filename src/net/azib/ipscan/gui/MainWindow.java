@@ -58,6 +58,7 @@ public class MainWindow {
 	private Combo feederSelectionCombo;
 	private FeederGUIRegistry feederRegistry;
 	
+	private StatusBar statusBar;
 	private ToolBar prefsButton;
 	private ToolBar fetchersButton;
 		
@@ -67,6 +68,7 @@ public class MainWindow {
 	public MainWindow(Shell shell, GUIConfig guiConfig, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry, StateMachine stateMachine, ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListsner) {
 		this.shell = shell;
 		this.guiConfig = guiConfig;
+		this.statusBar = statusBar;
 		
 		// this is particularly important on mac
 		Display.setAppName(Version.NAME);
@@ -271,6 +273,7 @@ public class MainWindow {
 					feederSelectionCombo.setEnabled(enabled);
 					prefsButton.setEnabled(enabled);
 					fetchersButton.setEnabled(enabled);
+					statusBar.setEnabled(enabled);
 				}
 			});
 		}

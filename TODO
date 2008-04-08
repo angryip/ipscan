@@ -11,7 +11,6 @@ Before 3.0:
 * top-level exception handler for NoClassDefFoundErrors, etc
 * public XSL for XMLExporter
 * Exporter appending functionality exposed to the user
-* make Display: status bar right-clickable
 * rename favorite option in the Manager dialog
 * goto prev stuff (alternative shortcuts)
 * GIJ + java.util.prefs don't work

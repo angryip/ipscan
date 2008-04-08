@@ -9,13 +9,18 @@ import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.ScannerConfig;
+import net.azib.ipscan.config.GUIConfig.DisplayMethod;
 import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
@@ -29,7 +34,7 @@ public class StatusBar {
 	private Composite composite;
 	
 	private Label statusText;
-	private Label configText;
+	private Label displayMethodText;
 	private Label threadsText;
 	private boolean maxThreadsReachedBefore;
 	private ProgressBar progressBar;
@@ -50,14 +55,17 @@ public class StatusBar {
 		statusText.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(35), new FormAttachment(0), new FormAttachment(100)));
 		setStatusText(null);
 		
-		configText = new Label(composite, SWT.BORDER);
-		configText.setLayoutData(LayoutHelper.formData(120, SWT.DEFAULT, new FormAttachment(statusText), null, new FormAttachment(0), new FormAttachment(100)));
+		displayMethodText = new Label(composite, SWT.BORDER);
+		displayMethodText.setText(Labels.getLabel("text.display." + DisplayMethod.PORTS));
+		displayMethodText.pack();
+		displayMethodText.setLayoutData(LayoutHelper.formData(displayMethodText.getSize().x, SWT.DEFAULT, new FormAttachment(statusText), null, new FormAttachment(0), new FormAttachment(100)));
+		displayMethodText.addListener(SWT.MouseDown, new ConfigTextClickListener());
 		updateConfigText();
 
 		threadsText = new Label(composite, SWT.BORDER);
 		setRunningThreads(Math.min(scannerConfig.maxThreads, 200)); // this should set the longest possible text		
 		threadsText.pack(); // calculate the width
-		threadsText.setLayoutData(LayoutHelper.formData(threadsText.getBounds().width, SWT.DEFAULT, new FormAttachment(configText), null, new FormAttachment(0), new FormAttachment(100)));
+		threadsText.setLayoutData(LayoutHelper.formData(threadsText.getSize().x, SWT.DEFAULT, new FormAttachment(displayMethodText), null, new FormAttachment(0), new FormAttachment(100)));
 		setRunningThreads(0); // set back to 0 at startup
 		
 		progressBar = new ProgressBar(composite, SWT.BORDER);
@@ -69,7 +77,7 @@ public class StatusBar {
 	 * Updates config text according to the latest changes in the GlobalConfig
 	 */
 	public void updateConfigText() {
-		configText.setText(Labels.getLabel("text.display." + guiConfig.displayMethod));
+		displayMethodText.setText(Labels.getLabel("text.display." + guiConfig.displayMethod));
 	}
 
 	/**
@@ -119,5 +127,34 @@ public class StatusBar {
 	
 	public Shell getShell() {
 		return composite.getShell();
+	}
+	
+	public void setEnabled(boolean enabled) {
+		// enable/disable interactive controls on the status bar
+		displayMethodText.setEnabled(enabled);
+	}
+	
+	class ConfigTextClickListener implements Listener {
+
+		public void handleEvent(Event event) {
+			// user clicked the config text, lets ask the display options
+			if (event.type == SWT.MouseDown) {
+				Menu popupMenu = new Menu(getShell(), SWT.POP_UP);
+				for (DisplayMethod displayMethod : DisplayMethod.values()) {
+					MenuItem item = new MenuItem(popupMenu, 0);
+					item.setText(Labels.getLabel("text.display." + displayMethod));
+					item.setData(displayMethod);
+					item.addListener(SWT.Selection, this);
+				}
+				popupMenu.setVisible(true);
+			}
+			// handle menu item selection
+			if (event.type == SWT.Selection) {
+				// remember the selected display method
+				guiConfig.displayMethod = (DisplayMethod) event.widget.getData();
+				updateConfigText();
+			}
+		}
+		
 	}
 }
