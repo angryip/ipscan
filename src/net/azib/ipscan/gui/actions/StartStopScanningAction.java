@@ -44,6 +44,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	private GUIConfig guiConfig;
 	private PingerRegistry pingerRegistry;
 
+	private String mainWindowTitle;
 	private StatusBar statusBar;
 	private ResultTable resultTable;
 	private FeederGUIRegistry feederRegistry;
@@ -157,6 +158,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 						try {
 							scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createFeeder(), StartStopScanningAction.this, createResultsCallback());
 							stateMachine.startScanning();
+							mainWindowTitle = statusBar.getShell().getText();
 						}
 						catch (RuntimeException e) {
 							stateMachine.reset();
@@ -169,6 +171,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 						try {
 							scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createRescanFeeder(resultTable.getSelection()), StartStopScanningAction.this, createResultsCallback());
 							stateMachine.startScanning();
+							mainWindowTitle = statusBar.getShell().getText();
 						}
 						catch (RuntimeException e) {
 							stateMachine.reset();
@@ -235,14 +238,20 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				if (statusBar.isDisposed())
 					return;
 				
+				// update status bar
 				if (currentAddress != null) {
 					statusBar.setStatusText(Labels.getLabel("state.scanning") + currentAddress.getHostAddress());
 				}					
-
 				statusBar.setRunningThreads(runningThreads);
 				statusBar.setProgress(percentageComplete);
+				
+				// show percentage in main window title
+				if (!stateMachine.inState(ScanningState.IDLE)) 
+					statusBar.getShell().setText(percentageComplete + "% - " + mainWindowTitle);
+				else
+					statusBar.getShell().setText(mainWindowTitle);
 
-				// change button image
+				// change button image according to the current state
 				button.setImage(buttonImages[stateMachine.getState().ordinal()]);
 			}
 		});

@@ -13,8 +13,6 @@ Before 3.0:
 * Exporter appending functionality exposed to the user
 * make Display: status bar right-clickable
 * rename favorite option in the Manager dialog
-* show percent in window title
-* show number of IPs scanned so far in status bar
 * change cursor while scanning
 * show hours in statistics dialog
 * goto prev stuff (alternative shortcuts)
