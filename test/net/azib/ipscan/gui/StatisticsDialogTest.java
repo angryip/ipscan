@@ -30,5 +30,7 @@ public class StatisticsDialogTest {
 		assertEquals("1\u00A0sec", StatisticsDialog.timeToText(1001));
 		assertEquals("1.5\u00A0min", StatisticsDialog.timeToText(90025));
 		assertEquals("10\u00A0min", StatisticsDialog.timeToText(600000));
+		assertEquals("1\u00A0h", StatisticsDialog.timeToText(3600000));
+		assertEquals("2.5\u00A0h", StatisticsDialog.timeToText(9036000));
 	}
 }

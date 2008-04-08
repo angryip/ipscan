@@ -116,11 +116,15 @@ public class StatisticsDialog extends AbstractModalDialog {
 	 * @return provided time in human-readable form
 	 */
 	static String timeToText(double scanTime) {
-		double seconds = scanTime/1000;
+		double totalSeconds = scanTime/1000;
+		double totalMinutes = totalSeconds/60;
+		double totalHours = totalMinutes/60;
 		NumberFormat format = new DecimalFormat("#.#");
-		if (seconds >= 60)
-			return format.format(seconds/60) + Labels.getLabel("text.scan.time.minutes");
-		return format.format(seconds) + Labels.getLabel("text.scan.time.seconds");
+		if (totalHours >= 1)
+			return format.format(totalHours) + Labels.getLabel("unit.hour");
+		if (totalMinutes >= 1)
+			return format.format(totalMinutes) + Labels.getLabel("unit.minute");
+		return format.format(totalSeconds) + Labels.getLabel("unit.second");
 	}
 
 }

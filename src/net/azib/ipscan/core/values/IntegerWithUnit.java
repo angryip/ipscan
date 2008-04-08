@@ -28,7 +28,7 @@ public class IntegerWithUnit implements Comparable<IntegerWithUnit> {
 	}
 	
 	public String toString() {
-		return value + Labels.getLabel("fetcher.unit." + unitLabel);
+		return value + Labels.getLabel("unit." + unitLabel);
 	}
 
 	public int hashCode() {
