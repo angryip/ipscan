@@ -23,6 +23,14 @@ public class TerminalLauncher {
 	
 	static final Logger LOG = LoggerFactory.getLogger();
 	
+	private static final int UNKNOWN = -1;
+	private static final int XTERM = 0;
+	private static final int GNOME = 1;
+	private static final int XFCE = 2;
+	private static final int KDE = 3;
+	/** caches last working terminal type */
+	private static int workingTerminal = UNKNOWN;
+	
 	/**
 	 * Launches the execString in the terminal.
 	 * Supports Linux/Unix, MacOS, and Windows
@@ -48,11 +56,45 @@ public class TerminalLauncher {
 				Runtime.getRuntime().exec(new String[] {"osascript", "-e", "tell application \"Terminal\" to do script \"" + execString + "\""}, null, workingDir);
 			}
 			else { // assume Linux or other Unix
-				// TODO: maybe gnome-terminal or konsole should be tried as well...
-				Runtime.getRuntime().exec(new String[] {"xterm", "-e", "bash", "-c", execString + ";bash"}, null, workingDir);
+				
+				// detect environment
+				if (workingTerminal == UNKNOWN) {
+					if (Runtime.getRuntime().exec(new String[] {"pidof", "gnome-panel"}).waitFor() == 0) {
+						workingTerminal = GNOME;
+					}
+					else
+					if (Runtime.getRuntime().exec(new String[] {"pidof", "xfce4-session"}).waitFor() == 0) {
+						workingTerminal = XFCE;
+					}
+					else
+					if (Runtime.getRuntime().exec(new String[] {"pidof", "dcopserver"}).waitFor() == 0) {
+						workingTerminal = KDE;
+					}
+					else {
+						workingTerminal = XTERM;
+					}
+				}
+				
+				// run detected terminal program
+				switch (workingTerminal) {
+					case GNOME:
+						Runtime.getRuntime().exec(new String[] {"gnome-terminal", "-x", "bash", "-c", execString + ";bash"}, null, workingDir);
+						break;
+					case XFCE:
+						Runtime.getRuntime().exec(new String[] {"Terminal", "--execute", "sh", "-c", execString + ";sh"}, null, workingDir);
+						break;
+					case KDE:
+						Runtime.getRuntime().exec(new String[] {"konsole", "-e", "bash", "-c", execString + ";bash"}, null, workingDir);
+						break;
+					default: // XTERM
+						Runtime.getRuntime().exec(new String[] {"xterm", "-e", "sh", "-c", execString + ";sh"}, null, workingDir);
+				}
 			}
 		}
 		catch (Exception e) {
+			// just try XTERM next time...
+			workingTerminal = XTERM;
+			// log and display the error
 			LOG.log(Level.WARNING, "openTerminal.failed", e);
 			throw new UserErrorException("openTerminal.failed", execString);
 		}

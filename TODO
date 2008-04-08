@@ -1,6 +1,5 @@
 Before 3.0:
 
-* save default selection of pinger (Combined for non-root users)
 * command-line scanning start
 * fetcher-specific options
 * multiple port support web-detect
@@ -13,7 +12,6 @@ Before 3.0:
 * public XSL for XMLExporter
 * Exporter appending functionality exposed to the user
 * make Display: status bar right-clickable
-* support gnome-terminal in openers
 * rename favorite option in the Manager dialog
 * show percent in window title
 * show number of IPs scanned so far in status bar
