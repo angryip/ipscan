@@ -107,12 +107,16 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 				}
 			}
 			catch (InterruptedException e) {
-				// just end the loop
+				// interrupt - end the loop
 			}
 			
 			// inform that no more addresses left
 			stateMachine.stop();
 		
+			// request shutdown of the thread pool
+			// this must be done here and not asynchronously by the state machine
+			threadPool.shutdown();
+
 			try {				
 				// now wait for all threads, which are still running
 				while (!threadPool.awaitTermination(UI_UPDATE_INTERVAL, TimeUnit.MILLISECONDS)) {
@@ -139,11 +143,6 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 	 * Currently used to kill all running threads if user says so.
 	 */
 	public void transitionTo(ScanningState state) {
-		if (state == ScanningState.STOPPING) {
-			// request shutdown of the thread pool
-			threadPool.shutdown();
-		}
-		else
 		if (state == ScanningState.KILLING) {
 			// try to interrupt all threads if we get to killing state
 			threadGroup.interrupt();
