@@ -59,11 +59,11 @@ public class TerminalLauncher {
 				
 				// detect environment
 				if (workingTerminal == UNKNOWN) {
-					if (Runtime.getRuntime().exec(new String[] {"pidof", "gnome-panel"}).waitFor() == 0) {
+					if (Runtime.getRuntime().exec(new String[] {"pidof", "nautilus"}).waitFor() == 0) {
 						workingTerminal = GNOME;
 					}
 					else
-					if (Runtime.getRuntime().exec(new String[] {"pidof", "xfce4-session"}).waitFor() == 0) {
+					if (Runtime.getRuntime().exec(new String[] {"pidof", "xfce4-session xfwm4 Thunar xfdesktop"}).waitFor() == 0) {
 						workingTerminal = XFCE;
 					}
 					else
@@ -81,7 +81,7 @@ public class TerminalLauncher {
 						Runtime.getRuntime().exec(new String[] {"gnome-terminal", "-x", "bash", "-c", execString + ";bash"}, null, workingDir);
 						break;
 					case XFCE:
-						Runtime.getRuntime().exec(new String[] {"Terminal", "--execute", "sh", "-c", execString + ";sh"}, null, workingDir);
+						Runtime.getRuntime().exec(new String[] {"xfce4-terminal", "-x", "sh", "-c", execString + ";sh"}, null, workingDir);
 						break;
 					case KDE:
 						Runtime.getRuntime().exec(new String[] {"konsole", "-e", "bash", "-c", execString + ";bash"}, null, workingDir);
@@ -92,11 +92,18 @@ public class TerminalLauncher {
 			}
 		}
 		catch (Exception e) {
-			// just try XTERM next time...
-			workingTerminal = XTERM;
 			// log and display the error
 			LOG.log(Level.WARNING, "openTerminal.failed", e);
-			throw new UserErrorException("openTerminal.failed", execString);
+
+			// if this is the first time, fall back to XTERM
+			if (workingTerminal != XTERM) {
+				workingTerminal = XTERM;
+				launchInTerminal(execString, workingDir);
+			}
+			else {
+				// even XTERM doesn't work...
+				throw new UserErrorException("openTerminal.failed", execString);
+			}
 		}
 	}
 }
