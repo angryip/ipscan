@@ -6,8 +6,8 @@
 package net.azib.ipscan.core.state;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * StateMachine implementation.
@@ -17,9 +17,10 @@ import java.util.List;
  */
 public class StateMachine {
 	
-	private ScanningState state = ScanningState.IDLE;
+	private volatile ScanningState state = ScanningState.IDLE;
 	
-	private List<StateTransitionListener> transitionListeners = Collections.synchronizedList(new ArrayList<StateTransitionListener>());
+	private ReentrantReadWriteLock listenersLock = new ReentrantReadWriteLock();
+	private List<StateTransitionListener> transitionListeners = new ArrayList<StateTransitionListener>();
 	
 	/**
 	 * @param state
@@ -41,7 +42,13 @@ public class StateMachine {
 	 * @param listener instance
 	 */
 	public void addTransitionListener(StateTransitionListener listener) {
-		transitionListeners.add(listener);
+		try {
+			listenersLock.writeLock().lock();
+			transitionListeners.add(listener);
+		}
+		finally {
+			listenersLock.writeLock().unlock();
+		}
 	}
 	
 	/**
@@ -49,7 +56,13 @@ public class StateMachine {
 	 * @param killHandler
 	 */
 	public void removeTransitionListener(StateTransitionListener listener) {
-		transitionListeners.remove(listener);
+		try {
+			listenersLock.writeLock().lock();
+			transitionListeners.remove(listener);
+		}
+		finally {
+			listenersLock.writeLock().unlock();
+		}
 	}
 
 	/**
@@ -65,10 +78,14 @@ public class StateMachine {
 	}
 
 	private void notifyAboutTransition() {
-		synchronized (transitionListeners) {
+		try {
+			listenersLock.readLock().lock();
 			for (StateTransitionListener listener : transitionListeners) {
 				listener.transitionTo(state);
 			}			
+		}
+		finally {
+			listenersLock.readLock().unlock();
 		}
 	}
 
