@@ -77,7 +77,15 @@ public class NamedListConfig implements Iterable<String> {
 	 * @return stored value
 	 */
 	public String get(String name) {
-		return (String) namedList.get(name);
+		return namedList.get(name).toString();
+	}
+	
+	/**
+	 * @param name name
+	 * @return stored value
+	 */
+	public String remove(String name) {
+		return namedList.remove(name).toString();
 	}
 
 	/**

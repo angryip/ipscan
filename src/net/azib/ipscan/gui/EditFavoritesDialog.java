@@ -60,13 +60,20 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 		downButton.setText(Labels.getLabel("button.down"));
 		downButton.addListener(SWT.Selection, new DownButtonListener(favoritesList));
 		
+		Button renameButton = new Button(shell, SWT.NONE);
+		renameButton.setText(Labels.getLabel("button.rename"));
+		Listener renameListener = new RenameListener();
+		renameButton.addListener(SWT.Selection, renameListener);
+		favoritesList.addListener(SWT.MouseDoubleClick, renameListener);
+
 		Button deleteButton = new Button(shell, SWT.NONE);
 		deleteButton.setText(Labels.getLabel("button.delete"));
-		deleteButton.addListener(SWT.Selection, new DeleteButtonListener());
+		deleteButton.addListener(SWT.Selection, new DeleteListener());
 		
-		upButton.setLayoutData(LayoutHelper.formData(new FormAttachment(favoritesList), new FormAttachment(deleteButton, 0, SWT.RIGHT), new FormAttachment(messageLabel), null));
-		downButton.setLayoutData(LayoutHelper.formData(new FormAttachment(favoritesList), new FormAttachment(deleteButton, 0, SWT.RIGHT), new FormAttachment(upButton), null));
-		deleteButton.setLayoutData(LayoutHelper.formData(new FormAttachment(favoritesList), null, new FormAttachment(downButton, 10), null));
+		upButton.setLayoutData(LayoutHelper.formData(new FormAttachment(favoritesList), new FormAttachment(renameButton, 0, SWT.RIGHT), new FormAttachment(messageLabel), null));
+		downButton.setLayoutData(LayoutHelper.formData(new FormAttachment(favoritesList), new FormAttachment(renameButton, 0, SWT.RIGHT), new FormAttachment(upButton), null));
+		renameButton.setLayoutData(LayoutHelper.formData(new FormAttachment(favoritesList), null, new FormAttachment(downButton, 10), null));
+		deleteButton.setLayoutData(LayoutHelper.formData(new FormAttachment(favoritesList), new FormAttachment(renameButton, 0, SWT.RIGHT), new FormAttachment(renameButton), null));
 		
 		Button okButton = new Button(shell, SWT.NONE);
 		okButton.setText(Labels.getLabel("button.OK"));		
@@ -96,10 +103,24 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 		favoritesConfig.store();
 	}
 	
-	class DeleteButtonListener implements Listener {
+	class DeleteListener implements Listener {
 		public void handleEvent(Event event) {
 			favoritesList.remove(favoritesList.getSelectionIndices());			
 		}
 	}
 
+	class RenameListener implements Listener {
+		public void handleEvent(Event event) {
+			int index = favoritesList.getSelectionIndex();
+			InputDialog prompt = new InputDialog(Labels.getLabel("title.rename"), "");
+			String oldName = favoritesList.getItem(index);
+			String newName = prompt.open(oldName);
+			if (newName != null) {
+				favoritesConfig.add(newName, favoritesConfig.remove(oldName));
+				favoritesList.setItem(index, newName);
+				// saving will rebuild favorites in correct order
+			}
+			favoritesList.forceFocus();
+		}
+	}
 }

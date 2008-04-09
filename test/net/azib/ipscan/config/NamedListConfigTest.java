@@ -44,6 +44,13 @@ public class NamedListConfigTest {
 	}
 	
 	@Test
+	public void testRemove() {
+		config.add("Mega favorite", "aaa:xxx");
+		assertEquals("aaa:xxx", config.remove("Mega favorite"));
+		assertEquals(0, config.size());
+	}
+
+	@Test
 	public void testLoad() throws Exception {
 		preferences.put(PREFERENCE_NAME, "aa###aaa###bb###bbb###cc###ccc");
 		NamedListConfig config = new NamedListConfig(preferences, PREFERENCE_NAME);

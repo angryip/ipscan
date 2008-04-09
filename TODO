@@ -7,17 +7,16 @@ Before 3.0:
 * startup as root option
 * compile librocksaw for mac and linux64
 * plugin loader
-* export/import of settings (profiles or tie with Favorites?)
-* top-level exception handler for NoClassDefFoundErrors, etc
 * public XSL for XMLExporter
 * Exporter appending functionality exposed to the user
-* rename favorite option in the Manager dialog
 * goto prev stuff (alternative shortcuts)
 * GIJ + java.util.prefs don't work
+* top-level exception handler for NoClassDefFoundErrors, etc
 
 Later:
 
 * find not-null for column
+* export/import of settings (profiles or tie with Favorites?)
 * display friendly names of ports
 * display manufacturers of mac addresses
 * preferences profiles (tied to favorites?)
