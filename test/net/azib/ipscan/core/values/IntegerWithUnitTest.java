@@ -27,7 +27,7 @@ public class IntegerWithUnitTest {
 	
 	@Test
 	public void testToString() throws Exception {
-		assertEquals("151" + Labels.getLabel("fetcher.unit.ms"), new IntegerWithUnit(151, "ms").toString());
+		assertEquals("151" + Labels.getLabel("unit.ms"), new IntegerWithUnit(151, "ms").toString());
 	}
 
 	@Test
