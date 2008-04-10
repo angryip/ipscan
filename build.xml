@@ -384,7 +384,8 @@
 		</replace>
 		<launch4j configFile="${dist}.win32/ipscan.xml"/>
 		<delete file="${dist}.win32/ipscan.xml"/>
-		<delete file="${ant.project.name}-win32-${version}.jar"/>
+		<delete file="${dist}.win32/${ant.project.name}-win32-${version}.jar"/>
+		<move file="${dist}.win32/${ant.project.name}-win32-${version}.exe" tofile="${dist}.win32/${ant.project.name}-${version}.exe"/>
 	</target>
 
 	<!-- Note: this task was tested only on Linux -->
