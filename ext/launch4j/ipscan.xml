@@ -1,8 +1,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>FILENAME.jar</jar>
-  <outfile>FILENAME.exe</outfile>
+  <jar>FILENAME_IN</jar>
+  <outfile>FILENAME_OUT</outfile>
   <errTitle>Angry IP Scanner</errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
