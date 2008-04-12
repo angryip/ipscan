@@ -73,6 +73,13 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	}
 	
 	/**
+	 * @return true if scanning info is available and can be used
+	 */
+	public boolean isInfoAvailable() {
+		return info != null;
+	}
+
+	/**
 	 * @return feeder configuration information that was used for the last scan
 	 */
 	public String getFeederInfo() {

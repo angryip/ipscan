@@ -41,7 +41,7 @@ public class StatisticsDialog extends AbstractModalDialog {
 	
 	@Override
 	public void open() {
-		if (scanningResults.areResultsAvailable()) {
+		if (scanningResults.isInfoAvailable()) {
 			createShell();
 			super.open();
 		}
@@ -104,8 +104,7 @@ public class StatisticsDialog extends AbstractModalDialog {
 			.append(scanningResults.getFeederInfo()).append(ln).append(ln);
 		
 		text.append(Labels.getLabel("text.scan.hosts.total")).append(scanInfo.getHostCount()).append(ln);
-		if (scanInfo.getAliveCount() > 0) 
-			text.append(Labels.getLabel("text.scan.hosts.alive")).append(scanInfo.getAliveCount()).append(ln);
+		text.append(Labels.getLabel("text.scan.hosts.alive")).append(scanInfo.getAliveCount()).append(ln);
 		if (scanInfo.getWithPortsCount() > 0) 
 			text.append(Labels.getLabel("text.scan.hosts.ports")).append(scanInfo.getWithPortsCount()).append(ln);
 		return text.toString();
