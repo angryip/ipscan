@@ -5,16 +5,15 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.config.OpenersConfig.Opener;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
+import net.azib.ipscan.core.values.Empty;
 import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.fetchers.HostnameFetcher;
 
 /**
  * OpenerLauncher
@@ -22,8 +21,6 @@ import net.azib.ipscan.fetchers.FetcherRegistry;
  * @author Anton Keks
  */
 public class OpenerLauncher {
-	
-	static final Logger LOG = LoggerFactory.getLogger();
 	
 	private final FetcherRegistry fetcherRegistry;
 	private final ScanningResultList scanningResults;
@@ -53,7 +50,6 @@ public class OpenerLauncher {
 				}
 			}
 			catch (Exception e) {
-				LOG.log(Level.WARNING, "opener.failed", e);
 				throw new UserErrorException("opener.failed", openerString);
 			}
 		}
@@ -61,7 +57,7 @@ public class OpenerLauncher {
 
 	/**
 	 * Replaces references to scanned values in an opener string.
-	 * Refefernces look like ${fetcher_label}
+	 * References look like ${fetcher_id}
 	 * @param openerString
 	 * @return opener string with values replaced
 	 */
@@ -71,28 +67,34 @@ public class OpenerLauncher {
 		StringBuffer sb = new StringBuffer(64);
 		while (matcher.find()) {
 			// resolve the required fetcher
-			String fetcherName = matcher.group(1);
-			int fetcherIndex = fetcherRegistry.getSelectedFetcherIndex(fetcherName);
-			if (fetcherIndex < 0) {
-				throw new UserErrorException("opener.unknownFetcher", fetcherName);
-			}
+			String fetcherId = matcher.group(1);
 
 			// retrieve the scanned value
-			try {
-				String scannedValue = getScannedValue(selectedItem, fetcherIndex);
-				matcher.appendReplacement(sb, scannedValue);
+			Object scannedValue = getScannedValue(selectedItem, fetcherId);
+			if (scannedValue == null || scannedValue instanceof Empty) {
+				throw new UserErrorException("opener.nullFetcherValue", fetcherId);					
 			}
-			catch (Exception e) {
-				LOG.log(Level.INFO, "opener.nullFetcherValue", e);
-				throw new UserErrorException("opener.nullFetcherValue", fetcherName);					
-			}
+			
+			matcher.appendReplacement(sb, scannedValue.toString());
 		}
 		matcher.appendTail(sb);
 		return sb.toString();
 	}
 
-	String getScannedValue(int selectedItem, int fetcherIndex) {
-		Object value = scanningResults.getResult(selectedItem).getValues().get(fetcherIndex); 
-		return value != null ? value.toString() : null;
+	private Object getScannedValue(int selectedItem, String fetcherId) {
+		int fetcherIndex = fetcherRegistry.getSelectedFetcherIndex(fetcherId);
+		if (fetcherIndex < 0) {
+			throw new UserErrorException("opener.unknownFetcher", fetcherId);
+		}
+
+		Object value = scanningResults.getResult(selectedItem).getValues().get(fetcherIndex);
+		
+		if ((value == null || value instanceof Empty) && fetcherId.equals(HostnameFetcher.ID)) {
+			// small innocent hardcode:
+			// if we request a hostname, but get null, use the IP
+			value = scanningResults.getResult(selectedItem).getAddress().getHostAddress();
+		}
+		
+		return value;
 	}
 }

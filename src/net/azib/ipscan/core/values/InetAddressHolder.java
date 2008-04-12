@@ -9,7 +9,7 @@ package net.azib.ipscan.core.values;
 import java.net.InetAddress;
 
 /**
- * InetAddressValue - a comparable holder of IP addresses
+ * InetAddressHolder - a comparable holder of IP addresses
  *
  * @author Anton Keks
  */

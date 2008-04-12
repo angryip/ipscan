@@ -25,15 +25,15 @@ public class OpenersConfig extends NamedListConfig {
 			Labels labels = Labels.getInstance();
 			// add default openers
 			if (Platform.WINDOWS) add(labels.get("opener.netbios"), new Opener("\\\\${fetcher.ip}", false, null));
-			add(labels.get("opener.web"), new Opener("http://${fetcher.ip}/", false, null));			
-			add(labels.get("opener.ftp"), new Opener("ftp://${fetcher.ip}/", false, null));
+			add(labels.get("opener.web"), new Opener("http://${fetcher.hostname}/", false, null));			
+			add(labels.get("opener.ftp"), new Opener("ftp://${fetcher.hostname}/", false, null));
 			add(labels.get("opener.telnet"), new Opener("telnet ${fetcher.ip}", true, null));
 			add(labels.get("opener.ping"), new Opener("ping ${fetcher.ip}", true, null));
 			add(labels.get("opener.traceroute"), new Opener((Platform.WINDOWS ? "tracert" : Platform.LINUX ? "tracepath" : "traceroute") + " ${fetcher.ip}", true, null));
 			if (!Platform.WINDOWS) add(labels.get("opener.ssh"), new Opener("ssh ${fetcher.ip}", true, null));
 			if (!Platform.WINDOWS) add(labels.get("opener.whois"), new Opener("whois ${fetcher.ip}", true, null));
 			add(labels.get("opener.geolocate"), new Opener("http://www.azib.net/iplocate.php?ip=${fetcher.ip}", false, null));
-			add(labels.get("opener.email"), new Opener("mailto:somebody@example.com?subject=IP: ${fetcher.ip}", true, null));
+			add(labels.get("opener.email"), new Opener("mailto:somebody@example.com?subject=${fetcher.ip} (${fetcher.hostname})", true, null));
 		}
 	}
 	

@@ -19,10 +19,14 @@ import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.values.InetAddressHolder;
+import net.azib.ipscan.core.values.IntegerWithUnit;
 import net.azib.ipscan.core.values.NotAvailable;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.fetchers.HostnameFetcher;
+import net.azib.ipscan.fetchers.IPFetcher;
+import net.azib.ipscan.fetchers.PingFetcher;
 
 import org.junit.Test;
 
@@ -37,10 +41,10 @@ public class OpenerLauncherTest {
 	public void testReplaceValues() throws UnknownHostException {
 		FetcherRegistry fetcherRegistry = createMock(FetcherRegistry.class);
 		expect(fetcherRegistry.getSelectedFetchers()).andReturn(Collections.<Fetcher>nCopies(5, null)).times(2);
-		expect(fetcherRegistry.getSelectedFetcherIndex("fetcher.ip")).andReturn(0).times(3);
-		expect(fetcherRegistry.getSelectedFetcherIndex("fetcher.hostname")).andReturn(1);
-		expect(fetcherRegistry.getSelectedFetcherIndex("fetcher.ping")).andReturn(2);
-		expect(fetcherRegistry.getSelectedFetcherIndex("fetcher.comment")).andReturn(3);
+		expect(fetcherRegistry.getSelectedFetcherIndex(IPFetcher.ID)).andReturn(0).times(3);
+		expect(fetcherRegistry.getSelectedFetcherIndex(HostnameFetcher.ID)).andReturn(1).anyTimes();
+		expect(fetcherRegistry.getSelectedFetcherIndex(PingFetcher.ID)).andReturn(2);
+		expect(fetcherRegistry.getSelectedFetcherIndex("fetcher.comment")).andReturn(3).anyTimes();
 		expect(fetcherRegistry.getSelectedFetcherIndex("noSuchFetcher")).andReturn(-1);
 		replay(fetcherRegistry);
 		
@@ -49,7 +53,7 @@ public class OpenerLauncherTest {
 		ScanningResult result = scanningResults.createResult(InetAddress.getByName("127.0.0.1"));
 		result.setValue(0, new InetAddressHolder(InetAddress.getByName("127.0.0.1")));
 		result.setValue(1, "HOSTNAME");
-		result.setValue(2, NotAvailable.VALUE);
+		result.setValue(2, new IntegerWithUnit(10, "ms"));
 		scanningResults.registerAtIndex(0, result);
 		
 		OpenerLauncher ol = new OpenerLauncher(fetcherRegistry, scanningResults);
@@ -57,8 +61,8 @@ public class OpenerLauncherTest {
 		assertEquals("\\\\127.0.0.1", ol.prepareOpenerStringForItem("\\\\${fetcher.ip}", 0));
 		assertEquals("HOSTNAME$$$127.0.0.1xxx${}", ol.prepareOpenerStringForItem("${fetcher.hostname}$$$${fetcher.ip}xxx${}", 0));
 		assertEquals("http://127.0.0.1:80/www", ol.prepareOpenerStringForItem("http://${fetcher.ip}:80/www", 0));
-		assertEquals(NotAvailable.VALUE.toString() + ", xx", ol.prepareOpenerStringForItem("${fetcher.ping}, xx", 0));
-		
+		assertEquals(result.getValues().get(2) + ", xx", ol.prepareOpenerStringForItem("${fetcher.ping}, xx", 0));
+				
 		try {
 			ol.prepareOpenerStringForItem("${noSuchFetcher}", 0);
 			fail();
@@ -74,6 +78,20 @@ public class OpenerLauncherTest {
 		catch (UserErrorException e) {
 			assertEquals(Labels.getLabel("exception.UserErrorException.opener.nullFetcherValue") + "fetcher.comment", e.getMessage());
 		}
+
+		try {
+			result.setValue(3, NotAvailable.VALUE);
+			ol.prepareOpenerStringForItem("${fetcher.comment}", 0);
+			fail();
+		}
+		catch (UserErrorException e) {
+			assertEquals(Labels.getLabel("exception.UserErrorException.opener.nullFetcherValue") + "fetcher.comment", e.getMessage());
+		}
+		
+		result.setValue(1, null);
+		assertEquals("Hostname opening should fall back to the IP", "127.0.0.1", ol.prepareOpenerStringForItem("${" + HostnameFetcher.ID + "}", 0));
+		result.setValue(1, NotAvailable.VALUE);
+		assertEquals("Hostname opening should fall back to the IP", "127.0.0.1", ol.prepareOpenerStringForItem("${" + HostnameFetcher.ID + "}", 0));
 		
 		verify(fetcherRegistry);
 	}

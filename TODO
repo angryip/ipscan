@@ -1,6 +1,6 @@
 Before 3.0:
 
-* windows 48 icon for Vista
+* gtk sort direction arrows
 * command-line scanning start
 * fetcher-specific options
 * multiple port support web-detect

@@ -25,7 +25,7 @@ import net.azib.ipscan.core.values.IntegerWithUnit;
  */
 public class PingFetcher extends AbstractFetcher {
 	
-	static final String ID = "fetcher.ping";
+	public static final String ID = "fetcher.ping";
 
 	private static final Logger LOG = LoggerFactory.getLogger();
 	

@@ -13,7 +13,7 @@ import net.azib.ipscan.core.ScanningSubject;
  */
 public class HostnameFetcher extends AbstractFetcher {
 
-	static final String ID = "fetcher.hostname";
+	public static final String ID = "fetcher.hostname";
 
 	public String getId() {
 		return ID;
