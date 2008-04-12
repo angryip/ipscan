@@ -5,6 +5,7 @@ package net.azib.ipscan.config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 import java.util.Iterator;
 import java.util.prefs.Preferences;
@@ -41,6 +42,11 @@ public class NamedListConfigTest {
 		config.add("Mega favorite", "aaa:xxx");
 		assertEquals("aaa:xxx", config.get("Mega favorite"));
 		assertEquals(1, config.size());
+	}
+	
+	@Test
+	public void testGetNull() throws Exception {
+		assertNull(config.get("foobar"));
 	}
 	
 	@Test

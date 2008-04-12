@@ -77,7 +77,8 @@ public class NamedListConfig implements Iterable<String> {
 	 * @return stored value
 	 */
 	public String get(String name) {
-		return namedList.get(name).toString();
+		Object value = namedList.get(name);
+		return value != null ? value.toString() : null;
 	}
 	
 	/**
