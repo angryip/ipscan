@@ -81,7 +81,7 @@ public class StatisticsDialog extends AbstractModalDialog {
 		Text statsText = new Text(shell, SWT.MULTI | SWT.READ_ONLY);
 		statsText.setBackground(currentDisplay.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
 		statsText.setLayoutData(LayoutHelper.formData(new FormAttachment(iconLabel), null, new FormAttachment(titleLabel), null));
-		statsText.setText(prepareText(scanningResults.getScanInfo()));
+		statsText.setText(prepareText());
 		statsText.pack();
 		
 		Button button = createCloseButton();
@@ -92,7 +92,8 @@ public class StatisticsDialog extends AbstractModalDialog {
 		shell.pack();
 	}
 
-	private String prepareText(ScanInfo scanInfo) {
+	String prepareText() {
+		ScanInfo scanInfo = scanningResults.getScanInfo();
 		String ln = System.getProperty("line.separator");
 		StringBuilder text = new StringBuilder();
 		text.append(Labels.getLabel("text.scan.time.total"))

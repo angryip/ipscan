@@ -289,14 +289,14 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	 */
 	public static class ScanInfo {
 		
-		boolean scanFinished;
-		boolean scanAborted;
+		protected boolean scanFinished;
+		protected boolean scanAborted;
 
-		long startTime = System.currentTimeMillis();
-		long endTime;
-		int numScanned;
-		int numAlive;
-		int numWithPorts;	
+		protected long startTime = System.currentTimeMillis();
+		protected long endTime;
+		protected int numScanned;
+		protected int numAlive;
+		protected int numWithPorts;	
 		
 		/**
 		 * @return total scan time, in milliseconds.
