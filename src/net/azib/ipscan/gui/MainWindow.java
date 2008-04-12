@@ -13,6 +13,7 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
+import net.azib.ipscan.gui.actions.BrowserLauncher;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.actions.ToolsActions;
 import net.azib.ipscan.gui.feeders.AbstractFeederGUI;
@@ -98,11 +99,13 @@ public class MainWindow {
 				public void run() {
 					if (Platform.CRIPPLED_WINDOWS) {
 						// inform crippled windows owners of their default configuration
-						showMessage(Labels.getLabel("text.crippledWindowsInfo"));
+						if (showMessage(Labels.getLabel("text.crippledWindowsInfo"), SWT.YES | SWT.NO) == SWT.YES) {
+							BrowserLauncher.openURL(Version.FAQ_CRIPPLED_WINDOWS_URL);
+						}
 					}
 					if (Platform.GNU_JAVA) {
 						// show a warning if running under GNU Java
-						showMessage(Labels.getLabel("text.gnuJavaInfo"));
+						showMessage(Labels.getLabel("text.gnuJavaInfo"), SWT.OK);
 					}
 					MainWindow.this.shell.forceActive();
 					new GettingStartedDialog().open();
@@ -114,11 +117,11 @@ public class MainWindow {
 		stateMachine.addTransitionListener(new EnablerDisabler());
 	}
 	
-	private void showMessage(String text) {
-		MessageBox box = new MessageBox(MainWindow.this.shell, SWT.ICON_WARNING | SWT.OK);
+	private int showMessage(String text, int buttons) {
+		MessageBox box = new MessageBox(MainWindow.this.shell, SWT.ICON_WARNING | buttons);
 		box.setText(Version.NAME);
 		box.setMessage(text);
-		box.open();
+		return box.open();
 	}
 
 	/**

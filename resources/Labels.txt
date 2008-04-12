@@ -308,7 +308,8 @@ Special values (also configurable):\n\
 
 text.crippledWindowsInfo=Thank you for trying Angry IP Scanner!\n\n\
 However, keep in mind that consumer versions of Windows (e.g. Windows XP SP2, Windows Vista) have limited ability to be hosts for scanning, due to removed RawSocket support and TCP connection rate limiting.\n\n\
-Because of that, some preferences were changed for you, making scanning a lot slower than on full-featured operating systems. See the FAQ on Angry IP Scanner homepage.
+Because of that, some preferences were changed for you, making scanning a lot slower than on full-featured operating systems.\n\n\
+Angry IP Scanner's FAQ page provides the information on how to patch your system. Do you want to open it now?
 
 text.gnuJavaInfo=Thank you for trying Angry IP Scanner!\n\n\
 The program is currently running under GNU Java (GIJ/GCJ) implementation.\n\n\

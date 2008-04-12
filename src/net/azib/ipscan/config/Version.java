@@ -22,9 +22,13 @@ public class Version {
 	
 	public static final String MAILTO = "support@azib.net";
 
-	public static final String FORUM_URL = "http://www.azib.net/ipscan/forum/";
+	public static final String FORUM_URL = "http://www.azib.net/w/Forum";
 	
-	public static final String PLUGINS_URL = "http://www.azib.net/ipscan/plugins/";
+	public static final String FAQ_URL = "http://www.azib.net/w/FAQ";
+	
+	public static final String FAQ_CRIPPLED_WINDOWS_URL = "http://www.azib.net/w/FAQ:_Crippled_Windows";
+
+	public static final String PLUGINS_URL = "http://www.azib.net/w/FAQ:_Plugins";
 	
 	public static final String LATEST_VERSION_URL = "http://www.azib.net/ipscan/IPSCAN.VERSION";
 	
