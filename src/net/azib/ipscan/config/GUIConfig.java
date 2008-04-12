@@ -14,6 +14,7 @@ import net.azib.ipscan.fetchers.PingFetcher;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * DimensionsConfig
@@ -54,11 +55,12 @@ public class GUIConfig {
 		askScanConfirmation = preferences.getBoolean("askScanConfirmation", true);
 
 		isMainWindowMaximized = preferences.getBoolean("windowMaximized", false);
+		Rectangle screen = Display.getDefault().getBounds();
 		mainWindowBounds = new Rectangle(
-			preferences.getInt("windowLeft", 100),
-			preferences.getInt("windowTop", 100),
-			preferences.getInt("windowWidth", 600),
-			preferences.getInt("windowHeight", 360));
+			preferences.getInt("windowLeft", screen.x + screen.width/2 - 660/2),
+			preferences.getInt("windowTop", screen.y + screen.height/2 - 380/2),
+			preferences.getInt("windowWidth", 660),
+			preferences.getInt("windowHeight", 380));
 		
 		detailsWindowSize = new Point(
 			preferences.getInt("detailsWidth", 300),
