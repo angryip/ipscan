@@ -119,7 +119,7 @@ public class MainMenu implements Startable {
 		initMenuItem(subMenu, "menu.help.gettingStarted", !Platform.MAC_OS ? "F1" : null, new Integer(Platform.MAC_OS ? SWT.HELP : SWT.F1), initListener(HelpActions.GettingStarted.class));
 		initMenuItem(subMenu, null, null, null, null);
 		initMenuItem(subMenu, "menu.help.website", null, null, initListener(HelpActions.Website.class));
-		initMenuItem(subMenu, "menu.help.forum", null, null, initListener(HelpActions.Forum.class));
+		initMenuItem(subMenu, "menu.help.faq", null, null, initListener(HelpActions.FAQ.class));
 		initMenuItem(subMenu, "menu.help.plugins", null, null, initListener(HelpActions.Plugins.class));
 		initMenuItem(subMenu, null, null, null, null);
 		initMenuItem(subMenu, "menu.help.cmdLine", null, null, null);

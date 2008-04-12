@@ -56,9 +56,9 @@ public class HelpActions {
 		}
 	}
 
-	public static final class Forum implements Listener { 		
+	public static final class FAQ implements Listener { 		
 		public void handleEvent(Event event) {
-			BrowserLauncher.openURL(Version.FORUM_URL);
+			BrowserLauncher.openURL(Version.FAQ_URL);
 		}
 	}
 
