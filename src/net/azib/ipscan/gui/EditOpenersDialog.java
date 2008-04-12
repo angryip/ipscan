@@ -192,7 +192,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 			// compose the message with all available fetchers
 			StringBuilder message = new StringBuilder(Labels.getLabel("text.openers.hintText"));
 			for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
-				message.append("${").append(fetcher.getId()).append("}   - ").append(Labels.getLabel(fetcher.getName())).append('\n');
+				message.append("${").append(fetcher.getId()).append("}   - ").append(fetcher.getName()).append('\n');
 			}
 			
 			MessageBox mb = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
