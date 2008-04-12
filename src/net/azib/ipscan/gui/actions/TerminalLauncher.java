@@ -7,6 +7,7 @@ package net.azib.ipscan.gui.actions;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -57,22 +58,8 @@ public class TerminalLauncher {
 			}
 			else { // assume Linux or other Unix
 				
-				// detect environment
 				if (workingTerminal == UNKNOWN) {
-					if (Runtime.getRuntime().exec(new String[] {"pidof", "nautilus"}).waitFor() == 0) {
-						workingTerminal = GNOME;
-					}
-					else
-					if (Runtime.getRuntime().exec(new String[] {"pidof", "xfce4-session xfwm4 Thunar xfdesktop"}).waitFor() == 0) {
-						workingTerminal = XFCE;
-					}
-					else
-					if (Runtime.getRuntime().exec(new String[] {"pidof", "dcopserver"}).waitFor() == 0) {
-						workingTerminal = KDE;
-					}
-					else {
-						workingTerminal = XTERM;
-					}
+					detectWorkingTerminal();
 				}
 				
 				// run detected terminal program
@@ -104,6 +91,23 @@ public class TerminalLauncher {
 				// even XTERM doesn't work...
 				throw new UserErrorException("openTerminal.failed", execString);
 			}
+		}
+	}
+
+	private static void detectWorkingTerminal() throws InterruptedException, IOException {
+		if (Runtime.getRuntime().exec(new String[] {"pidof", "nautilus"}).waitFor() == 0) {
+			workingTerminal = GNOME;
+		}
+		else
+		if (Runtime.getRuntime().exec(new String[] {"pidof", "xfce4-session xfwm4 Thunar xfdesktop"}).waitFor() == 0) {
+			workingTerminal = XFCE;
+		}
+		else
+		if (Runtime.getRuntime().exec(new String[] {"pidof", "dcopserver"}).waitFor() == 0) {
+			workingTerminal = KDE;
+		}
+		else {
+			workingTerminal = XTERM;
 		}
 	}
 }

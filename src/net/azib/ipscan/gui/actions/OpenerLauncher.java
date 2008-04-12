@@ -5,9 +5,14 @@
  */
 package net.azib.ipscan.gui.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.OpenersConfig.Opener;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
@@ -44,15 +49,50 @@ public class OpenerLauncher {
 					TerminalLauncher.launchInTerminal(openerString, opener.workingDir);
 				}
 				else {
-					// TODO: we probably need to support shell patterns, etc
-					// TODO: merge launchInTerminal with this code
-					Runtime.getRuntime().exec(openerString, null, opener.workingDir);
+					if (Platform.LINUX) {
+						// let shell interpret quoting and other stuff
+						Runtime.getRuntime().exec(new String[] {"sh", "-c", openerString}, null, opener.workingDir);
+					}
+					else {
+						Runtime.getRuntime().exec(splitCommand(openerString), null, opener.workingDir);
+					}
 				}
 			}
 			catch (Exception e) {
 				throw new UserErrorException("opener.failed", openerString);
 			}
 		}
+	}
+
+	/**
+	 * Splits the command provided as String into an array of parameters
+	 * to be passed to the OS.
+	 * This implementation supports quoting.
+	 */
+	static String[] splitCommand(String command) {
+		StringTokenizer tokenizer = new StringTokenizer(command);
+		List<String> result = new ArrayList<String>();
+		while (tokenizer.hasMoreTokens()) {
+			String token = tokenizer.nextToken(" \t");
+			
+			try {
+				if (token.startsWith("\"")) {
+					token = token.substring(1) + tokenizer.nextToken("\"");
+					tokenizer.nextToken(" \t");
+				}
+				else
+				if (token.startsWith("'")) {
+					token = token.substring(1) + tokenizer.nextToken("'");
+					tokenizer.nextToken(" \t");
+				}
+			}
+			catch (NoSuchElementException e) {
+				// probably the end of the command reached
+			}
+			
+			result.add(token);
+		}
+		return result.toArray(new String[result.size()]);
 	}
 
 	/**

@@ -3,12 +3,8 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -94,6 +90,15 @@ public class OpenerLauncherTest {
 		assertEquals("Hostname opening should fall back to the IP", "127.0.0.1", ol.prepareOpenerStringForItem("${" + HostnameFetcher.ID + "}", 0));
 		
 		verify(fetcherRegistry);
+	}
+	
+	@Test
+	public void testCommandSplitting() throws Exception {
+		assertArrayEquals(new String[] {"hello", "world"}, OpenerLauncher.splitCommand("hello world"));
+		assertArrayEquals(new String[] {"echo", "hello world", "muha-ha"}, OpenerLauncher.splitCommand("echo 'hello world' muha-ha"));
+		assertArrayEquals(new String[] {"echo", "hello world", "muha-ha"}, OpenerLauncher.splitCommand("echo \"hello world\" muha-ha"));
+		assertArrayEquals(new String[] {"mix \"1", "mix '2"}, OpenerLauncher.splitCommand("'mix \"1' \"mix '2\""));
+		assertArrayEquals(new String[] {"\"aaa"}, OpenerLauncher.splitCommand("\"aaa"));
 	}
 	
 	private Feeder createMockFeeder(String feederInfo) {
