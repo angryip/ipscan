@@ -57,10 +57,10 @@ public class GUIConfig {
 		isMainWindowMaximized = preferences.getBoolean("windowMaximized", false);
 		Rectangle screen = Display.getDefault().getBounds();
 		mainWindowBounds = new Rectangle(
-			preferences.getInt("windowLeft", screen.x + screen.width/2 - 660/2),
-			preferences.getInt("windowTop", screen.y + screen.height/2 - 380/2),
-			preferences.getInt("windowWidth", 660),
-			preferences.getInt("windowHeight", 380));
+			preferences.getInt("windowLeft", screen.x + screen.width/2 - 600/2),
+			preferences.getInt("windowTop", screen.y + screen.height/2 - 360/2),
+			preferences.getInt("windowWidth", 600),
+			preferences.getInt("windowHeight", 360));
 		
 		detailsWindowSize = new Point(
 			preferences.getInt("detailsWidth", 300),
