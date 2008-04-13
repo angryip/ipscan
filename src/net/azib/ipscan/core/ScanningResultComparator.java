@@ -20,15 +20,16 @@ public class ScanningResultComparator implements Comparator<ScanningResult> {
 		Object val1 = r1.getValues().get(index);
 		Object val2 = r2.getValues().get(index);
 		
-		if (val1 == val2) {
-			return 0;
-		}
 		if (val1 == null) 
 			val1 = NotAvailable.VALUE;
 		if (val2 == null) 
 			val2 = NotAvailable.VALUE;
-		
+
 		int result;
+		if (val1 == val2) {
+			result = 0;
+		}
+		else
 		if (val1.getClass() == val2.getClass() && !(val1 instanceof String) && val1 instanceof Comparable) {
 			// both are the same type and Comparable
 			result = ((Comparable)val1).compareTo(val2);
@@ -43,6 +44,11 @@ public class ScanningResultComparator implements Comparator<ScanningResult> {
 				// otherwise compare String representations
 				result = val1.toString().compareToIgnoreCase(val2.toString());
 			}
+		}
+		
+		if (result == 0 && index != 0) {
+			// if values are equal, order them according to the IPs
+			result = ((Comparable)r1.getValues().get(0)).compareTo(r2.getValues().get(0));
 		}
 		
 		return result * (ascending ? 1 : -1);

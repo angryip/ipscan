@@ -12,6 +12,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
+import net.azib.ipscan.core.values.InetAddressHolder;
 import net.azib.ipscan.core.values.IntegerWithUnit;
 import net.azib.ipscan.core.values.NotAvailable;
 import net.azib.ipscan.core.values.NotScanned;
@@ -67,7 +68,7 @@ public class ScanningResultComparatorTest {
 		assertTrue(comparator.compare(res("a", "z"), res("z", "a")) > 0);
 		
 		comparator.byIndex(2, false);
-		assertTrue(comparator.compare(res("a", "z", "mmm"), res("z", "a", "mmm")) == 0);
+		assertTrue(comparator.compare(res("a", "x", "mmm"), res("a", "y", "mmm")) == 0);
 	}
 	
 	@Test
@@ -89,6 +90,22 @@ public class ScanningResultComparatorTest {
 		assertTrue(comparator.compare(res("Z"), res("a")) > 0);
 	}
 	
+	@Test
+	public void fallbackToIP() throws Exception {
+		Object ip1 = new InetAddressHolder(InetAddress.getByName("127.0.0.25"));
+		Object ip2 = new InetAddressHolder(InetAddress.getByName("127.0.0.30"));
+		Object ip3 = new InetAddressHolder(InetAddress.getByName("128.0.0.25"));
+
+		comparator.byIndex(1, true);		
+		assertTrue(comparator.compare(res(ip1, "a"), res(ip1, "A")) == 0);
+		assertTrue(comparator.compare(res(ip1, "a"), res(ip2, "a")) < 0);
+		assertTrue(comparator.compare(res(ip3, "a"), res(ip2, "a")) > 0);
+		
+		comparator.byIndex(1, false);		
+		assertTrue(comparator.compare(res(ip1, null), res(ip2, null)) > 0);
+		assertTrue(comparator.compare(res(ip3, null), res(ip2, null)) < 0);
+	}
+
 	@Test
 	public void sortingWorksInBothDirections() throws Exception {
 		ScanningResult[] results = {
@@ -121,7 +138,7 @@ public class ScanningResultComparatorTest {
 		assertEquals(NotAvailable.VALUE, results[3].getValues().get(0));
 		assertEquals(NotScanned.VALUE, results[5].getValues().get(0));
 	}
-	
+		
 	private ScanningResult res(Object ... values) throws UnknownHostException {
 		ScanningResult result = new ScanningResult(InetAddress.getLocalHost(), values.length);
 		for (int i = 0; i < values.length; i++) {
