@@ -106,7 +106,7 @@ public class MainMenu implements Startable {
 		initMenuItem(subMenu, "menu.tools.fetchers", "Ctrl+Shift+O", new Integer(SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O')), initListener(ToolsActions.ChooseFetchers.class), true);
 		initMenuItem(subMenu, null, null, null, null);
 		Menu selectMenu = initMenu(subMenu, "menu.tools.select");
-		initMenuItem(subMenu, "menu.tools.scanInfo", "Ctrl+K", new Integer(SWT.MOD1 | 'K'), initListener(ToolsActions.ScanInfo.class));
+		initMenuItem(subMenu, "menu.tools.scanStatistics", "Ctrl+T", new Integer(SWT.MOD1 | 'T'), initListener(ToolsActions.ScanStatistics.class));
 
 		initMenuItem(selectMenu, "menu.tools.select.alive", null, null, initListener(ToolsActions.SelectAlive.class), true);
 		initMenuItem(selectMenu, "menu.tools.select.dead", null, null, initListener(ToolsActions.SelectDead.class), true);

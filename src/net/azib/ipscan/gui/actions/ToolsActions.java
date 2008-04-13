@@ -68,12 +68,12 @@ public class ToolsActions {
 
 	}
 
-	public static final class ScanInfo implements Listener, StateTransitionListener {
+	public static final class ScanStatistics implements Listener, StateTransitionListener {
 		
 		private final StatisticsDialog statisticsDialog;
 		private final GUIConfig guiConfig;
 		
-		public ScanInfo(GUIConfig guiConfig, StatisticsDialog statisticsDialog, StateMachine stateMachine) {
+		public ScanStatistics(GUIConfig guiConfig, StatisticsDialog statisticsDialog, StateMachine stateMachine) {
 			this.guiConfig = guiConfig;
 			this.statisticsDialog = statisticsDialog;
 			// register for state changes
