@@ -16,7 +16,15 @@ import java.util.List;
  */
 public class ScanningResult {
 	
-	public enum ResultType {UNKNOWN, DEAD, ALIVE, WITH_PORTS}
+	public enum ResultType {
+		UNKNOWN, DEAD, ALIVE, WITH_PORTS;
+
+		public boolean matches(ResultType that) {
+			if (this.ordinal() <= DEAD.ordinal())
+				return that.ordinal() <= DEAD.ordinal();
+			return this.ordinal() <= that.ordinal();
+		}
+	}
 
 	/** The scanned IP address */
 	private InetAddress address;

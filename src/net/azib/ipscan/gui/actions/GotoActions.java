@@ -28,24 +28,32 @@ public class GotoActions {
 
 	static class NextHost implements Listener {
 
-		private final ResultTable resultTable;
-		private final ResultType whatToSearchFor;
+		final ResultTable resultTable;
+		final ResultType whatToSearchFor;
 		
 		NextHost(ResultTable resultTable, ResultType whatToSearchFor) {
 			this.resultTable = resultTable;
 			this.whatToSearchFor = whatToSearchFor;
 		}
+		
+		protected int inc(int i) {
+			return i+1;
+		}
+		
+		protected int startIndex() {
+			return resultTable.getSelectionIndex();
+		}
 
-		public void handleEvent(Event event) {
+		public final void handleEvent(Event event) {
 			ScanningResultList results = resultTable.getScanningResults();
 			
 			int numElements = resultTable.getItemCount();
-			int startElement = resultTable.getSelectionIndex() + 1;
+			int startIndex = startIndex();
 			
-			for (int i = startElement; i < numElements; i++) {
+			for (int i = inc(startIndex); i < numElements && i >= 0; i = inc(i)) {
 				ScanningResult scanningResult = results.getResult(i);
 				
-				if (scanningResult.getType().ordinal() >= whatToSearchFor.ordinal()) {
+				if (whatToSearchFor.matches(scanningResult.getType())) {
 					resultTable.setSelection(i);
 					resultTable.setFocus();
 					return;
@@ -53,12 +61,29 @@ public class GotoActions {
 				
 			}
 						
-			if (startElement > 0) {
+			// rewind
+			if (startIndex >= 0 && startIndex < numElements) {
 				resultTable.deselectAll();
 				handleEvent(event);
 			}
 		}
 
+	}
+	
+	static class PrevHost extends NextHost {
+
+		public PrevHost(ResultTable resultTable, ResultType whatToSearchFor) {
+			super(resultTable, whatToSearchFor);
+		}
+
+		protected int inc(int i) {
+			return i-1;
+		}
+
+		protected int startIndex() {
+			int curIndex = resultTable.getSelectionIndex();
+			return curIndex >= 0 ? curIndex : resultTable.getItemCount();
+		}
 	}
 	
 	public static final class NextAliveHost extends NextHost {
@@ -75,6 +100,24 @@ public class GotoActions {
 	
 	public static final class NextHostWithInfo extends NextHost {
 		public NextHostWithInfo(ResultTable resultTable) {
+			super(resultTable, ResultType.WITH_PORTS);
+		}
+	}
+	
+	public static final class PrevAliveHost extends PrevHost {
+		public PrevAliveHost(ResultTable resultTable) {
+			super(resultTable, ResultType.ALIVE);
+		}
+	}
+	
+	public static final class PrevDeadHost extends PrevHost {
+		public PrevDeadHost(ResultTable resultTable) {
+			super(resultTable, ResultType.DEAD);
+		}
+	}
+	
+	public static final class PrevHostWithInfo extends PrevHost {
+		public PrevHostWithInfo(ResultTable resultTable) {
 			super(resultTable, ResultType.WITH_PORTS);
 		}
 	}

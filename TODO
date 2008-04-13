@@ -10,7 +10,6 @@ Before 3.0:
 * plugin loader
 * public XSL for XMLExporter
 * Exporter appending functionality exposed to the user
-* goto prev stuff (alternative shortcuts)
 * GIJ + java.util.prefs don't work
 * top-level exception handler for NoClassDefFoundErrors, etc
 

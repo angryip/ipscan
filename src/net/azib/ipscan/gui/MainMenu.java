@@ -90,9 +90,13 @@ public class MainMenu implements Startable {
 		}
 		
 		subMenu = initMenu(menu, "menu.goto");
-		initMenuItem(subMenu, "menu.goto.aliveHost", "Ctrl+Shift+H", new Integer(SWT.MOD1 | SWT.MOD2 | 'H'), initListener(GotoActions.NextAliveHost.class));
-		initMenuItem(subMenu, "menu.goto.deadHost", "Ctrl+Shift+D", new Integer(SWT.MOD1 | SWT.MOD2 | 'D'), initListener(GotoActions.NextDeadHost.class));
-		initMenuItem(subMenu, "menu.goto.openPort", "Ctrl+Shift+P", new Integer(SWT.MOD1 | SWT.MOD2 | 'P'), initListener(GotoActions.NextHostWithInfo.class));
+		initMenuItem(subMenu, "menu.goto.next.aliveHost", "Ctrl+H", new Integer(SWT.MOD1 | 'H'), initListener(GotoActions.NextAliveHost.class));
+		initMenuItem(subMenu, "menu.goto.next.openPort", "Ctrl+J", new Integer(SWT.MOD1 | 'J'), initListener(GotoActions.NextHostWithInfo.class));
+		initMenuItem(subMenu, "menu.goto.next.deadHost", "Ctrl+K", new Integer(SWT.MOD1 | 'K'), initListener(GotoActions.NextDeadHost.class));
+		initMenuItem(subMenu, null, null, null, null);
+		initMenuItem(subMenu, "menu.goto.prev.aliveHost", "Ctrl+Shift+H", new Integer(SWT.MOD1 | SWT.MOD2 | 'H'), initListener(GotoActions.PrevAliveHost.class));
+		initMenuItem(subMenu, "menu.goto.prev.openPort", "Ctrl+Shift+J", new Integer(SWT.MOD1 | SWT.MOD2 | 'J'), initListener(GotoActions.PrevHostWithInfo.class));
+		initMenuItem(subMenu, "menu.goto.prev.deadHost", "Ctrl+Shift+K", new Integer(SWT.MOD1 | SWT.MOD2 | 'K'), initListener(GotoActions.PrevDeadHost.class));
 		initMenuItem(subMenu, null, null, null, null);
 		initMenuItem(subMenu, "menu.goto.find", "Ctrl+F", new Integer(SWT.MOD1 | 'F'), initListener(GotoActions.Find.class));
 		
