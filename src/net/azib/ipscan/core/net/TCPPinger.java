@@ -25,7 +25,7 @@ public class TCPPinger implements Pinger {
 	static final Logger LOG = Logger.getLogger(TCPPinger.class.getName());
 	
 	// try different ports in sequence, starting with 80 (which is most probably not filtered)
-	private static final int[] PROBE_TCP_PORTS = {80, 80, 443, 22, 7, 8080};
+	private static final int[] PROBE_TCP_PORTS = {80, 80, 443, 8080, 22, 7};
 	
 	private int timeout;
 	
@@ -40,28 +40,33 @@ public class TCPPinger implements Pinger {
 		
 		for (int i = 0; i < count && !Thread.currentThread().isInterrupted(); i++) {
 			Socket socket = new Socket();
-
 			long startTime = System.currentTimeMillis();
 			try {
 				// cycle through different ports until a working one is found
 				int probePort = workingPort >= 0 ? workingPort : PROBE_TCP_PORTS[i % PROBE_TCP_PORTS.length];
+				
 				// set some optimization options
 				socket.setReuseAddress(true);
 				socket.setReceiveBufferSize(32);
-
-				socket.connect(new InetSocketAddress(address, probePort), timeout);
+				
+				socket.connect(new InetSocketAddress(address, probePort), timeout);				
 				if (socket.isConnected()) {
-					result.addReply(System.currentTimeMillis()-startTime);
-					// one positive result is enough for TCP 
-					result.enableTimeoutAdaptation();
+					socket.setTcpNoDelay(true);
+					
+					// some Java implementations (e.g. GNU and Mac) can erroneously report connections
+					// when there really are no successful connections made :-(
+					// let's try to send something to ensure that connection is really established
+					socket.getOutputStream().write(13);
+
+					// it worked - success
+					success(result, startTime);
 					// it worked! - remember the current port
 					workingPort = probePort;
 				}
 			}
 			catch (ConnectException e) {
 				// we've got an RST packet from the host - it is alive
-				result.addReply(System.currentTimeMillis()-startTime);
-				result.enableTimeoutAdaptation();
+				success(result, startTime);
 			}
 			catch (SocketTimeoutException e) {
 			}
@@ -70,7 +75,21 @@ public class TCPPinger implements Pinger {
 				break;
 			}
 			catch (IOException e) {
-				LOG.log(Level.FINER, address.toString(), e);
+				// RST should result in the ConnectException, but not all Java implementations respect that
+				if (e.getMessage().contains(/*Connection*/"refused")) {
+					// we've got an RST packet from the host - it is alive
+					success(result, startTime);
+				}
+				else
+				// this should result in a NoRouteToHostException, but not all Java implementation respect that
+				if (e.getMessage().contains(/*No*/"route to host")) {
+					// host is down
+					break;
+				}
+				else {
+					// something unknown
+					LOG.log(Level.FINER, address.toString(), e);
+				}
 			}
 			finally {
 				try {
@@ -81,6 +100,12 @@ public class TCPPinger implements Pinger {
 		}
 		
 		return result;
+	}
+	
+	private void success(PingResult result, long startTime) {
+		result.addReply(System.currentTimeMillis()-startTime);
+		// one positive result is enough for TCP 
+		result.enableTimeoutAdaptation();		
 	}
 
 	public void close() throws IOException {

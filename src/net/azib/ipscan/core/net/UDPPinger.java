@@ -57,8 +57,10 @@ public class UDPPinger implements Pinger {
 				break;
 			}
 			catch (SocketException e) {
-				// TODO: this may also mean that the host is down
-				// however, sometimes 'No route to host' also gets here...
+				if (e.getMessage().contains(/*No*/"route to host")) {
+					// sometimes 'No route to host' also gets here...
+					break;
+				}
 			}
 			catch (IOException e) {
 				LOG.log(Level.FINER, address.toString(), e);
