@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.config.Platform;
+import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.fetchers.FetcherException;
 
 /**
@@ -83,7 +84,7 @@ public class PingerRegistryImpl implements PingerRegistry {
 		if (scannerConfig.selectedPinger.startsWith("pinger.icmp")) {
 			try {
 				Pinger icmpPinger = createPinger(scannerConfig.selectedPinger, 250);
-				icmpPinger.ping(InetAddress.getLocalHost(), 1);
+				icmpPinger.ping(new ScanningSubject(InetAddress.getLocalHost()), 1);
 			}
 			catch (Exception e) {
 				LOG.info("ICMP pingers fail: " + e);

@@ -1,5 +1,6 @@
 Before 3.0:
 
+* MAC: TCPPinger produces false results (like GCJ)
 * gtk sort direction arrows
 * command-line scanning start
 * fetcher-specific options

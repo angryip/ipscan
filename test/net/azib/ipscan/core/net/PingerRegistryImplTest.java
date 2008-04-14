@@ -6,11 +6,11 @@ package net.azib.ipscan.core.net;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.net.InetAddress;
 
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.fetchers.FetcherException;
 
 import org.junit.Before;
@@ -84,7 +84,7 @@ public class PingerRegistryImplTest {
 	}
 	
 	public class DummyPinger1 implements Pinger {
-		public PingResult ping(InetAddress address, int count) throws IOException {
+		public PingResult ping(ScanningSubject subject, int count) throws IOException {
 			throw new IOException("This pinger will not work!");
 		}
 		
@@ -98,7 +98,7 @@ public class PingerRegistryImplTest {
 			throw new RuntimeException("This pinger will not work, can't even create!");
 		}
 
-		public PingResult ping(InetAddress address, int count) throws IOException {
+		public PingResult ping(ScanningSubject subject, int count) throws IOException {
 			return null;
 		}
 		

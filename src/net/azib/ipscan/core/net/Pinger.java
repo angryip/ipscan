@@ -6,7 +6,8 @@
 package net.azib.ipscan.core.net;
 
 import java.io.IOException;
-import java.net.InetAddress;
+
+import net.azib.ipscan.core.ScanningSubject;
 
 /**
  * Pinger
@@ -27,6 +28,6 @@ public interface Pinger {
 	 * 
 	 * @param count number of pings to perform
 	 */
-	public PingResult ping(InetAddress address, int count) throws IOException;
+	public PingResult ping(ScanningSubject subject, int count) throws IOException;
 
 }

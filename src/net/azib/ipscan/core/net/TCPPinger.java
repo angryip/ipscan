@@ -7,13 +7,14 @@ package net.azib.ipscan.core.net;
 
 import java.io.IOException;
 import java.net.ConnectException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.NoRouteToHostException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import net.azib.ipscan.core.ScanningSubject;
 
 /**
  * TCP Pinger. Uses a TCP port to ping, doesn't require root privileges.
@@ -34,8 +35,8 @@ public class TCPPinger implements Pinger {
 		this.timeout = timeout + timeout/2;
 	}
 
-	public PingResult ping(InetAddress address, int count) throws IOException {
-		PingResult result = new PingResult(address);
+	public PingResult ping(ScanningSubject subject, int count) throws IOException {
+		PingResult result = new PingResult(subject.getAddress());
 		int workingPort = -1;
 		
 		for (int i = 0; i < count && !Thread.currentThread().isInterrupted(); i++) {
@@ -44,12 +45,16 @@ public class TCPPinger implements Pinger {
 			try {
 				// cycle through different ports until a working one is found
 				int probePort = workingPort >= 0 ? workingPort : PROBE_TCP_PORTS[i % PROBE_TCP_PORTS.length];
+				// change the first port to the requested one, if it is available
+				if (i == 0 && subject.isAnyPortRequested()) {
+					probePort = subject.requestedPortsIterator().next();
+				}
 				
 				// set some optimization options
 				socket.setReuseAddress(true);
 				socket.setReceiveBufferSize(32);
 				
-				socket.connect(new InetSocketAddress(address, probePort), timeout);				
+				socket.connect(new InetSocketAddress(subject.getAddress(), probePort), timeout);				
 				if (socket.isConnected()) {
 					socket.setTcpNoDelay(true);
 					
@@ -88,7 +93,7 @@ public class TCPPinger implements Pinger {
 				}
 				else {
 					// something unknown
-					LOG.log(Level.FINER, address.toString(), e);
+					LOG.log(Level.FINER, subject.toString(), e);
 				}
 			}
 			finally {

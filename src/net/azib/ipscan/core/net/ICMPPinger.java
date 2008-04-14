@@ -12,6 +12,8 @@ import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.azib.ipscan.core.ScanningSubject;
+
 import org.savarese.rocksaw.net.RawSocket;
 import org.savarese.vserv.tcpip.ICMPEchoPacket;
 import org.savarese.vserv.tcpip.ICMPPacket;
@@ -40,7 +42,8 @@ public class ICMPPinger implements Pinger {
 		try {
 			socket.setSendTimeout(timeout);
 			socket.setReceiveTimeout(timeout);
-		} catch (java.net.SocketException se) {
+		} 
+		catch (java.net.SocketException se) {
 			socket.setUseSelectTimeout(true);
 			socket.setSendTimeout(timeout);
 			socket.setReceiveTimeout(timeout);
@@ -108,19 +111,19 @@ public class ICMPPinger implements Pinger {
 	 * Issues the specified number of pings and
 	 * waits for replies.
 	 * 
-	 * @param address address to ping
+	 * @param subject address to ping
 	 * @param count number of pings to perform
 	 */
-	public PingResult ping(InetAddress address, int count) throws IOException {
+	public PingResult ping(ScanningSubject subject, int count) throws IOException {
 		
-		PingResult result = new PingResult(address);
+		PingResult result = new PingResult(subject.getAddress());
 		RawSocket socket = createRawSocket();
 		
 		try {
 			// send a bunch of packets
 			for (int i = 0; i < count && !Thread.currentThread().isInterrupted(); i++) {
 				try {
-					sendReceiveEchoPacket(socket, address, i, result);
+					sendReceiveEchoPacket(socket, subject.getAddress(), i, result);
 				}
 				catch (InterruptedIOException e) {
 					// ignore timeouts

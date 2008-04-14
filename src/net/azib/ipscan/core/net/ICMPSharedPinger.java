@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.azib.ipscan.core.ScanningSubject;
+
 import org.savarese.rocksaw.net.RawSocket;
 import org.savarese.vserv.tcpip.ICMPEchoPacket;
 import org.savarese.vserv.tcpip.ICMPPacket;
@@ -22,7 +24,7 @@ import org.savarese.vserv.tcpip.IPPacket;
 import org.savarese.vserv.tcpip.OctetConverter;
 
 /**
- * Shared multithreaded pinger.
+ * Shared multi-threaded pinger.
  * 
  * @author Anton Keks
  */
@@ -75,8 +77,9 @@ public class ICMPSharedPinger implements Pinger {
 		receiverThread.interrupt();
 	}
 
-	public PingResult ping(InetAddress address, int count) throws IOException {
+	public PingResult ping(ScanningSubject subject, int count) throws IOException {
 		
+		InetAddress address = subject.getAddress();
 		PingResult result = new PingResult(address);
 		results.put(address, result);
 		

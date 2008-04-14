@@ -55,7 +55,7 @@ public class PingFetcher extends AbstractFetcher {
 		}
 		else {
 			try {
-				result = pinger.ping(subject.getAddress(), config.pingCount);
+				result = pinger.ping(subject, config.pingCount);
 			}
 			catch (IOException e) {
 				// if this is not a timeout
