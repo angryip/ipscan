@@ -86,6 +86,9 @@ public class ColumnsActions {
 
 			aboutMenuItem.setText(Labels.getLabel("menu.columns.about") + fetcher.getName());
 			
+			// focus the table to make Enter work after using the menu
+			tableColumn.getParent().forceFocus();
+			
 			// remember the clicked column (see SortBy, FetcherPreferences, and AboutFetcher below)
 			columnsMenu.setData(tableColumn);
 			
