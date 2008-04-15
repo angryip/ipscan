@@ -80,6 +80,11 @@
 	</target>
 
 	<target name="clean">
+		<delete dir="${dist}"/>
+        <antcall target="clean_end"/>
+	</target>
+	
+    <target name="clean_end">
 		<delete dir="${bin}"/>
 		<delete dir="${testbin}"/>
 		<delete dir="${bin}.linux"/>
@@ -87,11 +92,6 @@
 		<delete dir="${bin}.win32"/>
 		<delete dir="${bin}.mac"/>
 		<delete dir="${testresults}"/>
-		<delete file="retroguard.log"/>
-	</target>
-	
-    <target name="clean_end">
-        <antcall target="clean"/>
     </target>
 
 	<macrodef name="compile">
@@ -173,7 +173,9 @@
 		<os name="Linux"/>
 	</condition>
 	
-	<target name="package" depends="package-linux,package-linux64,package-win32,package-mac"/>
+	<target name="package" depends="package-linux,package-linux64,package-win32,package-mac">
+		<echo message="Packaged jars are in the ${dist} directory"/>
+	</target>
 	
 	<target name="svn-info">
 		<!-- TODO: make this more cross-platform (most likely this will fail on windows) -->
@@ -191,8 +193,7 @@
 		<attribute name="platform"/>
 		<attribute name="librocksaw"/>
 		<sequential>
-			<delete dir="${dist}.@{platform}"/>			
-			<mkdir dir="${dist}.@{platform}"/>			
+			<mkdir dir="${dist}"/>
 			<delete dir="${bin}.@{platform}"/>			
 			<mkdir dir="${bin}.@{platform}"/>			
 			<unzip src="${ext}/picocontainer/picocontainer-1.0.jar" dest="${bin}"/>
@@ -276,7 +277,7 @@
 			<copy todir="${bin}.mac">
 				<fileset dir="${bin}" includes="net/azib/ipscan/gui/mac/*"/>
 			</copy>
-			<jar destfile="${dist}.@{platform}/${ant.project.name}-orig.jar" >
+			<jar destfile="${dist}/${ant.project.name}-@{platform}-orig.jar" >
 				<manifest>
 					<attribute name="Main-Class" value="${main.class}"/>
 					<attribute name="Title" value="${name}"/>
@@ -292,8 +293,8 @@
 			</jar>
 			<proguard>
 				<!-- -printseeds -->
-				-injars ${dist}.@{platform}/${ant.project.name}-orig.jar
-				-outjars ${dist}.@{platform}/${ant.project.name}-@{platform}-${version}.jar
+				-injars ${dist}/${ant.project.name}-@{platform}-orig.jar
+				-outjars ${dist}/${ant.project.name}-@{platform}-${version}.jar
 				-libraryjars ${java.home}/lib/rt.jar
 				-keepclasseswithmembers public class * {
 				    public static void main(java.lang.String[]);
@@ -328,6 +329,8 @@
 					% *Proc(int, int, int);
 				}
 			</proguard>
+			
+			<delete file="${dist}/${ant.project.name}-@{platform}-orig.jar"/>
 		</sequential>
 	</macrodef>
 	
@@ -343,29 +346,31 @@
 	</target>
 	
 	<target name="package-linux-deb-rpm" if="isRunningOnLinux">
-		<mkdir dir="${dist}.linux/deb"/>
-		<copy todir="${dist}.linux/deb">
+		<mkdir dir="${dist}/deb"/>
+		<copy todir="${dist}/deb">
 			<fileset dir="${ext}/deb-bundle"/>
 		</copy>
 		
-		<copy file="${dist}.linux/${ant.project.name}-linux-${version}.jar" todir="${dist}.linux/deb/usr/lib/ipscan"/>
-		<copy file="resources/images/icon48.png" todir="${dist}.linux/deb/usr/lib/ipscan"/>
+		<copy file="${dist}/${ant.project.name}-linux-${version}.jar" todir="${dist}/deb/usr/lib/ipscan"/>
+		<copy file="resources/images/icon48.png" todir="${dist}/deb/usr/lib/ipscan"/>
 		
-		<replace file="${dist}.linux/deb/DEBIAN/control">
+		<replace file="${dist}/deb/DEBIAN/control">
 			<replacefilter token="VERSION" value="${version}"/>
 		</replace>
 		
-		<exec executable="chmod" dir="${dist}.linux">
+		<exec executable="chmod" dir="${dist}">
 			<arg line="a+x deb/usr/bin/ipscan deb/usr/lib/ipscan/${ant.project.name}-linux-${version}.jar"/>
 		</exec>
 		<echo message="Trying to build .deb package using dpkg..."/>
-		<exec executable="dpkg" dir="${dist}.linux">
+		<exec executable="dpkg" dir="${dist}">
 			<arg line="-b deb ${ant.project.name}_${version}_i386.deb"/>
 		</exec>
 		<echo message="Trying to build .rpm package using alien..."/>
-		<exec executable="alien" dir="${dist}.linux">
+		<exec executable="alien" dir="${dist}">
 			<arg line="--to-rpm ${ant.project.name}_${version}_i386.deb"/>
 		</exec>
+		
+		<delete dir="${dist}/deb"/>
 	</target>
 
 	<target name="package-win32" depends="svn-info">
@@ -374,33 +379,33 @@
 	</target>
 	
 	<target name="package-win32-exe">
-		<copy file="${ext}/launch4j/ipscan.xml" todir="${dist}.win32"/>
-		<replace file="${dist}.win32/ipscan.xml">
+		<copy file="${ext}/launch4j/ipscan.xml" todir="${dist}"/>
+		<replace file="${dist}/ipscan.xml">
 			<replacefilter token="FILENAME_IN" value="${ant.project.name}-win32-${version}.jar"/>
 			<replacefilter token="FILENAME_OUT" value="${ant.project.name}-${version}.exe"/>
 			<replacefilter token="VERSION" value="${version}"/>
 			<replacefilter token="BUILD" value="${build.number}"/>
 		</replace>
-		<launch4j configFile="${dist}.win32/ipscan.xml"/>
-		<delete file="${dist}.win32/ipscan.xml"/>
-		<delete file="${dist}.win32/${ant.project.name}-win32-${version}.jar"/>
+		<launch4j configFile="${dist}/ipscan.xml"/>
+		<delete file="${dist}/ipscan.xml"/>
+		<delete file="${dist}/${ant.project.name}-win32-${version}.jar"/>
 	</target>
 
 	<!-- Note: this task was tested only on Linux -->
 	<target name="package-mac" depends="svn-info">
 		<package-for platform="mac" librocksaw="todo-librocksaw.jnilib"/>
-		<copy todir="${dist}.mac">
+		<copy todir="${dist}">
 			<fileset dir="${ext}/mac-bundle"/>
 		</copy>
 		
-		<copy file="${dist}.mac/${ant.project.name}-mac-${version}.jar" todir="${dist}.mac/${name}.app/Contents/Resources/Java"/>
+		<copy file="${dist}/${ant.project.name}-mac-${version}.jar" todir="${dist}/${name}.app/Contents/Resources/Java"/>
 		
 		<exec executable="ln">
 			<arg line="-s /System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub"/>
-			<arg value="${dist}.mac/${name}.app/Contents/MacOS/ipscan"/>
+			<arg value="${dist}/${name}.app/Contents/MacOS/ipscan"/>
 		</exec>
 		
-		<replace file="${dist}.mac/${name}.app/Contents/Info.plist">
+		<replace file="${dist}/${name}.app/Contents/Info.plist">
 			<replacefilter token="APPNAME" value="${name}"/>
 			<replacefilter token="VERSION" value="${version}"/>
 			<replacefilter token="BUILD" value="${build.number}"/>
@@ -409,13 +414,13 @@
 		</replace>
 		
 		<!-- this will preserve symlinks (that zip task cannot do) -->
-		<exec executable="zip" dir="${dist}.mac">
+		<exec executable="zip" dir="${dist}">
 			<arg value="-ry9"/>
 			<arg value="${ant.project.name}-mac-${version}.zip"/>
 			<arg value="${name}.app"/>
 		</exec>
-		<delete dir="${dist}.mac/${name}.app"/>
-		<delete file="${ant.project.name}-mac-${version}.jar"/>
+		<delete dir="${dist}/${name}.app"/>
+		<delete file="${dist}/${ant.project.name}-mac-${version}.jar"/>
 	</target>
 
 </project>
