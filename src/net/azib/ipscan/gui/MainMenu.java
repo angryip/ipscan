@@ -141,9 +141,9 @@ public class MainMenu implements Startable {
 		initMenuItem(menu, "menu.commands.details", null, null, initListener(CommandsActions.Details.class));
 		initMenuItem(menu, null, null, null, null);
 		initMenuItem(menu, "menu.commands.rescan", "Ctrl+R", new Integer(SWT.MOD1 | 'R'), initListener(CommandsActions.Rescan.class), true);
-		initMenuItem(menu, "menu.commands.delete", "Del", /* this is not a global key binding */ null, initListener(CommandsActions.Delete.class), true);
+		initMenuItem(menu, "menu.commands.delete", Platform.MAC_OS ? "⌦" : "Del", /* this is not a global key binding */ null, initListener(CommandsActions.Delete.class), true);
 		initMenuItem(menu, null, null, null, null);
-		initMenuItem(menu, "menu.commands.copy", "Ctrl+C", /* this is not a global key binding */ null, initListener(CommandsActions.CopyIP.class));
+		initMenuItem(menu, "menu.commands.copy", Platform.MAC_OS ? "⌘C" : "Ctrl+C", /* this is not a global key binding */ null, initListener(CommandsActions.CopyIP.class));
 		initMenuItem(menu, "menu.commands.copyDetails", null, null, initListener(CommandsActions.CopyIPDetails.class));
 		initMenuItem(menu, null, null, null, null);
 		initMenuItem(menu, "menu.commands.editComment", "Ctrl+E", new Integer(SWT.MOD1 | 'E'), initListener(CommandsActions.EditComment.class));
