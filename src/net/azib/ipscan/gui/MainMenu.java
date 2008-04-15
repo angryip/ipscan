@@ -81,9 +81,9 @@ public class MainMenu implements Startable {
 //		initMenuItem(subMenu, null, null, null, null);
 		initMenuItem(subMenu, "menu.file.exportAll", "Ctrl+S", new Integer(SWT.MOD1 | 'S'), initListener(FileActions.SaveAll.class), true);
 		initMenuItem(subMenu, "menu.file.exportSelection", null, null, initListener(FileActions.SaveSelection.class), true);
-		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.file.exportPreferences", null, null, null);
-		initMenuItem(subMenu, "menu.file.importPreferences", null, null, null);
+//		initMenuItem(subMenu, null, null, null, null);
+//		initMenuItem(subMenu, "menu.file.exportPreferences", null, null, null);
+//		initMenuItem(subMenu, "menu.file.importPreferences", null, null, null);
 		if (!Platform.MAC_OS) {
 			initMenuItem(subMenu, null, null, null, null);
 			initMenuItem(subMenu, "menu.file.exit", !Platform.MAC_OS ? "Alt+F4" : null, null, initListener(FileActions.Exit.class));
@@ -124,9 +124,9 @@ public class MainMenu implements Startable {
 		initMenuItem(subMenu, null, null, null, null);
 		initMenuItem(subMenu, "menu.help.website", null, null, initListener(HelpActions.Website.class));
 		initMenuItem(subMenu, "menu.help.faq", null, null, initListener(HelpActions.FAQ.class));
-		initMenuItem(subMenu, "menu.help.plugins", null, null, initListener(HelpActions.Plugins.class));
-		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.help.cmdLine", null, null, null);
+//		initMenuItem(subMenu, "menu.help.plugins", null, null, initListener(HelpActions.Plugins.class));
+//		initMenuItem(subMenu, null, null, null, null);
+//		initMenuItem(subMenu, "menu.help.cmdLine", null, null, null);
 		
 		if (!Platform.MAC_OS) {
 			// mac will have these in the 'application' menu
