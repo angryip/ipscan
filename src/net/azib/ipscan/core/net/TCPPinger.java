@@ -6,7 +6,6 @@
 package net.azib.ipscan.core.net;
 
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.NoRouteToHostException;
 import java.net.Socket;
@@ -53,25 +52,13 @@ public class TCPPinger implements Pinger {
 				// set some optimization options
 				socket.setReuseAddress(true);
 				socket.setReceiveBufferSize(32);
-				
 				socket.connect(new InetSocketAddress(subject.getAddress(), probePort), timeout);				
 				if (socket.isConnected()) {
-					socket.setTcpNoDelay(true);
-					
-					// some Java implementations (e.g. GNU and Mac) can erroneously report connections
-					// when there really are no successful connections made :-(
-					// let's try to send something to ensure that connection is really established
-					socket.getOutputStream().write(13);
-
 					// it worked - success
 					success(result, startTime);
 					// it worked! - remember the current port
 					workingPort = probePort;
 				}
-			}
-			catch (ConnectException e) {
-				// we've got an RST packet from the host - it is alive
-				success(result, startTime);
 			}
 			catch (SocketTimeoutException e) {
 			}
@@ -80,14 +67,16 @@ public class TCPPinger implements Pinger {
 				break;
 			}
 			catch (IOException e) {
-				// RST should result in the ConnectException, but not all Java implementations respect that
-				if (e.getMessage().contains(/*Connection*/"refused")) {
+				String msg = e.getMessage();
+				
+				// RST should result in ConnectException, but not all Java implementations respect that
+				if (msg.contains(/*Connection*/"refused")) {
 					// we've got an RST packet from the host - it is alive
 					success(result, startTime);
 				}
 				else
-				// this should result in a NoRouteToHostException, but not all Java implementation respect that
-				if (e.getMessage().contains(/*No*/"route to host")) {
+				// this should result in NoRouteToHostException or ConnectException, but not all Java implementation respect that
+				if (msg.contains(/*No*/"route to host") || msg.contains(/*Host is*/"down")) {
 					// host is down
 					break;
 				}
