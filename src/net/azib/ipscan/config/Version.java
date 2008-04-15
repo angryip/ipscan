@@ -16,7 +16,7 @@ import java.util.logging.Level;
 public class Version {
 	public static final String NAME = "Angry IP Scanner";
 	
-	public static final String COPYLEFT = "\u00A9 2008 Anton Keks";
+	public static final String COPYLEFT = "© 2008 Anton Keks";
 	
 	public static final String WEBSITE = "http://www.azib.net/ipscan/";
 	
@@ -30,6 +30,8 @@ public class Version {
 
 	public static final String PLUGINS_URL = "http://www.azib.net/w/FAQ:_Plugins";
 	
+	public static final String DOWNLOAD_URL = "http://www.azib.net/w/Download";
+
 	public static final String LATEST_VERSION_URL = "http://www.azib.net/ipscan/IPSCAN.VERSION";
 	
 	private static String version;

@@ -82,14 +82,11 @@ public class HelpActions {
 		public void check() {
 			statusBar.setStatusText(Labels.getLabel("state.retrievingVersion"));
 			
-			// prepare message box in advance
-			final MessageBox messageBox = new MessageBox(statusBar.getShell(), SWT.ICON_INFORMATION);
-			messageBox.setText(Version.getFullName());
-
 			Runnable checkVersionCode = new Runnable() {
 				public void run() {
 					BufferedReader reader = null;
 					String message = null;
+					int messageStyle = SWT.ICON_WARNING;
 					try {
 						URL url = new URL(Version.LATEST_VERSION_URL);
 						URLConnection conn = url.openConnection();
@@ -102,9 +99,11 @@ public class HelpActions {
 							message = Labels.getLabel("text.version.old");
 							message = message.replaceFirst("%LATEST", latestVersion);
 							message = message.replaceFirst("%VERSION", Version.getVersion());
+							messageStyle = SWT.ICON_QUESTION | SWT.YES | SWT.NO;
 						}
 						else {
 							message = Labels.getLabel("text.version.latest");
+							messageStyle = SWT.ICON_INFORMATION;
 						}
 					}
 					catch (Exception e) {
@@ -120,11 +119,16 @@ public class HelpActions {
 						
 						// show the box in the SWT thread
 						final String messageToShow = message;
+						final int messageStyleToShow = messageStyle;
 						Display.getDefault().asyncExec(new Runnable() {
 							public void run() {
 								statusBar.setStatusText(null);
+								MessageBox messageBox = new MessageBox(statusBar.getShell(), messageStyleToShow);
+								messageBox.setText(Version.getFullName());
 								messageBox.setMessage(messageToShow);
-								messageBox.open();
+								if (messageBox.open() == SWT.YES) {
+									BrowserLauncher.openURL(Version.DOWNLOAD_URL);
+								}
 							}
 						});
 					}

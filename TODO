@@ -1,6 +1,5 @@
 Before 3.0:
 
-* Check for new version must offer going to the download page
 * gtk sort direction arrows
 * command-line scanning start
 * fetcher-specific options
