@@ -73,7 +73,7 @@ public class XMLExporter extends AbstractExporter {
 	}
 
 	public void setFetchers(String[] fetcherNames) throws IOException {
-		ipFetcherIndex = IPListExporter.findFetcherByLabel("fetcher.ip", fetcherNames);
+		ipFetcherIndex = IPListExporter.findFetcherById("fetcher.ip", fetcherNames);
 		this.fetcherNames = fetcherNames;
 	}
 

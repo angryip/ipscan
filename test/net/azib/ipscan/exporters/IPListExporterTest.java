@@ -7,12 +7,17 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Arrays;
 import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.values.NotAvailable;
+import net.azib.ipscan.core.values.NumericRangeList;
+import net.azib.ipscan.fetchers.IPFetcher;
+import net.azib.ipscan.fetchers.PortsFetcher;
 
 /**
  * IP List Exporter Test
@@ -36,8 +41,8 @@ public class IPListExporterTest extends AbstractExporterTestCase {
 		Labels labels = Labels.getInstance();
 		
 		exporter.start(outputStream, "feederstuff");		
-		exporter.setFetchers(new String[] {"fetcher1", labels.get("fetcher.ip"), "mega long fetcher 2", labels.get("fetcher.ports")});
-		exporter.nextAdressResults(new Object[] {"", "123", "", "1,23; 4-6 78"});
+		exporter.setFetchers(new String[] {"fetcher1", labels.get(IPFetcher.ID), "mega long fetcher 2", labels.get(PortsFetcher.ID)});
+		exporter.nextAdressResults(new Object[] {"", "123", "", new NumericRangeList(Arrays.asList(1,23,4,5,6,78), true)});
 		exporter.end();
 		
 		assertContains("123:1");
@@ -59,25 +64,26 @@ public class IPListExporterTest extends AbstractExporterTestCase {
 	}
 	
 	@Test
-	public void testNextAddressResultsWithNulls() throws IOException {
+	public void testNextAddressResultsWithNullsOrEmptyValues() throws IOException {
 		Labels labels = Labels.getInstance();
 
 		exporter.start(outputStream, "feederstuff");
-		exporter.setFetchers(new String[] {labels.get("fetcher.ip"), "fetcher1", labels.get("fetcher.ports")});
+		exporter.setFetchers(new String[] {labels.get(IPFetcher.ID), "fetcher1", labels.get(PortsFetcher.ID)});
 		exporter.nextAdressResults(new Object[] {InetAddress.getLocalHost(), null, null});
+		exporter.nextAdressResults(new Object[] {InetAddress.getLocalHost(), null, NotAvailable.VALUE});
 		exporter.end();
 	}
-
+	
 	@Test
-	public void testFindFetcherByLabel() {
+	public void testFindFetcherById() {
 		Labels labels = Labels.getInstance();
 		
-		assertEquals(0, IPListExporter.findFetcherByLabel("fetcher.ip", new String[] {labels.get("fetcher.ip")}));
-		assertEquals(3, IPListExporter.findFetcherByLabel("fetcher.ip", new String[] {"a", "b", "c", labels.get("fetcher.ip")}));
-		assertEquals(1, IPListExporter.findFetcherByLabel("fetcher.ports", new String[] {labels.get("fetcher.ports") + "x", labels.get("fetcher.ports"), "mmmm"}));
+		assertEquals(0, IPListExporter.findFetcherById(IPFetcher.ID, new String[] {labels.get(IPFetcher.ID)}));
+		assertEquals(3, IPListExporter.findFetcherById(IPFetcher.ID, new String[] {"a", "b", "c", labels.get(IPFetcher.ID)}));
+		assertEquals(1, IPListExporter.findFetcherById(PortsFetcher.ID, new String[] {labels.get(PortsFetcher.ID) + "x", labels.get(PortsFetcher.ID), "mmmm"}));
 		
 		try {
-			IPListExporter.findFetcherByLabel("fetcher.ip", new String[] {"1", "2"});
+			IPListExporter.findFetcherById(IPFetcher.ID, new String[] {"1", "2"});
 			fail();
 		}
 		catch (ExporterException e) {

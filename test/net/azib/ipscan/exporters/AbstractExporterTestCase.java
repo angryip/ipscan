@@ -11,6 +11,8 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.fetchers.IPFetcher;
+import net.azib.ipscan.fetchers.PortsFetcher;
 import junit.framework.ComparisonFailure;
 
 import org.junit.Before;
@@ -118,7 +120,7 @@ public abstract class AbstractExporterTestCase {
 	@Test
 	public void testNextAddressResultsWithNulls() throws IOException {
 		exporter.start(outputStream, "feederstuff");
-		exporter.setFetchers(new String[] {"IP", "fetcher1", "mega long fetcher 2"});
+		exporter.setFetchers(new String[] {Labels.getLabel(IPFetcher.ID), "fetcher1", Labels.getLabel(PortsFetcher.ID)});
 		exporter.nextAdressResults(new Object[] {InetAddress.getLocalHost(), null, null});
 		exporter.end();
 	}

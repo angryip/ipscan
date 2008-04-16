@@ -7,6 +7,9 @@ import java.io.IOException;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.PortIterator;
+import net.azib.ipscan.core.values.NumericRangeList;
+import net.azib.ipscan.fetchers.IPFetcher;
+import net.azib.ipscan.fetchers.PortsFetcher;
 
 /**
  * IP List Exporter
@@ -17,7 +20,6 @@ import net.azib.ipscan.core.PortIterator;
  */
 public class IPListExporter extends AbstractExporter {
 
-	/* CSV delimiter character */
 	static final char DELIMETER = ':';
 	
 	private int ipFetcherIndex;
@@ -32,20 +34,20 @@ public class IPListExporter extends AbstractExporter {
 	}
 	
 	public void setFetchers(String[] fetcherNames) throws IOException {
-		ipFetcherIndex = findFetcherByLabel("fetcher.ip", fetcherNames);
-		portsFetcherIndex = findFetcherByLabel("fetcher.ports", fetcherNames);
+		ipFetcherIndex = findFetcherById(IPFetcher.ID, fetcherNames);
+		portsFetcherIndex = findFetcherById(PortsFetcher.ID, fetcherNames);
 	}
 	
 	/**
 	 * Searches for the needed fetcher by name.
 	 * 
-	 * @param label
+	 * @param fetcherId
 	 * @param fetcherNames
 	 * @return fetcher's index
 	 * @throws ExporterException in case fetcher is not found
 	 */
-	static int findFetcherByLabel(String label, String[] fetcherNames) {
-		String fetcherName = Labels.getLabel(label);
+	static int findFetcherById(String fetcherId, String[] fetcherNames) {
+		String fetcherName = Labels.getLabel(fetcherId);
 		for (int i = 0; i < fetcherNames.length; i++) {
 			if (fetcherName.equals(fetcherNames[i])) {
 				return i;
@@ -56,17 +58,10 @@ public class IPListExporter extends AbstractExporter {
 
 	public void nextAdressResults(Object[] results) throws IOException {
 		String address = results[ipFetcherIndex].toString(); 
-		String portList;
-		try {
-			portList = results[portsFetcherIndex].toString();
-		}
-		catch (Exception e) {
-			// ignore empty results
-			return;
-		}
+		Object ports = results[portsFetcherIndex];
 		
-		if (portList != null) {
-			for (PortIterator i = new PortIterator(portList); i.hasNext(); ) {
+		if (ports != null && ports instanceof NumericRangeList) {
+			for (PortIterator i = new PortIterator(ports.toString()); i.hasNext(); ) {
 				output.println(address + DELIMETER + i.next());
 			}
 		}
