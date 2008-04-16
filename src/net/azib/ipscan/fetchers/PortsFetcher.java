@@ -30,7 +30,7 @@ import net.azib.ipscan.util.SequenceIterator;
  */
 public class PortsFetcher extends AbstractFetcher {
 	
-	static final String ID = "fetcher.ports";
+	public static final String ID = "fetcher.ports";
 	
 	private static final String PARAMETER_OPEN_PORTS = "openPorts";
 	private static final String PARAMETER_FILTERED_PORTS = "filteredPorts";
