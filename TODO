@@ -1,6 +1,11 @@
 Before 3.0:
 
 * gtk sort direction arrows
+* Mac: Commandr+Q must exit the application
+* advanced exporting options dialog
+* Exporter appending functionality exposed to the user
+* Enable/Disable ports (without resetting)
+* Comments & Opener Launchers to the details window
 * command-line scanning start
 * fetcher-specific options
 * multiple port support web-detect
@@ -9,8 +14,8 @@ Before 3.0:
 * compile librocksaw for mac and linux64
 * plugin loader
 * public XSL for XMLExporter
-* Exporter appending functionality exposed to the user
 * GIJ + java.util.prefs don't work
+* Easier adding/removing of columns to the result table (without resetting the results)
 * top-level exception handler for NoClassDefFoundErrors, etc
 
 Later:
