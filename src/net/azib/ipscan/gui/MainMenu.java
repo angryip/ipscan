@@ -145,8 +145,6 @@ public class MainMenu implements Startable {
 		initMenuItem(menu, null, null, null, null);
 		initMenuItem(menu, "menu.commands.copy", Platform.MAC_OS ? "⌘C" : "Ctrl+C", /* this is not a global key binding */ null, initListener(CommandsActions.CopyIP.class));
 		initMenuItem(menu, "menu.commands.copyDetails", null, null, initListener(CommandsActions.CopyIPDetails.class));
-		initMenuItem(menu, null, null, null, null);
-		initMenuItem(menu, "menu.commands.editComment", "Ctrl+E", new Integer(SWT.MOD1 | 'E'), initListener(CommandsActions.EditComment.class));
 		initMenuItem(menu, null, null, null, null);		
 		createOpenersMenu(menu);
 		// initMenuItem(subMenu, "menu.commands.show", null, initListener());

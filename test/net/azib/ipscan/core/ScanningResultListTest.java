@@ -297,7 +297,7 @@ public class ScanningResultListTest {
 		result.setValue(2, "xxxxx");
 		result.setValue(3, null);
 		
-		String s = scanningResults.getResultAsString(0);
+		String s = scanningResults.getResult(0).toString();
 		String ln = System.getProperty("line.separator");
 		assertTrue(s.endsWith(ln));
 		assertTrue(s.indexOf(fetchers.get(0).getName() + ":\t172.28.43.55" + ln) >= 0);

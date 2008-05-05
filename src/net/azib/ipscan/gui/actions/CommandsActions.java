@@ -5,22 +5,15 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import net.azib.ipscan.config.CommentsConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.OpenersConfig;
 import net.azib.ipscan.config.OpenersConfig.Opener;
-import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
-import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.DetailsWindow;
 import net.azib.ipscan.gui.EditOpenersDialog;
-import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.actions.ToolsActions.TableSelection;
@@ -159,7 +152,7 @@ public class CommandsActions {
 		public void handleEvent(Event event) {
 			checkSelection(resultTable);
 			Clipboard clipboard = new Clipboard(event.display);
-			clipboard.setContents(new Object[] {resultTable.getIPDetails()}, new Transfer[] {TextTransfer.getInstance()});
+			clipboard.setContents(new Object[] {resultTable.getSelectedResult().toString()}, new Transfer[] {TextTransfer.getInstance()});
 			clipboard.dispose();
 		}
 	}
@@ -199,45 +192,7 @@ public class CommandsActions {
 
 		}
 	}
-	
-	public static final class EditComment implements Listener {
-		private final ResultTable resultTable;
-		private final ScanningResultList results;
-		private final CommentsConfig commentsConfig;
-		private final FetcherRegistry fetcherRegistry;
 		
-		public EditComment(ResultTable resultTable, ScanningResultList results, CommentsConfig commentsConfig, FetcherRegistry fetcherRegistry) {
-			this.resultTable = resultTable;
-			this.results = results;
-			this.commentsConfig = commentsConfig;
-			this.fetcherRegistry = fetcherRegistry;
-		}
-
-		public void handleEvent(Event event) {
-			checkSelection(resultTable);
-			try {
-				int index = resultTable.getSelectionIndex();
-				InetAddress address = InetAddress.getByName(resultTable.getItem(index).getText());
-				String comment = commentsConfig.getComment(address);
-				String newComment = new InputDialog(Labels.getLabel("title.editComment"), Labels.getLabel("text.editComment")).open(comment);
-				if (newComment != null) {
-					commentsConfig.setComment(address, newComment);
-					// now update the result table for user to immediately see the change
-					int fetcherIndex = fetcherRegistry.getSelectedFetcherIndex(CommentFetcher.ID);
-					if (fetcherIndex >= 0) {
-						// update the value in the results
-						results.getResult(index).setValue(fetcherIndex, newComment);
-						// update visual representation
-						resultTable.clear(index);
-					}
-				}
-			}
-			catch (UnknownHostException e) {
-				// should not happen
-			}
-		}
-	}
-	
 	public static final class EditOpeners implements Listener {
 		
 		private final FetcherRegistry fetcherRegistry;

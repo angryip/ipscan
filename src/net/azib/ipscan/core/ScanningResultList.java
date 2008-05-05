@@ -118,6 +118,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		if (resultIndexes.put(result.getAddress(), index) != null)
 			throw new IllegalStateException(result.getAddress() + " is already registered in the list");
 		
+		result.resultList = this;
 		resultList.add(index, result);
 
 		// if the result is already ready, then update statistics right away
@@ -143,30 +144,6 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 			updateStatistics(result);
 	
 		return resultIndexes.get(result.getAddress());
-	}
-
-	/**
-	 * Returns all results for a particular IP address as a String.
-	 * This is used in showing the IP Details dialog box.
-	 * 
-	 * @param index
-	 * @return human-friendly text representation of results
-	 */
-	public synchronized String getResultAsString(int index) {
-		// cross-platform newline :-)
-		String newLine = System.getProperty("line.separator");
-		
-		ScanningResult scanningResult = resultList.get(index);
-		StringBuffer details = new StringBuffer(1024);
-		Iterator<?> iterator = scanningResult.getValues().iterator();
-		for (int i = 0; iterator.hasNext(); i++) {
-			String fetcherName = selectedFetchers.get(i).getName();
-			details.append(fetcherName).append(":\t");
-			Object value = iterator.next(); 
-			details.append(value != null ? value : "");
-			details.append(newLine);
-		}
-		return details.toString();	
 	}
 
 	/**

@@ -15,6 +15,7 @@ import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
@@ -159,12 +160,27 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 	}
 	
 	/**
-	 * Returns the details about the currently selected IP address
+	 * Changes the specified value
+	 * @param fetcherId
+	 * @param newValue
+	 */
+	public void updateResult(int index, String fetcherId, Object newValue) {
+		int fetcherIndex = fetcherRegistry.getSelectedFetcherIndex(CommentFetcher.ID);
+		if (fetcherIndex >= 0) {
+			// update the value in the results
+			scanningResults.getResult(index).setValue(fetcherIndex, newValue);
+			// update visual representation
+			clear(index);
+		}
+	}
+
+	/**
+	 * Returns the currently seelcted resusult
 	 * @return
 	 */
-	public String getIPDetails() {
+	public ScanningResult getSelectedResult() {
 		int selectedIndex = getSelectionIndex();
-		return scanningResults.getResultAsString(selectedIndex);
+		return scanningResults.getResult(selectedIndex);
 	}
 	
 	public void remove(int[] indices) {

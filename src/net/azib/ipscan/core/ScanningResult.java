@@ -7,7 +7,10 @@ package net.azib.ipscan.core;
 
 import java.net.InetAddress;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+
+import net.azib.ipscan.fetchers.Fetcher;
 
 /**
  * The holder of scanning result for a single IP address.
@@ -32,6 +35,9 @@ public class ScanningResult {
 	private Object[] values;
 	/** Scanning result type */ 
 	private ResultType type;
+	
+	/** reference to the containing list */
+	ScanningResultList resultList;
 	
 	/**
 	 * Creates a new instance, initializing the first value to the 
@@ -96,5 +102,30 @@ public class ScanningResult {
 	public void setValue(int fetcherIndex, Object value) {
 		values[fetcherIndex] = value;
 	}
+	
+	/**
+	 * Returns all results for this IP address as a String.
+	 * This is used in showing the IP Details dialog box.
+	 * 
+	 * @param index
+	 * @return human-friendly text representation of results
+	 */
+	public String toString() {
+		// cross-platform newline :-)
+		String newLine = System.getProperty("line.separator");
+		
+		StringBuffer details = new StringBuffer(1024);
+		Iterator<?> iterator = getValues().iterator();
+		List<Fetcher> fetchers = resultList.getFetchers();
+		for (int i = 0; iterator.hasNext(); i++) {
+			String fetcherName = fetchers.get(i).getName();
+			details.append(fetcherName).append(":\t");
+			Object value = iterator.next(); 
+			details.append(value != null ? value : "");
+			details.append(newLine);
+		}
+		return details.toString();	
+	}
+
 	
 }
