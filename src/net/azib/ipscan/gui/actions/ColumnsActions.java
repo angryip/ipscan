@@ -12,10 +12,7 @@ import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.fetchers.Fetcher;
-import net.azib.ipscan.fetchers.FetcherException;
-import net.azib.ipscan.fetchers.PingFetcher;
-import net.azib.ipscan.fetchers.PortsFetcher;
-import net.azib.ipscan.gui.PreferencesDialog;
+import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.MainMenu.ColumnsMenu;
 
@@ -82,7 +79,7 @@ public class ColumnsActions {
 
 			// disable these menu items if scanning
 			sortMenuItem.setEnabled(stateMachine.inState(ScanningState.IDLE));
-			preferencesMenuItem.setEnabled(stateMachine.inState(ScanningState.IDLE));
+			preferencesMenuItem.setEnabled(fetcher.getPreferencesClass() != null && stateMachine.inState(ScanningState.IDLE));
 
 			aboutMenuItem.setText(Labels.getLabel("menu.columns.about") + fetcher.getName());
 			
@@ -127,10 +124,10 @@ public class ColumnsActions {
 	
 	public static final class FetcherPreferences implements Listener {
 		
-		private final PreferencesDialog preferencesDialog;
+		private final FetcherRegistry fetcherRegistry;
 		
-		public FetcherPreferences(PreferencesDialog preferencesDialog) {
-			this.preferencesDialog = preferencesDialog;
+		public FetcherPreferences(FetcherRegistry fetcherRegistry) {
+			this.fetcherRegistry = fetcherRegistry;
 		}
 
 		public void handleEvent(Event event) {
@@ -139,19 +136,8 @@ public class ColumnsActions {
 			
 			Fetcher fetcher = (Fetcher) tableColumn.getData();
 			
-			// some hardcodes here for 'special' fetchers
-			// TODO: implement generic fetcher preferences here
-			if (fetcher instanceof PingFetcher) {
-				preferencesDialog.open();
-			}
-			else
-			if (fetcher instanceof PortsFetcher) {
-				preferencesDialog.openTab(1);
-			}
-			else {
-				throw new FetcherException("preferences.notAvailable");
-			}
-
+			fetcherRegistry.openPreferencesEditor(fetcher);
+			
 			// update name if preferences changed
 			tableColumn.setText(fetcher.getFullName());
 		}

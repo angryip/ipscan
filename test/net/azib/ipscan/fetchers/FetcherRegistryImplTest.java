@@ -3,14 +3,21 @@
  */
 package net.azib.ipscan.fetchers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Iterator;
 import java.util.prefs.Preferences;
 
+import net.azib.ipscan.core.ScanningSubject;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * @author Anton Keks
@@ -36,7 +43,7 @@ public class FetcherRegistryImplTest {
 		hostnameFetcher = new HostnameFetcher();
 		commentFetcher = new CommentFetcher(null);
 		portsFetcher = new PortsFetcher(null);
-		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, pingFetcher, hostnameFetcher, commentFetcher, portsFetcher}, preferences);
+		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, pingFetcher, hostnameFetcher, commentFetcher, portsFetcher}, preferences, null);
 	}
 	
 	@After
@@ -69,18 +76,18 @@ public class FetcherRegistryImplTest {
 	@Test
 	public void testLoadPreferences() throws Exception {
 		preferences.remove(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS);
-		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences);
+		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences, null);
 		assertEquals(4, fetcherRegistry.getSelectedFetchers().size());
 		
 		preferences.put(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, hostnameFetcher.getId() + "###" + commentFetcher.getId());
-		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences);
+		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences, null);
 		assertEquals(2, fetcherRegistry.getSelectedFetchers().size());
 		Iterator<?> iterator = fetcherRegistry.getSelectedFetchers().iterator();
 		assertSame(hostnameFetcher, iterator.next());
 		assertSame(commentFetcher, iterator.next());
 		
 		preferences.put(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, "not-existing-fetcher###" + hostnameFetcher.getId());
-		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher}, preferences);
+		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher}, preferences, null);
 		assertEquals(1, fetcherRegistry.getSelectedFetchers().size());
 	}
 	
@@ -114,5 +121,53 @@ public class FetcherRegistryImplTest {
 		});
 		fetcherRegistry.updateSelectedFetchers(new String[] {});
 		assertTrue(listenerWasCalled[0]);
+	}
+	
+	@Test
+	public void testOpenPreferencesEditor() throws Exception {
+		String message = "foo bar";
+		MutablePicoContainer container = new DefaultPicoContainer();
+		container.registerComponentInstance(message);
+		
+		Fetcher editableFetcher = new EditableFetcher();
+		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, editableFetcher}, preferences, container);
+		
+		EditableFetcherPrefs.calledWithMessage = null;
+		fetcherRegistry.openPreferencesEditor(editableFetcher);		
+		assertSame(message, EditableFetcherPrefs.calledWithMessage);
+
+		try {
+			fetcherRegistry.openPreferencesEditor(ipFetcher);
+			fail("This fetcher is not editable");
+		}
+		catch (FetcherException e) {
+		}
+	}
+	
+	public static class EditableFetcher extends AbstractFetcher {
+		public String getId() {
+			return null;
+		}
+		public Object scan(ScanningSubject subject) {
+			return null;
+		}
+		@Override
+		public Class<? extends Runnable> getPreferencesClass() {
+			return EditableFetcherPrefs.class;
+		}
+	}
+	
+	public static class EditableFetcherPrefs implements Runnable {
+		private static String calledWithMessage;
+		
+		private String message;
+
+		public EditableFetcherPrefs(String message) {
+			this.message = message;
+		}
+
+		public void run() {
+			calledWithMessage = message;
+		}		
 	}
 }

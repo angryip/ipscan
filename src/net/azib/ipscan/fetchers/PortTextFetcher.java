@@ -36,8 +36,8 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 	private ScannerConfig scannerConfig;
 
 	private int defaultPort;
-	private String textToSend;
-	private Pattern matchingRegexp;
+	protected String textToSend;
+	protected Pattern matchingRegexp;
 	
 	public PortTextFetcher(ScannerConfig scannerConfig, int defaultPort, String textToSend, String matchingRegexp) {
 		this.scannerConfig = scannerConfig;
@@ -92,5 +92,4 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 		}
 		return null;
 	}
-
 }

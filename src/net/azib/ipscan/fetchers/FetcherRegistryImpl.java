@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
 
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+
 /**
  * Fetcher registry singleton class.
  * It registers both plugins and builtins.
@@ -26,19 +30,29 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 	
 	/** All available Fetcher implementations, List of Fetcher instances */
 	private Map<String, Fetcher> registeredFetchers;
+	
 	/** Selected for scanning Fetcher implementations, keys are fetcher labels, values are Fetcher instances */
 	private Map<String, Fetcher> selectedFetchers;
+	
+	/** PicoContainer for FetcherPrefs components */
+	private PicoContainer prefsContainer;
+
 	/** A collection of update listeners - observers of FetcherRegistry */
 	private List<FetcherRegistryUpdateListener> updateListeners = new ArrayList<FetcherRegistryUpdateListener>();
-	
-	public FetcherRegistryImpl(Fetcher[] registeredFetchers, Preferences preferences) {
+		
+	public FetcherRegistryImpl(Fetcher[] registeredFetchers, Preferences preferences, PicoContainer parentContainer) {
 		this.preferences = preferences;
+		MutablePicoContainer prefsContainer = new DefaultPicoContainer(parentContainer);
 		
 		this.registeredFetchers = new LinkedHashMap<String, Fetcher>(registeredFetchers.length);
 		for (Fetcher fetcher : registeredFetchers) {
 			this.registeredFetchers.put(fetcher.getId(), fetcher);
+			Class<? extends Runnable> prefsClass = fetcher.getPreferencesClass();
+			if (prefsClass != null && prefsContainer.getComponentAdapterOfType(prefsClass) == null)
+				prefsContainer.registerComponentImplementation(prefsClass);
 		}
 		this.registeredFetchers = Collections.unmodifiableMap(this.registeredFetchers);
+		this.prefsContainer = prefsContainer;
 		
 		// now load the preferences to init selected fetchers
 		loadSelectedFetchers(preferences);
@@ -118,6 +132,15 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 		
 		// save preferences
 		saveSelectedFetchers(preferences);
+	}
+
+	public void openPreferencesEditor(Fetcher fetcher) throws FetcherException {
+		Class<? extends Runnable> prefsClass = fetcher.getPreferencesClass();
+		if (prefsClass == null)
+			throw new FetcherException("preferences.notAvailable");
+
+		Runnable prefs = (Runnable) prefsContainer.getComponentInstanceOfType(prefsClass);
+		prefs.run();
 	}
 	
 }

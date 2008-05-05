@@ -38,6 +38,12 @@ public interface Fetcher extends Cloneable, Pluggable {
 	public String getInfo();
 	
 	/**
+	 * @return the preferences class that may be used for editing of this fetcher's preferences
+	 * or null if no preferences editing is possible
+	 */
+	public Class<? extends Runnable> getPreferencesClass();
+	
+	/**
 	 * Does the actual fetching.
 	 * @param subject the scanning subject, containing an IP address
 	 * @return the fetched data (a String in most cases), null in case of any error. 

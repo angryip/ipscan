@@ -45,4 +45,11 @@ public interface FetcherRegistry {
 	 */
 	public void addListener(FetcherRegistryUpdateListener listener);
 
+	/**
+	 * Opens preferences editor for the specified fetcher, if possible.
+	 * @param fetcher
+	 * @throws FetcherException if preferences editor doesn't exist
+	 */
+	public void openPreferencesEditor(Fetcher fetcher) throws FetcherException;
+
 }

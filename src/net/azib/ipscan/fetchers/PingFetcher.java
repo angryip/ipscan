@@ -8,14 +8,15 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.config.LoggerFactory;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.net.PingResult;
 import net.azib.ipscan.core.net.Pinger;
 import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.core.values.IntegerWithUnit;
+import net.azib.ipscan.gui.fetchers.PingFetcherPrefs;
 
 /**
  * PingFetcher is able to ping IP addresses.
@@ -46,6 +47,11 @@ public class PingFetcher extends AbstractFetcher {
 		return ID;
 	}
 	
+	@Override
+	public Class<? extends Runnable> getPreferencesClass() {
+		return PingFetcherPrefs.class;
+	}
+
 	protected PingResult executePing(ScanningSubject subject) {
 		
 		PingResult result = null;
