@@ -47,7 +47,7 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 		this.registeredFetchers = new LinkedHashMap<String, Fetcher>(registeredFetchers.length);
 		for (Fetcher fetcher : registeredFetchers) {
 			this.registeredFetchers.put(fetcher.getId(), fetcher);
-			Class<? extends Runnable> prefsClass = fetcher.getPreferencesClass();
+			Class<? extends FetcherPrefs> prefsClass = fetcher.getPreferencesClass();
 			if (prefsClass != null && prefsContainer.getComponentAdapterOfType(prefsClass) == null)
 				prefsContainer.registerComponentImplementation(prefsClass);
 		}
@@ -135,12 +135,12 @@ public class FetcherRegistryImpl implements FetcherRegistry {
 	}
 
 	public void openPreferencesEditor(Fetcher fetcher) throws FetcherException {
-		Class<? extends Runnable> prefsClass = fetcher.getPreferencesClass();
+		Class<? extends FetcherPrefs> prefsClass = fetcher.getPreferencesClass();
 		if (prefsClass == null)
 			throw new FetcherException("preferences.notAvailable");
 
-		Runnable prefs = (Runnable) prefsContainer.getComponentInstanceOfType(prefsClass);
-		prefs.run();
+		FetcherPrefs prefs = (FetcherPrefs) prefsContainer.getComponentInstanceOfType(prefsClass);
+		prefs.openFor(fetcher);
 	}
 	
 }

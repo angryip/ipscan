@@ -41,7 +41,7 @@ public interface Fetcher extends Cloneable, Pluggable {
 	 * @return the preferences class that may be used for editing of this fetcher's preferences
 	 * or null if no preferences editing is possible
 	 */
-	public Class<? extends Runnable> getPreferencesClass();
+	public Class<? extends FetcherPrefs> getPreferencesClass();
 	
 	/**
 	 * Does the actual fetching.

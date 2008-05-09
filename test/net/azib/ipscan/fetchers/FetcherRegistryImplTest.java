@@ -135,6 +135,7 @@ public class FetcherRegistryImplTest {
 		EditableFetcherPrefs.calledWithMessage = null;
 		fetcherRegistry.openPreferencesEditor(editableFetcher);		
 		assertSame(message, EditableFetcherPrefs.calledWithMessage);
+		assertSame(editableFetcher, EditableFetcherPrefs.calledForFetcher);
 
 		try {
 			fetcherRegistry.openPreferencesEditor(ipFetcher);
@@ -152,13 +153,14 @@ public class FetcherRegistryImplTest {
 			return null;
 		}
 		@Override
-		public Class<? extends Runnable> getPreferencesClass() {
+		public Class<? extends FetcherPrefs> getPreferencesClass() {
 			return EditableFetcherPrefs.class;
 		}
 	}
 	
-	public static class EditableFetcherPrefs implements Runnable {
+	public static class EditableFetcherPrefs implements FetcherPrefs {
 		private static String calledWithMessage;
+		private static Fetcher calledForFetcher;
 		
 		private String message;
 
@@ -166,8 +168,9 @@ public class FetcherRegistryImplTest {
 			this.message = message;
 		}
 
-		public void run() {
+		public void openFor(Fetcher fetcher) {
 			calledWithMessage = message;
+			calledForFetcher = fetcher;
 		}		
 	}
 }

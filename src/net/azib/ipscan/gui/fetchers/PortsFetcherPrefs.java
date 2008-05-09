@@ -6,6 +6,8 @@
 
 package net.azib.ipscan.gui.fetchers;
 
+import net.azib.ipscan.fetchers.Fetcher;
+import net.azib.ipscan.fetchers.FetcherPrefs;
 import net.azib.ipscan.gui.PreferencesDialog;
 
 /**
@@ -13,7 +15,7 @@ import net.azib.ipscan.gui.PreferencesDialog;
  *
  * @author Anton Keks
  */
-public class PortsFetcherPrefs implements Runnable {
+public class PortsFetcherPrefs implements FetcherPrefs {
 	
 	private PreferencesDialog preferencesDialog;
 
@@ -21,7 +23,7 @@ public class PortsFetcherPrefs implements Runnable {
 		this.preferencesDialog = preferencesDialog;
 	}
 
-	public void run() {
+	public void openFor(Fetcher fetcher) {
 		preferencesDialog.openTab(1);
 	}
 	

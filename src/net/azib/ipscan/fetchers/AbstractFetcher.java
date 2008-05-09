@@ -33,7 +33,7 @@ public abstract class AbstractFetcher implements Fetcher {
 		}
 	}
 
-	public Class<? extends Runnable> getPreferencesClass() {
+	public Class<? extends FetcherPrefs> getPreferencesClass() {
 		// no preferences by default
 		return null;
 	}

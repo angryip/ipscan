@@ -57,7 +57,7 @@ public class PortsFetcher extends AbstractFetcher {
 	}
 	
 	@Override
-	public Class<? extends Runnable> getPreferencesClass() {
+	public Class<? extends FetcherPrefs> getPreferencesClass() {
 		return PortsFetcherPrefs.class;
 	}
 

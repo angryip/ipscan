@@ -24,6 +24,7 @@ import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.ScanningResult.ResultType;
+import net.azib.ipscan.gui.fetchers.PortTextFetcherPrefs;
 
 /**
  * PortTextFetcher - generic configurable fetcher to read some particular information from a port.
@@ -91,5 +92,26 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 			}
 		}
 		return null;
+	}
+	
+	@Override
+	public Class<? extends FetcherPrefs> getPreferencesClass() {
+		return PortTextFetcherPrefs.class;
+	}
+	
+	public String getTextToSend() {
+		return textToSend;
+	}
+
+	public void setTextToSend(String textToSend) {
+		this.textToSend = textToSend;
+	}
+
+	public Pattern getMatchingRegexp() {
+		return matchingRegexp;
+	}
+
+	public void setMatchingRegexp(Pattern matchingRegexp) {
+		this.matchingRegexp = matchingRegexp;
 	}
 }
