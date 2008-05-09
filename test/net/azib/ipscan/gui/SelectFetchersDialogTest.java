@@ -1,5 +1,7 @@
 /**
- * 
+ * This file is a part of Angry IP Scanner source code,
+ * see http://www.azib.net/ for more information.
+ * Licensed under GPLv2.
  */
 package net.azib.ipscan.gui;
 
@@ -11,7 +13,6 @@ import org.junit.Test;
 
 /**
  * @author Anton Keks
- *
  */
 public class SelectFetchersDialogTest {
 
@@ -23,9 +24,9 @@ public class SelectFetchersDialogTest {
 		
 		SelectFetchersDialog selectFetchersDialog = new SelectFetchersDialog(fetcherRegistry);
 		
-		selectFetchersDialog.registeredFetcherLabelsByNames.put("IP", "fetcher.ip");
-		selectFetchersDialog.registeredFetcherLabelsByNames.put("Hello", "fetcher.hello");
-		selectFetchersDialog.registeredFetcherLabelsByNames.put("Blah", "fetcher.blah");
+		selectFetchersDialog.registeredFetcherIdsByNames.put("IP", "fetcher.ip");
+		selectFetchersDialog.registeredFetcherIdsByNames.put("Hello", "fetcher.hello");
+		selectFetchersDialog.registeredFetcherIdsByNames.put("Blah", "fetcher.blah");
 		
 		selectFetchersDialog.saveFetchersToRegistry(new String[] {"Blah", "Hello"});
 		

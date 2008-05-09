@@ -30,8 +30,12 @@ import org.eclipse.swt.widgets.Shell;
 public abstract class AbstractModalDialog {
 
 	protected Shell shell;
-
+	
 	public void open() {
+		if (shell == null || shell.isDisposed()) {
+			createShell();
+		}
+		
 		// center dialog box according to the parent window
 		if (shell.getParent() != null) {
 			Rectangle parentBounds = shell.getParent().getBounds();
@@ -54,6 +58,29 @@ public abstract class AbstractModalDialog {
 		shell = null;
 	}
 	
+	/**
+	 * Populates the newly created shell with controls
+	 */
+	protected abstract void populateShell();
+
+	protected final void createShell() {
+		Display currentDisplay = Display.getCurrent();
+		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
+		
+		shell = new Shell(parent, getShellStyle());		
+		if (parent != null)
+			shell.setImage(parent.getImage());
+		
+		populateShell();
+	}
+
+	/**
+	 * @return combined style constants of the shell to be created
+	 */
+	protected int getShellStyle() {
+		return SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM;
+	}
+
 	/**
 	 * Positions 2 buttons at the bottom-right part of the shell.
 	 * On MacOS also changes OK and cancel button order.

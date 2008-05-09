@@ -18,7 +18,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -41,18 +40,13 @@ public class DetailsWindow extends AbstractModalDialog {
 	}
 	
 	@Override
-	public void open() {
-		createShell(resultTable.getShell());
-		super.open();
+	protected int getShellStyle() {
+		return SWT.TOOL | SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE;
 	}
-
-	/**
-	 * This method initializes shell
-	 */
-	private void createShell(Shell parent) {
-		shell = new Shell(parent, SWT.TOOL | SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
+	
+	@Override
+	protected void populateShell() {
 		shell.setText(Labels.getLabel("title.details"));
-		shell.setImage(parent.getImage());
 		shell.setLayout(LayoutHelper.formLayout(3, 3, 3));
 		shell.setSize(guiConfig.detailsWindowSize);
 		
@@ -119,6 +113,7 @@ public class DetailsWindow extends AbstractModalDialog {
 			if (e.detail == SWT.TRAVERSE_RETURN) {
 				guiConfig.detailsWindowSize = shell.getSize();				
 				shell.close();
+				shell.dispose();
 			}
 		}
 	}

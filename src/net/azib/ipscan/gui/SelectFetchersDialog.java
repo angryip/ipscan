@@ -37,22 +37,14 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 	
 	private List selectedFetchersList;
 	private List registeredFetchersList;
-	Map<String, String> registeredFetcherLabelsByNames = new HashMap<String, String>();
+	Map<String, String> registeredFetcherIdsByNames = new HashMap<String, String>();
 
 	public SelectFetchersDialog(FetcherRegistry fetcherRegistry) {
 		this.fetcherRegistry = fetcherRegistry;
 	}
 	
-	public void open() {
-		// create controls on demand
-		createShell();
-		super.open();
-	}
-
-	/**
-	 * This method initializes shell
-	 */
-	private void createShell() {
+	@Override
+	protected void populateShell() {
 		Display currentDisplay = Display.getCurrent();
 		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
@@ -88,10 +80,15 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		Button removeButton = new Button(shell, SWT.NONE);
 		removeButton.setText(Labels.getLabel("button.right"));
 		
+		Button prefsButton = new Button(shell, SWT.NONE);
+		prefsButton.setText(Labels.getLabel("button.fetcherPrefs"));
+		prefsButton.setToolTipText(Labels.getLabel("text.fetchers.preferences"));
+		
 		upButton.setLayoutData(LayoutHelper.formData(new FormAttachment(selectedFetchersList), new FormAttachment(downButton, 0, SWT.RIGHT), new FormAttachment(selectedLabel), null));
 		downButton.setLayoutData(LayoutHelper.formData(new FormAttachment(selectedFetchersList), null, new FormAttachment(upButton), null));
 		addButton.setLayoutData(LayoutHelper.formData(new FormAttachment(selectedFetchersList), new FormAttachment(downButton, 0, SWT.RIGHT), new FormAttachment(downButton, 16), null));	
 		removeButton.setLayoutData(LayoutHelper.formData(new FormAttachment(selectedFetchersList), new FormAttachment(downButton, 0, SWT.RIGHT), new FormAttachment(addButton), null));
+		prefsButton.setLayoutData(LayoutHelper.formData(new FormAttachment(selectedFetchersList), new FormAttachment(downButton, 0, SWT.RIGHT), new FormAttachment(removeButton, 16), null));
 		
 		Label registeredLabel = new Label(shell, SWT.NONE);
 		registeredLabel.setText(Labels.getLabel("text.fetchers.availableList"));		
@@ -104,7 +101,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		while (i.hasNext()) {
 			Fetcher fetcher = i.next();
 			String fetcherName = fetcher.getName();
-			registeredFetcherLabelsByNames.put(fetcherName, fetcher.getId());
+			registeredFetcherIdsByNames.put(fetcherName, fetcher.getId());
 			if (selectedFetchersList.indexOf(fetcherName) < 0)
 				registeredFetchersList.add(fetcherName);
 		}
@@ -125,6 +122,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		AddRemoveButtonListener removeButtonListener = new AddRemoveButtonListener(selectedFetchersList, registeredFetchersList);
 		removeButton.addListener(SWT.Selection, removeButtonListener);
 		selectedFetchersList.addListener(SWT.MouseDoubleClick, removeButtonListener);
+		prefsButton.addListener(SWT.Selection, new PrefsListener());
 
 		// this is a workaround for limitation of FormLayout to remove the extra edge below the form
 		shell.layout();
@@ -136,12 +134,14 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		cancelButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
 				shell.close();
+				shell.dispose();
 			}
 		});
 		okButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				saveFetchersToRegistry(selectedFetchersList.getItems());
 				shell.close();
+				shell.dispose();
 			}
 		});
 	}
@@ -156,12 +156,26 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		fetchersLabelsToRetain[0] = IPFetcher.ID; 
 
 		for (int i = 0; i < fetchersNamesToSave.length; i++) {
-			fetchersLabelsToRetain[i+1] = registeredFetcherLabelsByNames.get(fetchersNamesToSave[i]);
+			fetchersLabelsToRetain[i+1] = registeredFetcherIdsByNames.get(fetchersNamesToSave[i]);
 		}
 		fetcherRegistry.updateSelectedFetchers(fetchersLabelsToRetain);
 	}
 
-	private static class AddRemoveButtonListener implements Listener {
+	class PrefsListener implements Listener {
+		
+		public void handleEvent(Event event) {
+			String[] selection = selectedFetchersList.getSelection();
+			String fetcherName = selection.length > 0 ? selection[0] : selectedFetchersList.getItem(0);
+			for (Fetcher fetcher : fetcherRegistry.getRegisteredFetchers()) {
+				if (fetcherName.equals(fetcher.getName())) {
+					fetcherRegistry.openPreferencesEditor(fetcher);
+					break;
+				}
+			}
+		}
+	}
+
+	static class AddRemoveButtonListener implements Listener {
 		
 		private List fromList;
 		private List toList;
@@ -183,5 +197,5 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 			fromList.remove(selectedItems);
 		}
 	}
-
+	
 }

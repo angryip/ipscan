@@ -31,16 +31,14 @@ public class InputDialog extends AbstractModalDialog {
 	private String message;
 	
 	public InputDialog(String title, String message) {
-		createShell();
+		populateShell();
 		shell.setText(title);
 		messageLabel.setText(message);
 		messageLabel.pack();
 	}
 
-	/**
-	 * This method initializes shell
-	 */
-	private void createShell() {
+	@Override
+	protected void populateShell() {
 		Display currentDisplay = Display.getCurrent();
 		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		

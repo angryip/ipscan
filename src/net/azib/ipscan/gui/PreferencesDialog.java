@@ -26,12 +26,10 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
@@ -107,13 +105,8 @@ public class PreferencesDialog extends AbstractModalDialog {
 		super.open();
 	}
 
-	/**
-	 * This method initializes shell
-	 */
-	private void createShell() {
-		Display currentDisplay = Display.getCurrent();
-
-		shell = new Shell(currentDisplay != null ? currentDisplay.getActiveShell() : null, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
+	@Override
+	protected void populateShell() {
 		shell.setText(Labels.getLabel("title.preferences"));
 		shell.setLayout(LayoutHelper.formLayout(10, 10, 4));
 		

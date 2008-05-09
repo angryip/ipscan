@@ -26,10 +26,10 @@ public interface FetcherRegistry {
 
 	/**
 	 * Searches for selected fetcher with the given label
-	 * @param label
+	 * @param id
 	 * @return the index, if found, or -1
 	 */
-	public int getSelectedFetcherIndex(String label);
+	public int getSelectedFetcherIndex(String id);
 
 	/**
 	 * Updates the list, retaining only items that are passed in the array.

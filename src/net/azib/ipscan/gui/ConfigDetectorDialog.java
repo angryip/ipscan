@@ -8,8 +8,8 @@ package net.azib.ipscan.gui;
 import java.net.InetSocketAddress;
 
 import net.azib.ipscan.config.ConfigDetector;
-import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
@@ -21,7 +21,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -51,21 +50,9 @@ public class ConfigDetectorDialog extends AbstractModalDialog implements ConfigD
 	}
 	
 	@Override
-	public void open() {
-		createShell();
-		super.open();
-	}
-
-	/**
-	 * This method initializes shell
-	 */
-	private void createShell() {
-		Display currentDisplay = Display.getCurrent();
-		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
-		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-		shell.setLayout(LayoutHelper.formLayout(10, 10, 10));
-
+	protected void populateShell() {
 		shell.setText(Labels.getLabel("title.configDetect"));
+		shell.setLayout(LayoutHelper.formLayout(10, 10, 10));
 		
 		Label infoLabel = new Label(shell, SWT.WRAP);
 		infoLabel.setText(Labels.getLabel("text.configDetect"));

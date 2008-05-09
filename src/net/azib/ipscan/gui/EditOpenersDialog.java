@@ -48,13 +48,10 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	public EditOpenersDialog(FetcherRegistry fetcherRegistry, OpenersConfig openersConfig) {
 		this.fetcherRegistry = fetcherRegistry;
 		this.openersConfig = openersConfig;
-		createShell();
 	}
-	
-	/**
-	 * This method initializes shell
-	 */
-	private void createShell() {
+
+	@Override
+	protected void populateShell() {
 		Display currentDisplay = Display.getCurrent();
 		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);

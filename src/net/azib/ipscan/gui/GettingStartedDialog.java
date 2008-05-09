@@ -27,19 +27,8 @@ public class GettingStartedDialog extends AbstractModalDialog {
 	private Button closeButton;
 	private Button nextButton;
 
-	public GettingStartedDialog() {
-	}
-	
 	@Override
-	public void open() {
-		createShell();
-		super.open();
-	}
-
-	/**
-	 * This method initializes shell
-	 */
-	private void createShell() {
+	protected void populateShell() {
 		Display currentDisplay = Display.getCurrent();
 		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);

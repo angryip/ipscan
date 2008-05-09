@@ -11,11 +11,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -25,31 +23,15 @@ import org.eclipse.swt.widgets.Text;
  */
 public class AboutDialog extends AbstractModalDialog {
 
-	public AboutDialog() {
-	}
-	
 	@Override
-	public void open() {
-		createShell();		
-		super.open();
-	}
-
-	/**
-	 * This method initializes shell
-	 */
-	private void createShell() {
-		Display currentDisplay = Display.getCurrent();
-		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
-		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-
+	protected void populateShell() {
 		shell.setText(Labels.getLabel("title.about"));
 		shell.setSize(new Point(400, 373));
 		
 		Label iconLabel = new Label(shell, SWT.ICON);
 		iconLabel.setLocation(10, 10);
-		if (parent != null) {
-			iconLabel.setImage(parent.getImage());
-			shell.setImage(parent.getImage());
+		if (shell.getImage() != null) {
+			iconLabel.setImage(shell.getImage());
 		}		
 		iconLabel.pack();
 		int leftBound = iconLabel.getBounds().width + 20;

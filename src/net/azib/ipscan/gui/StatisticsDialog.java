@@ -21,9 +21,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -42,44 +40,36 @@ public class StatisticsDialog extends AbstractModalDialog {
 	@Override
 	public void open() {
 		if (scanningResults.isInfoAvailable()) {
-			createShell();
+			if (shell != null) {
+				// close the same window if it is already open ('scanning incomplete')
+				shell.close();
+				shell.dispose();
+			}
+
 			super.open();
 		}
 		else {
 			throw new UserErrorException("commands.noResults");
 		}
 	}
-	
-	/**
-	 * This method initializes shell
-	 */
-	private void createShell() {
-		if (shell != null) {
-			// close the same window if it is already open ('scanning incomplete')
-			shell.close();
-			shell.dispose();
-		}
-		
-		Display currentDisplay = Display.getCurrent();
-		Shell parent = currentDisplay.getShells()[0];
-		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
+	@Override
+	protected void populateShell() {
 		shell.setText(Labels.getLabel("title.statistics"));
 		shell.setLayout(LayoutHelper.formLayout(10, 10, 15));
 		
 		Label iconLabel = new Label(shell, SWT.ICON);
 		iconLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, new FormAttachment(0), null));
-		iconLabel.setImage(parent.getImage());
-		shell.setImage(parent.getImage());
+		iconLabel.setImage(shell.getImage());
 		
 		Label titleLabel = new Label(shell, SWT.NONE);
-		FontData sysFontData = currentDisplay.getSystemFont().getFontData()[0];
+		FontData sysFontData = shell.getDisplay().getSystemFont().getFontData()[0];
 		titleLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(iconLabel), null, new FormAttachment(0), null));
 		titleLabel.setFont(new Font(null, sysFontData.getName(), sysFontData.getHeight()+3, sysFontData.getStyle() | SWT.BOLD));
 		titleLabel.setText(Labels.getLabel(scanningResults.getScanInfo().isCompletedNormally() ? "text.scan.completed" : "text.scan.incomplete"));
 			
 		Text statsText = new Text(shell, SWT.MULTI | SWT.READ_ONLY);
-		statsText.setBackground(currentDisplay.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+		statsText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
 		statsText.setLayoutData(LayoutHelper.formData(new FormAttachment(iconLabel), null, new FormAttachment(titleLabel), null));
 		statsText.setText(prepareText());
 		statsText.pack();
@@ -88,7 +78,6 @@ public class StatisticsDialog extends AbstractModalDialog {
 		Point buttonSize = button.getSize();
 		button.setLayoutData(LayoutHelper.formData(buttonSize.x, buttonSize.y, null, new FormAttachment(statsText, 30, SWT.RIGHT), new FormAttachment(statsText), null));
 		
-		shell.layout();
 		shell.pack();
 	}
 

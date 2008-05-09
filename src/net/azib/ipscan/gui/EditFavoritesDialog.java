@@ -29,13 +29,10 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 	
 	public EditFavoritesDialog(FavoritesConfig favoritesConfig) {
 		this.favoritesConfig = favoritesConfig;
-		createShell();
 	}
-	
-	/**
-	 * This method initializes shell
-	 */
-	private void createShell() {
+
+	@Override
+	protected void populateShell() {
 		Display currentDisplay = Display.getCurrent();
 		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
