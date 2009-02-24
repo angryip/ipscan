@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.util;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -166,7 +167,7 @@ public class InetAddressUtils {
 					NetworkInterface networkInterface = i.nextElement();
 					for (Enumeration<InetAddress> i2 = networkInterface.getInetAddresses(); i2.hasMoreElements();) {
 						InetAddress currentAddress = i2.nextElement();
-						if (!currentAddress.isLoopbackAddress()) {
+						if (!currentAddress.isLoopbackAddress() && currentAddress instanceof Inet4Address) {
 							address = currentAddress;
 							break outer;
 						}
