@@ -13,33 +13,26 @@ import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.ScanningResultList.ScanInfo;
-import net.azib.ipscan.gui.util.LayoutHelper;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * StatisticsDialog - shows statistical information about the last scan
  *
  * @author Anton Keks
  */
-public class StatisticsDialog extends AbstractModalDialog {
+public class StatisticsDialog extends InfoDialog {
 	
-	private ScanningResultList scanningResults;
-	
-	public StatisticsDialog(ScanningResultList scanningResultList) {
-		this.scanningResults = scanningResultList;
+	private final ScanningResultList scanningResults;
+
+	public StatisticsDialog(ScanningResultList scanningResults) {
+		super(Labels.getLabel("title.statistics"), null);
+		this.scanningResults = scanningResults;
 	}
 	
 	@Override
 	public void open() {
 		if (scanningResults.isInfoAvailable()) {
+			setMessage(prepareText());
+			
 			if (shell != null) {
 				// close the same window if it is already open ('scanning incomplete')
 				shell.close();
@@ -53,35 +46,10 @@ public class StatisticsDialog extends AbstractModalDialog {
 		}
 	}
 
-	@Override
-	protected void populateShell() {
-		shell.setText(Labels.getLabel("title.statistics"));
-		shell.setLayout(LayoutHelper.formLayout(10, 10, 15));
-		
-		Label iconLabel = new Label(shell, SWT.ICON);
-		iconLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, new FormAttachment(0), null));
-		iconLabel.setImage(shell.getImage());
-		
-		Label titleLabel = new Label(shell, SWT.NONE);
-		FontData sysFontData = shell.getDisplay().getSystemFont().getFontData()[0];
-		titleLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(iconLabel), null, new FormAttachment(0), null));
-		titleLabel.setFont(new Font(null, sysFontData.getName(), sysFontData.getHeight()+3, sysFontData.getStyle() | SWT.BOLD));
-		titleLabel.setText(Labels.getLabel(scanningResults.getScanInfo().isCompletedNormally() ? "text.scan.completed" : "text.scan.incomplete"));
-			
-		Text statsText = new Text(shell, SWT.MULTI | SWT.READ_ONLY);
-		statsText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
-		statsText.setLayoutData(LayoutHelper.formData(new FormAttachment(iconLabel), null, new FormAttachment(titleLabel), null));
-		statsText.setText(prepareText());
-		statsText.pack();
-		
-		Button button = createCloseButton();
-		Point buttonSize = button.getSize();
-		button.setLayoutData(LayoutHelper.formData(buttonSize.x, buttonSize.y, null, new FormAttachment(statsText, 30, SWT.RIGHT), new FormAttachment(statsText), null));
-		
-		shell.pack();
-	}
-
 	String prepareText() {
+		title2 = Labels.getLabel(scanningResults.getScanInfo().isCompletedNormally() ? 
+				"text.scan.completed" : "text.scan.incomplete");
+		
 		ScanInfo scanInfo = scanningResults.getScanInfo();
 		String ln = System.getProperty("line.separator");
 		StringBuilder text = new StringBuilder();

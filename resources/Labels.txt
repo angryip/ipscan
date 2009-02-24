@@ -76,6 +76,7 @@ title.openers.edit=Edit Openers
 title.fetchers.select=Select Fetchers
 title.rename=Rename
 title.find=Find
+title.commandline=Command-Line Usage
 text.error=Error
 text.userError=Problem
 text.ip=IP

@@ -10,17 +10,20 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.azib.ipscan.config.ComponentRegistry;
+import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.LoggerFactory;
+import net.azib.ipscan.config.Platform;
+import net.azib.ipscan.config.Version;
+import net.azib.ipscan.core.UserErrorException;
+import net.azib.ipscan.gui.InfoDialog;
+import net.azib.ipscan.gui.MainWindow;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-
-import net.azib.ipscan.config.Config;
-import net.azib.ipscan.config.ComponentRegistry;
-import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.LoggerFactory;
-import net.azib.ipscan.core.UserErrorException;
-import net.azib.ipscan.gui.MainWindow;
 
 /**
  * The main executable class.
@@ -78,10 +81,9 @@ public class Main {
 				// display a nice error message
 				String localizedMessage = getLocalizedMessage(e);
 				Shell parent = display.getActiveShell();
-				MessageBox messageBox = new MessageBox(parent != null ? parent : mainWindow.getShell(), SWT.OK | (e instanceof UserErrorException ? SWT.ICON_WARNING : SWT.ICON_ERROR));
-				messageBox.setText(Labels.getLabel(e instanceof UserErrorException ? "text.userError" : "text.error"));
-				messageBox.setMessage(localizedMessage);
-				messageBox.open();
+				showMessage(parent != null ? parent : mainWindow.getShell(), 
+						e instanceof UserErrorException ? SWT.ICON_WARNING : SWT.ICON_ERROR, 
+						Labels.getLabel(e instanceof UserErrorException ? "text.userError" : "text.error"), localizedMessage);
 			}
 		}
 		
@@ -90,6 +92,13 @@ public class Main {
 		
 		// dispose the native objects
 		display.dispose();
+	}
+
+	private static void showMessage(Shell parent, int flags, String title, String localizedMessage) {
+		MessageBox messageBox = new MessageBox(parent, SWT.OK | flags);
+		messageBox.setText(title);
+		messageBox.setMessage(localizedMessage);
+		messageBox.open();
 	}
 
 	private static void initSystemProperties() {
@@ -103,7 +112,35 @@ public class Main {
 	private static void processCommandLine(String[] args) {
 		if (args.length != 0) {
 			// TODO: implement command-line
-			LOG.warning("Command-line usage is not implemented yet, sorry");
+			String usageText = "Command-line usage is not implemented yet, sorry";
+			
+			showMessageToConsole(usageText);
+		}
+	}
+
+	/**
+	 * @param usageText
+	 */
+	private static void showMessageToConsole(String usageText) {
+		// use console for all platforms except Windows by default
+		boolean haveConsole = !Platform.WINDOWS;
+		
+		try {
+			// determine if we have console attached using Java 6 System.console()
+			haveConsole = System.class.getMethod("console").invoke(null) != null;
+		}
+		catch (Exception e) {
+			// Java 5 will reach here
+			e.printStackTrace();
+		}
+		
+		if (haveConsole) {
+			System.err.println(usageText);
+		}
+		else {
+			InfoDialog dialog = new InfoDialog(Version.NAME, Labels.getLabel("title.commandline"));
+			dialog.setMessage(usageText);
+			dialog.open();
 		}
 	}
 
@@ -119,7 +156,7 @@ public class Main {
 				localizedMessage = e.getMessage();
 			}
 			else {
-				String exceptionClassName = getClassShortName(e.getClass());
+				String exceptionClassName = e.getClass().getSimpleName();
 				String originalMessage = e.getMessage();
 				localizedMessage = Labels.getLabel("exception." + exceptionClassName + (originalMessage != null ? "." + originalMessage : ""));
 			}
@@ -136,14 +173,5 @@ public class Main {
 			LOG.log(Level.SEVERE, "unexpected error", e);
 		}
 		return localizedMessage;
-	}
-	
-	/**
-	 * @return the short name of a class (without package name)
-	 */
-	static String getClassShortName(Class<?> clazz) {
-		String className = clazz.getName();
-		return className.substring(className.lastIndexOf('.') + 1);
-	}
-	
+	}	
 }

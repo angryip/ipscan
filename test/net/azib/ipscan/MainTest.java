@@ -38,11 +38,4 @@ public class MainTest {
 		assertEquals(Labels.getLabel("exception.OutOfMemoryError"), 
 				Main.getLocalizedMessage(new OutOfMemoryError()));
 	}
-	
-	@Test
-	public void classShortName() {
-		assertEquals("String", Main.getClassShortName(String.class));
-		assertEquals("MainTest", Main.getClassShortName(MainTest.class));
-	}
-
 }

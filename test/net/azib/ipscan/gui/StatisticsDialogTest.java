@@ -60,7 +60,7 @@ public class StatisticsDialogTest {
 		expect(results.getFeederInfo()).andReturn("SomeInfoHere");
 		replay(results);
 		
-		String text = new StatisticsDialog(results).prepareText();
+		String text = new StatisticsDialog(results).getMessage();
 		
 		assertNotNull(text);
 		assertTrue(text.contains(Labels.getLabel("text.scan.time.total") + "10"));

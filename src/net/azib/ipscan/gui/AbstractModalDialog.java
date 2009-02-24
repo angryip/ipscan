@@ -11,6 +11,7 @@ import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
@@ -72,9 +73,15 @@ public abstract class AbstractModalDialog {
 			// ignore if unsuccessful
 		}
 		
-		shell = new Shell(parent, getShellStyle());		
-		if (parent != null)
-			shell.setImage(parent.getImage());
+		shell = new Shell(parent, getShellStyle());
+		Image icon = null;
+		if (parent != null) {
+			icon = parent.getImage();
+		}
+		else {
+			icon = new Image(shell.getDisplay(), Labels.getInstance().getImageAsStream("icon"));
+		}
+		shell.setImage(icon);
 		
 		populateShell();
 	}
