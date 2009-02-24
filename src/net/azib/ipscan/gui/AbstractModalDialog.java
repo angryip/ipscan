@@ -64,8 +64,13 @@ public abstract class AbstractModalDialog {
 	protected abstract void populateShell();
 
 	protected final void createShell() {
-		Display currentDisplay = Display.getCurrent();
-		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
+		Shell parent = null;
+		try {
+			parent = Display.getCurrent().getShells()[0];
+		}
+		catch (Exception e) {
+			// ignore if unsuccessful
+		}
 		
 		shell = new Shell(parent, getShellStyle());		
 		if (parent != null)
