@@ -79,8 +79,8 @@ public class MainMenu implements Startable {
 		Menu subMenu = initMenu(menu, "menu.file");
 //		initMenuItem(subMenu, "menu.file.newWindow", "Ctrl+N", new Integer(SWT.MOD1 | 'N'), initListener(FileActions.NewWindow.class));
 //		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.file.exportAll", "Ctrl+S", new Integer(SWT.MOD1 | 'S'), initListener(FileActions.SaveAll.class), true);
-		initMenuItem(subMenu, "menu.file.exportSelection", null, null, initListener(FileActions.SaveSelection.class), true);
+		initMenuItem(subMenu, "menu.file.exportAll", "Ctrl+S", new Integer(SWT.MOD1 | 'S'), initListener(FileActions.SaveAll.class), false);
+		initMenuItem(subMenu, "menu.file.exportSelection", null, null, initListener(FileActions.SaveSelection.class), false);
 		initMenuItem(subMenu, null, null, null, null);
 		initMenuItem(subMenu, "menu.file.exportPreferences", null, null, null);
 		initMenuItem(subMenu, "menu.file.importPreferences", null, null, null);

@@ -10,8 +10,11 @@ import java.util.List;
 
 import net.azib.ipscan.Main;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.Version;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.UserErrorException;
+import net.azib.ipscan.core.state.ScanningState;
+import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.exporters.ExportProcessor;
 import net.azib.ipscan.exporters.Exporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
@@ -23,6 +26,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.MessageBox;
 
 /**
  * FileActions
@@ -42,18 +46,27 @@ public class FileActions {
 		private final ResultTable resultTable;
 		private final StatusBar statusBar;
 		private final boolean isSelection;
+		private final StateMachine stateMachine;
 		
-		SaveResults(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, boolean isSelection) {
+		SaveResults(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, StateMachine stateMachine, boolean isSelection) {
 			this.exporterRegistry = exporterRegistry;
 			this.resultTable = resultTable;
 			this.statusBar = statusBar;
-			// TODO: implement isSelection
+			this.stateMachine = stateMachine;
 			this.isSelection = isSelection;
 		}
 
 		public void handleEvent(Event event) {
 			if (resultTable.getItemCount() <= 0) {
 				throw new UserErrorException("commands.noResults");
+			}
+			
+			if (!stateMachine.inState(ScanningState.IDLE)) {
+				MessageBox box = new MessageBox(resultTable.getShell(), SWT.YES | SWT.NO | SWT.ICON_WARNING);
+				box.setText(Version.NAME);
+				box.setMessage(Labels.getLabel("exception.ExporterException.scanningInProgress"));
+				if (box.open() != SWT.YES)
+					return;
 			}
 			
 			// create the file dialog
@@ -112,14 +125,14 @@ public class FileActions {
 	}
 	
 	public static final class SaveAll extends SaveResults {
-		public SaveAll(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar) {
-			super(exporterRegistry, resultTable, statusBar, false);
+		public SaveAll(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, StateMachine stateMachine) {
+			super(exporterRegistry, resultTable, statusBar, stateMachine, false);
 		}
 	}
 
 	public static final class SaveSelection extends SaveResults {
-		public SaveSelection(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar) {
-			super(exporterRegistry, resultTable, statusBar, true);
+		public SaveSelection(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, StateMachine stateMachine) {
+			super(exporterRegistry, resultTable, statusBar, stateMachine, true);
 		}
 	}
 	

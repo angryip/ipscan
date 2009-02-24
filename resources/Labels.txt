@@ -268,6 +268,7 @@ exception.ExporterException.failed=Exporting failed
 exception.ExporterException.exporter.unknown=Unknown file type, please specify correct extension in the file name.
 exception.ExporterException.xml.noAppend=Appending to XML files is not supported.
 exception.ExporterException.fetcher.notFound=Not enough data in the scanning results to export to this file type.
+exception.ExporterException.scanningInProgress=Scanning is not finished yet. Do you really want to export incomplete results now?
 exception.UserErrorException.openURL.failed=Unable to launch your default browser, sorry.\nURL:  
 exception.UserErrorException.openTerminal.failed=Unable to launch the terminal, sorry\n 
 exception.UserErrorException.opener.failed=Unable to launch an external process, sorry.\nCommand-line: 
