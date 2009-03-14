@@ -78,7 +78,7 @@ public abstract class AbstractModalDialog {
 		if (parent != null) {
 			icon = parent.getImage();
 		}
-		else {
+		if (icon == null) {
 			icon = new Image(shell.getDisplay(), Labels.getInstance().getImageAsStream("icon"));
 		}
 		shell.setImage(icon);
