@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.azib.ipscan.config.CommandLineProcessor;
 import net.azib.ipscan.config.ComponentRegistry;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
@@ -54,8 +55,6 @@ public class Main {
 		
 		initSystemProperties();
 		
-		processCommandLine(args);
-		
 		Display display = Display.getDefault();		
 		LOG.finer("SWT initialized after " + (System.currentTimeMillis() - startTime));
 
@@ -68,8 +67,10 @@ public class Main {
 		ComponentRegistry componentRegistry = new ComponentRegistry();
 		LOG.finer("ComponentRegistry initialized after " + (System.currentTimeMillis() - startTime));
 		
+		processCommandLine(args, componentRegistry);
+		
 		// create the main window using dependency injection
-		MainWindow mainWindow = componentRegistry.createMainWindow();		
+		MainWindow mainWindow = componentRegistry.getMainWindow();		
 		LOG.fine("Startup time: " + (System.currentTimeMillis() - startTime));
 		
 		while (!mainWindow.isDisposed()) {
@@ -109,12 +110,11 @@ public class Main {
 		Security.setProperty("networkaddress.cache.negative.ttl", "0");
 	}
 
-	private static void processCommandLine(String[] args) {
+	private static void processCommandLine(String[] args, ComponentRegistry componentRegistry) {
 		if (args.length != 0) {
 			// TODO: implement command-line
-			String usageText = "Command-line usage is not implemented yet, sorry";
-			
-			showMessageToConsole(usageText);
+			CommandLineProcessor cli = componentRegistry.getCommandLineProcessor();
+			showMessageToConsole(cli.toString());
 		}
 	}
 
@@ -131,7 +131,6 @@ public class Main {
 		}
 		catch (Exception e) {
 			// Java 5 will reach here
-			e.printStackTrace();
 		}
 		
 		if (haveConsole) {

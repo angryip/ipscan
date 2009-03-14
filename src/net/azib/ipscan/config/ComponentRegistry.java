@@ -72,6 +72,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 public class ComponentRegistry {
 	
 	private PicoContainer container;
+	private boolean containerStarted;
 	
 	public ComponentRegistry() {
 		MutablePicoContainer container = new DefaultPicoContainer();
@@ -113,6 +114,7 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(Scanner.class);
 		container.registerComponentImplementation(StateMachine.class);
 		container.registerComponentImplementation(ScannerDispatcherThreadFactory.class);
+		container.registerComponentImplementation(CommandLineProcessor.class);
 		
 		// GUI follows (TODO: move GUI to a separate place)
 		
@@ -211,11 +213,23 @@ public class ComponentRegistry {
 		}
 	}
 	
-	public MainWindow createMainWindow() {
+	private void start() {
+		if (!containerStarted) {
+			containerStarted = true;
+			container.start();
+		}
+	}
+	
+	public MainWindow getMainWindow() {
 		// initialize all startable components
-		container.start();
+		start();
 		// initialize and return the main window
 		return (MainWindow) container.getComponentInstance(MainWindow.class);
+	}
+
+	public CommandLineProcessor getCommandLineProcessor() {
+		start();
+		return (CommandLineProcessor) container.getComponentInstance(CommandLineProcessor.class);
 	}
 
 }
