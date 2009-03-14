@@ -7,7 +7,6 @@ import java.io.File;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.OpenersConfig;
-import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.OpenersConfig.Opener;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
@@ -129,17 +128,8 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		editFieldsGroup.layout();
 		editFieldsGroup.pack();
 
-		// no close button on Mac
-		if (!Platform.MAC_OS) {
-			Button closeButton = new Button(shell, SWT.NONE);
-			closeButton.setText(Labels.getLabel("button.close"));
-			closeButton.setLayoutData(LayoutHelper.formData(85, SWT.DEFAULT, null, new FormAttachment(editFieldsGroup, 0, SWT.RIGHT), new FormAttachment(editFieldsGroup, 6), null));
-			closeButton.addListener(SWT.Selection, new Listener() {
-				public void handleEvent(Event event) {
-					shell.close();
-				}
-			});
-		}
+		Button closeButton = createCloseButton();
+		closeButton.setLayoutData(LayoutHelper.formData(85, SWT.DEFAULT, null, new FormAttachment(editFieldsGroup, 0, SWT.RIGHT), new FormAttachment(editFieldsGroup, 6), null));
 			
 		shell.pack();
 
