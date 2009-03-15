@@ -8,7 +8,7 @@
  *     IBM Corporation - initial API and implementation
  * 	   Anton Keks - Adaptation for Angry IP Scanner
  *******************************************************************************/
-package net.azib.ipscan.gui.mac;
+package net.azib.ipscan.platform.mac;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;

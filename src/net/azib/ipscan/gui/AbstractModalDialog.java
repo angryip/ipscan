@@ -9,6 +9,7 @@ import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.gui.util.LayoutHelper;
+import net.azib.ipscan.platform.SWTHelper;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -103,6 +104,9 @@ public abstract class AbstractModalDialog {
 		shell.setDefaultButton(okButton);
 		Rectangle clientArea = shell.getClientArea();
 		
+		SWTHelper.setStockIconFor(okButton, SWT.OK);
+		SWTHelper.setStockIconFor(cancelButton, SWT.CANCEL);
+
 		Point size = okButton.computeSize(85, SWT.DEFAULT);
 		if (!Platform.MAC_OS) {
 			size.y = Math.max(size.y, Config.getConfig().forGUI().standardButtonHeight);
@@ -140,6 +144,9 @@ public abstract class AbstractModalDialog {
 	protected void positionButtonsInFormLayout(Button okButton, Button cancelButton, Control control) {
 		shell.setDefaultButton(okButton);
 		
+		SWTHelper.setStockIconFor(okButton, SWT.OK);
+		SWTHelper.setStockIconFor(cancelButton, SWT.CANCEL);
+		
 		if (Platform.MAC_OS || Platform.LINUX) {
 			// Mac OS and Linux users expect button order to be reverse
 			Button fooButton = okButton;
@@ -159,13 +166,14 @@ public abstract class AbstractModalDialog {
 		okButton.pack();
 		okButton.setLayoutData(LayoutHelper.formData(Math.max(85, okButton.getSize().x), height, null, new FormAttachment(cancelButton, -distance), new FormAttachment(control, 8), null));
 	}
-	
+		
 	/**
 	 * Adds an optional close button, depending on the platform.
 	 */
 	protected Button createCloseButton() {
 		Button button = new Button(shell, SWT.NONE);
 		button.setText(Labels.getLabel("button.close"));
+		SWTHelper.setStockIconFor(button, SWT.ABORT);
 		positionButtons(button, null);
 		
 		button.addListener(SWT.Selection, new Listener() {

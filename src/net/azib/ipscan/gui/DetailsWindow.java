@@ -52,7 +52,7 @@ public class DetailsWindow extends AbstractModalDialog {
 		
 		ScanningResult result = resultTable.getSelectedResult();
 		
-		commentsText = new Text(shell, SWT.BORDER);
+		commentsText = new Text(shell, SWT.BORDER); // TODO: change to SWT.SEARCH in SWT 3.5
 		commentsText.pack();
 		commentsText.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), null, new FormAttachment(100)));
 		CommentsTextListener commentsTextListener = new CommentsTextListener();

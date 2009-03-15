@@ -209,7 +209,7 @@ public class ComponentRegistry {
 
 		if (Platform.MAC_OS) {
 			// initialize mac-specific stuff
-			container.registerComponentImplementation(net.azib.ipscan.gui.mac.MacApplicationMenu.class);
+			container.registerComponentImplementation(net.azib.ipscan.platform.mac.MacApplicationMenu.class);
 		}
 	}
 	
