@@ -59,7 +59,7 @@ public class Main {
 		LOG.finer("SWT initialized after " + (System.currentTimeMillis() - startTime));
 
 		// initialize Labels instance
-		Labels.initialize(new Locale("en"));	// TODO: retrieve locale normally				
+		Labels.initialize(Locale.getDefault());				
 		// initialize Config instance
 		Config globalConfig = Config.getConfig();		
 		LOG.finer("Labels and Config initialized after " + (System.currentTimeMillis() - startTime));

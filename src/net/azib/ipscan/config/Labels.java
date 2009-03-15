@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
+import java.util.logging.Logger;
 
 /**
  * Labels class for localization, based on PropertyResourceBundle.
@@ -22,16 +23,17 @@ import java.util.PropertyResourceBundle;
  * @author Anton Keks
  */
 public final class Labels {
-	
+
+	private static final Logger LOG = Logger.getLogger(Labels.class.getName());
 	private static Labels instance;
 
-	PropertyResourceBundle labels;
+	PropertyResourceBundle labels, labelsFallback;
 	Locale locale;
 	
 	static {
 		// this is needed for Visual Editor to display 
 		// labels at design time
-		initialize(new Locale("en"));
+		initialize(Locale.getDefault());
 	}
 	
 	private Labels() {
@@ -43,9 +45,8 @@ public final class Labels {
 	}
 	
 	/**
-	 * Initialized the internal locale-specific data.
-	 * The files Labels_LANG.txt and Labels.txt are searched for
-	 * in the same package as this class.
+	 * Initializes the internal locale-specific data.
+	 * The files messages_lang.properties and messages.properties are searched for from the classpath.
 	 * This method must be called prior to using this class.
 	 */
 	public static void initialize(Locale locale) {
@@ -58,19 +59,27 @@ public final class Labels {
 		
 		instance.locale = locale;
 		InputStream labelsStream = null;
-		labelsStream = Labels.class.getClassLoader().getResourceAsStream("Labels_" + locale.getLanguage().toUpperCase() + ".txt");
-		if (labelsStream == null) {
-			labelsStream = Labels.class.getClassLoader().getResourceAsStream("Labels.txt");
-		}
-		if (labelsStream == null) {
-			throw new MissingResourceException("Labels not found!", Labels.class.getName(), "Labels");
-		}
 		try {
 			// TODO: support UTF-8 here (unfortunately, stock PropertyResourceBundle supports Readers only starting with 1.6)
-			instance.labels = new PropertyResourceBundle(labelsStream);
+			labelsStream = Labels.class.getClassLoader().getResourceAsStream("messages.properties");
+			if (labelsStream == null) {
+				throw new MissingResourceException("Labels not found!", Labels.class.getName(), "messages");
+			}
+			instance.labelsFallback = new PropertyResourceBundle(labelsStream);
+			labelsStream.close();
 		}
 		catch (IOException e) {
-			throw new MissingResourceException(e.toString(), Labels.class.getName(), "Labels");
+			throw new MissingResourceException(e.toString(), Labels.class.getName(), "messages");
+		}
+		
+		try {
+			// TODO: support UTF-8 here (unfortunately, stock PropertyResourceBundle supports Readers only starting with 1.6)
+			labelsStream = Labels.class.getClassLoader().getResourceAsStream("messages_" + locale.getLanguage() + ".properties");		
+			instance.labels = new PropertyResourceBundle(labelsStream);
+			labelsStream.close();
+		}
+		catch (Exception e) {
+			instance.labels = instance.labelsFallback;
 		}
 	}
 	
@@ -79,7 +88,7 @@ public final class Labels {
 	 * @param key
 	 */
 	public InputStream getImageAsStream(String key) {
-		String imagePath = labels.getString(key);
+		String imagePath = get(key);
 		return getClass().getClassLoader().getResourceAsStream(imagePath);
 	}
 	
@@ -88,11 +97,17 @@ public final class Labels {
 	 * @param key
 	 */
 	public String get(String key) {
-		return labels.getString(key);
+		try {
+			return labels.getString(key);
+		}
+		catch (MissingResourceException e) {
+			LOG.warning("Using fallback label for " + key);
+			return labelsFallback.getString(key);
+		}
 	}
 	
 	/**
-	 * A shortened form of Labels.getLabel()
+	 * A shortened form of Labels.getLabel().get()
 	 */
 	public static String getLabel(String key) {
 		return getInstance().get(key);
