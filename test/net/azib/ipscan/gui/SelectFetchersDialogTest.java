@@ -16,7 +16,7 @@ import org.junit.Test;
  */
 public class SelectFetchersDialogTest {
 
-	@Test @SuppressWarnings("unchecked")
+	@Test
 	public void testSaveFetchersToRegistry() {
 		FetcherRegistry fetcherRegistry = createMock(FetcherRegistry.class);
 		fetcherRegistry.updateSelectedFetchers(aryEq(new String[] {"fetcher.ip", "fetcher.blah", "fetcher.hello"}));

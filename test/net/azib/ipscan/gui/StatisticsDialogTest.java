@@ -30,7 +30,7 @@ import org.junit.Test;
 public class StatisticsDialogTest {
 	
 	@Test
-	public void testTimeToText() throws Exception {
+	public void timeToText() throws Exception {
 		Labels.initialize(new Locale("en")); 
 		assertEquals("0\u00A0sec", StatisticsDialog.timeToText(0));
 		assertEquals("0.5\u00A0sec", StatisticsDialog.timeToText(499));
@@ -43,7 +43,7 @@ public class StatisticsDialogTest {
 	}
 	
 	@Test
-	public void testname() throws Exception {
+	public void dialogContent() throws Exception {
 		ScanningResultList results = createMock(ScanningResultList.class);
 		ScanInfo scanInfo = new ScanInfo() {
 			{
@@ -60,7 +60,7 @@ public class StatisticsDialogTest {
 		expect(results.getFeederInfo()).andReturn("SomeInfoHere");
 		replay(results);
 		
-		String text = new StatisticsDialog(results).getMessage();
+		String text = new StatisticsDialog(results).prepareText();
 		
 		assertNotNull(text);
 		assertTrue(text.contains(Labels.getLabel("text.scan.time.total") + "10"));

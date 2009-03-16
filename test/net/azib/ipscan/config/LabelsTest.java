@@ -82,7 +82,7 @@ public class LabelsTest {
 	}
 	
 	public static File findBaseDir() {
-		URL url = LabelsTest.class.getClassLoader().getResource("Labels.txt");
+		URL url = LabelsTest.class.getClassLoader().getResource("messages.properties");
 		return new File(url.getPath()).getParentFile().getParentFile();	
 	}
 
@@ -102,7 +102,7 @@ public class LabelsTest {
 
 	private void findAndTestLabels(File file) throws IOException {
 		// TODO: tune these regexps
-		final Pattern LABELS_REGEX = Pattern.compile("Label.{1,60}\"([a-z]\\w+?\\.[a-z][\\w.]+?\\w)\"");
+		final Pattern LABELS_REGEX = Pattern.compile("Label.get{1,60}\"([a-z]\\w+?\\.[a-z][\\w.]+?\\w)\"");
 		final Pattern EXCEPTION_REGEX = Pattern.compile("new\\s+?(\\w+?Exception)\\(\"([\\w.]+?\\w)\"");
 		
 		BufferedReader fileReader = new BufferedReader(new FileReader(file));
