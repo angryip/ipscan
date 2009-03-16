@@ -5,7 +5,6 @@
  */
 package net.azib.ipscan.gui;
 
-import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.gui.util.LayoutHelper;
@@ -108,10 +107,6 @@ public abstract class AbstractModalDialog {
 		SWTHelper.setStockIconFor(cancelButton, SWT.CANCEL);
 
 		Point size = okButton.computeSize(85, SWT.DEFAULT);
-		if (!Platform.MAC_OS) {
-			size.y = Math.max(size.y, Config.getConfig().forGUI().standardButtonHeight);
-		}
-		
 		okButton.setSize(size);
 		
 		if (cancelButton != null) {
@@ -154,17 +149,11 @@ public abstract class AbstractModalDialog {
 			cancelButton = fooButton;
 		}
 		// both buttons
-		int height = SWT.DEFAULT;
-		int distance = 10;
-		if (!Platform.MAC_OS) {
-			height = Math.max(okButton.computeSize(SWT.DEFAULT, SWT.DEFAULT).y, Config.getConfig().forGUI().standardButtonHeight);
-			distance = height/3;
-		}
-		
 		cancelButton.pack();
-		cancelButton.setLayoutData(LayoutHelper.formData(Math.max(85, cancelButton.getSize().x),  height, null, new FormAttachment(control, 0, SWT.RIGHT), new FormAttachment(control, 8), null));
+		cancelButton.setLayoutData(LayoutHelper.formData(Math.max(85, cancelButton.getSize().x),  SWT.DEFAULT, null, new FormAttachment(control, 0, SWT.RIGHT), new FormAttachment(control, 8), null));
 		okButton.pack();
-		okButton.setLayoutData(LayoutHelper.formData(Math.max(85, okButton.getSize().x), height, null, new FormAttachment(cancelButton, -distance), new FormAttachment(control, 8), null));
+		Point okSize = okButton.getSize();
+		okButton.setLayoutData(LayoutHelper.formData(Math.max(85, okSize.x), SWT.DEFAULT, null, new FormAttachment(cancelButton, -okSize.y/3), new FormAttachment(control, 8), null));
 	}
 		
 	/**

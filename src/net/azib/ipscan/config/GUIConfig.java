@@ -36,9 +36,6 @@ public class GUIConfig {
 	
 	public Point detailsWindowSize;
 	
-	/** this one is not saved, just a globally accessed parameter */
-	public int standardButtonHeight = 22;
-	
 	public static enum DisplayMethod {ALL, ALIVE, PORTS}
 
 	// package local constructor

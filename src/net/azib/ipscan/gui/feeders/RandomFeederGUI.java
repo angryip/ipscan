@@ -6,6 +6,7 @@
 package net.azib.ipscan.gui.feeders;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.RandomFeeder;
 import net.azib.ipscan.gui.actions.FeederActions;
@@ -99,7 +100,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
 		ipUpButton.setText(Labels.getLabel("button.ipUp"));
 		ipUpButton.addSelectionListener(hostnameSelectionListener);
-		ipUpButton.setLayoutData(LayoutHelper.formData(new FormAttachment(hostnameText), null, new FormAttachment(ipPrototypeText), new FormAttachment(hostnameText, 1, SWT.BOTTOM)));
+		ipUpButton.setLayoutData(LayoutHelper.formData(new FormAttachment(hostnameText), null, new FormAttachment(ipPrototypeText), !Platform.MAC_OS ? new FormAttachment(hostnameText, 1, SWT.BOTTOM) : null));
 		
 		countLabel.setText(getStringLabel("count"));
 		countLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(ipUpButton, 3), null, new FormAttachment(hostnameLabel, 0, SWT.TOP), null));

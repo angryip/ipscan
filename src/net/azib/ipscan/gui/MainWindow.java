@@ -55,6 +55,7 @@ public class MainWindow {
 	
 	private Composite feederArea;
 	
+	private static int buttonHeight = 22;
 	private Button startStopButton;
 	private Combo feederSelectionCombo;
 	private FeederGUIRegistry feederRegistry;
@@ -184,7 +185,7 @@ public class MainWindow {
 		// this results in better visual alignment with FeederGUIs
 		Control secondControl = feederRegistry.current().getChildren()[1];
 		// initialize global standard button height
-		guiConfig.standardButtonHeight = secondControl.getSize().y + 1;
+		buttonHeight = secondControl.getSize().y + 1;
 				
 		// feeder selection combobox
 		this.feederSelectionCombo = feederSelectionCombo;
@@ -224,16 +225,16 @@ public class MainWindow {
 	}
 	
 	private void relayoutControls() {
-		boolean twoRowToolbar = Math.abs(feederRegistry.current().getSize().y - guiConfig.standardButtonHeight * 2) <= 10;
+		boolean twoRowToolbar = Math.abs(feederRegistry.current().getSize().y - buttonHeight * 2) <= 10;
 		
-		feederSelectionCombo.setLayoutData(LayoutHelper.formData(SWT.DEFAULT, guiConfig.standardButtonHeight, new FormAttachment(0), null, new FormAttachment(0), null));
+		feederSelectionCombo.setLayoutData(LayoutHelper.formData(SWT.DEFAULT, buttonHeight, new FormAttachment(0), null, new FormAttachment(0), null));
 		if (twoRowToolbar) {
-			startStopButton.setLayoutData(LayoutHelper.formData(feederSelectionCombo.getSize().x, guiConfig.standardButtonHeight, new FormAttachment(0), null, new FormAttachment(feederSelectionCombo), null));
+			startStopButton.setLayoutData(LayoutHelper.formData(feederSelectionCombo.getSize().x, SWT.DEFAULT, new FormAttachment(0), null, new FormAttachment(feederSelectionCombo), null));
 			prefsButton.setLayoutData(LayoutHelper.formData(new FormAttachment(feederSelectionCombo), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
 			fetchersButton.setLayoutData(LayoutHelper.formData(new FormAttachment(startStopButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
 		}
 		else {
-			startStopButton.setLayoutData(LayoutHelper.formData(feederSelectionCombo.getSize().x, guiConfig.standardButtonHeight, new FormAttachment(feederSelectionCombo), null, new FormAttachment(0), null));
+			startStopButton.setLayoutData(LayoutHelper.formData(feederSelectionCombo.getSize().x, SWT.DEFAULT, new FormAttachment(feederSelectionCombo), null, new FormAttachment(0), null));
 			prefsButton.setLayoutData(LayoutHelper.formData(new FormAttachment(startStopButton), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
 			fetchersButton.setLayoutData(LayoutHelper.formData(new FormAttachment(prefsButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
 		}
@@ -282,18 +283,16 @@ public class MainWindow {
 		}
 	}
 	
+	// TODO: remove this class with SWT > 3.5
 	public static class FeederSelectionCombo extends Combo {
-		private final GUIConfig guiConfig;
-
-		public FeederSelectionCombo(Composite parent, GUIConfig guiConfig) {
+		public FeederSelectionCombo(Composite parent) {
 			super(parent, SWT.READ_ONLY);
-			this.guiConfig = guiConfig;
 		}
 
 		@Override
 		public int getTextHeight() {
-			// fixes the problem described here: https://bugs.eclipse.org/bugs/show_bug.cgi?id=223015
-			return guiConfig.standardButtonHeight;
+			// fixes the problem described here: https://bugs.eclipse.org/bugs/show_bug.cgi?id=223015			
+			return buttonHeight;
 		}
 
 		@Override
