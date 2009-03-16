@@ -47,10 +47,10 @@ public class StatisticsDialog extends InfoDialog {
 	}
 
 	String prepareText() {
-		title2 = Labels.getLabel(scanningResults.getScanInfo().isCompletedNormally() ? 
-				"text.scan.completed" : "text.scan.incomplete");
-		
 		ScanInfo scanInfo = scanningResults.getScanInfo();
+		title2 = Labels.getLabel(scanInfo.isCompletedNormally() ? 
+				"text.scan.completed" : "text.scan.incomplete");
+				
 		String ln = System.getProperty("line.separator");
 		StringBuilder text = new StringBuilder();
 		text.append(Labels.getLabel("text.scan.time.total"))

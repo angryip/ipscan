@@ -91,7 +91,7 @@ public class DetailsWindow extends AbstractModalDialog {
 		}
 
 		public void focusLost(FocusEvent e) {
-			if (commentsText.getText().isEmpty()) {
+			if (commentsText.getText().length() == 0) {
 				commentsText.setText(defaultText);
 				commentsText.setForeground(commentsText.getDisplay().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));
 			}
