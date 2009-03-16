@@ -391,7 +391,6 @@
 		<delete file="${dist}/${ant.project.name}-win32-${version}.jar"/>
 	</target>
 
-	<!-- Note: this task was tested only on Linux -->
 	<target name="package-mac" depends="svn-info">
 		<package-for platform="mac" librocksaw="todo-librocksaw.jnilib"/>
 		<copy todir="${dist}">
@@ -399,11 +398,6 @@
 		</copy>
 		
 		<copy file="${dist}/${ant.project.name}-mac-${version}.jar" todir="${dist}/${name}.app/Contents/Resources/Java"/>
-		
-		<exec executable="ln">
-			<arg line="-s /System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub"/>
-			<arg value="${dist}/${name}.app/Contents/MacOS/ipscan"/>
-		</exec>
 		
 		<replace file="${dist}/${name}.app/Contents/Info.plist">
 			<replacefilter token="APPNAME" value="${name}"/>
@@ -413,12 +407,12 @@
 			<replacefilter token="MAINCLASS" value="${main.class}"/>
 		</replace>
 		
-		<!-- this will preserve symlinks (that zip task cannot do) -->
-		<exec executable="zip" dir="${dist}">
-			<arg value="-ry9"/>
-			<arg value="${ant.project.name}-mac-${version}.zip"/>
-			<arg value="${name}.app"/>
-		</exec>
+		<zip destfile="${dist}/${ant.project.name}-mac-${version}.zip">
+			<zipfileset dir="${dist}/${name}.app" excludes="Contents/MacOS/ipscan" prefix="${name}.app"/>
+			<!-- this one should be executable -->
+			<zipfileset dir="${dist}/${name}.app" includes="Contents/MacOS/ipscan" prefix="${name}.app" filemode="755"/>
+		</zip>
+
 		<delete dir="${dist}/${name}.app"/>
 		<delete file="${dist}/${ant.project.name}-mac-${version}.jar"/>
 	</target>
