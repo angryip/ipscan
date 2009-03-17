@@ -9,9 +9,9 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Logger;
 
-import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.feeders.Feeder;
+import net.azib.ipscan.feeders.FeederCreator;
 import net.azib.ipscan.util.InetAddressUtils;
 
 import org.eclipse.swt.SWT;
@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author Anton Keks
  */
-public abstract class AbstractFeederGUI extends Composite {
+public abstract class AbstractFeederGUI extends Composite implements FeederCreator {
 	
 	static final Logger LOG = LoggerFactory.getLogger();
 	
@@ -37,13 +37,14 @@ public abstract class AbstractFeederGUI extends Composite {
 	}
 
 	protected abstract void initialize();
-	
+		
 	/**
-	 * Initializes a Feeder instance using the parameters, provided by the GUI.
-	 * @return initialized feeder instance
+	 * @return the feeder id
 	 */
-	public abstract Feeder createFeeder();
-	
+	public String getFeederId() {
+		return feeder.getId();
+	}
+
 	/**
 	 * @return the feeder name
 	 */
@@ -52,31 +53,12 @@ public abstract class AbstractFeederGUI extends Composite {
 	}
 	
 	/**
-	 * For internal usage, returns the feeder-specific label
-	 * TODO: remove this method
-	 */
-	protected String getStringLabel(String name) {
-		return Labels.getLabel(feeder.getId() + '.' + name);
-	}
-
-	/**
 	 * @return the feeder's name and the information about its current settings
 	 */
 	public String getInfo() {
 		return getFeederName() + ": " + createFeeder().getInfo();
 	}
 	
-	/**
-	 * @return serialized settings to a String
-	 */
-	public abstract String serialize();
-	
-	/**
-	 * Restores previously serialized settings.
-	 * @param serialized
-	 */
-	public abstract void unserialize(String serialized);
-
 	private static Object localResolveLock = new Object();
 	/** Cached name of local host **/
 	private static String localName;

@@ -7,6 +7,8 @@ package net.azib.ipscan.config;
 
 import java.util.prefs.Preferences;
 
+import net.azib.ipscan.feeders.FeederCreator;
+
 /**
  * FavoritesConfig
  *
@@ -18,4 +20,24 @@ public class FavoritesConfig extends NamedListConfig {
 		super(preferences, "favorites");
 	}
 
+	public void add(String key, FeederCreator feederCreator) {
+		StringBuilder serializedFeeder = new StringBuilder(feederCreator.getFeederName());
+		serializedFeeder.append('\t');
+		for (String part : feederCreator.serialize()) {
+			serializedFeeder.append(part).append(":::");
+		}
+		super.add(key, serializedFeeder.toString());
+	}
+	
+	public String getFeederName(String key) {
+		String value = get(key);
+		int indexOf = value.indexOf('\t');
+		return value.substring(0, indexOf);
+	}
+	
+	public String[] getSerializedParts(String key) {
+		String value = get(key);
+		int indexOf = value.indexOf('\t');
+		return value.substring(indexOf+1).split(":::");		
+	}
 }

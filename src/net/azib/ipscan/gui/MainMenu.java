@@ -126,7 +126,7 @@ public class MainMenu implements Startable {
 		initMenuItem(subMenu, "menu.help.faq", null, null, initListener(HelpActions.FAQ.class));
 		initMenuItem(subMenu, "menu.help.plugins", null, null, initListener(HelpActions.Plugins.class));
 		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.help.cmdLine", null, null, null);
+		initMenuItem(subMenu, "menu.help.cmdLine", null, null, initListener(HelpActions.CommandLineUsage.class));
 		
 		if (!Platform.MAC_OS) {
 			// mac will have these in the 'application' menu

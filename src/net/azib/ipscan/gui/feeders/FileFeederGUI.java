@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.gui.feeders;
 
+import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FileFeeder;
 import net.azib.ipscan.gui.util.LayoutHelper;
@@ -45,7 +46,7 @@ public class FileFeederGUI extends AbstractFeederGUI {
         fileNameText = new Text(this, SWT.BORDER);
         browseButton = new Button(this, SWT.NONE);
         
-        fileNameLabel.setText(getStringLabel("name"));
+        fileNameLabel.setText(Labels.getLabel("feeder.file.name")+":");
         FormData formData = new FormData();
         formData.left = new FormAttachment(0);
         formData.top = new FormAttachment(fileNameText, 0, SWT.CENTER);
@@ -60,7 +61,7 @@ public class FileFeederGUI extends AbstractFeederGUI {
         fileNameText.setLayoutData(formData);
         fileNameText.setText("");
         
-        browseButton.setText(getStringLabel("browse"));
+        browseButton.setText(Labels.getLabel("feeder.file.browse"));
         formData = new FormData();
         formData.top = new FormAttachment(0);
         formData.bottom = new FormAttachment(fileNameText, 0, SWT.BOTTOM);
@@ -74,7 +75,7 @@ public class FileFeederGUI extends AbstractFeederGUI {
 
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog dialog = new FileDialog(getShell());
-				dialog.setText(getStringLabel("browse"));
+				dialog.setText(Labels.getLabel("feeder.file.browse"));
 				String fileName = dialog.open();
 				if (fileName != null) {
 					fileNameText.setText(fileName);
@@ -92,12 +93,15 @@ public class FileFeederGUI extends AbstractFeederGUI {
 		return feeder;
 	}
 	
-	public String serialize() {
-		return fileNameText.getText();
+	public String[] serialize() {
+		return new String[] {fileNameText.getText()};
 	}
 
-	public void unserialize(String serialized) {
-		fileNameText.setText(serialized);
+	public void unserialize(String[] parts) {
+		fileNameText.setText(parts[0]);
 	}
-	
+
+	public String[] serializePartsLabels() {
+		return new String[] {"feeder.file.name"};
+	}
 }

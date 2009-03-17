@@ -50,8 +50,7 @@ public class FavoritesActions {
 				if (favoritesConfig.get(favoriteName) != null) {
 					throw new UserErrorException("favorite.alreadyExists");
 				}
-				String serializedFeeder = feederRegistry.current().getFeederName() + '\t' + feederRegistry.current().serialize();				
-				favoritesConfig.add(favoriteName, serializedFeeder);
+				favoritesConfig.add(favoriteName, feederRegistry.current());
 				event.display.getActiveShell().setText(favoriteName + " - " + Version.NAME);
 			}
 		}
@@ -70,15 +69,11 @@ public class FavoritesActions {
 
 		public void widgetSelected(SelectionEvent event) {
 			MenuItem menuItem = (MenuItem) event.widget;
-			String serializedFeeder = favoritesConfig.get(menuItem.getText());
+			String key = menuItem.getText();
 			
-			int indexOf = serializedFeeder.indexOf('\t');
-			String feederName = serializedFeeder.substring(0, indexOf);
-			serializedFeeder = serializedFeeder.substring(indexOf + 1);
-			
-			feederRegistry.select(feederName);
-			feederRegistry.current().unserialize(serializedFeeder);
-			event.display.getActiveShell().setText(menuItem.getText() + " - " + Version.NAME);
+			feederRegistry.select(favoritesConfig.getFeederName(key));
+			feederRegistry.current().unserialize(favoritesConfig.getSerializedParts(key));
+			event.display.getActiveShell().setText(key + " - " + Version.NAME);
 			
 			// try to start scanning immediately
 			startStopAction.widgetSelected(event);

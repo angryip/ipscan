@@ -78,13 +78,13 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         int textWidth = startIPText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
         startIPText.setText("");
         
-        ipRangeLabel.setText(getStringLabel("startIP"));
+        ipRangeLabel.setText(Labels.getLabel("feeder.range")+":");
         ipRangeLabel.setLayoutData(LayoutHelper.formData(null, new FormAttachment(hostnameLabel, 0, SWT.RIGHT), new FormAttachment(startIPText, 0, SWT.CENTER), null));
         
         startIPText.setLayoutData(LayoutHelper.formData(textWidth, SWT.DEFAULT, new FormAttachment(ipRangeLabel), null, new FormAttachment(0), null));
         startIPText.addModifyListener(new StartIPModifyListener());
         
-        toLabel.setText(getStringLabel("endIP"));
+        toLabel.setText(Labels.getLabel("feeder.range.to"));
         toLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(startIPText), null, new FormAttachment(startIPText, 0, SWT.CENTER), null));
                 
         endIPText.setLayoutData(LayoutHelper.formData(textWidth, SWT.DEFAULT, new FormAttachment(toLabel), null, null, null));
@@ -95,7 +95,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 				// raise the flag
 				isEndIPUnedited = true;
 				// reset the netmask combo
-				netmaskCombo.setText(getStringLabel("netmask"));
+				netmaskCombo.setText(Labels.getLabel("feeder.range.netmask"));
 				// now do the stuff
 				super.widgetSelected(event);
 			}
@@ -109,7 +109,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		startIPText.addListener(SWT.Modify, netmaskResetListener);
 		endIPText.addListener(SWT.Modify, netmaskResetListener);
         
-        hostnameLabel.setText(getStringLabel("hostname"));
+        hostnameLabel.setText(Labels.getLabel("feeder.range.hostname")+":");
 		hostnameLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, new FormAttachment(hostnameText, 0, SWT.CENTER), null));
 		
 		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
@@ -117,7 +117,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		ipUpButton.addSelectionListener(hostnameListener);
 		ipUpButton.setLayoutData(LayoutHelper.formData(new FormAttachment(hostnameText), null, new FormAttachment(endIPText), !Platform.MAC_OS ? new FormAttachment(hostnameText, 1, SWT.BOTTOM) : null));
         
-        netmaskCombo.setText(getStringLabel("netmask"));
+        netmaskCombo.setText(Labels.getLabel("feeder.range.netmask"));
 		netmaskCombo.setVisibleItemCount(10);
 		netmaskCombo.add("/26");
 		netmaskCombo.add("/24");
@@ -145,16 +145,19 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		return feeder;
 	}
 	
-	public String serialize() {
-		return startIPText.getText() + ":::" + endIPText.getText();
+	public String[] serialize() {
+		return new String[] {startIPText.getText(), endIPText.getText()};
 	}
 
-	public void unserialize(String serialized) {
-		String[] parts = serialized.split(":::");
+	public void unserialize(String[] parts) {
 		startIPText.setText(parts[0]);
 		endIPText.setText(parts[1]);
 		// reset the netmask combo
-		netmaskCombo.setText(getStringLabel("netmask"));
+		netmaskCombo.setText(Labels.getLabel("feeder.range.netmask"));
+	}
+
+	public String[] serializePartsLabels() {
+		return new String[] {"feeder.range.startIP", "feeder.range.endIP"};
 	}
 
 	final class EndIPKeyListener implements KeyListener {
@@ -170,7 +173,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		public void handleEvent(Event event) {
 			// reset the netmask combo
 			if (!modifyListenersDisabled)
-				netmaskCombo.setText(getStringLabel("netmask"));
+				netmaskCombo.setText(Labels.getLabel("feeder.range.netmask"));
 		}
 	}
 

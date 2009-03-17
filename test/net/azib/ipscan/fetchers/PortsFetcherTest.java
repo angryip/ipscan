@@ -107,12 +107,12 @@ public class PortsFetcherTest extends AbstractFetcherTestCase {
 				}
 			}
 		};
-		server.start();
 		
 		config.portString = "65431";
 		fetcher.init();
 		
 		synchronized (server) {
+			server.start();
 			server.wait();
 		}
 		NumericRangeList value = (NumericRangeList) fetcher.scan(new ScanningSubject(InetAddress.getLocalHost()));

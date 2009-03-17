@@ -70,12 +70,12 @@ public class RandomFeederGUI extends AbstractFeederGUI {
         int textWidth = ipPrototypeText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
         ipPrototypeText.setText("");
         
-        ipPrototypeLabel.setText(getStringLabel("prototype"));
+        ipPrototypeLabel.setText(Labels.getLabel("feeder.random.prototype")+":");
         ipPrototypeLabel.setLayoutData(LayoutHelper.formData(null, new FormAttachment(hostnameLabel, 0, SWT.RIGHT), new FormAttachment(ipPrototypeText, 0, SWT.CENTER), null));
         
         ipPrototypeText.setLayoutData(LayoutHelper.formData(textWidth, SWT.DEFAULT, new FormAttachment(ipPrototypeLabel), null, new FormAttachment(0), null));
         
-        ipMaskLabel.setText(getStringLabel("mask"));
+        ipMaskLabel.setText(Labels.getLabel("feeder.random.mask")+":");
         ipMaskLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(ipPrototypeText, 3), null, new FormAttachment(ipPrototypeText, 0, SWT.CENTER), null));
         
 		ipMaskCombo.setVisibleItemCount(10);
@@ -94,7 +94,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
         hostnameText.addTraverseListener(hostnameSelectionListener);
 		hostnameText.setLayoutData(LayoutHelper.formData(textWidth, SWT.DEFAULT, new FormAttachment(ipPrototypeText, 0, SWT.LEFT), null, new FormAttachment(ipPrototypeText), null));
         
-        hostnameLabel.setText(getStringLabel("hostname"));
+        hostnameLabel.setText(Labels.getLabel("feeder.random.hostname")+":");
 		hostnameLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, new FormAttachment(hostnameText, 0, SWT.CENTER), null));
 		
 		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
@@ -102,7 +102,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		ipUpButton.addSelectionListener(hostnameSelectionListener);
 		ipUpButton.setLayoutData(LayoutHelper.formData(new FormAttachment(hostnameText), null, new FormAttachment(ipPrototypeText), !Platform.MAC_OS ? new FormAttachment(hostnameText, 1, SWT.BOTTOM) : null));
 		
-		countLabel.setText(getStringLabel("count"));
+		countLabel.setText(Labels.getLabel("feeder.random.count"));
 		countLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(ipUpButton, 3), null, new FormAttachment(hostnameLabel, 0, SWT.TOP), null));
 		
 		countSpinner.setSelection(100);
@@ -130,15 +130,18 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		return feeder;
 	}
 	
-	public String serialize() {
-		return ipPrototypeText.getText() + ":::" + ipMaskCombo.getText() + ":::" + countSpinner.getSelection();
+	public String[] serialize() {
+		return new String[] {ipPrototypeText.getText(), ipMaskCombo.getText(), String.valueOf(countSpinner.getSelection())};
 	}
 
-	public void unserialize(String serialized) {
-		String[] parts = serialized.split(":::");
+	public void unserialize(String[] parts) {
 		ipPrototypeText.setText(parts[0]);
 		ipMaskCombo.setText(parts[1]);
 		countSpinner.setSelection(Integer.parseInt(parts[2]));
+	}
+	
+	public String[] serializePartsLabels() {
+		return new String[] {"feeder.random.prototype", "feeder.random.mask", "feeder.random.count"};
 	}
 	
 }

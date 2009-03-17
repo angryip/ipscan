@@ -65,28 +65,28 @@ public class NamedListConfig implements Iterable<String> {
 	}
 
 	/**
-	 * @param name displayed to the user
+	 * @param key displayed to the user
 	 * @param value to store according to the name
 	 */
-	public void add(String name, Object value) {
-		namedList.put(name, value);
+	public void add(String key, Object value) {
+		namedList.put(key, value);
 	}
 
 	/**
-	 * @param name name
+	 * @param key key
 	 * @return stored value
 	 */
-	public String get(String name) {
-		Object value = namedList.get(name);
+	public String get(String key) {
+		Object value = namedList.get(key);
 		return value != null ? value.toString() : null;
 	}
 	
 	/**
-	 * @param name name
+	 * @param key name
 	 * @return stored value
 	 */
-	public String remove(String name) {
-		return namedList.remove(name).toString();
+	public String remove(String key) {
+		return namedList.remove(key).toString();
 	}
 
 	/**
@@ -104,13 +104,13 @@ public class NamedListConfig implements Iterable<String> {
 	 * Updates the list, retaining only items that are passed in the array.
 	 * The order of elements will be the same as in the array.
 	 * 
-	 * @param names
+	 * @param keys
 	 */
-	public void update(String[] names) {
+	public void update(String[] keys) {
 		// rebuild the map (to recreate the new order of elements)
 		Map<String, Object> newList = new LinkedHashMap<String, Object>();
-		for (int i = 0; i < names.length; i++) {
-			newList.put(names[i], namedList.get(names[i]));
+		for (int i = 0; i < keys.length; i++) {
+			newList.put(keys[i], namedList.get(keys[i]));
 		}
 		namedList = newList;
 	}

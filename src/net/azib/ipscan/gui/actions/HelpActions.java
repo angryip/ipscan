@@ -13,10 +13,12 @@ import java.net.URLConnection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.azib.ipscan.config.CommandLineProcessor;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.gui.AboutDialog;
 import net.azib.ipscan.gui.GettingStartedDialog;
+import net.azib.ipscan.gui.InfoDialog;
 import net.azib.ipscan.gui.StatusBar;
 
 import org.eclipse.swt.SWT;
@@ -31,9 +33,24 @@ import org.eclipse.swt.widgets.MessageBox;
  * @author Anton Keks
  */
 public class HelpActions {
+
 	public static final class GettingStarted implements Listener {
 		public void handleEvent(Event event) {
 			new GettingStartedDialog().open();
+		}
+	}
+
+	public static final class CommandLineUsage implements Listener {
+		private CommandLineProcessor cli;
+
+		public CommandLineUsage(CommandLineProcessor cli) {
+			this.cli = cli;
+		}
+
+		public void handleEvent(Event event) {
+			InfoDialog dialog = new InfoDialog(Version.NAME, Labels.getLabel("title.commandline"));
+			dialog.setMessage(cli.toString());
+			dialog.open();
 		}
 	}
 
