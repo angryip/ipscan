@@ -49,7 +49,7 @@ public class ScanningSubject {
 	 */
 	public ScanningSubject(InetAddress address) {
 		this.address = address;
-		this.parameters = new HashMap<String, Object>();
+		this.parameters = new HashMap<String, Object>(); // single-threaded access only
 		this.config = Config.getConfig().forScanner();
 	}
 	

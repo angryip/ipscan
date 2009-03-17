@@ -188,7 +188,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 
 	/**
 	 * @param index
-	 * @return the results of the IP adress, corresponding to an index
+	 * @return the results of the IP address, corresponding to an index
 	 */
 	public synchronized ScanningResult getResult(int index) {
 		return resultList.get(index);
@@ -231,18 +231,18 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	}
 	
 	/**
-	 * Finds the text in the result list. 
+	 * Finds the text in the result list (case-insensitive). 
 	 * @param text the text to find
 	 * @param startIndex the element to start from
 	 * @return the index of found element, or -1
 	 */
 	public int findText(String text, int startIndex) {
+		text = text.toLowerCase();
 		for (int i = startIndex; i < resultList.size(); i++) {
 			ScanningResult scanningResult = getResult(i);
 			
 			for (Object value : scanningResult.getValues()) {				
-				// TODO: case-insensitive search
-				if (value != null && value.toString().indexOf(text) >= 0) {						
+				if (value != null && value.toString().toLowerCase().contains(text)) {						
 					return i;
 				}
 			}
