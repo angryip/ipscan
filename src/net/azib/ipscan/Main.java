@@ -52,9 +52,11 @@ public class Main {
 	public static void main(String... args) {
 		
 		long startTime = System.currentTimeMillis();
-		
+				
 		initSystemProperties();
-		
+
+		// this defines the Window class and app name on the Mac
+		Display.setAppName(Version.NAME);		
 		Display display = Display.getDefault();		
 		LOG.finer("SWT initialized after " + (System.currentTimeMillis() - startTime));
 
@@ -112,9 +114,13 @@ public class Main {
 
 	private static void processCommandLine(String[] args, ComponentRegistry componentRegistry) {
 		if (args.length != 0) {
-			// TODO: implement command-line
 			CommandLineProcessor cli = componentRegistry.getCommandLineProcessor();
-			showMessageToConsole(cli.toString());
+			try {
+				cli.parse(args);
+			}
+			catch (Exception e) {
+				showMessageToConsole(e.getMessage() + "\n\n" + cli);
+			}
 		}
 	}
 

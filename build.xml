@@ -352,7 +352,7 @@
 		</copy>
 		
 		<copy file="${dist}/${ant.project.name}-linux-${version}.jar" todir="${dist}/deb/usr/lib/ipscan"/>
-		<copy file="resources/images/icon48.png" todir="${dist}/deb/usr/lib/ipscan"/>
+		<copy file="resources/images/icon.png" tofile="${dist}/deb/usr/share/pixmaps/ipscan.png"/>
 		
 		<replace file="${dist}/deb/DEBIAN/control">
 			<replacefilter token="VERSION" value="${version}"/>

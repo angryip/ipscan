@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.ToolItem;
  * @author Anton Keks
  */
 public class MainWindow {
-	
+		
 	private final Shell shell;
 	private final GUIConfig guiConfig;
 	
@@ -72,9 +72,6 @@ public class MainWindow {
 		this.guiConfig = guiConfig;
 		this.statusBar = statusBar;
 		
-		// this is particularly important on mac
-		Display.setAppName(Version.NAME);
-
 		initShell(shell);
 		
 		initFeederArea(feederArea, feederGUIRegistry);
