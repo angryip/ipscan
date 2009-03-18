@@ -99,7 +99,7 @@ public class TerminalLauncher {
 			workingTerminal = GNOME;
 		}
 		else
-		if (Runtime.getRuntime().exec(new String[] {"pidof", "xfce4-session xfwm4 Thunar xfdesktop"}).waitFor() == 0) {
+		if (Runtime.getRuntime().exec(new String[] {"pidof", "xfce4-session", "xfwm4", "Thunar", "xfdesktop"}).waitFor() == 0) {
 			workingTerminal = XFCE;
 		}
 		else
