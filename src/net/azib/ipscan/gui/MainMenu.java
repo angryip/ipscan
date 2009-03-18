@@ -11,11 +11,11 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.actions.ColumnsActions;
-import net.azib.ipscan.gui.actions.CommandsActions;
-import net.azib.ipscan.gui.actions.FavoritesActions;
-import net.azib.ipscan.gui.actions.FileActions;
-import net.azib.ipscan.gui.actions.GotoActions;
-import net.azib.ipscan.gui.actions.HelpActions;
+import net.azib.ipscan.gui.actions.CommandsMenuActions;
+import net.azib.ipscan.gui.actions.FavoritesMenuActions;
+import net.azib.ipscan.gui.actions.ScanMenuActions;
+import net.azib.ipscan.gui.actions.GotoMenuActions;
+import net.azib.ipscan.gui.actions.HelpMenuActions;
 import net.azib.ipscan.gui.actions.ToolsActions;
 
 import org.eclipse.swt.SWT;
@@ -47,14 +47,14 @@ public class MainMenu implements Startable {
 		
 		// register some components not registered in the main menu
 		container.registerComponentImplementation(FavoritesMenu.class);
-		container.registerComponentImplementation(FavoritesActions.ShowMenu.class);
-		container.registerComponentImplementation(FavoritesActions.Select.class);		
-		container.registerComponentImplementation(FavoritesActions.Add.class);		
-		container.registerComponentImplementation(FavoritesActions.Edit.class);
+		container.registerComponentImplementation(FavoritesMenuActions.ShowMenu.class);
+		container.registerComponentImplementation(FavoritesMenuActions.Select.class);		
+		container.registerComponentImplementation(FavoritesMenuActions.Add.class);		
+		container.registerComponentImplementation(FavoritesMenuActions.Edit.class);
 		
-		container.registerComponentImplementation(CommandsActions.EditOpeners.class);
-		container.registerComponentImplementation(CommandsActions.SelectOpener.class);
-		container.registerComponentImplementation(CommandsActions.ShowOpenersMenu.class);
+		container.registerComponentImplementation(CommandsMenuActions.EditOpeners.class);
+		container.registerComponentImplementation(CommandsMenuActions.SelectOpener.class);
+		container.registerComponentImplementation(CommandsMenuActions.ShowOpenersMenu.class);
 		// this one is not cached because we need 2 instances of it - in the Commands menu and in the context menu
 		container.registerComponent(new ConstructorInjectionComponentAdapter(OpenersMenu.class, OpenersMenu.class)); 
 		
@@ -76,29 +76,27 @@ public class MainMenu implements Startable {
 
 	private void createMainMenuItems(Menu menu) {
 		
-		Menu subMenu = initMenu(menu, "menu.file");
-//		initMenuItem(subMenu, "menu.file.newWindow", "Ctrl+N", new Integer(SWT.MOD1 | 'N'), initListener(FileActions.NewWindow.class));
+		Menu subMenu = initMenu(menu, "menu.scan");
+//		initMenuItem(subMenu, "menu.scan.newWindow", "Ctrl+N", new Integer(SWT.MOD1 | 'N'), initListener(FileActions.NewWindow.class));
 //		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.file.exportAll", "Ctrl+S", new Integer(SWT.MOD1 | 'S'), initListener(FileActions.SaveAll.class), false);
-		initMenuItem(subMenu, "menu.file.exportSelection", null, null, initListener(FileActions.SaveSelection.class), false);
+		initMenuItem(subMenu, "menu.scan.exportAll", "Ctrl+S", new Integer(SWT.MOD1 | 'S'), initListener(ScanMenuActions.SaveAll.class), false);
+		initMenuItem(subMenu, "menu.scan.exportSelection", null, null, initListener(ScanMenuActions.SaveSelection.class), false);
 		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.file.exportPreferences", null, null, null);
-		initMenuItem(subMenu, "menu.file.importPreferences", null, null, null);
-		if (!Platform.MAC_OS) {
-			initMenuItem(subMenu, null, null, null, null);
-			initMenuItem(subMenu, "menu.file.exit", !Platform.MAC_OS ? "Alt+F4" : null, null, initListener(FileActions.Exit.class));
-		}
+		initMenuItem(subMenu, "menu.scan.exportPreferences", null, null, null);
+		initMenuItem(subMenu, "menu.scan.importPreferences", null, null, null);
+		initMenuItem(subMenu, null, null, null, null);
+		initMenuItem(subMenu, "menu.scan.quit", "Ctrl+Q", new Integer(SWT.MOD1 | 'Q'), initListener(ScanMenuActions.Quit.class));
 		
 		subMenu = initMenu(menu, "menu.goto");
-		initMenuItem(subMenu, "menu.goto.next.aliveHost", "Ctrl+H", new Integer(SWT.MOD1 | 'H'), initListener(GotoActions.NextAliveHost.class));
-		initMenuItem(subMenu, "menu.goto.next.openPort", "Ctrl+J", new Integer(SWT.MOD1 | 'J'), initListener(GotoActions.NextHostWithInfo.class));
-		initMenuItem(subMenu, "menu.goto.next.deadHost", "Ctrl+K", new Integer(SWT.MOD1 | 'K'), initListener(GotoActions.NextDeadHost.class));
+		initMenuItem(subMenu, "menu.goto.next.aliveHost", "Ctrl+H", new Integer(SWT.MOD1 | 'H'), initListener(GotoMenuActions.NextAliveHost.class));
+		initMenuItem(subMenu, "menu.goto.next.openPort", "Ctrl+J", new Integer(SWT.MOD1 | 'J'), initListener(GotoMenuActions.NextHostWithInfo.class));
+		initMenuItem(subMenu, "menu.goto.next.deadHost", "Ctrl+K", new Integer(SWT.MOD1 | 'K'), initListener(GotoMenuActions.NextDeadHost.class));
 		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.goto.prev.aliveHost", "Ctrl+Shift+H", new Integer(SWT.MOD1 | SWT.MOD2 | 'H'), initListener(GotoActions.PrevAliveHost.class));
-		initMenuItem(subMenu, "menu.goto.prev.openPort", "Ctrl+Shift+J", new Integer(SWT.MOD1 | SWT.MOD2 | 'J'), initListener(GotoActions.PrevHostWithInfo.class));
-		initMenuItem(subMenu, "menu.goto.prev.deadHost", "Ctrl+Shift+K", new Integer(SWT.MOD1 | SWT.MOD2 | 'K'), initListener(GotoActions.PrevDeadHost.class));
+		initMenuItem(subMenu, "menu.goto.prev.aliveHost", "Ctrl+Shift+H", new Integer(SWT.MOD1 | SWT.MOD2 | 'H'), initListener(GotoMenuActions.PrevAliveHost.class));
+		initMenuItem(subMenu, "menu.goto.prev.openPort", "Ctrl+Shift+J", new Integer(SWT.MOD1 | SWT.MOD2 | 'J'), initListener(GotoMenuActions.PrevHostWithInfo.class));
+		initMenuItem(subMenu, "menu.goto.prev.deadHost", "Ctrl+Shift+K", new Integer(SWT.MOD1 | SWT.MOD2 | 'K'), initListener(GotoMenuActions.PrevDeadHost.class));
 		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.goto.find", "Ctrl+F", new Integer(SWT.MOD1 | 'F'), initListener(GotoActions.Find.class));
+		initMenuItem(subMenu, "menu.goto.find", "Ctrl+F", new Integer(SWT.MOD1 | 'F'), initListener(GotoMenuActions.Find.class));
 		
 		subMenu = initMenu(menu, "menu.commands");
 		createCommandsMenuItems(subMenu);
@@ -120,31 +118,31 @@ public class MainMenu implements Startable {
 		initMenuItem(selectMenu, "menu.tools.select.invert", "Ctrl+I", new Integer(SWT.MOD1 | 'I'), initListener(ToolsActions.SelectInvert.class), true);
 		
 		subMenu = initMenu(menu, "menu.help");
-		initMenuItem(subMenu, "menu.help.gettingStarted", !Platform.MAC_OS ? "F1" : null, new Integer(Platform.MAC_OS ? SWT.HELP : SWT.F1), initListener(HelpActions.GettingStarted.class));
+		initMenuItem(subMenu, "menu.help.gettingStarted", !Platform.MAC_OS ? "F1" : null, new Integer(Platform.MAC_OS ? SWT.HELP : SWT.F1), initListener(HelpMenuActions.GettingStarted.class));
 		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.help.website", null, null, initListener(HelpActions.Website.class));
-		initMenuItem(subMenu, "menu.help.faq", null, null, initListener(HelpActions.FAQ.class));
-		initMenuItem(subMenu, "menu.help.plugins", null, null, initListener(HelpActions.Plugins.class));
+		initMenuItem(subMenu, "menu.help.website", null, null, initListener(HelpMenuActions.Website.class));
+		initMenuItem(subMenu, "menu.help.faq", null, null, initListener(HelpMenuActions.FAQ.class));
+		initMenuItem(subMenu, "menu.help.plugins", null, null, initListener(HelpMenuActions.Plugins.class));
 		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.help.cmdLine", null, null, initListener(HelpActions.CommandLineUsage.class));
+		initMenuItem(subMenu, "menu.help.cmdLine", null, null, initListener(HelpMenuActions.CommandLineUsage.class));
 		
 		if (!Platform.MAC_OS) {
 			// mac will have these in the 'application' menu
 			initMenuItem(subMenu, null, null, null, null);
-			initMenuItem(subMenu, "menu.help.checkVersion", null, null, initListener(HelpActions.CheckVersion.class));
+			initMenuItem(subMenu, "menu.help.checkVersion", null, null, initListener(HelpMenuActions.CheckVersion.class));
 			initMenuItem(subMenu, null, null, null, null);
-			initMenuItem(subMenu, "menu.help.about", null, null, initListener(HelpActions.About.class));
+			initMenuItem(subMenu, "menu.help.about", null, null, initListener(HelpMenuActions.About.class));
 		}
 	}
 
 	private void createCommandsMenuItems(Menu menu) {
-		initMenuItem(menu, "menu.commands.details", null, null, initListener(CommandsActions.Details.class));
+		initMenuItem(menu, "menu.commands.details", null, null, initListener(CommandsMenuActions.Details.class));
 		initMenuItem(menu, null, null, null, null);
-		initMenuItem(menu, "menu.commands.rescan", "Ctrl+R", new Integer(SWT.MOD1 | 'R'), initListener(CommandsActions.Rescan.class), true);
-		initMenuItem(menu, "menu.commands.delete", Platform.MAC_OS ? "⌦" : "Del", /* this is not a global key binding */ null, initListener(CommandsActions.Delete.class), true);
+		initMenuItem(menu, "menu.commands.rescan", "Ctrl+R", new Integer(SWT.MOD1 | 'R'), initListener(CommandsMenuActions.Rescan.class), true);
+		initMenuItem(menu, "menu.commands.delete", Platform.MAC_OS ? "⌦" : "Del", /* this is not a global key binding */ null, initListener(CommandsMenuActions.Delete.class), true);
 		initMenuItem(menu, null, null, null, null);
-		initMenuItem(menu, "menu.commands.copy", Platform.MAC_OS ? "⌘C" : "Ctrl+C", /* this is not a global key binding */ null, initListener(CommandsActions.CopyIP.class));
-		initMenuItem(menu, "menu.commands.copyDetails", null, null, initListener(CommandsActions.CopyIPDetails.class));
+		initMenuItem(menu, "menu.commands.copy", Platform.MAC_OS ? "⌘C" : "Ctrl+C", /* this is not a global key binding */ null, initListener(CommandsMenuActions.CopyIP.class));
+		initMenuItem(menu, "menu.commands.copyDetails", null, null, initListener(CommandsMenuActions.CopyIPDetails.class));
 		initMenuItem(menu, null, null, null, null);		
 		createOpenersMenu(menu);
 		// initMenuItem(subMenu, "menu.commands.show", null, initListener());
@@ -222,7 +220,7 @@ public class MainMenu implements Startable {
 	 * OpenersMenu wrapper for type-safety
 	 */
 	public static class OpenersMenu extends Menu {
-		public OpenersMenu(Decorations parent, CommandsActions.EditOpeners editOpenersListener, CommandsActions.ShowOpenersMenu showOpenersMenuListener) {
+		public OpenersMenu(Decorations parent, CommandsMenuActions.EditOpeners editOpenersListener, CommandsMenuActions.ShowOpenersMenu showOpenersMenuListener) {
 			super(parent, SWT.DROP_DOWN);
 
 			initMenuItem(this, "menu.commands.open.edit", null, null, editOpenersListener);
@@ -242,7 +240,7 @@ public class MainMenu implements Startable {
 	 * FavoritesMenu wrapper for type-safety
 	 */
 	public static class FavoritesMenu extends Menu {
-		public FavoritesMenu(Decorations parent, FavoritesActions.Add addListener, FavoritesActions.Edit editListener, FavoritesActions.ShowMenu showFavoritesMenuListener) {
+		public FavoritesMenu(Decorations parent, FavoritesMenuActions.Add addListener, FavoritesMenuActions.Edit editListener, FavoritesMenuActions.ShowMenu showFavoritesMenuListener) {
 			super(parent, SWT.DROP_DOWN);
 
 			initMenuItem(this, "menu.favorites.add", "Ctrl+D", new Integer(SWT.MOD1 | 'D'), addListener);

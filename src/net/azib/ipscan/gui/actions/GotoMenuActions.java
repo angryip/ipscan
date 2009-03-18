@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Shell;
  *
  * @author Anton Keks
  */
-public class GotoActions {
+public class GotoMenuActions {
 
 	static class NextHost implements Listener {
 

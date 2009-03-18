@@ -20,7 +20,7 @@ import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
 import net.azib.ipscan.gui.actions.ColumnsActions;
-import net.azib.ipscan.gui.actions.CommandsActions;
+import net.azib.ipscan.gui.actions.CommandsMenuActions;
 import net.azib.ipscan.gui.actions.ToolsActions;
 
 import org.eclipse.swt.SWT;
@@ -71,8 +71,8 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 		listImages[ResultType.WITH_PORTS.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.addinfo.img"));
 		
 		addListener(SWT.Selection, selectionListener);
-		addListener(SWT.KeyDown, new CommandsActions.Delete(this, stateMachine, selectionListener));
-		addListener(SWT.KeyDown, new CommandsActions.CopyIP(this));
+		addListener(SWT.KeyDown, new CommandsMenuActions.Delete(this, stateMachine, selectionListener));
+		addListener(SWT.KeyDown, new CommandsMenuActions.CopyIP(this));
 		addListener(SWT.KeyDown, new ToolsActions.SelectAll(this, selectionListener));
 		
 		// this one populates table dynamically, taking data from ScanningResultList
@@ -187,6 +187,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 		// we need to remove the elements from our real storage as well
 		scanningResults.remove(indices);
 		super.remove(indices);
+		// TODO: this is VERY slow if there a lot of items (eg 300k), due to the Control.sort() that is called inside to sort the indices
 	}
 	
 	public void removeAll() {

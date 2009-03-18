@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.MessageBox;
  *
  * @author Anton Keks
  */
-public class HelpActions {
+public class HelpMenuActions {
 
 	public static final class GettingStarted implements Listener {
 		public void handleEvent(Event event) {

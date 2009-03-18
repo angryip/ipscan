@@ -46,7 +46,7 @@ public class LabelsTest {
 
 	@Test
 	public void testSimpleLabel() {
-		assertEquals("&File", Labels.getLabel("menu.file"));
+		assertEquals("&Scan", Labels.getLabel("menu.scan"));
 	}
 	
 	@Test

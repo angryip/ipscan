@@ -33,9 +33,9 @@ import org.eclipse.swt.widgets.MessageBox;
  * 
  * @author Anton Keks
  */
-public class FileActions {
+public class ScanMenuActions {
 
-	public static final class Exit implements Listener {
+	public static final class Quit implements Listener {
 		public void handleEvent(Event event) {
 			event.display.getActiveShell().close();
 		}

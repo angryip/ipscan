@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.MenuItem;
  *
  * @author Anton Keks
  */
-public class CommandsActions {
+public class CommandsMenuActions {
 	
 	/**
 	 * Checks that there is at least one item selected in the results list.

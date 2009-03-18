@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.MenuItem;
  *
  * @author Anton Keks
  */
-public class FavoritesActions {
+public class FavoritesMenuActions {
 
 	public static final class Add implements Listener {
 		private final FeederGUIRegistry feederRegistry;

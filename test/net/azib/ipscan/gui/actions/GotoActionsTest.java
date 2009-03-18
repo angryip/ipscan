@@ -9,8 +9,8 @@ import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.gui.ResultTable;
-import net.azib.ipscan.gui.actions.GotoActions.NextHost;
-import net.azib.ipscan.gui.actions.GotoActions.PrevHost;
+import net.azib.ipscan.gui.actions.GotoMenuActions.NextHost;
+import net.azib.ipscan.gui.actions.GotoMenuActions.PrevHost;
 
 import org.junit.Test;
 

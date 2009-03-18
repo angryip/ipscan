@@ -1,22 +1,21 @@
 Before 3.0:
 
 * gtk sort direction arrows
-* Mac: Commandr+Q must exit the application
 * advanced exporting options dialog
 * Exporter appending functionality exposed to the user
 * Enable/Disable ports (without resetting)
 * Comments & Opener Launchers to the details window
 * command-line scanning start
 * fetcher-specific options
-* multiple port support web-detect
+* multiple port support web-detect, opening in browser selects scanned ports if available
 * add new fetchers by configuration of PortTextFetcher
 * startup as root option
 * compile librocksaw for mac and linux64
 * plugin loader
 * public XSL for XMLExporter
-* GIJ + java.util.prefs don't work
 * Easier adding/removing of columns to the result table (without resetting the results)
 * top-level exception handler for NoClassDefFoundErrors, etc
+* bug: rescanning when display=open does not properly render dead hosts
 
 Later:
 

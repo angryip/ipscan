@@ -15,7 +15,7 @@ import net.azib.ipscan.config.Version;
 import net.azib.ipscan.gui.AboutDialog;
 import net.azib.ipscan.gui.PreferencesDialog;
 import net.azib.ipscan.gui.SelectFetchersDialog;
-import net.azib.ipscan.gui.actions.HelpActions.CheckVersion;
+import net.azib.ipscan.gui.actions.HelpMenuActions.CheckVersion;
 
 import org.eclipse.swt.internal.Callback;
 import org.eclipse.swt.internal.carbon.*;

@@ -41,8 +41,8 @@ import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.MainWindow.FeederSelectionCombo;
 import net.azib.ipscan.gui.actions.ColumnsActions;
-import net.azib.ipscan.gui.actions.CommandsActions;
-import net.azib.ipscan.gui.actions.HelpActions;
+import net.azib.ipscan.gui.actions.CommandsMenuActions;
+import net.azib.ipscan.gui.actions.HelpMenuActions;
 import net.azib.ipscan.gui.actions.OpenerLauncher;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.actions.ToolsActions;
@@ -200,11 +200,11 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(ColumnsActions.AboutFetcher.class);
 		container.registerComponentImplementation(ColumnsActions.ColumnClick.class);
 		container.registerComponentImplementation(ColumnsActions.ColumnResize.class);
-		container.registerComponentImplementation(CommandsActions.Details.class);
+		container.registerComponentImplementation(CommandsMenuActions.Details.class);
 		container.registerComponentImplementation(ToolsActions.Preferences.class);
 		container.registerComponentImplementation(ToolsActions.ChooseFetchers.class);
 		container.registerComponentImplementation(ToolsActions.TableSelection.class);
-		container.registerComponentImplementation(HelpActions.CheckVersion.class);
+		container.registerComponentImplementation(HelpMenuActions.CheckVersion.class);
 
 		if (Platform.MAC_OS) {
 			// initialize mac-specific stuff
