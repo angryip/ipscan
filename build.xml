@@ -57,10 +57,10 @@
 	</condition>
 
 	<target name="all" depends="clean,compile,compile-tests,test,package,clean_end"/>
-	<target name="linux" depends="clean,compile,package-linux,clean_end"/>
-	<target name="linux64" depends="clean,compile,package-linux64,clean_end"/>
-	<target name="mac" depends="clean,compile,package-mac,clean_end"/>
-	<target name="win32" depends="clean,compile,package-win32,clean_end"/>
+	<target name="linux" depends="clean,compile-linux,package-linux,clean_end"/>
+	<target name="linux64" depends="clean,compile-linux64,package-linux64,clean_end"/>
+	<target name="mac" depends="clean,compile-mac,package-mac,clean_end"/>
+	<target name="win32" depends="clean,compile-win32,package-win32,clean_end"/>
 	<target name="current">
 		<antcall target="${platform}"/>
 	</target>
@@ -96,17 +96,23 @@
 
 	<macrodef name="compile">
 		<attribute name="path"/>
-		<attribute name="dest" default="${bin}"/>
 		<attribute name="extpath" default=""/>
 		<attribute name="debug" default="false"/>
 		<attribute name="optimize" default="true"/>
+		<attribute name="platform" default="${platform}"/>
+		<attribute name="dest" default="${bin}.@{platform}"/>
 		<sequential>
 			<mkdir dir="@{dest}"/>
 			<javac destdir="@{dest}" debug="@{debug}" source="1.5" target="1.5" optimize="@{optimize}">
 				<src path="@{path}"/>
-				<src path="@{extpath}"/>				
+				<src path="@{path}-platform/@{platform}"/>
+				<src path="@{extpath}"/>
 				<classpath>
-					<fileset dir="${ext}" includes="**/*.jar"/>
+					<fileset dir="${ext}/easymock" includes="*.jar"/>
+					<fileset dir="${ext}/emma" includes="*.jar"/>
+					<fileset dir="${ext}/junit" includes="*.jar"/>
+					<fileset dir="${ext}/picocontainer" includes="*.jar"/>
+					<fileset dir="${ext}/swt" includes="swt-@{platform}.jar"/>
 				</classpath>
 			</javac>
 			<copy todir="@{dest}">
@@ -122,10 +128,24 @@
 		</sequential>
 	</macrodef>
 
-	<target name="compile">
-		<compile path="${src}" extpath="${ext.src}"/>
+	<target name="compile" depends="compile-linux,compile-linux64,compile-mac,compile-win32"/>
+
+	<target name="compile-linux">
+		<compile path="${src}" extpath="${ext.src}" platform="linux"/>
 	</target>
 	
+	<target name="compile-linux64">
+		<compile path="${src}" extpath="${ext.src}" platform="linux64"/>
+	</target>
+
+	<target name="compile-mac">
+		<compile path="${src}" extpath="${ext.src}" platform="mac"/>
+	</target>
+
+	<target name="compile-win32">
+		<compile path="${src}" extpath="${ext.src}" platform="win32"/>
+	</target>
+
 	<target name="compile-tests">
 		<compile path="${src}" extpath="${test}:${ext.src}" dest="${testbin}" debug="true" optimize="false"/>
 		<!-- coverage is currently broken
@@ -194,15 +214,12 @@
 		<attribute name="librocksaw"/>
 		<sequential>
 			<mkdir dir="${dist}"/>
-			<delete dir="${bin}.@{platform}"/>			
-			<mkdir dir="${bin}.@{platform}"/>			
-			<unzip src="${ext}/picocontainer/picocontainer-1.0.jar" dest="${bin}"/>
+			<unzip src="${ext}/picocontainer/picocontainer-1.0.jar" dest="${bin}.@{platform}"/>
 			<unzip src="${swt}/swt-@{platform}.jar" dest="${bin}.@{platform}"/>
 			<copy file="${ext}/rocksaw/lib/@{librocksaw}" todir="${bin}.@{platform}"/>
 			<copy file="${ext}/winping/lib/winping.dll" todir="${bin}.win32"/>
 			<delete includeemptydirs="true" failonerror="false">
-				<fileset dir="${bin}/META-INF"/>
-				<fileset dir="${bin}/images" includes="**/*.svg"/>
+				<fileset dir="${bin}.@{platform}/images" includes="**/*.svg"/>
 				<fileset dir="${bin}.@{platform}/META-INF"/>
 				<fileset dir="${bin}.@{platform}">
 					<include name="version.txt"/>
@@ -274,9 +291,6 @@
 				</fileset>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/awt"/>
 			</delete>
-			<copy todir="${bin}.mac">
-				<fileset dir="${bin}" includes="net/azib/ipscan/gui/mac/*"/>
-			</copy>
 			<jar destfile="${dist}/${ant.project.name}-@{platform}-orig.jar" >
 				<manifest>
 					<attribute name="Main-Class" value="${main.class}"/>
@@ -288,7 +302,6 @@
 					<attribute name="Built-By" value="${user.name}"/>
 					<attribute name="URL" value="http://www.azib.net/ipscan/"/>
 				</manifest>
-				<fileset dir="${bin}" includes="**/*" excludes="net/azib/ipscan/gui/mac/*"/>
 				<fileset dir="${bin}.@{platform}" includes="**/*"/>
 			</jar>
 			<proguard>

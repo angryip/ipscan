@@ -12,7 +12,7 @@ import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
-import net.azib.ipscan.platform.SWTHelper;
+import net.azib.ipscan.swt.SWTHelper;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;

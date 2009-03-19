@@ -4,7 +4,7 @@
  * Licensed under GPLv2.
  */
 
-package net.azib.ipscan.platform;
+package net.azib.ipscan.swt;
 
 import net.azib.ipscan.config.Platform;
 
@@ -30,7 +30,7 @@ public class SWTHelper {
 			return;
 		
 		if (Platform.LINUX) {
-			net.azib.ipscan.platform.linux.GTKHelper.setStockIconFor(button, iconConstant);
+			GTKHelper.setStockIconFor(button, iconConstant);
 		}
 	}
 }

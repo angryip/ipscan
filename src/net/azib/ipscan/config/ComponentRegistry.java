@@ -5,6 +5,8 @@
  */
 package net.azib.ipscan.config;
 
+import java.util.logging.Logger;
+
 import net.azib.ipscan.core.Scanner;
 import net.azib.ipscan.core.ScannerDispatcherThreadFactory;
 import net.azib.ipscan.core.ScanningResultList;
@@ -208,7 +210,12 @@ public class ComponentRegistry {
 
 		if (Platform.MAC_OS) {
 			// initialize mac-specific stuff
-			container.registerComponentImplementation(net.azib.ipscan.platform.mac.MacApplicationMenu.class);
+			try {
+				container.registerComponentImplementation(Class.forName("net.azib.ipscan.platform.mac.MacApplicationMenu"));
+			}
+			catch (Exception e) {
+				Logger.getLogger(getClass().getName()).warning("Cannot initialize MacApplicationMenu: " + e);
+			}
 		}
 	}
 	

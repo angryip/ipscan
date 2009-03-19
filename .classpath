@@ -7,6 +7,7 @@
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="src" path="ext/rocksaw/lib"/>
 	<classpathentry kind="src" path="ext/winping/lib"/>
+	<classpathentry kind="src" path="src-platform/linux"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="ext/picocontainer/picocontainer-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/swt/swt-linux.jar" sourcepath="ext/swt/src-linux.zip"/>
