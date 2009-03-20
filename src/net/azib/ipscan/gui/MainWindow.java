@@ -159,7 +159,7 @@ public class MainWindow {
 	 * This method initializes resultTable	
 	 */
 	private void initTableAndStatusBar(ResultTable resultTable, CommandsMenu resultsContextMenu, StatusBar statusBar) {
-		resultTable.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), new FormAttachment(feederArea), new FormAttachment(statusBar.getComposite(), -2)));
+		resultTable.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), new FormAttachment(feederArea, 1), new FormAttachment(statusBar.getComposite(), -2)));
 		resultTable.setMenu(resultsContextMenu);
 	}
 
@@ -182,7 +182,7 @@ public class MainWindow {
 		// this results in better visual alignment with FeederGUIs
 		Control secondControl = feederRegistry.current().getChildren()[1];
 		// initialize global standard button height
-		buttonHeight = secondControl.getSize().y + 1;
+		buttonHeight = Platform.MAC_OS ? SWT.DEFAULT : secondControl.getSize().y + 2;
 				
 		// feeder selection combobox
 		this.feederSelectionCombo = feederSelectionCombo;
@@ -226,12 +226,12 @@ public class MainWindow {
 		
 		feederSelectionCombo.setLayoutData(LayoutHelper.formData(SWT.DEFAULT, buttonHeight, new FormAttachment(0), null, new FormAttachment(0), null));
 		if (twoRowToolbar) {
-			startStopButton.setLayoutData(LayoutHelper.formData(feederSelectionCombo.getSize().x, SWT.DEFAULT, new FormAttachment(0), null, new FormAttachment(feederSelectionCombo), null));
+			startStopButton.setLayoutData(LayoutHelper.formData(feederSelectionCombo.getSize().x, buttonHeight, new FormAttachment(0), null, new FormAttachment(feederSelectionCombo, 0), null));
 			prefsButton.setLayoutData(LayoutHelper.formData(new FormAttachment(feederSelectionCombo), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
 			fetchersButton.setLayoutData(LayoutHelper.formData(new FormAttachment(startStopButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
 		}
 		else {
-			startStopButton.setLayoutData(LayoutHelper.formData(feederSelectionCombo.getSize().x, SWT.DEFAULT, new FormAttachment(feederSelectionCombo), null, new FormAttachment(0), null));
+			startStopButton.setLayoutData(LayoutHelper.formData(feederSelectionCombo.getSize().x, buttonHeight, new FormAttachment(feederSelectionCombo), null, new FormAttachment(-1), null));
 			prefsButton.setLayoutData(LayoutHelper.formData(new FormAttachment(startStopButton), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
 			fetchersButton.setLayoutData(LayoutHelper.formData(new FormAttachment(prefsButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
 		}

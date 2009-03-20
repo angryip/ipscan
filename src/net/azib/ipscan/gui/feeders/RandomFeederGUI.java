@@ -103,7 +103,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		ipUpButton.setLayoutData(LayoutHelper.formData(new FormAttachment(hostnameText), null, new FormAttachment(ipPrototypeText), !Platform.MAC_OS ? new FormAttachment(hostnameText, 1, SWT.BOTTOM) : null));
 		
 		countLabel.setText(Labels.getLabel("feeder.random.count"));
-		countLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(ipUpButton, 3), null, new FormAttachment(hostnameLabel, 0, SWT.TOP), null));
+		countLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(ipUpButton, 3), null, new FormAttachment(ipUpButton, 0, SWT.CENTER), null));
 		
 		countSpinner.setSelection(100);
 		countSpinner.setMaximum(100000);
