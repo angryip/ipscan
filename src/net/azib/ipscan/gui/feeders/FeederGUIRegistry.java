@@ -12,6 +12,7 @@ import java.util.List;
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederException;
+import net.azib.ipscan.feeders.FeederRegistry;
 import net.azib.ipscan.feeders.RescanFeeder;
 
 import org.eclipse.swt.SWT;
@@ -23,7 +24,7 @@ import org.eclipse.swt.widgets.TableItem;
  *
  * @author Anton Keks
  */
-public class FeederGUIRegistry implements Iterable<AbstractFeederGUI> {
+public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
 	
 	private final List<AbstractFeederGUI> feederGUIList;
 	private final Combo feederSelectionCombo;	

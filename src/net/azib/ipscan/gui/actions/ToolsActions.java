@@ -12,6 +12,7 @@ import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.gui.PreferencesDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.SelectFetchersDialog;
@@ -84,9 +85,9 @@ public class ToolsActions {
 			statisticsDialog.open();
 		}
 
-		public void transitionTo(ScanningState state) {
+		public void transitionTo(ScanningState state, Transition transition) {
 			// switching to IDLE means the end of scanning
-			if (state == ScanningState.IDLE && guiConfig.showScanStats) {
+			if (transition == Transition.COMPLETE && guiConfig.showScanStats) {
 				Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
 						handleEvent(null);						

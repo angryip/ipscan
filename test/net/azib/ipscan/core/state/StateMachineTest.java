@@ -7,6 +7,8 @@ package net.azib.ipscan.core.state;
 
 import static org.junit.Assert.*;
 
+import net.azib.ipscan.core.state.StateMachine.Transition;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,19 +30,19 @@ public class StateMachineTest {
 	public void inState() throws Exception {
 		assertTrue(stateMachine.inState(ScanningState.IDLE));
 		assertFalse(stateMachine.inState(ScanningState.KILLING));
-		stateMachine.transitionTo(ScanningState.KILLING);
+		stateMachine.transitionTo(ScanningState.KILLING, null);
 		assertTrue(stateMachine.inState(ScanningState.KILLING));
 	}
 	
 	@Test
 	public void transitionToSameState() throws Exception {
 		stateMachine.addTransitionListener(new StateTransitionListener() {
-			public void transitionTo(ScanningState state) {
+			public void transitionTo(ScanningState state, Transition transition) {
 				fail("no transition if changing to the same state");
 			}
 		});
 		assertEquals(ScanningState.IDLE, stateMachine.getState());
-		stateMachine.transitionTo(ScanningState.IDLE);
+		stateMachine.transitionTo(ScanningState.IDLE, null);
 		assertEquals(ScanningState.IDLE, stateMachine.getState());
 	}
 
@@ -48,16 +50,16 @@ public class StateMachineTest {
 	public void transitionToAnotherState() throws Exception {
 		final ScanningState[] calledWithParameter = {null};
 		stateMachine.addTransitionListener(new StateTransitionListener() {
-			public void transitionTo(ScanningState state) {
+			public void transitionTo(ScanningState state, Transition transition) {
 				calledWithParameter[0] = state;
 			}
 		});
 		
 		assertEquals(ScanningState.IDLE, stateMachine.getState());
-		stateMachine.transitionTo(ScanningState.STOPPING);
+		stateMachine.transitionTo(ScanningState.STOPPING, null);
 		assertEquals(ScanningState.STOPPING, stateMachine.getState());
 		assertEquals(ScanningState.STOPPING, calledWithParameter[0]);
-		stateMachine.transitionTo(ScanningState.STARTING);
+		stateMachine.transitionTo(ScanningState.STARTING, null);
 		assertEquals(ScanningState.STARTING, stateMachine.getState());
 		assertEquals(ScanningState.STARTING, calledWithParameter[0]);
 	}
@@ -81,11 +83,11 @@ public class StateMachineTest {
 	public void stop() throws Exception {
 		final int notificationCount[] = {0};
 		stateMachine.addTransitionListener(new StateTransitionListener() {
-			public void transitionTo(ScanningState state) {
+			public void transitionTo(ScanningState state, Transition transition) {
 				notificationCount[0]++;
 			}
 		});
-		stateMachine.transitionTo(ScanningState.SCANNING);
+		stateMachine.transitionTo(ScanningState.SCANNING, null);
 		assertEquals(1, notificationCount[0]);
 		stateMachine.stop();
 		assertEquals(ScanningState.STOPPING, stateMachine.getState());
@@ -97,40 +99,40 @@ public class StateMachineTest {
 	
 	@Test
 	public void complete() throws Exception {
-		stateMachine.transitionTo(ScanningState.STOPPING);
+		stateMachine.transitionTo(ScanningState.STOPPING, null);
 		stateMachine.complete();
 		assertEquals(ScanningState.IDLE, stateMachine.getState());
 		
-		stateMachine.transitionTo(ScanningState.KILLING);
+		stateMachine.transitionTo(ScanningState.KILLING, null);
 		stateMachine.complete();
 		assertEquals(ScanningState.IDLE, stateMachine.getState());
 	}
 
 	@Test
 	public void rescan() throws Exception {
-		stateMachine.transitionTo(ScanningState.IDLE);
+		stateMachine.transitionTo(ScanningState.IDLE, null);
 		stateMachine.rescan();
 		assertEquals(ScanningState.RESTARTING, stateMachine.getState());
 	}
 
 	@Test
 	public void startScanning() throws Exception {
-		stateMachine.transitionTo(ScanningState.STARTING);
+		stateMachine.transitionTo(ScanningState.STARTING, null);
 		stateMachine.startScanning();
 		assertEquals(ScanningState.SCANNING, stateMachine.getState());
 		
-		stateMachine.transitionTo(ScanningState.RESTARTING);
+		stateMachine.transitionTo(ScanningState.RESTARTING, null);
 		stateMachine.startScanning();
 		assertEquals(ScanningState.SCANNING, stateMachine.getState());
 	}
 	
 	@Test
 	public void reset() throws Exception {
-		stateMachine.transitionTo(ScanningState.STARTING);
+		stateMachine.transitionTo(ScanningState.STARTING, null);
 		stateMachine.reset();
 		assertEquals(ScanningState.IDLE, stateMachine.getState());
 		
-		stateMachine.transitionTo(ScanningState.KILLING);
+		stateMachine.transitionTo(ScanningState.KILLING, null);
 		stateMachine.reset();
 		assertEquals(ScanningState.IDLE, stateMachine.getState());
 	}

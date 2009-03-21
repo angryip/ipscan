@@ -19,6 +19,7 @@ import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
@@ -136,12 +137,12 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		return true;
 	}
 	
-	public void transitionTo(final ScanningState state) {
+	public void transitionTo(final ScanningState state, final Transition transition) {
 		if (display.isDisposed())
 			return;
 		display.syncExec(new Runnable() {
 			public void run() {
-				if (statusBar.isDisposed())
+				if (statusBar.isDisposed() || transition == Transition.INIT)
 					return;
 				
 				// TODO: separate GUI and non-GUI stuff

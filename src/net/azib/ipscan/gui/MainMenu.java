@@ -10,6 +10,7 @@ import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsMenuActions;
 import net.azib.ipscan.gui.actions.FavoritesMenuActions;
@@ -278,7 +279,7 @@ public class MainMenu implements Startable {
 			this.menu = menu;
 		}
 
-		public void transitionTo(final ScanningState state) {
+		public void transitionTo(final ScanningState state, Transition transition) {
 			if (state != ScanningState.SCANNING && state !=  ScanningState.IDLE)
 				return;
 			

@@ -202,10 +202,10 @@ public class ScanningResultListTest {
 		StopScanningListener stopListener = scanningResults.new StopScanningListener();
 		assertFalse(scanningResults.getScanInfo().isCompletedNormally());
 		
-		stopListener.transitionTo(ScanningState.IDLE);
+		stopListener.transitionTo(ScanningState.IDLE, null);
 		assertTrue(scanningResults.getScanInfo().isCompletedNormally());
 
-		stopListener.transitionTo(ScanningState.KILLING);
+		stopListener.transitionTo(ScanningState.KILLING, null);
 		assertFalse(scanningResults.getScanInfo().isCompletedNormally());
 	}
 	
@@ -337,7 +337,7 @@ public class ScanningResultListTest {
 		assertTrue("Scanning has just begun", scanTime1 >= 0 && scanTime1 <= 10);
 		
 		Thread.sleep(10);
-		scanningResults.new StopScanningListener().transitionTo(ScanningState.IDLE);
+		scanningResults.new StopScanningListener().transitionTo(ScanningState.IDLE, null);
 		assertTrue(scanInfo.isCompletedNormally());
 		long scanTime2 = scanInfo.getScanTime();
 		assertTrue("Scanning has just finished", scanTime2 >= 10 && scanTime1 <= 20);

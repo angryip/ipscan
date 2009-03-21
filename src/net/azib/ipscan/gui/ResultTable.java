@@ -15,6 +15,7 @@ import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
@@ -241,7 +242,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 		
 	}
 
-	public void transitionTo(final ScanningState state) {
+	public void transitionTo(final ScanningState state, Transition transition) {
 		// change cursor while scanning
 		getDisplay().asyncExec(new Runnable() {
 			public void run() {

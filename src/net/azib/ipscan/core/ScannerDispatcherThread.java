@@ -15,6 +15,7 @@ import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.util.InetAddressUtils;
 
@@ -142,7 +143,7 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 	 * Local stateMachine transition listener.
 	 * Currently used to kill all running threads if user says so.
 	 */
-	public void transitionTo(ScanningState state) {
+	public void transitionTo(ScanningState state, Transition transition) {
 		if (state == ScanningState.KILLING) {
 			// try to interrupt all threads if we get to killing state
 			threadGroup.interrupt();

@@ -18,6 +18,7 @@ import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
@@ -316,9 +317,8 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	}
 	
 	class StopScanningListener implements StateTransitionListener {
-		public void transitionTo(ScanningState state) {
-			// transition to IDLE means complete stop
-			if (state == ScanningState.IDLE) {
+		public void transitionTo(ScanningState state, Transition transition) {
+			if (transition == Transition.COMPLETE && state == ScanningState.IDLE) {
 				info.endTime = System.currentTimeMillis();
 				info.scanFinished = true;
 			}

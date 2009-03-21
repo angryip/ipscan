@@ -19,7 +19,7 @@ import java.util.Collections;
 
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
-import net.azib.ipscan.exporters.ExportProcessor.ScanningResultSelector;
+import net.azib.ipscan.exporters.ExportProcessor.ScanningResultFilter;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
@@ -81,7 +81,7 @@ public class ExportProcessorTest {
 		scanningResultList.registerAtIndex(1, scanningResultList.createResult(InetAddress.getByName("192.168.13.67")));
 		scanningResultList.registerAtIndex(2, scanningResultList.createResult(InetAddress.getByName("192.168.13.76")));
 		
-		exportProcessor.process(scanningResultList, new ScanningResultSelector() {
+		exportProcessor.process(scanningResultList, new ScanningResultFilter() {
 			public boolean isResultSelected(int index, ScanningResult result) {
 				// select only IP addresses ending with 6
 				return ((String)result.getValues().get(0)).endsWith("6");

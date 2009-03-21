@@ -17,6 +17,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class StateMachine {
 	
+	public enum Transition {INIT, START, STOP, NEXT, COMPLETE, RESET, RESCAN}
+	
 	private volatile ScanningState state = ScanningState.IDLE;
 	
 	private ReentrantReadWriteLock listenersLock = new ReentrantReadWriteLock();
@@ -70,18 +72,18 @@ public class StateMachine {
 	 * Note: this method is intentionally not public, use specific methods to make desired transitions.
 	 * @param newState
 	 */
-	void transitionTo(ScanningState newState) {
+	void transitionTo(ScanningState newState, Transition transition) {
 		if (state != newState) {
 			state = newState;
-			notifyAboutTransition();
+			notifyAboutTransition(transition);
 		}
 	}
 
-	private void notifyAboutTransition() {
+	private void notifyAboutTransition(Transition transition) {
 		try {
 			listenersLock.readLock().lock();
 			for (StateTransitionListener listener : transitionListeners) {
-				listener.transitionTo(state);
+				listener.transitionTo(state, transition);
 			}			
 		}
 		finally {
@@ -96,7 +98,7 @@ public class StateMachine {
 	public void transitionToNext() {
 		// killing state cannot be transitioned from by pressing a button
 		if (state != ScanningState.KILLING) {
-			transitionTo(state.next());
+			transitionTo(state.next(), Transition.NEXT);
 		}
 	}
 
@@ -105,11 +107,11 @@ public class StateMachine {
 	 */
 	public void stop() {
 		if (state == ScanningState.SCANNING) {
-			transitionTo(ScanningState.STOPPING);
+			transitionTo(ScanningState.STOPPING, Transition.STOP);
 		}
 		else if (state == ScanningState.STOPPING) {
 			// notify anyway to ensure that manual stopping and automatic stopping work well together
-			notifyAboutTransition();
+			notifyAboutTransition(Transition.STOP);
 		}
 		else {
 			throw new IllegalStateException("Attempt to stop from " + state);
@@ -121,7 +123,7 @@ public class StateMachine {
 	 */
 	public void complete() {
 		if (state == ScanningState.STOPPING || state == ScanningState.KILLING) {
-			transitionTo(ScanningState.IDLE);
+			transitionTo(ScanningState.IDLE, Transition.COMPLETE);
 		}		
 		else {
 			throw new IllegalStateException("Attempt to complete from " + state);
@@ -133,7 +135,7 @@ public class StateMachine {
 	 */
 	public void rescan() {
 		if (state == ScanningState.IDLE) {
-			transitionTo(ScanningState.RESTARTING);
+			transitionTo(ScanningState.RESTARTING, Transition.RESCAN);
 		}
 		else {
 			throw new IllegalStateException("Attempt to rescan from " + state);
@@ -145,11 +147,19 @@ public class StateMachine {
 	 */
 	public void startScanning() {
 		if (state == ScanningState.STARTING || state == ScanningState.RESTARTING) {
-			transitionTo(ScanningState.SCANNING);
+			transitionTo(ScanningState.SCANNING, Transition.START);
 		}
 		else {
 			throw new IllegalStateException("Attempt to go scanning from " + state);
 		}
+	}
+
+	/**
+	 * Inits everyone on startup
+	 */
+	public void init() {
+		state = ScanningState.IDLE;
+		notifyAboutTransition(Transition.INIT);
 	}
 
 	/**

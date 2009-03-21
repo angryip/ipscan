@@ -30,9 +30,9 @@ public class ExportProcessor {
 	/**
 	 * Called to execute the actual scanning process.
 	 * @param scanningResults the scanning results, which are available
-	 * @param resultSelector optional (can be null) - determines results for saving or skipping
+	 * @param filter optional (can be null) - determines results for saving or skipping
 	 */
-	public void process(ScanningResultList scanningResults, ScanningResultSelector resultSelector) {
+	public void process(ScanningResultList scanningResults, ScanningResultFilter filter) {
 		FileOutputStream outputStream = null;
 		try {
 			outputStream = new FileOutputStream(fileName);
@@ -50,7 +50,7 @@ public class ExportProcessor {
 
 			int index = 0;
 			for (ScanningResult scanningResult : scanningResults) {
-				if (resultSelector == null || resultSelector.isResultSelected(index, scanningResult)) {
+				if (filter == null || filter.isResultSelected(index, scanningResult)) {
 					exporter.nextAdressResults(scanningResult.getValues().toArray());
 				}
 			}
@@ -73,7 +73,7 @@ public class ExportProcessor {
 	/**
 	 * ScanningResultSelector can be implemented and passed to {@link ExportProcessor#process(ScanningResultList, String)}
 	 */
-	public static interface ScanningResultSelector {
+	public static interface ScanningResultFilter {
 		boolean isResultSelected(int index, ScanningResult result);
 	}
 }

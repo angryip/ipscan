@@ -12,6 +12,7 @@ import net.azib.ipscan.config.Version;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.BrowserLauncher;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
@@ -67,7 +68,7 @@ public class MainWindow {
 	/**
 	 * Creates and initializes the main window.
 	 */
-	public MainWindow(Shell shell, GUIConfig guiConfig, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry, StateMachine stateMachine, ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListsner) {
+	public MainWindow(Shell shell, GUIConfig guiConfig, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry, final StateMachine stateMachine, ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListsner) {
 		this.shell = shell;
 		this.guiConfig = guiConfig;
 		this.statusBar = statusBar;
@@ -113,6 +114,13 @@ public class MainWindow {
 		}
 
 		stateMachine.addTransitionListener(new EnablerDisabler());
+
+		Display.getCurrent().asyncExec(new Runnable() {
+			public void run() {
+				// asynchronously run init handlers outside of the constructor
+				stateMachine.init();
+			}
+		});
 	}
 	
 	private int showMessage(String text, int buttons) {
@@ -263,7 +271,7 @@ public class MainWindow {
 	}
 	
 	class EnablerDisabler implements StateTransitionListener {
-		public void transitionTo(final ScanningState state) {
+		public void transitionTo(final ScanningState state, Transition transition) {
 			if (state != ScanningState.SCANNING && state !=  ScanningState.IDLE)
 				return;
 			

@@ -18,7 +18,7 @@ import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.exporters.ExportProcessor;
 import net.azib.ipscan.exporters.Exporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
-import net.azib.ipscan.exporters.ExportProcessor.ScanningResultSelector;
+import net.azib.ipscan.exporters.ExportProcessor.ScanningResultFilter;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
 
@@ -62,6 +62,7 @@ public class ScanMenuActions {
 			}
 			
 			if (!stateMachine.inState(ScanningState.IDLE)) {
+				// ask the user whether to save incomplete results
 				MessageBox box = new MessageBox(resultTable.getShell(), SWT.YES | SWT.NO | SWT.ICON_WARNING);
 				box.setText(Version.NAME);
 				box.setMessage(Labels.getLabel("exception.ExporterException.scanningInProgress"));
@@ -95,10 +96,10 @@ public class ScanMenuActions {
 				
 				ExportProcessor exportProcessor = new ExportProcessor(exporter, fileName);
 				
-				// in case of isSelection we need to create our ScanningResultSelector
-				ScanningResultSelector scanningResultSelector = null;
+				// in case of isSelection we need to create our filter
+				ScanningResultFilter scanningResultSelector = null;
 				if (isSelection) {
-					scanningResultSelector = new ScanningResultSelector() {
+					scanningResultSelector = new ScanningResultFilter() {
 						public boolean isResultSelected(int index, ScanningResult result) {
 							return resultTable.isSelected(index);
 						}
