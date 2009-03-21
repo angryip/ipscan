@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * HTTPSenderFetcherPrefs
+ * PortTextFetcherPrefs
  *
  * @author Anton Keks
  */
@@ -45,21 +45,21 @@ public class PortTextFetcherPrefs extends AbstractModalDialog implements Fetcher
 		Label sendLabel = new Label(shell, SWT.NONE);
 		sendLabel.setText(Labels.getLabel("text.fetcher.portText.send"));
 		sendLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, new FormAttachment(0), null));
-		Text sendText = new Text(shell, SWT.NONE);
+		Text sendText = new Text(shell, SWT.BORDER | SWT.READ_ONLY);
 		sendText.setText(stringToText(fetcher.getTextToSend()));
 		sendText.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), new FormAttachment(sendLabel), null));
 		
 		Label matchLabel = new Label(shell, SWT.NONE);
 		matchLabel.setText(Labels.getLabel("text.fetcher.portText.match"));
 		matchLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, new FormAttachment(sendText), null));
-		Text matchText = new Text(shell, SWT.NONE);
+		Text matchText = new Text(shell, SWT.BORDER | SWT.READ_ONLY);
 		matchText.setText(fetcher.getMatchingRegexp().pattern());
 		matchText.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(sendText, 0, SWT.RIGHT), new FormAttachment(matchLabel), null));
 
 		Label replaceLabel = new Label(shell, SWT.NONE);
 		replaceLabel.setText(Labels.getLabel("text.fetcher.portText.replace"));
 		replaceLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, new FormAttachment(matchText), null));
-		Text replaceText = new Text(shell, SWT.NONE);
+		Text replaceText = new Text(shell, SWT.BORDER | SWT.READ_ONLY);
 		replaceText.setText("$1");
 		replaceText.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(sendText, 0, SWT.RIGHT), new FormAttachment(replaceLabel), null));
 

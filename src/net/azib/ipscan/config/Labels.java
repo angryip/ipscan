@@ -101,8 +101,9 @@ public final class Labels {
 			return labels.getString(key);
 		}
 		catch (MissingResourceException e) {
-			LOG.warning("Using fallback label for " + key);
-			return labelsFallback.getString(key);
+			String text = labelsFallback.getString(key);
+			LOG.warning("Used fallback label for " + key);
+			return text;
 		}
 	}
 	
