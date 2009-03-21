@@ -36,6 +36,9 @@ public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
 	public FeederGUIRegistry(AbstractFeederGUI[] allTheFeeders, Combo feederSelectionCombo, GUIConfig guiConfig) {
 		this.feederGUIList = Arrays.asList(allTheFeeders);
 		this.feederSelectionCombo = feederSelectionCombo;
+		for (AbstractFeederGUI feederGUI : feederGUIList) {
+			feederSelectionCombo.add(feederGUI.getFeederName());	
+		}
 		this.guiConfig = guiConfig;
 		this.currentFeederGUI = allTheFeeders[0];
 	}
@@ -66,10 +69,10 @@ public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
 	/**
 	 * Select the Feeder GUI by its name, while updating the GUI
 	 */
-	public void select(String feederName) {
-		String[] items = feederSelectionCombo.getItems();
-		for (int i = 0; i < items.length; i++) {
-			if (items[i].equals(feederName)) {
+	public void select(String feederId) {
+		for (int i = 0; i < feederGUIList.size(); i++) {
+			AbstractFeederGUI guiFeeder = feederGUIList.get(i);
+			if (guiFeeder.getFeederId().equals(feederId) || guiFeeder.getFeederName().equals(feederId)) {
 				// select the feeder if found
 				feederSelectionCombo.select(i);
 				feederSelectionCombo.notifyListeners(SWT.Selection, null);
@@ -77,7 +80,7 @@ public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
 			}
 		}
 		// if not found
-		throw new FeederException("Feeder not found: " + feederName);
+		throw new FeederException("Feeder not found: " + feederId);
 	}
 
 	/**

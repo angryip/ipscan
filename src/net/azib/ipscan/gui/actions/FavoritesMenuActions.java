@@ -71,7 +71,7 @@ public class FavoritesMenuActions {
 			MenuItem menuItem = (MenuItem) event.widget;
 			String key = menuItem.getText();
 			
-			feederRegistry.select(favoritesConfig.getFeederName(key));
+			feederRegistry.select(favoritesConfig.getFeederId(key));
 			feederRegistry.current().unserialize(favoritesConfig.getSerializedParts(key));
 			event.display.getActiveShell().setText(key + " - " + Version.NAME);
 			

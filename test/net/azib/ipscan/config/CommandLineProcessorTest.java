@@ -9,14 +9,17 @@ package net.azib.ipscan.config;
 import static org.junit.Assert.*;
 import static org.easymock.classextension.EasyMock.*;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import net.azib.ipscan.exporters.Exporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
 import net.azib.ipscan.feeders.FeederCreator;
+import net.azib.ipscan.feeders.FeederRegistry;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -34,7 +37,7 @@ public class CommandLineProcessorTest {
 	public void prepare() {
 		feederCreator = createMock(FeederCreator.class);
 		exporters = createMock(ExporterRegistry.class);
-		processor = new CommandLineProcessor(new FeederCreator[] {feederCreator}, exporters);
+		processor = new CommandLineProcessor(new MockFeederRegistry(feederCreator), exporters);
 	}
 	
 	@Test
@@ -51,8 +54,8 @@ public class CommandLineProcessorTest {
 		assertTrue(usage.contains("-f:range"));
 		assertTrue(usage.contains(Labels.getLabel("feeder.range.to")));
 		assertTrue(usage.contains(".pdf"));
-		assertTrue(usage.contains("-e"));
-		assertTrue(usage.contains("-a"));
+		assertTrue(usage.contains("-q"));
+//		assertTrue(usage.contains("-a"));
 		assertTrue(usage.contains("-s"));
 		
 		verify(feederCreator, exporters, exporter);
@@ -73,9 +76,9 @@ public class CommandLineProcessorTest {
 		assertEquals("file.txt", processor.outputFilename);
 		assertEquals(txtExporter, processor.exporter);
 		
-		assertFalse(processor.autoExit);
-		assertFalse(processor.autoStart);
+		assertFalse(processor.autoQuit);
 		assertFalse(processor.appendToFile);
+		assertTrue("specifying exporter should enable autoStart", processor.autoStart);
 		
 		verify(feederCreator, exporters);
 	}
@@ -87,10 +90,10 @@ public class CommandLineProcessorTest {
 		feederCreator.unserialize(aryEq(new String[0]));
 		replay(feederCreator);
 
-		processor.parse("-s", "-f:mega", "-ea");
+		processor.parse("-s", "-f:mega", "-aq");
 		
 		assertEquals(feederCreator, processor.feederCreator);
-		assertTrue(processor.autoExit);
+		assertTrue(processor.autoQuit);
 		assertTrue(processor.autoStart);
 		assertTrue(processor.appendToFile);
 		
@@ -121,4 +124,22 @@ public class CommandLineProcessorTest {
 	public void extraFeeder() throws Exception {
 		processor.parse("-f:feeder", "-o", "exporter.xml", "-f:feeder");
 	}
+	
+	public static class MockFeederRegistry implements FeederRegistry<FeederCreator> {
+		
+		private List<FeederCreator> list;
+		
+		public MockFeederRegistry(FeederCreator ... creators) {
+			list = Arrays.asList(creators);
+		}
+
+		public void select(String feederId) {
+		}
+
+		public Iterator<FeederCreator> iterator() {
+			return list.iterator();
+		}
+
+	}
+
 }

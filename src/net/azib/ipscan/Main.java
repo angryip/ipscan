@@ -120,6 +120,7 @@ public class Main {
 			}
 			catch (Exception e) {
 				showMessageToConsole(e.getMessage() + "\n\n" + cli);
+				System.exit(1);
 			}
 		}
 	}

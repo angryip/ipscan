@@ -21,7 +21,7 @@ public class FavoritesConfig extends NamedListConfig {
 	}
 
 	public void add(String key, FeederCreator feederCreator) {
-		StringBuilder serializedFeeder = new StringBuilder(feederCreator.getFeederName());
+		StringBuilder serializedFeeder = new StringBuilder(feederCreator.getFeederId());
 		serializedFeeder.append('\t');
 		for (String part : feederCreator.serialize()) {
 			serializedFeeder.append(part).append(":::");
@@ -29,7 +29,7 @@ public class FavoritesConfig extends NamedListConfig {
 		super.add(key, serializedFeeder.toString());
 	}
 	
-	public String getFeederName(String key) {
+	public String getFeederId(String key) {
 		String value = get(key);
 		int indexOf = value.indexOf('\t');
 		return value.substring(0, indexOf);

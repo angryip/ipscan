@@ -15,6 +15,7 @@ import net.azib.ipscan.exporters.ExportProcessor;
 import net.azib.ipscan.exporters.Exporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
 import net.azib.ipscan.feeders.FeederCreator;
+import net.azib.ipscan.feeders.FeederRegistry;
 
 /**
  * CommandLineProcessor
@@ -23,7 +24,7 @@ import net.azib.ipscan.feeders.FeederCreator;
  */
 public class CommandLineProcessor implements StateTransitionListener {
 	
-	private final FeederCreator[] feederCreators;
+	private final FeederRegistry<FeederCreator> feederRegistry;
 	private final ExporterRegistry exporters;
 	private StateMachine stateMachine;
 	private ScanningResultList scanningResults;
@@ -34,15 +35,15 @@ public class CommandLineProcessor implements StateTransitionListener {
 	String outputFilename;
 	
 	boolean autoStart;
-	boolean autoExit;
+	boolean autoQuit;
 	boolean appendToFile;
 	
-	CommandLineProcessor(FeederCreator[] feederCreators, ExporterRegistry exporters) {
-		this.feederCreators = feederCreators;
+	CommandLineProcessor(FeederRegistry<FeederCreator> feederCreators, ExporterRegistry exporters) {
+		this.feederRegistry = feederCreators;
 		this.exporters = exporters;		
 	}
 	
-	public CommandLineProcessor(FeederCreator[] feederCreators, ExporterRegistry exporters, StateMachine stateMachine, ScanningResultList scanningResults) {
+	public CommandLineProcessor(FeederRegistry<FeederCreator> feederCreators, ExporterRegistry exporters, StateMachine stateMachine, ScanningResultList scanningResults) {
 		this(feederCreators, exporters);
 		this.stateMachine = stateMachine;
 		this.scanningResults = scanningResults;
@@ -81,7 +82,7 @@ public class CommandLineProcessor implements StateTransitionListener {
 				for (char option : arg.substring(1).toCharArray()) {
 					switch (option) {
 						case 's': autoStart = true; break;
-						case 'e': autoExit = true; break;
+						case 'q': autoQuit = true; break;
 						case 'a': appendToFile = true; break;
 						default:
 							throw new IllegalArgumentException("Unknown option: " + option);
@@ -103,7 +104,7 @@ public class CommandLineProcessor implements StateTransitionListener {
 		usage.append("Pass the following arguments:\n");
 		usage.append("[options] <feeder> <exporter>\n\n");
 		usage.append("Where <feeder> is one of:\n");
-		for (FeederCreator creator : feederCreators) {
+		for (FeederCreator creator : feederRegistry) {
 			usage.append("-f:").append(shortId(creator.getFeederId()));
 			for (String partLabel : creator.serializePartsLabels()) {
 				usage.append(" <").append(Labels.getLabel(partLabel)).append(">");
@@ -116,7 +117,7 @@ public class CommandLineProcessor implements StateTransitionListener {
 		}
 		usage.append("\nAnd possible [options] are (grouping allowed):\n");
 		usage.append("-s\tstart scanning automatically\n");
-		usage.append("-e\texit after saving\n");
+		usage.append("-q\tquit after exporting the results\n");
 		//usage.append("-a\tappend to the file, do not overwrite\n");
 		return usage.toString();
 	}
@@ -126,9 +127,10 @@ public class CommandLineProcessor implements StateTransitionListener {
 	}
 	
 	private FeederCreator findFeederCreator(String feederId) {
-		for (FeederCreator creator : feederCreators) {
-			if (feederId.equals(creator.getFeederId()))
+		for (FeederCreator creator : feederRegistry) {
+			if (feederId.equals(creator.getFeederId())) {
 				return creator;
+			}
 		}
 		throw new IllegalArgumentException("Feeder unknown: " + shortId(feederId));
 	}
@@ -138,16 +140,21 @@ public class CommandLineProcessor implements StateTransitionListener {
 	}
 
 	public void transitionTo(ScanningState state, Transition transition) {
-		if (transition == Transition.INIT && autoStart) {
+		if (transition == Transition.INIT) {
+			// select the correct feeder
+			if (feederCreator != null)
+				feederRegistry.select(feederCreator.getFeederId());
+			
 			// start scanning automatically
-			stateMachine.transitionToNext();				
+			if (autoStart)
+				stateMachine.transitionToNext();				
 		}
 		else
 		if (transition == Transition.COMPLETE && state == ScanningState.IDLE && exporter != null) {
 			// TODO: introduce SAVING state in order to show nice notification in the status bar
 			ExportProcessor processor = new ExportProcessor(exporter, outputFilename);
 			processor.process(scanningResults, null);
-			if (autoExit) {
+			if (autoQuit) {
 				System.err.println("Saved results to " + outputFilename);
 				System.exit(0);
 			}

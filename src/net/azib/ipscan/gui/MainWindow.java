@@ -17,7 +17,6 @@ import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.BrowserLauncher;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.actions.ToolsActions;
-import net.azib.ipscan.gui.feeders.AbstractFeederGUI;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import net.azib.ipscan.gui.util.LayoutHelper;
 
@@ -194,9 +193,6 @@ public class MainWindow {
 				
 		// feeder selection combobox
 		this.feederSelectionCombo = feederSelectionCombo;
-		for (AbstractFeederGUI feederGUI : feederRegistry) {
-			feederSelectionCombo.add(feederGUI.getFeederName());	
-		}
 		feederSelectionCombo.pack();
 		IPFeederSelectionListener feederSelectionListener = new IPFeederSelectionListener();		
 		feederSelectionCombo.addSelectionListener(feederSelectionListener);
