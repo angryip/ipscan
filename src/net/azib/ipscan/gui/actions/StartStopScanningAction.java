@@ -138,63 +138,57 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	}
 	
 	public void transitionTo(final ScanningState state, final Transition transition) {
-		if (display.isDisposed())
+		if (statusBar.isDisposed() || transition == Transition.INIT)
 			return;
-		display.syncExec(new Runnable() {
-			public void run() {
-				if (statusBar.isDisposed() || transition == Transition.INIT)
-					return;
-				
-				// TODO: separate GUI and non-GUI stuff
-				switch (state) {
-					case IDLE:
-						// reset state text
-						button.setEnabled(true);
-						updateProgress(null, 0, 0);
-						statusBar.setStatusText(null);
-						break;
-					case STARTING:
-						// start the scan from scratch!
-						resultTable.removeAll();
-						try {
-							scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createFeeder(), StartStopScanningAction.this, createResultsCallback());
-							stateMachine.startScanning();
-							mainWindowTitle = statusBar.getShell().getText();
-						}
-						catch (RuntimeException e) {
-							stateMachine.reset();
-							throw e;
-						}
-						break;
-					case RESTARTING:
-						// restart the scanning - rescan
-						resultTable.resetSelection();
-						try {
-							scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createRescanFeeder(resultTable.getSelection()), StartStopScanningAction.this, createResultsCallback());
-							stateMachine.startScanning();
-							mainWindowTitle = statusBar.getShell().getText();
-						}
-						catch (RuntimeException e) {
-							stateMachine.reset();
-							throw e;
-						}
-						break;
-					case SCANNING:
-						scannerThread.start();
-						break;
-					case STOPPING:
-						statusBar.setStatusText(Labels.getLabel("state.waitForThreads"));
-						break;
-					case KILLING:
-						button.setEnabled(false);
-						statusBar.setStatusText(Labels.getLabel("state.killingThreads"));
-						break;
+		
+		// TODO: separate GUI and non-GUI stuff
+		switch (state) {
+			case IDLE:
+				// reset state text
+				button.setEnabled(true);
+				updateProgress(null, 0, 0);
+				statusBar.setStatusText(null);
+				break;
+			case STARTING:
+				// start the scan from scratch!
+				resultTable.removeAll();
+				try {
+					scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createFeeder(), StartStopScanningAction.this, createResultsCallback());
+					stateMachine.startScanning();
+					mainWindowTitle = statusBar.getShell().getText();
 				}
-				// change button image
-				button.setImage(buttonImages[state.ordinal()]);
-				button.setText(buttonTexts[state.ordinal()]);
-			}
-		});
+				catch (RuntimeException e) {
+					stateMachine.reset();
+					throw e;
+				}
+				break;
+			case RESTARTING:
+				// restart the scanning - rescan
+				resultTable.resetSelection();
+				try {
+					scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createRescanFeeder(resultTable.getSelection()), StartStopScanningAction.this, createResultsCallback());
+					stateMachine.startScanning();
+					mainWindowTitle = statusBar.getShell().getText();
+				}
+				catch (RuntimeException e) {
+					stateMachine.reset();
+					throw e;
+				}
+				break;
+			case SCANNING:
+				scannerThread.start();
+				break;
+			case STOPPING:
+				statusBar.setStatusText(Labels.getLabel("state.waitForThreads"));
+				break;
+			case KILLING:
+				button.setEnabled(false);
+				statusBar.setStatusText(Labels.getLabel("state.killingThreads"));
+				break;
+		}
+		// change button image
+		button.setImage(buttonImages[state.ordinal()]);
+		button.setText(buttonTexts[state.ordinal()]);
 	}
 	
 	/**

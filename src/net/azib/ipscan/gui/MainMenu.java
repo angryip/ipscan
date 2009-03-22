@@ -280,27 +280,22 @@ public class MainMenu implements Startable {
 		}
 
 		public void transitionTo(final ScanningState state, Transition transition) {
-			if (state != ScanningState.SCANNING && state !=  ScanningState.IDLE)
+			if (transition != Transition.START && transition != Transition.COMPLETE)
 				return;
-			
-			menu.getDisplay().asyncExec(new Runnable() {
-				public void run() {
-					processMenu(menu);
+			processMenu(menu, state == ScanningState.IDLE);
+		}
+
+		public void processMenu(Menu menu, boolean isEnabled) {
+			// processes menu items recursively
+			for (MenuItem item : menu.getItems()) {
+				if (item.getData("disableDuringScanning") == Boolean.TRUE) {
+					item.setEnabled(isEnabled);
 				}
-				
-				public void processMenu(Menu menu) {
-					// processes menu items recursively
-					for (MenuItem item : menu.getItems()) {
-						if (item.getData("disableDuringScanning") == Boolean.TRUE) {
-							item.setEnabled(state == ScanningState.IDLE);
-						}
-						else 
-						if (item.getMenu() != null) {
-							processMenu(item.getMenu());
-						}
-					}
+				else 
+				if (item.getMenu() != null) {
+					processMenu(item.getMenu(), isEnabled);
 				}
-			});
+			}
 		}
 	}
 }

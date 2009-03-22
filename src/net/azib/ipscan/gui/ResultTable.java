@@ -132,7 +132,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 	public void addOrUpdateResultRow(final ScanningResult result) {
 		if (isDisposed())
 			return;
-		getDisplay().syncExec(new Runnable() {
+		getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				if (isDisposed())
 					return;
@@ -242,13 +242,9 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 		
 	}
 
-	public void transitionTo(final ScanningState state, Transition transition) {
+	public void transitionTo(ScanningState state, Transition transition) {
 		// change cursor while scanning
-		getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				setCursor(getDisplay().getSystemCursor(state == ScanningState.IDLE ? SWT.CURSOR_ARROW : SWT.CURSOR_APPSTARTING));
-			}
-		});
+		setCursor(getDisplay().getSystemCursor(state == ScanningState.IDLE ? SWT.CURSOR_ARROW : SWT.CURSOR_APPSTARTING));
 	}
 
 }

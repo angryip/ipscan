@@ -23,7 +23,8 @@ public class StateMachineTest {
 	
 	@Before
 	public void createStateMachine() {
-		stateMachine = new StateMachine();
+		// create empty subclass of StateMachine
+		stateMachine = new StateMachine(){};
 	}
 	
 	@Test

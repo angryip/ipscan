@@ -10,12 +10,15 @@ import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * StateMachine implementation.
+ * Generic StateMachine implementation.
  * It holds the current state and performs transitions with corresponding methods.
+ * <p/>
+ * Note: the class is abstract because notification of listeners often should happen in the correct thread,
+ * so subclasses should provide this functionality.
  *
  * @author Anton Keks
  */
-public class StateMachine {
+public abstract class StateMachine {
 	
 	public enum Transition {INIT, START, STOP, NEXT, COMPLETE, RESET, RESCAN}
 	
@@ -79,7 +82,7 @@ public class StateMachine {
 		}
 	}
 
-	private void notifyAboutTransition(Transition transition) {
+	protected void notifyAboutTransition(Transition transition) {		
 		try {
 			listenersLock.readLock().lock();
 			for (StateTransitionListener listener : transitionListeners) {

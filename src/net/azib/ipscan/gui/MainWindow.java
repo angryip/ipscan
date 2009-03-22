@@ -268,19 +268,15 @@ public class MainWindow {
 	
 	class EnablerDisabler implements StateTransitionListener {
 		public void transitionTo(final ScanningState state, Transition transition) {
-			if (state != ScanningState.SCANNING && state !=  ScanningState.IDLE)
+			if (transition != Transition.START && transition != Transition.COMPLETE)
 				return;
 			
-			shell.getDisplay().asyncExec(new Runnable() {
-				public void run() {
-					boolean enabled = state == ScanningState.IDLE;
-					feederArea.setEnabled(enabled);
-					feederSelectionCombo.setEnabled(enabled);
-					prefsButton.setEnabled(enabled);
-					fetchersButton.setEnabled(enabled);
-					statusBar.setEnabled(enabled);
-				}
-			});
+			boolean enabled = state == ScanningState.IDLE;
+			feederArea.setEnabled(enabled);
+			feederSelectionCombo.setEnabled(enabled);
+			prefsButton.setEnabled(enabled);
+			fetchersButton.setEnabled(enabled);
+			statusBar.setEnabled(enabled);
 		}
 	}
 	

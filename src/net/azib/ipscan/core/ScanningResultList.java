@@ -318,13 +318,15 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	
 	class StopScanningListener implements StateTransitionListener {
 		public void transitionTo(ScanningState state, Transition transition) {
-			if (transition == Transition.COMPLETE && state == ScanningState.IDLE) {
-				info.endTime = System.currentTimeMillis();
-				info.scanFinished = true;
-			}
-			else 
-			if (state == ScanningState.KILLING) {
-				info.scanAborted = true;
+			synchronized (ScanningResultList.this) {
+				if (transition == Transition.COMPLETE && state == ScanningState.IDLE) {
+					info.endTime = System.currentTimeMillis();
+					info.scanFinished = true;
+				}
+				else 
+				if (state == ScanningState.KILLING) {
+					info.scanAborted = true;
+				}
 			}
 		}
 	}

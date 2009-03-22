@@ -26,7 +26,7 @@ import net.azib.ipscan.util.InetAddressUtils;
  */
 public class ScannerDispatcherThread extends Thread implements ThreadFactory, StateTransitionListener {
 	
-	private static final long UI_UPDATE_INTERVAL = 100;
+	private static final long UI_UPDATE_INTERVAL_MS = 150;
 
 	private ScannerConfig config;
 	private Scanner scanner;
@@ -100,9 +100,10 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 						threadPool.execute(scanningTask);
 					}
 					
-					// notify listeners of the progress we are doing (max 5 times per second)
-					if (System.currentTimeMillis() - lastNotifyTime >= UI_UPDATE_INTERVAL) {
-						lastNotifyTime = System.currentTimeMillis();
+					// notify listeners of the progress we are doing (limiting the update rate)
+					long now = System.currentTimeMillis();
+					if (now - lastNotifyTime >= UI_UPDATE_INTERVAL_MS) {
+						lastNotifyTime = now;
 						progressCallback.updateProgress(subject.getAddress(), numActiveThreads.intValue(), feeder.percentageComplete());
 					}
 				}
@@ -120,7 +121,7 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 
 			try {				
 				// now wait for all threads, which are still running
-				while (!threadPool.awaitTermination(UI_UPDATE_INTERVAL, TimeUnit.MILLISECONDS)) {
+				while (!threadPool.awaitTermination(UI_UPDATE_INTERVAL_MS, TimeUnit.MILLISECONDS)) {
 					progressCallback.updateProgress(null, numActiveThreads.intValue(), 100);
 				}
 			} 

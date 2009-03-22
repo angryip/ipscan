@@ -24,7 +24,7 @@ import net.azib.ipscan.feeders.FeederRegistry;
  *
  * @author Anton Keks
  */
-public class CommandLineProcessor implements StateTransitionListener {
+public class CommandLineProcessor implements CommandProcessor, StateTransitionListener {
 	
 	private final FeederRegistry<FeederCreator> feederRegistry;
 	private final ExporterRegistry exporters;
@@ -53,6 +53,14 @@ public class CommandLineProcessor implements StateTransitionListener {
 			stateMachine.addTransitionListener(this);
 	}
 	
+	public boolean shouldAutoQuit() {
+		return autoQuit;
+	}
+
+	public boolean shouldAutoStart() {
+		return autoStart;
+	}
+
 	public void parse(String ...args) {
 		for (int i = 0; i < args.length; i++) {
 			String arg = args[i];

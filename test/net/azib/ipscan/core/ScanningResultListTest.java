@@ -66,7 +66,7 @@ public class ScanningResultListTest {
 	
 	@Test
 	public void testConstructor() throws Exception {
-		StateMachine stateMachine = new StateMachine();
+		StateMachine stateMachine = new StateMachine(){};
 		scanningResults = new ScanningResultList(fetcherRegistry, stateMachine);
 		scanningResults.initNewScan(createMockFeeder("inff"));
 		assertFalse(scanningResults.getScanInfo().isCompletedNormally());

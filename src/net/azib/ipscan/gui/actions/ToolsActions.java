@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.gui.actions;
 
+import net.azib.ipscan.config.CommandProcessor;
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResultList;
@@ -20,7 +21,6 @@ import net.azib.ipscan.gui.StatisticsDialog;
 import net.azib.ipscan.gui.StatusBar;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
@@ -74,11 +74,12 @@ public class ToolsActions {
 		private final StatisticsDialog statisticsDialog;
 		private final GUIConfig guiConfig;
 		
-		public ScanStatistics(GUIConfig guiConfig, StatisticsDialog statisticsDialog, StateMachine stateMachine) {
+		public ScanStatistics(GUIConfig guiConfig, StatisticsDialog statisticsDialog, StateMachine stateMachine, CommandProcessor commandProcessor) {
 			this.guiConfig = guiConfig;
 			this.statisticsDialog = statisticsDialog;
 			// register for state changes
-			stateMachine.addTransitionListener(this);
+			if (!commandProcessor.shouldAutoQuit())
+				stateMachine.addTransitionListener(this);
 		}
 
 		public void handleEvent(Event event) {
@@ -88,11 +89,7 @@ public class ToolsActions {
 		public void transitionTo(ScanningState state, Transition transition) {
 			// switching to IDLE means the end of scanning
 			if (transition == Transition.COMPLETE && guiConfig.showScanStats) {
-				Display.getDefault().asyncExec(new Runnable() {
-					public void run() {
-						handleEvent(null);						
-					}
-				});				
+				handleEvent(null);						
 			}
 		}
 	}
