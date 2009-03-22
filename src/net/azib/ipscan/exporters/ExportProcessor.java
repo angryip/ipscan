@@ -64,6 +64,9 @@ public class ExportProcessor {
 			
 			exporter.end();
 		}
+		catch (ExporterException e) {
+			throw e;
+		}
 		catch (Exception e) {
 			throw new ExporterException("exporting failed", e);
 		}

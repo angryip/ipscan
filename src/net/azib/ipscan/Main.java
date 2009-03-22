@@ -22,6 +22,7 @@ import net.azib.ipscan.gui.InfoDialog;
 import net.azib.ipscan.gui.MainWindow;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -81,6 +82,9 @@ public class Main {
 					display.sleep();
 			}
 			catch (Throwable e) {
+				if (e instanceof SWTException && e.getCause() != null)
+					e = e.getCause();
+					
 				// display a nice error message
 				String localizedMessage = getLocalizedMessage(e);
 				Shell parent = display.getActiveShell();
