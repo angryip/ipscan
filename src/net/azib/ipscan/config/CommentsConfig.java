@@ -27,6 +27,9 @@ public class CommentsConfig {
 	}
 	
 	public void setComment(InetAddress address, String comment) {
-		preferences.put(address.getHostAddress(), comment);
+		if (comment == null || comment.length() == 0)
+			preferences.remove(address.getHostAddress());
+		else
+			preferences.put(address.getHostAddress(), comment);
 	}
 }
