@@ -19,8 +19,6 @@ import org.eclipse.swt.widgets.Display;
  * @author Anton Keks
  */
 public class DisplayExt extends Display {
-	public static final int GTK_ICON_SIZE_BUTTON = OS.GTK_ICON_SIZE_LARGE_TOOLBAR+1;
-	
 	@SuppressWarnings("static-access")
 	public static Image createImage(String name, int size) {
 		// copy-paste from Display.createImage() follows, with replaced GTK_ICON_SIZE_MENU
