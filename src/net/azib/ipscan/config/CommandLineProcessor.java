@@ -6,6 +6,8 @@
 
 package net.azib.ipscan.config;
 
+import java.io.File;
+
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
@@ -118,7 +120,7 @@ public class CommandLineProcessor implements StateTransitionListener {
 		usage.append("\nAnd possible [options] are (grouping allowed):\n");
 		usage.append("-s\tstart scanning automatically\n");
 		usage.append("-q\tquit after exporting the results\n");
-		//usage.append("-a\tappend to the file, do not overwrite\n");
+		usage.append("-a\tappend to the file, do not overwrite\n");
 		return usage.toString();
 	}
 
@@ -152,7 +154,7 @@ public class CommandLineProcessor implements StateTransitionListener {
 		else
 		if (transition == Transition.COMPLETE && state == ScanningState.IDLE && exporter != null) {
 			// TODO: introduce SAVING state in order to show nice notification in the status bar
-			ExportProcessor processor = new ExportProcessor(exporter, outputFilename);
+			ExportProcessor processor = new ExportProcessor(exporter, new File(outputFilename), appendToFile);
 			processor.process(scanningResults, null);
 			if (autoQuit) {
 				System.err.println("Saved results to " + outputFilename);

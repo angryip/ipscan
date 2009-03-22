@@ -6,6 +6,7 @@
 
 package net.azib.ipscan.exporters;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -21,14 +22,14 @@ import net.azib.ipscan.config.Labels;
 public abstract class AbstractExporter implements Exporter {
 	
 	protected PrintWriter output;
-	protected boolean isAppend;
+	protected boolean append;
 
 	public String getName() {
 		return Labels.getLabel(getId());
 	}
 	
-	public void setAppend(boolean append) {
-		isAppend = append;
+	public void shouldAppendTo(File file) {
+		this.append = true;
 	}
 
 	public void start(OutputStream outputStream, String feederInfo) throws IOException {

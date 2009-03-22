@@ -41,7 +41,7 @@ public class TXTExporterTest extends AbstractExporterTestCase {
 
 	@Test
 	public void testHeaderWithAppend() throws IOException {
-		exporter.setAppend(true);
+		exporter.shouldAppendTo(null);
 		exporter.start(outputStream, "feederstuff");
 		exporter.end();
 		assertNotContains(Version.NAME);

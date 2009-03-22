@@ -5,12 +5,6 @@ package net.azib.ipscan.exporters;
 
 import java.io.IOException;
 
-import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.core.PortIterator;
-import net.azib.ipscan.core.values.NumericRangeList;
-import net.azib.ipscan.fetchers.IPFetcher;
-import net.azib.ipscan.fetchers.PortsFetcher;
-
 /**
  * SQL Exporter
  * <p/>

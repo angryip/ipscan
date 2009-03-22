@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.exporters;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -33,13 +34,14 @@ public class XMLExporter extends AbstractExporter {
 	public String getFilenameExtension() {
 		return "xml";
 	}
-	
-	public void setAppend(boolean append) {
-		if (append) {
-			throw new ExporterException("xml.noAppend");
-		}
+
+	@Override
+	public void shouldAppendTo(File file) {
+		// TODO: allow appending: use RandomAccessFile here to remove the closing tag before appending
+		throw new ExporterException("xml.noAppend");
 	}
 
+	@Override
 	public void start(OutputStream outputStream, String feederInfo) throws IOException {
 		output = new PrintWriter(new OutputStreamWriter(outputStream, ENCODING));
 		output.println("<?xml version=\"1.0\" encoding=\"" + ENCODING + "\" standalone=\"yes\"?>");
@@ -64,6 +66,7 @@ public class XMLExporter extends AbstractExporter {
 		output.println("\t<hosts>");
 	}
 
+	@Override
 	public void end() throws IOException {
 		output.println("\t</hosts>");
 		output.println("</scanning_report>");

@@ -1,11 +1,9 @@
 Before 3.0:
 
 * gtk sort direction arrows
-* advanced exporting options dialog
-* Exporter appending functionality exposed to the user
+* advanced exporting options dialog (with append checkbox)
 * Enable/Disable ports (without resetting)
-* Comments & Opener Launchers to the details window
-* command-line scanning start
+* Opener Launchers to the details window
 * fetcher-specific options
 * multiple port support web-detect, opening in browser selects scanned ports if available
 * add new fetchers by configuration of PortTextFetcher
@@ -19,6 +17,8 @@ Before 3.0:
 
 Later:
 
+* command-line: support favorites
+* command-line: add netmask support to the range feeder 
 * find not-null for column
 * export/import of settings (profiles or tie with Favorites?)
 * display friendly names of ports
@@ -34,3 +34,4 @@ Later:
 * diff with saved
 * WHOIS fetcher
 * show distinct values for a column
+* SWT bug: deleting of many IPs at once is very slow (freezes the ipscan) due to the sorting of provided indices

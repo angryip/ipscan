@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.exporters;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -32,10 +33,10 @@ public interface Exporter extends Cloneable, Pluggable {
 	public String getFilenameExtension();
 	
 	/**
-	 * @param append determines whether to append to the existing file or create a new one. 
-	 * false by default.
+	 * Tells the exporter that it should append to the specified file instead of creating a new one.
+	 * @param file the file that the appending will be directed to, so that the Exporter can prepare the file before it will start appending. 
 	 */
-	public void setAppend(boolean append);
+	public void shouldAppendTo(File file);
 	
 	/**
 	 * Called on start of the exporting.

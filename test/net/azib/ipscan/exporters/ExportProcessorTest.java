@@ -54,7 +54,7 @@ public class ExportProcessorTest {
 	@Test
 	public void testProcess() throws Exception {
 		File file = File.createTempFile("exportTest", "txt");
-		ExportProcessor exportProcessor = new ExportProcessor(new TXTExporter(), file.getAbsolutePath());
+		ExportProcessor exportProcessor = new ExportProcessor(new TXTExporter(), file, false);
 		
 		ScanningResultList scanningResultList = new ScanningResultList(fetcherRegistry);
 		scanningResultList.initNewScan(createMockFeeder("megaFeeder"));
@@ -70,9 +70,9 @@ public class ExportProcessorTest {
 	}
 	
 	@Test
-	public void testProcessWithSelector() throws Exception {
+	public void testProcessWithFilter() throws Exception {
 		File file = File.createTempFile("exportTest", "txt");
-		ExportProcessor exportProcessor = new ExportProcessor(new TXTExporter(), file.getAbsolutePath());
+		ExportProcessor exportProcessor = new ExportProcessor(new TXTExporter(), file, false);
 		
 		ScanningResultList scanningResultList = new ScanningResultList(fetcherRegistry);
 		scanningResultList.initNewScan(createMockFeeder("feeder2"));

@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.exporters;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
@@ -19,12 +20,14 @@ import net.azib.ipscan.fetchers.Fetcher;
  */
 public class ExportProcessor {
 
-	private Exporter exporter;
-	private String fileName;
+	private final Exporter exporter;
+	private final File file;
+	private final boolean append;
 	
-	public ExportProcessor(Exporter exporter, String fileName) {
+	public ExportProcessor(Exporter exporter, File file, boolean append) {
 		this.exporter = exporter;
-		this.fileName = fileName;
+		this.file = file;
+		this.append = append;
 	}
 
 	/**
@@ -35,7 +38,11 @@ public class ExportProcessor {
 	public void process(ScanningResultList scanningResults, ScanningResultFilter filter) {
 		FileOutputStream outputStream = null;
 		try {
-			outputStream = new FileOutputStream(fileName);
+			if (append) {
+				// let the exporter know
+				exporter.shouldAppendTo(file);
+			}
+			outputStream = new FileOutputStream(file, append);
 			
 			exporter.start(outputStream, scanningResults.getFeederInfo());
 	

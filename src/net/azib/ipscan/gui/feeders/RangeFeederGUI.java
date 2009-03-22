@@ -150,6 +150,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	}
 
 	public void unserialize(String[] parts) {
+		// TODO: netmask support from the command-line
 		startIPText.setText(parts[0]);
 		endIPText.setText(parts[1]);
 		// reset the netmask combo

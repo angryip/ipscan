@@ -59,7 +59,7 @@ public class XMLExporterTest extends AbstractExporterTestCase {
 	@Test
 	public void testFetchersWithAppend() {
 		try {
-			exporter.setAppend(true);
+			exporter.shouldAppendTo(null);
 			fail();
 		}
 		catch (ExporterException e) {

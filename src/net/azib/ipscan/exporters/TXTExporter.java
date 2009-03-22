@@ -31,7 +31,7 @@ public class TXTExporter extends AbstractExporter {
 	public void start(OutputStream outputStream, String feederInfo) throws IOException {
 		super.start(outputStream, feederInfo);
 
-		if (!isAppend) {
+		if (!append) {
 			output.write(Labels.getLabel("exporter.txt.generated"));
 			output.println(Version.getFullName());
 			output.println(Version.WEBSITE);
@@ -49,11 +49,11 @@ public class TXTExporter extends AbstractExporter {
 		padLengths = new int[fetcherNames.length];
 		for (int i = 0; i < fetcherNames.length; i++) {
 			padLengths[i] = fetcherNames[i].length() * 3;
-			if (!isAppend) {
+			if (!append) {
 				output.write(pad(fetcherNames[i], padLengths[i]));
 			}
 		}
-		if (!isAppend) {
+		if (!append) {
 			output.println();
 		}
 	}

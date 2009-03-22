@@ -102,7 +102,7 @@ public abstract class AbstractExporterTestCase {
 
 	@Test
 	public void testFetchersWithAppend() throws IOException {
-		exporter.setAppend(true);
+		exporter.shouldAppendTo(null);
 		exporter.start(outputStream, "feederstuff");
 		exporter.setFetchers(new String[] {"IP", "fetcher1", "mega long fetcher 2"});
 		exporter.end();

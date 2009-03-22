@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.gui.actions;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,7 +95,8 @@ public class ScanMenuActions {
 				
 				statusBar.setStatusText(Labels.getLabel("state.exporting"));
 				
-				ExportProcessor exportProcessor = new ExportProcessor(exporter, fileName);
+				// TODO: expose appending feature in the GUI
+				ExportProcessor exportProcessor = new ExportProcessor(exporter, new File(fileName), false);
 				
 				// in case of isSelection we need to create our filter
 				ScanningResultFilter scanningResultSelector = null;

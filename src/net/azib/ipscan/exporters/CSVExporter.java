@@ -26,7 +26,7 @@ public class CSVExporter extends AbstractExporter {
 	}
 	
 	public void setFetchers(String[] fetcherNames) throws IOException {
-		if (!isAppend) {
+		if (!append) {
 			output.write(csvSafeString(fetcherNames[0]));
 			for (int i = 1; i < fetcherNames.length; i++) {
 				output.write(DELIMETER);
