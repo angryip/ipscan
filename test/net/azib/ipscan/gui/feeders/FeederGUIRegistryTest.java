@@ -5,8 +5,10 @@
  */
 package net.azib.ipscan.gui.feeders;
 
+import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.feeders.Feeder;
 
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableItem;
@@ -25,16 +27,31 @@ public class FeederGUIRegistryTest {
 	
 	private Composite parent;
 	private FeederGUIRegistry registry;
+	private Combo feederSelectionCombo;
+	private RangeFeederGUI feederGUI;
 	
 	@Before
 	public void createRegistry() {
 		parent = new Shell();
-		registry = new FeederGUIRegistry(new AbstractFeederGUI[] {new RangeFeederGUI(parent)}, null, null);
+		
+		feederSelectionCombo = createMock(Combo.class);
+		
+		feederGUI = new RangeFeederGUI(parent);
+		registry = new FeederGUIRegistry(new AbstractFeederGUI[] {feederGUI}, feederSelectionCombo, null);
 	}
 	
 	@After
 	public void dispose() {
 		parent.dispose();
+	}
+	
+	@Test
+	public void addFeederNamesToTheCombo() throws Exception {
+		reset(feederSelectionCombo);
+		feederSelectionCombo.add(Labels.getLabel(feederGUI.getFeederId()));
+		replay(feederSelectionCombo);
+		new FeederGUIRegistry(new AbstractFeederGUI[] {feederGUI}, feederSelectionCombo, null);
+		verify(feederSelectionCombo);
 	}
 
 	@Test

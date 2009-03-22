@@ -25,6 +25,7 @@ import net.azib.ipscan.core.ScanningResultList.ScanInfo;
 import net.azib.ipscan.core.ScanningResultList.StopScanningListener;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
+import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
@@ -202,10 +203,10 @@ public class ScanningResultListTest {
 		StopScanningListener stopListener = scanningResults.new StopScanningListener();
 		assertFalse(scanningResults.getScanInfo().isCompletedNormally());
 		
-		stopListener.transitionTo(ScanningState.IDLE, null);
+		stopListener.transitionTo(ScanningState.IDLE, Transition.COMPLETE);
 		assertTrue(scanningResults.getScanInfo().isCompletedNormally());
 
-		stopListener.transitionTo(ScanningState.KILLING, null);
+		stopListener.transitionTo(ScanningState.KILLING, Transition.STOP);
 		assertFalse(scanningResults.getScanInfo().isCompletedNormally());
 	}
 	
@@ -337,7 +338,7 @@ public class ScanningResultListTest {
 		assertTrue("Scanning has just begun", scanTime1 >= 0 && scanTime1 <= 10);
 		
 		Thread.sleep(10);
-		scanningResults.new StopScanningListener().transitionTo(ScanningState.IDLE, null);
+		scanningResults.new StopScanningListener().transitionTo(ScanningState.IDLE, Transition.COMPLETE);
 		assertTrue(scanInfo.isCompletedNormally());
 		long scanTime2 = scanInfo.getScanTime();
 		assertTrue("Scanning has just finished", scanTime2 >= 10 && scanTime1 <= 20);
