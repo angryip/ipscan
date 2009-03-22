@@ -14,6 +14,7 @@ import net.azib.ipscan.gui.util.LayoutHelper;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -42,9 +43,16 @@ public class PortTextFetcherPrefs extends AbstractModalDialog implements Fetcher
 		shell.setText(fetcher.getName());
 		shell.setLayout(LayoutHelper.formLayout(10, 10, 5));
 		
+		Combo predefinedCombo = new Combo(shell, SWT.DROP_DOWN | SWT.READ_ONLY);
+		predefinedCombo.add(Labels.getLabel("fetcher.portText.custom"));
+		//predefinedCombo.add("Web detect");
+		//predefinedCombo.add("SMTP detect");
+		predefinedCombo.select(0);
+		predefinedCombo.setLayoutData(LayoutHelper.formData(null, new FormAttachment(100), new FormAttachment(0), null));
+		
 		Label sendLabel = new Label(shell, SWT.NONE);
 		sendLabel.setText(Labels.getLabel("text.fetcher.portText.send"));
-		sendLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, new FormAttachment(0), null));
+		sendLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, null, new FormAttachment(predefinedCombo, 0, SWT.BOTTOM)));
 		Text sendText = new Text(shell, SWT.BORDER | SWT.READ_ONLY);
 		sendText.setText(stringToText(fetcher.getTextToSend()));
 		sendText.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), new FormAttachment(sendLabel), null));
