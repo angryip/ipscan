@@ -169,6 +169,7 @@
 				<fileset dir="${swt}" includes="swt-${platform}.jar"/>
 				<fileset dir="${ext}/junit" includes="*.jar"/>
 				<fileset dir="${ext}/easymock" includes="*.jar"/>
+				<fileset dir="${ext}/picocontainer" includes="*.jar"/>
 				<path refid="emma.lib"/>
 			</classpath>
 			<formatter type="xml"/>
