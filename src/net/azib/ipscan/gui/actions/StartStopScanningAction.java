@@ -9,6 +9,7 @@ import java.net.InetAddress;
 
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.GUIConfig.DisplayMethod;
 import net.azib.ipscan.core.ScannerDispatcherThread;
 import net.azib.ipscan.core.ScannerDispatcherThreadFactory;
 import net.azib.ipscan.core.ScanningProgressCallback;
@@ -153,7 +154,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				// start the scan from scratch!
 				resultTable.removeAll();
 				try {
-					scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createFeeder(), StartStopScanningAction.this, createResultsCallback());
+					scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createFeeder(), StartStopScanningAction.this, createResultsCallback(state));
 					stateMachine.startScanning();
 					mainWindowTitle = statusBar.getShell().getText();
 				}
@@ -166,7 +167,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				// restart the scanning - rescan
 				resultTable.resetSelection();
 				try {
-					scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createRescanFeeder(resultTable.getSelection()), StartStopScanningAction.this, createResultsCallback());
+					scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createRescanFeeder(resultTable.getSelection()), StartStopScanningAction.this, createResultsCallback(state));
 					stateMachine.startScanning();
 					mainWindowTitle = statusBar.getShell().getText();
 				}
@@ -194,9 +195,10 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	/**
 	 * @return the appropriate ResultsCallback instance, depending on the configured display method.
 	 */
-	private final ScanningResultCallback createResultsCallback() {
-		switch (guiConfig.displayMethod) {
-			default: return new ScanningResultCallback() {
+	private final ScanningResultCallback createResultsCallback(ScanningState state) {
+		// rescanning must follow the same strategy of displaying all hosts (even the dead ones), because the results are already in the list
+		if (guiConfig.displayMethod == DisplayMethod.ALL || state == ScanningState.RESTARTING) {
+			return new ScanningResultCallback() {
 				public void prepareForResults(ScanningResult result) {
 					resultTable.addOrUpdateResultRow(result);
 				}
@@ -204,8 +206,9 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 					resultTable.addOrUpdateResultRow(result);
 				}
 			};
-			
-			case ALIVE: return new ScanningResultCallback() {
+		}
+		if (guiConfig.displayMethod == DisplayMethod.ALIVE) {
+			return new ScanningResultCallback() {
 				public void prepareForResults(ScanningResult result) {
 				}
 				public void consumeResults(ScanningResult result) {
@@ -213,8 +216,9 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 						resultTable.addOrUpdateResultRow(result);
 				}
 			};
-			
-			case PORTS: return new ScanningResultCallback() {
+		}
+		if (guiConfig.displayMethod == DisplayMethod.PORTS) {
+			return new ScanningResultCallback() {
 				public void prepareForResults(ScanningResult result) {
 				}
 				public void consumeResults(ScanningResult result) {
@@ -223,6 +227,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				}
 			};
 		}
+		throw new UnsupportedOperationException(guiConfig.displayMethod.toString());
 	}
 
 	public void updateProgress(final InetAddress currentAddress, final int runningThreads, final int percentageComplete) {

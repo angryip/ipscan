@@ -13,7 +13,6 @@ Before 3.0:
 * public XSL for XMLExporter
 * Easier adding/removing of columns to the result table (without resetting the results)
 * top-level exception handler for NoClassDefFoundErrors, etc
-* bug: rescanning when display=open does not properly render dead hosts
 
 Later:
 

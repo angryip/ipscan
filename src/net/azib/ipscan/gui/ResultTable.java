@@ -188,7 +188,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 		// we need to remove the elements from our real storage as well
 		scanningResults.remove(indices);
 		super.remove(indices);
-		// TODO: this is VERY slow if there a lot of items (eg 300k), due to the Control.sort() that is called inside to sort the indices
+		// TODO: this is VERY slow if there are a lot of items (eg 300k), due to the Control.sort() that is called inside to sort the indices
 	}
 	
 	public void removeAll() {
