@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.internal.gtk.OS;
 import org.eclipse.swt.widgets.Button;
 
 /**
@@ -20,7 +19,6 @@ import org.eclipse.swt.widgets.Button;
  * @author Anton Keks
  */
 class GTKHelper {
-	public static final int GTK_ICON_SIZE_BUTTON = OS.GTK_ICON_SIZE_LARGE_TOOLBAR+1;
 
 	/**
 	 * Sets the stock icon to the specified widget
@@ -51,7 +49,7 @@ class GTKHelper {
 			// use reflection to avoid compile-time dependency on other platforms
 			Class<?> displayExt = Class.forName("net.azib.ipscan.platform.swt.DisplayExt");
 			Method createImage = displayExt.getDeclaredMethod("createImage", String.class, int.class);
-			Image icon = (Image) createImage.invoke(null, name, GTK_ICON_SIZE_BUTTON);
+			Image icon = (Image) createImage.invoke(null, name, displayExt.getField("GTK_ICON_SIZE_BUTTON").get(null));
 			if (icon != null) {
 				button.setImage(icon);
 			}
