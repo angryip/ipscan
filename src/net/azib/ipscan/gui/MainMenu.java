@@ -81,7 +81,10 @@ public class MainMenu implements Startable {
 		initMenuItem(subMenu, "menu.scan.exportAll", "Ctrl+S", new Integer(SWT.MOD1 | 'S'), initListener(ScanMenuActions.SaveAll.class), false);
 		initMenuItem(subMenu, "menu.scan.exportSelection", null, null, initListener(ScanMenuActions.SaveSelection.class), false);
 		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.scan.quit", "Ctrl+Q", new Integer(SWT.MOD1 | 'Q'), initListener(ScanMenuActions.Quit.class));
+		if (!Platform.MAC_OS) {
+			initMenuItem(subMenu, null, null, null, null);
+			initMenuItem(subMenu, "menu.scan.quit", "Ctrl+Q", new Integer(SWT.MOD1 | 'Q'), initListener(ScanMenuActions.Quit.class));
+		}
 		
 		subMenu = initMenu(menu, "menu.goto");
 		initMenuItem(subMenu, "menu.goto.next.aliveHost", "Ctrl+H", new Integer(SWT.MOD1 | 'H'), initListener(GotoMenuActions.NextAliveHost.class));
