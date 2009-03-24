@@ -3,3 +3,4 @@ ant-bin.linux
 ant-bin.linux64
 ant-bin.mac
 ant-bin.win32
+dist
