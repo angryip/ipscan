@@ -20,11 +20,11 @@
     <jdkPreference>preferJre</jdkPreference>
   </jre>
   <versionInfo>
-    <fileVersion>3.0.0.BUILD</fileVersion>
+    <fileVersion>3.0.0.0</fileVersion>
     <txtFileVersion>VERSION</txtFileVersion>
     <fileDescription>Angry IP Scanner - fast and friendly network scanner</fileDescription>
     <copyright>Anton Keks</copyright>
-    <productVersion>3.0.0.BUILD</productVersion>
+    <productVersion>3.0.0.0</productVersion>
     <txtProductVersion>VERSION</txtProductVersion>
     <productName>Angry IP Scanner</productName>
     <companyName></companyName>

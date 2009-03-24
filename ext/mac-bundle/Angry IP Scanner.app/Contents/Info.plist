@@ -32,7 +32,7 @@
     <string>????</string>
 
     <key>CFBundleVersion</key>
-    <string>BUILD</string>
+    <string>VERSION</string>
 
     <key>CFBundleIdentifier</key>
     <string>net.azib.ipscan</string>

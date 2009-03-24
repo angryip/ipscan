@@ -10,7 +10,7 @@
 	<property name="testresults" value="test-results"/>
 			
 	<property name="name" value="Angry IP Scanner"/>
-	<property name="version" value="3.0-svn"/>
+	<property name="version" value="3.0-git"/>
 	<property name="main.class" value="net.azib.ipscan.Main"/>
 	<property name="swt" value="ext/swt"/>
 	<property name="ext.src" value="${ext}/rocksaw/src:${ext}/vserv-tcpip/src"/>
@@ -198,14 +198,7 @@
 		<echo message="Packaged jars are in the ${dist} directory"/>
 	</target>
 	
-	<target name="svn-info">
-		<!-- TODO: make this more cross-platform (most likely this will fail on windows) -->
-		<exec executable="svn" output="svn-info.xml" failonerror="false">
-			<arg line="info . --xml"/>
-		</exec>
-		<xmlproperty file="svn-info.xml" prefix="svn"/>
-		<delete file="svn-info.xml" failonerror="false"/>
-		<property name="build.number" value="${svn.info.entry(revision)}"/>
+	<target name="build-info">
 		<tstamp/>
 		<property name="build.date" value="${TODAY}"/>
 	</target>
@@ -297,7 +290,8 @@
 					<attribute name="Main-Class" value="${main.class}"/>
 					<attribute name="Title" value="${name}"/>
 					<attribute name="Version" value="${version}"/>
-					<attribute name="Build" value="${build.number}"/>
+					<!-- TODO: add git sha1 here -->
+					<!--<attribute name="Git-SHA1" value="${build.number}"/>-->
 					<attribute name="Build-Date" value="${build.date}"/>
 					<attribute name="Platform" value="@{platform}"/>
 					<attribute name="Built-By" value="${user.name}"/>
@@ -348,14 +342,14 @@
 		</sequential>
 	</macrodef>
 	
-	<target name="package-linux" depends="svn-info">
+	<target name="package-linux" depends="build-info">
 		<package-for platform="linux" librocksaw="librocksaw.so"/>
 		
 		<!-- now create deb package for Ubuntu and such -->
 		<antcall target="package-linux-deb-rpm"/>
 	</target>
 	
-	<target name="package-linux64" depends="svn-info">
+	<target name="package-linux64" depends="build-info">
 		<package-for platform="linux64" librocksaw="librocksaw.so"/>
 	</target>
 	
@@ -387,7 +381,7 @@
 		<delete dir="${dist}/deb"/>
 	</target>
 
-	<target name="package-win32" depends="svn-info">
+	<target name="package-win32" depends="build-info">
 		<package-for platform="win32" librocksaw="rocksaw.dll"/>
 		<antcall target="package-win32-exe"/>
 	</target>
@@ -398,14 +392,13 @@
 			<replacefilter token="FILENAME_IN" value="${ant.project.name}-win32-${version}.jar"/>
 			<replacefilter token="FILENAME_OUT" value="${ant.project.name}-${version}.exe"/>
 			<replacefilter token="VERSION" value="${version}"/>
-			<replacefilter token="BUILD" value="${build.number}"/>
 		</replace>
 		<launch4j configFile="${dist}/ipscan.xml"/>
 		<delete file="${dist}/ipscan.xml"/>
 		<delete file="${dist}/${ant.project.name}-win32-${version}.jar"/>
 	</target>
 
-	<target name="package-mac" depends="svn-info">
+	<target name="package-mac" depends="build-info">
 		<package-for platform="mac" librocksaw="todo-librocksaw.jnilib"/>
 		<copy todir="${dist}">
 			<fileset dir="${ext}/mac-bundle"/>
@@ -416,7 +409,6 @@
 		<replace file="${dist}/${name}.app/Contents/Info.plist">
 			<replacefilter token="APPNAME" value="${name}"/>
 			<replacefilter token="VERSION" value="${version}"/>
-			<replacefilter token="BUILD" value="${build.number}"/>
 			<replacefilter token="JARFILE" value="${ant.project.name}-mac-${version}.jar"/>
 			<replacefilter token="MAINCLASS" value="${main.class}"/>
 		</replace>
