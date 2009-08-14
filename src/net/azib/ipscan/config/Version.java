@@ -18,21 +18,21 @@ public class Version {
 	
 	public static final String COPYLEFT = "© 2008 Anton Keks";
 	
-	public static final String WEBSITE = "http://www.azib.net/ipscan/";
+	public static final String WEBSITE = "http://www.angryip.org/";
 	
 	public static final String MAILTO = "support@azib.net";
 
-	public static final String FORUM_URL = "http://www.azib.net/w/Forum";
+	public static final String FORUM_URL = "http://www.angryip.org/w/Forum";
 	
-	public static final String FAQ_URL = "http://www.azib.net/w/FAQ";
+	public static final String FAQ_URL = "http://www.angryip.org/w/FAQ";
 	
-	public static final String FAQ_CRIPPLED_WINDOWS_URL = "http://www.azib.net/w/FAQ:_Crippled_Windows";
+	public static final String FAQ_CRIPPLED_WINDOWS_URL = "http://www.angryip.org/w/FAQ:_Crippled_Windows";
 
-	public static final String PLUGINS_URL = "http://www.azib.net/w/FAQ:_Plugins";
+	public static final String PLUGINS_URL = "http://www.angryip.org/w/FAQ:_Plugins";
 	
-	public static final String DOWNLOAD_URL = "http://www.azib.net/w/Download";
+	public static final String DOWNLOAD_URL = "http://www.angryip.org/w/Download";
 
-	public static final String LATEST_VERSION_URL = "http://www.azib.net/ipscan/IPSCAN.VERSION";
+	public static final String LATEST_VERSION_URL = "http://www.angryip.org/ipscan/IPSCAN.VERSION";
 	
 	private static String version;
 	private static String build;

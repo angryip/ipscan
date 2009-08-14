@@ -1,5 +1,6 @@
 Before 3.0:
 
+* Windows: net stop SharedAccess
 * Show "+" in Ports fetcher only if it is relevant
 * gtk sort direction arrows
 * advanced exporting options dialog (with append checkbox)
