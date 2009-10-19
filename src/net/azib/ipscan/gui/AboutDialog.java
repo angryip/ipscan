@@ -39,7 +39,6 @@ public class AboutDialog extends AbstractModalDialog {
 		String aboutText = Labels.getLabel("text.about");
 		aboutText = aboutText.replaceAll("%NAME", Version.NAME);
 		aboutText = aboutText.replaceAll("%VERSION", Version.getVersion());
-		aboutText = aboutText.replaceAll("%BUILD", Version.getBuildNumber());
 		aboutText = aboutText.replaceAll("%DATE", Version.getBuildDate());
 		aboutText = aboutText.replaceAll("%COPYLEFT", Version.COPYLEFT);
 		Label aboutLabel = new Label(shell, SWT.NONE);

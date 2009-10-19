@@ -295,7 +295,7 @@
 					<attribute name="Build-Date" value="${build.date}"/>
 					<attribute name="Platform" value="@{platform}"/>
 					<attribute name="Built-By" value="${user.name}"/>
-					<attribute name="URL" value="http://www.azib.net/ipscan/"/>
+					<attribute name="URL" value="http://www.angryip.org/"/>
 				</manifest>
 				<fileset dir="${bin}.@{platform}" includes="**/*"/>
 			</jar>

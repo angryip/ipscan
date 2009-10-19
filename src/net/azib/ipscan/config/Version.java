@@ -16,7 +16,7 @@ import java.util.logging.Level;
 public class Version {
 	public static final String NAME = "Angry IP Scanner";
 	
-	public static final String COPYLEFT = "© 2008 Anton Keks";
+	public static final String COPYLEFT = "© 2009 Anton Keks";
 	
 	public static final String WEBSITE = "http://www.angryip.org/";
 	
@@ -35,7 +35,6 @@ public class Version {
 	public static final String LATEST_VERSION_URL = "http://www.angryip.org/ipscan/IPSCAN.VERSION";
 	
 	private static String version;
-	private static String build;
 	private static String buildDate;
 	
 	/**
@@ -48,16 +47,6 @@ public class Version {
 		return version;
 	}
 	
-	/**
-	 * @return build number of currently running Angry IP Scanner (retrieved from the jar file)
-	 */
-	public static String getBuildNumber() {
-		if (build == null) {
-			loadVersionFromJar();
-		}
-		return build;
-	}
-
 	/**
 	 * @return build date of currently running Angry IP Scanner  (retrieved from the jar file)
 	 */
@@ -76,7 +65,6 @@ public class Version {
 				JarFile jarFile = new JarFile(new URI(path).getPath());
 				Attributes attrs = jarFile.getManifest().getMainAttributes();
 				version = attrs.getValue("Version");
-				build = attrs.getValue("Build");
 				buildDate = attrs.getValue("Build-Date");
 				return;
 			}
@@ -85,7 +73,6 @@ public class Version {
 			}
 		}
 		version = "current";
-		build = "unknown";
 		buildDate = "today";
 	}
 	
