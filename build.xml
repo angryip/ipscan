@@ -351,35 +351,51 @@
 	
 	<target name="package-linux64" depends="build-info">
 		<package-for platform="linux64" librocksaw="librocksaw.so"/>
+
+    <!-- now create deb package for Ubuntu and such -->
+    <antcall target="package-linux64-deb-rpm"/>
 	</target>
 	
 	<target name="package-linux-deb-rpm" if="isRunningOnLinux">
-		<mkdir dir="${dist}/deb"/>
-		<copy todir="${dist}/deb">
-			<fileset dir="${ext}/deb-bundle"/>
-		</copy>
-		
-		<copy file="${dist}/${ant.project.name}-linux-${version}.jar" todir="${dist}/deb/usr/lib/ipscan"/>
-		<copy file="resources/images/icon.png" tofile="${dist}/deb/usr/share/pixmaps/ipscan.png"/>
-		
-		<replace file="${dist}/deb/DEBIAN/control">
-			<replacefilter token="VERSION" value="${version}"/>
-		</replace>
-		
-		<exec executable="chmod" dir="${dist}">
-			<arg line="a+x deb/usr/bin/ipscan deb/usr/lib/ipscan/${ant.project.name}-linux-${version}.jar"/>
-		</exec>
-		<echo message="Trying to build .deb package using dpkg..."/>
-		<exec executable="dpkg" dir="${dist}">
-			<arg line="-b deb ${ant.project.name}_${version}_i386.deb"/>
-		</exec>
-		<echo message="Trying to build .rpm package using alien..."/>
-		<exec executable="alien" dir="${dist}">
-			<arg line="--to-rpm ${ant.project.name}_${version}_i386.deb"/>
-		</exec>
-		
-		<delete dir="${dist}/deb"/>
+    <deb-and-rpm platform="linux" arch="i386"/>
 	</target>
+
+  <target name="package-linux64-deb-rpm" if="isRunningOnLinux">
+    <deb-and-rpm platform="linux64" arch="amd64"/>
+  </target>
+
+  <macrodef name="deb-and-rpm">
+    <attribute name="platform" default="linux"/>
+    <attribute name="arch" default="i386"/>
+    <sequential>
+      <mkdir dir="${dist}/deb"/>
+      <copy todir="${dist}/deb">
+        <fileset dir="${ext}/deb-bundle"/>
+      </copy>
+
+      <copy file="${dist}/${ant.project.name}-@{platform}-${version}.jar" todir="${dist}/deb/usr/lib/ipscan"/>
+      <copy file="resources/images/icon.png" tofile="${dist}/deb/usr/share/pixmaps/ipscan.png"/>
+
+      <replace file="${dist}/deb/DEBIAN/control">
+        <replacefilter token="VERSION" value="${version}"/>
+        <replacefilter token="ARCH" value="@{arch}"/>
+      </replace>
+
+      <exec executable="chmod" dir="${dist}">
+        <arg line="a+x deb/usr/bin/ipscan deb/usr/lib/ipscan/${ant.project.name}-@{platform}-${version}.jar"/>
+      </exec>
+      <echo message="Building .deb package using dpkg..."/>
+      <exec executable="dpkg" dir="${dist}">
+        <arg line="-b deb ${ant.project.name}_${version}_@{arch}.deb"/>
+      </exec>
+      <echo message="Building .rpm package using alien..."/>
+      <exec executable="alien" dir="${dist}">
+        <arg line="--to-rpm ${ant.project.name}_${version}_@{arch}.deb"/>
+      </exec>
+
+      <delete dir="${dist}/deb"/>
+    </sequential>
+  </macrodef>
 
 	<target name="package-win32" depends="build-info">
 		<package-for platform="win32" librocksaw="rocksaw.dll"/>

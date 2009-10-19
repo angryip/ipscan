@@ -2,7 +2,7 @@ Package: ipscan
 Section: net
 Version: VERSION-0
 Priority: optional
-Architecture: i386
+Architecture: ARCH
 Depends: openjdk-6-jre | icedtea-java7-jre | sun-java6-jre | sun-java5-jre | java5-runtime
 Maintainer: Anton Keks <anton@azib.net>
 Provides: ipscan
