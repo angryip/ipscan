@@ -253,7 +253,6 @@
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/ole"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/ole/win32" includes="I*"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/ole/win32" includes="O*"/>
-				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/gdip"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/opengl"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/opengl"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/cairo"/>
