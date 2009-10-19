@@ -154,9 +154,10 @@ public class EditOpenersDialog extends AbstractModalDialog {
 
 	private void saveCurrentFields() {
 		String openerName = openerNameText.getText();
-		if (openerName.length() == 0)
+		if (openerName.length() == 0 || openersList.getItemCount() == 0)
 			return;
-		
+
+    currentSelectionIndex = openersList.getSelectionIndex();		
 		File workingDir = workingDirText.getText().length() > 0 ? new File(workingDirText.getText()) : null;
 		openersConfig.add(openerName, new OpenersConfig.Opener(openerStringText.getText(), isInTerminalCheckbox.getSelection(), workingDir));
 		openersList.setItem(currentSelectionIndex, openerName);
@@ -164,6 +165,9 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	
 	private void loadFieldsForSelection() {
 		currentSelectionIndex = openersList.getSelectionIndex();
+    if (currentSelectionIndex < 0)
+      return;
+    
 		String openerName = openersList.getItem(currentSelectionIndex);
 		editFieldsGroup.setText(openerName);
 		Opener opener = openersConfig.getOpener(openerName);
