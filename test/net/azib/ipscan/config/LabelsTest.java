@@ -83,7 +83,10 @@ public class LabelsTest {
 	
 	public static File findBaseDir() {
 		URL url = LabelsTest.class.getClassLoader().getResource("messages.properties");
-		return new File(url.getPath()).getParentFile().getParentFile();	
+        File parent = new File(url.getPath());
+        while (!new File(parent, "build.xml").exists())
+            parent = parent.getParentFile();
+		return parent;
 	}
 
 	private void recurseAndTestLabels(File dir) throws IOException {
