@@ -8,7 +8,6 @@ package net.azib.ipscan.gui;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.gui.util.LayoutHelper;
-import net.azib.ipscan.swt.SWTHelper;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -103,9 +102,6 @@ public abstract class AbstractModalDialog {
 		shell.setDefaultButton(okButton);
 		Rectangle clientArea = shell.getClientArea();
 		
-		SWTHelper.setStockIconFor(okButton, SWT.OK);
-		SWTHelper.setStockIconFor(cancelButton, SWT.CANCEL);
-
 		Point size = okButton.computeSize(85, SWT.DEFAULT);
 		okButton.setSize(size);
 		
@@ -139,9 +135,6 @@ public abstract class AbstractModalDialog {
 	protected void positionButtonsInFormLayout(Button okButton, Button cancelButton, Control control) {
 		shell.setDefaultButton(okButton);
 		
-		SWTHelper.setStockIconFor(okButton, SWT.OK);
-		SWTHelper.setStockIconFor(cancelButton, SWT.CANCEL);
-		
 		if (Platform.MAC_OS || Platform.LINUX) {
 			// Mac OS and Linux users expect button order to be reverse
 			Button fooButton = okButton;
@@ -162,7 +155,6 @@ public abstract class AbstractModalDialog {
 	protected Button createCloseButton() {
 		Button button = new Button(shell, SWT.NONE);
 		button.setText(Labels.getLabel("button.close"));
-		SWTHelper.setStockIconFor(button, SWT.ABORT);
 		positionButtons(button, null);
 		
 		button.addListener(SWT.Selection, new Listener() {

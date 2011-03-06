@@ -7,7 +7,6 @@ package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.gui.util.LayoutHelper;
-import net.azib.ipscan.swt.SWTHelper;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -26,18 +25,12 @@ public class InputDialog extends AbstractModalDialog {
 
 	Label messageLabel;
 	Text text;
-	int okButtonStockIcon;
 	Button okButton;
 	Button cancelButton;
 	
 	private String message;
 	
 	public InputDialog(String title, String message) {
-		this(title, message, 0);
-	}
-
-	public InputDialog(String title, String message, int okButtonStockIcon) {
-		this.okButtonStockIcon = okButtonStockIcon;
 		populateShell();
 		shell.setText(title);
 		messageLabel.setText(message);
@@ -59,9 +52,7 @@ public class InputDialog extends AbstractModalDialog {
 		
 		okButton = new Button(shell, SWT.NONE);
 		okButton.setText(Labels.getLabel("button.OK"));
-		if (okButtonStockIcon != 0)
-			SWTHelper.setStockIconFor(okButton, okButtonStockIcon);
-		
+
 		cancelButton = new Button(shell, SWT.NONE);
 		cancelButton.setText(Labels.getLabel("button.cancel"));
 				

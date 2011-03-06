@@ -12,7 +12,6 @@ import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
-import net.azib.ipscan.swt.SWTHelper;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
@@ -135,7 +134,7 @@ public class GotoMenuActions {
 		}
 		
 		public void handleEvent(Event event) {
-			InputDialog dialog = new InputDialog(Labels.getLabel("title.find"), Labels.getLabel("text.find"), SWTHelper.FIND);
+			InputDialog dialog = new InputDialog(Labels.getLabel("title.find"), Labels.getLabel("text.find"));
 			String text = dialog.open(lastText, Labels.getLabel("button.find.next"));
 			if (text == null) {
 				return;

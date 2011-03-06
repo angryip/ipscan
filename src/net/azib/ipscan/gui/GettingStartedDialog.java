@@ -4,7 +4,6 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.swt.SWTHelper;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -54,8 +53,6 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		nextButton.setText(Labels.getLabel("button.next"));
 		nextButton.setFocus();
 		
-		SWTHelper.setStockIconFor(closeButton, SWT.ABORT);
-		SWTHelper.setStockIconFor(nextButton, SWT.ARROW_RIGHT);
 		positionButtons(nextButton, closeButton);
 		
 		gettingStartedText = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
