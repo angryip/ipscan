@@ -12,6 +12,7 @@ import net.azib.ipscan.core.ScannerDispatcherThreadFactory;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.core.net.PingerRegistryImpl;
+import net.azib.ipscan.core.plugins.PluginLoader;
 import net.azib.ipscan.exporters.CSVExporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
 import net.azib.ipscan.exporters.IPListExporter;
@@ -195,6 +196,8 @@ public class ComponentRegistry {
 				Logger.getLogger(getClass().getName()).warning("Cannot initialize MacApplicationMenu: " + e);
 			}
 		}
+
+        new PluginLoader().addTo(container);
 	}
 
 	private void start() {
