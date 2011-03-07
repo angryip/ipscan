@@ -7,7 +7,7 @@
 package net.azib.ipscan.feeders;
 
 import static org.junit.Assert.*;
-import static org.easymock.EasyMock.*;
+import static org.mockito.Mockito.*;
 
 import net.azib.ipscan.config.Labels;
 
@@ -29,7 +29,7 @@ public class RescanFeederTest {
 	
 	@Test
 	public void testDelegatedMethods() {
-		feeder = new RescanFeeder(createMockFeeder(), "123");
+		feeder = new RescanFeeder(mockFeeder(), "123");
 		assertEquals("SomeInfo", feeder.getInfo());
 		assertEquals("someLabel", feeder.getId());
 		assertEquals(Labels.getLabel("feeder.rescan.of") + "someName", feeder.getName());
@@ -37,7 +37,7 @@ public class RescanFeederTest {
 	
 	@Test
 	public void testFunctionality() throws Exception {		
-		feeder = new RescanFeeder(createMockFeeder(), "127.0.0.15", "127.0.1.35", "127.0.2.2");
+		feeder = new RescanFeeder(mockFeeder(), "127.0.0.15", "127.0.1.35", "127.0.2.2");
 		
 		assertTrue(feeder.hasNext());
 		assertEquals(0, feeder.percentageComplete());
@@ -55,12 +55,11 @@ public class RescanFeederTest {
 		assertEquals(100, feeder.percentageComplete());
 	}
 	
-	private Feeder createMockFeeder() {
-		Feeder feeder = createMock(Feeder.class);
-		expect(feeder.getInfo()).andReturn("SomeInfo");
-		expect(feeder.getId()).andReturn("someLabel");
-		expect(feeder.getName()).andReturn("someName");
-		replay(feeder);
+	private Feeder mockFeeder() {
+		Feeder feeder = mock(Feeder.class);
+		when(feeder.getInfo()).thenReturn("SomeInfo");
+		when(feeder.getId()).thenReturn("someLabel");
+		when(feeder.getName()).thenReturn("someName");
 		return feeder;
 	}
 

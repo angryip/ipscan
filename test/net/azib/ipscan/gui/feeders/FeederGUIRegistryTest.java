@@ -16,7 +16,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static org.easymock.classextension.EasyMock.*;
+import static org.mockito.Mockito.*;
 
 /**
  * FeederGUIRegistryTest
@@ -34,7 +34,7 @@ public class FeederGUIRegistryTest {
 	public void createRegistry() {
 		parent = new Shell();
 		
-		feederSelectionCombo = createMock(Combo.class);
+		feederSelectionCombo = mock(Combo.class);
 		
 		feederGUI = new RangeFeederGUI(parent);
 		registry = new FeederGUIRegistry(new AbstractFeederGUI[] {feederGUI}, feederSelectionCombo, null);
@@ -48,10 +48,8 @@ public class FeederGUIRegistryTest {
 	@Test
 	public void addFeederNamesToTheCombo() throws Exception {
 		reset(feederSelectionCombo);
-		feederSelectionCombo.add(Labels.getLabel(feederGUI.getFeederId()));
-		replay(feederSelectionCombo);
 		new FeederGUIRegistry(new AbstractFeederGUI[] {feederGUI}, feederSelectionCombo, null);
-		verify(feederSelectionCombo);
+        verify(feederSelectionCombo).add(Labels.getLabel(feederGUI.getFeederId()));
 	}
 
 	@Test
@@ -64,7 +62,7 @@ public class FeederGUIRegistryTest {
 	@Test
 	public void createRescanFeederGetsOriginalFeeder() throws Exception {
 		Feeder lastFeeder = registry.createFeeder();
-		Feeder rescanFeeder = registry.createRescanFeeder(new TableItem[] {createMock(TableItem.class)});
+		Feeder rescanFeeder = registry.createRescanFeeder(new TableItem[] {mock(TableItem.class)});
 		assertEquals(lastFeeder.getId(), rescanFeeder.getId());
 	}
 }

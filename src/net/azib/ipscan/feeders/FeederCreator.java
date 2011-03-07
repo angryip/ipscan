@@ -36,9 +36,9 @@ public interface FeederCreator {
 	
 	/**
 	 * Restores previously serialized settings.
-	 * @param serialized
+	 * @param parts
 	 */
-	public void unserialize(String[] parts);
+	public void unserialize(String ... parts);
 	
 	/**
 	 * @return labels corresponding to parts during serialization.

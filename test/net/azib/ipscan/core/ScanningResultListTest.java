@@ -3,10 +3,10 @@
  */
 package net.azib.ipscan.core;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -43,32 +43,25 @@ import org.junit.Test;
 public class ScanningResultListTest {
 
 	private List<Fetcher> fetchers = new ArrayList<Fetcher>(
-			Arrays.asList(createMockFetcher("fetcher.ip"), createMockFetcher("fetcher.ping"), createMockFetcher("fetcher.hostname"), createMockFetcher("fetcher.ping.ttl")));
+			Arrays.asList(mockFetcher("fetcher.ip"), mockFetcher("fetcher.ping"), mockFetcher("fetcher.hostname"), mockFetcher("fetcher.ping.ttl")));
 
 	private FetcherRegistry fetcherRegistry;
 	private ScanningResultList scanningResults;
 	
 	@Before
 	public void setUp() throws Exception {
-		fetcherRegistry = createMock(FetcherRegistry.class);
-		expect(fetcherRegistry.getSelectedFetchers())
-			.andReturn(fetchers).anyTimes();
-		replay(fetcherRegistry);
-		
+		fetcherRegistry = mock(FetcherRegistry.class);
+		when(fetcherRegistry.getSelectedFetchers()).thenReturn(fetchers);
+
 		scanningResults =  new ScanningResultList(fetcherRegistry);
-		scanningResults.initNewScan(createMockFeeder("someFeeder"));
-	}
-	
-	@After
-	public void tearDown() {
-		verify(fetcherRegistry);
+		scanningResults.initNewScan(mockFeeder("someFeeder"));
 	}
 	
 	@Test
 	public void testConstructor() throws Exception {
 		StateMachine stateMachine = new StateMachine(){};
 		scanningResults = new ScanningResultList(fetcherRegistry, stateMachine);
-		scanningResults.initNewScan(createMockFeeder("inff"));
+		scanningResults.initNewScan(mockFeeder("inff"));
 		assertFalse(scanningResults.getScanInfo().isCompletedNormally());
 		stateMachine.transitionToNext();
 		stateMachine.startScanning();
@@ -213,14 +206,13 @@ public class ScanningResultListTest {
 	@Test 
 	public void testInitNewScan() throws Exception {
 		fetcherRegistry.getSelectedFetchers().clear();
-		fetcherRegistry.getSelectedFetchers().add(createMockFetcher("hello"));
+		fetcherRegistry.getSelectedFetchers().add(mockFetcher("hello"));
 
 		scanningResults.registerAtIndex(0, scanningResults.createResult(InetAddress.getLocalHost()));
 		
-		Feeder feeder = createMockFeeder("I am the best Feeder in the World!");
+		Feeder feeder = mockFeeder("I am the best Feeder in the World!");
 		scanningResults.initNewScan(feeder);
 		
-		verify(feeder);
 		assertTrue("initNewScan() must not clear results - otherwise rescanning will be broken", scanningResults.areResultsAvailable());
 		assertEquals("Cached Fetchers must be re-initilized", 1, scanningResults.getFetchers().size());
 		assertEquals("I am the best Feeder in the World!", scanningResults.getFeederInfo());
@@ -234,7 +226,7 @@ public class ScanningResultListTest {
 
 	@Test
 	public void testCachedFetchers() throws Exception {
-		scanningResults.initNewScan(createMockFeeder("aaa"));
+		scanningResults.initNewScan(mockFeeder("aaa"));
 		fetcherRegistry.getSelectedFetchers().clear();
 		assertEquals("Fetchers should be cached from the last scan", 4, scanningResults.getFetchers().size());
 	}
@@ -290,7 +282,7 @@ public class ScanningResultListTest {
 	
 	@Test 
 	public void testGetResultAsString() throws Exception {
-		scanningResults.initNewScan(createMockFeeder("abc"));
+		scanningResults.initNewScan(mockFeeder("abc"));
 		List<Fetcher> fetchers = scanningResults.getFetchers();
 		ScanningResult result = scanningResults.createResult(InetAddress.getByName("172.28.43.55"));
 		scanningResults.registerAtIndex(0, result);
@@ -347,18 +339,16 @@ public class ScanningResultListTest {
 		assertEquals(scanTime2, scanInfo.getScanTime());
 	}
 	
-	private Fetcher createMockFetcher(String name) {
-		Fetcher fetcher = createMock(Fetcher.class);
-		expect(fetcher.getName()).andReturn(name).anyTimes();
-		replay(fetcher);
+	private Fetcher mockFetcher(String name) {
+		Fetcher fetcher = mock(Fetcher.class);
+		when(fetcher.getName()).thenReturn(name);
 		return fetcher;
 	}
 	
-	private Feeder createMockFeeder(String feederInfo) {
-		Feeder feeder = createMock(Feeder.class);
-		expect(feeder.getInfo()).andReturn(feederInfo);
-		expect(feeder.getName()).andReturn("feeder.range");
-		replay(feeder);
+	private Feeder mockFeeder(String feederInfo) {
+		Feeder feeder = mock(Feeder.class);
+		when(feeder.getInfo()).thenReturn(feederInfo);
+		when(feeder.getName()).thenReturn("feeder.range");
 		return feeder;
 	}
 }

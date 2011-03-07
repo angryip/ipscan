@@ -6,7 +6,7 @@
 package net.azib.ipscan.gui;
 
 import static org.junit.Assert.*;
-import static org.easymock.classextension.EasyMock.*;
+import static org.mockito.Mockito.*;
 
 import net.azib.ipscan.gui.PreferencesDialog.PortsTextValidationListener;
 
@@ -30,7 +30,7 @@ public class PreferencesDialogTest {
 	private KeyEvent initPortsTextListener() {
 		portsTextListener = new PortsTextValidationListener();
 		Event ev = new Event();
-		ev.widget = createMock(Text.class);
+		ev.widget = mock(Text.class);
 		ev.doit = true;
 		return new KeyEvent(ev);
 	}
@@ -39,28 +39,24 @@ public class PreferencesDialogTest {
 	public void portsTextTraversesOnTab() throws Exception {
 		KeyEvent e = initPortsTextListener();
 		e.keyCode = SWT.TAB;
-		Shell shell = createMock(Shell.class);
-		expect(((Control)e.getSource()).getShell()).andReturn(shell);
-		expect(shell.traverse(SWT.TRAVERSE_TAB_NEXT)).andReturn(true);
-		replay(e.widget, shell);
-		
+		Shell shell = mock(Shell.class);
+		when(((Control)e.getSource()).getShell()).thenReturn(shell);
+		when(shell.traverse(SWT.TRAVERSE_TAB_NEXT)).thenReturn(true);
+
 		portsTextListener.keyPressed(e);
 		assertFalse(e.doit);
-		verify(e.widget, shell);
 	}
 	
 	@Test
 	public void portsTextTraversesOnEnter() throws Exception {
 		KeyEvent e = initPortsTextListener();
 		e.keyCode = SWT.CR;
-		Shell shell = createMock(Shell.class);
-		expect(((Control)e.getSource()).getShell()).andReturn(shell);
-		expect(shell.traverse(SWT.TRAVERSE_RETURN)).andReturn(true);
-		replay(e.widget, shell);
-		
+		Shell shell = mock(Shell.class);
+		when(((Control)e.getSource()).getShell()).thenReturn(shell);
+		when(shell.traverse(SWT.TRAVERSE_RETURN)).thenReturn(true);
+
 		portsTextListener.keyPressed(e);
 		assertFalse(e.doit);
-		verify(e.widget, shell);
 	}
 
 	@Test
@@ -69,14 +65,12 @@ public class PreferencesDialogTest {
 		e.character = SWT.CR;
 		e.keyCode = SWT.CR;
 		e.stateMask = SWT.MOD1; // is Ctrl on most platforms
-		expect(((Text)e.widget).getText()).andReturn("1,");
-		expect(((Text)e.widget).getCaretPosition()).andReturn(2);
-		replay(e.widget);
+		when(((Text)e.widget).getText()).thenReturn("1,");
+		when(((Text)e.widget).getCaretPosition()).thenReturn(2);
 
 		portsTextListener.keyPressed(e);
 		assertEquals(0, e.stateMask);
 		assertTrue(e.doit);
-		verify(e.widget);
 	}
 
 	@Test
@@ -107,5 +101,4 @@ public class PreferencesDialogTest {
 		assertTrue(listener.validateChar('7', "123,1-3,1-", 10));
 		assertTrue(listener.validateChar('3', "1,   ", 4));
 	}
-
 }

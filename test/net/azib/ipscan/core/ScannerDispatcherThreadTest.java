@@ -5,7 +5,6 @@
  */
 package net.azib.ipscan.core;
 
-import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.util.Collections;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -17,10 +16,11 @@ import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.IPFetcher;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.objenesis.ObjenesisHelper;
 
 /**
  * ScannerThreadTest
@@ -31,18 +31,17 @@ public class ScannerDispatcherThreadTest {
 	
 	@Test
 	public void testConstruction() throws Exception {
-		FetcherRegistry registry = createMock(FetcherRegistry.class);
-		expect(registry.getSelectedFetchers()).andReturn(Collections.<Fetcher>singleton(new IPFetcher())).anyTimes();
-		Feeder feeder = createMock(Feeder.class);
-		expect(feeder.getInfo()).andReturn("info");
-		expect(feeder.getName()).andReturn("text.ip");
-		replay(registry, feeder);
-		
+		FetcherRegistry registry = mock(FetcherRegistry.class);
+		when(registry.getSelectedFetchers()).thenReturn(Collections.<Fetcher>singleton(new IPFetcher()));
+		Feeder feeder = mock(Feeder.class);
+		when(feeder.getInfo()).thenReturn("info");
+		when(feeder.getName()).thenReturn("text.ip");
+
 		ScanningResultList scanningResults = new ScanningResultList(registry);
 		scanningResults.info = new ScanInfo(); // initialize info so we can add a dummy result
 		scanningResults.registerAtIndex(0, scanningResults.createResult(InetAddress.getLocalHost()));
 		
-		ScannerConfig config = createMock(ScannerConfig.class);
+		ScannerConfig config = mock(ScannerConfig.class);
 		config.maxThreads = 10;
 		
 		ScannerDispatcherThread thread = new ScannerDispatcherThread(feeder, new Scanner(registry), null, null, scanningResults, config, null);
@@ -53,16 +52,14 @@ public class ScannerDispatcherThreadTest {
 		assertEquals(thread.getClass().getSimpleName(), thread.getName());
 		assertTrue(thread.isDaemon());
 		assertEquals(config.maxThreads, ((ThreadPoolExecutor)thread.threadPool).getMaximumPoolSize());
-		assertEquals(thread, ((ThreadPoolExecutor)thread.threadPool).getThreadFactory());
-		
-		verify(registry, feeder);
+		assertEquals(thread, ((ThreadPoolExecutor) thread.threadPool).getThreadFactory());
 	}
 	
 	@Test
 	public void threadFactoryProducesDaemons() throws Exception {
-		ScannerDispatcherThread thread = createMock(ScannerDispatcherThread.class, (Method)null);
+		ScannerDispatcherThread thread = (ScannerDispatcherThread) ObjenesisHelper.newInstance(ScannerDispatcherThread.class);
 		thread.threadGroup = new ThreadGroup("foo");
-		Thread t = thread.newThread(createMock(Runnable.class));
+		Thread t = thread.newThread(mock(Runnable.class));
 		assertTrue(t.isDaemon());
 		assertSame(thread.threadGroup, t.getThreadGroup());
 	}

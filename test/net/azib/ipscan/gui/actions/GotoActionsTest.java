@@ -5,16 +5,14 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import net.azib.ipscan.core.ScanningResult;
-import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.ScanningResult.ResultType;
+import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.actions.GotoMenuActions.NextHost;
 import net.azib.ipscan.gui.actions.GotoMenuActions.PrevHost;
 
 import org.junit.Test;
-
-import static org.easymock.classextension.EasyMock.*;
+import static org.mockito.Mockito.*;
 
 /**
  * GotoActionsTest
@@ -22,101 +20,71 @@ import static org.easymock.classextension.EasyMock.*;
  * @author Anton Keks
  */
 public class GotoActionsTest {
+    private ResultTable table = mock(ResultTable.class, RETURNS_DEEP_STUBS);
+    private ScanningResultList results = table.getScanningResults();
 
-	@Test
-	public void nextHost() throws Exception {
-		ResultTable table = createMock(ResultTable.class);
-		ScanningResultList results = createMock(ScanningResultList.class);
-		NextHost nextHostAction = new NextHost(table, ResultType.ALIVE);
-		
-		// first host (0) is found
-		expect(table.getScanningResults()).andReturn(results);
-		expect(table.getItemCount()).andReturn(2);
-		expect(table.getSelectionIndex()).andReturn(-1);
-		expect(results.getResult(0)).andReturn(result(ResultType.WITH_PORTS));
-		table.setSelection(0); expectLastCall();
-		expect(table.setFocus()).andReturn(true);
-		replay(table, results);		
-		nextHostAction.handleEvent(null);
-		verify(table, results);
+    @Test
+	public void nextHostFindsFirstHost() throws Exception {
+        when(table.getItemCount()).thenReturn(2);
+		when(table.getSelectionIndex()).thenReturn(-1);
+        when(results.getResult(0).getType()).thenReturn(ResultType.WITH_PORTS);
+        new NextHost(table, ResultType.ALIVE).handleEvent(null);
+        verify(table).setFocus();
+		verify(table).setSelection(0);
+    }
 
-		// start from the middle, rewind, first is found
-		reset(table, results);
-		expect(table.getScanningResults()).andReturn(results).times(2);
-		expect(table.getItemCount()).andReturn(2).times(2);
-		expect(table.getSelectionIndex()).andReturn(0);
-		expect(results.getResult(1)).andReturn(result(ResultType.DEAD));
-		expect(results.getResult(0)).andReturn(result(ResultType.ALIVE));
-		table.deselectAll(); expectLastCall();
-		expect(table.getSelectionIndex()).andReturn(-1);
-		table.setSelection(0); expectLastCall();
-		expect(table.setFocus()).andReturn(true);
-		replay(table, results);		
-		nextHostAction.handleEvent(null);
-		verify(table, results);
-		
-		// second dead host (1) is found
-		nextHostAction =  new NextHost(table, ResultType.DEAD);
-		reset(table, results);
-		expect(table.getScanningResults()).andReturn(results);
-		expect(table.getItemCount()).andReturn(2);
-		expect(table.getSelectionIndex()).andReturn(-1);
-		expect(results.getResult(0)).andReturn(result(ResultType.WITH_PORTS));
-		expect(results.getResult(1)).andReturn(result(ResultType.DEAD));
-		table.setSelection(1); expectLastCall();
-		expect(table.setFocus()).andReturn(true);
-		replay(table, results);		
-		nextHostAction.handleEvent(null);
-		verify(table, results);
-	}
-	
-	@Test
-	public void prevHost() throws Exception {
-		ResultTable table = createMock(ResultTable.class);
-		ScanningResultList results = createMock(ScanningResultList.class);
-		PrevHost nextHostAction = new PrevHost(table, ResultType.ALIVE);
-		
-		// last host (9) is found
-		expect(table.getScanningResults()).andReturn(results);
-		expect(table.getItemCount()).andReturn(10).times(2);
-		expect(table.getSelectionIndex()).andReturn(-1);
-		expect(results.getResult(9)).andReturn(result(ResultType.WITH_PORTS));
-		table.setSelection(9); expectLastCall();
-		expect(table.setFocus()).andReturn(true);
-		replay(table, results);		
-		nextHostAction.handleEvent(null);
-		verify(table, results);
+    @Test
+    public void nextHostStartsFromMiddleRewindsAndFindsFirstOne() {
+		when(table.getItemCount()).thenReturn(2);
+		when(table.getSelectionIndex()).thenReturn(0);
+        when(results.getResult(1).getType()).thenReturn(ResultType.DEAD);
+        when(results.getResult(0).getType()).thenReturn(ResultType.ALIVE);
+        when(table.getSelectionIndex()).thenReturn(-1);
+		new NextHost(table, ResultType.ALIVE).handleEvent(null);
+        verify(table).setFocus();
+        verify(table).setSelection(0);
+    }
 
-		// start from the start, rewind to the end, last is found
-		reset(table, results);
-		expect(table.getScanningResults()).andReturn(results).times(2);
-		expect(table.getItemCount()).andReturn(25).times(3);
-		expect(table.getSelectionIndex()).andReturn(0);
-		expect(results.getResult(24)).andReturn(result(ResultType.DEAD));
-		expect(results.getResult(23)).andReturn(result(ResultType.ALIVE));
-		table.deselectAll(); expectLastCall();
-		expect(table.getSelectionIndex()).andReturn(-1);
-		table.setSelection(23); expectLastCall();
-		expect(table.setFocus()).andReturn(true);
-		replay(table, results);		
-		nextHostAction.handleEvent(null);
-		verify(table, results);
-		
-		// not found
-		reset(table, results);
-		expect(table.getScanningResults()).andReturn(results);
-		expect(table.getItemCount()).andReturn(1).times(2);
-		expect(table.getSelectionIndex()).andReturn(-1);
-		expect(results.getResult(0)).andReturn(result(ResultType.DEAD));
-		replay(table, results);		
-		nextHostAction.handleEvent(null);
-		verify(table, results);
+    @Test
+    public void nextHostFindsSecondItem() {
+		when(table.getItemCount()).thenReturn(2);
+		when(table.getSelectionIndex()).thenReturn(-1);
+        when(results.getResult(0).getType()).thenReturn(ResultType.WITH_PORTS);
+        when(results.getResult(1).getType()).thenReturn(ResultType.DEAD);
+        new NextHost(table, ResultType.DEAD).handleEvent(null);
+        verify(table).setFocus();
+        verify(table).setSelection(1);
 	}
 
-	private ScanningResult result(ResultType type) {
-		ScanningResult result = createMock(ScanningResult.class);
-		expect(result.getType()).andReturn(type);
-		replay(result);
-		return result;
+    @Test
+	public void prevHostFindsLastHost() throws Exception {
+        when(table.getItemCount()).thenReturn(10);
+		when(table.getSelectionIndex()).thenReturn(-1);
+        when(results.getResult(9).getType()).thenReturn(ResultType.WITH_PORTS);
+        when(table.setFocus()).thenReturn(true);
+		new PrevHost(table, ResultType.ALIVE).handleEvent(null);
+        verify(table).setFocus();
+        verify(table).setSelection(9);
+    }
+
+    @Test
+    public void prevHostRewindsAndFindsLastItem() {
+		when(table.getItemCount()).thenReturn(25);
+		when(table.getSelectionIndex()).thenReturn(0);
+        when(results.getResult(24).getType()).thenReturn(ResultType.DEAD);
+        when(results.getResult(23).getType()).thenReturn(ResultType.ALIVE);
+        when(table.getSelectionIndex()).thenReturn(-1);
+		new PrevHost(table, ResultType.ALIVE).handleEvent(null);
+        verify(table).setFocus();
+        verify(table).setSelection(23);
+    }
+
+    @Test
+    public void prevHostDoesntFindAnything() {
+		when(table.getItemCount()).thenReturn(1);
+		when(table.getSelectionIndex()).thenReturn(-1);
+        when(results.getResult(0).getType()).thenReturn(ResultType.DEAD);
+        new PrevHost(table, ResultType.ALIVE).handleEvent(null);
+        verify(table, never()).setSelection(anyInt());
 	}
 }

@@ -3,10 +3,7 @@
  */
 package net.azib.ipscan.exporters;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
@@ -40,24 +37,18 @@ public class ExportProcessorTest {
 	
 	@Before
 	public void setUp() {
-		fetcherRegistry = createMock(FetcherRegistry.class);
-		expect(fetcherRegistry.getSelectedFetchers())
-			.andReturn(Collections.<Fetcher>singletonList(new IPFetcher())).anyTimes();
-		replay(fetcherRegistry);
+		fetcherRegistry = mock(FetcherRegistry.class);
+		when(fetcherRegistry.getSelectedFetchers())
+			.thenReturn(Collections.<Fetcher>singletonList(new IPFetcher()));
 	}
 	
-	@After
-	public void tearDown() {
-		verify(fetcherRegistry);
-	}
-
 	@Test
 	public void testProcess() throws Exception {
 		File file = File.createTempFile("exportTest", "txt");
 		ExportProcessor exportProcessor = new ExportProcessor(new TXTExporter(), file, false);
 		
 		ScanningResultList scanningResultList = new ScanningResultList(fetcherRegistry);
-		scanningResultList.initNewScan(createMockFeeder("megaFeeder"));
+		scanningResultList.initNewScan(mockFeeder("megaFeeder"));
 		scanningResultList.registerAtIndex(0, scanningResultList.createResult(InetAddress.getByName("192.168.0.13")));
 		exportProcessor.process(scanningResultList, null);
 		
@@ -75,7 +66,7 @@ public class ExportProcessorTest {
 		ExportProcessor exportProcessor = new ExportProcessor(new TXTExporter(), file, false);
 		
 		ScanningResultList scanningResultList = new ScanningResultList(fetcherRegistry);
-		scanningResultList.initNewScan(createMockFeeder("feeder2"));
+		scanningResultList.initNewScan(mockFeeder("feeder2"));
 		
 		scanningResultList.registerAtIndex(0, scanningResultList.createResult(InetAddress.getByName("192.168.13.66")));
 		scanningResultList.registerAtIndex(1, scanningResultList.createResult(InetAddress.getByName("192.168.13.67")));
@@ -96,11 +87,10 @@ public class ExportProcessorTest {
 		assertTrue(content.indexOf("192.168.13.76") > 0);		
 	}
 	
-	private Feeder createMockFeeder(String feederInfo) {
-		Feeder feeder = createMock(Feeder.class);
-		expect(feeder.getInfo()).andReturn(feederInfo);
-		expect(feeder.getName()).andReturn("feeder.range");
-		replay(feeder);
+	private Feeder mockFeeder(String feederInfo) {
+		Feeder feeder = mock(Feeder.class);
+		when(feeder.getInfo()).thenReturn(feederInfo);
+		when(feeder.getName()).thenReturn("feeder.range");
 		return feeder;
 	}
 

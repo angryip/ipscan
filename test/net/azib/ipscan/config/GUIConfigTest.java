@@ -3,9 +3,7 @@
  */
 package net.azib.ipscan.config;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -67,13 +65,11 @@ public class GUIConfigTest {
 
 	@Test
 	public void columnWidths() throws Exception {
-		Fetcher fetcher = createMock(Fetcher.class);
-		expect(fetcher.getId()).andReturn("fetcher.abc").anyTimes();
-		replay(fetcher);
-		
+		Fetcher fetcher = mock(Fetcher.class);
+		when(fetcher.getId()).thenReturn("fetcher.abc");
+
 		config.setColumnWidth(fetcher, 35);
 		assertEquals(35, config.getColumnWidth(fetcher));
 		assertEquals(35, preferences.getInt("columnWidth." + fetcher.getId(), 0));
 	}
-
 }

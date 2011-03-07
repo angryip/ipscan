@@ -7,7 +7,7 @@
 package net.azib.ipscan.config;
 
 import static org.junit.Assert.*;
-import static org.easymock.classextension.EasyMock.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,7 +22,6 @@ import net.azib.ipscan.feeders.FeederRegistry;
 import org.junit.Before;
 import org.junit.Test;
 
-
 /**
  * CommandLineProcessorTest
  *
@@ -35,21 +34,20 @@ public class CommandLineProcessorTest {
 	
 	@Before
 	public void prepare() {
-		feederCreator = createMock(FeederCreator.class);
-		exporters = createMock(ExporterRegistry.class);
+		feederCreator = mock(FeederCreator.class);
+		exporters = mock(ExporterRegistry.class);
 		processor = new CommandLineProcessor(new MockFeederRegistry(feederCreator), exporters);
 	}
 	
 	@Test
 	public void toStringGeneratesUsageHelp() throws Exception {
-		expect(feederCreator.getFeederId()).andReturn("feeder.range");
-		expect(feederCreator.serializePartsLabels()).andReturn(new String[] {"feeder.range.to"});
-		Exporter exporter = createMock(Exporter.class);
-		expect(exporters.iterator()).andReturn(Collections.singleton(exporter).iterator());
-		expect(exporter.getFilenameExtension()).andReturn("pdf");
-		expect(exporter.getId()).andReturn("exporter.txt");
-		replay(feederCreator, exporters, exporter);
-		
+		when(feederCreator.getFeederId()).thenReturn("feeder.range");
+		when(feederCreator.serializePartsLabels()).thenReturn(new String[] {"feeder.range.to"});
+		Exporter exporter = mock(Exporter.class);
+		when(exporters.iterator()).thenReturn(Collections.singleton(exporter).iterator());
+		when(exporter.getFilenameExtension()).thenReturn("pdf");
+		when(exporter.getId()).thenReturn("exporter.txt");
+
 		String usage = processor.toString();
 		assertTrue(usage.contains("-f:range"));
 		assertTrue(usage.contains(Labels.getLabel("feeder.range.to")));
@@ -57,19 +55,15 @@ public class CommandLineProcessorTest {
 		assertTrue(usage.contains("-q"));
 //		assertTrue(usage.contains("-a"));
 		assertTrue(usage.contains("-s"));
-		
-		verify(feederCreator, exporters, exporter);
 	}
 
 	@Test
 	public void minimal() throws Exception {
-		expect(feederCreator.getFeederId()).andReturn("feeder.feeder");
-		expect(feederCreator.serializePartsLabels()).andReturn(new String[] {"1st", "2nd"});
-		feederCreator.unserialize(aryEq(new String[] {"arg1", "arg2"})); expectLastCall();
-		Exporter txtExporter = createMock(Exporter.class);
-		expect(exporters.createExporter("file.txt")).andReturn(txtExporter);
-		replay(feederCreator, exporters);
-		
+		when(feederCreator.getFeederId()).thenReturn("feeder.feeder");
+		when(feederCreator.serializePartsLabels()).thenReturn(new String[] {"1st", "2nd"});
+		Exporter txtExporter = mock(Exporter.class);
+		when(exporters.createExporter("file.txt")).thenReturn(txtExporter);
+
 		processor.parse("-f:feeder", "arg1", "arg2", "-o", "file.txt");
 
 		assertEquals(feederCreator, processor.feederCreator);
@@ -80,15 +74,13 @@ public class CommandLineProcessorTest {
 		assertFalse(processor.appendToFile);
 		assertTrue("specifying exporter should enable autoStart", processor.autoStart);
 		
-		verify(feederCreator, exporters);
+        verify(feederCreator).unserialize(new String[] {"arg1", "arg2"});
 	}
 
 	@Test
 	public void options() throws Exception {
-		expect(feederCreator.getFeederId()).andReturn("feeder.mega");
-		expect(feederCreator.serializePartsLabels()).andReturn(new String[0]);
-		feederCreator.unserialize(aryEq(new String[0]));
-		replay(feederCreator);
+		when(feederCreator.getFeederId()).thenReturn("feeder.mega");
+		when(feederCreator.serializePartsLabels()).thenReturn(new String[0]);
 
 		processor.parse("-s", "-f:mega", "-aq");
 		
@@ -97,7 +89,7 @@ public class CommandLineProcessorTest {
 		assertTrue(processor.autoStart);
 		assertTrue(processor.appendToFile);
 		
-		verify(feederCreator);
+		verify(feederCreator).unserialize(new String[0]);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
@@ -141,5 +133,4 @@ public class CommandLineProcessorTest {
 		}
 
 	}
-
 }

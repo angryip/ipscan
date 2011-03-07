@@ -6,10 +6,7 @@
 
 package net.azib.ipscan.gui;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.replay;
-import static org.easymock.classextension.EasyMock.verify;
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -44,7 +41,7 @@ public class StatisticsDialogTest {
 	
 	@Test
 	public void dialogContent() throws Exception {
-		ScanningResultList results = createMock(ScanningResultList.class);
+		ScanningResultList results = mock(ScanningResultList.class);
 		ScanInfo scanInfo = new ScanInfo() {
 			{
 				this.startTime = System.currentTimeMillis();
@@ -55,11 +52,10 @@ public class StatisticsDialogTest {
 			}
 		};
 		
-		expect(results.getScanInfo()).andReturn(scanInfo);
-		expect(results.getFeederName()).andReturn("SomeFeeder");
-		expect(results.getFeederInfo()).andReturn("SomeInfoHere");
-		replay(results);
-		
+		when(results.getScanInfo()).thenReturn(scanInfo);
+		when(results.getFeederName()).thenReturn("SomeFeeder");
+		when(results.getFeederInfo()).thenReturn("SomeInfoHere");
+
 		String text = new StatisticsDialog(results).prepareText();
 		
 		assertNotNull(text);
@@ -70,6 +66,5 @@ public class StatisticsDialogTest {
 		assertTrue(text.contains(Labels.getLabel("text.scan.hosts.total") + "20"));
 		assertTrue(text.contains(Labels.getLabel("text.scan.hosts.alive") + "10"));
 		assertTrue(text.contains(Labels.getLabel("text.scan.hosts.ports") + "5"));
-		verify(results);
 	}
 }

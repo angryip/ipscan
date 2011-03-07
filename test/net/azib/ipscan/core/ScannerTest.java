@@ -3,10 +3,10 @@
  */
 package net.azib.ipscan.core;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -42,20 +42,14 @@ public class ScannerTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		fetcherRegistry = createMock(FetcherRegistry.class);
-		expect(fetcherRegistry.getSelectedFetchers()).andReturn(
+		fetcherRegistry = mock(FetcherRegistry.class);
+		when(fetcherRegistry.getSelectedFetchers()).thenReturn(
 			Arrays.asList(new Fetcher[] {new FakeFetcher(), new AnotherFakeFetcher(), new AddressAbortingFetcher(), new FailingFetcher()})
 		);
-		replay(fetcherRegistry);
-		
+
 		scanner = new Scanner(fetcherRegistry);
 	}
 	
-	@After
-	public void tearDown() {
-		verify(fetcherRegistry);
-	}
-
 	@Test
 	public void testScan() throws Exception {
 		// scan the local host
@@ -73,11 +67,10 @@ public class ScannerTest {
 	
 	@Test
 	public void testScanInterrupted() throws Exception {
-		fetcherRegistry = createMock(FetcherRegistry.class);
-		expect(fetcherRegistry.getSelectedFetchers()).andReturn(
+		fetcherRegistry = mock(FetcherRegistry.class);
+		when(fetcherRegistry.getSelectedFetchers()).thenReturn(
 			Arrays.asList(new Fetcher[] {new PlainValueFetcher(), new InterruptedFetcher(), new PlainValueFetcher()})
 		);
-		replay(fetcherRegistry);
 		scanner = new Scanner(fetcherRegistry);
 		
 		// scan the local host

@@ -3,7 +3,7 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import static org.easymock.EasyMock.*;
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 import java.net.InetAddress;
@@ -35,17 +35,16 @@ public class OpenerLauncherTest {
 
 	@Test
 	public void testReplaceValues() throws UnknownHostException {
-		FetcherRegistry fetcherRegistry = createMock(FetcherRegistry.class);
-		expect(fetcherRegistry.getSelectedFetchers()).andReturn(Collections.<Fetcher>nCopies(5, null)).times(2);
-		expect(fetcherRegistry.getSelectedFetcherIndex(IPFetcher.ID)).andReturn(0).times(3);
-		expect(fetcherRegistry.getSelectedFetcherIndex(HostnameFetcher.ID)).andReturn(1).anyTimes();
-		expect(fetcherRegistry.getSelectedFetcherIndex(PingFetcher.ID)).andReturn(2);
-		expect(fetcherRegistry.getSelectedFetcherIndex("fetcher.comment")).andReturn(3).anyTimes();
-		expect(fetcherRegistry.getSelectedFetcherIndex("noSuchFetcher")).andReturn(-1);
-		replay(fetcherRegistry);
-		
+		FetcherRegistry fetcherRegistry = mock(FetcherRegistry.class);
+		when(fetcherRegistry.getSelectedFetchers()).thenReturn(Collections.<Fetcher>nCopies(5, null));
+		when(fetcherRegistry.getSelectedFetcherIndex(IPFetcher.ID)).thenReturn(0);
+		when(fetcherRegistry.getSelectedFetcherIndex(HostnameFetcher.ID)).thenReturn(1);
+		when(fetcherRegistry.getSelectedFetcherIndex(PingFetcher.ID)).thenReturn(2);
+		when(fetcherRegistry.getSelectedFetcherIndex("fetcher.comment")).thenReturn(3);
+		when(fetcherRegistry.getSelectedFetcherIndex("noSuchFetcher")).thenReturn(-1);
+
 		ScanningResultList scanningResults = new ScanningResultList(fetcherRegistry);
-		scanningResults.initNewScan(createMockFeeder("info"));
+		scanningResults.initNewScan(mockFeeder("info"));
 		ScanningResult result = scanningResults.createResult(InetAddress.getByName("127.0.0.1"));
 		result.setValue(0, new InetAddressHolder(InetAddress.getByName("127.0.0.1")));
 		result.setValue(1, "HOSTNAME");
@@ -88,8 +87,6 @@ public class OpenerLauncherTest {
 		assertEquals("Hostname opening should fall back to the IP", "127.0.0.1", ol.prepareOpenerStringForItem("${" + HostnameFetcher.ID + "}", 0));
 		result.setValue(1, NotAvailable.VALUE);
 		assertEquals("Hostname opening should fall back to the IP", "127.0.0.1", ol.prepareOpenerStringForItem("${" + HostnameFetcher.ID + "}", 0));
-		
-		verify(fetcherRegistry);
 	}
 	
 	@Test
@@ -101,11 +98,10 @@ public class OpenerLauncherTest {
 		assertArrayEquals(new String[] {"\"aaa"}, OpenerLauncher.splitCommand("\"aaa"));
 	}
 	
-	private Feeder createMockFeeder(String feederInfo) {
-		Feeder feeder = createMock(Feeder.class);
-		expect(feeder.getInfo()).andReturn(feederInfo);
-		expect(feeder.getName()).andReturn("feeder.range");
-		replay(feeder);
+	private Feeder mockFeeder(String feederInfo) {
+		Feeder feeder = mock(Feeder.class);
+		when(feeder.getInfo()).thenReturn(feederInfo);
+		when(feeder.getName()).thenReturn("feeder.range");
 		return feeder;
 	}
 }

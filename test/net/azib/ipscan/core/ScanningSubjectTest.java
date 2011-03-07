@@ -5,7 +5,7 @@
  */
 package net.azib.ipscan.core;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.net.PingResult;
@@ -26,7 +26,7 @@ public class ScanningSubjectTest {
 	
 	@Before
 	public void initTest() {
-		config = createMock(ScannerConfig.class);
+		config = mock(ScannerConfig.class);
 		subject = new ScanningSubject(null);
 		subject.config = config;
 		config.portTimeout = 1000;

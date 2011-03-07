@@ -3,7 +3,7 @@
  */
 package net.azib.ipscan.fetchers;
 
-import static org.easymock.classextension.EasyMock.createMock;
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -32,7 +32,7 @@ public class PortsFetcherTest extends AbstractFetcherTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		config = createMock(ScannerConfig.class);
+		config = mock(ScannerConfig.class);
 		fetcher = new PortsFetcher(config);
 	}
 	
