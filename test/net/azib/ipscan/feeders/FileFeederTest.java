@@ -121,15 +121,15 @@ public class FileFeederTest {
 		StringReader reader = new StringReader("1.2.3.4:1234\n2.3.4.5:\n 7.6.5.4:789004\n 1.2.3.5:80  1.2.3.5:3128 ");
 		FileFeeder fileFeeder = new FileFeeder(reader);
 		
-		assertEquals(1234, fileFeeder.next().requestedPortsIterator().next());
+		assertEquals(1234, (int)fileFeeder.next().requestedPortsIterator().next());
 		assertFalse(fileFeeder.next().isAnyPortRequested());
 		assertFalse(fileFeeder.next().isAnyPortRequested());
 		
 		ScanningSubject lastSubject = fileFeeder.next();
 		assertEquals("1.2.3.5", lastSubject.getAddress().getHostAddress());
 		Iterator<Integer> portIterator = lastSubject.requestedPortsIterator();
-		assertEquals(80, portIterator.next());
-		assertEquals(3128, portIterator.next());
+		assertEquals(80, (int)portIterator.next());
+		assertEquals(3128, (int)portIterator.next());
 	}
 
 	private void assertAddressCount(String s, int addressCount) {
