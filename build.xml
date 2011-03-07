@@ -108,7 +108,7 @@
 				<src path="@{path}-platform/@{platform}"/>
 				<src path="@{extpath}"/>
 				<classpath>
-					<fileset dir="${ext}/easymock" includes="*.jar"/>
+					<fileset dir="${ext}/mockito" includes="*.jar"/>
 					<fileset dir="${ext}/emma" includes="*.jar"/>
 					<fileset dir="${ext}/junit" includes="*.jar"/>
 					<fileset dir="${ext}/picocontainer" includes="*.jar"/>
@@ -168,7 +168,7 @@
 				<path location="${testbin}"/>
 				<fileset dir="${swt}" includes="swt-${platform}.jar"/>
 				<fileset dir="${ext}/junit" includes="*.jar"/>
-				<fileset dir="${ext}/easymock" includes="*.jar"/>
+				<fileset dir="${ext}/mockito" includes="*.jar"/>
 				<fileset dir="${ext}/picocontainer" includes="*.jar"/>
 				<path refid="emma.lib"/>
 			</classpath>
