@@ -3,8 +3,6 @@
 	<property name="bin" value="ant-bin"/>
 	<property name="testbin" value="ant-tests"/>
 	<property name="dist" value="dist"/>
-	<property name="ext" value="ext"/>
-	<property name="src" value="src"/>
 	<property name="test" value="test"/>
 	<property name="resources" value="resources"/>
 	<property name="testresults" value="test-results"/>
@@ -12,20 +10,20 @@
 	<property name="name" value="Angry IP Scanner"/>
 	<property name="version" value="3.0-git"/>
 	<property name="main.class" value="net.azib.ipscan.Main"/>
-	<property name="swt" value="ext/swt"/>
-	<property name="ext.src" value="${ext}/rocksaw/src:${ext}/vserv-tcpip/src"/>
+	<property name="swt" value="lib"/>
+	<property name="ext.src" value="ext/rocksaw/src:ext/vserv-tcpip/src"/>
 
-	<property name="emma.dir" value="${ext}/emma"/>
+	<property name="emma.dir" value="ext/emma"/>
 		
 	<path id="emma.lib">
-		<pathelement location="${emma.dir}/emma.jar" />
-		<pathelement location="${emma.dir}/emma_ant.jar" />
+		<pathelement location="lib/testing/emma.jar"/>
+		<pathelement location="lib/testing/emma_ant.jar"/>
 	</path>
 	<taskdef resource="emma_ant.properties" classpathref="emma.lib"/>
 	
-	<taskdef resource="proguard/ant/task.properties" classpath="${ext}/proguard/proguard.jar"/>
+	<taskdef resource="proguard/ant/task.properties" classpath="ext/proguard/proguard.jar"/>
 	
-	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${ext}/launch4j/launch4j.jar:${ext}/launch4j/xstream.jar"/>
+	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="ext/launch4j/launch4j.jar:ext/launch4j/xstream.jar"/>
 
 	<patternset id="classpath.resources">
 		<exclude name="**/*.java"/>
@@ -108,11 +106,7 @@
 				<src path="@{path}-platform/@{platform}"/>
 				<src path="@{extpath}"/>
 				<classpath>
-					<fileset dir="${ext}/mockito" includes="*.jar"/>
-					<fileset dir="${ext}/emma" includes="*.jar"/>
-					<fileset dir="${ext}/junit" includes="*.jar"/>
-					<fileset dir="${ext}/picocontainer" includes="*.jar"/>
-					<fileset dir="${ext}/swt" includes="swt-@{platform}.jar"/>
+					<fileset dir="lib" includes="**/*.jar"/>
 				</classpath>
 			</javac>
 			<copy todir="@{dest}">
@@ -131,23 +125,23 @@
 	<target name="compile" depends="compile-linux,compile-linux64,compile-mac,compile-win32"/>
 
 	<target name="compile-linux">
-		<compile path="${src}" extpath="${ext.src}" platform="linux"/>
+		<compile path="src" extpath="${ext.src}" platform="linux"/>
 	</target>
 	
 	<target name="compile-linux64">
-		<compile path="${src}" extpath="${ext.src}" platform="linux64"/>
+		<compile path="src" extpath="${ext.src}" platform="linux64"/>
 	</target>
 
 	<target name="compile-mac">
-		<compile path="${src}" extpath="${ext.src}" platform="mac"/>
+		<compile path="src" extpath="${ext.src}" platform="mac"/>
 	</target>
 
 	<target name="compile-win32">
-		<compile path="${src}" extpath="${ext.src}" platform="win32"/>
+		<compile path="src" extpath="${ext.src}" platform="win32"/>
 	</target>
 
 	<target name="compile-tests">
-		<compile path="${src}" extpath="${test}:${ext.src}" dest="${testbin}" debug="true" optimize="false"/>
+		<compile path="src" extpath="test:${ext.src}" dest="${testbin}" debug="true" optimize="false"/>
 		<!-- coverage is currently broken
 		<emma>
 			<instr instrpath="${testbin}" destdir="${testbin}.instr" metadatafile="${testresults}/metadata.emma" merge="false" filter="net.azib.ipscan.*"/>
@@ -166,10 +160,7 @@
 		<junit haltonfailure="true" showoutput="true" fork="yes">
 			<classpath>
 				<path location="${testbin}"/>
-				<fileset dir="${swt}" includes="swt-${platform}.jar"/>
-				<fileset dir="${ext}/junit" includes="*.jar"/>
-				<fileset dir="${ext}/mockito" includes="*.jar"/>
-				<fileset dir="${ext}/picocontainer" includes="*.jar"/>
+				<fileset dir="lib" includes="**/*.jar"/>
 				<path refid="emma.lib"/>
 			</classpath>
 			<formatter type="xml"/>
@@ -180,7 +171,7 @@
 		<!--
 		report: no valid input data files have been specified
 		<emma>
-			<report sourcepath="${src}" encoding="UTF-8">
+			<report sourcepath="src" encoding="UTF-8">
 				<fileset dir="${basedir}" includes="coverage.ec"/>
 				<fileset dir="${testresults}" includes="*.emma"/>
 				<txt outfile="${testresults}/coverage.txt"/>
@@ -208,10 +199,10 @@
 		<attribute name="librocksaw"/>
 		<sequential>
 			<mkdir dir="${dist}"/>
-			<unzip src="${ext}/picocontainer/picocontainer-1.0.jar" dest="${bin}.@{platform}"/>
+			<unzip src="lib/picocontainer-1.0.jar" dest="${bin}.@{platform}"/>
 			<unzip src="${swt}/swt-@{platform}.jar" dest="${bin}.@{platform}"/>
-			<copy file="${ext}/rocksaw/lib/@{librocksaw}" todir="${bin}.@{platform}"/>
-			<copy file="${ext}/winping/lib/winping.dll" todir="${bin}.win32"/>
+			<copy file="ext/rocksaw/lib/@{librocksaw}" todir="${bin}.@{platform}"/>
+			<copy file="ext/winping/lib/winping.dll" todir="${bin}.win32"/>
 			<delete includeemptydirs="true" failonerror="false">
 				<fileset dir="${bin}.@{platform}/images" includes="**/*.svg"/>
 				<fileset dir="${bin}.@{platform}/META-INF"/>
@@ -369,7 +360,7 @@
     <sequential>
       <mkdir dir="${dist}/deb"/>
       <copy todir="${dist}/deb">
-        <fileset dir="${ext}/deb-bundle"/>
+        <fileset dir="ext/deb-bundle"/>
       </copy>
 
       <copy file="${dist}/${ant.project.name}-@{platform}-${version}.jar" todir="${dist}/deb/usr/lib/ipscan"/>
@@ -402,7 +393,7 @@
 	</target>
 	
 	<target name="package-win32-exe">
-		<copy file="${ext}/launch4j/ipscan.xml" todir="${dist}"/>
+		<copy file="ext/launch4j/ipscan.xml" todir="${dist}"/>
 		<replace file="${dist}/ipscan.xml">
 			<replacefilter token="FILENAME_IN" value="${ant.project.name}-win32-${version}.jar"/>
 			<replacefilter token="FILENAME_OUT" value="${ant.project.name}-${version}.exe"/>
@@ -416,7 +407,7 @@
 	<target name="package-mac" depends="build-info">
 		<package-for platform="mac" librocksaw="todo-librocksaw.jnilib"/>
 		<copy todir="${dist}">
-			<fileset dir="${ext}/mac-bundle"/>
+			<fileset dir="ext/mac-bundle"/>
 		</copy>
 		
 		<copy file="${dist}/${ant.project.name}-mac-${version}.jar" todir="${dist}/${name}.app/Contents/Resources/Java"/>
