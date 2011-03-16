@@ -196,12 +196,10 @@
 	
 	<macrodef name="package-for">
 		<attribute name="platform"/>
-		<attribute name="librocksaw"/>
 		<sequential>
 			<mkdir dir="${dist}"/>
 			<unzip src="lib/picocontainer-1.0.jar" dest="${bin}.@{platform}"/>
 			<unzip src="${swt}/swt-@{platform}.jar" dest="${bin}.@{platform}"/>
-			<copy file="ext/rocksaw/lib/@{librocksaw}" todir="${bin}.@{platform}"/>
 			<copy file="ext/winping/lib/winping.dll" todir="${bin}.win32"/>
 			<delete includeemptydirs="true" failonerror="false">
 				<fileset dir="${bin}.@{platform}/images" includes="**/*.svg"/>
@@ -333,21 +331,21 @@
 	</macrodef>
 	
 	<target name="package-linux" depends="build-info">
-		<package-for platform="linux" librocksaw="librocksaw.so"/>
-		
+        <copy file="ext/rocksaw/lib/librocksaw32.so" tofile="${bin}.linux/librocksaw.so"/>
+		<package-for platform="linux"/>
 		<!-- now create deb package for Ubuntu and such -->
 		<antcall target="package-linux-deb-rpm"/>
 	</target>
 	
 	<target name="package-linux64" depends="build-info">
-		<package-for platform="linux64" librocksaw="librocksaw.so"/>
-
-    <!-- now create deb package for Ubuntu and such -->
-    <antcall target="package-linux64-deb-rpm"/>
+        <copy file="ext/rocksaw/lib/librocksaw64.so" tofile="${bin}.linux64/librocksaw.so"/>
+		<package-for platform="linux64"/>
+        <!-- now create deb package for Ubuntu and such -->
+        <antcall target="package-linux64-deb-rpm"/>
 	</target>
 	
 	<target name="package-linux-deb-rpm" if="isRunningOnLinux">
-    <deb-and-rpm platform="linux" arch="i386"/>
+        <deb-and-rpm platform="linux" arch="i386"/>
 	</target>
 
   <target name="package-linux64-deb-rpm" if="isRunningOnLinux">
@@ -388,6 +386,7 @@
   </macrodef>
 
 	<target name="package-win32" depends="build-info">
+        <copy file="ext/rocksaw/lib/rocksaw.dll" todir="${bin}.win32"/>
 		<package-for platform="win32" librocksaw="rocksaw.dll"/>
 		<antcall target="package-win32-exe"/>
 	</target>
@@ -405,7 +404,8 @@
 	</target>
 
 	<target name="package-mac" depends="build-info">
-		<package-for platform="mac" librocksaw="todo-librocksaw.jnilib"/>
+        <!--<copy file="ext/rocksaw/lib/todo-librocksaw.jnilib" todir="${bin}.mac"/>-->
+		<package-for platform="mac"/>
 		<copy todir="${dist}">
 			<fileset dir="ext/mac-bundle"/>
 		</copy>
