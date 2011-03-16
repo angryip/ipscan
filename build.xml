@@ -13,14 +13,14 @@
 	<property name="swt" value="lib"/>
 	<property name="ext.src" value="ext/rocksaw/src:ext/vserv-tcpip/src"/>
 
-	<property name="emma.dir" value="ext/emma"/>
-		
-	<path id="emma.lib">
-		<pathelement location="lib/testing/emma.jar"/>
-		<pathelement location="lib/testing/emma_ant.jar"/>
-	</path>
-	<taskdef resource="emma_ant.properties" classpathref="emma.lib"/>
-	
+    <path id="cobertura.classpath">
+        <fileset dir="lib/testing">
+            <include name="cobertura.jar" />
+            <include name="*.jar" />
+        </fileset>
+    </path>
+    <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+
 	<taskdef resource="proguard/ant/task.properties" classpath="ext/proguard/proguard.jar"/>
 	
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="ext/launch4j/launch4j.jar:ext/launch4j/xstream.jar"/>
@@ -95,7 +95,7 @@
 	<macrodef name="compile">
 		<attribute name="path"/>
 		<attribute name="extpath" default=""/>
-		<attribute name="debug" default="false"/>
+		<attribute name="debug" default="true"/>
 		<attribute name="optimize" default="true"/>
 		<attribute name="platform" default="${platform}"/>
 		<attribute name="dest" default="${bin}.@{platform}"/>
@@ -142,15 +142,17 @@
 
 	<target name="compile-tests">
 		<compile path="src" extpath="test:${ext.src}" dest="${testbin}" debug="true" optimize="false"/>
-		<!-- coverage is currently broken
-		<emma>
-			<instr instrpath="${testbin}" destdir="${testbin}.instr" metadatafile="${testresults}/metadata.emma" merge="false" filter="net.azib.ipscan.*"/>
-		</emma>
-		<copy todir="${testbin}" overwrite="true">
-			<fileset dir="${testbin}.instr" includes="**/*.class"/>
-		</copy>
-		<delete dir="${testbin}.instr"/>
-		-->
+        <cobertura-instrument todir="${testbin}.instr">
+            <ignore regex="org.apache.log4j.*" />
+            <fileset dir="${testbin}">
+                <include name="**/*.class" />
+                <exclude name="**/*Test.class" />
+            </fileset>
+        </cobertura-instrument>
+        <copy todir="${testbin}" overwrite="true">
+            <fileset dir="${testbin}.instr" includes="**/*.class"/>
+        </copy>
+        <delete dir="${testbin}.instr"/>
 	</target>
 	
 	<target name="test">
@@ -158,28 +160,19 @@
 		<mkdir dir="${testresults}"/>
 		<delete file="coverage.ec"/>
 		<junit haltonfailure="true" showoutput="true" fork="yes">
+            <sysproperty key="net.sourceforge.cobertura.datafile" file="${testresults}/cobertura.ser"/>
 			<classpath>
 				<path location="${testbin}"/>
 				<fileset dir="lib" includes="swt-${platform}.jar"/>
 				<fileset dir="lib" includes="**/*.jar"/>
-				<path refid="emma.lib"/>
 			</classpath>
 			<formatter type="xml"/>
 			<batchtest todir="${testresults}">
 				<fileset dir="${testbin}" includes="**/*Test.class"/>
 			</batchtest>
 		</junit>
-		<!--
-		report: no valid input data files have been specified
-		<emma>
-			<report sourcepath="src" encoding="UTF-8">
-				<fileset dir="${basedir}" includes="coverage.ec"/>
-				<fileset dir="${testresults}" includes="*.emma"/>
-				<txt outfile="${testresults}/coverage.txt"/>
-				<html outfile="${testresults}/coverage.html"/>
-			</report>
-		</emma>
-		-->
+        <cobertura-report format="xml" destdir="test-coverage" srcdir="src" datafile="${testresults}/cobertura.ser"/>
+        <cobertura-report format="html" destdir="test-coverage" srcdir="src" datafile="${testresults}/cobertura.ser"/>
 	</target>
 	
 	<condition property="isRunningOnLinux">
