@@ -388,7 +388,7 @@
 
 	<target name="package-win32" depends="build-info">
         <copy file="ext/rocksaw/lib/rocksaw.dll" todir="${bin}.win32"/>
-		<package-for platform="win32" librocksaw="rocksaw.dll"/>
+		<package-for platform="win32"/>
 		<antcall target="package-win32-exe"/>
 	</target>
 	
