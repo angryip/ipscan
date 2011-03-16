@@ -32,8 +32,8 @@ public class HostnameFetcherTest extends AbstractFetcherTestCase {
 			assertEquals(InetAddress.getLocalHost().getCanonicalHostName(), fetcher.scan(new ScanningSubject(InetAddress.getLocalHost())));
 		
 		try {
-			InetAddress wwweeAddress = InetAddress.getByName("www.ee");
-			assertEquals(wwweeAddress.getCanonicalHostName(), fetcher.scan(new ScanningSubject(wwweeAddress)));
+			InetAddress googleAddress = InetAddress.getByName("www.google.com");
+			assertEquals(googleAddress.getCanonicalHostName(), fetcher.scan(new ScanningSubject(googleAddress)));
 		}
 		catch (UnknownHostException e) { /* ignore - test is running in off-line environment */ }
 		
