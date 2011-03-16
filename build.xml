@@ -160,6 +160,7 @@
 		<junit haltonfailure="true" showoutput="true" fork="yes">
 			<classpath>
 				<path location="${testbin}"/>
+				<fileset dir="lib" includes="swt-${platform}.jar"/>
 				<fileset dir="lib" includes="**/*.jar"/>
 				<path refid="emma.lib"/>
 			</classpath>
