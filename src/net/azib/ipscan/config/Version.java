@@ -16,7 +16,7 @@ import java.util.logging.Level;
 public class Version {
 	public static final String NAME = "Angry IP Scanner";
 	
-	public static final String COPYLEFT = "© 2009 Anton Keks";
+	public static final String COPYLEFT = "© 2011 Anton Keks";
 	
 	public static final String WEBSITE = "http://www.angryip.org/";
 	
