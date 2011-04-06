@@ -6,7 +6,7 @@
 package net.azib.ipscan.config;
 
 /**
- * This class provides constants for distingushing between various platforms.
+ * This class provides constants for distinguishing between various platforms.
  * However, platform-specific behaviour must be kept at minimum.
  *
  * @author Anton Keks
@@ -14,6 +14,8 @@ package net.azib.ipscan.config;
 public class Platform {
 	
 	private static final String OS_NAME = System.getProperty("os.name");
+
+    public static final boolean ARCH_64 = System.getProperty("os.arch").contains("64");
 	
 	/** Mac OS detection :-) */
 	public static final boolean MAC_OS = System.getProperty("mrj.version") != null;

@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.sun.java.swing.plaf.nimbus.OptionPanePainter;
 import net.azib.ipscan.config.CommandLineProcessor;
 import net.azib.ipscan.config.ComponentRegistry;
 import net.azib.ipscan.config.Config;
@@ -26,6 +27,8 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+
+import javax.swing.*;
 
 /**
  * The main executable class.
@@ -55,6 +58,11 @@ public class Main {
 		long startTime = System.currentTimeMillis();
 				
 		initSystemProperties();
+
+        if (Platform.WINDOWS && Platform.ARCH_64) {
+            JOptionPane.showMessageDialog(null, "64-bit Java is not (yet) supported on Windows, please install 32-bit Java");
+            return;
+        }
 
 		// this defines the Window class and app name on the Mac
 		Display.setAppName(Version.NAME);		
