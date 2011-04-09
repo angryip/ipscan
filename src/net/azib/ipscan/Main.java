@@ -10,7 +10,6 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.sun.java.swing.plaf.nimbus.OptionPanePainter;
 import net.azib.ipscan.config.CommandLineProcessor;
 import net.azib.ipscan.config.ComponentRegistry;
 import net.azib.ipscan.config.Config;
@@ -41,7 +40,6 @@ import javax.swing.*;
  * @author Anton Keks
  */
 public class Main {
-	
 	static final Logger LOG = LoggerFactory.getLogger();
 
 	/**
@@ -57,7 +55,7 @@ public class Main {
 		long startTime = System.currentTimeMillis();
 				
 		initSystemProperties();
-        Display display = null;
+        Display display;
 
         try {
             // this defines the Window class and app name on the Mac
