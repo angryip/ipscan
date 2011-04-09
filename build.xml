@@ -46,7 +46,14 @@
 		<os family="mac"/>
 	</condition>
 	<condition property="platform" value="win32">
-		<os family="windows"/>
+	    <os family="windows" arch="i386"/>
+	</condition>
+	<condition property="platform" value="win64">
+        <or>
+            <os family="windows" arch="amd64"/>
+            <os family="windows" arch="ia64"/>
+            <os family="windows" arch="x86_64"/>
+        </or>
 	</condition>
 	<condition property="platform" value="unknown">
 		<not>
@@ -59,6 +66,7 @@
 	<target name="linux64" depends="clean,compile-linux64,package-linux64,clean_end"/>
 	<target name="mac" depends="clean,compile-mac,package-mac,clean_end"/>
 	<target name="win32" depends="clean,compile-win32,package-win32,clean_end"/>
+	<target name="win64" depends="clean,compile-win64,package-win64,clean_end"/>
 	<target name="current">
 		<antcall target="${platform}"/>
 	</target>
@@ -74,6 +82,7 @@
 		<echo message="  linux64 - builds only Linux 64-bit binary"/>
 		<echo message="  mac     - builds only Mac binary"/>
 		<echo message="  win32   - builds only Windows binary"/>
+		<echo message="  win64   - builds only Windows 64-bit binary"/>
 		<echo message="  current = ${platform}"/>
 	</target>
 
@@ -88,6 +97,7 @@
 		<delete dir="${bin}.linux"/>
 		<delete dir="${bin}.linux64"/>
 		<delete dir="${bin}.win32"/>
+		<delete dir="${bin}.win64"/>
 		<delete dir="${bin}.mac"/>
 		<delete dir="${testresults}"/>
     </target>
@@ -122,7 +132,7 @@
 		</sequential>
 	</macrodef>
 
-	<target name="compile" depends="compile-linux,compile-linux64,compile-mac,compile-win32"/>
+	<target name="compile" depends="compile-linux,compile-linux64,compile-mac,compile-win32,compile-win64"/>
 
 	<target name="compile-linux">
 		<compile path="src" extpath="${ext.src}" platform="linux"/>
@@ -138,6 +148,10 @@
 
 	<target name="compile-win32">
 		<compile path="src" extpath="${ext.src}" platform="win32"/>
+	</target>
+
+	<target name="compile-win64">
+		<compile path="src" extpath="${ext.src}" platform="win64"/>
 	</target>
 
 	<target name="compile-tests">
@@ -179,7 +193,7 @@
 		<os name="Linux"/>
 	</condition>
 	
-	<target name="package" depends="package-linux,package-linux64,package-win32,package-mac">
+	<target name="package" depends="package-linux,package-linux64,package-win32,package-win64,package-mac">
 		<echo message="Packaged jars are in the ${dist} directory"/>
 	</target>
 	
@@ -194,7 +208,7 @@
 			<mkdir dir="${dist}"/>
 			<unzip src="lib/picocontainer-1.0.jar" dest="${bin}.@{platform}"/>
 			<unzip src="${swt}/swt-@{platform}.jar" dest="${bin}.@{platform}"/>
-			<copy file="ext/winping/lib/winping.dll" todir="${bin}.win32"/>
+			<copy file="ext/winping/lib/winping.dll" todir="${bin}.win32"/> <!-- TODO: support win64 -->
 			<delete includeemptydirs="true" failonerror="false">
 				<fileset dir="${bin}.@{platform}/images" includes="**/*.svg"/>
 				<fileset dir="${bin}.@{platform}/META-INF"/>
@@ -384,7 +398,13 @@
 		<package-for platform="win32"/>
 		<antcall target="package-win32-exe"/>
 	</target>
-	
+
+	<target name="package-win64" depends="build-info">
+        <!--<copy file="ext/rocksaw/lib/rocksaw.dll" todir="${bin}.win64"/>-->
+		<package-for platform="win64"/>
+		<!--<antcall target="package-win32-exe"/>-->
+	</target>
+
 	<target name="package-win32-exe">
 		<copy file="ext/launch4j/ipscan.xml" todir="${dist}"/>
 		<replace file="${dist}/ipscan.xml">

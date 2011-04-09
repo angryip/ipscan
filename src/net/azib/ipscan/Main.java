@@ -54,22 +54,23 @@ public class Main {
 	 * <tt>-XstartOnFirstThread</tt>
 	 */
 	public static void main(String... args) {
-		
 		long startTime = System.currentTimeMillis();
 				
 		initSystemProperties();
+        Display display = null;
 
-        if (Platform.WINDOWS && Platform.ARCH_64) {
-            JOptionPane.showMessageDialog(null, "64-bit Java is not (yet) supported on Windows, please install 32-bit Java");
+        try {
+            // this defines the Window class and app name on the Mac
+            Display.setAppName(Version.NAME);
+            display = Display.getDefault();
+            LOG.finer("SWT initialized after " + (System.currentTimeMillis() - startTime));
+        }
+        catch (UnsatisfiedLinkError e) {
+            JOptionPane.showMessageDialog(null, "Failed to load native code. Probably you are using a binary built for wrong OS or CPU - try downloading both 32-bit and 64-bit binaries");
             return;
         }
 
-		// this defines the Window class and app name on the Mac
-		Display.setAppName(Version.NAME);		
-		Display display = Display.getDefault();		
-		LOG.finer("SWT initialized after " + (System.currentTimeMillis() - startTime));
-
-		// initialize Labels instance
+        // initialize Labels instance
 		Labels.initialize(Locale.getDefault());				
 		// initialize Config instance
 		Config globalConfig = Config.getConfig();		
