@@ -90,7 +90,7 @@ public class MacApplicationMenu implements Startable {
 			}
 		};
 		final Callback commandCallback = new Callback(target, "commandProc", 3); 
-		int commandProc = commandCallback.getAddress();
+		long commandProc = commandCallback.getAddress();
 		if (commandProc == 0) {
 			commandCallback.dispose();
 			return; // give up
@@ -98,7 +98,7 @@ public class MacApplicationMenu implements Startable {
 
 		// install event handler for commands
 		int[] mask = new int[] {OS.kEventClassCommand, OS.kEventProcessCommand};
-		OS.InstallEventHandler(OS.GetApplicationEventTarget(), commandProc, mask.length / 2, mask, 0, null);
+		OS.InstallEventHandler(OS.GetApplicationEventTarget(), (int)commandProc, mask.length / 2, mask, 0, null);
 
 		// create menu commands
 		int[] outMenu = new int[1];
