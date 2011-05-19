@@ -90,7 +90,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		ipMaskCombo.select(3);
 		ipMaskCombo.setLayoutData(LayoutHelper.formData(textWidth-15, SWT.DEFAULT, new FormAttachment(ipMaskLabel), null, new FormAttachment(0), new FormAttachment(ipPrototypeText, 0, SWT.BOTTOM)));
         
-		FeederActions.HostnameButton hostnameSelectionListener = new FeederActions.HostnameButton(hostnameText, ipPrototypeText);
+		FeederActions.HostnameButton hostnameSelectionListener = new FeederActions.HostnameButton(hostnameText, ipPrototypeText, ipMaskCombo);
         hostnameText.addTraverseListener(hostnameSelectionListener);
 		hostnameText.setLayoutData(LayoutHelper.formData(textWidth, SWT.DEFAULT, new FormAttachment(ipPrototypeText, 0, SWT.LEFT), null, new FormAttachment(ipPrototypeText), null));
         

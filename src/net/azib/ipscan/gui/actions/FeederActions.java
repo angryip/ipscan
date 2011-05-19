@@ -3,10 +3,7 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,12 +17,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.*;
 
 /**
  * FeederActions
@@ -41,11 +33,13 @@ public class FeederActions {
 		
 		private final Text hostnameText;
 		private final Text ipText;
+        private final Combo netmaskCombo;
 
-		public HostnameButton(Text hostnameText, Text ipText) {
+		public HostnameButton(Text hostnameText, Text ipText, Combo netmaskCombo) {
 			this.hostnameText = hostnameText;
 			this.ipText = ipText;
-		}
+            this.netmaskCombo = netmaskCombo;
+        }
 		
 		public void widgetDefaultSelected(SelectionEvent event) {
 			widgetSelected(event);
@@ -88,29 +82,28 @@ public class FeederActions {
 		/**
 		 * Asks user which local IP address they want to use 
 		 */
-		private final void askLocalIPAddress() {
+		private void askLocalIPAddress() {
 			try {
 				Menu popupMenu = new Menu(Display.getCurrent().getActiveShell(), SWT.POP_UP);
 				Listener menuItemListener = new Listener() {
 					public void handleEvent(Event event) {
 						MenuItem menuItem = (MenuItem) event.widget;
 						String address = (String) menuItem.getData();
-						ipText.setText(address);
+						ipText.setText(address.substring(0, address.lastIndexOf('/')));
+                        netmaskCombo.setText(address.substring(address.lastIndexOf('/')));
+//                        netmaskCombo.traverse(SWT.TRAVERSE_RETURN);
 						menuItem.getParent().dispose();
 					}
 				};
-				
-				
+
 				for (Enumeration<NetworkInterface> i = NetworkInterface.getNetworkInterfaces(); i.hasMoreElements(); ) {
 					NetworkInterface networkInterface = i.nextElement();
-					for (Enumeration<InetAddress> i2 = networkInterface.getInetAddresses(); i2.hasMoreElements();) {
-						InetAddress currentAddress = i2.nextElement();
-						// TODO: we would benefit from Java 1.6 here by automatically initializing the netmask, too
-
-						if (!currentAddress.isLoopbackAddress()) {
+					for (InterfaceAddress ifaddr : networkInterface.getInterfaceAddresses()) {
+                        InetAddress address = ifaddr.getAddress();
+                        if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
 							MenuItem menuItem = new MenuItem(popupMenu, 0);
-							menuItem.setText(networkInterface.getDisplayName() + ": " + currentAddress.getHostAddress());
-							menuItem.setData(currentAddress.getHostAddress());
+							menuItem.setText(networkInterface.getDisplayName() + ": " + address.getHostAddress());
+							menuItem.setData(address.getHostAddress() + "/" + ifaddr.getNetworkPrefixLength());
 							menuItem.addListener(SWT.Selection, menuItemListener);
 						}
 					}					

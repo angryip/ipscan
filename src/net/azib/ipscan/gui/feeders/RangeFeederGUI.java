@@ -90,7 +90,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         endIPText.setLayoutData(LayoutHelper.formData(textWidth, SWT.DEFAULT, new FormAttachment(toLabel), null, null, null));
         endIPText.addKeyListener(new EndIPKeyListener());
         
-        FeederActions.HostnameButton hostnameListener = new FeederActions.HostnameButton(hostnameText, startIPText) {
+        FeederActions.HostnameButton hostnameListener = new FeederActions.HostnameButton(hostnameText, startIPText, netmaskCombo) {
 			public void widgetSelected(SelectionEvent event) {
 				// raise the flag
 				isEndIPUnedited = true;
