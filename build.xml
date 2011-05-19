@@ -111,7 +111,7 @@
 		<attribute name="dest" default="${bin}.@{platform}"/>
 		<sequential>
 			<mkdir dir="@{dest}"/>
-			<javac destdir="@{dest}" debug="@{debug}" source="1.5" target="1.5" optimize="@{optimize}">
+			<javac destdir="@{dest}" debug="@{debug}" source="1.6" target="1.6" optimize="@{optimize}">
 				<src path="@{path}"/>
 				<src path="@{path}-platform/@{platform}"/>
 				<src path="@{extpath}"/>

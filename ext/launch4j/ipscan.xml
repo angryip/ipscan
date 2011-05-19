@@ -4,20 +4,15 @@
   <jar>FILENAME_IN</jar>
   <outfile>FILENAME_OUT</outfile>
   <errTitle>Angry IP Scanner</errTitle>
-  <cmdLine></cmdLine>
-  <chdir></chdir>
   <priority>normal</priority>
   <downloadUrl>http://java.com/download</downloadUrl>
-  <supportUrl></supportUrl>
+  <supportUrl>http://www.angryip.org/</supportUrl>
   <customProcName>true</customProcName>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
   <icon>../resources/images/icon.ico</icon>
   <jre>
-    <path></path>
-    <minVersion>1.5.0</minVersion>
-    <maxVersion></maxVersion>
-    <jdkPreference>preferJre</jdkPreference>
+    <minVersion>1.6</minVersion>
   </jre>
   <versionInfo>
     <fileVersion>3.0.0.0</fileVersion>
@@ -27,7 +22,6 @@
     <productVersion>3.0.0.0</productVersion>
     <txtProductVersion>VERSION</txtProductVersion>
     <productName>Angry IP Scanner</productName>
-    <companyName></companyName>
     <internalName>ipscan</internalName>
     <originalFilename>ipscan.exe</originalFilename>
   </versionInfo>

@@ -6,10 +6,7 @@
 
 package net.azib.ipscan.core;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * Utility class for loading of JNI libraries from jar files.
@@ -44,15 +41,7 @@ public class LibraryLoader {
 				}
 				os.close();
 				is.close();
-				if (!net.azib.ipscan.config.Platform.WINDOWS) {
-					// TODO: change this to new File(fullFilename).setExecutable(true) in case of
-					// Java 1.6
-					try {
-						Runtime.getRuntime().exec(new String[] { "chmod", "755", fullFilename }).waitFor();
-					}
-					catch (Throwable t) {
-					}
-				}
+                new File(fullFilename).setExecutable(true, false);
 				System.load(fullFilename);
 			}
 			catch (IOException ioe) {
