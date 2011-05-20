@@ -36,7 +36,7 @@ public class PingerRegistryImpl implements PingerRegistry {
 		this.scannerConfig = scannerConfig;
 		
 		pingers = new LinkedHashMap<String, Class<? extends Pinger>>();
-		if (Platform.WINDOWS) {
+		if (Platform.WINDOWS && !Platform.ARCH_64) {
 			// this will be the preferred choice for Windows users
 			pingers.put("pinger.windows", WindowsPinger.class);
 		}
