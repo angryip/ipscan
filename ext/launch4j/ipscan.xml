@@ -12,7 +12,7 @@
   <manifest></manifest>
   <icon>../resources/images/icon.ico</icon>
   <jre>
-    <minVersion>1.6</minVersion>
+    <minVersion>1.6.0</minVersion>
   </jre>
   <versionInfo>
     <fileVersion>3.0.0.0</fileVersion>
