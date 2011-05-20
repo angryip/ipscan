@@ -295,8 +295,8 @@
 				</manifest>
 				<fileset dir="${bin}.@{platform}" includes="**/*"/>
 			</jar>
-			<proguard>
-				<!-- -printseeds -->
+			<!--proguard>
+				<!- - -printseeds - ->
 				-injars ${dist}/${ant.project.name}-@{platform}-orig.jar
 				-outjars ${dist}/${ant.project.name}-@{platform}-${version}.jar
 				-libraryjars ${java.home}/lib/rt.jar
@@ -322,20 +322,24 @@
 				-keep class org.eclipse.swt.dnd.ClipboardProxy {
 					&lt;methods&gt;;
 				}
+                -keep class * {
+                    &lt;methods&gt;;
+                    &lt;fields&gt;;
+                }
 		    	-keep class org.eclipse.swt.internal.image.*FileFormat
 				-keep class * {
 					% *Proc(int);
+                    % *Proc(int, int);
+                    % *Proc(int, int, int);
+					% *Proc(long);
+                    % *Proc(long, long);
+                    % *Proc(long, long, long);
 				}
-				-keep class * {
-					% *Proc(int, int);
-				}
-				-keep class * {
-					% *Proc(int, int, int);
-				}
-			</proguard>
-			
+			</proguard-->
+
+            <copy file="${dist}/${ant.project.name}-@{platform}-orig.jar" tofile="${dist}/${ant.project.name}-@{platform}-${version}.jar"/>
 			<delete file="${dist}/${ant.project.name}-@{platform}-orig.jar"/>
-		</sequential>
+   		</sequential>
 	</macrodef>
 	
 	<target name="package-linux" depends="build-info">
@@ -393,31 +397,34 @@
     </sequential>
   </macrodef>
 
-	<target name="package-win32" depends="build-info">
+    <target name="package-win32" depends="build-info">
         <copy file="ext/rocksaw/lib/rocksaw.dll" todir="${bin}.win32"/>
-		<package-for platform="win32"/>
-		<antcall target="package-win32-exe"/>
-	</target>
+        <package-for platform="win32"/>
+        <package-exe-for platform="win32"/>
+    </target>
 
-	<target name="package-win64" depends="build-info">
+    <target name="package-win64" depends="build-info">
         <!--<copy file="ext/rocksaw/lib/rocksaw.dll" todir="${bin}.win64"/>-->
-		<package-for platform="win64"/>
-		<!--<antcall target="package-win32-exe"/>-->
-	</target>
+        <package-for platform="win64"/>
+        <package-exe-for platform="win64"/>
+    </target>
 
-	<target name="package-win32-exe">
-		<copy file="ext/launch4j/ipscan.xml" todir="${dist}"/>
-		<replace file="${dist}/ipscan.xml">
-			<replacefilter token="FILENAME_IN" value="${ant.project.name}-win32-${version}.jar"/>
-			<replacefilter token="FILENAME_OUT" value="${ant.project.name}-${version}.exe"/>
-			<replacefilter token="VERSION" value="${version}"/>
-		</replace>
-		<launch4j configFile="${dist}/ipscan.xml"/>
-		<delete file="${dist}/ipscan.xml"/>
-		<delete file="${dist}/${ant.project.name}-win32-${version}.jar"/>
-	</target>
+    <macrodef name="package-exe-for">
+        <attribute name="platform"/>
+        <sequential>
+            <copy file="ext/launch4j/ipscan.xml" todir="${dist}"/>
+            <replace file="${dist}/ipscan.xml">
+                <replacefilter token="FILENAME_IN" value="${ant.project.name}-@{platform}-${version}.jar"/>
+                <replacefilter token="FILENAME_OUT" value="${ant.project.name}-@{platform}-${version}.exe"/>
+                <replacefilter token="VERSION" value="${version}"/>
+            </replace>
+            <launch4j configFile="${dist}/ipscan.xml"/>
+            <delete file="${dist}/ipscan.xml"/>
+            <delete file="${dist}/${ant.project.name}-@{platform}-${version}.jar"/>
+        </sequential>
+    </macrodef>
 
-	<target name="package-mac" depends="build-info">
+    <target name="package-mac" depends="build-info">
         <!--<copy file="ext/rocksaw/lib/todo-librocksaw.jnilib" todir="${bin}.mac"/>-->
 		<package-for platform="mac"/>
 		<copy todir="${dist}">
