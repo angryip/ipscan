@@ -3,6 +3,7 @@ Section: net
 Version: VERSION-1
 Priority: optional
 Architecture: ARCH
+Installed-Size: 950
 Depends: openjdk-6-jre | icedtea-java7-jre | sun-java6-jre
 Maintainer: Anton Keks <anton@azib.net>
 Description: Angry IP Scanner - fast and friendly IP Scanner

@@ -389,8 +389,8 @@
         <arg line="dpkg-deb -b deb ${ant.project.name}_${version}_@{arch}.deb"/>
       </exec>
       <echo message="Building .rpm package using alien..."/>
-      <exec executable="alien" dir="${dist}">
-        <arg line="--to-rpm ${ant.project.name}_${version}_@{arch}.deb"/>
+      <exec executable="fakeroot" dir="${dist}">
+        <arg line="alien --to-rpm ${ant.project.name}_${version}_@{arch}.deb"/>
       </exec>
 
       <delete dir="${dist}/deb"/>
