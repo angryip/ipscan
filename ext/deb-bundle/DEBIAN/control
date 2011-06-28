@@ -3,7 +3,7 @@ Section: net
 Version: VERSION-1
 Priority: optional
 Architecture: ARCH
-Depends: openjdk-6-jre | icedtea-java7-jre | sun-java6-jre | sun-java5-jre | java5-runtime
+Depends: openjdk-6-jre | icedtea-java7-jre | sun-java6-jre
 Maintainer: Anton Keks <anton@azib.net>
 Description: Angry IP Scanner - fast and friendly IP Scanner
  Angry IP Scanner is a cross-platform network scanner written in Java.
