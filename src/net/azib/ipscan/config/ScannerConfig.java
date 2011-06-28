@@ -42,7 +42,7 @@ public class ScannerConfig {
 		maxThreads = preferences.getInt("maxThreads", Platform.CRIPPLED_WINDOWS ? 10 : 100);
 		threadDelay = preferences.getInt("threadDelay", 20);
 		scanDeadHosts = preferences.getBoolean("scanDeadHosts", false);
-		selectedPinger = preferences.get("selectedPinger", Platform.WINDOWS ? "pinger.windows" : "pinger.icmp");
+		selectedPinger = preferences.get("selectedPinger", Platform.WINDOWS && !Platform.ARCH_64 ? "pinger.windows" : "pinger.icmp");
 		pingTimeout = preferences.getInt("pingTimeout", 2000);
 		pingCount = preferences.getInt("pingCount", 3);
 		skipBroadcastAddresses = preferences.getBoolean("skipBroadcastAddresses", true);

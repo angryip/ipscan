@@ -46,7 +46,7 @@ public class PingerRegistryImpl implements PingerRegistry {
 		pingers.put("pinger.tcp", TCPPinger.class);
 		pingers.put("pinger.combined", CombinedUnprivilegedPinger.class);
 	}
-	
+
 	public String[] getRegisteredNames() {
 		return pingers.keySet().toArray(new String[pingers.size()]);
 	}
@@ -87,9 +87,9 @@ public class PingerRegistryImpl implements PingerRegistry {
 				icmpPinger.ping(new ScanningSubject(InetAddress.getLocalHost()), 1);
 			}
 			catch (Exception e) {
-				LOG.info("ICMP pingers fail: " + e);
-				// windows will use native pinger, all others get combined UDP+TCP, which doesn't require special privileges
-				scannerConfig.selectedPinger = Platform.WINDOWS ? "pinger.windows" : "pinger.combined";
+				LOG.info("ICMP pinger failed: " + e);
+				// win32 will use native pinger, all others get combined UDP+TCP, which doesn't require special privileges
+				scannerConfig.selectedPinger = Platform.WINDOWS && !Platform.ARCH_64 ? "pinger.windows" : "pinger.combined";
 				return false;
 			}
 		}
