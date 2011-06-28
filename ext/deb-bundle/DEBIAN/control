@@ -1,12 +1,10 @@
 Package: ipscan
 Section: net
-Version: VERSION-0
+Version: VERSION-1
 Priority: optional
 Architecture: ARCH
 Depends: openjdk-6-jre | icedtea-java7-jre | sun-java6-jre | sun-java5-jre | java5-runtime
 Maintainer: Anton Keks <anton@azib.net>
-Provides: ipscan
-Installed-Size: 850
 Description: Angry IP Scanner - fast and friendly IP Scanner
  Angry IP Scanner is a cross-platform network scanner written in Java.
  It can scan IP-based networks in any range, scan ports, and resolve
