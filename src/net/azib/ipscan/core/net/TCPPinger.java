@@ -76,7 +76,7 @@ public class TCPPinger implements Pinger {
 				}
 				else
 				// this should result in NoRouteToHostException or ConnectException, but not all Java implementation respect that
-				if (msg.contains(/*No*/"route to host") || msg.contains(/*Host is*/"down")) {
+				if (msg.contains(/*No*/"route to host") || msg.contains(/*Host is*/"down") || msg.contains(/*Network*/"unreachable")) {
 					// host is down
 					break;
 				}
