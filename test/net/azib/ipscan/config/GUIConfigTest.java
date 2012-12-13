@@ -3,19 +3,16 @@
  */
 package net.azib.ipscan.config;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.prefs.Preferences;
-
 import net.azib.ipscan.fetchers.Fetcher;
-
-import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.graphics.Point;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.prefs.Preferences;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * DimensionsConfigTest
@@ -41,26 +38,26 @@ public class GUIConfigTest {
 
 	@Test
 	public void setMainWindowDimensions() throws Exception {
-		Rectangle bounds1 = new Rectangle(4, 3, 2, 1);
-		config.setMainWindowBounds(bounds1, false);
+		Point size1 = new Point(2, 1);
+		config.setMainWindowSize(size1, false);
 		assertFalse(config.isMainWindowMaximized);
-		assertEquals(bounds1, config.getMainWindowBounds());
+		assertEquals(size1, config.getMainWindowSize());
 		
-		Rectangle bounds2 = new Rectangle(1, 2, 3, 4);
-		config.setMainWindowBounds(bounds2, true);
+		Point size2 = new Point(3, 4);
+		config.setMainWindowSize(size2, true);
 		assertTrue(config.isMainWindowMaximized);
-		assertEquals(bounds1, config.getMainWindowBounds());
+		assertEquals(size1, config.getMainWindowSize());
 	}
 
 	@Test
 	public void store() throws Exception {
-		config.setMainWindowBounds(new Rectangle(11, 22, 33, 44), false);
+		config.setMainWindowSize(new Point(33, 44), false);
 		config.store();
-		assertEquals(11, preferences.getInt("windowLeft", 0));
+		assertEquals(33, preferences.getInt("windowWidth", 0));
 
-		config.setMainWindowBounds(new Rectangle(77, 22, 33, 44), true);
+		config.setMainWindowSize(new Point(55, 66), true);
 		config.store();
-		assertEquals(11, preferences.getInt("windowLeft", 0));
+		assertEquals(33, preferences.getInt("windowWidth", 0));
 	}
 
 	@Test

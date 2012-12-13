@@ -5,16 +5,13 @@
  */
 package net.azib.ipscan.config;
 
-import java.util.prefs.Preferences;
-
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.HostnameFetcher;
 import net.azib.ipscan.fetchers.IPFetcher;
 import net.azib.ipscan.fetchers.PingFetcher;
-
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Display;
+
+import java.util.prefs.Preferences;
 
 /**
  * DimensionsConfig
@@ -31,7 +28,7 @@ public class GUIConfig {
 	public boolean showScanStats;
 	public boolean askScanConfirmation;
 	
-	public Rectangle mainWindowBounds;
+	public Point mainWindowSize;
 	public boolean isMainWindowMaximized;
 	
 	public Point detailsWindowSize;
@@ -52,10 +49,7 @@ public class GUIConfig {
 		askScanConfirmation = preferences.getBoolean("askScanConfirmation", true);
 
 		isMainWindowMaximized = preferences.getBoolean("windowMaximized", false);
-		Rectangle screen = Display.getDefault().getBounds();
-		mainWindowBounds = new Rectangle(
-			preferences.getInt("windowLeft", screen.x + screen.width/2 - 600/2),
-			preferences.getInt("windowTop", screen.y + screen.height/2 - 360/2),
+		mainWindowSize = new Point(
 			preferences.getInt("windowWidth", 600),
 			preferences.getInt("windowHeight", 360));
 		
@@ -73,27 +67,21 @@ public class GUIConfig {
 
 		preferences.putBoolean("windowMaximized", isMainWindowMaximized);
 		if (!isMainWindowMaximized) {
-			preferences.putInt("windowLeft", mainWindowBounds.x);
-			preferences.putInt("windowTop", mainWindowBounds.y);
-			preferences.putInt("windowWidth", mainWindowBounds.width);
-			preferences.putInt("windowHeight", mainWindowBounds.height);
+			preferences.putInt("windowWidth", mainWindowSize.x);
+			preferences.putInt("windowHeight", mainWindowSize.y);
 		}
 		
 		preferences.putInt("detailsWidth", detailsWindowSize.x);
 		preferences.putInt("detailsHeight", detailsWindowSize.y);
 	}
 
-	public Rectangle getMainWindowBounds() {
-		return mainWindowBounds;
+	public Point getMainWindowSize() {
+		return mainWindowSize;
 	}
 
-	/**
-	 * @param bounds
-	 * @param isMaximized 
-	 */
-	public void setMainWindowBounds(Rectangle bounds, boolean isMaximized) {
+	public void setMainWindowSize(Point size, boolean isMaximized) {
 		if (!isMaximized) {
-			mainWindowBounds = bounds;
+			mainWindowSize = size;
 		}
 		isMainWindowMaximized = isMaximized;
 	}

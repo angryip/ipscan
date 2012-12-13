@@ -11,15 +11,14 @@ import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
-import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.core.state.StateMachine.Transition;
+import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.BrowserLauncher;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.actions.ToolsActions;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import net.azib.ipscan.gui.util.LayoutHelper;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -28,17 +27,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.swt.widgets.*;
 
 /**
  * Main window of Angry IP Scanner.
@@ -81,7 +70,7 @@ public class MainWindow {
 		initTableAndStatusBar(resultTable, resultsContextMenu, statusBar);
 
 		// after all controls are initialized, resize and open
-		shell.setBounds(guiConfig.getMainWindowBounds());
+		shell.setSize(guiConfig.getMainWindowSize());
 		shell.open();
 		if (guiConfig.isMainWindowMaximized) {
 			shell.setMaximized(true);
@@ -89,7 +78,7 @@ public class MainWindow {
 		else {
 			// set bounds twice - a workaround for a bug in SWT GTK + Compiz 
 			// (otherwise window gets smaller and smaller each time)
-			shell.setBounds(guiConfig.getMainWindowBounds());			
+//			shell.setSize(guiConfig.getMainWindowBounds());
 		}
 		
 		if (guiConfig.isFirstRun) {
@@ -143,7 +132,7 @@ public class MainWindow {
 		shell.addListener(SWT.Close, new Listener() {
 			public void handleEvent(Event event) {
 				// save dimensions!
-				guiConfig.setMainWindowBounds(shell.getBounds(), shell.getMaximized());
+				guiConfig.setMainWindowSize(shell.getSize(), shell.getMaximized());
 			}
 		});
 	}
