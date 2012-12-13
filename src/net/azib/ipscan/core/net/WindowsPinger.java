@@ -5,12 +5,15 @@
  */
 package net.azib.ipscan.core.net;
 
+import com.sun.jna.Native;
+import com.sun.jna.Structure;
+import com.sun.jna.win32.StdCallLibrary;
+import net.azib.ipscan.core.ScanningSubject;
+
 import java.io.IOException;
 import java.net.InetAddress;
 
-import com.sun.jna.Native;
-import com.sun.jna.win32.StdCallLibrary;
-import net.azib.ipscan.core.ScanningSubject;
+import static java.lang.Thread.*;
 
 /**
  * Windows-only pinger that uses Microsoft's ICMP.DLL for its job.
@@ -38,25 +41,21 @@ public class WindowsPinger implements Pinger {
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
-		PingResult result = new PingResult(subject.getAddress());
-		byte[] pingData = new byte[56];
-		byte[] replyData = new byte[56 + 100];
-
 		int handle = dll.IcmpCreateFile();
 		if (handle < 0) {
 			throw new IOException("Unable to create Windows native ICMP handle");
 		}
 
-		try {
-			// send a bunch of packets
-			for (int i = 1; i <= count && !Thread.currentThread().isInterrupted(); i++) {
-				if (dll.IcmpSendEcho(handle, subject.getAddress().getAddress(), pingData, pingData.length, 0, replyData, replyData.length, timeout) > 0) {
-					int status = replyData[4] + (replyData[5]<<8) + (replyData[6]<<16) + (replyData[7]<<24);
-					if (status == 0) {
-						int roundTripTime = replyData[8] + (replyData[9]<<8) + (replyData[10]<<16) + (replyData[11]<<24);
-						int timeToLive = replyData[20] & 0xFF;
-						result.addReply(roundTripTime);
-						result.setTTL(timeToLive);
+    PingResult result = new PingResult(subject.getAddress());
+    byte[] pingData = new byte[56];
+    IcmpDll.ICMP_ECHO_REPLY replyData = new IcmpDll.ICMP_ECHO_REPLY();
+    try {
+      for (int i = 1; i <= count && !currentThread().isInterrupted(); i++) {
+        int numReplies = dll.IcmpSendEcho(handle, subject.getAddress().getAddress(), pingData, pingData.length, 0, replyData, replyData.size(), timeout);
+        if (numReplies > 0) {
+          if (replyData.status == 0) {
+						result.addReply(replyData.roundTripTime);
+						result.setTTL(replyData.ttl & 0xFF);
 					}
 				}
 			}
@@ -81,16 +80,30 @@ public class WindowsPinger implements Pinger {
     /**
      * Wrapper for Microsoft's {@linkplain http://msdn.microsoft.com/EN-US/library/aa366050.aspx IcmpSendEcho}
      */
-    int IcmpSendEcho(int handle, byte[] address, byte[] pingData, int pingDataSize, int options, byte[] replyData, int replyDataSize, int timeout);
+    int IcmpSendEcho(int handle, byte[] address, byte[] pingData, int pingDataSize, int options, ICMP_ECHO_REPLY replyData, int replyDataSize, int timeout);
 
     /**
      * Wrapper for Microsoft's IcmpCreateFile: {@linkplain http://msdn.microsoft.com/en-us/library/aa366043.aspx IcmpCloseHandle}
      */
     void IcmpCloseHandle(int handle);
+
+    public static class ICMP_ECHO_REPLY extends Structure {
+      public byte[] address = new byte[4];
+      public int status;
+      public int roundTripTime;
+      public short dataSize;
+      public short reserved;
+      public byte ttl;
+      public byte tos;
+      public byte flags;
+      public byte optionsSize;
+      public byte[] more = new byte[100];
+    }
   }
 
   public static void main(String[] args) throws IOException {
-    PingResult ping = new WindowsPinger(2000).ping(new ScanningSubject(InetAddress.getLocalHost()), 1);
-    System.out.println(ping.getAverageTime());
+    PingResult ping = new WindowsPinger(5000).ping(new ScanningSubject(InetAddress.getLocalHost()), 3);
+    System.out.println(ping.getAverageTime() + "ms");
+    System.out.println("TTL " + ping.getTTL());
   }
 }
