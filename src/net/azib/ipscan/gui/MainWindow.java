@@ -75,12 +75,7 @@ public class MainWindow {
 		if (guiConfig.isMainWindowMaximized) {
 			shell.setMaximized(true);
 		}
-		else {
-			// set bounds twice - a workaround for a bug in SWT GTK + Compiz 
-			// (otherwise window gets smaller and smaller each time)
-//			shell.setSize(guiConfig.getMainWindowBounds());
-		}
-		
+
 		if (guiConfig.isFirstRun) {
 			Display.getCurrent().asyncExec(new Runnable() {
 				public void run() {
