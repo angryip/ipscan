@@ -5,17 +5,14 @@
  */
 package net.azib.ipscan.core.net;
 
+import net.azib.ipscan.core.ScanningSubject;
+
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.NoRouteToHostException;
-import java.net.PortUnreachableException;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.util.logging.Level;
+import java.net.*;
 import java.util.logging.Logger;
 
-import net.azib.ipscan.core.ScanningSubject;
+import static java.util.logging.Level.*;
+import static net.azib.ipscan.util.IOUtils.*;
 
 /**
  * UDP Pinger. Uses an UDP port to ping, doesn't require root privileges.
@@ -23,21 +20,21 @@ import net.azib.ipscan.core.ScanningSubject;
  * @author Anton Keks
  */
 public class UDPPinger implements Pinger {
-	
 	static final Logger LOG = Logger.getLogger(UDPPinger.class.getName());
 	
 	private static final int PROBE_UDP_PORT = 33381;
-	
-	private int timeout;
-	
-	public UDPPinger(int timeout) {
+
+  private DatagramSocket socket;
+  private int timeout;
+
+  public UDPPinger(int timeout) {
 		this.timeout = timeout;
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
 		PingResult result = new PingResult(subject.getAddress());
-		
-		DatagramSocket socket = new DatagramSocket();
+
+    socket = new DatagramSocket();
 		socket.setSoTimeout(timeout);
 		socket.connect(subject.getAddress(), PROBE_UDP_PORT);
 		
@@ -51,7 +48,7 @@ public class UDPPinger implements Pinger {
 			catch (PortUnreachableException e) {
 				result.addReply(System.currentTimeMillis()-startTime);
 			}
-			catch (SocketTimeoutException e) {
+			catch (SocketTimeoutException ignore) {
 			}
 			catch (NoRouteToHostException e) {
 				// this means that the host is down
@@ -64,16 +61,13 @@ public class UDPPinger implements Pinger {
 				}
 			}
 			catch (IOException e) {
-				LOG.log(Level.FINER, subject.toString(), e);
+				LOG.log(FINER, subject.toString(), e);
 			}
 		}
-		
-		socket.close();
-		
 		return result;
 	}
 
 	public void close() throws IOException {
-		// nothing to do here
-	}
+    closeQuietly(socket);
+  }
 }

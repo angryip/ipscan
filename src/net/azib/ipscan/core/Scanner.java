@@ -26,18 +26,18 @@ public class Scanner {
 
 	/**
 	 * Executes all registered fetchers for the current IP address.
-	 * @param scanningSubject containing the IP address to scan
+	 * @param subject containing the IP address to scan
 	 * @param result where the results are injected
 	 */
-	public void scan(ScanningSubject scanningSubject, ScanningResult result) {
+	public void scan(ScanningSubject subject, ScanningResult result) {
 		// populate results
 		int fetcherIndex = 0;
 		boolean isScanningInterrupted = false;
 		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
 			Object value = NotScanned.VALUE;
-			if (!scanningSubject.isAddressAborted() && !isScanningInterrupted) {
+			if (!subject.isAddressAborted() && !isScanningInterrupted) {
 				// run the fetcher
-				value = fetcher.scan(scanningSubject);
+				value = fetcher.scan(subject);
 				// check if scanning was interrupted
 				isScanningInterrupted = Thread.currentThread().isInterrupted();
 				if (value == null)
@@ -48,7 +48,7 @@ public class Scanner {
 			fetcherIndex++;
 		}
 		
-		result.setType(scanningSubject.getResultType());
+		result.setType(subject.getResultType());
 	}
 	
 	/**

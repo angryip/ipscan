@@ -5,15 +5,17 @@
  */
 package net.azib.ipscan.core.net;
 
+import net.azib.ipscan.core.ScanningSubject;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.NoRouteToHostException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.azib.ipscan.core.ScanningSubject;
+import static java.util.logging.Level.*;
+import static net.azib.ipscan.util.IOUtils.*;
 
 /**
  * TCP Pinger. Uses a TCP port to ping, doesn't require root privileges.
@@ -21,15 +23,15 @@ import net.azib.ipscan.core.ScanningSubject;
  * @author Anton Keks
  */
 public class TCPPinger implements Pinger {
-	
 	static final Logger LOG = Logger.getLogger(TCPPinger.class.getName());
 	
 	// try different ports in sequence, starting with 80 (which is most probably not filtered)
 	private static final int[] PROBE_TCP_PORTS = {80, 80, 443, 8080, 22, 7};
-	
-	private int timeout;
-	
-	public TCPPinger(int timeout) {
+
+  private Socket socket;
+  private int timeout;
+
+  public TCPPinger(int timeout) {
 		// use increased timeout, because TCP connect() produces more packets (roundtrips)
 		this.timeout = timeout + timeout/2;
 	}
@@ -39,7 +41,7 @@ public class TCPPinger implements Pinger {
 		int workingPort = -1;
 		
 		for (int i = 0; i < count && !Thread.currentThread().isInterrupted(); i++) {
-			Socket socket = new Socket();
+      socket = new Socket();
 			long startTime = System.currentTimeMillis();
 			try {
 				// cycle through different ports until a working one is found
@@ -52,7 +54,7 @@ public class TCPPinger implements Pinger {
 				// set some optimization options
 				socket.setReuseAddress(true);
 				socket.setReceiveBufferSize(32);
-				socket.connect(new InetSocketAddress(subject.getAddress(), probePort), timeout);				
+				socket.connect(new InetSocketAddress(subject.getAddress(), probePort), timeout);
 				if (socket.isConnected()) {
 					// it worked - success
 					success(result, startTime);
@@ -60,7 +62,7 @@ public class TCPPinger implements Pinger {
 					workingPort = probePort;
 				}
 			}
-			catch (SocketTimeoutException e) {
+			catch (SocketTimeoutException ignore) {
 			}
 			catch (NoRouteToHostException e) {
 				// this means that the host is down
@@ -82,14 +84,11 @@ public class TCPPinger implements Pinger {
 				}
 				else {
 					// something unknown
-					LOG.log(Level.FINER, subject.toString(), e);
+					LOG.log(FINER, subject.toString(), e);
 				}
 			}
 			finally {
-				try {
-					socket.close();
-				}
-				catch (Exception e) {}
+        closeQuietly(socket);
 			}
 		}
 		
@@ -103,6 +102,6 @@ public class TCPPinger implements Pinger {
 	}
 
 	public void close() throws IOException {
-		// nothing to do here
+    closeQuietly(socket);
 	}
 }

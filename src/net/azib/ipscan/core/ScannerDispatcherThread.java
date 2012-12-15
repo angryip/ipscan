@@ -5,19 +5,21 @@
  */
 package net.azib.ipscan.core;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
-import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.core.state.StateMachine.Transition;
+import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.util.InetAddressUtils;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static java.util.concurrent.TimeUnit.*;
+import static net.azib.ipscan.core.state.ScanningState.*;
 
 /**
  * Main scanning thread that spawns other threads.
@@ -78,7 +80,7 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 
 			try {
 				ScanningSubject subject = null;
-				while(feeder.hasNext() && stateMachine.inState(ScanningState.SCANNING)) {
+				while(feeder.hasNext() && stateMachine.inState(SCANNING)) {
 					// make a small delay between thread creation
 					Thread.sleep(config.threadDelay);
 					
@@ -121,7 +123,7 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 
 			try {				
 				// now wait for all threads, which are still running
-				while (!threadPool.awaitTermination(UI_UPDATE_INTERVAL_MS, TimeUnit.MILLISECONDS)) {
+				while (!threadPool.awaitTermination(UI_UPDATE_INTERVAL_MS, MILLISECONDS)) {
 					progressCallback.updateProgress(null, numActiveThreads.intValue(), 100);
 				}
 			} 
@@ -145,7 +147,7 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 	 * Currently used to kill all running threads if user says so.
 	 */
 	public void transitionTo(ScanningState state, Transition transition) {
-		if (state == ScanningState.KILLING) {
+		if (state == KILLING) {
 			// try to interrupt all threads if we get to killing state
 			threadGroup.interrupt();
 		}
