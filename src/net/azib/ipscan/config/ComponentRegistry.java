@@ -5,67 +5,31 @@
  */
 package net.azib.ipscan.config;
 
-import java.util.logging.Logger;
-
 import net.azib.ipscan.core.Scanner;
 import net.azib.ipscan.core.ScannerDispatcherThreadFactory;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.net.PingerRegistry;
-import net.azib.ipscan.core.net.PingerRegistryImpl;
 import net.azib.ipscan.core.plugins.PluginLoader;
-import net.azib.ipscan.exporters.CSVExporter;
-import net.azib.ipscan.exporters.ExporterRegistry;
-import net.azib.ipscan.exporters.IPListExporter;
-import net.azib.ipscan.exporters.TXTExporter;
-import net.azib.ipscan.exporters.XMLExporter;
-import net.azib.ipscan.fetchers.CommentFetcher;
-import net.azib.ipscan.fetchers.FetcherRegistry;
-import net.azib.ipscan.fetchers.FetcherRegistryImpl;
-import net.azib.ipscan.fetchers.FilteredPortsFetcher;
-import net.azib.ipscan.fetchers.HTTPSenderFetcher;
-import net.azib.ipscan.fetchers.HostnameFetcher;
-import net.azib.ipscan.fetchers.IPFetcher;
-import net.azib.ipscan.fetchers.NetBIOSInfoFetcher;
-import net.azib.ipscan.fetchers.PingFetcher;
-import net.azib.ipscan.fetchers.PingTTLFetcher;
-import net.azib.ipscan.fetchers.PortsFetcher;
-import net.azib.ipscan.fetchers.WebDetectFetcher;
-import net.azib.ipscan.gui.AboutDialog;
-import net.azib.ipscan.gui.ConfigDetectorDialog;
-import net.azib.ipscan.gui.DetailsWindow;
-import net.azib.ipscan.gui.MainMenu;
-import net.azib.ipscan.gui.MainWindow;
-import net.azib.ipscan.gui.PreferencesDialog;
-import net.azib.ipscan.gui.ResultTable;
-import net.azib.ipscan.gui.SWTAwareStateMachine;
-import net.azib.ipscan.gui.SelectFetchersDialog;
-import net.azib.ipscan.gui.StatisticsDialog;
-import net.azib.ipscan.gui.StatusBar;
+import net.azib.ipscan.exporters.*;
+import net.azib.ipscan.fetchers.*;
+import net.azib.ipscan.gui.*;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.MainWindow.FeederSelectionCombo;
-import net.azib.ipscan.gui.actions.ColumnsActions;
-import net.azib.ipscan.gui.actions.CommandsMenuActions;
-import net.azib.ipscan.gui.actions.HelpMenuActions;
-import net.azib.ipscan.gui.actions.OpenerLauncher;
-import net.azib.ipscan.gui.actions.StartStopScanningAction;
-import net.azib.ipscan.gui.actions.ToolsActions;
+import net.azib.ipscan.gui.actions.*;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import net.azib.ipscan.gui.feeders.FileFeederGUI;
 import net.azib.ipscan.gui.feeders.RandomFeederGUI;
 import net.azib.ipscan.gui.feeders.RangeFeederGUI;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.*;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
+
+import java.util.logging.Logger;
 
 /**
  * This class is the dependency injection configuration using the Pico Container.
@@ -113,7 +77,7 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(CommentFetcher.class);
 		container.registerComponentImplementation(NetBIOSInfoFetcher.class);
 
-		container.registerComponentImplementation(PingerRegistry.class, PingerRegistryImpl.class);
+		container.registerComponentImplementation(PingerRegistry.class, PingerRegistry.class);
 		container.registerComponentImplementation(ScanningResultList.class);
 		container.registerComponentImplementation(Scanner.class);
 		container.registerComponentImplementation(SWTAwareStateMachine.class);
@@ -126,15 +90,15 @@ public class ComponentRegistry {
 		container.registerComponentInstance(Display.getDefault());
 		container.registerComponentImplementation("mainShell", Shell.class);
 		container.registerComponentImplementation("mainMenu", Menu.class, new Parameter[] {
-				new ComponentParameter("mainShell"), new ConstantParameter(new Integer(SWT.BAR)) });
+				new ComponentParameter("mainShell"), new ConstantParameter(SWT.BAR) });
 		container.registerComponentImplementation("commandsMenu", CommandsMenu.class);
 
 		container.registerComponentImplementation("feederArea", Composite.class, new Parameter[] {
-				new ComponentParameter("mainShell"), new ConstantParameter(new Integer(SWT.NONE)) });
+				new ComponentParameter("mainShell"), new ConstantParameter(SWT.NONE) });
 		container.registerComponentImplementation("controlsArea", Composite.class, new Parameter[] {
-				new ComponentParameter("mainShell"), new ConstantParameter(new Integer(SWT.NONE)) });
+				new ComponentParameter("mainShell"), new ConstantParameter(SWT.NONE) });
 		container.registerComponentImplementation("startStopButton", Button.class, new Parameter[] {
-				new ComponentParameter("controlsArea"), new ConstantParameter(new Integer(SWT.NONE)) });
+				new ComponentParameter("controlsArea"), new ConstantParameter(SWT.NONE) });
 		container.registerComponentImplementation("feederSelectionCombo", FeederSelectionCombo.class,
 				new Parameter[] { new ComponentParameter("controlsArea") });
 
