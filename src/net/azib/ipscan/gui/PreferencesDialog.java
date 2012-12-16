@@ -6,14 +6,13 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.GUIConfig;
+import net.azib.ipscan.config.GUIConfig.DisplayMethod;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.ScannerConfig;
-import net.azib.ipscan.config.GUIConfig.DisplayMethod;
 import net.azib.ipscan.core.PortIterator;
 import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.fetchers.FetcherException;
 import net.azib.ipscan.gui.util.LayoutHelper;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -23,16 +22,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.*;
 
 /**
  * Preferences Dialog
@@ -383,6 +373,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 	}
 
 	private void loadPreferences() {
+    pingerRegistry.checkSelectedPinger();
 		maxThreadsText.setText(Integer.toString(scannerConfig.maxThreads));
 		threadDelayText.setText(Integer.toString(scannerConfig.threadDelay));
 		String[] pingerNames = pingerRegistry.getRegisteredNames();
