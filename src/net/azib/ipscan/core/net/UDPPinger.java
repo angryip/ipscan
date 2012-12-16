@@ -10,6 +10,7 @@ import net.azib.ipscan.util.ThreadResourceBinder;
 
 import java.io.IOException;
 import java.net.*;
+import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.*;
@@ -22,7 +23,7 @@ import static java.util.logging.Level.*;
 public class UDPPinger implements Pinger {
 	static final Logger LOG = Logger.getLogger(UDPPinger.class.getName());
 	
-	private static final int PROBE_UDP_PORT = 33381;
+	private static final int PROBE_UDP_PORT = 37381;
 
   private int timeout;
   private ThreadResourceBinder<DatagramSocket> sockets = new ThreadResourceBinder<DatagramSocket>();
@@ -39,9 +40,11 @@ public class UDPPinger implements Pinger {
 		socket.connect(subject.getAddress(), PROBE_UDP_PORT);
 		
 		for (int i = 0; i < count && !Thread.currentThread().isInterrupted(); i++) {
-			DatagramPacket packet = new DatagramPacket(new byte[]{}, 0);
-			long startTime = System.currentTimeMillis();
-			try {
+      long startTime = System.currentTimeMillis();
+      byte[] payload = new byte[8];
+      ByteBuffer.wrap(payload).putLong(startTime);
+      DatagramPacket packet = new DatagramPacket(payload, payload.length);
+      try {
 				socket.send(packet);
 				socket.receive(packet);
 			}
