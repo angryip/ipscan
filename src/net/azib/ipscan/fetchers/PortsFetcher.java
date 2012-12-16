@@ -5,6 +5,16 @@
  */
 package net.azib.ipscan.fetchers;
 
+import net.azib.ipscan.config.ScannerConfig;
+import net.azib.ipscan.core.PortIterator;
+import net.azib.ipscan.core.ScanningResult.ResultType;
+import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.core.values.NotScanned;
+import net.azib.ipscan.core.values.NumericRangeList;
+import net.azib.ipscan.gui.fetchers.PortsFetcherPrefs;
+import net.azib.ipscan.util.SequenceIterator;
+import net.azib.ipscan.util.ThreadResourceBinder;
+
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
@@ -13,15 +23,6 @@ import java.net.SocketTimeoutException;
 import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import net.azib.ipscan.config.ScannerConfig;
-import net.azib.ipscan.core.PortIterator;
-import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.core.ScanningResult.ResultType;
-import net.azib.ipscan.core.values.NotScanned;
-import net.azib.ipscan.core.values.NumericRangeList;
-import net.azib.ipscan.gui.fetchers.PortsFetcherPrefs;
-import net.azib.ipscan.util.SequenceIterator;
 
 /**
  * PortsFetcher scans TCP ports.
@@ -37,6 +38,7 @@ public class PortsFetcher extends AbstractFetcher {
 	private static final String PARAMETER_FILTERED_PORTS = "filteredPorts";
 	
 	private ScannerConfig config;
+  private ThreadResourceBinder<Socket> sockets = new ThreadResourceBinder<Socket>();
 	
 	// initialize preferences for this scan
 	private PortIterator portIteratorPrototype;
@@ -80,7 +82,6 @@ public class PortsFetcher extends AbstractFetcher {
 
 			int portTimeout = subject.getAdaptedPortTimeout();
 			
-			Socket socket = null;
 			// clone port iterator for performance instead of creating for every thread
 			Iterator<Integer> portsIterator = portIteratorPrototype.copy();
 			if (config.useRequestedPorts && subject.isAnyPortRequested()) {
@@ -91,11 +92,10 @@ public class PortsFetcher extends AbstractFetcher {
 				// no ports are configured for scanning
 				return false;
 			}
-			
+
 			while (portsIterator.hasNext() && !Thread.currentThread().isInterrupted()) {
 				// TODO: UDP ports?
-				// TODO: reuse sockets?
-				socket = new Socket();
+				Socket socket = sockets.bind(new Socket());
 				int port = portsIterator.next();
 				try {			
 					// set some optimization options
@@ -108,9 +108,7 @@ public class PortsFetcher extends AbstractFetcher {
 					socket.setSendBufferSize(16);
 					socket.setTcpNoDelay(true);
 					
-					if (socket.isConnected()) {
-						openPorts.add(port);
-					}
+					if (socket.isConnected()) openPorts.add(port);
 				}
 				catch (SocketTimeoutException e) {
 					filteredPorts.add(port);
@@ -120,29 +118,18 @@ public class PortsFetcher extends AbstractFetcher {
 					assert e instanceof ConnectException : e;
 				}
 				finally {
-					try {
-						socket.close();
-					}
-					catch (IOException e) {}
+          sockets.closeAndUnbind(socket);
 				}
 			}
 		}
 		return true;
 	}
 
-	/**
-	 * @param subject
-	 * @return
-	 */
 	@SuppressWarnings("unchecked")
 	protected SortedSet<Integer> getFilteredPorts(ScanningSubject subject) {
 		return (SortedSet<Integer>) subject.getParameter(PARAMETER_FILTERED_PORTS);
 	}
 
-	/**
-	 * @param subject
-	 * @return
-	 */
 	@SuppressWarnings("unchecked")
 	protected SortedSet<Integer> getOpenPorts(ScanningSubject subject) {
 		return (SortedSet<Integer>) subject.getParameter(PARAMETER_OPEN_PORTS);
@@ -169,4 +156,8 @@ public class PortsFetcher extends AbstractFetcher {
 		this.portIteratorPrototype = new PortIterator(config.portString);
 	}
 
+  @Override
+  public void cleanup() {
+    sockets.close();
+  }
 }

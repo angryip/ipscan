@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static net.azib.ipscan.core.ScanningSubject.*;
+
 /**
  * PingFetcher is able to ping IP addresses.
  * It returns the average round trip time of all pings sent.
@@ -53,25 +55,21 @@ public class PingFetcher extends AbstractFetcher {
 	}
 
 	protected PingResult executePing(ScanningSubject subject) {
-		
-		PingResult result = null;
-		
-		if (subject.hasParameter(ScanningSubject.PARAMETER_PING_RESULT)) {
-			result = (PingResult) subject.getParameter(ScanningSubject.PARAMETER_PING_RESULT);
-		}
-		else {
-			try {
-				result = pinger.ping(subject, config.pingCount);
-			}
-			catch (IOException e) {
-				// if this is not a timeout
-				LOG.log(Level.WARNING, "Pinging failed", e);
-				// return an empty ping result
-				result = new PingResult(subject.getAddress());
-			}
-			// remember the result for other fetchers to use
-			subject.setParameter(ScanningSubject.PARAMETER_PING_RESULT, result);
-		}
+		if (subject.hasParameter(PARAMETER_PING_RESULT))
+			return (PingResult) subject.getParameter(PARAMETER_PING_RESULT);
+
+    PingResult result;
+    try {
+      result = pinger.ping(subject, config.pingCount);
+    }
+    catch (IOException e) {
+      // if this is not a timeout
+      LOG.log(Level.WARNING, "Pinging failed", e);
+      // return an empty ping result
+      result = new PingResult(subject.getAddress());
+    }
+    // remember the result for other fetchers to use
+    subject.setParameter(PARAMETER_PING_RESULT, result);
 		return result;
 	}
 

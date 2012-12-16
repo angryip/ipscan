@@ -6,16 +6,18 @@
 
 package net.azib.ipscan.fetchers;
 
+import net.azib.ipscan.config.LoggerFactory;
+import net.azib.ipscan.config.ScannerConfig;
+import net.azib.ipscan.core.ScanningSubject;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.azib.ipscan.config.ScannerConfig;
-import net.azib.ipscan.config.LoggerFactory;
-import net.azib.ipscan.core.ScanningSubject;
+import static java.util.logging.Level.*;
+import static net.azib.ipscan.util.IOUtils.*;
 
 /**
  * NetBIOSInfoFetcher - gathers NetBIOS info about Windows machines.
@@ -84,13 +86,11 @@ public class NetBIOSInfoFetcher extends AbstractFetcher {
 		}
 		catch (Exception e) {
 			// bugs?
-			LOG.log(Level.WARNING, null, e);
+			LOG.log(WARNING, null, e);
 			return null;
 		}
 		finally {
-			if (socket != null) {
-				socket.close();
-			}
+      closeQuietly(socket);
 		}
 	}
 

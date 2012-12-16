@@ -10,6 +10,9 @@ import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Scanner functionality is encapsulated in this class.
  * It uses a list of fetchers to perform the actual scanning.
@@ -17,8 +20,8 @@ import net.azib.ipscan.fetchers.FetcherRegistry;
  * @author Anton Keks
  */
 public class Scanner {
-	
 	private FetcherRegistry fetcherRegistry;
+  private Map<Long, Fetcher> currentFetchers = new ConcurrentHashMap<Long, Fetcher>();
 	
 	public Scanner(FetcherRegistry fetcherRegistry) {
 		this.fetcherRegistry = fetcherRegistry;
@@ -34,6 +37,7 @@ public class Scanner {
 		int fetcherIndex = 0;
 		boolean isScanningInterrupted = false;
 		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
+      currentFetchers.put(Thread.currentThread().getId(), fetcher);
 			Object value = NotScanned.VALUE;
 			if (!subject.isAddressAborted() && !isScanningInterrupted) {
 				// run the fetcher
@@ -50,6 +54,11 @@ public class Scanner {
 		
 		result.setType(subject.getResultType());
 	}
+
+  public void interrupt(Thread thread) {
+    Fetcher fetcher = currentFetchers.get(thread.getId());
+    if (fetcher != null) fetcher.cleanup();
+  }
 	
 	/**
 	 * Init everything needed for scanning, including Fetchers
@@ -64,9 +73,9 @@ public class Scanner {
 	 * Cleanup after a scan
 	 */
 	public void cleanup() {
+    currentFetchers.clear();
 		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
 			fetcher.cleanup();
 		}
 	}
-	
 }
