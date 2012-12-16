@@ -3,26 +3,22 @@
  */
 package net.azib.ipscan.fetchers;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.Iterator;
-import java.util.prefs.Preferences;
-
 import net.azib.ipscan.core.ScanningSubject;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
+import java.util.Iterator;
+import java.util.prefs.Preferences;
+
+import static org.junit.Assert.*;
+
 /**
  * @author Anton Keks
  */
-public class FetcherRegistryImplTest {
+public class FetcherRegistryTest {
 	
 	private Preferences preferences;
 	
@@ -43,7 +39,7 @@ public class FetcherRegistryImplTest {
 		hostnameFetcher = new HostnameFetcher();
 		commentFetcher = new CommentFetcher(null);
 		portsFetcher = new PortsFetcher(null);
-		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, pingFetcher, hostnameFetcher, commentFetcher, portsFetcher}, preferences, null);
+		fetcherRegistry = new FetcherRegistry(new Fetcher[] {ipFetcher, pingFetcher, hostnameFetcher, commentFetcher, portsFetcher}, preferences, null);
 	}
 	
 	@After
@@ -75,19 +71,19 @@ public class FetcherRegistryImplTest {
 	
 	@Test
 	public void testLoadPreferences() throws Exception {
-		preferences.remove(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS);
-		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences, null);
+		preferences.remove(FetcherRegistry.PREFERENCE_SELECTED_FETCHERS);
+		fetcherRegistry = new FetcherRegistry(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences, null);
 		assertEquals(4, fetcherRegistry.getSelectedFetchers().size());
 		
-		preferences.put(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, hostnameFetcher.getId() + "###" + commentFetcher.getId());
-		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences, null);
+		preferences.put(FetcherRegistry.PREFERENCE_SELECTED_FETCHERS, hostnameFetcher.getId() + "###" + commentFetcher.getId());
+		fetcherRegistry = new FetcherRegistry(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences, null);
 		assertEquals(2, fetcherRegistry.getSelectedFetchers().size());
 		Iterator<?> iterator = fetcherRegistry.getSelectedFetchers().iterator();
 		assertSame(hostnameFetcher, iterator.next());
 		assertSame(commentFetcher, iterator.next());
 		
-		preferences.put(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, "not-existing-fetcher###" + hostnameFetcher.getId());
-		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, hostnameFetcher}, preferences, null);
+		preferences.put(FetcherRegistry.PREFERENCE_SELECTED_FETCHERS, "not-existing-fetcher###" + hostnameFetcher.getId());
+		fetcherRegistry = new FetcherRegistry(new Fetcher[] {ipFetcher, hostnameFetcher}, preferences, null);
 		assertEquals(1, fetcherRegistry.getSelectedFetchers().size());
 	}
 	
@@ -98,7 +94,7 @@ public class FetcherRegistryImplTest {
 		assertEquals(1, fetcherRegistry.getSelectedFetchers().size());
 		Iterator<?> iterator = fetcherRegistry.getSelectedFetchers().iterator();
 		assertEquals(ipFetcher.getId(), ((Fetcher)iterator.next()).getId());
-		assertEquals(ipFetcher.getId(), preferences.get(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, null));
+		assertEquals(ipFetcher.getId(), preferences.get(FetcherRegistry.PREFERENCE_SELECTED_FETCHERS, null));
 		
 		// now return a fetcher back
 		fetcherRegistry.updateSelectedFetchers(new String[] {commentFetcher.getId(), ipFetcher.getId()});
@@ -106,7 +102,7 @@ public class FetcherRegistryImplTest {
 		iterator = fetcherRegistry.getSelectedFetchers().iterator();
 		assertEquals(commentFetcher.getId(), ((Fetcher)iterator.next()).getId());
 		assertEquals(ipFetcher.getId(), ((Fetcher)iterator.next()).getId());
-		assertEquals(commentFetcher.getId() + "###" + ipFetcher.getId(), preferences.get(FetcherRegistryImpl.PREFERENCE_SELECTED_FETCHERS, null));
+		assertEquals(commentFetcher.getId() + "###" + ipFetcher.getId(), preferences.get(FetcherRegistry.PREFERENCE_SELECTED_FETCHERS, null));
 	}
 	
 	@Test
@@ -114,7 +110,7 @@ public class FetcherRegistryImplTest {
 		final boolean listenerWasCalled[] = {false};
 		fetcherRegistry.addListener(new FetcherRegistryUpdateListener() {
 			public void handleUpdateOfSelectedFetchers(FetcherRegistry fetcherRegistry) {
-				assertSame(FetcherRegistryImplTest.this.fetcherRegistry, fetcherRegistry);
+				assertSame(FetcherRegistryTest.this.fetcherRegistry, fetcherRegistry);
 				assertEquals(0, fetcherRegistry.getSelectedFetchers().size());
 				listenerWasCalled[0] = true;
 			}
@@ -130,7 +126,7 @@ public class FetcherRegistryImplTest {
 		container.registerComponentInstance(message);
 		
 		Fetcher editableFetcher = new EditableFetcher();
-		fetcherRegistry = new FetcherRegistryImpl(new Fetcher[] {ipFetcher, editableFetcher}, preferences, container);
+		fetcherRegistry = new FetcherRegistry(new Fetcher[] {ipFetcher, editableFetcher}, preferences, container);
 		
 		EditableFetcherPrefs.calledWithMessage = null;
 		fetcherRegistry.openPreferencesEditor(editableFetcher);		

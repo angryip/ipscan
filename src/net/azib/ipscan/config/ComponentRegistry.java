@@ -65,7 +65,7 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(XMLExporter.class);
 		container.registerComponentImplementation(IPListExporter.class);
 
-		container.registerComponentImplementation(FetcherRegistry.class, FetcherRegistryImpl.class);
+		container.registerComponentImplementation(FetcherRegistry.class, FetcherRegistry.class);
 		container.registerComponentImplementation(IPFetcher.class);
 		container.registerComponentImplementation(PingFetcher.class);
 		container.registerComponentImplementation(PingTTLFetcher.class);
