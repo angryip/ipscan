@@ -32,8 +32,7 @@ public class TCPPinger implements Pinger {
   private int timeout;
 
   public TCPPinger(int timeout) {
-		// use increased timeout, because TCP connect() produces more packets (roundtrips)
-		this.timeout = timeout + timeout/2;
+		this.timeout = timeout;
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
