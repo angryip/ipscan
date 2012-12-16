@@ -5,23 +5,23 @@
  */
 package net.azib.ipscan.core.net;
 
-import java.io.IOException;
-import java.io.InterruptedIOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import net.azib.ipscan.core.ScanningSubject;
-
 import org.savarese.rocksaw.net.RawSocket;
 import org.savarese.vserv.tcpip.ICMPEchoPacket;
 import org.savarese.vserv.tcpip.ICMPPacket;
 import org.savarese.vserv.tcpip.IPPacket;
 import org.savarese.vserv.tcpip.OctetConverter;
+
+import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
+
+import static java.util.logging.Level.*;
+import static net.azib.ipscan.util.IOUtils.*;
 
 /**
  * Shared multi-threaded pinger.
@@ -29,15 +29,14 @@ import org.savarese.vserv.tcpip.OctetConverter;
  * @author Anton Keks
  */
 public class ICMPSharedPinger implements Pinger {
-	
 	static final Logger LOG = Logger.getLogger(ICMPSharedPinger.class.getName());
 
 	/** a single raw socket for sending of all ICMP packets */
-	private RawSocket sendingSocket;
+	private final RawSocket sendingSocket;
 	/** a single raw socket for receiving of all ICMP packets */
-	private RawSocket receivingSocket;
+	private final RawSocket receivingSocket;
 	/** the map with PingResults, keys are InetAddress */
-	private Map<InetAddress, PingResult> results = Collections.synchronizedMap(new HashMap<InetAddress, PingResult>());
+	private Map<InetAddress, PingResult> results = new ConcurrentHashMap<InetAddress, PingResult>();
 	
 	private Thread receiverThread;
 	
@@ -78,7 +77,6 @@ public class ICMPSharedPinger implements Pinger {
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
-		
 		InetAddress address = subject.getAddress();
 		PingResult result = new PingResult(address);
 		results.put(address, result);
@@ -106,7 +104,7 @@ public class ICMPSharedPinger implements Pinger {
 				OctetConverter.longToOctets(System.currentTimeMillis(), data, timeOffsetInPacket);
 				packet.computeICMPChecksum();
 				
-				if (LOG.isLoggable(Level.FINEST)) {
+				if (LOG.isLoggable(FINEST)) {
 					LOG.finest("Pinging " + i + result.address);
 				}
 				synchronized (sendingSocket) {
@@ -125,7 +123,7 @@ public class ICMPSharedPinger implements Pinger {
 				
 			int totalTimeout = timeout * count;
 			while (totalTimeout > 0 && result.getReplyCount() < count) {
-				if (LOG.isLoggable(Level.FINEST)) {
+				if (LOG.isLoggable(FINEST)) {
 					LOG.finest("Waiting for response " + address + ": " + totalTimeout);
 				}
 				synchronized (result) {
@@ -133,11 +131,10 @@ public class ICMPSharedPinger implements Pinger {
 					try {
 						result.wait(timeout);
 					}
-					catch (InterruptedException e) {}
+					catch (InterruptedException ignore) {}
 				}
 				totalTimeout -= timeout;
 			}
-			
 			
 			return result;
 		}
@@ -172,7 +169,7 @@ public class ICMPSharedPinger implements Pinger {
 				tmpAddress = InetAddress.getLocalHost();
 			}
 			catch (UnknownHostException e) {
-				LOG.log(Level.SEVERE, null, e);
+				LOG.log(SEVERE, null, e);
 			}
 			
 			try {
@@ -180,7 +177,7 @@ public class ICMPSharedPinger implements Pinger {
 				receivingSocket.write(tmpAddress, data);
 			}
 			catch (IOException e) {
-				LOG.log(Level.WARNING, "Sending of test packet failed", e);
+				LOG.log(WARNING, "Sending of test packet failed", e);
 			}
 			
 			do {
@@ -202,7 +199,7 @@ public class ICMPSharedPinger implements Pinger {
 						long startTime = OctetConverter.octetsToLong(data, timeOffsetInPacket);
 						long time = endTime - startTime;
 						
-						if (LOG.isLoggable(Level.FINEST)) {
+						if (LOG.isLoggable(FINEST)) {
 							LOG.finest("Received " + packet.getSequenceNumber() + packet.getSourceAsInetAddress() + ": " + time);
 						}
 
@@ -227,21 +224,17 @@ public class ICMPSharedPinger implements Pinger {
 					// TODO: make RawSocket to throw Exceptions without the stack trace (for speed)
 				}
 				catch (UnknownHostException e) {
-					LOG.log(Level.WARNING, "Cannot retrieve the source address of an ICMP packet", e);
+					LOG.log(WARNING, "Cannot retrieve the source address of an ICMP packet", e);
 				}
 				catch (IOException e) {
-					LOG.log(Level.WARNING, "Unable to read from the socket", e);
+					LOG.log(WARNING, "Unable to read from the socket", e);
 				}
 			
 			}
 			while(!interrupted());
-			
-			try {
-				receivingSocket.close();
-			}
-			catch (IOException e) {	}			
+
+      closeQuietly(receivingSocket);
 			LOG.fine("Terminated");
 		}
 	}
-
 }

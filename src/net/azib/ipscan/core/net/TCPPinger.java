@@ -102,7 +102,7 @@ public class TCPPinger implements Pinger {
 		result.enableTimeoutAdaptation();		
 	}
 
-	public void close() throws IOException {
+	public void close() {
     sockets.close();
 	}
 }

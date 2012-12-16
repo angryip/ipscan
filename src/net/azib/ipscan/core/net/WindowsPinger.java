@@ -67,7 +67,7 @@ public class WindowsPinger implements Pinger {
 		return result;
 	}
 
-	public void close() throws IOException {
+	public void close() {
 		// not needed in this pinger
 	}
 

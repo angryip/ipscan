@@ -67,7 +67,7 @@ public class UDPPinger implements Pinger {
 		return result;
 	}
 
-	public void close() throws IOException {
+	public void close() {
     sockets.close();
   }
 }

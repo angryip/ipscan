@@ -5,6 +5,13 @@
  */
 package net.azib.ipscan.core.net;
 
+import net.azib.ipscan.core.ScanningSubject;
+import org.savarese.rocksaw.net.RawSocket;
+import org.savarese.vserv.tcpip.ICMPEchoPacket;
+import org.savarese.vserv.tcpip.ICMPPacket;
+import org.savarese.vserv.tcpip.IPPacket;
+import org.savarese.vserv.tcpip.OctetConverter;
+
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.InetAddress;
@@ -12,13 +19,7 @@ import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.azib.ipscan.core.ScanningSubject;
-
-import org.savarese.rocksaw.net.RawSocket;
-import org.savarese.vserv.tcpip.ICMPEchoPacket;
-import org.savarese.vserv.tcpip.ICMPPacket;
-import org.savarese.vserv.tcpip.IPPacket;
-import org.savarese.vserv.tcpip.OctetConverter;
+import static net.azib.ipscan.util.IOUtils.*;
 
 /**
  * Pinging code is encapsulated here.
@@ -26,7 +27,6 @@ import org.savarese.vserv.tcpip.OctetConverter;
  * @author Anton Keks
  */
 public class ICMPPinger implements Pinger {
-	
 	private static final Logger LOG = Logger.getLogger(ICMPPinger.class.getName());
 
 	private int timeout;
@@ -115,7 +115,6 @@ public class ICMPPinger implements Pinger {
 	 * @param count number of pings to perform
 	 */
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
-		
 		PingResult result = new PingResult(subject.getAddress());
 		RawSocket socket = createRawSocket();
 		
@@ -131,7 +130,7 @@ public class ICMPPinger implements Pinger {
 			}
 		}
 		finally {
-			socket.close();
+      closeQuietly(socket);
 		}
 		
 		return result;
@@ -139,5 +138,4 @@ public class ICMPPinger implements Pinger {
 
 	public void close() {
 	}
-
 }
