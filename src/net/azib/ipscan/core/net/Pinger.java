@@ -5,23 +5,17 @@
  */
 package net.azib.ipscan.core.net;
 
-import java.io.IOException;
-
 import net.azib.ipscan.core.ScanningSubject;
+
+import java.io.Closeable;
+import java.io.IOException;
 
 /**
  * Pinger
  *
  * @author Anton Keks
  */
-public interface Pinger {
-
-	/**
-	 * Closes the raw socket opened by the constructor. After calling this
-	 * method, the object cannot be used.
-	 */
-	public void close() throws IOException;
-
+public interface Pinger extends Closeable {
 	/**
 	 * Issues the specified number of pings and
 	 * waits for replies.
