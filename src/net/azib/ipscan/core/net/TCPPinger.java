@@ -6,6 +6,7 @@
 package net.azib.ipscan.core.net;
 
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.util.ThreadResourceBinder;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -15,7 +16,6 @@ import java.net.SocketTimeoutException;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.*;
-import static net.azib.ipscan.util.IOUtils.*;
 
 /**
  * TCP Pinger. Uses a TCP port to ping, doesn't require root privileges.
@@ -28,7 +28,7 @@ public class TCPPinger implements Pinger {
 	// try different ports in sequence, starting with 80 (which is most probably not filtered)
 	private static final int[] PROBE_TCP_PORTS = {80, 80, 443, 8080, 22, 7};
 
-  private Socket socket;
+  private ThreadResourceBinder<Socket> sockets = new ThreadResourceBinder<Socket>();
   private int timeout;
 
   public TCPPinger(int timeout) {
@@ -39,9 +39,10 @@ public class TCPPinger implements Pinger {
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
 		PingResult result = new PingResult(subject.getAddress());
 		int workingPort = -1;
-		
+
+    Socket socket;
 		for (int i = 0; i < count && !Thread.currentThread().isInterrupted(); i++) {
-      socket = new Socket();
+      socket = sockets.bind(new Socket());
 			long startTime = System.currentTimeMillis();
 			try {
 				// cycle through different ports until a working one is found
@@ -78,7 +79,7 @@ public class TCPPinger implements Pinger {
 				}
 				else
 				// this should result in NoRouteToHostException or ConnectException, but not all Java implementation respect that
-				if (msg.contains(/*No*/"route to host") || msg.contains(/*Host is*/"down") || msg.contains(/*Network*/"unreachable")) {
+				if (msg.contains(/*No*/"route to host") || msg.contains(/*Host is*/"down") || msg.contains(/*Network*/"unreachable") || msg.contains(/*Socket*/"closed")) {
 					// host is down
 					break;
 				}
@@ -88,7 +89,7 @@ public class TCPPinger implements Pinger {
 				}
 			}
 			finally {
-        closeQuietly(socket);
+        sockets.closeAndUnbind(socket);
 			}
 		}
 		
@@ -102,6 +103,6 @@ public class TCPPinger implements Pinger {
 	}
 
 	public void close() throws IOException {
-    closeQuietly(socket);
+    sockets.close();
 	}
 }

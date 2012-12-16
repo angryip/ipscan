@@ -6,13 +6,13 @@
 package net.azib.ipscan.core.net;
 
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.util.ThreadResourceBinder;
 
 import java.io.IOException;
 import java.net.*;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.*;
-import static net.azib.ipscan.util.IOUtils.*;
 
 /**
  * UDP Pinger. Uses an UDP port to ping, doesn't require root privileges.
@@ -24,8 +24,8 @@ public class UDPPinger implements Pinger {
 	
 	private static final int PROBE_UDP_PORT = 33381;
 
-  private DatagramSocket socket;
   private int timeout;
+  private ThreadResourceBinder<DatagramSocket> sockets = new ThreadResourceBinder<DatagramSocket>();
 
   public UDPPinger(int timeout) {
 		this.timeout = timeout;
@@ -34,7 +34,7 @@ public class UDPPinger implements Pinger {
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
 		PingResult result = new PingResult(subject.getAddress());
 
-    socket = new DatagramSocket();
+    DatagramSocket socket = sockets.bind(new DatagramSocket());
 		socket.setSoTimeout(timeout);
 		socket.connect(subject.getAddress(), PROBE_UDP_PORT);
 		
@@ -68,6 +68,6 @@ public class UDPPinger implements Pinger {
 	}
 
 	public void close() throws IOException {
-    closeQuietly(socket);
+    sockets.close();
   }
 }
