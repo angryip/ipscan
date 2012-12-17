@@ -16,8 +16,6 @@ import net.azib.ipscan.gui.DetailsWindow;
 import net.azib.ipscan.gui.EditOpenersDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
-import net.azib.ipscan.gui.actions.ToolsActions.TableSelection;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -34,10 +32,8 @@ import org.eclipse.swt.widgets.MenuItem;
  * @author Anton Keks
  */
 public class CommandsMenuActions {
-	
 	/**
 	 * Checks that there is at least one item selected in the results list.
-	 * @param mainWindow
 	 */
 	static void checkSelection(ResultTable resultTable) {
 		if (resultTable.getItemCount() <= 0) {
@@ -73,12 +69,10 @@ public class CommandsMenuActions {
 	public static final class Delete implements Listener {
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
-		private final TableSelection selectionListener;
-		
-		public Delete(ResultTable resultTable, StateMachine stateMachine, TableSelection selectionListener) {
+
+		public Delete(ResultTable resultTable, StateMachine stateMachine) {
 			this.resultTable = resultTable;
 			this.stateMachine = stateMachine;
-			this.selectionListener = selectionListener;
 		}
 
 		public void handleEvent(Event event) {
@@ -94,9 +88,8 @@ public class CommandsMenuActions {
 			int firstSelection = resultTable.getSelectionIndex();
 			resultTable.remove(resultTable.getSelectionIndices());
 			resultTable.setSelection(firstSelection);
-			// reset status text about multiple selection
-			event.widget = resultTable;
-			selectionListener.handleEvent(event);
+      event.widget = resultTable;
+      resultTable.notifyListeners(SWT.Selection, event);
 		}
 	}
 

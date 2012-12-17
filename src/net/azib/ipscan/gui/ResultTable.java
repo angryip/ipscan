@@ -5,17 +5,15 @@
  */
 package net.azib.ipscan.gui;
 
-import java.util.List;
-
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
-import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.ScanningResult.ResultType;
+import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
-import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.core.state.StateMachine.Transition;
+import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
@@ -23,15 +21,11 @@ import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsMenuActions;
 import net.azib.ipscan.gui.actions.ToolsActions;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.*;
+
+import java.util.List;
 
 /**
  * Table of scanning results.
@@ -72,9 +66,9 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 		listImages[ResultType.WITH_PORTS.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.addinfo.img"));
 		
 		addListener(SWT.Selection, selectionListener);
-		addListener(SWT.KeyDown, new CommandsMenuActions.Delete(this, stateMachine, selectionListener));
+		addListener(SWT.KeyDown, new CommandsMenuActions.Delete(this, stateMachine));
 		addListener(SWT.KeyDown, new CommandsMenuActions.CopyIP(this));
-		addListener(SWT.KeyDown, new ToolsActions.SelectAll(this, selectionListener));
+		addListener(SWT.KeyDown, new ToolsActions.SelectAll(this));
 		
 		// this one populates table dynamically, taking data from ScanningResultList
 		addListener(SWT.SetData, new SetDataListener());

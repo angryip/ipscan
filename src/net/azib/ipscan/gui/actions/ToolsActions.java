@@ -8,22 +8,19 @@ package net.azib.ipscan.gui.actions;
 import net.azib.ipscan.config.CommandProcessor;
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.ScanningResult.ResultType;
+import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
-import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.core.state.StateMachine.Transition;
-import net.azib.ipscan.gui.PreferencesDialog;
-import net.azib.ipscan.gui.ResultTable;
-import net.azib.ipscan.gui.SelectFetchersDialog;
-import net.azib.ipscan.gui.StatisticsDialog;
-import net.azib.ipscan.gui.StatusBar;
-
+import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.gui.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
+
+import static net.azib.ipscan.core.ScanningResult.ResultType.*;
 
 /**
  * ToolsActions
@@ -119,15 +116,12 @@ public class ToolsActions {
 	}
 	
 	static abstract class SelectDesired implements Listener {
-		
 		private final ResultTable resultTable;
 		private final ScanningResultList results;
-		private final TableSelection tableSelectionListener;
 
-		public SelectDesired(ResultTable resultTable, ScanningResultList results, TableSelection tableSelectionListener) {
+		public SelectDesired(ResultTable resultTable, ScanningResultList results) {
 			this.resultTable = resultTable;
 			this.results = results;
-			this.tableSelectionListener = tableSelectionListener;
 		}
 
 		public void handleEvent(Event event) {
@@ -139,7 +133,7 @@ public class ToolsActions {
 				}
 			}
 			event.widget = resultTable;
-			tableSelectionListener.handleEvent(event);
+			resultTable.notifyListeners(SWT.Selection, event);
 			resultTable.forceFocus();
 		}
 
@@ -147,42 +141,42 @@ public class ToolsActions {
 	}
 	
 	public static final class SelectAlive extends SelectDesired {
-		public SelectAlive(ResultTable resultTable, ScanningResultList results, TableSelection tableSelectionListener) {
-			super(resultTable, results, tableSelectionListener);
+		public SelectAlive(ResultTable resultTable, ScanningResultList results) {
+			super(resultTable, results);
 		}
 
 		boolean isDesired(ResultType type) {
-			return type.ordinal() >= ResultType.ALIVE.ordinal();
+			return type.ordinal() >= ALIVE.ordinal();
 		}
 	}
 
 	public static final class SelectDead extends SelectDesired {
-		public SelectDead(ResultTable resultTable, ScanningResultList results, TableSelection tableSelectionListener) {
-			super(resultTable, results, tableSelectionListener);
+		public SelectDead(ResultTable resultTable, ScanningResultList results) {
+			super(resultTable, results);
 		}
 
 		boolean isDesired(ResultType type) {
-			return type == ResultType.DEAD;
+			return type == DEAD;
 		}
 	}
 	
 	public static final class SelectWithPorts extends SelectDesired {
-		public SelectWithPorts(ResultTable resultTable, ScanningResultList results, TableSelection tableSelectionListener) {
-			super(resultTable, results, tableSelectionListener);
+		public SelectWithPorts(ResultTable resultTable, ScanningResultList results) {
+			super(resultTable, results);
 		}
 
 		boolean isDesired(ResultType type) {
-			return type == ResultType.WITH_PORTS;
+			return type == WITH_PORTS;
 		}
 	}
 	
 	public static final class SelectWithoutPorts extends SelectDesired {
-		public SelectWithoutPorts(ResultTable resultTable, ScanningResultList results, TableSelection tableSelectionListener) {
-			super(resultTable, results, tableSelectionListener);
+		public SelectWithoutPorts(ResultTable resultTable, ScanningResultList results) {
+			super(resultTable, results);
 		}
 
 		boolean isDesired(ResultType type) {
-			return type == ResultType.ALIVE;
+			return type == ALIVE;
 		}
 	}
 	
@@ -192,11 +186,9 @@ public class ToolsActions {
 	 */
 	public static class SelectAll implements Listener {
 		private final ResultTable resultTable;
-		private final TableSelection tableSelectionListener;
 
-		public SelectAll(ResultTable resultTable, TableSelection tableSelectionListener) {
+		public SelectAll(ResultTable resultTable) {
 			this.resultTable = resultTable;
-			this.tableSelectionListener = tableSelectionListener;
 		}
 
 		public void handleEvent(Event event) {
@@ -205,7 +197,7 @@ public class ToolsActions {
 				resultTable.selectAll();
 				// update selection status
 				event.widget = resultTable;
-				tableSelectionListener.handleEvent(event);
+        resultTable.notifyListeners(SWT.Selection, event);
 				event.doit = false;
 			}
 		}
@@ -213,11 +205,9 @@ public class ToolsActions {
 
 	public static final class SelectInvert implements Listener {
 		private final ResultTable resultTable;
-		private final TableSelection tableSelectionListener;
-		
-		public SelectInvert(ResultTable resultTable, TableSelection tableSelectionListener) {
+
+		public SelectInvert(ResultTable resultTable) {
 			this.resultTable = resultTable;
-			this.tableSelectionListener = tableSelectionListener;
 		}
 
 		public void handleEvent(Event event) {
@@ -233,7 +223,7 @@ public class ToolsActions {
 			resultTable.setRedraw(true);
 			resultTable.redraw();
 			event.widget = resultTable;
-			tableSelectionListener.handleEvent(event);
+      resultTable.notifyListeners(SWT.Selection, event);
 			resultTable.forceFocus();
 		}
 	}
