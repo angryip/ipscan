@@ -119,9 +119,9 @@ public class ToolsActions {
 		private final ResultTable resultTable;
 		private final ScanningResultList results;
 
-		public SelectDesired(ResultTable resultTable, ScanningResultList results) {
+		public SelectDesired(ResultTable resultTable) {
 			this.resultTable = resultTable;
-			this.results = results;
+			this.results = resultTable.getScanningResults();
 		}
 
 		public void handleEvent(Event event) {
@@ -141,8 +141,8 @@ public class ToolsActions {
 	}
 	
 	public static final class SelectAlive extends SelectDesired {
-		public SelectAlive(ResultTable resultTable, ScanningResultList results) {
-			super(resultTable, results);
+		public SelectAlive(ResultTable resultTable) {
+			super(resultTable);
 		}
 
 		boolean isDesired(ResultType type) {
@@ -151,8 +151,8 @@ public class ToolsActions {
 	}
 
 	public static final class SelectDead extends SelectDesired {
-		public SelectDead(ResultTable resultTable, ScanningResultList results) {
-			super(resultTable, results);
+		public SelectDead(ResultTable resultTable) {
+			super(resultTable);
 		}
 
 		boolean isDesired(ResultType type) {
@@ -161,8 +161,8 @@ public class ToolsActions {
 	}
 	
 	public static final class SelectWithPorts extends SelectDesired {
-		public SelectWithPorts(ResultTable resultTable, ScanningResultList results) {
-			super(resultTable, results);
+		public SelectWithPorts(ResultTable resultTable) {
+			super(resultTable);
 		}
 
 		boolean isDesired(ResultType type) {
@@ -171,8 +171,8 @@ public class ToolsActions {
 	}
 	
 	public static final class SelectWithoutPorts extends SelectDesired {
-		public SelectWithoutPorts(ResultTable resultTable, ScanningResultList results) {
-			super(resultTable, results);
+		public SelectWithoutPorts(ResultTable resultTable) {
+			super(resultTable);
 		}
 
 		boolean isDesired(ResultType type) {

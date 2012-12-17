@@ -44,7 +44,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 
 	private Listener columnResizeListener;
 
-	public ResultTable(Composite parent, GUIConfig guiConfig, FetcherRegistry fetcherRegistry, ScanningResultList scanningResultList, StateMachine stateMachine, ColumnsActions.ColumnClick columnClickListener, ColumnsActions.ColumnResize columnResizeListener, ToolsActions.TableSelection selectionListener) {
+	public ResultTable(Composite parent, GUIConfig guiConfig, FetcherRegistry fetcherRegistry, ScanningResultList scanningResultList, StateMachine stateMachine, ColumnsActions.ColumnClick columnClickListener, ColumnsActions.ColumnResize columnResizeListener) {
 		super(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		this.guiConfig = guiConfig;
 		this.scanningResults = scanningResultList;
@@ -65,7 +65,6 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 		listImages[ResultType.ALIVE.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.alive.img"));
 		listImages[ResultType.WITH_PORTS.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.addinfo.img"));
 		
-		addListener(SWT.Selection, selectionListener);
 		addListener(SWT.KeyDown, new CommandsMenuActions.Delete(this, stateMachine));
 		addListener(SWT.KeyDown, new CommandsMenuActions.CopyIP(this));
 		addListener(SWT.KeyDown, new ToolsActions.SelectAll(this));

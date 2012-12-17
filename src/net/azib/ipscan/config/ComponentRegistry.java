@@ -118,10 +118,9 @@ public class ComponentRegistry {
 				anyComponentParameter, anyComponentParameter });
 		container.registerComponentImplementation(ResultTable.class, ResultTable.class, new Parameter[] {
 				new ComponentParameter("mainShell"), anyComponentParameter, anyComponentParameter,
-				anyComponentParameter, anyComponentParameter, anyComponentParameter, anyComponentParameter,
-				anyComponentParameter });
+				anyComponentParameter, anyComponentParameter, anyComponentParameter, anyComponentParameter });
 		container.registerComponentImplementation(StatusBar.class, StatusBar.class, new Parameter[] {
-				new ComponentParameter("mainShell"), anyComponentParameter, anyComponentParameter });
+				new ComponentParameter("mainShell"), anyComponentParameter, anyComponentParameter, anyComponentParameter, anyComponentParameter });
 
 		container.registerComponentImplementation(MainMenu.class, MainMenu.class, new Parameter[] {
 				new ComponentParameter("mainShell"), new ComponentParameter("mainMenu"),
@@ -147,7 +146,6 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(CommandsMenuActions.Details.class);
 		container.registerComponentImplementation(ToolsActions.Preferences.class);
 		container.registerComponentImplementation(ToolsActions.ChooseFetchers.class);
-		container.registerComponentImplementation(ToolsActions.TableSelection.class);
 		container.registerComponentImplementation(HelpMenuActions.CheckVersion.class);
 
 		if (Platform.MAC_OS) {

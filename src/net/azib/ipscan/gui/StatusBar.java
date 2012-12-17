@@ -6,23 +6,22 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.GUIConfig;
+import net.azib.ipscan.config.GUIConfig.DisplayMethod;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.ScannerConfig;
-import net.azib.ipscan.config.GUIConfig.DisplayMethod;
+import net.azib.ipscan.core.state.StateMachine;
+import net.azib.ipscan.gui.actions.CommandsMenuActions.Delete;
+import net.azib.ipscan.gui.actions.ToolsActions.SelectDead;
+import net.azib.ipscan.gui.actions.ToolsActions.SelectWithoutPorts;
+import net.azib.ipscan.gui.actions.ToolsActions.TableSelection;
 import net.azib.ipscan.gui.util.LayoutHelper;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.*;
+
+import static net.azib.ipscan.config.GUIConfig.DisplayMethod.*;
 
 /**
  * The status bar of the main window.
@@ -30,9 +29,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Anton Keks
  */
 public class StatusBar {
-	
 	private Composite composite;
-	
 	private Label statusText;
 	private Label displayMethodText;
 	private Label threadsText;
@@ -41,10 +38,15 @@ public class StatusBar {
 	
 	private ScannerConfig scannerConfig;
 	private GUIConfig guiConfig;
+  private StateMachine stateMachine;
+  private ResultTable resultTable;
 
-	public StatusBar(Shell shell, GUIConfig guiConfig, ScannerConfig scannerConfig) {
+	public StatusBar(Shell shell, GUIConfig guiConfig, ScannerConfig scannerConfig, ResultTable resultTable, StateMachine stateMachine) {
 		this.guiConfig = guiConfig;
 		this.scannerConfig = scannerConfig;
+    this.stateMachine = stateMachine;
+    this.resultTable = resultTable;
+    this.resultTable.addListener(SWT.Selection, new TableSelection(this, stateMachine));
 		
 		composite = new Composite(shell, SWT.NONE);
 		composite.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), null, new FormAttachment(100)));
@@ -56,10 +58,10 @@ public class StatusBar {
 		setStatusText(null);
 		
 		displayMethodText = new Label(composite, SWT.BORDER);
-		displayMethodText.setText(Labels.getLabel("text.display." + DisplayMethod.PORTS));
+		displayMethodText.setText(Labels.getLabel("text.display." + PORTS));
 		displayMethodText.pack();
 		displayMethodText.setLayoutData(LayoutHelper.formData(displayMethodText.getSize().x, SWT.DEFAULT, new FormAttachment(statusText), null, new FormAttachment(0), new FormAttachment(100)));
-		displayMethodText.addListener(SWT.MouseDown, new ConfigTextClickListener());
+		displayMethodText.addListener(SWT.MouseDown, new DisplayModeChangeListener());
 		updateConfigText();
 
 		threadsText = new Label(composite, SWT.BORDER);
@@ -134,9 +136,8 @@ public class StatusBar {
 		displayMethodText.setEnabled(enabled);
 	}
 	
-	class ConfigTextClickListener implements Listener {
-
-		public void handleEvent(Event event) {
+	class DisplayModeChangeListener implements Listener {
+    public void handleEvent(Event event) {
 			// user clicked the config text, lets ask the display options
 			if (event.type == SWT.MouseDown) {
 				Menu popupMenu = new Menu(getShell(), SWT.POP_UP);
@@ -149,12 +150,24 @@ public class StatusBar {
 				popupMenu.setVisible(true);
 			}
 			// handle menu item selection
-			if (event.type == SWT.Selection) {
+			else if (event.type == SWT.Selection) {
 				// remember the selected display method
 				guiConfig.displayMethod = (DisplayMethod) event.widget.getData();
 				updateConfigText();
+        if (!resultTable.getScanningResults().areResultsAvailable()) return;
+        switch (guiConfig.displayMethod) {
+          case ALIVE: {
+            new SelectDead(resultTable).handleEvent(event);
+            new Delete(resultTable, stateMachine).handleEvent(event);
+            break;
+          }
+          case PORTS: {
+            new SelectWithoutPorts(resultTable).handleEvent(event);
+            new Delete(resultTable, stateMachine).handleEvent(event);
+            break;
+          }
+        }
 			}
 		}
-		
 	}
 }

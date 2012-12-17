@@ -78,14 +78,13 @@ public class CommandsMenuActions {
 		public void handleEvent(Event event) {
 			// ignore other keys if this is a KeyDown event - 
 			// the same listener is used for several events
-			if (event.type == SWT.KeyDown && event.keyCode != SWT.DEL)
-				return;
+			if (event.type == SWT.KeyDown && event.keyCode != SWT.DEL) return;
 			// deletion not allowed when scanning
-			if (!stateMachine.inState(ScanningState.IDLE))
-				return;
+			if (!stateMachine.inState(ScanningState.IDLE)) return;
 			
-			checkSelection(resultTable);
 			int firstSelection = resultTable.getSelectionIndex();
+      if (firstSelection < 0) return;
+
 			resultTable.remove(resultTable.getSelectionIndices());
 			resultTable.setSelection(firstSelection);
       event.widget = resultTable;
