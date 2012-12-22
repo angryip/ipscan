@@ -222,12 +222,12 @@ public class PreferencesDialog extends AbstractModalDialog {
 		deadHostsCheckbox.setText(Labels.getLabel("preferences.pinging.deadHosts"));
 		deadHostsCheckbox.setLayoutData(gridDataWithSpan);
 
-		Group broadcastGroup = new Group(scanningTab, SWT.NONE);
-		broadcastGroup.setLayout(groupLayout);
-		broadcastGroup.setText(Labels.getLabel("preferences.broadcast"));
+		Group skippingGroup = new Group(scanningTab, SWT.NONE);
+		skippingGroup.setLayout(groupLayout);
+		skippingGroup.setText(Labels.getLabel("preferences.skipping"));
 		
-		skipBroadcastsCheckbox = new Button(broadcastGroup, SWT.CHECK);
-		skipBroadcastsCheckbox.setText(Labels.getLabel("preferences.broadcast.skip"));
+		skipBroadcastsCheckbox = new Button(skippingGroup, SWT.CHECK);
+		skipBroadcastsCheckbox.setText(Labels.getLabel("preferences.skipping.broadcast"));
 		GridData gridDataWithSpan2 = new GridData();
 		gridDataWithSpan2.horizontalSpan = 2;
 		skipBroadcastsCheckbox.setLayoutData(gridDataWithSpan2);
