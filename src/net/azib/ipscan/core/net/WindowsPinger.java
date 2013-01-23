@@ -11,7 +11,6 @@ import com.sun.jna.Structure.ByValue;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.net.WindowsPinger.IcmpDll.IcmpEchoReply;
 import net.azib.ipscan.core.net.WindowsPinger.IcmpDll.IpAddrByVal;
-import net.azib.ipscan.core.net.WindowsPinger.IcmpDll.IpOptionInformationByRef;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -45,9 +44,7 @@ public class WindowsPinger implements Pinger {
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
 		Pointer handle = dll.IcmpCreateFile();
-		if (handle == null) {
-			throw new IOException("Unable to create Windows native ICMP handle");
-		}
+		if (handle == null)  throw new IOException("Unable to create Windows native ICMP handle");
 
     IpAddrByVal ipaddr = new IpAddrByVal();
     ipaddr.bytes = subject.getAddress().getAddress();
@@ -56,18 +53,12 @@ public class WindowsPinger implements Pinger {
     int replyDataSize = sendDataSize + (new IcmpEchoReply().size());
     Pointer sendData  = new Memory(sendDataSize);
     Pointer replyData = new Memory(replyDataSize);
-    IpOptionInformationByRef ipOption = new IpOptionInformationByRef();
-    ipOption.ttl = (byte)0xFF;
-    ipOption.tos = (byte)0;
-    ipOption.flags = (byte)0;
-    ipOption.optionsSize = (byte)0;
-    ipOption.optionsData = null;
 
     PingResult result = new PingResult(subject.getAddress());
     try {
       for (int i = 1; i <= count && !currentThread().isInterrupted(); i++) {
-        int numReplies = dll.IcmpSendEcho(handle, ipaddr, sendData, (short)sendDataSize, ipOption, replyData, replyDataSize, timeout);
-        Icmp.IcmpEchoReply echoReply = new Icmp.IcmpEchoReply(replyData);
+        int numReplies = dll.IcmpSendEcho(handle, ipaddr, sendData, (short)sendDataSize, null, replyData, replyDataSize, timeout);
+        IcmpEchoReply echoReply = new IcmpEchoReply(replyData);
         if (numReplies > 0 && echoReply.status == 0) {
           result.addReply(echoReply.roundTripTime);
           result.setTTL(echoReply.options.ttl & 0xFF);
