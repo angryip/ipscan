@@ -16,8 +16,14 @@ current:
 linux:
 	ant linux
 	
+linux64:
+	ant linux64
+	
 win32:
 	ant win32
+	
+win64:
+	ant win64
 	
 mac:
 	ant mac

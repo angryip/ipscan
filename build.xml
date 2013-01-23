@@ -208,7 +208,6 @@
 			<mkdir dir="${dist}"/>
 			<unzip src="lib/picocontainer-1.0.jar" dest="${bin}.@{platform}"/>
 			<unzip src="${swt}/swt-@{platform}.jar" dest="${bin}.@{platform}"/>
-			<copy file="ext/winping/lib/winping.dll" todir="${bin}.win32"/> <!-- TODO: support win64 -->
 			<delete includeemptydirs="true" failonerror="false">
 				<fileset dir="${bin}.@{platform}/images" includes="**/*.svg"/>
 				<fileset dir="${bin}.@{platform}/META-INF"/>
@@ -399,12 +398,14 @@
 
     <target name="package-win32" depends="build-info">
         <copy file="ext/rocksaw/lib/rocksaw.dll" todir="${bin}.win32"/>
+        <unzip src="${swt}/jna-win32.jar" dest="${bin}.win32"/>
         <package-for platform="win32"/>
         <package-exe-for platform="win32"/>
     </target>
 
     <target name="package-win64" depends="build-info">
         <!--<copy file="ext/rocksaw/lib/rocksaw.dll" todir="${bin}.win64"/>-->
+        <unzip src="${swt}/jna-win64.jar" dest="${bin}.win64"/>
         <package-for platform="win64"/>
         <package-exe-for platform="win64"/>
     </target>
