@@ -5,10 +5,13 @@
  */
 package net.azib.ipscan.core.net;
 
-import com.sun.jna.Native;
-import com.sun.jna.Structure;
-import com.sun.jna.win32.StdCallLibrary;
+import com.sun.jna.*;
+import com.sun.jna.Structure.ByReference;
+import com.sun.jna.Structure.ByValue;
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.core.net.WindowsPinger.IcmpDll.IcmpEchoReply;
+import net.azib.ipscan.core.net.WindowsPinger.IcmpDll.IpAddrByVal;
+import net.azib.ipscan.core.net.WindowsPinger.IcmpDll.IpOptionInformationByRef;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -41,22 +44,33 @@ public class WindowsPinger implements Pinger {
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
-		int handle = dll.IcmpCreateFile();
-		if (handle < 0) {
+		Pointer handle = dll.IcmpCreateFile();
+		if (handle == null) {
 			throw new IOException("Unable to create Windows native ICMP handle");
 		}
 
+    IpAddrByVal ipaddr = new IpAddrByVal();
+    ipaddr.bytes = subject.getAddress().getAddress();
+
+    int sendDataSize = 16;
+    int replyDataSize = sendDataSize + (new IcmpEchoReply().size());
+    Pointer sendData  = new Memory(sendDataSize);
+    Pointer replyData = new Memory(replyDataSize);
+    IpOptionInformationByRef ipOption = new IpOptionInformationByRef();
+    ipOption.ttl = (byte)0xFF;
+    ipOption.tos = (byte)0;
+    ipOption.flags = (byte)0;
+    ipOption.optionsSize = (byte)0;
+    ipOption.optionsData = null;
+
     PingResult result = new PingResult(subject.getAddress());
-    byte[] pingData = new byte[56];
-    IcmpDll.ICMP_ECHO_REPLY replyData = new IcmpDll.ICMP_ECHO_REPLY();
     try {
       for (int i = 1; i <= count && !currentThread().isInterrupted(); i++) {
-        int numReplies = dll.IcmpSendEcho(handle, subject.getAddress().getAddress(), pingData, pingData.length, 0, replyData, replyData.size(), timeout);
-        if (numReplies > 0) {
-          if (replyData.status == 0) {
-						result.addReply(replyData.roundTripTime);
-						result.setTTL(replyData.ttl & 0xFF);
-					}
+        int numReplies = dll.IcmpSendEcho(handle, ipaddr, sendData, (short)sendDataSize, ipOption, replyData, replyDataSize, timeout);
+        Icmp.IcmpEchoReply echoReply = new Icmp.IcmpEchoReply(replyData);
+        if (numReplies > 0 && echoReply.status == 0) {
+          result.addReply(echoReply.roundTripTime);
+          result.setTTL(echoReply.options.ttl & 0xFF);
 				}
 			}
 		}
@@ -71,33 +85,70 @@ public class WindowsPinger implements Pinger {
 		// not needed in this pinger
 	}
 
-  public interface IcmpDll extends StdCallLibrary {
+  public interface IcmpDll extends Library {
     /**
-     * Wrapper for Microsoft's  {@linkplain http://msdn.microsoft.com/en-US/library/aa366045.aspx IcmpCreateFile}
+     * Wrapper for Microsoft's {@linkplain http://msdn.microsoft.com/en-US/library/aa366045.aspx IcmpCreateFile}
      */
-    int IcmpCreateFile();
-
-    /**
-     * Wrapper for Microsoft's {@linkplain http://msdn.microsoft.com/EN-US/library/aa366050.aspx IcmpSendEcho}
-     */
-    int IcmpSendEcho(int handle, byte[] address, byte[] pingData, int pingDataSize, int options, ICMP_ECHO_REPLY replyData, int replyDataSize, int timeout);
+    public Pointer IcmpCreateFile();
 
     /**
      * Wrapper for Microsoft's IcmpCreateFile: {@linkplain http://msdn.microsoft.com/en-us/library/aa366043.aspx IcmpCloseHandle}
      */
-    void IcmpCloseHandle(int handle);
+    public boolean IcmpCloseHandle(Pointer hIcmp);
 
-    public static class ICMP_ECHO_REPLY extends Structure {
-      public byte[] address = new byte[4];
-      public int status;
-      public int roundTripTime;
-      public short dataSize;
-      public short reserved;
+    /**
+     * Wrapper for Microsoft's {@linkplain http://msdn.microsoft.com/EN-US/library/aa366050.aspx IcmpSendEcho}
+     */
+    public int IcmpSendEcho(
+        Pointer     hIcmp,
+        IpAddrByVal destinationAddress,
+        Pointer     requestData,
+        short       requestSize,
+        IpOptionInformationByRef requestOptions,
+        Pointer     replyBuffer,
+        int         replySize,
+        int         timeout
+    );
+
+    public static class IpAddr extends Structure {
+      public byte[] bytes = new byte[4];
+    }
+
+    public static class IpAddrByVal extends IpAddr implements ByValue {
+    }
+
+    public static class IpOptionInformation extends Structure {
       public byte ttl;
       public byte tos;
       public byte flags;
       public byte optionsSize;
-      public byte[] more = new byte[100];
+      public Pointer optionsData;
+    }
+
+    public static class IpOptionInformationByVal
+        extends IpOptionInformation implements ByValue {
+    }
+
+    public static class IpOptionInformationByRef
+        extends IpOptionInformation implements ByReference {
+    }
+
+    public static class IcmpEchoReply extends Structure {
+      public IpAddrByVal address;
+      public int status;
+      public int roundTripTime;
+      public short dataSize;
+      public short reserved;
+      public Pointer data;
+      public IpOptionInformationByVal options;
+
+      public IcmpEchoReply() {
+      }
+
+      public IcmpEchoReply(Pointer p) {
+        useMemory(p);
+        read();
+      }
     }
   }
 
