@@ -14,7 +14,6 @@ Before 3.0:
 * plugin loader
 * public XSL for XMLExporter
 * Easier adding/removing of columns to the result table (without resetting the results)
-* top-level exception handler for NoClassDefFoundErrors, etc
 
 Later:
 
