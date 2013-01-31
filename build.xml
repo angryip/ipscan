@@ -295,10 +295,10 @@
 				<fileset dir="${bin}.@{platform}" includes="**/*"/>
 			</jar>
 			<!--proguard>
-				<!- - -printseeds - ->
 				-injars ${dist}/${ant.project.name}-@{platform}-orig.jar
 				-outjars ${dist}/${ant.project.name}-@{platform}-${version}.jar
 				-libraryjars ${java.home}/lib/rt.jar
+				-libraryjars lib/jna-win32.jar
 				-keepclasseswithmembers public class * {
 				    public static void main(java.lang.String[]);
 				}
@@ -334,8 +334,8 @@
                     % *Proc(long, long);
                     % *Proc(long, long, long);
 				}
+                -ignorewarnings
 			</proguard-->
-
             <copy file="${dist}/${ant.project.name}-@{platform}-orig.jar" tofile="${dist}/${ant.project.name}-@{platform}-${version}.jar"/>
 			<delete file="${dist}/${ant.project.name}-@{platform}-orig.jar"/>
    		</sequential>
