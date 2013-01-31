@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.logging.Logger;
 
@@ -29,10 +30,10 @@ public class PluginLoader {
 
     public void addTo(MutablePicoContainer container) {
 		loadPluginsSpecifiedInSystemProperties(container);
-		loadPluginJars(container);
+		loadPluginJars(container, getOwnFile());
     }
 
-	private void loadPluginsSpecifiedInSystemProperties(MutablePicoContainer container) {
+	void loadPluginsSpecifiedInSystemProperties(MutablePicoContainer container) {
 		String plugins = System.getProperty("ipscan.plugins");
 		if (plugins != null) {
 			loadPluginClasses(container, getClass().getClassLoader(), plugins);
@@ -55,12 +56,7 @@ public class PluginLoader {
 		}
 	}
 
-	private void loadPluginJars(MutablePicoContainer container) {
-		String ownPath = PluginLoader.class.getResource("PluginLoader.class").getFile();
-		if (ownPath.startsWith("file:")) ownPath = ownPath.substring("file:".length());
-		if (ownPath.indexOf('!') >= 0) ownPath = ownPath.substring(0, ownPath.indexOf('!'));
-		final File ownFile = new File(ownPath);
-
+	void loadPluginJars(MutablePicoContainer container, final File ownFile) {
 		File[] jars = ownFile.getParentFile().listFiles(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
@@ -68,20 +64,50 @@ public class PluginLoader {
 			}
 		});
 
+		PluginClassLoader loader = new PluginClassLoader();
 		for (File jar : jars) {
 			try {
-				URLClassLoader loader = new URLClassLoader(new URL[] {jar.toURI().toURL()}, PluginLoader.class.getClassLoader());
-				Manifest manifest = new Manifest(loader.getResourceAsStream("META-INF/MANIFEST.MF"));
+				JarFile jarFile = new JarFile(jar);
+				Manifest manifest = jarFile.getManifest();
+				if (manifest == null) continue;
+				jarFile.close();
 
 				String className = manifest.getMainAttributes().getValue("IPScan-Plugin");
-				if (className != null) loadPluginClasses(container, loader, className);
+				if (className != null) {
+					loader.addURL(jar.toURI().toURL());
+					loadPluginClasses(container, loader, className);
+				}
 
 				String classNames = manifest.getMainAttributes().getValue("IPScan-Plugins");
-				if (classNames != null) loadPluginClasses(container, loader, classNames);
+				if (classNames != null) {
+					loader.addURL(jar.toURI().toURL());
+					loadPluginClasses(container, loader, classNames);
+				}
 			}
 			catch (Exception e) {
 				LOG.warning("Failed to load plugin jar " + jar + ": " + e);
 			}
+		}
+	}
+
+	private File getOwnFile() {
+		return getClassLocation(getClass());
+	}
+
+	File getClassLocation(Class clazz) {
+		String ownPath = clazz.getResource(clazz.getSimpleName() + ".class").getFile();
+		if (ownPath.startsWith("file:")) ownPath = ownPath.substring("file:".length());
+		if (ownPath.indexOf('!') >= 0) ownPath = ownPath.substring(0, ownPath.indexOf('!'));
+		return new File(ownPath);
+	}
+
+	static class PluginClassLoader extends URLClassLoader {
+		PluginClassLoader() {
+			super(new URL[0], PluginLoader.class.getClassLoader());
+		}
+
+		@Override protected void addURL(URL url) {
+			super.addURL(url);
 		}
 	}
 }
