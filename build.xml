@@ -200,6 +200,7 @@
 	<target name="build-info">
 		<tstamp/>
 		<property name="build.date" value="${TODAY}"/>
+        <exec command="git rev-parse HEAD" outputproperty="build.sha1"/>
 	</target>
 	
 	<macrodef name="package-for">
@@ -285,8 +286,7 @@
 					<attribute name="Main-Class" value="${main.class}"/>
 					<attribute name="Title" value="${name}"/>
 					<attribute name="Version" value="${version}"/>
-					<!-- TODO: add git sha1 here -->
-					<!--<attribute name="Git-SHA1" value="${build.number}"/>-->
+					<attribute name="Git-SHA1" value="${build.sha1}"/>
 					<attribute name="Build-Date" value="${build.date}"/>
 					<attribute name="Platform" value="@{platform}"/>
 					<attribute name="Built-By" value="${user.name}"/>
