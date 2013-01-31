@@ -12,7 +12,7 @@ import java.util.jar.Manifest;
 import java.util.logging.Logger;
 
 /**
- * Loads plugins using two ways:
+ * Loads plugins using three ways:
  * <ul>
  * <li>
  *     Classes listed in <code>ipscan.plugins</code> system property.
@@ -20,7 +20,10 @@ import java.util.logging.Logger;
  * </li>
  * <li>
  *     Jar files residing in the same directory as ipscan's binary file (jar or exe).
- *     These jar files must have their classes listed in <code>META-INF/MANIFEST.MF</code> as <code>IPScan-Plugins</code>.
+ *     Plugin jar files must have their classes listed in <code>META-INF/MANIFEST.MF</code> as <code>IPScan-Plugins</code>.
+ * </li>
+ * <li>
+ *     Jar files residing in the $HOME/.ipscan directory.
  * </li>
  * </ul>
  * In either way, all plugins must implement {@link net.azib.ipscan.core.Plugin} and one or more of the concrete interfaces.
@@ -31,6 +34,7 @@ public class PluginLoader {
     public void addTo(MutablePicoContainer container) {
 		loadPluginsSpecifiedInSystemProperties(container);
 		loadPluginJars(container, getOwnFile());
+		loadPluginJars(container, new File(System.getProperty("user.home"), ".ipscan/imaginary-plugin.jar"));
     }
 
 	void loadPluginsSpecifiedInSystemProperties(MutablePicoContainer container) {
@@ -57,6 +61,8 @@ public class PluginLoader {
 	}
 
 	void loadPluginJars(MutablePicoContainer container, final File ownFile) {
+		if (!ownFile.getParentFile().exists()) return;
+
 		File[] jars = ownFile.getParentFile().listFiles(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
