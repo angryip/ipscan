@@ -78,17 +78,17 @@ public class WindowsPinger implements Pinger {
 
   public interface IcmpDll extends Library {
     /**
-     * Wrapper for Microsoft's {@linkplain http://msdn.microsoft.com/en-US/library/aa366045.aspx IcmpCreateFile}
+     * Wrapper for Microsoft's <a href="http://msdn.microsoft.com/en-US/library/aa366045.aspx">IcmpCreateFile</a>
      */
     public Pointer IcmpCreateFile();
 
     /**
-     * Wrapper for Microsoft's IcmpCreateFile: {@linkplain http://msdn.microsoft.com/en-us/library/aa366043.aspx IcmpCloseHandle}
+     * Wrapper for Microsoft's <a href="http://msdn.microsoft.com/en-us/library/aa366043.aspx">IcmpCloseHandle</a>
      */
     public boolean IcmpCloseHandle(Pointer hIcmp);
 
     /**
-     * Wrapper for Microsoft's {@linkplain http://msdn.microsoft.com/EN-US/library/aa366050.aspx IcmpSendEcho}
+     * Wrapper for Microsoft's <a href="http://msdn.microsoft.com/EN-US/library/aa366050.aspx">IcmpSendEcho</a>
      */
     public int IcmpSendEcho(
         Pointer     hIcmp,
