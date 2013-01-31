@@ -5,11 +5,11 @@
  */
 package net.azib.ipscan.exporters;
 
+import net.azib.ipscan.core.Plugin;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-
-import net.azib.ipscan.core.plugins.Pluggable;
 
 /**
  * An Exporter is a class, which is able to export scanning results into a
@@ -25,7 +25,7 @@ import net.azib.ipscan.core.plugins.Pluggable;
  *
  * @author Anton Keks
  */
-public interface Exporter extends Cloneable, Pluggable {
+public interface Exporter extends Cloneable, Plugin {
 		
 	/**
 	 * @return the filename extension of the file type this Exporter produces (like txt, html, etc)

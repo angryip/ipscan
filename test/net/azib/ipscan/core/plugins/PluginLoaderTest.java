@@ -1,11 +1,13 @@
 package net.azib.ipscan.core.plugins;
 
+import net.azib.ipscan.core.PluginLoader;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.fetchers.AbstractFetcher;
 import org.junit.Test;
 import org.picocontainer.MutablePicoContainer;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class PluginLoaderTest {
     @Test

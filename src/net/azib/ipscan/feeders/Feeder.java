@@ -5,8 +5,8 @@
  */
 package net.azib.ipscan.feeders;
 
+import net.azib.ipscan.core.Plugin;
 import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.core.plugins.Pluggable;
 
 /**
  * Interface of a Feeder, which is used to feed scanner with IP addresses.
@@ -22,7 +22,7 @@ import net.azib.ipscan.core.plugins.Pluggable;
  * 
  * @author Anton Keks
  */
-public interface Feeder extends Pluggable {
+public interface Feeder extends Plugin {
 	
 	/**
 	 * @return true in case there are more IPs left for processing

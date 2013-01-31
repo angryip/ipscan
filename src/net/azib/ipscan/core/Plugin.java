@@ -4,15 +4,14 @@
  * Licensed under GPLv2.
  */
 
-package net.azib.ipscan.core.plugins;
+package net.azib.ipscan.core;
 
 /**
- * Pluggable
+ * Base interface for all plugins.
  *
  * @author Anton Keks
  */
-public interface Pluggable {
-
+public interface Plugin {
 	/**
 	 * @return unique ID of the pluggable, representing it
 	 */

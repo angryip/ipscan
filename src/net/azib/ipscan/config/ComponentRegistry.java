@@ -5,11 +5,11 @@
  */
 package net.azib.ipscan.config;
 
+import net.azib.ipscan.core.PluginLoader;
 import net.azib.ipscan.core.Scanner;
 import net.azib.ipscan.core.ScannerDispatcherThreadFactory;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.net.PingerRegistry;
-import net.azib.ipscan.core.plugins.PluginLoader;
 import net.azib.ipscan.exporters.*;
 import net.azib.ipscan.fetchers.*;
 import net.azib.ipscan.gui.*;

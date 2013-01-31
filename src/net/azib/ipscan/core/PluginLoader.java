@@ -1,4 +1,4 @@
-package net.azib.ipscan.core.plugins;
+package net.azib.ipscan.core;
 
 import net.azib.ipscan.config.LoggerFactory;
 import org.picocontainer.MutablePicoContainer;
@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  *     These jar files must have their classes listed in <code>META-INF/MANIFEST.MF</code> as <code>IPScan-Plugins</code>.
  * </li>
  * </ul>
- * In either way, all plugins must implement {@link Pluggable} and one or more of the concrete interfaces.
+ * In either way, all plugins must implement {@link net.azib.ipscan.core.Plugin} and one or more of the concrete interfaces.
  */
 public class PluginLoader {
     static final Logger LOG = LoggerFactory.getLogger();
@@ -44,10 +44,10 @@ public class PluginLoader {
 		for (String className : classes) {
 			try {
 				Class clazz = Class.forName(className, true, classLoader);
-				if (Pluggable.class.isAssignableFrom(clazz))
+				if (Plugin.class.isAssignableFrom(clazz))
 					container.registerComponentImplementation(clazz);
 				else
-					LOG.warning("Plugin class " + clazz.getName() + " is not assignable to " + Pluggable.class.getName());
+					LOG.warning("Plugin class " + clazz.getName() + " is not assignable to " + Plugin.class.getName());
 			}
 			catch (ClassNotFoundException e) {
 				LOG.warning("Unable to load plugin: " + className);

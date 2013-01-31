@@ -4,8 +4,8 @@
  */
 package net.azib.ipscan.fetchers;
 
+import net.azib.ipscan.core.Plugin;
 import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.core.plugins.Pluggable;
 import net.azib.ipscan.core.values.NotAvailable;
 import net.azib.ipscan.core.values.NotScanned;
 
@@ -24,7 +24,7 @@ import net.azib.ipscan.core.values.NotScanned;
  * 
  * @author Anton Keks
  */
-public interface Fetcher extends Cloneable, Pluggable {
+public interface Fetcher extends Cloneable, Plugin {
 
 	/**
 	 * @return full name to be displayed in the result table column. 
