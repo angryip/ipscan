@@ -5,9 +5,11 @@
  */
 package net.azib.ipscan.fetchers;
 
-import java.util.MissingResourceException;
-
+import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Labels;
+
+import java.util.MissingResourceException;
+import java.util.prefs.Preferences;
 
 /**
  * Convenience base class for built-in fetchers
@@ -31,6 +33,10 @@ public abstract class AbstractFetcher implements Fetcher {
 		catch (MissingResourceException e) {
 			return null;
 		}
+	}
+
+	public Preferences getPreferences() {
+		return Config.getConfig().getPreferences().node(getId().replace("fetcher.", ""));
 	}
 
 	public Class<? extends FetcherPrefs> getPreferencesClass() {

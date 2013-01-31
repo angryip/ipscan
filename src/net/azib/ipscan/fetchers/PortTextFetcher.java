@@ -5,26 +5,22 @@
  */
 package net.azib.ipscan.fetchers;
 
+import net.azib.ipscan.config.LoggerFactory;
+import net.azib.ipscan.config.ScannerConfig;
+import net.azib.ipscan.core.ScanningResult.ResultType;
+import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.gui.fetchers.PortTextFetcherPrefs;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.ConnectException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
+import java.net.*;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import net.azib.ipscan.config.ScannerConfig;
-import net.azib.ipscan.config.LoggerFactory;
-import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.core.ScanningResult.ResultType;
-import net.azib.ipscan.gui.fetchers.PortTextFetcherPrefs;
 
 /**
  * PortTextFetcher - generic configurable fetcher to read some particular information from a port.
@@ -39,12 +35,14 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 	private int defaultPort;
 	protected String textToSend;
 	protected Pattern matchingRegexp;
+	protected int extractGroup;
 	
 	public PortTextFetcher(ScannerConfig scannerConfig, int defaultPort, String textToSend, String matchingRegexp) {
 		this.scannerConfig = scannerConfig;
 		this.defaultPort = defaultPort;
-		this.textToSend = textToSend;
-		this.matchingRegexp = Pattern.compile(matchingRegexp);
+		this.textToSend = getPreferences().get("textToSend", textToSend);
+		this.matchingRegexp = Pattern.compile(getPreferences().get("matchingRegexp", matchingRegexp));
+		this.extractGroup = getPreferences().getInt("extractGroup", 1);
 	}
 
 	public Object scan(ScanningSubject subject) {
@@ -68,7 +66,7 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 						// mark that additional info is available
 						subject.setResultType(ResultType.WITH_PORTS);
 						// return the required contents
-						return matcher.group(1);
+						return matcher.group(extractGroup);
 					}
 				}
 			}
@@ -113,5 +111,13 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 
 	public void setMatchingRegexp(Pattern matchingRegexp) {
 		this.matchingRegexp = matchingRegexp;
+	}
+
+	public int getExtractGroup() {
+		return extractGroup;
+	}
+
+	public void setExtractGroup(int extractGroup) {
+		this.extractGroup = extractGroup;
 	}
 }

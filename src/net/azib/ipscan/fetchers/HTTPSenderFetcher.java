@@ -16,8 +16,7 @@ import net.azib.ipscan.config.ScannerConfig;
 public class HTTPSenderFetcher extends PortTextFetcher {
 	
 	public HTTPSenderFetcher(ScannerConfig scannerConfig) {
-		super(scannerConfig, 3128, "GET http://www.urbandplayground.com/?f=vote&band_id=150 HTTP/1.0\r\n\r\n", 
-				"\">([^>]+?VOT[^<]+?)</");
+		super(scannerConfig, 3128, "GET http://www.google.com HTTP/1.0\r\n\r\n", "Location: (https?.*)$");
 	}
 	
 	public String getId() {
