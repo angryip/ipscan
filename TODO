@@ -11,7 +11,6 @@ Before 3.0:
 * add new fetchers by configuration of PortTextFetcher
 * startup as root option
 * compile librocksaw for mac and linux64
-* plugin loader
 * public XSL for XMLExporter
 * Easier adding/removing of columns to the result table (without resetting the results)
 
