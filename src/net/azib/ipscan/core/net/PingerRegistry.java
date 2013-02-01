@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import static java.util.logging.Level.*;
+import static java.util.logging.Level.SEVERE;
 
 /**
  * PingerRegistry
@@ -87,7 +87,7 @@ public class PingerRegistry {
 				Pinger icmpPinger = createPinger(scannerConfig.selectedPinger, 250);
 				icmpPinger.ping(new ScanningSubject(InetAddress.getLocalHost()), 1);
 			}
-			catch (Exception e) {
+			catch (Throwable e) {
 				LOG.info("ICMP pinger failed: " + e);
 				// win32 will use native pinger, all others get combined UDP+TCP, which doesn't require special privileges
 				scannerConfig.selectedPinger = Platform.WINDOWS && !Platform.ARCH_64 ? "pinger.windows" : "pinger.combined";
