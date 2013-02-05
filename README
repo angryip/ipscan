@@ -1,4 +1,4 @@
-This is the source code of Angry IP Scanner, a network scanner tool.
+This is the source code of Angry IP Scanner, licensed with GPL v2.
 http://angryip.org/
 
 The code is written mostly in Java.
@@ -20,6 +20,8 @@ Install JDK and Ant on other platforms as you usually do it.
 
 Then use Ant for building a package for your desired platform:
 just type `ant' or `make' in the project dir for the list of available targets.
+
+`ant current' would build the app for your current OS.
 
 The resulting binaries will be put into the `dist' directory.
 Run jar files with `java -jar <jar-file>'.
