@@ -1,21 +1,14 @@
-Before 3.0:
-
 * Windows: net stop SharedAccess
-* Show "+" in Ports fetcher only if it is relevant
 * gtk sort direction arrows
 * advanced exporting options dialog (with append checkbox)
 * Enable/Disable ports (without resetting)
 * Opener Launchers to the details window
-* fetcher-specific options
 * multiple port support web-detect, opening in browser selects scanned ports if available
 * add new fetchers by configuration of PortTextFetcher
 * startup as root option
 * compile librocksaw for mac and linux64
 * public XSL for XMLExporter
 * Easier adding/removing of columns to the result table (without resetting the results)
-
-Later:
-
 * command-line: support favorites
 * command-line: add netmask support to the range feeder 
 * find not-null for column
