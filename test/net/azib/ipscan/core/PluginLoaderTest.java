@@ -28,6 +28,7 @@ public class PluginLoaderTest {
 		File file = loader.getClassLocation(getClass());
 		assertEquals("core", file.getParentFile().getName());
 		assertTrue(file.exists());
+		assertTrue(new File(file.getParent(), "test-plugin.jar").exists());
 	}
 
 	@Test

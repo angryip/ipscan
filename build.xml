@@ -156,6 +156,9 @@
 
 	<target name="compile-tests">
 		<compile path="src" extpath="test:${ext.src}" dest="${testbin}" debug="true" optimize="false"/>
+        <copy todir="${testbin}" overwrite="true" verbose="true">
+            <fileset dir="test" excludes="**/*.java"/>
+        </copy>
         <cobertura-instrument todir="${testbin}.instr">
             <ignore regex="org.apache.log4j.*" />
             <fileset dir="${testbin}">
