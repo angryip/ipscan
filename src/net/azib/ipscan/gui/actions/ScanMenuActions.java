@@ -5,10 +5,6 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import net.azib.ipscan.Main;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
@@ -17,17 +13,20 @@ import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.exporters.ExportProcessor;
+import net.azib.ipscan.exporters.ExportProcessor.ScanningResultFilter;
 import net.azib.ipscan.exporters.Exporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
-import net.azib.ipscan.exporters.ExportProcessor.ScanningResultFilter;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * FileActions
@@ -90,7 +89,6 @@ public class ScanMenuActions {
 
 			// check the received file name
 			if (fileName != null) {
-				// create exporter instance
 				Exporter exporter = exporterRegistry.createExporter(fileName);
 				
 				statusBar.setStatusText(Labels.getLabel("state.exporting"));
@@ -99,22 +97,22 @@ public class ScanMenuActions {
 				ExportProcessor exportProcessor = new ExportProcessor(exporter, new File(fileName), false);
 				
 				// in case of isSelection we need to create our filter
-				ScanningResultFilter scanningResultSelector = null;
+				ScanningResultFilter filter = null;
 				if (isSelection) {
-					scanningResultSelector = new ScanningResultFilter() {
-						public boolean isResultSelected(int index, ScanningResult result) {
+					filter = new ScanningResultFilter() {
+						public boolean apply(int index, ScanningResult result) {
 							return resultTable.isSelected(index);
 						}
 					};
 				}
 				
-				exportProcessor.process(resultTable.getScanningResults(), scanningResultSelector);
+				exportProcessor.process(resultTable.getScanningResults(), filter);
 				
 				statusBar.setStatusText(null);
 			}
 		}
 
-		private final void addFileExtensions(List<String> extensions, List<String> descriptions, StringBuffer sb) {
+		private void addFileExtensions(List<String> extensions, List<String> descriptions, StringBuffer sb) {
 			sb.append(" (");
 			for (Exporter exporter : exporterRegistry) {
 				extensions.add("*." + exporter.getFilenameExtension());

@@ -3,17 +3,6 @@
  */
 package net.azib.ipscan.exporters;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.assertTrue;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.util.Collections;
-
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.exporters.ExportProcessor.ScanningResultFilter;
@@ -21,10 +10,16 @@ import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.IPFetcher;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.*;
+import java.net.InetAddress;
+import java.util.Collections;
+
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * ExportProcessorTest
@@ -73,7 +68,7 @@ public class ExportProcessorTest {
 		scanningResultList.registerAtIndex(2, scanningResultList.createResult(InetAddress.getByName("192.168.13.76")));
 		
 		exportProcessor.process(scanningResultList, new ScanningResultFilter() {
-			public boolean isResultSelected(int index, ScanningResult result) {
+			public boolean apply(int index, ScanningResult result) {
 				// select only IP addresses ending with 6
 				return ((String)result.getValues().get(0)).endsWith("6");
 			}

@@ -5,13 +5,13 @@
  */
 package net.azib.ipscan.exporters;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.List;
-
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.fetchers.Fetcher;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.List;
 
 /**
  * Export Processor controls the actual exporting using the provided Exporter.
@@ -57,7 +57,7 @@ public class ExportProcessor {
 
 			int index = 0;
 			for (ScanningResult scanningResult : scanningResults) {
-				if (filter == null || filter.isResultSelected(index, scanningResult)) {
+				if (filter == null || filter.apply(index++, scanningResult)) {
 					exporter.nextAdressResults(scanningResult.getValues().toArray());
 				}
 			}
@@ -75,15 +75,15 @@ public class ExportProcessor {
 				try {
 					outputStream.close();
 				}
-				catch (Exception e) {}
+				catch (Exception ignore) {}
 			}
 		}
 	}
 	
 	/**
-	 * ScanningResultSelector can be implemented and passed to {@link ExportProcessor#process(ScanningResultList, String)}
+	 * ScanningResultSelector can be implemented and passed to {@link ExportProcessor#process(ScanningResultList, ScanningResultFilter)}
 	 */
 	public static interface ScanningResultFilter {
-		boolean isResultSelected(int index, ScanningResult result);
+		boolean apply(int index, ScanningResult result);
 	}
 }
