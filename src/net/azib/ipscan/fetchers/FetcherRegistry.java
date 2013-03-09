@@ -66,18 +66,18 @@ public class FetcherRegistry {
 			String[] fetcherPrefs = fetcherPrefValue.split("###");
 			selectedFetchers = new LinkedHashMap<String, Fetcher>(registeredFetchers.size());
 			// initialize saved selected fetchers
-      for (String fetcherPref : fetcherPrefs) {
-        Fetcher fetcher = registeredFetchers.get(fetcherPref);
-        // make sure that this fetcher is registered
-        if (fetcher != null) {
-          selectedFetchers.put(fetcherPref, fetcher);
-        }
-      }
+			for (String fetcherPref : fetcherPrefs) {
+				Fetcher fetcher = registeredFetchers.get(fetcherPref);
+				// make sure that this fetcher is registered
+				if (fetcher != null) {
+					selectedFetchers.put(fetcherPref, fetcher);
+				}
+			}
 		}
 	}
 	
 	private void saveSelectedFetchers(Preferences preferences) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for (String fetcherName : selectedFetchers.keySet()) {
 			sb.append(fetcherName).append("###");
 		}
@@ -134,9 +134,9 @@ public class FetcherRegistry {
 	public void updateSelectedFetchers(String[] labels) {
 		// rebuild the map (to recreate the new order of elements)
 		Map<String, Fetcher> newList = new LinkedHashMap<String, Fetcher>();
-    for (String label : labels) {
-      newList.put(label, registeredFetchers.get(label));
-    }
+		for (String label : labels) {
+			newList.put(label, registeredFetchers.get(label));
+		}
 		selectedFetchers = newList;
 		
 		// inform observers
