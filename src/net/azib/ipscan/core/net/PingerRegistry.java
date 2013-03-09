@@ -37,10 +37,8 @@ public class PingerRegistry {
 		this.scannerConfig = scannerConfig;
 		
 		pingers = new LinkedHashMap<String, Class<? extends Pinger>>();
-		if (Platform.WINDOWS) {
-			// this will be the preferred choice for Windows users
+		if (Platform.WINDOWS)
 			pingers.put("pinger.windows", WindowsPinger.class);
-		}
 		pingers.put("pinger.icmp", ICMPSharedPinger.class);
 		pingers.put("pinger.icmp2", ICMPPinger.class);
 		pingers.put("pinger.udp", UDPPinger.class);
@@ -90,7 +88,7 @@ public class PingerRegistry {
 			catch (Throwable e) {
 				LOG.info("ICMP pinger failed: " + e);
 				// win32 will use native pinger, all others get combined UDP+TCP, which doesn't require special privileges
-				scannerConfig.selectedPinger = Platform.WINDOWS && !Platform.ARCH_64 ? "pinger.windows" : "pinger.combined";
+				scannerConfig.selectedPinger = Platform.WINDOWS ? "pinger.windows" : "pinger.combined";
 				return false;
 			}
 		}
