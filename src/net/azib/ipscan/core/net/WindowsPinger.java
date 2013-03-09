@@ -13,6 +13,7 @@ import net.azib.ipscan.core.net.WinIpHlpDll.IpAddrByVal;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Arrays;
 
 import static java.lang.Thread.currentThread;
 
@@ -51,7 +52,7 @@ public class WindowsPinger implements Pinger {
 			for (int i = 1; i <= count && !currentThread().isInterrupted(); i++) {
 				int numReplies = dll.IcmpSendEcho(handle, ipaddr, sendData, (short) sendDataSize, null, replyData, replyDataSize, timeout);
 				IcmpEchoReply echoReply = new IcmpEchoReply(replyData);
-				if (numReplies > 0 && echoReply.status == 0) {
+				if (numReplies > 0 && echoReply.status == 0 && Arrays.equals(echoReply.address.bytes, ipaddr.bytes)) {
 					result.addReply(echoReply.roundTripTime);
 					result.setTTL(echoReply.options.ttl & 0xFF);
 				}
