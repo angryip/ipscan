@@ -3,21 +3,20 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import java.net.*;
-import java.util.Enumeration;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.feeders.FeederException;
 import net.azib.ipscan.util.InetAddressUtils;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.widgets.*;
+
+import java.net.*;
+import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * FeederActions
@@ -50,7 +49,6 @@ public class FeederActions {
 			
 			try {				
 				if (hostname.equals(InetAddress.getLocalHost().getHostName())) {
-					// retrieve local addresses
 					askLocalIPAddress();
 				}
 				else {

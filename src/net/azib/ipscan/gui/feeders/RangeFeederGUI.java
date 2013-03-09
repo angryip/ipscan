@@ -5,9 +5,6 @@
  */
 package net.azib.ipscan.gui.feeders;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.feeders.Feeder;
@@ -16,22 +13,14 @@ import net.azib.ipscan.feeders.RangeFeeder;
 import net.azib.ipscan.gui.actions.FeederActions;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import net.azib.ipscan.util.InetAddressUtils;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.*;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * GUI for initialization of RangeFeeder.
@@ -195,11 +184,12 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 				event.doit = false;
 			}
 			if (event.type == SWT.Selection) {
-				// this is a workaround for a strange bug in GTK: if text is just typed in the combo,
-				// then this event is sent after each keypress, but we want it to be fired
+				// workaround for GTK: this event is fired after keypresses, but we want it to be fired
 				// only if something is selected from the drop down
-				if (netmaskCombo.indexOf(netmaskCombo.getText()) < 0)
-					return;
+				if (netmaskCombo.indexOf(netmaskCombo.getText()) < 0) return;
+
+				// workaround for Windows: selection event is fired when the dropdown is opened
+				if (netmaskCombo.getListVisible()) return;
 			}
 			
 			try {
