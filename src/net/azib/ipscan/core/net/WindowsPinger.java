@@ -42,9 +42,10 @@ public class WindowsPinger implements Pinger {
 		IpAddrByVal ipaddr = new IpAddrByVal();
 		ipaddr.bytes = subject.getAddress().getAddress();
 
-		int sendDataSize = 16;
-		int replyDataSize = sendDataSize + (new IcmpEchoReply().size());
+		int sendDataSize = 56;
+		int replyDataSize = sendDataSize + (new IcmpEchoReply().size()) + 10;
 		Pointer sendData = new Memory(sendDataSize);
+		sendData.clear(sendDataSize);
 		Pointer replyData = new Memory(replyDataSize);
 
 		PingResult result = new PingResult(subject.getAddress());
