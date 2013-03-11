@@ -76,10 +76,9 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(HTTPSenderFetcher.class);
 		container.registerComponentImplementation(CommentFetcher.class);
 		container.registerComponentImplementation(NetBIOSInfoFetcher.class);
-		if (Platform.WINDOWS)
-			container.registerComponentImplementation(WinMACFetcher.class);
-		else
-			container.registerComponentImplementation(UnixMACFetcher.class);
+		if (Platform.WINDOWS) container.registerComponentImplementation(WinMACFetcher.class);
+		else container.registerComponentImplementation(UnixMACFetcher.class);
+		container.registerComponentImplementation(MACVendorFetcher.class);
 
 		container.registerComponentImplementation(PingerRegistry.class, PingerRegistry.class);
 		container.registerComponentImplementation(ScanningResultList.class);

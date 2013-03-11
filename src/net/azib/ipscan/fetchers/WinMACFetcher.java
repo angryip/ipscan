@@ -1,30 +1,13 @@
 package net.azib.ipscan.fetchers;
 
+import com.sun.jna.Memory;
+import com.sun.jna.Pointer;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.net.WinIpHlpDll;
-import net.azib.ipscan.core.net.WinIpHlpDll.*;
-import net.azib.ipscan.fetchers.AbstractFetcher;
+import net.azib.ipscan.core.net.WinIpHlpDll.IpAddrByVal;
 
-import java.lang.*;
-import java.lang.Integer;
-import java.lang.Object;
-import java.lang.Override;
-import java.lang.String;
-import java.lang.StringBuilder;
-
-import com.sun.jna.Pointer;
-import com.sun.jna.Memory;
-
-import static java.lang.Integer.toHexString;
-
-public class WinMACFetcher extends AbstractFetcher {
-	public static final String ID = "fetcher.mac";
-
+public class WinMACFetcher extends MACFetcher {
 	private WinIpHlpDll dll;
-
-	@Override public String getId() {
-		return ID;
-	}
 
 	@Override public void init() {
 		dll = WinIpHlpDll.Loader.load();
@@ -43,13 +26,6 @@ public class WinMACFetcher extends AbstractFetcher {
 		if (result != 0) return null;
 
 		byte[] bytes = pmac.getByteArray(0, plen.getInt(0));
-		return bytesToMAC(bytes);
-	}
-
-	static String bytesToMAC(byte[] bytes) {
-		StringBuilder mac = new StringBuilder();
-		for (byte b : bytes) mac.append(String.format("%02X", b)).append(":");
-		if (mac.length() > 0) mac.deleteCharAt(mac.length()-1);
-		return mac.toString();
+		return remember(bytesToMAC(bytes), subject);
 	}
 }

@@ -8,17 +8,8 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class UnixMACFetcher extends AbstractFetcher {
-	public static final String ID = "fetcher.mac";
-	static final Pattern macAddressPattern = Pattern.compile("([a-fA-F0-9]{1,2}(-|:)){5}[a-fA-F0-9]{1,2}");
-
-	@Override public String getId() {
-		return ID;
-	}
-
+public class UnixMACFetcher extends MACFetcher {
 	@Override public void init() {
 	}
 
@@ -28,12 +19,11 @@ public class UnixMACFetcher extends AbstractFetcher {
 		try {
 			// highly inefficient implementation, there must be a better way (using JNA?)
 			Process process = Runtime.getRuntime().exec("arp -an " + ip);
-			process.waitFor();
 			reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			String line;
 			while ((line = reader.readLine()) != null) {
 				if (line.contains(ip))
-					return extractMAC(line);
+					return remember(extractMAC(line), subject);
 			}
 
 			// see if it is a local address
@@ -45,7 +35,7 @@ public class UnixMACFetcher extends AbstractFetcher {
 					while (addrs.hasMoreElements()) {
 						InetAddress addr = addrs.nextElement();
 						if (addr.equals(subject.getAddress()))
-							return WinMACFetcher.bytesToMAC(netif.getHardwareAddress());
+							return remember(bytesToMAC(netif.getHardwareAddress()), subject);
 					}
 				}
 			}
@@ -57,10 +47,5 @@ public class UnixMACFetcher extends AbstractFetcher {
 		finally {
 			IOUtils.closeQuietly(reader);
 		}
-	}
-
-	static String extractMAC(String line) {
-		Matcher m = macAddressPattern.matcher(line);
-		return m.find() ? m.group().toUpperCase() : null;
 	}
 }
