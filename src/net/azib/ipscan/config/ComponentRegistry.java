@@ -78,6 +78,8 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(NetBIOSInfoFetcher.class);
 		if (Platform.WINDOWS)
 			container.registerComponentImplementation(WinMACFetcher.class);
+		else
+			container.registerComponentImplementation(UnixMACFetcher.class);
 
 		container.registerComponentImplementation(PingerRegistry.class, PingerRegistry.class);
 		container.registerComponentImplementation(ScanningResultList.class);
