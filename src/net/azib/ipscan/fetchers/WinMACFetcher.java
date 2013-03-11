@@ -2,9 +2,10 @@ package net.azib.ipscan.fetchers;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
-import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.net.WinIpHlpDll;
 import net.azib.ipscan.core.net.WinIpHlpDll.IpAddrByVal;
+
+import java.net.InetAddress;
 
 public class WinMACFetcher extends MACFetcher {
 	private WinIpHlpDll dll;
@@ -13,9 +14,9 @@ public class WinMACFetcher extends MACFetcher {
 		dll = WinIpHlpDll.Loader.load();
 	}
 
-	@Override public String scan(ScanningSubject subject) {
+	@Override public String resolveMAC(InetAddress address) {
 		IpAddrByVal destIP = new IpAddrByVal();
-		destIP.bytes = subject.getAddress().getAddress();
+		destIP.bytes = address.getAddress();
 
 		Pointer pmac = new Memory(8);
 		Pointer plen = new Memory(4);
@@ -26,6 +27,6 @@ public class WinMACFetcher extends MACFetcher {
 		if (result != 0) return null;
 
 		byte[] bytes = pmac.getByteArray(0, plen.getInt(0));
-		return remember(bytesToMAC(bytes), subject);
+		return bytesToMAC(bytes);
 	}
 }

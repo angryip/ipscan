@@ -1,6 +1,5 @@
 package net.azib.ipscan.fetchers;
 
-import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.util.IOUtils;
 
 import java.io.BufferedReader;
@@ -13,8 +12,8 @@ public class UnixMACFetcher extends MACFetcher {
 	@Override public void init() {
 	}
 
-	@Override public String scan(ScanningSubject subject) {
-		String ip = subject.getAddress().getHostAddress();
+	@Override public String resolveMAC(InetAddress address) {
+		String ip = address.getHostAddress();
 		BufferedReader reader = null;
 		try {
 			// highly inefficient implementation, there must be a better way (using JNA?)
@@ -23,7 +22,7 @@ public class UnixMACFetcher extends MACFetcher {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				if (line.contains(ip))
-					return remember(extractMAC(line), subject);
+					return extractMAC(line);
 			}
 
 			// see if it is a local address
@@ -34,8 +33,8 @@ public class UnixMACFetcher extends MACFetcher {
 					Enumeration<InetAddress> addrs = netif.getInetAddresses();
 					while (addrs.hasMoreElements()) {
 						InetAddress addr = addrs.nextElement();
-						if (addr.equals(subject.getAddress()))
-							return remember(bytesToMAC(netif.getHardwareAddress()), subject);
+						if (addr.equals(address))
+							return bytesToMAC(netif.getHardwareAddress());
 					}
 				}
 			}
