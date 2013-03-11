@@ -4,8 +4,6 @@ Version:            VERSION
 Release:			1%{?dist}
 License:            GPLv2+
 Group:              Applications/Internet
-Source1:            ipscan.desktop
-Source2:            ipscan
 BuildRoot: 			%{_builddir}/%{name}
 URL:                http://angryip.org
 Packager:			Anton Keks
@@ -25,9 +23,10 @@ see http://angryip.org/ for more information.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/%{_libdir}/ipscan $RPM_BUILD_ROOT/%{_datadir}/applications $RPM_BUILD_ROOT/%{_bindir}
+mkdir -p $RPM_BUILD_ROOT/%{_libdir}/ipscan $RPM_BUILD_ROOT/%{_datadir}/applications $RPM_BUILD_ROOT/%{_datadir}/pixmaps $RPM_BUILD_ROOT/%{_bindir}
 cp ../../%{name}-%{platform}-%{version}.jar $RPM_BUILD_ROOT/%{_libdir}/ipscan/
 cp ../../../ext/deb-bundle/usr/share/applications/ipscan.desktop $RPM_BUILD_ROOT/%{_datadir}/applications/
+cp ../../../resources/images/icon128.png $RPM_BUILD_ROOT/%{_datadir}/pixmaps/ipscan.png
 echo "#/bin/sh" > $RPM_BUILD_ROOT/%{_bindir}/ipscan
 echo "java -jar %{_libdir}/ipscan/ipscan*.jar" >> $RPM_BUILD_ROOT/%{_bindir}/ipscan
 chmod a+x $RPM_BUILD_ROOT/%{_bindir}/ipscan
@@ -39,4 +38,5 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{_libdir}/ipscan/%{name}-%{platform}-%{version}.jar
 %{_datadir}/applications/ipscan.desktop
+%{_datadir}/pixmaps/ipscan.png
 %{_bindir}/ipscan
