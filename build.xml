@@ -8,7 +8,7 @@
 	<property name="testresults" value="test-results"/>
 			
 	<property name="name" value="Angry IP Scanner"/>
-	<property name="version" value="3.0-git"/>
+	<property name="version" value="3.git"/>
 	<property name="main.class" value="net.azib.ipscan.Main"/>
 	<property name="swt" value="lib"/>
 	<property name="ext.src" value="ext/rocksaw/src:ext/vserv-tcpip/src"/>
@@ -359,45 +359,64 @@
 	</target>
 	
 	<target name="package-linux-deb-rpm" if="isRunningOnLinux">
-        <deb-and-rpm platform="linux" arch="i386"/>
+        <build-deb platform="linux" arch="i386"/>
+        <build-rpm platform="linux" arch="i386"/>
 	</target>
 
-  <target name="package-linux64-deb-rpm" if="isRunningOnLinux">
-    <deb-and-rpm platform="linux64" arch="amd64"/>
-  </target>
+    <target name="package-linux64-deb-rpm" if="isRunningOnLinux">
+        <build-deb platform="linux64" arch="amd64"/>
+        <build-rpm platform="linux64" arch="x86_64"/>
+    </target>
 
-  <macrodef name="deb-and-rpm">
-    <attribute name="platform" default="linux"/>
-    <attribute name="arch" default="i386"/>
-    <sequential>
-      <mkdir dir="${dist}/deb"/>
-      <copy todir="${dist}/deb">
-        <fileset dir="ext/deb-bundle"/>
-      </copy>
+    <macrodef name="build-deb">
+        <attribute name="platform" default="linux"/>
+        <attribute name="arch" default="i386"/>
+        <sequential>
+            <mkdir dir="${dist}/deb"/>
+            <copy todir="${dist}/deb">
+                <fileset dir="ext/deb-bundle"/>
+            </copy>
 
-      <copy file="${dist}/${ant.project.name}-@{platform}-${version}.jar" todir="${dist}/deb/usr/lib/ipscan"/>
-      <copy file="resources/images/icon128.png" tofile="${dist}/deb/usr/share/pixmaps/ipscan.png"/>
+            <copy file="${dist}/${ant.project.name}-@{platform}-${version}.jar" todir="${dist}/deb/usr/lib/ipscan"/>
+            <copy file="resources/images/icon128.png" tofile="${dist}/deb/usr/share/pixmaps/ipscan.png"/>
 
-      <replace file="${dist}/deb/DEBIAN/control">
-        <replacefilter token="VERSION" value="${version}"/>
-        <replacefilter token="ARCH" value="@{arch}"/>
-      </replace>
+            <replace file="${dist}/deb/DEBIAN/control">
+                <replacefilter token="VERSION" value="${version}"/>
+                <replacefilter token="ARCH" value="@{arch}"/>
+            </replace>
 
-      <exec executable="chmod" dir="${dist}">
-        <arg line="a+x deb/usr/bin/ipscan deb/usr/lib/ipscan/${ant.project.name}-@{platform}-${version}.jar"/>
-      </exec>
-      <echo message="Building .deb package using dpkg..."/>
-      <exec executable="fakeroot" dir="${dist}">
-        <arg line="dpkg-deb -b deb ${ant.project.name}_${version}_@{arch}.deb"/>
-      </exec>
-      <echo message="Building .rpm package using alien..."/>
-      <exec executable="fakeroot" dir="${dist}">
-        <arg line="alien --to-rpm ${ant.project.name}_${version}_@{arch}.deb"/>
-      </exec>
+            <exec executable="chmod" dir="${dist}">
+                <arg line="a+x deb/usr/bin/ipscan deb/usr/lib/ipscan/${ant.project.name}-@{platform}-${version}.jar"/>
+            </exec>
+            <echo message="Building .deb package using dpkg..."/>
+            <exec executable="fakeroot" dir="${dist}">
+                <arg line="dpkg-deb -b deb ${ant.project.name}_${version}_@{arch}.deb"/>
+            </exec>
 
-      <delete dir="${dist}/deb"/>
-    </sequential>
-  </macrodef>
+            <delete dir="${dist}/deb"/>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="build-rpm">
+        <attribute name="platform" default="linux"/>
+        <attribute name="arch" default="i386"/>
+        <sequential>
+            <mkdir dir="${dist}/rpm"/>
+            <copy todir="${dist}/rpm">
+                <fileset dir="ext/rpmbuild"/>
+            </copy>
+            <replace file="${dist}/rpm/SPECS/ipscan.spec">
+                <replacefilter token="VERSION" value="${version}"/>
+            </replace>
+
+            <exec executable="rpmbuild" dir="${dist}/rpm">
+                <arg line="--target @{arch} --define &quot;_topdir ${user.dir}/${dist}/rpm&quot; --define &quot;platform @{platform}&quot; -bb SPECS/ipscan.spec"/>
+            </exec>
+            <move file="${dist}/rpm/RPMS/@{arch}/ipscan-${version}-1.@{arch}.rpm" todir="${dist}"/>
+
+            <delete dir="${dist}/rpm"/>
+        </sequential>
+    </macrodef>
 
     <target name="package-win32" depends="build-info">
         <copy file="ext/rocksaw/lib/rocksaw.dll" todir="${bin}.win32"/>

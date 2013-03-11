@@ -14,7 +14,7 @@ Using these tools you can build on any platform. The binaries are in the form of
 only be built on Linux. Building of Windows exe can be done on Linux as well.
 
 On Ubuntu install the following packages:
-sudo apt-get install openjdk-7-jdk ant alien
+sudo apt-get install openjdk-7-jdk ant rpm
 
 Install JDK and Ant on other platforms as you usually do it.
 
