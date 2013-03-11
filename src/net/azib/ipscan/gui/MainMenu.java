@@ -190,7 +190,7 @@ public class MainMenu implements Startable {
 			menuItem.setEnabled(false);
 		
 		if (disableDuringScanning) {
-			menuItem.setData("disableDuringScanning", Boolean.TRUE);
+			menuItem.setData("disableDuringScanning", true);
 		}
 		
 		return menuItem;

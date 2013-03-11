@@ -13,17 +13,10 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
-import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.MainMenu.ColumnsMenu;
-
+import net.azib.ipscan.gui.ResultTable;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.*;
 
 /**
  * ColumnsActions
@@ -70,18 +63,18 @@ public class ColumnsActions {
 			MenuItem preferencesMenuItem = columnsMenu.getItem(1);
 			MenuItem aboutMenuItem = columnsMenu.getItem(2);
 
-			if (tableColumn.getParent().getSortColumn() == tableColumn) {
+			if (tableColumn.getParent().getSortColumn() == tableColumn)
 				sortMenuItem.setText(Labels.getLabel("menu.columns.sortDirection"));
-			}
-			else {
-				sortMenuItem.setText(Labels.getLabel("menu.columns.sortBy") + fetcher.getName());
-			}
+			else
+				sortMenuItem.setText(Labels.getLabel("menu.columns.sortBy") + " " + fetcher.getName());
 
 			// disable these menu items if scanning
 			sortMenuItem.setEnabled(stateMachine.inState(ScanningState.IDLE));
+
+			preferencesMenuItem.setText(fetcher.getName() + " " + Labels.getLabel("menu.columns.preferences"));
 			preferencesMenuItem.setEnabled(fetcher.getPreferencesClass() != null && stateMachine.inState(ScanningState.IDLE));
 
-			aboutMenuItem.setText(Labels.getLabel("menu.columns.about") + fetcher.getName());
+			aboutMenuItem.setText(Labels.getLabel("menu.columns.about") + " " + fetcher.getName());
 			
 			// focus the table to make Enter work after using the menu
 			tableColumn.getParent().forceFocus();
