@@ -24,8 +24,8 @@ public class MACVendorFetcher extends AbstractFetcher {
 		try {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				int del = line.indexOf(' ');
-				vendors.put(line.substring(0, del), line.substring(del+1));
+				String prefix = line.substring(0, 2) + ':' + line.substring(2, 4) + ':' + line.substring(4, 6);
+				vendors.put(prefix, line.substring(6));
 			}
 			IOUtils.closeQuietly(reader);
 		}
