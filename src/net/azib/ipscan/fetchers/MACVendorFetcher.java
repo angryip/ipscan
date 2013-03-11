@@ -12,6 +12,11 @@ import java.util.Map;
 public class MACVendorFetcher extends AbstractFetcher {
 	public static final String ID = "fetcher.mac.vendor";
 	private static Map<String, String> vendors = new HashMap<String, String>();
+	private MACFetcher macFetcher;
+
+	public MACVendorFetcher(MACFetcher macFetcher) {
+		this.macFetcher = macFetcher;
+	}
 
 	@Override
 	public String getId() {
@@ -37,8 +42,10 @@ public class MACVendorFetcher extends AbstractFetcher {
 	@Override
 	public Object scan(ScanningSubject subject) {
 		String mac = (String)subject.getParameter(MACFetcher.ID);
-		if (mac == null) return null;
-		else return findMACVendor(mac);
+		if (mac == null) {
+			mac = (String)macFetcher.scan(subject);
+		}
+		return mac != null ? findMACVendor(mac) : null;
 	}
 
 	String findMACVendor(String mac) {
