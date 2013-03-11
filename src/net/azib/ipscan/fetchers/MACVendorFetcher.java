@@ -24,10 +24,8 @@ public class MACVendorFetcher extends AbstractFetcher {
 		try {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				if (line.indexOf('\t') > 0) {
-					String[] parts = line.split("\\s+", 3);
-					vendors.put(parts[0], parts[1]);
-				}
+				int del = line.indexOf(' ');
+				vendors.put(line.substring(0, del), line.substring(del+1));
 			}
 			IOUtils.closeQuietly(reader);
 		}
