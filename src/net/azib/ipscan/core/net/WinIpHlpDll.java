@@ -9,17 +9,15 @@ import com.sun.jna.Structure;
  * JNA binding for iphlpapi.dll for ICMP and ARP support under Windows
  */
 public interface WinIpHlpDll extends Library {
+	public static WinIpHlpDll dll = Loader.load();
 	static class Loader {
-		private static WinIpHlpDll dll;
 		public static WinIpHlpDll load() {
-			if (dll != null) return dll;
 			try {
-				dll = (WinIpHlpDll) Native.loadLibrary("iphlpapi", WinIpHlpDll.class);
+				return (WinIpHlpDll) Native.loadLibrary("iphlpapi", WinIpHlpDll.class);
 			}
 			catch (UnsatisfiedLinkError e) {
-				dll = (WinIpHlpDll) Native.loadLibrary("icmp", WinIpHlpDll.class);
+				return (WinIpHlpDll) Native.loadLibrary("icmp", WinIpHlpDll.class);
 			}
-			return dll;
 		}
 	}
 

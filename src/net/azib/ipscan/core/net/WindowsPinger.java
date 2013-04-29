@@ -16,6 +16,7 @@ import java.net.InetAddress;
 import java.util.Arrays;
 
 import static java.lang.Thread.currentThread;
+import static net.azib.ipscan.core.net.WinIpHlpDll.dll;
 
 /**
  * Windows-only pinger that uses Microsoft's ICMP.DLL for its job.
@@ -28,11 +29,9 @@ import static java.lang.Thread.currentThread;
  */
 public class WindowsPinger implements Pinger {
 	private int timeout;
-	private WinIpHlpDll dll;
 
 	public WindowsPinger(int timeout) {
 		this.timeout = timeout;
-		dll = WinIpHlpDll.Loader.load();
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {

@@ -2,16 +2,14 @@ package net.azib.ipscan.fetchers;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
-import net.azib.ipscan.core.net.WinIpHlpDll;
 import net.azib.ipscan.core.net.WinIpHlpDll.IpAddrByVal;
 
 import java.net.InetAddress;
 
-public class WinMACFetcher extends MACFetcher {
-	private WinIpHlpDll dll;
+import static net.azib.ipscan.core.net.WinIpHlpDll.dll;
 
+public class WinMACFetcher extends MACFetcher {
 	@Override public void init() {
-		dll = WinIpHlpDll.Loader.load();
 	}
 
 	@Override public String resolveMAC(InetAddress address) {
