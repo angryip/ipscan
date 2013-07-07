@@ -189,7 +189,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 				if (netmaskCombo.indexOf(netmaskCombo.getText()) < 0) return;
 
 				// workaround for Windows: selection event is fired when the dropdown is opened
-				if (netmaskCombo.getListVisible()) return;
+				if (Platform.WINDOWS && netmaskCombo.getListVisible()) return;
 			}
 			
 			try {
