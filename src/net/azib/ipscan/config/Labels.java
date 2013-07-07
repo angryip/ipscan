@@ -7,6 +7,7 @@ package net.azib.ipscan.config;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
@@ -60,12 +61,11 @@ public final class Labels {
 		instance.locale = locale;
 		InputStream labelsStream = null;
 		try {
-			// TODO: support UTF-8 here (unfortunately, stock PropertyResourceBundle supports Readers only starting with 1.6)
 			labelsStream = Labels.class.getClassLoader().getResourceAsStream("messages.properties");
 			if (labelsStream == null) {
 				throw new MissingResourceException("Labels not found!", Labels.class.getName(), "messages");
 			}
-			instance.labelsFallback = new PropertyResourceBundle(labelsStream);
+			instance.labelsFallback = new PropertyResourceBundle(new InputStreamReader(labelsStream, "UTF-8"));
 			labelsStream.close();
 		}
 		catch (IOException e) {
@@ -73,9 +73,8 @@ public final class Labels {
 		}
 		
 		try {
-			// TODO: support UTF-8 here (unfortunately, stock PropertyResourceBundle supports Readers only starting with 1.6)
-			labelsStream = Labels.class.getClassLoader().getResourceAsStream("messages_" + locale.getLanguage() + ".properties");		
-			instance.labels = new PropertyResourceBundle(labelsStream);
+			labelsStream = Labels.class.getClassLoader().getResourceAsStream("messages_" + locale.getLanguage() + ".properties");
+			instance.labels = new PropertyResourceBundle(new InputStreamReader(labelsStream, "UTF-8"));
 			labelsStream.close();
 		}
 		catch (Exception e) {
@@ -113,5 +112,4 @@ public final class Labels {
 	public static String getLabel(String key) {
 		return getInstance().get(key);
 	}
-	
 }
