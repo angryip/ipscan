@@ -475,8 +475,8 @@
 
     <target name="win-installer">
         <replace file="ext/win-installer/InstallerConfig.nsh">
-            <replacefilter token="VERSION" value="${version}"/>
             <replacefilter token="VERSION_MINOR" value="2"/>
+            <replacefilter token="VERSION" value="${version}"/>
         </replace>
         <copy file="${dist}/${ant.project.name}-win32-${version}.exe" tofile="ext/win-installer/AppFiles32/ipscan.exe"/>
         <copy file="${dist}/${ant.project.name}-win64-${version}.exe" tofile="ext/win-installer/AppFiles64/ipscan.exe"/>
