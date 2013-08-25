@@ -77,12 +77,13 @@
 	<target name="info">
 		<echo message="This script will build ${name} ${version}"/>
 		<echo message="Targets (some may work only on Linux):"/>
-		<echo message="  all     - runs tests and builds binaries for all OSs"/>
-		<echo message="  linux   - builds only Linux 32-bit binary"/>
-		<echo message="  linux64 - builds only Linux 64-bit binary"/>
-		<echo message="  mac     - builds only Mac binary"/>
-		<echo message="  win32   - builds only Windows binary"/>
-		<echo message="  win64   - builds only Windows 64-bit binary"/>
+		<echo message="  all           - runs tests and builds binaries for all OSs"/>
+		<echo message="  linux         - builds only Linux 32-bit binary"/>
+		<echo message="  linux64       - builds only Linux 64-bit binary"/>
+		<echo message="  mac           - builds only Mac binary"/>
+		<echo message="  win32         - builds only Windows binary"/>
+		<echo message="  win64         - builds only Windows 64-bit binary"/>
+		<echo message="  win-installer - packages a Windows installer (including both 32 and 64-bit binaries)"/>
 		<echo message="  current = ${platform}"/>
 	</target>
 
@@ -473,7 +474,7 @@
 		<delete file="${dist}/${ant.project.name}-mac-${version}.jar"/>
 	</target>
 
-    <target name="win-installer">
+    <target name="win-installer" depends="win32,win64">
         <replace file="ext/win-installer/InstallerConfig.nsh">
             <replacefilter token="VERSION_MINOR" value="2"/>
             <replacefilter token="VERSION" value="${version}"/>
