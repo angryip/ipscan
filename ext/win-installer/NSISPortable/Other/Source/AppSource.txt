@@ -1,0 +1,5 @@
+Unicode NSIS source code is available from the Unicode NSIS home page:
+http://code.google.com/p/unsis/downloads/list
+
+The launchers source code is available from PortableApps.com:
+http://portableapps.com/node/22364

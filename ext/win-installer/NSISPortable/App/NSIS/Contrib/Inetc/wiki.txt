@@ -1,0 +1,169 @@
+{{PageAuthor|Takhir}}
+
+== Links ==
+
+Download:<br>
+<attach>Inetc.zip</attach><br>
+
+[http://forums.winamp.com/showthread.php?threadid=198596 Forum thread]
+
+== Description ==
+
+Internet client plug-in for files download and upload. Based on the InetLoad plug-in. Network implementation uses MS WinInet API, supports http/https and ftp protocols. Plugin has better proxy support compared to NSISdl plug-in. Command line may include few URL/File pairs to be transfered. If server or proxy login/password are not set in the script, it displays IE-style authentication dialog (except silent mode). Plug-in supports 3 "transfer in progress" display modes:
+
+# old NSISdl style - additional embedded progress bar and text on the INSTFILES page;
+# POPUP dialog mode with detailed info;
+# BANNER mode with simple popup window.
+
+Plug-in recognizes Installer's Silent mode and this case hides any output (this feature requires NSIS 2.03 or later). Program implements simple re-get functionality - host reconnect and download from current position after short pause. While program depends on IE settings, it changes current IE mode to online. NSISdl code fragment was used for progress bar displaying in the "old style" mode.
+For ftp use "host/path" for file location relative to user's home dir and 
+"host//path" for absolute path.
+
+== Command line ==
+
+Plug-in DLL functions (entry points): get, post, head, put
+
+=== get DLL Function ===
+
+<highlight-nsis>inetc::get [/PROXY IP:PORT] [/USERNAME PROXY_LOGIN /PASSWORD PROXY_PASSWD]
+ [/NOPROXY] [/NOCANCEL] [/CONNECTTIMEOUT TO_SEC]  [/RECEIVETIMEOUT TO_SEC] [/SILENT] 
+ [/CAPTION TEXT] [/NOCOOKIES]  [/RESUME RETRY_QUESTION] [/POPUP HOST_ALIAS | /BANNER TEXT] 
+ [/CANCELTEXT CANCEL_TEXT] [/QUESTION CANCEL_QUESTION] [/USER_AGENT USER_AGENT_TEXT] 
+ [/HEADER HEADER_TEXT] [/TRANSLATE LANG_PARAMS]
+ URL1 local_file1 [URL2 local_file2 [...]] [/END]</highlight-nsis>
+This call returns "OK" string if successful, error description string if failed (see included InetLoad.cpp file for a full set of status strings). Usage and result processing samples are included to the package.
+
+; /PROXY
+: Overwrites current proxy settings, not required in most cases. IE settings will be used by default.
+
+; /USERNAME
+: Proxy username (http only).
+
+; /PASSWORD
+: Proxy password (http only).  For server (http/ftp) authentication it is possible to use URL encoded name and password, for example <nowiki>http://username:password@nsis.sourceforge.net</nowiki>.
+
+;/NOPROXY
+: Disables proxy settings for this connection (if any)
+
+;/NOCANCEL
+: Prevents download from being interrupted by user (locks Esc, Alt-F4, Cancel handling)
+
+;/CONNECTTIMEOUT - 
+:Sets INTERNET_OPTION_CONNECT_TIMEOUT, seconds, default - IE current parameter value. 
+
+;/RECEIVETIMEOUT - 
+:Sets INTERNET_OPTION_RECEIVE_TIMEOUT, seconds, default - IE current parameter value. 
+
+; /SILENT
+: Key hides plug-in' output (both popup dialog and embedded progress bar). Not required if 'SilentInstall silent' mode was defined in script (NSIS 2.03 or later).
+
+; /RESUME
+: On the permanent connection/transfer error instead of exit first displays message box with "resume download" question. Useful for dial-up connections and big files - allows user to restore connection and resume download. Default is "Your internet connection seems to have dropped out!\nPlease reconnect and click Retry to resume downloading...".
+
+; /CAPTION
+: Defines caption text for /BANNER mode, caption prefix (left of '-') for /POPUP mode and caption for RESUME MessageBox. Default is "InetLoad plug-in" if not set or "".
+
+; /POPUP
+: This mode displays detailed download dialog instead of embedded progress bar. Also useful in .onInit function (i.e. not in Section). If HOST_ALIAS is not "", text will replace URL in the dialog - this allows to hide real URL (including password). 
+
+; /BANNER 
+: Displays simple popup dialog (MSI Banner mode) and sets dialog TEXT (up to 3 lines using $\n).
+
+; /CANCELTEXT
+: Text for the Cancel button in the NSISdl mode. Default is NSIS dialog Cancel button text (current lang). 
+
+; /QUESTION
+: Text for the optional MessageBox if user tries to cancel download. If /QUESTION "" was used default "Are you sure that you want to stop download?" will be substituted.
+
+; /USERAGENT
+: UserAgent http request header value. Default is "NSIS_Inetc (Mozilla)". 
+
+; /HEADER
+: Adds or replaces http request header. Common HEADER_TEXT format is "header: value". 
+
+; /NOCOOKIES 
+: Removes cookies from http request
+
+; /END
+: Allows to limit plug-in stack reading (optional, required if you stores other vars in the stack).
+
+; /TRANSLATE
+: Allows translating plug-in text in the POPUP or "old style" (NSISdl) modes (see Readme for parameters). In the BANNER mode text is also customizable.
+
+=== post DLL Function ===
+
+<highlight-nsis>inetc::post TEXT2POST [/PROXY IP:PORT] [/USERNAME PROXY_LOGIN  /PASSWORD PROXY_PASSWD]
+ [/NOPROXY] [/NOCANCEL] [/CONNECTTIMEOUT TO_SEC]  [/RECEIVETIMEOUT TO_SEC] [/SILENT]
+ [/FILE] [/CAPTION TEXT] [/NOCOOKIES] [/POPUP HOST_ALIAS | /BANNER TEXT]
+ [/CANCELTEXT CANCEL_TEXT] [/USER_AGENT USER_AGENT_TEXT] [/TRANSLATE LANG_PARAMS]
+ URL1 local_file1 [URL2 local_file2 [...]] [/END]</highlight-nsis>
+Sets POST http mode and defines text string or file name to be used in the POST (http only). Disables auto re-get. No char replaces used (%20 and others). /FILE option allows to send TEXT2POST file content to server, additional 'Filename:' header added to request this case. 
+
+=== head DLL Function ===
+
+The same as get, but requests http headers only. Writes raw headers to file.
+
+=== put DLL Function ===
+
+<highlight-nsis>inetc::put [/PROXY IP:PORT] [/USERNAME PROXY_LOGIN /PASSWORD PROXY_PASSWD] [/NOPROXY]
+ [/NOCANCEL] [/CONNECTTIMEOUT TO_SEC]  [/RECEIVETIMEOUT TO_SEC] [/SILENT] [/CAPTION TEXT]
+ [/POPUP HOST_ALIAS | /BANNER TEXT] [/CANCELTEXT CANCEL_TEXT] [/USER_AGENT USER_AGENT_TEXT]
+ [/TRANSLATE LANG_PARAMS] [/NOCOOKIES]
+ URL1 local_file1 [URL2 local_file2 [...]] [/END]</highlight-nsis>
+Return value and parameters (if applicable) are the same as for previous entry point.
+
+== Examples ==
+
+<highlight-nsis>
+inetc::get "http://dl.zvuki.ru/6306/mp3/12.mp3" "$EXEDIR\12.mp3" \
+               "ftp://dl.zvuki.ru/6306/mp3/11.mp3" "$EXEDIR\11.mp3"
+Pop $0
+</highlight-nsis>
+
+<highlight-nsis>
+inetc::put /BANNER "Cameron Diaz upload in progress..." \
+"http://www.dreamgirlswallpaper.co.uk/fiveyearsonline/wallpaper/Cameron_Diaz/camerond09big.JPG" \
+"$EXEDIR\cd.jpg"
+  Pop $0
+  StrCmp $0 "OK" dlok
+  MessageBox MB_OK|MB_ICONEXCLAMATION "http upload Error, click OK to abort installation" /SD IDOK
+  Abort
+dlok:
+  ...
+</highlight-nsis>
+
+<highlight-nsis>
+;installer window restoring after silent calls from .onGUIInit
+;by Edward Marshall & Jonathan Beddoes
+;temporarily makes the installer window topmost so that inetc doesn't drop our focus
+
+Function .onGUIInit
+
+  ; Get window handle of installer into register 0.
+  ; This only works in onGUIInit! (so you still can't silently call inetc from onInit)
+  StrCpy $0 $HWNDPARENT
+
+  ; Make window always-on-top. Yes, this is bad but we are only doing it temporarily!
+  ; This prevents inetc's hidden dialog from getting foreground precedence over the installer.
+  ; This must be done before any inetc calls.
+  ; -1 = HWND_TOPMOST, 3 = SWP_NOSIZE|SWP_NOMOVE
+  System::Call "user32::SetWindowPos(i r0, i -1, i 0, i 0, i 0, i 0, i 3)"
+
+  ; Now do whatever you want with inetc.
+  inetc::head /silent "http://ineum.narod.ru/spr_2006.htm" "$EXEDIR\head.txt"
+
+  ; Now set the installer window back to normal (not always-on-top).
+  ; -2 = HWND_NOTOPMOST, 3 = SWP_NOSIZE|SWP_NOMOVE
+  System::Call "user32::SetWindowPos(i r0, i -2, i 0, i 0, i 0, i 0, i 3)"
+
+FunctionEnd
+</highlight-nsis>
+<highlight-nsis>
+; Following attribute also can restore installer Window
+; BGGradient 000000 000080 FFFFFF
+</highlight-nsis>
+== Credits ==
+
+Many thanks to Backland who offered a simple way to fix NSISdl mode crashes, added 'center parent' function, offers few nice design ideas and spent a lot of time testing the plug-in. 
+
+[[Category:Plugins]]

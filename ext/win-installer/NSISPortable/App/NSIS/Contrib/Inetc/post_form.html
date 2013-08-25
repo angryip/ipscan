@@ -1,0 +1,18 @@
+<html>
+<head>
+<title>Registration form for post.php test</title>
+</head>
+<body>
+This form sends POST request to server. It was interesting to compare server echo <br>
+reply (by included post.php) for this form and InetLoad plug-in - in my <br>
+tests server did not see any difference between them :)<br> 
+<form name="MainLogin" action="/post.php?lg=ami&pw=333" method="post">
+
+<input type="text" name="login" value="" tabindex="1"><br>
+<input type="password" name="passwd" value="" tabindex="2"><br>
+<input type="submit" name="In" value="Enter"  tabindex="3">
+
+</form>
+
+</body>
+</html>

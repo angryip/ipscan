@@ -1,0 +1,191 @@
+# Header, Ulah diropéa
+NLF v6
+# mimitian ti dieu
+# ID Sundanese
+33
+# Font and size - dash (-) means default
+-
+-
+# Codepage - dash (-) means ANSI code page
+-
+# RTL - anything else than RTL means LTR
+-
+# Translation sukma gemala [http://facebook.com/sukma.gemala]
+# ^Branding
+Sistem Pamasang Nullsoft %s
+# ^SetupCaption
+Masangkeun $(^Name)
+# ^UninstallCaption
+Miceun $(^Name)
+# ^LicenseSubCaption
+: Aturan jeung Kasapukan
+# ^ComponentsSubCaption
+: Pilihan Instalasi
+# ^DirSubCaption
+: Map Instalasi
+# ^InstallingSubCaption
+: Masangkeun
+# ^CompletedSubCaption
+: Réngsé
+# ^UnComponentsSubCaption
+: Pilihan Miceun
+# ^UnDirSubCaption
+: Map Miceun
+# ^ConfirmSubCaption
+: Muguhkeun
+# ^UninstallingSubCaption
+: Miceun instalasi
+# ^UnCompletedSubCaption
+: Réngsé
+# ^BackBtn
+< Sam&éméhna
+# ^NextBtn
+Tulu&ykeun >
+# ^AgreeBtn
+&Sapuk
+# ^AcceptBtn
+S&apuk
+# ^DontAcceptBtn
+Te&u sapuk
+# ^InstallBtn
+&Pasang
+# ^UninstallBtn
+Pi&ceun
+# ^CancelBtn
+&Bolay
+# ^CloseBtn
+&Tutup
+# ^BrowseBtn
+Pili&h...
+# ^ShowDetailsBtn
+&Detil
+# ^ClickNext
+Klik Tuluykeun pikeun nuluykeun.
+# ^ClickInstall
+Klik Pasang pikeun ngamimitian masang $(^Name).
+# ^ClickUninstall
+Klik Piceun pikeun ngamimitian miceun $(^Name).
+# ^Name
+Ngaran
+# ^Completed
+Réngsé
+# ^LicenseText
+Imeutan ieu kasapukan saméméh masangkeun $(^NameDA). Lamun anjeun narima sakabéh anu dipedar dina kasapukan, klik Sapuk.
+# ^LicenseTextCB
+Imeutan ieu kasapukan saméméh masangkeun $(^NameDA). Lamun anjeun narima sakabéh anu dipedar dina kasapukan, béré contréng. $_CLICK
+# ^LicenseTextRB
+Imeutan ieu kasapukan saméméh masangkeun $(^NameDA). Lamun anjeun narima sakabéh anu dipedar dina kasapukan, pilih salah sahiji anu aya di handap. $_CLICK
+# ^UnLicenseText
+Imeutan ieu kasapukan saméméh miceun $(^NameDA). Lamun anjeun narima sakabéh anu dipedar dina kasapukan, klik Sapuk.
+# ^UnLicenseTextCB
+Imeutan ieu kasapukan saméméh miceun $(^NameDA). Lamun anjeun narima sakabéh anu dipedar dina kasapukan, béré contréng. $_CLICK
+# ^UnLicenseTextRB
+Imeutan ieu kasapukan saméméh miceun $(^NameDA). Lamun anjeun narima sakabéh anu dipedar dina kasapukan, pilih salah sahiji anu aya di handap. $_CLICK
+# ^Custom
+Reka
+# ^ComponentsText
+Contréng dina komponén anu rék dipasang atawa piceun contréngna lamun teu pati perlu. $_CLICK
+# ^ComponentsSubText1
+Pilih tipeu instalasi:
+# ^ComponentsSubText2_NoInstTypes
+Pilih komponén-komponén anu bakal dipasang:
+# ^ComponentsSubText2
+Atawa, pilih ieu komponén anu bakal dipasang:
+# ^UnComponentsText
+Contréng dina komponén anu rék dipiceun. $_CLICK
+# ^UnComponentsSubText1
+Pilih tipeu miceun:
+# ^UnComponentsSubText2_NoInstTypes
+Pilih komponén-komponén anu rék dipiceun:
+# ^UnComponentsSubText2
+Atawa, pilih ieu komponén anu rék dipiceun:
+# ^DirText
+$(^NameDA) bakal dipasang dina ieu map. Pikeun milih map séjén, klik Pilih tuluy tangtukeun map nu dipikahayang ku ajeun. $_CLICK
+# ^DirSubText
+Map anu dituju
+# ^DirBrowseText
+Pilih map pikeun tempat masangkeun $(^NameDA):
+# ^UnDirText
+$(^NameDA) bakal dipiceun tina ieu map. Pikeun milih map séjén, klik Pilih tuluy tangtukeun map nu dipikahayang ku ajeun. $_CLICK
+# ^UnDirSubText
+""
+# ^UnDirBrowseText
+Pilih map pikeun tempat miceun $(^NameDA):
+# ^SpaceAvailable
+"Rohang disk anu nyampak: "
+# ^SpaceRequired
+"Rohang disk anu dibutuhkeun: "
+# ^UninstallingText
+$(^NameDA) bakal dipiceun tina ieu map. $_CLICK
+# ^UninstallingSubText
+Miceun instalasi:
+# ^FileError
+Henteu bisa nulis koropak: \r\n\t"$0"\r\nKlik abort pikeun ngabolaykeun instalasi,\r\nretry pikeun nyoba deui, atawa\r\nignore lamun moal dipaliré.
+# ^FileError_NoIgnore
+Henteu bisa nulis koropak: \r\n\t"$0"\r\nKlik retry pikeun nyobaan deui, atawa\r\ncancel pikeun ngabolaykeun instalasi
+# ^CantWrite
+"Henteu bisa nulis dina: "
+# ^CopyFailed
+Prosés niron gagal
+# ^CopyTo
+"Ditiron kana "
+# ^Registering
+"Ngadaftarkeun modul: "
+# ^Unregistering
+"Ngudar modul: "
+# ^SymbolNotFound
+"Henteu manggih : "
+# ^CouldNotLoad
+"Henteu bisa muka: "
+# ^CreateFolder
+"Nyieun map: "
+# ^CreateShortcut
+"Nyieun tumbu: "
+# ^CreatedUninstaller
+"Nyieun aplikasi pamiceun instalasi: "
+# ^Delete
+"Mupus koropak: "
+# ^DeleteOnReboot
+"Bakal dipupus nalika komputer dimimitian-deui: "
+# ^ErrorCreatingShortcut
+"Henteu bisa nyieun tumbu: "
+# ^ErrorCreating
+"Kasalahan dina nyieun: "
+# ^ErrorDecompressing
+Kasalahan nalika muka gémbolan data! Aplikasi Pamasang ruksak
+# ^ErrorRegistering
+Kasalahan nalika ngadaftarkeun modul DLL
+# ^ExecShell
+"ExecShell: "
+# ^Exec
+"Ngajalankeun: "
+# ^Extract
+"Muka gémbolan: "
+# ^ErrorWriting
+"Gémbolan: kasalahan nalika nulis koropak "
+# ^InvalidOpcode
+Program Pamasang: opcode henteu lengkep
+# ^NoOLE
+"OLE henteu kapanggih: "
+# ^OutputFolder
+"Map anu dituju: "
+# ^RemoveFolder
+"Mupus map: "
+# ^RenameOnReboot
+"Bakal diganti ngaranna nalika dimimitian-deui (restart): "
+# ^Rename
+"Ngaganti ngaran: "
+# ^Skipped
+Diliwat: "
+# ^CopyDetails
+Tiron Detil kana Clipboard
+# ^LogInstall
+Catet prosés instalasi
+# ^Byte
+B
+# ^Kilo
+K
+# ^Mega
+M
+# ^Giga
+G

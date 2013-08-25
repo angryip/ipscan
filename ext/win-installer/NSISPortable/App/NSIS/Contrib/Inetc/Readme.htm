@@ -1,0 +1,140 @@
+<div style="border:solid 1px black;padding:10px;width:300px">
+<h2>Contents</h2>
+<UL>
+<LI>1 Links 
+<LI>2 Description 
+<LI>3 Command line 
+<UL>
+<LI>3.1 get DLL Function 
+<LI>3.2 post DLL Function 
+<LI>3.3 head DLL Function 
+<LI>3.4 put DLL Function
+</UL>
+<LI>4 Examples 
+<LI>5 Credits
+</UL>
+</div>
+
+<h2>Links</h2> 
+Download: <a href="http://nsis.sourceforge.net/Inetc_plug-in">http://nsis.sourceforge.net/Inetc_plug-in</a>
+
+<h2>Description</h2>
+Internet client plug-in for files download and upload. Based on the InetLoad plug-in. 
+Network implementation uses MS WinInet API, supports http/https and ftp protocols. 
+Plugin has better proxy support compare to NSISdl plug-in. Command line may include 
+few URL/File pairs to be transfered. If server or proxy login/password are not setten in the script, 
+displays IE-style authentication dialog (except silent mode). Plug-in supports 3 
+"transfer in progress" display modes: 
+<UL>
+<LI>old NSISdl style - additional embedded progress bar and text on the INSTFILES page; 
+<LI>POPUP dialog mode with detailed info; 
+<LI>BANNER mode with simple popup window. 
+</UL>
+Plug-in recognizes Installer's Silent mode and this case hides any output (this feature 
+requires NSIS 2.03 or later). Program implements simple re-get functionality - host 
+reconnect and download from current position after short pause. While program depends on IE settings, 
+it changes current IE mode to online. NSISdl code fragment was used for progress bar displaying 
+in the "old style" mode. For ftp use "host/path" for file location relative to user's home dir and 
+"host//path" for absolute path.
+
+<h2>Command line</h2>
+
+Plug-in DLL functions (entry points): get, post, head, put 
+
+<h3>get DLL Function </h3>
+
+<i>inetc::get [/PROXY IP:PORT] [/USERNAME PROXY_LOGIN /PASSWORD PROXY_PASSWD] [/NOCOOKIES] 
+ [/NOPROXY] [/NOCANCEL] [/CONNECTTIMEOUT TO_SEC]  [/RECEIVETIMEOUT TO_SEC] [/SILENT] 
+ [/CAPTION TEXT] [/NOCOOKIES]  [/RESUME RETRY_QUESTION] [/POPUP HOST_ALIAS | /BANNER TEXT] 
+ [/CANCELTEXT CANCEL_TEXT] [/QUESTION CANCEL_QUESTION] [/USER_AGENT USER_AGENT_TEXT] 
+ [/HEADER HEADER_TEXT] [/TRANSLATE LANG_PARAMS]
+ URL1 local_file1 [URL2 local_file2 [...]] [/END]</i>
+<p>This call returns "OK" string if successful, error description string if failed (see included InetLoad.cpp file for a full set of status strings). Usage and result processing samples are included to the package. 
+<p>/PROXY - 
+Overwrites current proxy settings, not required in most cases. IE settings will be used by default. 
+<p>/USERNAME - 
+Proxy username (http only). 
+<p>/PASSWORD - 
+Proxy password (http only). For server (http/ftp) authentication it is possible to use URL encoded name and password, for example http://username:password@nsis.sourceforge.net. 
+<p>/NOPROXY - 
+Disables proxy settings for this connection (if any) 
+<p>/NOCANCEL - 
+Prevents download from being interrupted by user (locks Esc, Alt-F4, Cancel handling, removes sysmenu) 
+<p>/CONNECTTIMEOUT - 
+Sets INTERNET_OPTION_CONNECT_TIMEOUT, seconds, default - IE current parameter value. 
+<p>/RECEIVETIMEOUT - 
+Sets INTERNET_OPTION_RECEIVE_TIMEOUT, seconds, default - IE current parameter value. 
+<p>/SILENT - 
+Key hides plug-in' output (both popup dialog and embedded progress bar). Not required if 'SilentInstall silent' mode was defined in script (NSIS 2.03 or later). 
+<p>/RESUME - 
+On the permanent connection/transfer error instead of exit first displays message box with "resume download" question. Useful for dial-up connections and big files - allows user to restore connection and resume download. Default is "Your internet connection seems to have dropped out!\nPlease reconnect and click Retry to resume downloading...". 
+<p>/CAPTION - 
+Defines caption text for /BANNER mode, caption prefix (left of '-') for /POPUP mode and caption for RESUME MessageBox. Default is "InetLoad plug-in" if not set or "". 127 chars maximum. 
+<p>/POPUP - 
+This mode displays detailed download dialog instead of embedded progress bar. Also useful in .onInit function (i.e. not in Section). If HOST_ALIAS is not "", text will replace URL in the dialog - this allows to hide real URL (including password). 
+<p>/BANNER - 
+Displays simple popup dialog (MSI Banner mode) and sets dialog TEXT (up to 3 lines using $\n). 
+<p>/CANCELTEXT - 
+Text for the Cancel button in the NSISdl mode. Default is NSIS dialog Cancel button text (current lang). 
+<p>/QUESTION - 
+Text for the optional MessageBox if user tries to cancel download. If /QUESTION "" was used default
+"Are you sure that you want to stop download?" will be substituted.
+<p>/USERAGENT - 
+UserAgent http request header value. Default is "NSIS_Inetc (Mozilla)". 256 chars maximum. 
+<p>/HEADER - 
+Adds or replaces http request header. Common HEADER_TEXT format is "header: value". 
+<p>/NOCOOKIES - 
+Removes cookies from http request 
+<p>/END - 
+Allows to limit plug-in stack reading (optional, required if you stores other vars in the stack). 
+<p>/TRANSLATE - 
+Allows translating plug-in text in the POPUP or NSISdl modes. 8 parameters both cases.<br>
+
+NSISdl mode parameters:<br>
+  /TRANSLATE downloading connecting second minute hour plural progress remaining<br>
+With default values:<br>
+  "Downloading %s" "Connecting ..." second minute hour s "%dkB (%d%%) of %dkB @ %d.%01dkB/s" "(%d %s%s remaining)"<br>
+
+POPUP mode parameters:<br>
+  /TRANSLATE url downloading connecting file_name received file_size remaining_time total_time<br>
+With default values:<br>
+  URL Downloading Connecting "File Name" Received "File Size" "Remaining Time" "Total Time"<br>
+
+<h3>post DLL Function </h3>
+
+<i>inetc::post TEXT2POST [/FILE] [/PROXY IP:PORT] [/NOPROXY] [/NOCANCEL]
+ [/USERNAME PROXY_LOGIN  /PASSWORD PROXY_PASSWD] [/TIMEOUT INT_MS] [/SILENT]
+ [/CAPTION TEXT] [/POPUP | /BANNER TEXT] [/CANCELTEXT CANCEL_TEXT] 
+ [/USER_AGENT USER_AGENT_TEXT] [/TRANSLATE LANG_PARAMS]
+ URL1 local_file1 [URL2 local_file2 [...]] [/END]</i>
+<p>Sets POST http mode and defines text string to be used in the POST (http only). Disables auto re-get. No char replaces used (%20 and others). 
+If /FILE presents in command line, TEXT2POST is filename to be sent in POST request. Also 'Filename:' header will be added to HTTP headers. 
+
+<h3>head DLL Function </h3>
+
+The same as get, but requests http headers only. Writes raw headers to file. 
+
+<h3>put DLL Function </h3>
+
+<i>inetc::put [/PROXY IP:PORT] [/USERNAME PROXY_LOGIN /PASSWORD PROXY_PASSWD] [/NOPROXY]
+ [/NOCANCEL] [/TIMEOUT INT_MS] [/SILENT] [/CAPTION TEXT] [/POPUP | /BANNER TEXT] 
+ [/CANCELTEXT CANCEL_TEXT] [/USER_AGENT USER_AGENT_TEXT] 
+ [/TRANSLATE LANG_PARAMS] URL1 local_file1 [URL2 local_file2 [...]] [/END]</i>
+<p>Return value and parameters (if applicable) are the same as for previous entry point. 
+
+<h2>Examples </h2>
+<pre>  inetc::get "http://dl.zvuki.ru/6306/mp3/12.mp3" "$EXEDIR\12.mp3" \
+     "ftp://dl.zvuki.ru/6306/mp3/11.mp3" "$EXEDIR\11.mp3"
+  Pop $0
+  inetc::put /BANNER "Cameron Diaz upload in progress..." \
+    "http://www.dreamgirlswallpaper.co.uk/fiveyearsonline/wallpaper/Cameron_Diaz/camerond09big.JPG" \
+    "$EXEDIR\cd.jpg"
+  Pop $0
+  StrCmp $0 "OK" dlok
+  MessageBox MB_OK|MB_ICONEXCLAMATION "http upload Error, click OK to abort installation" /SD IDOK
+  Abort
+dlok:
+  ...</pre>
+
+<h2>Credits</h2> 
+Many thanks to Backland who offered a simple way to fix NSISdl mode crashes and added 'center parent' function.

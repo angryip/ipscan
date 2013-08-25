@@ -1,0 +1,191 @@
+# Header, don't edit
+NLF v6
+# Start editing here
+# Language ID
+1152
+# Font and size - dash (-) means default  فونت نامى ۋە چوڭلىقى 
+Arial
+9
+# Codepage - dash (-) means ANSI code page كودبېتى
+65001
+# RTL - anything else than RTL means LTR ئوڭدىن سولغا يېزىش
+RTL
+# Translation by Yasinjan Ghupur (yasenghupur@sina.com) 26 April 2012
+# ^Branding
+Nullsoft Install System %s
+# ^SetupCaption
+$(^Name) قاچىلاش
+# ^UninstallCaption
+$(^Name)  ئۆچۈرۈش 
+# ^LicenseSubCaption
+: ئىجازەت كېلىشىمى 
+# ^ComponentsSubCaption
+: قاچىلاش تاللاشلىرى
+# ^DirSubCaption
+: قاچىلايدىغان قىسقۇچ
+# ^InstallingSubCaption
+: قاچىلاۋاتىدۇ
+# ^CompletedSubCaption
+: تاماملاندى
+# ^UnComponentsSubCaption
+: ئۆچۈرۈش تاللاشلىرى
+# ^UnDirSubCaption
+: ئۆچۈرۈدىغان قىسقۇچ
+# ^ConfirmSubCaption
+: جەزىملەش
+# ^UninstallingSubCaption
+: ئۆچۈرۈۋاتىدۇ
+# ^UnCompletedSubCaption
+: تاماملاندى
+# ^BackBtn
+< &كەينىگە
+# ^NextBtn
+&ئالدىغا >
+# ^AgreeBtn
+قوشۇلىمەن
+# ^AcceptBtn
+ ئىجازەت كېلىشىمىدىكى تۈرلەرگە قوشۇلىمەن 
+# ^DontAcceptBtn
+ ئىجازەت كېلىشىمىدىكى تۈرلەرگە قوشۇلمايمەن
+# ^InstallBtn
+&قاچىلاش
+# ^UninstallBtn
+& ئۆچۈرۈش 
+# ^CancelBtn
+قالدۇرۇش
+# ^CloseBtn
+&يېپىش
+# ^BrowseBtn
+كۆرۈش...
+# ^ShowDetailsBtn
+تەپسىلاتىنى كۆرۈش
+# ^ClickNext
+ئالدىغا نى چېكىپ داۋاملاشتۇرۇڭ.
+# ^ClickInstall
+قاچىلاش نى چېكىپ قاچىلاشنى باشلاڭ.
+# ^ClickUninstall
+ئۆچۈرۈش نى چېكىپ ئۆچۈرۈشنى باشلاڭ.
+# ^Name
+نامى
+# ^Completed
+تاماملاندى
+# ^LicenseText
+$(^NameDA) نى قاچىلاشتىن بۇرۇن ئىجازەت كېلىشىمىنى كۆرۈپ چىقىڭ. كېلىشىم تۈرلىرىگە قوشۇلسىڭىز،قوشۇلىمەن نى بېسىڭ .
+# ^LicenseTextCB
+$(^NameDA) نى قاچىلاشتىن بۇرۇن ئىجازەت كېلىشىمىنى كۆرۈپ چىقىڭ. كېلىشىم تۈرلىرىگە قوشۇلسىڭىز،تاللاش كاتەكچىسى نى چېكىڭ . $_CLICK
+# ^LicenseTextRB
+$(^NameDA) نى قاچىلاشتىن بۇرۇن ئىجازەت كېلىشىمىنى كۆرۈپ چىقىڭ. كېلىشىم تۈرلىرىگە قوشۇلسىڭىز،بىرىنجى تاللاش  نى تاللاڭ . $_CLICK
+# ^UnLicenseText
+$(^NameDA) نى ئۆچۈرۈشتىن بۇرۇن ئىجازەت كېلىشىمىنى كۆرۈپ. كېلىشىم تۈرلىرىگە قوشۇلسىڭىز،قوشۇلىمەن نى بېسىڭ .
+# ^UnLicenseTextCB
+$(^NameDA) نى ئۆچۈرۈشتىن بۇرۇن ئىجازەت كېلىشىمىنى كۆرۈپ چىقىڭ. كېلىشىم تۈرلىرىگە قوشۇلسىڭىز،تاللاش كاتەكچىسى نى چېكىڭ . $_CLICK
+# ^UnLicenseTextRB
+$(^NameDA) نى ئۆچۈرۈشتىن بۇرۇن ئىجازەت كېلىشىمىنى كۆرۈپ چىقىڭ. كېلىشىم تۈرلىرىگە قوشۇلسىڭىز،بىرىنجى تاللاش  نى تاللاڭ . $_CLICK
+# ^Custom
+ئۆزى بېكىتىش
+# ^ComponentsText
+قاچىلايدىغان بۆلەكلەرنى تاللاڭ ۋە قاچىلىمايدىغان بۆلەكلەرنى تاللىماڭ. $_CLICK
+# ^ComponentsSubText1
+قاچىلاش ئۇسلۇبىنى تاللاڭ:
+# ^ComponentsSubText2_NoInstTypes
+قاچىلاش بۆلىكىنى تاللاڭ:
+# ^ComponentsSubText2
+ياكى قاچىلىماقچى بولغان بۆلەكنى تاللاڭ:
+# ^UnComponentsText
+ئۆچۈرمەكچى بولغان بۆلەكنى تاللاڭ ھەمدە ئۆچۈرمەيدىغان بۆلەكنى تاللىماڭ. $_CLICK
+# ^UnComponentsSubText1
+ئۆچۈرۈش ئۇسلۇبىنى تاللاڭ:
+# ^UnComponentsSubText2_NoInstTypes
+ئۆچۈرۈش بۆلىكىنى تاللاڭ:
+# ^UnComponentsSubText2
+ياكى ئۆچۈرمەكچى بولغان بۆلەكنى تاللاڭ:
+# ^DirText
+ قاچىلاش يېتەكچىسى $(^NameDA) نى بۇ قىسقۇچنىڭ ئاستىغا قاچىلايدۇ.باشقا قىسقۇچقا قاچىلماقچى بولسىڭىز،كۆرۈش نى چېكىپ باشقا قىسقۇچنى تاللاڭ . $_CLICK
+# ^DirSubText
+نىشان قىسقۇچ
+# ^DirBrowseText
+نى قاچىلايدىغان قىسقۇچنى تاللاڭ $(^NameDA):
+# ^UnDirText
+قاچىلاش يېتەكچىسى $(^NameDA) نى بۇ قىسقۇچنىڭ ئاستىدىن ئۆچۈرۈدۇ.باشقا قىسقۇچتىن ئۆچۈرمەكچى بولسىڭىز،كۆرۈش نى چېكىپ باشقا قىسقۇچنى تاللاڭ . $_CLICK
+# ^UnDirSubText
+""
+# ^UnDirBrowseText
+ $(^NameDA) نى ئۆچۈرۈدىغان قىسقۇچنى تاللاڭ :
+# ^SpaceAvailable
+"قاچىلاش بوشلۇقى يېتەرلىك: "
+# ^SpaceRequired
+" ئېھتىياجلىق قاچىلاش بوشلۇقى : "
+# ^UninstallingText
+$(^NameDA) نى تۆۋەندىكى قىسقۇچتىن ئۆچۈرۈدۇ. $_CLICK
+# ^UninstallingSubText
+دىن ئۆچۈرۈۋاتىدۇ:
+# ^FileError
+يازىدىغان ھۆججەتنى ئېچىش خاتالىقى: \r\n\r\n$0\r\n\r\nتوختىتۇش نى بېسىپ قاچىلاشنى توختۇتۇش,\r\nقايتىلاش ياكى \r\nبۇ ھۆججەتتىن ئاتلاپ ئۆتۈپ كېتىش.
+# ^FileError_NoIgnore
+يازىدىغان ھۆججەتنى ئېچىش خاتالىقى: \r\n\r\n$0\r\n\r\nقايتىلاش  نى بېسىپ قاچىلاشنى قايتىلاش ياكى \r\n قاچىلاشنى قالدۇرۇش .
+# ^CantWrite
+"يازالمىدى: "
+# ^CopyFailed
+كۆچۈرەلمىدى
+# ^CopyTo
+"گە كۆچۈرۈش "
+# ^Registering
+"رۇيخەتكە ئېلىۋاتىدۇ: "
+# ^Unregistering
+"رۇيخەتتىن ئۆچۈرۈۋاتىدۇ: "
+# ^SymbolNotFound
+"بەلگىنى تاپالمىدى: "
+# ^CouldNotLoad
+"يۈكلىيەلمىدى: "
+# ^CreateFolder
+"قىسقۇچ  قۇرۇش: "
+# ^CreateShortcut
+"تېزكۆرگۈچ  قۇرۇش: "
+# ^CreatedUninstaller
+" ئۆچۈرۈش يېتەكچىسى ياسالدى: "
+# ^Delete
+"ھۆججەت ئۆچۈرۈش: "
+# ^DeleteOnReboot
+"قايتا قوزغالغاندا  ئۆچۈرۈش: "
+# ^ErrorCreatingShortcut
+"تېزكۆرگۈچ  قۇرۇش خاتالىقى: "
+# ^ErrorCreating
+"قۇرۇش خاتالىقى: "
+# ^ErrorDecompressing
+مەلۇماتلارنى ئەسلىگە قايتۇرۇش خاتالىقى! قاچىلاش يېتەكچىسى بۇزۇلغانمۇ؟
+# ^ErrorRegistering
+DLL نى رۇيخەتكە ئېلىش خاتالىقى 
+# ^ExecShell
+"قاپلىنىش بۇيرۇقى ئىجرا قىلىش : "
+# ^Exec
+"ئىجرا قىلىش: "
+# ^Extract
+"يېيىش: "
+# ^ErrorWriting
+"يېيىش  : ھۆججەتكە يېزىش خاتالىقى   "
+# ^InvalidOpcode
+قاچىلاش يېتەكچىسى بۇزۇلغان : ئىناۋەتسىز كود
+# ^NoOLE
+"گە OLE يوق : "
+# ^OutputFolder
+"چىقىرىدىغان قىسقۇچ: "
+# ^RemoveFolder
+"قىسقۇچنى ئۆچۈرۈش: "
+# ^RenameOnReboot
+" قايتا قوزغالغاندا نامىنى ئۆزگەرتىش: "
+# ^Rename
+"نامىنى ئۆزگەرتىش: "
+# ^Skipped
+"ئاتلاپ ئۆتتى: "
+# ^CopyDetails
+تەپسىلاتىنى ئىشتاختىغا كۆچۈرۈش
+# ^LogInstall
+قاچىلاش جەريانى خاتىرسى
+# ^Byte
+بايىت 
+# ^Kilo
+ كىلو
+# ^Mega
+ مېگا 
+# ^Giga
+ گىگا
