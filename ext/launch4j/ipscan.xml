@@ -9,7 +9,7 @@
   <supportUrl>http://www.angryip.org/</supportUrl>
   <customProcName>true</customProcName>
   <stayAlive>false</stayAlive>
-  <manifest></manifest>
+  <manifest>../ext/launch4j/ipscan.manifest</manifest>
   <icon>../resources/images/icon.ico</icon>
   <jre>
     <minVersion>1.6.0</minVersion>
