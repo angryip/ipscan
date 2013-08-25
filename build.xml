@@ -474,10 +474,14 @@
 	</target>
 
     <target name="win-installer">
+        <replace file="ext/win-installer/InstallerConfig.nsh">
+            <replacefilter token="VERSION" value="${version}"/>
+            <replacefilter token="VERSION_MINOR" value="2"/>
+        </replace>
         <copy file="${dist}/${ant.project.name}-win32-${version}.exe" tofile="ext/win-installer/AppFiles32/ipscan.exe"/>
         <copy file="${dist}/${ant.project.name}-win64-${version}.exe" tofile="ext/win-installer/AppFiles64/ipscan.exe"/>
         <exec command="ext/win-installer/build.sh"/>
-        <move file="ext/win-installer/Angry_IP_Scanner_3.2_Setup.exe" tofile="${dist}/ipscan-${version}-setup.exe"/>
+        <move file="ext/win-installer/Angry_IP_Scanner_${version}_Setup.exe" tofile="${dist}/ipscan-${version}-setup.exe"/>
     </target>
 
 </project>
