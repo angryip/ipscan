@@ -105,9 +105,9 @@ public final class Labels {
 			return text;
 		}
 	}
-	
+
 	/**
-	 * A shortened form of Labels.getLabel().get()
+	 * A shortened form of Labels.getInstance().get()
 	 */
 	public static String getLabel(String key) {
 		return getInstance().get(key);

@@ -4,16 +4,12 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * About Window
@@ -21,11 +17,26 @@ import org.eclipse.swt.widgets.Text;
  * @author Anton Keks
  */
 public class GettingStartedDialog extends AbstractModalDialog {
-
-	private int activePage = 1;
+	private int activePage;
+	private List<String> texts = new ArrayList<String>();
 	private Text gettingStartedText;
 	private Button closeButton;
 	private Button nextButton;
+
+	public GettingStartedDialog() {
+		int num = 1;
+		try {
+			while (true) {
+				texts.add(Labels.getLabel("text.gettingStarted" + num++));
+			}
+		}
+		catch (Exception noMoreTexts) {}
+	}
+
+	public GettingStartedDialog prependText(String text) {
+		texts.add(0, text);
+		return this;
+	}
 
 	@Override
 	protected void populateShell() {
@@ -34,8 +45,8 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(Labels.getLabel("title.gettingStarted"));
-		shell.setSize(new Point(400, 240));
-		
+		shell.setSize(new Point(500, 300));
+
 		Label iconLabel = new Label(shell, SWT.ICON);
 		iconLabel.setLocation(10, 10);
 		
@@ -67,7 +78,6 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		});
 		nextButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				activePage++;
 				displayActivePage();
 			}
 		});
@@ -76,15 +86,9 @@ public class GettingStartedDialog extends AbstractModalDialog {
 	}
 	
 	void displayActivePage() {
-		String text = Labels.getLabel("text.gettingStarted" + activePage);
-		gettingStartedText.setText(text);
+		gettingStartedText.setText(texts.get(activePage++));
 		
-		// check for the next one
-		try {
-			Labels.getLabel("text.gettingStarted" + (activePage+1));
-		}
-		catch (Exception e) {
-			// no label, disable the next button
+		if (activePage >= texts.size()) {
 			nextButton.setEnabled(false);
 			shell.setDefaultButton(closeButton);
 			closeButton.setFocus();

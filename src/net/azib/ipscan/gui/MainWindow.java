@@ -14,7 +14,6 @@ import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
-import net.azib.ipscan.gui.actions.BrowserLauncher;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.actions.ToolsActions;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
@@ -79,18 +78,14 @@ public class MainWindow {
 		if (guiConfig.isFirstRun) {
 			Display.getCurrent().asyncExec(new Runnable() {
 				public void run() {
-					if (Platform.CRIPPLED_WINDOWS) {
-						// inform crippled windows owners of their default configuration
-						if (showMessage(Labels.getLabel("text.crippledWindowsInfo"), SWT.YES | SWT.NO) == SWT.YES) {
-							BrowserLauncher.openURL(Version.FAQ_CRIPPLED_WINDOWS_URL);
-						}
-					}
-					if (Platform.GNU_JAVA) {
-						// show a warning if running under GNU Java
-						showMessage(Labels.getLabel("text.gnuJavaInfo"), SWT.OK);
-					}
+					GettingStartedDialog dialog = new GettingStartedDialog();
+					if (Platform.CRIPPLED_WINDOWS)
+						dialog.prependText(Labels.getLabel("text.crippledWindowsInfo"));
+					if (Platform.GNU_JAVA)
+						dialog.prependText(Labels.getLabel("text.gnuJavaInfo"));
+
 					MainWindow.this.shell.forceActive();
-					new GettingStartedDialog().open();
+					dialog.open();
 					MainWindow.this.guiConfig.isFirstRun = false;
 				}
 			});
