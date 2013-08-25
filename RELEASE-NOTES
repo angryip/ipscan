@@ -1,8 +1,4 @@
-Changes in 3.2:
-- New MAC Address fetcher
-- New MAC Vendor fetcher
-- iBoot devices are now detected on the network
-- Netmask field on Windows now behaves better
-- Better handling of ICMP replies coming from firewall, not the host itself
-- Fixed exporting of selected results
-- RPMs now install on Fedora 18 (no longer created with alien)
+Changes in 3.2.1:
+- New Windows installer that includes both 32 and 64-bit binaries
+- More improvements for Windows binary (better icon, manifest, etc)
+- Issue with netmask combo fixed on OS X
