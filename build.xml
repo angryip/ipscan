@@ -474,14 +474,14 @@
 		<delete file="${dist}/${ant.project.name}-mac-${version}.jar"/>
 	</target>
 
-    <target name="win-installer" depends="win32,win64">
+    <target name="win-installer" depends="clean,compile-win32,compile-win64,package-win32,package-win64">
         <replace file="ext/win-installer/InstallerConfig.nsh">
             <replacefilter token="VERSION_MINOR" value="2"/>
             <replacefilter token="VERSION" value="${version}"/>
         </replace>
         <copy file="${dist}/${ant.project.name}-win32-${version}.exe" tofile="ext/win-installer/AppFiles32/ipscan.exe"/>
         <copy file="${dist}/${ant.project.name}-win64-${version}.exe" tofile="ext/win-installer/AppFiles64/ipscan.exe"/>
-        <exec command="ext/win-installer/build.sh"/>
+        <exec dir="ext/win-installer" command="NSISPortable/NSISPortable.exe InstallerConfig.nsh"/>
         <move file="ext/win-installer/Angry_IP_Scanner_${version}_Setup.exe" tofile="${dist}/ipscan-${version}-setup.exe"/>
         <exec command="git checkout ext/win-installer/InstallerConfig.nsh"/>
     </target>
