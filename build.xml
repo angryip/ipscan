@@ -474,7 +474,7 @@
 		<delete file="${dist}/${ant.project.name}-mac-${version}.jar"/>
 	</target>
 
-    <target name="win-installer" depends="win32,win64">
+    <target name="win-installer" depends="clean,compile-win32,compile-win64,package-win32,package-win64">
         <replace file="ext/win-installer/InstallerConfig.nsh">
             <replacefilter token="VERSION_MINOR" value="2"/>
             <replacefilter token="VERSION" value="${version}"/>
