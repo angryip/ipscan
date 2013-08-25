@@ -97,8 +97,9 @@ public class FeederActions {
 				for (Enumeration<NetworkInterface> i = NetworkInterface.getNetworkInterfaces(); i.hasMoreElements(); ) {
 					NetworkInterface networkInterface = i.nextElement();
 					for (InterfaceAddress ifaddr : networkInterface.getInterfaceAddresses()) {
+						if (ifaddr == null) continue;
                         InetAddress address = ifaddr.getAddress();
-                        if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
+                        if (address instanceof Inet4Address && !address.isLoopbackAddress()) {
 							MenuItem menuItem = new MenuItem(popupMenu, 0);
 							menuItem.setText(networkInterface.getDisplayName() + ": " + address.getHostAddress());
 							menuItem.setData(address.getHostAddress() + "/" + ifaddr.getNetworkPrefixLength());
