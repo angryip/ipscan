@@ -13,7 +13,7 @@
 !define DefaultDirectory "Angry IP Scanner"
 	
 ;InstallerFileName is the start of the generated installer file. No spaces or invalid Windows file/directory characters.
-!define InstallerFileName "Angry_IP_Scanner"
+!define InstallerFileName "ipscan"
 	
 ;AppVersionFull is a full 4 number dotted version number.  No letters, spaces, etc, dots only ex: 1.2.3.4
 !define AppVersionFull "3.VERSION_MINOR.0.0"
