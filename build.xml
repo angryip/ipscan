@@ -481,7 +481,7 @@
         </replace>
         <copy file="${dist}/${ant.project.name}-win32-${version}.exe" tofile="ext/win-installer/AppFiles32/ipscan.exe"/>
         <copy file="${dist}/${ant.project.name}-win64-${version}.exe" tofile="ext/win-installer/AppFiles64/ipscan.exe"/>
-        <exec dir="ext/win-installer" command="NSISPortable/NSISPortable.exe InstallerConfig.nsh"/>
+        <exec dir="ext/win-installer" command="NSISPortable/NSISPortable.exe Installer/Installer.nsi"/>
         <move file="ext/win-installer/Angry_IP_Scanner_${version}_Setup.exe" tofile="${dist}/ipscan-${version}-setup.exe"/>
         <exec command="git checkout ext/win-installer/InstallerConfig.nsh"/>
     </target>
