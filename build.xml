@@ -482,6 +482,7 @@
         <copy file="${dist}/${ant.project.name}-win64-${version}.exe" tofile="ext/win-installer/AppFiles64/ipscan.exe"/>
         <exec command="ext/win-installer/build.sh"/>
         <move file="ext/win-installer/Angry_IP_Scanner_${version}_Setup.exe" tofile="${dist}/ipscan-${version}-setup.exe"/>
+        <exec command="git checkout ext/win-installer/InstallerConfig.nsh"/>
     </target>
 
 </project>
