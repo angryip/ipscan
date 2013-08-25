@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+<assemblyIdentity
+	version="3.2.0.0"
+	processorArchitecture="*"
+	name="org.angryip.ipscan"
+	type="win32"
+/>
+<description>PortableApps</description>
+	<!-- Identify the application security requirements. -->
+	<mssv2:trustInfo xmlns:mssv2="urn:schemas-microsoft-com:asm.v2">
+		<mssv2:security>
+			<mssv2:requestedPrivileges>
+				<mssv2:requestedExecutionLevel
+				  level="asInvoker"
+				  uiAccess="false"/>
+			</mssv2:requestedPrivileges>
+		</mssv2:security>
+	</mssv2:trustInfo>
+<dependency>
+	<dependentAssembly>
+		<assemblyIdentity
+			type="win32"
+			name="Microsoft.Windows.Common-Controls"
+			version="6.0.0.0"
+			processorArchitecture="*"
+			publicKeyToken="6595b64144ccf1df"
+			language="*"
+		/>
+	</dependentAssembly>
+</dependency>
+</assembly>

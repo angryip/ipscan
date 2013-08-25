@@ -93,7 +93,7 @@ public class Main {
 			display.dispose();
 		}
 		catch (UnsatisfiedLinkError e) {
-			JOptionPane.showMessageDialog(null, "Failed to load native code. Probably you are using a binary built for wrong OS or CPU - try downloading both 32-bit and 64-bit binaries");
+			JOptionPane.showMessageDialog(null, "Failed to load native code. Probably you are using a binary built for wrong OS or CPU. If 64-bit binary doesn't work for you, try 32-bit version, or vice versa.");
 		}
 		catch (Throwable e) {
 			JOptionPane.showMessageDialog(null, e + "\nPlease submit a bug report mentioning your OS and what were you doing.");
