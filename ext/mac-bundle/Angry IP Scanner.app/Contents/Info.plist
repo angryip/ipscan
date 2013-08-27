@@ -4,13 +4,13 @@
 <dict>
     <key>CFBundleName</key>
     <string>APPNAME</string>
-    
+
     <key>CFBundleShortVersionString</key>
     <string>VERSION</string>
 
     <key>CFBundleGetInfoString</key>
     <string>VERSION</string>
-    
+
     <key>CFBundleIconFile</key>
     <string>ipscan.icns</string>
 
@@ -38,28 +38,28 @@
     <key>CFBundleIdentifier</key>
     <string>net.azib.ipscan</string>
 
-	<key>NSHighResolutionCapable</key>
-	<true/>
+    <key>NSHighResolutionCapable</key>
+    <true/>
 
     <key>Java</key>
     <dict>
-		<key>MainClass</key>
-		<string>MAINCLASS</string>
+        <key>MainClass</key>
+        <string>MAINCLASS</string>
 
-		<key>JVMVersion</key>
-		<string>1.5</string>
-		<!-- This should be 1.5, not 1.5+ for now until we make the Java6 64-bit release -->
+        <key>JVMVersion</key>
+        <string>1.5</string>
+        <!-- This should be 1.5, not 1.5+ for now until we make the Java6 64-bit release -->
 
-		<key>ClassPath</key>
-		<array>
-				<string>$JAVAROOT/JARFILE</string>
-		</array>
+        <key>ClassPath</key>
+        <array>
+            <string>$JAVAROOT/JARFILE</string>
+        </array>
 
-		<key>StartOnMainThread</key>
-		<true/>
+        <key>StartOnMainThread</key>
+        <true/>
 
-		<key>VMOptions</key>
-		<string>-XstartOnFirstThread</string>
+        <key>VMOptions</key>
+        <string>-XstartOnFirstThread</string>
     </dict>
 </dict>
 </plist>
