@@ -5,6 +5,10 @@ import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * JNA binding for iphlpapi.dll for ICMP and ARP support under Windows
  */
@@ -18,6 +22,17 @@ public interface WinIpHlpDll extends Library {
 			catch (UnsatisfiedLinkError e) {
 				return (WinIpHlpDll) Native.loadLibrary("icmp", WinIpHlpDll.class);
 			}
+		}
+	}
+
+	public static class AutoOrderedStructure extends Structure {
+		// this is a requirement of newer JNA, possibly it won't work on some JVM, but probability is quite small
+		@Override protected List<String> getFieldOrder() {
+			ArrayList<String> fields = new ArrayList<String>();
+			for (Field field : getClass().getFields()) {
+				fields.add(field.getName());
+			}
+			return fields;
 		}
 	}
 
@@ -55,14 +70,14 @@ public interface WinIpHlpDll extends Library {
 			Pointer pPhyAddrLen
 	);
 
-	public static class IpAddr extends Structure {
+	public static class IpAddr extends AutoOrderedStructure {
 		public byte[] bytes = new byte[4];
 	}
 
 	public static class IpAddrByVal extends IpAddr implements Structure.ByValue {
 	}
 
-	public static class IpOptionInformation extends Structure {
+	public static class IpOptionInformation extends AutoOrderedStructure {
 		public byte ttl;
 		public byte tos;
 		public byte flags;
@@ -78,7 +93,7 @@ public interface WinIpHlpDll extends Library {
 			extends IpOptionInformation implements Structure.ByReference {
 	}
 
-	public static class IcmpEchoReply extends Structure {
+	public static class IcmpEchoReply extends AutoOrderedStructure {
 		public IpAddrByVal address;
 		public int status;
 		public int roundTripTime;
