@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0"><dict>
+<plist version="1.0">
+<dict>
     <key>CFBundleName</key>
     <string>APPNAME</string>
     
@@ -37,25 +38,28 @@
     <key>CFBundleIdentifier</key>
     <string>net.azib.ipscan</string>
 
-    <key>Java</key>
-    <dict>
-	<key>MainClass</key>
-	<string>MAINCLASS</string>
-
-	<key>JVMVersion</key>
-	<string>1.5</string>
-	<!-- This should be 1.5, not 1.5+ for now until we make the Java6 64-bit release -->
-
-	<key>ClassPath</key>
-	<array>	
-    	    <string>$JAVAROOT/JARFILE</string>
-	</array>
-
-	<key>StartOnMainThread</key>
+	<key>NSHighResolutionCapable</key>
 	<true/>
 
-	<key>VMOptions</key>
-	<string>-XstartOnFirstThread</string>
+    <key>Java</key>
+    <dict>
+		<key>MainClass</key>
+		<string>MAINCLASS</string>
+
+		<key>JVMVersion</key>
+		<string>1.5</string>
+		<!-- This should be 1.5, not 1.5+ for now until we make the Java6 64-bit release -->
+
+		<key>ClassPath</key>
+		<array>
+				<string>$JAVAROOT/JARFILE</string>
+		</array>
+
+		<key>StartOnMainThread</key>
+		<true/>
+
+		<key>VMOptions</key>
+		<string>-XstartOnFirstThread</string>
     </dict>
 </dict>
 </plist>
