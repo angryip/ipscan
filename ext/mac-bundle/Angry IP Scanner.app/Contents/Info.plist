@@ -47,8 +47,7 @@
         <string>MAINCLASS</string>
 
         <key>JVMVersion</key>
-        <string>1.5</string>
-        <!-- This should be 1.5, not 1.5+ for now until we make the Java6 64-bit release -->
+        <string>1.6+</string>
 
         <key>ClassPath</key>
         <array>
