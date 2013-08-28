@@ -111,5 +111,9 @@ public class PluginLoader {
 		PluginClassLoader() {
 			super(new URL[0], PluginLoader.class.getClassLoader());
 		}
+
+		@Override protected void addURL(URL url) {
+			super.addURL(url); //make protected method accessible to PluginLoader
+		}
 	}
 }
