@@ -34,7 +34,7 @@ public class PluginLoader {
     public void addTo(MutablePicoContainer container) {
 		loadPluginsSpecifiedInSystemProperties(container);
 		loadPluginJars(container, getOwnFile());
-		loadPluginJars(container, new File(System.getProperty("user.home"), ".ipscan/imaginary-plugin.jar"));
+		loadPluginJars(container, new File(System.getProperty("user.home"), ".ipscan/placeholder"));
     }
 
 	void loadPluginsSpecifiedInSystemProperties(MutablePicoContainer container) {
