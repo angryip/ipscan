@@ -25,8 +25,10 @@ public class Version {
 	public static final String FORUM_URL = WEBSITE + "w/Forum";
 	
 	public static final String FAQ_URL = WEBSITE + "w/FAQ";
-	
-	public static final String FAQ_CRIPPLED_WINDOWS_URL = WEBSITE + "w/FAQ:_Crippled_Windows";
+
+	public static final String PRIVACY_URL = WEBSITE + "w/Privacy";
+
+	public static final String FULL_LICENSE_URL = "http://www.gnu.org/licenses/gpl-2.0.html";
 
 	public static final String PLUGINS_URL = WEBSITE + "w/FAQ:_Plugins";
 	
