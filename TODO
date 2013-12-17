@@ -27,3 +27,4 @@
 * WHOIS fetcher
 * show distinct values for a column
 * SWT bug: deleting of many IPs at once is very slow (freezes the ipscan) due to the sorting of provided indices
+* Add the possibility of changing the language in GUI
