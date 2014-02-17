@@ -1,5 +1,5 @@
 /*******************************************************************************
-Slate Theme for GitHub Pages
+Based on Slate Theme for GitHub Pages
 by Jason Costello, @jsncostello
 *******************************************************************************/
 
@@ -264,7 +264,7 @@ Full-Width Styles
 
 .inner {
   position: relative;
-  max-width: 640px;
+  max-width: 800px;
   padding: 20px 10px;
   margin: 0 auto;
 }
@@ -297,12 +297,32 @@ Full-Width Styles
   padding: 50px 10px 30px 10px;
 }
 
+
 #project_title {
   margin: 0;
   color: #fff;
   font-size: 42px;
   font-weight: 700;
   text-shadow: #111 0px 0px 10px;
+  position: relative;
+}
+
+#project_title a {
+  color: inherit;
+}
+
+#project_title a:hover {
+  text-decoration: none;
+}
+
+img.logo {
+  position: absolute;
+  border: none;
+  box-shadow: none;
+  height: 96px;
+  width: 96px;
+  left: -125px;
+  top: -28px;
 }
 
 #project_tagline {
@@ -353,13 +373,27 @@ Full-Width Styles
 }
 
 #main_content_wrap {
-  background: #f2f2f2;
+  background: #fff;
   border-top: 1px solid #111;
   border-bottom: 1px solid #111;
 }
 
 #main_content {
   padding-top: 40px;
+}
+
+img.featured {
+  border: none;
+  box-shadow: none;
+  width: 450px;
+  float: right;
+  margin-right: -15px;
+}
+
+.clearfix:after {
+  content: '';
+  clear: both;
+  display: block;
 }
 
 #footer_wrap {

@@ -1,0 +1,11 @@
+---
+layout: post
+title:  "New site!"
+date:   2014-02-17 21:07:48
+categories: new site
+---
+
+Finally Angry IP Scanner is getting a new, simpler and more modern site.
+
+It uses Jekyll and is hosted on Github pages.
+
