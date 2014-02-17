@@ -395,6 +395,22 @@ img.featured {
   display: block;
 }
 
+#menu {
+  float: right;
+  margin-top: -45px;
+}
+
+#menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#menu ul li {
+  display: inline-block;
+  margin-left: 20px;
+}
+
 #footer_wrap {
   background: #212121;
 }
