@@ -3,6 +3,7 @@ Based on Slate Theme for GitHub Pages
 by Jason Costello, @jsncostello
 *******************************************************************************/
 
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:400);
 @import url(pygment_trac.css);
 
 /*******************************************************************************
@@ -52,8 +53,8 @@ body {
   box-sizing: border-box;
   color:#373737;
   background: #212121;
-  font-size: 16px;
-  font-family: 'Varela Round', sans-serif;
+  font-size: 17px;
+  font-family: Ubuntu, sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -62,7 +63,7 @@ h1, h2, h3, h4, h5, h6 {
   margin: 10px 0;
   font-weight: 700;
   color:#222222;
-  letter-spacing: -1px;
+/*  letter-spacing: -1px;*/
 }
 
 h1 {
@@ -397,18 +398,27 @@ img.featured {
 
 #menu {
   float: right;
-  margin-top: -45px;
+  margin-top: -50px;
 }
 
 #menu ul {
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin: 0 -10px 0 0;
+  padding: 0;  
 }
 
 #menu ul li {
   display: inline-block;
-  margin-left: 20px;
+  padding: 3px 10px;
+}
+
+#menu ul li.active {
+  background: rgba(255,255,255,0.3);
+  border-radius: 3px;
+}
+
+#menu ul li.active a {
+  color: white;
 }
 
 #footer_wrap {

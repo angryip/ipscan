@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width">
 
     <link rel="stylesheet" href="/css/main.css">
-    <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
   </head>
   <body>
 
@@ -20,10 +19,10 @@
           
           <section id="menu">
             <ul>
-              <li><a href="/about/">About</a></li>
-              <li><a href="/download/">Download</a></li>
-              <li><a href="/screenshots/">Screenshots</a></li>
-              <li><a href="/contribute/">Contribute</a></li>
+              <li class="{%if page.url == '/about/index.html'%}active{%endif%}"><a href="/about/">About</a></li>
+              <li class="{%if page.url == '/download/index.html'%}active{%endif%}"><a href="/download/">Download</a></li>
+              <li class="{%if page.url == '/screenshots/index.html'%}active{%endif%}"><a href="/screenshots/">Screenshots</a></li>
+              <li class="{%if page.url == '/contribute/index.html'%}active{%endif%}"><a href="/contribute/">Contribute</a></li>
             </ul>
           </section>
 
