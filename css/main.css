@@ -427,17 +427,26 @@ Small Device Styles
     font-size:14px;
   }
 
-  #downloads {
-    display: none;
-  }
-
   .inner {
     min-width: 320px;
     max-width: 480px;
   }
 
   #project_title {
-  font-size: 32px;
+    font-size: 32px;
+  }
+
+  #project_tagline {
+    font-size: 18px;
+  }
+
+  #menu {
+    float: none;
+    margin-top: 0;
+  }
+
+  img {
+    max-width: 400px;
   }
 
   h1 {
