@@ -16,7 +16,7 @@ In order to get the source code, the following command must be run (make sure yo
     git clone git://github.com/angryziber/ipscan.git
 
 This command will fetch the current source code of the program with full history into local directory named 'ipscan'.
-Or just [https://github.com/angryziber/ipscan browse the code repository on Github].
+Or just [browse the code repository on Github](https://github.com/angryziber/ipscan).
 
 If the source of particular release is required, then you can later switch to particular tag using:
 
@@ -26,7 +26,10 @@ where tag-name is the released version number (eg 3.0-beta4), for full list of a
 
     git tag
 
-Then, in order to build the binaries, you need only to run 'ant' in the 'ipscan' directory.
+Building
+--------
+
+In order to build the binaries, you need only to run 'ant' in the 'ipscan' directory.
 Ant will use the standard build.xml script there and compile, test, and package the program for all platforms.
 Note: some packaging features were tested only on Linux.
 
