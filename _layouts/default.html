@@ -29,8 +29,9 @@
     </div>
 
     <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-         {{ content }}
+      <section id="main_content" class="inner {{ page.title | downcase }}">
+        <h1>{{ page.title }}</h1>
+        {{ content }}
       </section>
     </div>
 
