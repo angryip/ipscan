@@ -3,6 +3,9 @@ title: About
 layout: default
 ---
 
+About
+=====
+
 Angry IP scanner is a very fast IP address and port scanner.
 
 It can scan IP addresses in any range as well as any their ports. It is cross-platform and lightweight. Not requiring any installations, it can be freely copied and used anywhere. 
