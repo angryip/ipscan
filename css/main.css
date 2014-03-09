@@ -294,7 +294,7 @@ Full-Width Styles
 }
 
 #header_wrap .inner {
-  padding: 50px 10px 30px 10px;
+  padding: 40px 10px 10px 10px;
 }
 
 
@@ -340,7 +340,7 @@ img.logo {
 }
 
 #main_content {
-  padding-top: 40px;
+  padding-top: 10px;
 }
 
 img.featured {
@@ -384,6 +384,13 @@ img.featured {
 
 #footer_wrap {
   background: #212121;
+}
+
+#main_content.screenshots img {
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0 0 0 -6px;
 }
 
 .accordion {
