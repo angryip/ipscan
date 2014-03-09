@@ -386,6 +386,10 @@ img.featured {
   background: #212121;
 }
 
+#main_content.home h1:first-child {
+  display: none;
+}
+
 #main_content.screenshots img {
   border: 0;
   box-shadow: none;
