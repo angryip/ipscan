@@ -3,7 +3,7 @@ Based on Slate Theme for GitHub Pages
 by Jason Costello, @jsncostello
 *******************************************************************************/
 
-@import url(http://fonts.googleapis.com/css?family=Ubuntu:400);
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:400,400italic);
 @import url(pygment_trac.css);
 
 /*******************************************************************************
@@ -425,7 +425,42 @@ img.featured {
   background: #212121;
 }
 
+.accordion {
+  outline: 1px solid;
+}
 
+.accordion section h2 {
+  padding: 0;
+  font-size: 100%;
+}
+
+.accordion section h2 a {
+  background: #333;
+  padding:8px 10px;
+  display:block;
+  color:#eee;
+  text-decoration:none;
+}
+
+.accordion section h2:hover a {
+  background:#444;
+}
+
+.accordion section .content {
+  display: none;
+  padding: 0 10px 10px 10px;
+}
+
+.accordion section:target .content {
+  display: block;
+}
+
+.accordion section .content {
+  -webkit-transition:height 0.2s ease-out;
+  -moz-transition:height 0.2s ease-out;
+  -o-transition:height 0.2s ease-out;
+  transition:height 0.2s ease-out;
+}
 
 /*******************************************************************************
 Small Device Styles
@@ -478,5 +513,4 @@ Small Device Styles
     max-width: 480px;
     font-size: 11px;
   }
-
 }
