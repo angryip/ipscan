@@ -311,8 +311,9 @@ img.logo {
 }
 
 #project_tagline {
+  right: 0;
   color: #fff;
-  font-size: 24px;
+  font-size: 21px;
   font-weight: 300;
   background: none;
   text-shadow: #111 0px 0px 10px;
@@ -344,7 +345,7 @@ img.featured {
 
 #menu {
   float: right;
-  margin-top: -50px;
+  margin-top: -49px;
 }
 
 #menu ul {
