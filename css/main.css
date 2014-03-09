@@ -406,19 +406,15 @@ img.featured {
 }
 
 .accordion section .content {
-  display: none;
+  max-height: 0;
   padding: 0 10px 10px 10px;
+  overflow: hidden;
+  transition: 0.2s;
 }
 
 .accordion section:target .content {
-  display: block;
-}
-
-.accordion section .content {
-  -webkit-transition:height 0.2s ease-out;
-  -moz-transition:height 0.2s ease-out;
-  -o-transition:height 0.2s ease-out;
-  transition:height 0.2s ease-out;
+  max-height: 800px;
+  transition: 0.6s;
 }
 
 /*******************************************************************************
