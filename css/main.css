@@ -104,18 +104,6 @@ footer p {
 a {
   text-decoration: none;
   color: #007edf;
-  text-shadow: none;
-
-  transition: color 0.5s ease;
-  transition: text-shadow 0.5s ease;
-  -webkit-transition: color 0.5s ease;
-  -webkit-transition: text-shadow 0.5s ease;
-  -moz-transition: color 0.5s ease;
-  -moz-transition: text-shadow 0.5s ease;
-  -o-transition: color 0.5s ease;
-  -o-transition: text-shadow 0.5s ease;
-  -ms-transition: color 0.5s ease;
-  -ms-transition: text-shadow 0.5s ease;
 }
 
 a:hover, a:focus {text-decoration: underline;}
@@ -277,7 +265,7 @@ Full-Width Styles
   z-index: 10;
   padding: 10px 50px 10px 10px;
   color: #fff;
-  background: url('../images/blacktocat.png') #0090ff no-repeat 95% 50%;
+  background: url('../images/blacktocat.png') rgba(0,0,0,0.4) no-repeat 95% 50%;
   font-weight: 700;
   box-shadow: 0 0 10px rgba(0,0,0,.5);
   border-bottom-left-radius: 2px;
@@ -285,18 +273,15 @@ Full-Width Styles
 }
 
 #header_wrap {
-  background: #212121;
-  background: -moz-linear-gradient(top, #373737, #212121);
-  background: -webkit-linear-gradient(top, #373737, #212121);
-  background: -ms-linear-gradient(top, #373737, #212121);
-  background: -o-linear-gradient(top, #373737, #212121);
-  background: linear-gradient(top, #373737, #212121);
-}
+  background-color: rgba(0,0,0,0.85);
+  background-image: -webkit-linear-gradient(left,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
+  background-image: -moz-linear-gradient(left,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
+  background-image: -o-linear-gradient(left,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
+  background-image: linear-gradient(to right,rgba(153,93,179,0.6),rgba(44,155,219,0.6));}
 
 #header_wrap .inner {
   padding: 40px 10px 10px 10px;
 }
-
 
 #project_title {
   margin: 0;
@@ -378,16 +363,12 @@ img.featured {
   border-radius: 3px;
 }
 
-#menu ul li.active a {
+#menu ul li a {
   color: white;
 }
 
 #footer_wrap {
   background: #212121;
-}
-
-#main_content.home h1:first-child {
-  display: none;
 }
 
 #main_content.screenshots img {
@@ -398,20 +379,31 @@ img.featured {
 }
 
 .accordion {
-  outline: 1px solid;
+  border: 1px solid #888;
+  border-radius: 5px;
 }
 
 .accordion section h2 {
   padding: 0;
   font-size: 100%;
+  margin-top: 0;
+  margin-bottom: 1px;
+}
+
+.accordion section:last-of-type h2 {
+  margin-bottom: 0;
 }
 
 .accordion section h2 a {
-  background: #333;
   padding:8px 10px;
   display:block;
-  color:#eee;
+  color:white;
   text-decoration:none;
+  background-color: rgba(0,0,0,0.85);
+  background-image: -webkit-linear-gradient(left,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
+  background-image: -moz-linear-gradient(left,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
+  background-image: -o-linear-gradient(left,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
+  background-image: linear-gradient(to right,rgba(153,93,179,0.6),rgba(44,155,219,0.6));}
 }
 
 .accordion section h2:hover a {
