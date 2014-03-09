@@ -378,13 +378,7 @@ img.featured {
   margin: 0 0 0 -6px;
 }
 
-.accordion {
-  border: 1px solid #888;
-  border-radius: 5px;
-}
-
 .accordion section h2 {
-  padding: 0;
   font-size: 100%;
   margin-top: 0;
   margin-bottom: 1px;
@@ -395,6 +389,7 @@ img.featured {
 }
 
 .accordion section h2 a {
+  border-radius: 5px;
   padding:8px 10px;
   display:block;
   color:white;
@@ -403,11 +398,11 @@ img.featured {
   background-image: -webkit-linear-gradient(left,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
   background-image: -moz-linear-gradient(left,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
   background-image: -o-linear-gradient(left,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
-  background-image: linear-gradient(to right,rgba(153,93,179,0.6),rgba(44,155,219,0.6));}
+  background-image: linear-gradient(to right,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
 }
 
 .accordion section h2:hover a {
-  background:#444;
+  background-color:#444;
 }
 
 .accordion section .content {
