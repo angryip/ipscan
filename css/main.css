@@ -321,6 +321,11 @@ img.logo {
   padding-top: 20px;
 }
 
+#horizontal_ad {
+  max-width: 100%;
+  overflow: auto;
+}
+
 #vertical_ad {
   position: absolute;
   right: -200px;
@@ -333,6 +338,7 @@ img.featured {
   width: 450px;
   float: right;
   margin-right: -15px;
+  margin-bottom: -35px;
 }
 
 .clearfix:after {
@@ -420,6 +426,38 @@ img.featured {
 Small Device Styles
 *******************************************************************************/
 
+@media screen and (max-width: 1024px) {
+  img.logo {
+    width: 64px;
+    height: 64px;
+    top: -14px;
+    left: -88px;
+  }
+
+  #vertical_ad {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  #project_title {
+    margin-left: 85px;
+  }
+
+  #project_tagline {
+    float: none;
+    margin-top: 0;
+    margin-left: 85px;
+  }
+
+  #menu {
+    margin-left: 75px;
+    clear: both;
+    float: none;
+    margin-top: 0;
+  }
+}
+
 @media screen and (max-width: 480px) {
   body {
     font-size:14px;
@@ -443,12 +481,17 @@ Small Device Styles
   }
 
   #menu {
-    float: none;
-    margin-top: 0;
+    margin-left: 0;
   }
 
   img {
     max-width: 400px;
+  }
+
+  img.featured {
+    float: none;
+    margin: 20px auto -10px auto;
+    display: block;
   }
 
   h1 {
