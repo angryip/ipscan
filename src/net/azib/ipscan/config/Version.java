@@ -16,23 +16,21 @@ import java.util.logging.Level;
 public class Version {
 	public static final String NAME = "Angry IP Scanner";
 	
-	public static final String COPYLEFT = "© 2013 Anton Keks";
+	public static final String COPYLEFT = "© 2014 Anton Keks";
 	
 	public static final String WEBSITE = "http://angryip.org/";
 	
 	public static final String MAILTO = "support@azib.net";
 
-	public static final String FORUM_URL = WEBSITE + "w/Forum";
-	
-	public static final String FAQ_URL = WEBSITE + "w/FAQ";
+	public static final String FAQ_URL = WEBSITE + "/faq/";
 
-	public static final String PRIVACY_URL = WEBSITE + "w/Privacy";
+	public static final String PRIVACY_URL = WEBSITE + "/about/privacy.html";
 
 	public static final String FULL_LICENSE_URL = "http://www.gnu.org/licenses/gpl-2.0.html";
 
-	public static final String PLUGINS_URL = WEBSITE + "w/FAQ:_Plugins";
+	public static final String PLUGINS_URL = WEBSITE + "/faq/plugins.html";
 	
-	public static final String DOWNLOAD_URL = WEBSITE + "w/Download";
+	public static final String DOWNLOAD_URL = WEBSITE + "/download/";
 
 	public static final String LATEST_VERSION_URL = WEBSITE + "ipscan/IPSCAN.VERSION";
 	
