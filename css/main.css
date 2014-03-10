@@ -458,22 +458,17 @@ Small Device Styles
   }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 570px) {
   body {
     font-size:14px;
   }
 
-  .inner {
-    min-width: 320px;
-    max-width: 480px;
-  }
-
   #project_title {
-    font-size: 32px;
+    font-size: 28px;
   }
 
   #project_tagline {
-    font-size: 18px;
+    font-size: 14px;
   }
 
   #vertical_ad {
@@ -485,12 +480,12 @@ Small Device Styles
   }
 
   img {
-    max-width: 400px;
+    max-width: 96%;
   }
 
   img.featured {
     float: none;
-    margin: 20px auto -10px auto;
+    margin: 0 auto -10px auto;
     display: block;
   }
 
@@ -522,5 +517,20 @@ Small Device Styles
     min-width: 320px;
     max-width: 480px;
     font-size: 11px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  #project_title {
+    font-size: 24px;
+  }
+
+  #project_tagline {
+    font-size: 12px;
+  }
+
+  #menu ul li {
+    width: 80px;
+    text-align: center;
   }
 }
