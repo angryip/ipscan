@@ -1,15 +1,7 @@
-/*******************************************************************************
-Based on Slate Theme for GitHub Pages
-by Jason Costello, @jsncostello
-*******************************************************************************/
-
 @import url(http://fonts.googleapis.com/css?family=Ubuntu:400,400italic);
 @import url(pygment_trac.css);
 
-/*******************************************************************************
-MeyerWeb Reset
-*******************************************************************************/
-
+/* MeyerWeb Reset */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -326,7 +318,13 @@ img.logo {
 }
 
 #main_content {
-  padding-top: 10px;
+  padding-top: 20px;
+}
+
+#vertical_ad {
+  position: absolute;
+  right: -200px;
+  top: 20px;
 }
 
 img.featured {
@@ -438,6 +436,10 @@ Small Device Styles
 
   #project_tagline {
     font-size: 18px;
+  }
+
+  #vertical_ad {
+    display: none;
   }
 
   #menu {
