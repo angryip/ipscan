@@ -2,7 +2,6 @@
 title: Download
 layout: default
 binary_url: http://sourceforge.net/projects/ipscan/files/ipscan3-binary/
-version: 3.2.1
 ---
 
 <h1>{{ page.title }}</h1>
@@ -12,14 +11,14 @@ version: 3.2.1
     <h2><a href="#linux">Linux</a></h2>
     <div class="content">
       <p>
-        Download version <b>{{ page.version }}</b> below or
+        Download version <b>{{ site.version }}</b> below or
         <a href="{{ page.binary_url }}">browse all 3.x releases</a>
       </p>
       <ul>
-        <li><a href="{{ page.binary_url }}{{ page.version }}/ipscan_{{ page.version }}_i386.deb">DEB Package</a> for <i>Ubuntu/Debian, 32-bit</i></li>
-        <li><a href="{{ page.binary_url }}{{ page.version }}/ipscan-{{ page.version }}-1.i386.rpm">RPM Package</a> for Fedora/RedHat/Suse/Mandriva, 32-bit</li>
-        <li><a href="{{ page.binary_url }}{{ page.version }}/ipscan_{{ page.version }}_amd64.deb">DEB Package</a> for <i>Ubuntu/Debian, 64-bit</i></li>
-        <li><a href="{{ page.binary_url }}{{ page.version }}/ipscan-{{ page.version }}-1.x86_64.rpm">RPM Package</a> for Fedora/RedHat/Suse/Mandriva, 64-bit</li>
+        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_i386.deb">DEB Package</a> for <i>Ubuntu/Debian, 32-bit</i></li>
+        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-1.i386.rpm">RPM Package</a> for Fedora/RedHat/Suse/Mandriva, 32-bit</li>
+        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_amd64.deb">DEB Package</a> for <i>Ubuntu/Debian, 64-bit</i></li>
+        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-1.x86_64.rpm">RPM Package</a> for Fedora/RedHat/Suse/Mandriva, 64-bit</li>
       </ul>
       <h4>Running</h4>
       <p>Make sure you have <a href="http://java.com/download">Oracle Java</a> or <a href="http://en.wikipedia.org/wiki/OpenJDK">OpenJDK</a> installed - check your distribution. <a href="http://en.wikipedia.org/wiki/GNU_Compiler_for_Java">GCJ</a> is not recommended.</p>
@@ -32,12 +31,12 @@ version: 3.2.1
     <h2><a href="#mac">MacOS X</a></h2>
     <div class="content">
       <p>
-        Download version <b>{{ page.version }}</b> below or
+        Download version <b>{{ site.version }}</b> below or
         <a href="{{ page.binary_url }}">browse all 3.x releases</a>
       </p>
       <ul>
         <li>
-          <a href="{{ page.binary_url }}{{ page.version }}/ipscan-mac-{{ page.version }}.zip">Zipped Application Bundle</a>
+          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-mac-{{ site.version }}.zip">Zipped Application Bundle</a>
           for <i>Intel/PPC</i>
         </li>
       </ul>
@@ -59,20 +58,20 @@ version: 3.2.1
     <div class="content">
       <h4>Current</h4>
       <p>
-        Download version <b>{{ page.version }}</b> below or <a href="{{ page.binary_url }}">browse all 3.x releases</a>
+        Download version <b>{{ site.version }}</b> below or <a href="{{ page.binary_url }}">browse all 3.x releases</a>
       </p>
 
       <ul>
         <li>
-          <a href="{{ page.binary_url }}{{ page.version }}/ipscan-{{ page.version }}-setup.exe">32/64-bit Installer</a>
+          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-setup.exe">32/64-bit Installer</a>
           - recommended, autodetects 32/64-bit Java, for Windows <i>XP/Vista/7/8</i>
         </li>
         <li>
-          <a href="{{ page.binary_url }}{{ page.version }}/ipscan-win32-{{ page.version }}.exe">32-bit Executable</a>
+          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-win32-{{ site.version }}.exe">32-bit Executable</a>
           - if you prefer no installation
         </li>
         <li>
-          <a href="{{ page.binary_url }}{{ page.version }}/ipscan-win64-{{ page.version }}.exe">64-bit Executable</a>
+          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-win64-{{ site.version }}.exe">64-bit Executable</a>
           - for 64-bit Java on Windows <i>Vista/7/8</i>
         </li>
       </ul>
