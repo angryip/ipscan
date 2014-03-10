@@ -2,3 +2,4 @@ name: Angry IP Scanner
 pygments: true
 url: http://new.angryip.org
 version: 3.2.1
+permalink: /:year/:month/:title.html

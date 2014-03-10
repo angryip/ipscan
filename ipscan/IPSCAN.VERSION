@@ -1,3 +1,4 @@
 ---
+sitemap: no
 ---
 {{ site.version }}

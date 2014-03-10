@@ -1,6 +1,7 @@
 ---
 title: About
 layout: default
+priority: 1.0
 ---
 
 About

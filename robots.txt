@@ -1,0 +1,6 @@
+---
+sitemap: no
+---
+Sitemap: {{ site.url }}/sitemap.xml
+User-Agent: *
+Allow: /
