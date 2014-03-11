@@ -25,6 +25,11 @@ Presentations
 - [Writing of cross-platform desktops apps](http://prezi.com/k1i5lmcdl8cy/angry-ip-scanner/) - presentation from Jokerconf.
 - [Is scanning of computer networks dangerous?](Baltic_DB&IS.pdf) - presentation from the [Baltic DB & IS](http://www.cs.ioc.ee/balt2008/) conference.
 
+Documentation
+-------------
+
+Read the [longer essay](/documentation/) with theory of network scanning and the reasoning behind the project.
+
 License
 -------
 
