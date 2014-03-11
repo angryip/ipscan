@@ -53,9 +53,9 @@ public class Main {
 			Display display = Display.getDefault();
 			LOG.finer("SWT initialized after " + (System.currentTimeMillis() - startTime));
 
-			// initialize Labels instance
-			Labels.initialize(Locale.getDefault());
-			// initialize Config instance
+			Locale locale = System.getProperty("locale") == null ? Locale.getDefault() : new Locale(System.getProperty("locale"));
+			Labels.initialize(locale);
+
 			Config globalConfig = Config.getConfig();
 			LOG.finer("Labels and Config initialized after " + (System.currentTimeMillis() - startTime));
 
