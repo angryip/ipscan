@@ -58,7 +58,7 @@ public class Version {
 	}
 
 	private static void loadVersionFromJar() {
-		String path = Version.class.getClassLoader().getResource(Version.class.getName().replace('.', '/') + ".class").toString();
+		String path = Version.class.getProtectionDomain().getCodeSource().getLocation().toString();
 		if (path.startsWith("jar:file:")) {
 			path = path.substring(4, path.indexOf('!'));
 			try {
