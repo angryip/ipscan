@@ -5,19 +5,18 @@
  */
 package net.azib.ipscan.gui.feeders;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.logging.Logger;
-
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederCreator;
 import net.azib.ipscan.util.InetAddressUtils;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.logging.Logger;
 
 /**
  * Base class of feeder GUI classes.
@@ -59,7 +58,7 @@ public abstract class AbstractFeederGUI extends Composite implements FeederCreat
 		return getFeederName() + ": " + createFeeder().getInfo();
 	}
 	
-	private static Object localResolveLock = new Object();
+	private static final Object localResolveLock = new Object();
 	/** Cached name of local host **/
 	private static String localName;
 	/** Cached address of local host **/

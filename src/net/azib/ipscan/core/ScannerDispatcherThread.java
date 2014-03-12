@@ -18,8 +18,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static java.util.concurrent.TimeUnit.*;
-import static net.azib.ipscan.core.state.ScanningState.*;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static net.azib.ipscan.core.state.ScanningState.KILLING;
+import static net.azib.ipscan.core.state.ScanningState.SCANNING;
 
 /**
  * Main scanning thread that spawns other threads.
@@ -104,7 +105,7 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 					
 					// notify listeners of the progress we are doing (limiting the update rate)
 					long now = System.currentTimeMillis();
-					if (now - lastNotifyTime >= UI_UPDATE_INTERVAL_MS) {
+					if (now - lastNotifyTime >= UI_UPDATE_INTERVAL_MS && subject != null) {
 						lastNotifyTime = now;
 						progressCallback.updateProgress(subject.getAddress(), numActiveThreads.intValue(), feeder.percentageComplete());
 					}

@@ -16,7 +16,7 @@ public abstract class Empty implements Comparable<Object> {
 	static int sortDirection = 1;
 	
 	/**
-	 * @param changes the sorting behavior of all Empty objects,
+	 * @param ascending changes the sorting behavior of all Empty objects,
 	 * passing true here will make all Empty objects to be greater than any other objects,
 	 * passing false will do otherwise. This needs to be set to make all Empty objects always
 	 * appear at the end of the sorted list.
