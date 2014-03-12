@@ -5,12 +5,12 @@
  */
 package net.azib.ipscan.core;
 
+import net.azib.ipscan.fetchers.Fetcher;
+
 import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
-import net.azib.ipscan.fetchers.Fetcher;
 
 /**
  * The holder of scanning result for a single IP address.
@@ -114,7 +114,7 @@ public class ScanningResult {
 		// cross-platform newline :-)
 		String newLine = System.getProperty("line.separator");
 		
-		StringBuffer details = new StringBuffer(1024);
+		StringBuilder details = new StringBuilder(1024);
 		Iterator<?> iterator = getValues().iterator();
 		List<Fetcher> fetchers = resultList.getFetchers();
 		for (int i = 0; iterator.hasNext(); i++) {

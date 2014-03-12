@@ -178,7 +178,7 @@ public class CommandsMenuActions {
 				}
 				
 				menuItem.setText(name);
-				menuItem.setData(new Integer(index));
+				menuItem.setData(index);
 				menuItem.addListener(SWT.Selection, openersSelectListener);
 			}
 

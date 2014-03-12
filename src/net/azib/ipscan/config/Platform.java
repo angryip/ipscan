@@ -27,7 +27,7 @@ public class Platform {
 	public static final boolean WINDOWS = OS_NAME.startsWith("Windows");
 	
 	/** Crippled-down version of Windows (no RawSockets, TCP rate limiting, etc */
-	public static final boolean CRIPPLED_WINDOWS = WINDOWS && OS_NAME.indexOf("Server") < 0 && Double.parseDouble(System.getProperty("os.version").substring(0, 3)) >= 5.1;
+	public static final boolean CRIPPLED_WINDOWS = WINDOWS && !OS_NAME.contains("Server") && Double.parseDouble(System.getProperty("os.version").substring(0, 3)) >= 5.1;
 	
 	/** GNU Java, based on GIJ/GCC and GNU Classpath projects */
 	public static final boolean GNU_JAVA = System.getProperty("java.vm.vendor").contains("Free Software Foundation");

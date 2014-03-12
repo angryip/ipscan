@@ -84,9 +84,8 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 		removeAll();
 		
 		// remove all columns
-		TableColumn[] columns = getColumns();
-		for (int i = 0; i < columns.length; i++) {
-			columns[i].dispose();
+		for (TableColumn column : getColumns()) {
+			column.dispose();
 		}
 		
 		// add the new selected columns back

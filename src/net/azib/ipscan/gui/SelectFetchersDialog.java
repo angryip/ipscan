@@ -5,26 +5,19 @@
  */
 package net.azib.ipscan.gui;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.IPFetcher;
 import net.azib.ipscan.gui.util.LayoutHelper;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.*;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * SelectFetchersDialog
@@ -189,8 +182,8 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 			int[] selectedItems = fromList.getSelectionIndices();
 
 			// first, add items back to the registered list
-			for (int i = 0; i < selectedItems.length; i++) {
-				toList.add(fromList.getItem(selectedItems[i]));
+			for (int selectedItem : selectedItems) {
+				toList.add(fromList.getItem(selectedItem));
 			}
 			
 			// now, add remove the items

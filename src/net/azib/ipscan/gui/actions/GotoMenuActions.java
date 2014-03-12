@@ -7,12 +7,11 @@ package net.azib.ipscan.gui.actions;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
-import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.ScanningResult.ResultType;
+import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -150,7 +149,7 @@ public class GotoMenuActions {
 			}
 		}
 
-		private final void findText(String text, Shell activeShell) {
+		private void findText(String text, Shell activeShell) {
 			ScanningResultList results = resultTable.getScanningResults();
 			
 			int startIndex = resultTable.getSelectionIndex() + 1;

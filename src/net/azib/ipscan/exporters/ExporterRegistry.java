@@ -22,9 +22,9 @@ public class ExporterRegistry implements Iterable<Exporter> {
 	
 	public ExporterRegistry(Exporter[] registeredExporters) {
 		exporters = new LinkedHashMap<String, Exporter>();
-		
-		for (int i = 0; i < registeredExporters.length; i++) {
-			exporters.put(registeredExporters[i].getFilenameExtension(), registeredExporters[i]);
+
+		for (Exporter exporter : registeredExporters) {
+			exporters.put(exporter.getFilenameExtension(), exporter);
 		}
 	}
 

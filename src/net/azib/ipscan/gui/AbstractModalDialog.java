@@ -8,19 +8,12 @@ package net.azib.ipscan.gui;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.gui.util.LayoutHelper;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.*;
 
 /**
  * This is the base of a modal dialog window
@@ -193,10 +186,8 @@ public abstract class AbstractModalDialog {
 			}
 			
 			int[] selectedItems = list.getSelectionIndices();
-			for (int i = 0; i < selectedItems.length; i++) {
+			for (int index : selectedItems) {
 				// here, index is always > 0
-				int index = selectedItems[i];
-
 				list.deselect(index);
 				String oldItem = list.getItem(index - 1);
 				list.setItem(index - 1, list.getItem(index));

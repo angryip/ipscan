@@ -41,7 +41,7 @@ public final class Labels {
 		// private constructor
 	}
 	
-	public static final Labels getInstance() {
+	public static Labels getInstance() {
 		return instance;
 	}
 	

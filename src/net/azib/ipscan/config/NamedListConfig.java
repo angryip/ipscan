@@ -54,7 +54,7 @@ public class NamedListConfig implements Iterable<String> {
 	 * Stores the currently available named list
 	 */
 	public void store() {
-		StringBuffer sb = new StringBuffer(32);
+		StringBuilder sb = new StringBuilder(32);
 		for (Map.Entry<String, Object> e : namedList.entrySet()) {
 			sb.append(e.getKey()).append("###").append(e.getValue()).append("###");
 		}
@@ -109,8 +109,8 @@ public class NamedListConfig implements Iterable<String> {
 	public void update(String[] keys) {
 		// rebuild the map (to recreate the new order of elements)
 		Map<String, Object> newList = new LinkedHashMap<String, Object>();
-		for (int i = 0; i < keys.length; i++) {
-			newList.put(keys[i], namedList.get(keys[i]));
+		for (String key : keys) {
+			newList.put(key, namedList.get(key));
 		}
 		namedList = newList;
 	}

@@ -43,7 +43,7 @@ public class NumericRangeList implements Comparable<NumericRangeList> {
 	 * Outputs nice, human-friendly numeric list, displayed either as ranges or fully
 	 */
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		
 		int prevNumber = Integer.MAX_VALUE;
 		int rangeStartNumber = 0;
