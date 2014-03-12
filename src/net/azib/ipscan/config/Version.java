@@ -3,7 +3,6 @@
  */
 package net.azib.ipscan.config;
 
-import java.net.URI;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
@@ -58,19 +57,18 @@ public class Version {
 	}
 
 	private static void loadVersionFromJar() {
-		String path = Version.class.getProtectionDomain().getCodeSource().getLocation().toString();
-		if (path.startsWith("jar:file:")) {
-			path = path.substring(4, path.indexOf('!'));
-			try {
-				JarFile jarFile = new JarFile(new URI(path).getPath());
+		try {
+			String path = Version.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+			if (path.endsWith(".jar") || path.endsWith(".exe")) {
+				JarFile jarFile = new JarFile(path);
 				Attributes attrs = jarFile.getManifest().getMainAttributes();
 				version = attrs.getValue("Version");
 				buildDate = attrs.getValue("Build-Date");
 				return;
 			}
-			catch (Exception e) {
-				LoggerFactory.getLogger().log(Level.WARNING, "Cannot obtain version", e);
-			}
+		}
+		catch (Exception e) {
+			LoggerFactory.getLogger().log(Level.WARNING, "Cannot obtain version", e);
 		}
 		version = "current";
 		buildDate = "today";
