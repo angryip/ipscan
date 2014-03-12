@@ -18,7 +18,7 @@ public class Version {
 	
 	public static final String COPYLEFT = "© 2014 Anton Keks";
 	
-	public static final String WEBSITE = "http://angryip.org/";
+	public static final String WEBSITE = "http://angryip.org";
 	
 	public static final String MAILTO = "support@azib.net";
 
@@ -32,7 +32,7 @@ public class Version {
 	
 	public static final String DOWNLOAD_URL = WEBSITE + "/download/";
 
-	public static final String LATEST_VERSION_URL = WEBSITE + "ipscan/IPSCAN.VERSION";
+	public static final String LATEST_VERSION_URL = WEBSITE + "/ipscan/IPSCAN.VERSION";
 	
 	private static String version;
 	private static String buildDate;
