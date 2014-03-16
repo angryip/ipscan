@@ -22,33 +22,20 @@ enabled (see the corresponding check box).
 
 However, especially on _Windows_ platforms, the problem can also be caused by TCP connection rate limiting.
 
-Starting from Windows XP SP2 (and on through Vista SP1), Microsoft has crippled down consumer versions of Windows,
-officially in order to limit the possibilities of insecure Windows machines to act as hosts for Internet attacks
+Starting from Windows XP SP2 and on through Vista SP1, Microsoft has crippled down consumer versions of Windows,
+in order to limit the possibilities of insecure Windows machines to act as hosts for Internet attacks
 executed by worms and trojans. Unfortunately, these changes also made non-server editions of Windows a lot less capable
 for doing network administrations tasks, such as scanning.
 
 Windows implementation of _TCP connection attempt rate limiting_ limits the number of simultaneous connection attempts
-to 10 on XP SP2 or 2 to 25, depending on the edition of Vista. The previous limit was over 65,000. You can check if you
-reach this limit by examining the _Event Log_ after scanning: look for the _Event ID 4226_, which corresponds to this problem.
-
-This limitation has been removed in Vista SP2 and later releases (Server 2008 SP2 and Windows 7).
+to 10. You can check if you reach this limit by examining the _Event Log_ after scanning: look for the _Event ID 4226_,
+which corresponds to this problem.
 
 For scanning purposes, that means you can have at most this number of scanning threads if you want to get reliable results.
 The number of scanning threads affects the maximum number of hosts scanned simultaneously and therefore the maximum number
 of connections made at each moment.
 
-If you have more threads, then even successful connection attempts will be blocked by the TCP stack, so Angry IP Scanner
-will reach port timeouts and think the ports are closed.
-
-The limit affects all network-intensive applications: scanners, file sharing software, or a combination of network
-applications that a power user may be using (VPN, FTP, p2p, RDP, SSH, "Firefox on steroids" and more).
-
-Current versions of Angry IP Scanner will warn you about this then first run on Windows platforms.
-
-### Patching your Windows
-
-Although, Windows is anyway not the best platform for scanning, this concrete limitation can be removed by patching your
-system files. The limitation is built into the _tcpip.sys_ driver, and the limit is not configurable by default.
+_This limitation has been removed in Vista SP2 and later releases (Server 2008 SP2 and Windows 7)._
 
 #### Windows XP
 
@@ -64,5 +51,5 @@ preferences after applying the patch.
 
 #### Windows 7 and beyond
 
-This limitation is [removed in Vista SP2](http://www.mydigitallife.info/2009/06/07/half-open-outbound-tcp-connections-limit-removed-in-windows-7-and-vista-sp2-no-patch-required/),
-so no patching will be required.
+This limitation is [removed in Vista SP2](http://www.mydigitallife.info/half-open-outbound-tcp-connections-limit-removed-in-windows-7-and-vista-sp2-no-patch-required/),
+so no patching is required.
