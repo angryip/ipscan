@@ -9,6 +9,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.reflect.Modifier.isStatic;
+
 /**
  * JNA binding for iphlpapi.dll for ICMP and ARP support under Windows
  */
@@ -30,7 +32,8 @@ public interface WinIpHlpDll extends Library {
 		@Override protected List<String> getFieldOrder() {
 			ArrayList<String> fields = new ArrayList<String>();
 			for (Field field : getClass().getFields()) {
-				fields.add(field.getName());
+				if (!isStatic(field.getModifiers()))
+					fields.add(field.getName());
 			}
 			return fields;
 		}
