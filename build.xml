@@ -197,7 +197,7 @@
 		<os name="Linux"/>
 	</condition>
 	
-	<target name="package" depends="package-linux,package-linux64,package-win32,package-win64,package-mac">
+	<target name="package" depends="package-linux,package-linux64,package-win32,package-win64,package-mac,win-installer">
 		<echo message="Packaged jars are in the ${dist} directory"/>
 	</target>
 	
