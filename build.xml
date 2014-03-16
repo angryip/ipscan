@@ -455,13 +455,11 @@
 			<fileset dir="ext/mac-bundle"/>
 		</copy>
 		
-		<copy file="${dist}/${ant.project.name}-mac-${version}.jar" todir="${dist}/${name}.app/Contents/Resources/Java"/>
+		<copy file="${dist}/${ant.project.name}-mac-${version}.jar" todir="${dist}/${name}.app/Contents/MacOS"/>
 		
 		<replace file="${dist}/${name}.app/Contents/Info.plist">
 			<replacefilter token="APPNAME" value="${name}"/>
 			<replacefilter token="VERSION" value="${version}"/>
-			<replacefilter token="JARFILE" value="${ant.project.name}-mac-${version}.jar"/>
-			<replacefilter token="MAINCLASS" value="${main.class}"/>
 		</replace>
 		
 		<zip destfile="${dist}/${ant.project.name}-mac-${version}.zip">

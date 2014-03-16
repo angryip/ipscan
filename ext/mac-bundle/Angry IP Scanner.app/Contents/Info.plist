@@ -1,64 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-    <key>CFBundleName</key>
-    <string>APPNAME</string>
-
-    <key>CFBundleShortVersionString</key>
-    <string>VERSION</string>
-
-    <key>CFBundleGetInfoString</key>
-    <string>VERSION</string>
-
-    <key>CFBundleIconFile</key>
-    <string>ipscan.icns</string>
-
-    <key>CFBundleAllowMixedLocalizations</key>
-    <string>false</string>
-
-    <key>CFBundleInfoDictionaryVersion</key>
-    <string>6.0</string>
-
-    <key>CFBundleExecutable</key>
-    <string>ipscan</string>
-
-    <key>CFBundleDevelopmentRegion</key>
-    <string>English</string>
-
-    <key>CFBundlePackageType</key>
-    <string>APPL</string>
-
-    <key>CFBundleSignature</key>
-    <string>????</string>
-
-    <key>CFBundleVersion</key>
-    <string>VERSION</string>
-
-    <key>CFBundleIdentifier</key>
-    <string>net.azib.ipscan</string>
-
-    <key>NSHighResolutionCapable</key>
-    <true/>
-
-    <key>Java</key>
     <dict>
-        <key>MainClass</key>
-        <string>MAINCLASS</string>
-
-        <key>JVMVersion</key>
-        <string>1.6+</string>
-
-        <key>ClassPath</key>
-        <array>
-            <string>$JAVAROOT/JARFILE</string>
-        </array>
-
-        <key>StartOnMainThread</key>
+        <key>CFBundleExecutable</key>
+        <string>ipscan</string>
+        <key>CFBundleGetInfoString</key>
+        <string>APPNAME VERSION - fast and friendly network scanner</string>
+        <key>CFBundleIconFile</key>
+        <string>ipscan.icns</string>
+        <key>CFBundleIdentifier</key>
+        <string>net.azib.ipscan</string>
+        <key>CFBundleInfoDictionaryVersion</key>
+        <string>6.0</string>
+        <key>CFBundleName</key>
+        <string>APPNAME</string>
+        <key>CFBundlePackageType</key>
+        <string>APPL</string>
+        <key>CFBundleShortVersionString</key>
+        <string>VERSION</string>
+        <key>CFBundleSignature</key>
+        <string>?????</string>
+        <key>CFBundleVersion</key>
+        <string>1.0</string>
+        <key>NSPrincipalClass</key>
+        <string>NSApplication</string>
+        <key>NSHighResolutionCapable</key>
         <true/>
-
-        <key>VMOptions</key>
-        <string>-XstartOnFirstThread</string>
     </dict>
-</dict>
 </plist>
