@@ -54,7 +54,7 @@ public class InfoDialog extends AbstractModalDialog {
 
 		Text statsText = new Text(shell, SWT.MULTI | SWT.READ_ONLY);
 		statsText.setBackground(shell.getBackground());
-		statsText.setLayoutData(formData(new FormAttachment(iconLabel), new FormAttachment(100), new FormAttachment(titleLabel), null));
+		statsText.setLayoutData(formData(250, -1, new FormAttachment(iconLabel), new FormAttachment(100), new FormAttachment(titleLabel), null));
 		statsText.setText(message);
 		statsText.pack();
 
