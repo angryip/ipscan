@@ -4,6 +4,7 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.gui.actions.BrowserLauncher;
 import org.eclipse.swt.SWT;
@@ -24,7 +25,7 @@ public class AboutDialog extends AbstractModalDialog {
 	protected void populateShell() {
 		shell.setText(Labels.getLabel("title.about"));
 		shell.setSize(new Point(400, 393));
-		
+
 		Label iconLabel = new Label(shell, SWT.ICON);
 		iconLabel.setLocation(10, 10);
 		if (shell.getImage() != null) {
@@ -59,7 +60,7 @@ public class AboutDialog extends AbstractModalDialog {
 		Text licenseText = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
 		licenseText.setBounds(leftBound, systemLabel.getBounds().y + systemLabel.getBounds().height + 10, 
 							  shell.getClientArea().width - leftBound - 10, 
-							  button.getLocation().y - systemLabel.getBounds().y - systemLabel.getBounds().height - 20);
+							  button.getLocation().y - systemLabel.getBounds().y - systemLabel.getBounds().height - (Platform.MAC_OS ? 40 : 20));
 		licenseText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		licenseText.setText("Licensed under the GNU General Public License Version 2\n\n" +
 							NAME + " is free software; you can redistribute it and/or " +
