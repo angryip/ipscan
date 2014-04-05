@@ -82,11 +82,39 @@ public class InetAddressUtils {
 	 * Increments an IP address by 1.
 	 */
 	public static InetAddress increment(InetAddress address) {
+		return modifyInetAddress(address, true);
+	}
+
+	/**
+	 * Decrements an IP address by 1.
+	 */
+	public static InetAddress decrement(InetAddress address) {
+		return modifyInetAddress(address, false);
+	}
+
+	/**
+	 * Increments or decrements an IP address by 1.
+	 * 
+	 * @param address
+	 *            the IP address
+	 * @param isIncrement
+	 * @return incremented/decremented IP address
+	 */
+	private static InetAddress modifyInetAddress(InetAddress address,
+			boolean isIncrement) {
 		try {
 			byte[] newAddress = address.getAddress();
 			for (int i = newAddress.length-1; i >= 0; i--) {
-				if (++newAddress[i] != 0x00)
-					break;
+				if (isIncrement) {
+					if (++newAddress[i] != 0x00) {
+						break;
+					}
+				} else {
+					if (--newAddress[i] != 0x00) {
+						break;
+					}
+				}
+
 			}
 			return InetAddress.getByAddress(newAddress);
 		}

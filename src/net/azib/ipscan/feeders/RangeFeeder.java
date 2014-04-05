@@ -26,6 +26,7 @@ public class RangeFeeder extends AbstractFeeder {
 	private InetAddress endIP;
 	private InetAddress originalEndIP;
 	private InetAddress currentIP;
+	private boolean isReverse;
 	
 	double percentageComplete;
 	double percentageIncrement;
@@ -44,12 +45,15 @@ public class RangeFeeder extends AbstractFeeder {
 		try {
 			this.startIP = this.currentIP = InetAddress.getByName(startIP);
 			this.endIP = this.originalEndIP = InetAddress.getByName(endIP);
+			this.isReverse = false;
 		}
 		catch (UnknownHostException e) {
 			throw new FeederException("malformedIP");
 		}
 		if (InetAddressUtils.greaterThan(this.startIP, this.endIP)) {
-			throw new FeederException("range.greaterThan");
+			this.isReverse = true;
+			this.endIP = InetAddressUtils.decrement(InetAddressUtils
+					.decrement(this.endIP));
 		}
 		initPercentageIncrement();
 		this.endIP = InetAddressUtils.increment(this.endIP);
@@ -66,7 +70,7 @@ public class RangeFeeder extends AbstractFeeder {
 		rawEndIP = rawEndIP >= 0 ? rawEndIP : rawEndIP + Integer.MAX_VALUE;
 		rawStartIP = rawStartIP >= 0 ? rawStartIP : rawStartIP + Integer.MAX_VALUE;
 		// compute 1% of the whole range
-		percentageIncrement = 100.0/(rawEndIP - rawStartIP + 1);
+		percentageIncrement = Math.abs(100.0 / (rawEndIP - rawStartIP + 1));
 		percentageComplete = 0;
 	}
 	
@@ -78,7 +82,11 @@ public class RangeFeeder extends AbstractFeeder {
 	public ScanningSubject next() {
 		percentageComplete += percentageIncrement;
 		InetAddress prevIP = this.currentIP;
-		this.currentIP = InetAddressUtils.increment(prevIP);
+		if (this.isReverse) {
+			this.currentIP = InetAddressUtils.decrement(prevIP);
+		} else {
+			this.currentIP = InetAddressUtils.increment(prevIP);
+		}
 		return new ScanningSubject(prevIP);
 	}
 
