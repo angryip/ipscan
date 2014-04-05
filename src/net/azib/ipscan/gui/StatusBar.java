@@ -165,6 +165,21 @@ public class StatusBar {
 			progressBar.setSelection(progress);
 	}
 	
+	public static void setPortProgress(final int progress) {
+		if (!portProgressBar.isDisposed()) {
+			Shell shell = MainWindow.getShell();
+			Display display = shell.getDisplay();
+
+			display.asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					StatusBar.portProgressBar.setSelection(progress);
+				}
+			});
+		}
+			
+	}
+
 	public Shell getShell() {
 		return composite.getShell();
 	}
