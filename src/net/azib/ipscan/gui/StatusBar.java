@@ -18,6 +18,7 @@ import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.*;
 
 import static net.azib.ipscan.config.GUIConfig.DisplayMethod.PORTS;
@@ -32,28 +33,39 @@ public class StatusBar {
 	private Label statusText;
 	private Label displayMethodText;
 	private Label threadsText;
+	private Label ipText;
+	private Label portText;
 	private boolean maxThreadsReachedBefore;
 	private ProgressBar progressBar;
+	private static ProgressBar portProgressBar;
 	
 	private ScannerConfig scannerConfig;
 	private GUIConfig guiConfig;
-  private StateMachine stateMachine;
-  private ResultTable resultTable;
+	private StateMachine stateMachine;
+	private ResultTable resultTable;
 
 	public StatusBar(Shell shell, GUIConfig guiConfig, ScannerConfig scannerConfig, ResultTable resultTable, StateMachine stateMachine) {
 		this.guiConfig = guiConfig;
 		this.scannerConfig = scannerConfig;
-    this.stateMachine = stateMachine;
-    this.resultTable = resultTable;
-    this.resultTable.addListener(SWT.Selection, new TableSelection(this, stateMachine));
+		this.stateMachine = stateMachine;
+		this.resultTable = resultTable;
+		this.resultTable.addListener(SWT.Selection, new TableSelection(this,
+				stateMachine));
 		
 		composite = new Composite(shell, SWT.NONE);
 		composite.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), null, new FormAttachment(100)));
-		
 		composite.setLayout(LayoutHelper.formLayout(1, 1, 2));
 		
+		initializeStatusTexts();
+		initializeIPProgress();
+		initializePortProgress();
+	}
+
+	private void initializeStatusTexts() {
 		statusText = new Label(composite, SWT.BORDER);
-		statusText.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(35), new FormAttachment(0), new FormAttachment(100)));
+		statusText.setLayoutData(LayoutHelper.formData(new FormAttachment(0),
+				new FormAttachment(10), new FormAttachment(0),
+				new FormAttachment(100)));
 		setStatusText(null);
 		
 		displayMethodText = new Label(composite, SWT.BORDER);
@@ -68,10 +80,37 @@ public class StatusBar {
 		threadsText.pack(); // calculate the width
 		threadsText.setLayoutData(LayoutHelper.formData(threadsText.getSize().x, SWT.DEFAULT, new FormAttachment(displayMethodText), null, new FormAttachment(0), new FormAttachment(100)));
 		setRunningThreads(0); // set back to 0 at startup
-		
+	}
+
+	private void initializeIPProgress() {
+		ipText = new Label(composite, SWT.BORDER);
+		ipText.pack(); // calculate the width
+		ipText.setText("IP status: ");
+		FormData data = new FormData();
+		data.left = new FormAttachment(threadsText, 5);
+		ipText.setLayoutData(data);
+
 		progressBar = new ProgressBar(composite, SWT.BORDER);
-		progressBar.setLayoutData(LayoutHelper.formData(new FormAttachment(threadsText), new FormAttachment(100, 0), new FormAttachment(0), new FormAttachment(100)));
+		progressBar.setLayoutData(LayoutHelper.formData(new FormAttachment(
+				ipText), new FormAttachment(60), new FormAttachment(0),
+				new FormAttachment(100)));
 		progressBar.setSelection(0);
+	}
+
+	private void initializePortProgress() {
+		portText = new Label(composite, SWT.BORDER);
+		portText.pack(); // calculate the width
+		portText.setText("Port status:");
+		FormData data = new FormData();
+		data.left = new FormAttachment(progressBar, 10);
+		portText.setLayoutData(data);
+
+		portProgressBar = new ProgressBar(composite, SWT.BORDER);
+		data = new FormData();
+		data.left = new FormAttachment(portText, 5);
+		data.right = new FormAttachment(100);
+		portProgressBar.setLayoutData(data);
+		portProgressBar.setSelection(0);
 	}
 	
 	/**
