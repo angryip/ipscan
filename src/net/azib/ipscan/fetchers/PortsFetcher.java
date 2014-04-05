@@ -11,6 +11,7 @@ import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.core.values.NumericRangeList;
+import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.fetchers.PortsFetcherPrefs;
 import net.azib.ipscan.util.SequenceIterator;
 import net.azib.ipscan.util.ThreadResourceBinder;
@@ -93,8 +94,17 @@ public class PortsFetcher extends AbstractFetcher {
 				return false;
 			}
 
+			StatusBar.setPortProgress(0);
+			int numberOfScannedPorts = portIteratorPrototype.size();
+			int count = 0;
+
 			while (portsIterator.hasNext() && !Thread.currentThread().isInterrupted()) {
 				// TODO: UDP ports?
+				count++;
+				int progress = Math
+						.round((((float) count / numberOfScannedPorts) * 100));
+				StatusBar.setPortProgress(progress);
+
 				Socket socket = sockets.bind(new Socket());
 				int port = portsIterator.next();
 				try {			
@@ -122,6 +132,7 @@ public class PortsFetcher extends AbstractFetcher {
 				}
 			}
 		}
+		StatusBar.setPortProgress(0);
 		return true;
 	}
 
