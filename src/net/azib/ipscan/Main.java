@@ -52,11 +52,21 @@ public class Main {
 			Display.setAppName(Version.NAME);
 			Display display = Display.getDefault();
 			LOG.finer("SWT initialized after " + (System.currentTimeMillis() - startTime));
-
-			Locale locale = System.getProperty("locale") == null ? Locale.getDefault() : new Locale(System.getProperty("locale"));
+			
+			Config globalConfig = Config.getConfig();
+			
+			Locale locale;
+			ScannerConfig scannerConfig = globalConfig.forScanner();
+			if( scannerConfig.language.equals("language.inherited")) {
+				locale = System.getProperty("locale") == null ? Locale.getDefault() : new Locale(System.getProperty("locale"));
+			} else if(scannerConfig.language.equals("language.hungarian")) {
+				locale = new Locale("hu", "HU");
+			} else {
+				locale = Locale.US;
+			}
 			Labels.initialize(locale);
 
-			Config globalConfig = Config.getConfig();
+			
 			LOG.finer("Labels and Config initialized after " + (System.currentTimeMillis() - startTime));
 
 			ComponentRegistry componentRegistry = new ComponentRegistry();
