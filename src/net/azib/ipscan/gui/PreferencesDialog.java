@@ -464,7 +464,13 @@ public class PreferencesDialog extends AbstractModalDialog {
 		}
 		guiConfig.showScanStats = showInfoCheckbox.getSelection();
 		guiConfig.askScanConfirmation = askConfirmationCheckbox.getSelection();
-		globalConfig.language = languages[languageCombo.getSelectionIndex()];
+		String newLanguage = languages[languageCombo.getSelectionIndex()];
+		if (!newLanguage.equals(globalConfig.language)) {
+			globalConfig.language = newLanguage;
+			MessageBox msgBox = new MessageBox(shell);
+			msgBox.setMessage(Labels.getLabel("preferences.language.needsRestart"));
+			msgBox.open();
+		}
 	}
 
 	/**
