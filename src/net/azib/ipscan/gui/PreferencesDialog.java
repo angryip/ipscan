@@ -66,7 +66,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 	private Button showInfoCheckbox;
 	private Button askConfirmationCheckbox;
 	private Combo languageCombo;
-	private String[] languages = { "system", "en", "hu" };
+	private String[] languages = { "system", "en", "hu", "lt", "es", "ku" };
 	
 	public PreferencesDialog(PingerRegistry pingerRegistry, Config globalConfig, ScannerConfig scannerConfig, GUIConfig guiConfig, ConfigDetectorDialog configDetectorDialog) {
 		this.pingerRegistry = pingerRegistry;
@@ -296,20 +296,18 @@ public class PreferencesDialog extends AbstractModalDialog {
 		groupLayout = new GridLayout();
 		groupLayout.numColumns = 2;
 		
-		gridData = new GridData(80, SWT.DEFAULT);
-		
 		Group languageGroup = new Group(displayTab, SWT.NONE);
 		languageGroup.setLayout(groupLayout);
 		languageGroup.setText(Labels.getLabel("preferences.language"));
 		
-		label = new Label(languageGroup, SWT.NONE);
-		label.setText(Labels.getLabel("preferences.language"));
-
 		languageCombo = new Combo(languageGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 		for (String language : languages) {
 			languageCombo.add(Labels.getLabel("language." + language));
 		}
 		languageCombo.select(0);
+
+		label = new Label(languageGroup, SWT.NONE);
+		label.setText(Labels.getLabel("preferences.language.someIncomplete"));
 	}
 	
 	/**
