@@ -30,7 +30,6 @@ public class ScannerConfig {
 	public boolean useRequestedPorts;
 	public String notAvailableText;
 	public String notScannedText;
-	public String language;
 
 	/**
 	 * Package local constructor.
@@ -54,7 +53,6 @@ public class ScannerConfig {
 		useRequestedPorts = preferences.getBoolean("useRequestedPorts", true);
 		notAvailableText = preferences.get("notAvailableText", Labels.getLabel("fetcher.value.notAvailable"));
 		notScannedText = preferences.get("notScannedText", Labels.getLabel("fetcher.value.notScanned"));
-		language = preferences.get("language", "language.english");
 	}
 		
 	/**
@@ -75,6 +73,5 @@ public class ScannerConfig {
 		preferences.putBoolean("useRequestedPorts", useRequestedPorts);
 		preferences.put("notAvailableText", notAvailableText);
 		preferences.put("notScannedText", notScannedText);
-		preferences.put("language", language);
 	}
 }

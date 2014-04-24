@@ -50,6 +50,7 @@ public class ComponentRegistry {
 
 		// non-GUI
 		Config globalConfig = Config.getConfig();
+		container.registerComponentInstance(globalConfig);
 		container.registerComponentInstance(globalConfig.getPreferences());
 		container.registerComponentInstance(globalConfig.forScanner());
 		container.registerComponentInstance(globalConfig.forGUI());

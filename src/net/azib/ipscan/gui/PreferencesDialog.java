@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.gui;
 
+import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.GUIConfig.DisplayMethod;
 import net.azib.ipscan.config.Labels;
@@ -32,6 +33,7 @@ import org.eclipse.swt.widgets.*;
 public class PreferencesDialog extends AbstractModalDialog {
 	
 	private PingerRegistry pingerRegistry;
+	private Config globalConfig;
 	private ScannerConfig scannerConfig;
 	private GUIConfig guiConfig;
 	private ConfigDetectorDialog configDetectorDialog;
@@ -64,10 +66,11 @@ public class PreferencesDialog extends AbstractModalDialog {
 	private Button showInfoCheckbox;
 	private Button askConfirmationCheckbox;
 	private Combo languageCombo;
-	private String[] languageNames = { "language.inherited", "language.english", "language.hungarian" };
+	private String[] languages = { "system", "en", "hu" };
 	
-	public PreferencesDialog(PingerRegistry pingerRegistry, ScannerConfig scannerConfig, GUIConfig guiConfig, ConfigDetectorDialog configDetectorDialog) {
+	public PreferencesDialog(PingerRegistry pingerRegistry, Config globalConfig, ScannerConfig scannerConfig, GUIConfig guiConfig, ConfigDetectorDialog configDetectorDialog) {
 		this.pingerRegistry = pingerRegistry;
+		this.globalConfig = globalConfig;
 		this.scannerConfig = scannerConfig;
 		this.guiConfig = guiConfig;
 		this.configDetectorDialog = configDetectorDialog;
@@ -303,10 +306,8 @@ public class PreferencesDialog extends AbstractModalDialog {
 		label.setText(Labels.getLabel("preferences.language"));
 		languageCombo = new Combo(languageGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 		languageCombo.setLayoutData(gridData);
-		for (int i = 0; i < languageNames.length; i++) {
-			languageCombo.add(Labels.getLabel(languageNames[i]));
-			// this is used by savePreferences()
-			languageCombo.setData(Integer.toString(i), languageNames[i]);
+		for (int i = 0; i < languages.length; i++) {
+			languageCombo.add(Labels.getLabel("language." + languages[i]));
 		}
 		languageCombo.select(0);
 	}
@@ -419,8 +420,8 @@ public class PreferencesDialog extends AbstractModalDialog {
 		displayMethod[guiConfig.displayMethod.ordinal()].setSelection(true);
 		showInfoCheckbox.setSelection(guiConfig.showScanStats);
 		askConfirmationCheckbox.setSelection(guiConfig.askScanConfirmation);
-		for (int i = 0; i < languageNames.length; i++) {
-			if (scannerConfig.language.equals(languageNames[i])) {
+		for (int i = 0; i < languages.length; i++) {
+			if (globalConfig.language.equals(languages[i])) {
 				languageCombo.select(i);
 			}
 		}
@@ -463,7 +464,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		}
 		guiConfig.showScanStats = showInfoCheckbox.getSelection();
 		guiConfig.askScanConfirmation = askConfirmationCheckbox.getSelection();
-		scannerConfig.language = (String) languageCombo.getData(Integer.toString(languageCombo.getSelectionIndex()));
+		globalConfig.language = languages[languageCombo.getSelectionIndex()];
 	}
 
 	/**

@@ -52,21 +52,10 @@ public class Main {
 			Display.setAppName(Version.NAME);
 			Display display = Display.getDefault();
 			LOG.finer("SWT initialized after " + (System.currentTimeMillis() - startTime));
-			
-			Config globalConfig = Config.getConfig();
-			
-			Locale locale;
-			ScannerConfig scannerConfig = globalConfig.forScanner();
-			if( scannerConfig.language.equals("language.inherited")) {
-				locale = System.getProperty("locale") == null ? Locale.getDefault() : new Locale(System.getProperty("locale"));
-			} else if(scannerConfig.language.equals("language.hungarian")) {
-				locale = new Locale("hu", "HU");
-			} else {
-				locale = Locale.US;
-			}
+
+			Locale locale = Config.getConfig().getLocale();
 			Labels.initialize(locale);
 
-			
 			LOG.finer("Labels and Config initialized after " + (System.currentTimeMillis() - startTime));
 
 			ComponentRegistry componentRegistry = new ComponentRegistry();
@@ -97,7 +86,7 @@ public class Main {
 			}
 
 			// save config on exit
-			globalConfig.store();
+			Config.getConfig().store();
 
 			// dispose the native objects
 			display.dispose();
