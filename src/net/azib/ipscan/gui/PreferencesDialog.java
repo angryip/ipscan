@@ -304,10 +304,10 @@ public class PreferencesDialog extends AbstractModalDialog {
 		
 		label = new Label(languageGroup, SWT.NONE);
 		label.setText(Labels.getLabel("preferences.language"));
+
 		languageCombo = new Combo(languageGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
-		languageCombo.setLayoutData(gridData);
-		for (int i = 0; i < languages.length; i++) {
-			languageCombo.add(Labels.getLabel("language." + languages[i]));
+		for (String language : languages) {
+			languageCombo.add(Labels.getLabel("language." + language));
 		}
 		languageCombo.select(0);
 	}
