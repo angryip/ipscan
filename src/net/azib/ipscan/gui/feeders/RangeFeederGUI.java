@@ -67,10 +67,18 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         int textWidth = startIPText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
         startIPText.setText("");
         
-        ipRangeLabel.setText(Labels.getLabel("feeder.range")+":");
-        ipRangeLabel.setLayoutData(LayoutHelper.formData(null, new FormAttachment(hostnameLabel, 0, SWT.RIGHT), new FormAttachment(startIPText, 0, SWT.CENTER), null));
-        
-        startIPText.setLayoutData(LayoutHelper.formData(textWidth, SWT.DEFAULT, new FormAttachment(ipRangeLabel), null, new FormAttachment(0), null));
+        ipRangeLabel.setText(Labels.getLabel("feeder.range") + ":");
+		hostnameLabel.setAlignment(SWT.RIGHT);
+		ipRangeLabel.pack();
+		hostnameLabel.setText(Labels.getLabel("feeder.range.hostname") + ":");
+		ipRangeLabel.setAlignment(SWT.RIGHT);
+		hostnameLabel.pack();
+
+		int ipHostWidth = Math.max(hostnameLabel.getBounds().width, ipRangeLabel.getBounds().width);
+		ipRangeLabel.setLayoutData(LayoutHelper.formData(ipHostWidth, -1, null, new FormAttachment(hostnameLabel, 0, SWT.RIGHT), new FormAttachment(startIPText, 0, SWT.CENTER), null));
+		hostnameLabel.setLayoutData(LayoutHelper.formData(ipHostWidth, -1, new FormAttachment(0), null, new FormAttachment(hostnameText, 0, SWT.CENTER), null));
+
+		startIPText.setLayoutData(LayoutHelper.formData(textWidth, SWT.DEFAULT, new FormAttachment(ipRangeLabel), null, new FormAttachment(0), null));
         startIPText.addModifyListener(new StartIPModifyListener());
         
         toLabel.setText(Labels.getLabel("feeder.range.to"));
@@ -97,10 +105,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		Listener netmaskResetListener = new NetmaskResetListener();
 		startIPText.addListener(SWT.Modify, netmaskResetListener);
 		endIPText.addListener(SWT.Modify, netmaskResetListener);
-        
-        hostnameLabel.setText(Labels.getLabel("feeder.range.hostname")+":");
-		hostnameLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, new FormAttachment(hostnameText, 0, SWT.CENTER), null));
-		
+
 		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
 		ipUpButton.setText(Labels.getLabel("button.ipUp"));
 		ipUpButton.addSelectionListener(hostnameListener);
