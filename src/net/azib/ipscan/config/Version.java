@@ -27,7 +27,7 @@ public class Version {
 
 	public static final String FULL_LICENSE_URL = "http://www.gnu.org/licenses/gpl-2.0.html";
 
-	public static final String PLUGINS_URL = WEBSITE + "/faq/plugins.html";
+	public static final String PLUGINS_URL = WEBSITE + "/contribute/plugins.html";
 	
 	public static final String DOWNLOAD_URL = WEBSITE + "/download/";
 
