@@ -84,7 +84,12 @@ public class GettingStartedDialog extends AbstractModalDialog {
 
 		displayActivePage();
 	}
-	
+
+	@Override
+	protected int getShellStyle() {
+		return super.getShellStyle() | SWT.SHEET;
+	}
+
 	void displayActivePage() {
 		gettingStartedText.setText(texts.get(activePage++));
 		

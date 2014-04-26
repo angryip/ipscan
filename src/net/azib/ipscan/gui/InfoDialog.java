@@ -19,11 +19,6 @@ import org.eclipse.swt.widgets.Text;
 
 import static net.azib.ipscan.gui.util.LayoutHelper.formData;
 
-/**
- * StatisticsDialog - shows statistical information about the last scan
- *
- * @author Anton Keks
- */
 public class InfoDialog extends AbstractModalDialog {
 	
 	String title;
@@ -64,6 +59,11 @@ public class InfoDialog extends AbstractModalDialog {
 		}
 
 		shell.pack();
+	}
+
+	@Override
+	protected int getShellStyle() {
+		return super.getShellStyle() | SWT.SHEET;
 	}
 
 	/**
