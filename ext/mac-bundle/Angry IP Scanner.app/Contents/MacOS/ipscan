@@ -1,5 +1,11 @@
 #!/bin/sh
 BASEDIR=`dirname "$0"`
+
+if [ -z "$JAVA_HOME" ]; then
+    JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home"
+    if [ -d "$JAVA_HOME" ]; then export JAVA_HOME; fi
+fi
+
 exec java \
      -XstartOnFirstThread \
      -jar "$BASEDIR"/ipscan*.jar
