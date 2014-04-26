@@ -29,8 +29,6 @@ import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-import java.util.logging.Logger;
-
 /**
  * This class is the dependency injection configuration using the Pico Container.
  * 
@@ -130,8 +128,9 @@ public class ComponentRegistry {
 				new ComponentParameter("mainShell"), new ComponentParameter("mainMenu"),
 				new ComponentParameter("commandsMenu"), anyComponentParameter, new ConstantParameter(container) });
 		container.registerComponentImplementation(MainMenu.ColumnsMenu.class, MainMenu.ColumnsMenu.class,
-				new Parameter[] { new ComponentParameter("mainShell"), anyComponentParameter, anyComponentParameter,
-						anyComponentParameter });
+				new Parameter[] { new ComponentParameter("mainShell"), anyComponentParameter, anyComponentParameter, anyComponentParameter });
+		if (Platform.MAC_OS)
+			container.registerComponentImplementation(MacApplicationMenu.class);
 
 		container.registerComponentImplementation(AboutDialog.class);
 		container.registerComponentImplementation(PreferencesDialog.class);
@@ -151,17 +150,6 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(ToolsActions.Preferences.class);
 		container.registerComponentImplementation(ToolsActions.ChooseFetchers.class);
 		container.registerComponentImplementation(HelpMenuActions.CheckVersion.class);
-
-		if (Platform.MAC_OS) {
-			// initialize mac-specific stuff
-			try {
-				container.registerComponentImplementation(Class
-						.forName("net.azib.ipscan.platform.mac.MacApplicationMenu"));
-			}
-			catch (Exception e) {
-				Logger.getLogger(getClass().getName()).warning("Cannot initialize MacApplicationMenu: " + e);
-			}
-		}
 
         new PluginLoader().addTo(container);
 	}
@@ -184,5 +172,4 @@ public class ComponentRegistry {
 		start();
 		return (CommandLineProcessor) container.getComponentInstance(CommandLineProcessor.class);
 	}
-
 }

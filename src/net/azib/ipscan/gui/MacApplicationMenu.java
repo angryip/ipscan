@@ -1,9 +1,6 @@
-package net.azib.ipscan.platform.mac;
+package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.gui.AboutDialog;
-import net.azib.ipscan.gui.PreferencesDialog;
-import net.azib.ipscan.gui.SelectFetchersDialog;
 import net.azib.ipscan.gui.actions.HelpMenuActions.CheckVersion;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
