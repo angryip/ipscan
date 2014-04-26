@@ -1,6 +1,5 @@
 #!/bin/sh
 BASEDIR=`dirname "$0"`
 exec java \
-     -d32 \
      -XstartOnFirstThread \
      -jar "$BASEDIR"/ipscan*.jar
