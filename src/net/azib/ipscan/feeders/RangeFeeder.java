@@ -20,19 +20,12 @@ import java.net.UnknownHostException;
  * @author Anton Keks
  */
 public class RangeFeeder extends AbstractFeeder {
-	
 	private InetAddress startIP;
 	private InetAddress endIP;
 	private InetAddress originalEndIP;
 	private InetAddress currentIP;
 	boolean isReverse;
-	
-	double percentageComplete;
-	double percentageIncrement;
-	
-	/**
-	 * @see Feeder#getId()
-	 */
+
 	public String getId() {
 		return "feeder.range";
 	}
@@ -68,9 +61,9 @@ public class RangeFeeder extends AbstractFeeder {
 		// make 32-bit unsigned values
 		rawEndIP = rawEndIP >= 0 ? rawEndIP : rawEndIP + Integer.MAX_VALUE;
 		rawStartIP = rawStartIP >= 0 ? rawStartIP : rawStartIP + Integer.MAX_VALUE;
-		// compute 1% of the whole range
-		percentageIncrement = Math.abs(100.0 / (rawEndIP - rawStartIP + 1));
-		percentageComplete = 0;
+
+		totalCount = Math.abs(rawEndIP - rawStartIP + 1);
+		completedCount = 0;
 	}
 	
 	public boolean hasNext() {
@@ -79,7 +72,7 @@ public class RangeFeeder extends AbstractFeeder {
 	}
 
 	public ScanningSubject next() {
-		percentageComplete += percentageIncrement;
+		completedCount++;
 		InetAddress prevIP = this.currentIP;
 		if (this.isReverse) {
 			this.currentIP = InetAddressUtils.decrement(prevIP);
@@ -89,12 +82,8 @@ public class RangeFeeder extends AbstractFeeder {
 		return new ScanningSubject(prevIP);
 	}
 
-	public int percentageComplete() {
-		return (int)Math.round(percentageComplete);
-	}
-	
+	@Override
 	public String getInfo() {
-		// let's return the range
 		return startIP.getHostAddress() + " - " + originalEndIP.getHostAddress();
 	}
 }

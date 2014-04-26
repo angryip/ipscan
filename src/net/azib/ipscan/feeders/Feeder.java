@@ -27,21 +27,31 @@ public interface Feeder extends Plugin {
 	/**
 	 * @return true in case there are more IPs left for processing
 	 */
-	public boolean hasNext();
+	boolean hasNext();
 	
 	/**
 	 * @return the next IP for processing
 	 */
-	public ScanningSubject next();
+	ScanningSubject next();
+
+	/**
+	 * @return how many IPs to scan in total
+	 */
+	long getTotalCount();
+
+	/**
+	 * @return how many IPs are already scanned
+	 */
+	long getCompletedCount();
 	
 	/**
 	 * @return value from 0 to 100, describing the amount of work already done
 	 */
-	public int percentageComplete();
+	int percentageComplete();
 
 	/**
 	 * @return information about feeder's current settings.
 	 * Used for creation of Favorites, saving to file, etc.
 	 */
-	public String getInfo();	
+	String getInfo();
 }

@@ -5,12 +5,12 @@
  */
 package net.azib.ipscan.feeders;
 
+import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.util.InetAddressUtils;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.SecureRandom;
-
-import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.util.InetAddressUtils;
 
 /**
  * A feeder, that generates random IP addresses.
@@ -18,20 +18,12 @@ import net.azib.ipscan.util.InetAddressUtils;
  * @author Anton Keks
  */
 public class RandomFeeder extends AbstractFeeder {
-	
 	SecureRandom random = new SecureRandom();
-	InetAddress currentAddress;
-	
+
 	byte[] prototypeBytes;
 	byte[] maskBytes;
 	byte[] currentBytes;
 	
-	int addressCount;
-	int currentNumber;
-
-	/**
-	 * @see Feeder#getId()
-	 */
 	public String getId() {
 		return "feeder.random";
 	}
@@ -58,21 +50,17 @@ public class RandomFeeder extends AbstractFeeder {
 			throw new FeederException("random.invalidCount");
 		}
 		
-		this.currentNumber = 0;
-		this.addressCount = count;
+		this.completedCount = 0;
+		this.totalCount = count;
 		this.currentBytes = new byte[prototypeBytes.length];
 	}
 
-	public int percentageComplete() {
-		return Math.round((float)currentNumber * 100 / addressCount);
-	}
-
 	public boolean hasNext() {
-		return currentNumber < addressCount;
+		return completedCount < totalCount;
 	}
 
 	public ScanningSubject next() {
-		currentNumber++;
+		completedCount++;
 		random.nextBytes(currentBytes);
 		try {
 			InetAddressUtils.maskPrototypeAddressBytes(currentBytes, maskBytes, prototypeBytes);
@@ -86,7 +74,7 @@ public class RandomFeeder extends AbstractFeeder {
 	
 	public String getInfo() {
 		try {
-			return addressCount + ": " + InetAddress.getByAddress(prototypeBytes).getHostAddress() + " / " + InetAddress.getByAddress(maskBytes).getHostAddress();
+			return totalCount + ": " + InetAddress.getByAddress(prototypeBytes).getHostAddress() + " / " + InetAddress.getByAddress(maskBytes).getHostAddress();
 		}
 		catch (UnknownHostException e) {
 			assert false : e;

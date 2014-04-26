@@ -14,9 +14,26 @@ import net.azib.ipscan.config.Labels;
  * @author Anton Keks
  */
 public abstract class AbstractFeeder implements Feeder {
-	
+	protected long totalCount;
+	protected long completedCount;
+
 	public String getName() {
 		return Labels.getLabel(getId());
+	}
+
+	@Override
+	public long getTotalCount() {
+		return totalCount;
+	}
+
+	@Override
+	public long getCompletedCount() {
+		return completedCount;
+	}
+
+	@Override
+	public int percentageComplete() {
+		return (int)(getCompletedCount() * 100 / getTotalCount());
 	}
 
 	@Override
