@@ -1,14 +1,14 @@
 package net.azib.ipscan;
 
-import static org.junit.Assert.*;
+import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.feeders.FeederException;
+import org.junit.Test;
 
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
-import org.junit.Test;
-
-import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.feeders.FeederException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MainTest {
 
@@ -31,8 +31,8 @@ public class MainTest {
 		assertTrue(wasStackTraceLogged[0]);
 		
 		// localized exception
-		assertEquals(Labels.getLabel("exception.FeederException.range.greaterThan"), 
-				Main.getLocalizedMessage(new FeederException("range.greaterThan")));
+		assertEquals(Labels.getLabel("exception.FeederException.malformedIP"),
+				Main.getLocalizedMessage(new FeederException("malformedIP")));
 		
 		// message-less localized exception
 		assertEquals(Labels.getLabel("exception.OutOfMemoryError"), 

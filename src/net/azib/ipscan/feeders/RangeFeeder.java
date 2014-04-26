@@ -5,13 +5,12 @@
  */
 package net.azib.ipscan.feeders;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.util.InetAddressUtils;
-
 import org.savarese.vserv.tcpip.OctetConverter;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * IP Range Feeder.
@@ -26,7 +25,7 @@ public class RangeFeeder extends AbstractFeeder {
 	private InetAddress endIP;
 	private InetAddress originalEndIP;
 	private InetAddress currentIP;
-	private boolean isReverse;
+	boolean isReverse;
 	
 	double percentageComplete;
 	double percentageIncrement;

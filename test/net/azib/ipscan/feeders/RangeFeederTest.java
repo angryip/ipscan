@@ -1,42 +1,35 @@
 package net.azib.ipscan.feeders;
 
-import static net.azib.ipscan.feeders.FeederTestUtils.*;
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
-/**
- * Test of RangeFeeder 
- * 
- * @author Anton Keks
- */
-public class RangeFeederTest {
+import static net.azib.ipscan.feeders.FeederTestUtils.assertFeederException;
+import static org.junit.Assert.*;
 
+public class RangeFeederTest {
 	@Test
-	public void testHappyPath() throws FeederException {
-		RangeFeeder rangeFeeder = new RangeFeeder("10.11.12.13", "10.11.12.15");
-		assertTrue(rangeFeeder.hasNext());
-		assertEquals("10.11.12.13", rangeFeeder.next().getAddress().getHostAddress());
-		assertTrue(rangeFeeder.hasNext());
-		assertEquals("10.11.12.14", rangeFeeder.next().getAddress().getHostAddress());
-		assertTrue(rangeFeeder.hasNext());
-		assertEquals("10.11.12.15", rangeFeeder.next().getAddress().getHostAddress());
-		assertFalse(rangeFeeder.hasNext());
+	public void forward() throws FeederException {
+		RangeFeeder feeder = new RangeFeeder("10.11.12.13", "10.11.12.15");
+		assertTrue(feeder.hasNext());
+		assertEquals("10.11.12.13", feeder.next().getAddress().getHostAddress());
+		assertTrue(feeder.hasNext());
+		assertEquals("10.11.12.14", feeder.next().getAddress().getHostAddress());
+		assertTrue(feeder.hasNext());
+		assertEquals("10.11.12.15", feeder.next().getAddress().getHostAddress());
+		assertFalse(feeder.hasNext());
 	}
 	
 	@Test
-	public void testInvalidRange() {
-		try {
-			new RangeFeeder("10.11.12.13", "10.11.12.10");
-			fail();
-		}
-		catch (FeederException e) {
-			assertFeederException("range.greaterThan", e);
-		}
+	public void reverse() {
+		RangeFeeder feeder = new RangeFeeder("10.11.12.13", "10.11.12.11");
+		assertTrue(feeder.isReverse);
+		assertEquals("10.11.12.13", feeder.next().getAddress().getHostAddress());
+		assertEquals("10.11.12.12", feeder.next().getAddress().getHostAddress());
+		assertEquals("10.11.12.11", feeder.next().getAddress().getHostAddress());
+		assertFalse(feeder.hasNext());
 	}
 
 	@Test
-	public void testMalformedIP() {
+	public void malformedIP() {
 		try {
 			new RangeFeeder("10.11.12.abc.", "10.11.12.10");
 			fail();
@@ -54,7 +47,7 @@ public class RangeFeederTest {
 	}
 	
 	@Test
-	public void testExtremeValues() {
+	public void extremeValues() {
 		RangeFeeder rangeFeeder = null; 
 		
 		rangeFeeder = new RangeFeeder("0.0.0.0", "0.0.0.0");
@@ -69,7 +62,7 @@ public class RangeFeederTest {
 	}
 		
 	@Test
-	public void testGetPercentageComplete() throws Exception {
+	public void getPercentageComplete() throws Exception {
 		RangeFeeder rangeFeeder = new RangeFeeder("100.11.12.13", "100.11.12.15");
 		assertEquals(0, rangeFeeder.percentageComplete());
 		rangeFeeder.next();
@@ -86,7 +79,7 @@ public class RangeFeederTest {
 	}
 	
 	@Test
-	public void testGetInfo() {
+	public void getInfo() {
 		RangeFeeder rangeFeeder = new RangeFeeder("100.11.12.13", "100.11.12.13");
 		assertEquals("100.11.12.13 - 100.11.12.13", rangeFeeder.getInfo());
 		rangeFeeder = new RangeFeeder("0.0.0.0", "255.255.255.255");
