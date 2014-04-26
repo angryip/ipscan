@@ -227,15 +227,16 @@
 					<include name="libswt-cairo-*.so"/>
 					<include name="libswt-xpcominit-gtk-*.so"/>
 					<include name="libswt-xulrunner-gtk-*.so"/>
+					<include name="libswt-webkit-gtk-*.so"/>
 					<!-- Win32 stuff -->
 					<include name="swt-awt-*.dll"/>
 					<include name="swt-wgl-*.dll"/>
 					<include name="swt-gdip-*.dll"/>
 					<include name="swt-xpcominit-*.dll"/>
 					<include name="swt-xulrunner-*.dll"/>
+					<include name="swt-webkit-*.dll"/>
 					<!-- Mac stuff -->
-					<include name="libswt-agl-*.jnilib"/>
-					<include name="libswt-xpcominit-*.jnilib"/>
+					<include name="libswt-awt-*.jnilib"/>
 					<include name="libswt-xulrunner-*.jnilib"/>
 				</fileset>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/dnd">
@@ -248,18 +249,16 @@
 					<include name="Table*"/>
 					<include name="Tree*"/>
 				</fileset>
-				<!--fileset dir="${bin}.@{platform}/org/eclipse/swt/accessibility"/-->
-				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/accessibility"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/browser"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/ole"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/ole/win32" includes="I*"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/ole/win32" includes="O*"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/opengl"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/opengl"/>
-				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/cairo"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/cde"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/theme"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/mozilla"/>
+				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/webkit"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/gnome"/>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/internal/image">
 					<include name="JPEG*"/>

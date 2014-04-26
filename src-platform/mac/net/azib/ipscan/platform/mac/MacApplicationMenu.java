@@ -1,25 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2000, 2003 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials  
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * Contributors:
- *     IBM Corporation - initial API and implementation
- * 	   Anton Keks - Adaptation for Angry IP Scanner
- *******************************************************************************/
 package net.azib.ipscan.platform.mac;
 
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.Version;
 import net.azib.ipscan.gui.AboutDialog;
 import net.azib.ipscan.gui.PreferencesDialog;
 import net.azib.ipscan.gui.SelectFetchersDialog;
 import net.azib.ipscan.gui.actions.HelpMenuActions.CheckVersion;
-
-import org.eclipse.swt.internal.Callback;
-import org.eclipse.swt.internal.carbon.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.picocontainer.Startable;
 
 /**
@@ -27,13 +18,6 @@ import org.picocontainer.Startable;
  * in order to conform better to Mac standards.
  */
 public class MacApplicationMenu implements Startable {
-	
-	private static final int kHICommandAbout = ('a' << 24) + ('b' << 16) + ('o' << 8) + 'u';
-	private static final int kHICommandPreferences = ('p' << 24) + ('r' << 16) + ('e' << 8) + 'f';
-	private static final int kHICommandFetchers = ('f' << 24) + ('e' << 16) + ('t' << 8) + 'c';
-	private static final int kHICommandCheckVersion = ('v' << 24) + ('e' << 16) + ('r' << 8) + 's';
-	private static final int kHICommandServices = ('s' << 24) + ('e' << 16) + ('r' << 8) + 'v';
-
 	private final AboutDialog aboutDialog;
 	private final PreferencesDialog preferencesDialog;
 	private final SelectFetchersDialog selectFetchersDialog;
@@ -50,7 +34,7 @@ public class MacApplicationMenu implements Startable {
 		final Display display = Display.getDefault();
 		display.syncExec(new Runnable() {
 			public void run() {
-				hookApplicationMenu(display);
+				initApplicationMenu(display);
 			}
 		});
 	}
@@ -58,93 +42,51 @@ public class MacApplicationMenu implements Startable {
 	public void stop() {
 	}
 
-	/**
-	 * See Apple Technical Q&A 1079 (http://developer.apple.com/qa/qa2001/qa1079.html)<br/>
-	 * Also
-	 * http://developer.apple.com/documentation/Carbon/Reference/Menu_Manager/menu_mgr_ref/function_group_10.html
-	 */
-	public void hookApplicationMenu(final Display display) {
-		// callback target
-		Object target = new Object() {
-			@SuppressWarnings("unused")
-			int commandProc(int nextHandler, int theEvent, int userData) {
-				if (OS.GetEventKind(theEvent) == OS.kEventProcessCommand) {
-					HICommand command = new HICommand();
-					OS.GetEventParameter(theEvent, OS.kEventParamDirectObject, OS.typeHICommand, null, HICommand.sizeof, null, command);
-					switch (command.commandID) {
-						case kHICommandPreferences: 
-							preferencesDialog.open();
-							return OS.noErr;
-						case kHICommandFetchers:
-							selectFetchersDialog.open();
-							return OS.noErr;
-						case kHICommandAbout:
-							aboutDialog.open();
-							return OS.noErr;
-						case kHICommandCheckVersion:
-							checkVersionListener.check();
-							return OS.noErr;
-					}
-				}
-				return OS.eventNotHandledErr;
-			}
-		};
-		final Callback commandCallback = new Callback(target, "commandProc", 3); 
-		long commandProc = commandCallback.getAddress();
-		if (commandProc == 0) {
-			commandCallback.dispose();
-			return; // give up
-		}
+	void initApplicationMenu(Display display) {
+		Menu systemMenu = display.getSystemMenu();
+		if (systemMenu == null) return;
 
-		// install event handler for commands
-		int[] mask = new int[] {OS.kEventClassCommand, OS.kEventProcessCommand};
-		OS.InstallEventHandler(OS.GetApplicationEventTarget(), (int)commandProc, mask.length / 2, mask, 0, null);
-
-		// create menu commands
-		int[] outMenu = new int[1];
-		short[] outIndex = new short[1];
-		if (OS.GetIndMenuItemWithCommandID(0, kHICommandPreferences, 1, outMenu, outIndex) == OS.noErr && outMenu[0] != 0) {
-			int menu = outMenu[0];
-
-			String aboutName = Labels.getLabel("title.about") + " " + Version.NAME;
-			char buf[] = new char[aboutName.length()];
-			aboutName.getChars(0, buf.length, buf, 0);
-			int str = OS.CFStringCreateWithCharacters(OS.kCFAllocatorDefault, buf, buf.length);
-			OS.InsertMenuItemTextWithCFString(menu, str, (short) 0, 0, kHICommandAbout);
-			OS.CFRelease(str);
-			// add separator between About & Preferences
-			OS.InsertMenuItemTextWithCFString(menu, 0, (short) 1, OS.kMenuItemAttrSeparator, 0);
-
-			// enable Preferences menu
-			OS.EnableMenuCommand(menu, kHICommandPreferences);
-
-			// add Fetchers menu
-			String fetchersName = Labels.getLabel("menu.tools.fetchers").replace("&", "");
-			buf = new char[fetchersName.length()];
-			fetchersName.getChars(0, buf.length, buf, 0);
-			str = OS.CFStringCreateWithCharacters(OS.kCFAllocatorDefault, buf, buf.length);
-			OS.InsertMenuItemTextWithCFString(menu, str, (short) 3, 0, kHICommandFetchers);
-			OS.CFRelease(str);
-			// add separator between Fetchers & Check Version
-			OS.InsertMenuItemTextWithCFString(menu, 0, (short) 4, OS.kMenuItemAttrSeparator, 0);
-			
-			// add Check Version menu
-			String checkVersionName = Labels.getLabel("menu.help.checkVersion").replace("&", "");
-			buf = new char[checkVersionName.length()];
-			checkVersionName.getChars(0, buf.length, buf, 0);
-			str = OS.CFStringCreateWithCharacters(OS.kCFAllocatorDefault, buf, buf.length);
-			OS.InsertMenuItemTextWithCFString(menu, str, (short) 5, 0, kHICommandCheckVersion);
-			OS.CFRelease(str);
-
-			// disable services menu
-            OS.DisableMenuCommand(menu, kHICommandServices);
-		}
-
-		// schedule disposal of callback object
-		display.disposeExec(new Runnable() {
-			public void run() {
-				commandCallback.dispose();
+		MenuItem prefs = getItem(systemMenu, SWT.ID_PREFERENCES);
+		prefs.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				preferencesDialog.open();
 			}
 		});
+
+		MenuItem about = getItem(systemMenu, SWT.ID_ABOUT);
+		// about.setText(Labels.getLabel("title.about") + " " + Version.NAME);
+		about.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				aboutDialog.open();
+			}
+		});
+
+		MenuItem fetchers = new MenuItem(systemMenu, SWT.NONE, systemMenu.indexOf(prefs) + 1);
+		fetchers.setText(Labels.getLabel("menu.tools.fetchers"));
+		fetchers.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				selectFetchersDialog.open();
+			}
+		});
+
+		MenuItem checkVersion = new MenuItem(systemMenu, SWT.NONE, systemMenu.indexOf(about) + 1);
+		checkVersion.setText(Labels.getLabel("menu.help.checkVersion"));
+		checkVersion.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				checkVersionListener.check();
+			}
+		});
+	}
+
+	static MenuItem getItem(Menu menu, int id) {
+		MenuItem[] items = menu.getItems();
+		for (MenuItem item : items) {
+			if (item.getID() == id) return item;
+		}
+		return null;
 	}
 }
