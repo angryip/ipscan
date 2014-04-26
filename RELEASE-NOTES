@@ -1,5 +1,9 @@
 Changes in 3.3:
 - Fixed links in the Help menu
+- Hungarian translation
+- Language can now be selected in preferences
 - SWT upgraded to 4.3
 - Use 64-bit SWT on Mac, supporting Oracle Java 1.7+
 - Use sheets instead of some dialogs on Mac
+
+(thanks to contributors)
