@@ -63,7 +63,7 @@ public class ScanMenuActions {
 			
 			if (!stateMachine.inState(ScanningState.IDLE)) {
 				// ask the user whether to save incomplete results
-				MessageBox box = new MessageBox(resultTable.getShell(), SWT.YES | SWT.NO | SWT.ICON_WARNING);
+				MessageBox box = new MessageBox(resultTable.getShell(), SWT.YES | SWT.NO | SWT.ICON_WARNING | SWT.SHEET);
 				box.setText(Version.NAME);
 				box.setMessage(Labels.getLabel("exception.ExporterException.scanningInProgress"));
 				if (box.open() != SWT.YES)

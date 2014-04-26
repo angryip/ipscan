@@ -101,7 +101,7 @@ public class Main {
 	}
 
 	private static void showMessage(Shell parent, int flags, String title, String localizedMessage) {
-		MessageBox messageBox = new MessageBox(parent, SWT.OK | flags);
+		MessageBox messageBox = new MessageBox(parent, SWT.OK | SWT.SHEET | flags);
 		messageBox.setText(title);
 		messageBox.setMessage(localizedMessage);
 		messageBox.open();

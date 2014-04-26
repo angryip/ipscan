@@ -100,13 +100,6 @@ public class MainWindow {
 			}
 		});
 	}
-	
-	private int showMessage(String text, int buttons) {
-		MessageBox box = new MessageBox(MainWindow.this.shell, SWT.ICON_WARNING | buttons);
-		box.setText(Version.NAME);
-		box.setMessage(text);
-		return box.open();
-	}
 
 	/**
 	 * This method initializes shell

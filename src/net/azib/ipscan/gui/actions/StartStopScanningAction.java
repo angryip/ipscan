@@ -5,26 +5,19 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import java.net.InetAddress;
-
 import net.azib.ipscan.config.GUIConfig;
-import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.GUIConfig.DisplayMethod;
-import net.azib.ipscan.core.ScannerDispatcherThread;
-import net.azib.ipscan.core.ScannerDispatcherThreadFactory;
-import net.azib.ipscan.core.ScanningProgressCallback;
-import net.azib.ipscan.core.ScanningResult;
-import net.azib.ipscan.core.ScanningResultCallback;
+import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.*;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
-import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.core.state.StateMachine.Transition;
+import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -32,6 +25,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
+
+import java.net.InetAddress;
 
 /**
  * Start/Stop button action class.
@@ -128,7 +123,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		
 		// ask user for confirmation if needed
 		if (guiConfig.askScanConfirmation && resultTable.getItemCount() > 0) {
-			MessageBox box = new MessageBox(resultTable.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+			MessageBox box = new MessageBox(resultTable.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.SHEET);
 			box.setText(Labels.getLabel("text.scan.new"));
 			box.setMessage(Labels.getLabel("text.scan.confirmation"));
 			if (box.open() != SWT.YES) {
