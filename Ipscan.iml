@@ -14,6 +14,8 @@
       <excludeFolder url="file://$MODULE_DIR$/ant-bin.mac" />
       <excludeFolder url="file://$MODULE_DIR$/ant-bin.win32" />
       <excludeFolder url="file://$MODULE_DIR$/ant-tests" />
+      <excludeFolder url="file://$MODULE_DIR$/test-coverage" />
+      <excludeFolder url="file://$MODULE_DIR$/test-results" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
