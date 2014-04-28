@@ -157,15 +157,7 @@ public abstract class AbstractModalDialog {
 			}
 		});
 		
-		if (Platform.MAC_OS) {
-			// no button on Mac
-			Point size = shell.getSize();
-			shell.setSize(size.x, size.y - button.getSize().y);
-			button.setVisible(false);
-		}
-		else {
-			button.setFocus();
-		}		
+		button.setFocus();
 		return button;
 	}
 

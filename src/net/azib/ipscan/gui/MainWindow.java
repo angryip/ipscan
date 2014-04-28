@@ -202,12 +202,12 @@ public class MainWindow {
 		
 		feederSelectionCombo.setLayoutData(LayoutHelper.formData(SWT.DEFAULT, buttonHeight, new FormAttachment(0), null, new FormAttachment(0), null));
 		if (twoRowToolbar) {
-			startStopButton.setLayoutData(LayoutHelper.formData(feederSelectionCombo.getSize().x, Platform.MAC_OS ? SWT.DEFAULT : buttonHeight, new FormAttachment(0), null, new FormAttachment(feederSelectionCombo, 0), null));
+			startStopButton.setLayoutData(LayoutHelper.formData(feederSelectionCombo.getSize().x, buttonHeight, new FormAttachment(0), null, new FormAttachment(feederSelectionCombo, 0), null));
 			prefsButton.setLayoutData(LayoutHelper.formData(new FormAttachment(feederSelectionCombo), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
 			fetchersButton.setLayoutData(LayoutHelper.formData(new FormAttachment(startStopButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
 		}
 		else {
-			startStopButton.setLayoutData(LayoutHelper.formData(feederSelectionCombo.getSize().x, Platform.MAC_OS ? SWT.DEFAULT : buttonHeight, new FormAttachment(feederSelectionCombo), null, new FormAttachment(-1), null));
+			startStopButton.setLayoutData(LayoutHelper.formData(feederSelectionCombo.getSize().x, buttonHeight, new FormAttachment(feederSelectionCombo), null, new FormAttachment(-1), null));
 			prefsButton.setLayoutData(LayoutHelper.formData(new FormAttachment(startStopButton), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
 			fetchersButton.setLayoutData(LayoutHelper.formData(new FormAttachment(prefsButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
 		}

@@ -8,7 +8,6 @@ package net.azib.ipscan.gui;
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.GUIConfig.DisplayMethod;
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.gui.actions.CommandsMenuActions.Delete;
@@ -21,7 +20,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
-import static net.azib.ipscan.config.GUIConfig.DisplayMethod.*;
+import static net.azib.ipscan.config.GUIConfig.DisplayMethod.PORTS;
 
 /**
  * The status bar of the main window.
@@ -71,7 +70,7 @@ public class StatusBar {
 		setRunningThreads(0); // set back to 0 at startup
 		
 		progressBar = new ProgressBar(composite, SWT.BORDER);
-		progressBar.setLayoutData(LayoutHelper.formData(new FormAttachment(threadsText), new FormAttachment(100, Platform.MAC_OS ? -20 : 0), new FormAttachment(0), new FormAttachment(100)));
+		progressBar.setLayoutData(LayoutHelper.formData(new FormAttachment(threadsText), new FormAttachment(100, 0), new FormAttachment(0), new FormAttachment(100)));
 		progressBar.setSelection(0);
 	}
 	

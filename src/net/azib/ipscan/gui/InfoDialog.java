@@ -6,7 +6,6 @@
 
 package net.azib.ipscan.gui;
 
-import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
@@ -53,10 +52,8 @@ public class InfoDialog extends AbstractModalDialog {
 		statsText.setText(message);
 		statsText.pack();
 
-		if (!Platform.MAC_OS) {
-			Point buttonSize = button.getSize();
-			button.setLayoutData(formData(buttonSize.x, buttonSize.y, null, new FormAttachment(statsText, 0, SWT.RIGHT), new FormAttachment(statsText), null));
-		}
+		Point buttonSize = button.getSize();
+		button.setLayoutData(formData(buttonSize.x, buttonSize.y, null, new FormAttachment(statsText, 0, SWT.RIGHT), new FormAttachment(statsText), null));
 
 		shell.pack();
 	}
