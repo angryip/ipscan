@@ -251,23 +251,4 @@ public class MainWindow {
 			statusBar.setEnabled(enabled);
 		}
 	}
-	
-	// TODO: remove this class with SWT > 3.5
-	public static class FeederSelectionCombo extends Combo {
-		public FeederSelectionCombo(Composite parent) {
-			super(parent, SWT.READ_ONLY);
-		}
-
-		@Override
-		public int getTextHeight() {
-			// fixes the problem described here: https://bugs.eclipse.org/bugs/show_bug.cgi?id=223015			
-			return buttonHeight;
-		}
-
-		@Override
-		protected void checkSubclass() {
-			// allow subclassing
-		}
-	}
-
 }

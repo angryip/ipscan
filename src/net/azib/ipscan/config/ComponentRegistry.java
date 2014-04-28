@@ -14,7 +14,6 @@ import net.azib.ipscan.exporters.*;
 import net.azib.ipscan.fetchers.*;
 import net.azib.ipscan.gui.*;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
-import net.azib.ipscan.gui.MainWindow.FeederSelectionCombo;
 import net.azib.ipscan.gui.actions.*;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import net.azib.ipscan.gui.feeders.FileFeederGUI;
@@ -101,8 +100,8 @@ public class ComponentRegistry {
 				new ComponentParameter("mainShell"), new ConstantParameter(SWT.NONE) });
 		container.registerComponentImplementation("startStopButton", Button.class, new Parameter[] {
 				new ComponentParameter("controlsArea"), new ConstantParameter(SWT.NONE) });
-		container.registerComponentImplementation("feederSelectionCombo", FeederSelectionCombo.class,
-				new Parameter[] { new ComponentParameter("controlsArea") });
+		container.registerComponentImplementation("feederSelectionCombo", Combo.class,
+				new Parameter[] { new ComponentParameter("controlsArea"), new ConstantParameter(SWT.READ_ONLY) });
 
 		// GUI Feeders
 		container.registerComponentImplementation(FeederGUIRegistry.class);
