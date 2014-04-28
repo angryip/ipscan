@@ -11,18 +11,12 @@ import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.RandomFeeder;
 import net.azib.ipscan.gui.actions.FeederActions;
 import net.azib.ipscan.gui.util.LayoutHelper;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Spinner;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.*;
 
 /**
  * GUI for initialization of RandomFeeder
@@ -52,8 +46,6 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 
 	protected void initialize() {
 		feeder = new RandomFeeder();
-		
-		setLayout(LayoutHelper.formLayout(3, 3, 4));
 		
         ipPrototypeLabel = new Label(this, SWT.NONE);
         ipPrototypeText = new Text(this, SWT.BORDER);

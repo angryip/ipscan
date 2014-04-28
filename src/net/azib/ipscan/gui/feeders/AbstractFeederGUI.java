@@ -18,6 +18,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Logger;
 
+import static net.azib.ipscan.gui.util.LayoutHelper.formLayout;
+
 /**
  * Base class of feeder GUI classes.
  * 
@@ -32,6 +34,7 @@ public abstract class AbstractFeederGUI extends Composite implements FeederCreat
 	public AbstractFeederGUI(Composite parent) {
 		super(parent, SWT.NONE);
 		setVisible(false);
+		setLayout(formLayout(7, 3, 3));
 		initialize();
 	}
 

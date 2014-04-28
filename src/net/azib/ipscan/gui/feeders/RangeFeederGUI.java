@@ -50,9 +50,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 
 	protected void initialize() {
 		feeder = new RangeFeeder();
-		
-		setLayout(LayoutHelper.formLayout(3, 3, 4));
-		
+
         ipRangeLabel = new Label(this, SWT.NONE);
         startIPText = new Text(this, SWT.BORDER);
         toLabel = new Label(this, SWT.NONE);
