@@ -268,19 +268,6 @@
 					<include name="Win*"/>
 				</fileset>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/custom"/>
-				<fileset dir="${bin}.@{platform}/org/eclipse/swt/widgets">
-					<include name="Cool*"/>
-					<include name="Expand*"/>
-					<include name="Font*"/>
-					<include name="Color*"/>
-					<include name="Link*"/>
-					<include name="Tracker*"/>
-					<include name="Date*"/>
-					<include name="Tray*"/>
-					<include name="Tree*"/>
-					<include name="DateTime*"/>
-					<include name="Sash*"/>
-				</fileset>
 				<fileset dir="${bin}.@{platform}/org/eclipse/swt/awt"/>
 			</delete>
 			<jar destfile="${dist}/${ant.project.name}-@{platform}-orig.jar" >
