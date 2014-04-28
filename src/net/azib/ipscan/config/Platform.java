@@ -20,7 +20,7 @@ public class Platform {
     public static final boolean ARCH_64 = System.getProperty("os.arch").contains("64");
 	
 	/** Mac OS detection :-) */
-	public static final boolean MAC_OS = System.getProperty("mrj.version") != null;
+	public static final boolean MAC_OS = OS_NAME.contains("OS X");
 	
 	/** Linux */
 	public static final boolean LINUX = OS_NAME.contains("Linux");
