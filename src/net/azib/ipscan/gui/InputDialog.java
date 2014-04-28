@@ -64,7 +64,12 @@ public class InputDialog extends AbstractModalDialog {
 			}
 		});
 	}
-	
+
+	@Override
+	protected int getShellStyle() {
+		return super.getShellStyle() | SWT.SHEET;
+	}
+
 	private void setText(String text) {
 		text = text != null ? text : "";
 		this.text.setText(text);
