@@ -17,7 +17,6 @@ import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.actions.ToolsActions;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
-import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -27,6 +26,9 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.*;
+
+import static net.azib.ipscan.gui.util.LayoutHelper.formData;
+import static net.azib.ipscan.gui.util.LayoutHelper.formLayout;
 
 /**
  * Main window of Angry IP Scanner.
@@ -138,14 +140,14 @@ public class MainWindow {
 	 * This method initializes resultTable	
 	 */
 	private void initTableAndStatusBar(ResultTable resultTable, CommandsMenu resultsContextMenu, StatusBar statusBar) {
-		resultTable.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), new FormAttachment(feederArea, 1), new FormAttachment(statusBar.getComposite(), -2)));
+		resultTable.setLayoutData(formData(new FormAttachment(0), new FormAttachment(100), new FormAttachment(feederArea, 1), new FormAttachment(statusBar.getComposite(), -2)));
 		resultTable.setMenu(resultsContextMenu);
 	}
 
 	private void initFeederArea(Composite feederArea, FeederGUIRegistry feederRegistry) {
 		// feederArea is the placeholder for the visible feeder
 		this.feederArea = feederArea;
-		feederArea.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, new FormAttachment(0), null));
+		feederArea.setLayoutData(formData(new FormAttachment(0), null, new FormAttachment(0), null));
 
 		this.feederRegistry = feederRegistry;		
 	}
@@ -154,28 +156,25 @@ public class MainWindow {
 	 * This method initializes main controls of the main window	
 	 */
 	private void initControlsArea(final Composite controlsArea, final Combo feederSelectionCombo, final Button startStopButton, final StartStopScanningAction startStopScanningAction, final ToolsActions.Preferences preferencesListener, final ToolsActions.ChooseFetchers chooseFetchersListsner) {
-		controlsArea.setLayoutData(LayoutHelper.formData(new FormAttachment(feederArea), new FormAttachment(100), new FormAttachment(0), new FormAttachment(feederArea, 0, SWT.BOTTOM)));
-		controlsArea.setLayout(LayoutHelper.formLayout(7, 3, 3));
+		controlsArea.setLayoutData(formData(new FormAttachment(feederArea), new FormAttachment(100), new FormAttachment(0), new FormAttachment(feederArea, 0, SWT.BOTTOM)));
+		controlsArea.setLayout(formLayout(3, 3, 3));
 
-		// steal the height from the second child of the FeederGUI - this must be the first edit box.
-		// this results in better visual alignment with FeederGUIs
-		Control secondControl = feederRegistry.current().getChildren()[1];
-		// initialize global standard button height
-		buttonHeight = secondControl.getSize().y + 2;
-				
-		// feeder selection combobox
-		this.feederSelectionCombo = feederSelectionCombo;
-		feederSelectionCombo.pack();
-		IPFeederSelectionListener feederSelectionListener = new IPFeederSelectionListener();		
-		feederSelectionCombo.addSelectionListener(feederSelectionListener);
-		// initialize the selected feeder GUI 
-		feederSelectionCombo.select(guiConfig.activeFeeder);
-		feederSelectionCombo.setToolTipText(Labels.getLabel("combobox.feeder.tooltip"));
-		
 		// start/stop button
 		this.startStopButton = startStopButton;
 		shell.setDefaultButton(startStopButton);
 		startStopButton.addSelectionListener(startStopScanningAction);
+		startStopButton.pack();
+		// initialize global standard button height
+		buttonHeight = startStopButton.getSize().y;
+
+		// feeder selection combobox
+		this.feederSelectionCombo = feederSelectionCombo;
+		feederSelectionCombo.pack();
+		IPFeederSelectionListener feederSelectionListener = new IPFeederSelectionListener();
+		feederSelectionCombo.addSelectionListener(feederSelectionListener);
+		// initialize the selected feeder GUI 
+		feederSelectionCombo.select(guiConfig.activeFeeder);
+		feederSelectionCombo.setToolTipText(Labels.getLabel("combobox.feeder.tooltip"));
 
 		// traverse the button before the combo (and don't traverse other buttons at all)
 		controlsArea.setTabList(new Control[] {startStopButton, feederSelectionCombo});
@@ -200,16 +199,16 @@ public class MainWindow {
 	private void relayoutControls() {
 		boolean twoRowToolbar = Math.abs(feederRegistry.current().getSize().y - buttonHeight * 2) <= 10;
 		
-		feederSelectionCombo.setLayoutData(LayoutHelper.formData(SWT.DEFAULT, buttonHeight, new FormAttachment(0), null, new FormAttachment(0), null));
+		feederSelectionCombo.setLayoutData(formData(SWT.DEFAULT, buttonHeight, new FormAttachment(0), null, new FormAttachment(0), null));
 		if (twoRowToolbar) {
-			startStopButton.setLayoutData(LayoutHelper.formData(feederSelectionCombo.getSize().x, buttonHeight, new FormAttachment(0), null, new FormAttachment(feederSelectionCombo, 0), null));
-			prefsButton.setLayoutData(LayoutHelper.formData(new FormAttachment(feederSelectionCombo), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
-			fetchersButton.setLayoutData(LayoutHelper.formData(new FormAttachment(startStopButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
+			startStopButton.setLayoutData(formData(feederSelectionCombo.getSize().x, buttonHeight, new FormAttachment(0), null, new FormAttachment(feederSelectionCombo, 0), null));
+			prefsButton.setLayoutData(formData(new FormAttachment(feederSelectionCombo), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
+			fetchersButton.setLayoutData(formData(new FormAttachment(startStopButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
 		}
 		else {
-			startStopButton.setLayoutData(LayoutHelper.formData(feederSelectionCombo.getSize().x, buttonHeight, new FormAttachment(feederSelectionCombo), null, new FormAttachment(-1), null));
-			prefsButton.setLayoutData(LayoutHelper.formData(new FormAttachment(startStopButton), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
-			fetchersButton.setLayoutData(LayoutHelper.formData(new FormAttachment(prefsButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
+			startStopButton.setLayoutData(formData(feederSelectionCombo.getSize().x, buttonHeight, new FormAttachment(feederSelectionCombo), null, new FormAttachment(-1), null));
+			prefsButton.setLayoutData(formData(new FormAttachment(startStopButton), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
+			fetchersButton.setLayoutData(formData(new FormAttachment(prefsButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
 		}
 	}
 			
