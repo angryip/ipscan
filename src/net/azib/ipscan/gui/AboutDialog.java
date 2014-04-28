@@ -4,7 +4,6 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.gui.actions.BrowserLauncher;
 import org.eclipse.swt.SWT;
@@ -60,7 +59,7 @@ public class AboutDialog extends AbstractModalDialog {
 		Text licenseText = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
 		licenseText.setBounds(leftBound, systemLabel.getBounds().y + systemLabel.getBounds().height + 10, 
 							  shell.getClientArea().width - leftBound - 10, 
-							  button.getLocation().y - systemLabel.getBounds().y - systemLabel.getBounds().height - (Platform.MAC_OS ? 40 : 20));
+							  button.getLocation().y - systemLabel.getBounds().y - systemLabel.getBounds().height - 20);
 		licenseText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		licenseText.setText("Licensed under the GNU General Public License Version 2\n\n" +
 							NAME + " is free software; you can redistribute it and/or " +
@@ -77,6 +76,11 @@ public class AboutDialog extends AbstractModalDialog {
 
 		Label privacyLabel = createLinkLabel("Privacy", Version.PRIVACY_URL);
 		privacyLabel.setLocation(leftBound + privacyLabel.getBounds().width + 40, fullLicenseLabel.getBounds().y);
+	}
+
+	@Override
+	protected int getShellStyle() {
+		return super.getShellStyle() | SWT.SHEET;
 	}
 
 	private Label createLinkLabel(final String text, final String url) {
