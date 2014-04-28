@@ -5,14 +5,6 @@
  */
 package net.azib.ipscan.gui.actions;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import net.azib.ipscan.config.CommandLineProcessor;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
@@ -20,12 +12,19 @@ import net.azib.ipscan.gui.AboutDialog;
 import net.azib.ipscan.gui.GettingStartedDialog;
 import net.azib.ipscan.gui.InfoDialog;
 import net.azib.ipscan.gui.StatusBar;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * HelpActions
@@ -103,7 +102,7 @@ public class HelpMenuActions {
 				public void run() {
 					BufferedReader reader = null;
 					String message = null;
-					int messageStyle = SWT.ICON_WARNING;
+					int messageStyle = SWT.ICON_INFORMATION;
 					try {
 						URL url = new URL(Version.LATEST_VERSION_URL);
 						URLConnection conn = url.openConnection();
@@ -140,7 +139,7 @@ public class HelpMenuActions {
 						Display.getDefault().asyncExec(new Runnable() {
 							public void run() {
 								statusBar.setStatusText(null);
-								MessageBox messageBox = new MessageBox(statusBar.getShell(), messageStyleToShow);
+								MessageBox messageBox = new MessageBox(statusBar.getShell(), messageStyleToShow | SWT.SHEET);
 								messageBox.setText(Version.getFullName());
 								messageBox.setMessage(messageToShow);
 								if (messageBox.open() == SWT.YES) {
