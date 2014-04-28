@@ -5,15 +5,16 @@
  */
 package net.azib.ipscan.gui.feeders;
 
-import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FileFeeder;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.*;
+
+import static net.azib.ipscan.config.Labels.getLabel;
+import static net.azib.ipscan.gui.util.LayoutHelper.formData;
 
 /**
  * GUI for initialization of FileFeeder.
@@ -38,43 +39,26 @@ public class FileFeederGUI extends AbstractFeederGUI {
         fileNameText = new Text(this, SWT.BORDER);
         browseButton = new Button(this, SWT.NONE);
         
-        fileNameLabel.setText(Labels.getLabel("feeder.file.name")+":");
-        FormData formData = new FormData();
-        formData.left = new FormAttachment(0);
-        formData.top = new FormAttachment(fileNameText, 0, SWT.CENTER);
-        formData.bottom = new FormAttachment(browseButton, 0, SWT.BOTTOM);
-        fileNameLabel.setLayoutData(formData);
-        
+        fileNameLabel.setText(getLabel("feeder.file.name")+":");
+        fileNameLabel.setLayoutData(formData(new FormAttachment(0), null, new FormAttachment(fileNameText, 0, SWT.CENTER), new FormAttachment(browseButton, 0, SWT.BOTTOM)));
+
         // some long text
         fileNameText.setText("255.255.255.255.xxx.xxx");
-		formData = new FormData(fileNameText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x, SWT.DEFAULT);
-		formData.top = new FormAttachment(0);
-		formData.left = new FormAttachment(fileNameLabel);
-        fileNameText.setLayoutData(formData);
+        fileNameText.setLayoutData(formData(fileNameText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x, SWT.DEFAULT, new FormAttachment(fileNameLabel), null, new FormAttachment(0), null));
         fileNameText.setText("");
         
-        browseButton.setText(Labels.getLabel("feeder.file.browse"));
-        formData = new FormData();
-        formData.top = new FormAttachment(0);
-        formData.bottom = new FormAttachment(fileNameText, 0, SWT.BOTTOM);
-        formData.left = new FormAttachment(fileNameText);
-        browseButton.setLayoutData(formData);
-        browseButton.addSelectionListener(new SelectionListener() {
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-				widgetSelected(e);
-			}
-
+        browseButton.setText(getLabel("feeder.file.browse"));
+        browseButton.setLayoutData(formData(new FormAttachment(fileNameText), null, new FormAttachment(0), new FormAttachment(fileNameText, 0, SWT.BOTTOM)));
+        browseButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog dialog = new FileDialog(getShell());
-				dialog.setText(Labels.getLabel("feeder.file.browse"));
+				dialog.setText(getLabel("feeder.file.browse"));
 				String fileName = dialog.open();
 				if (fileName != null) {
 					fileNameText.setText(fileName);
 					fileNameText.setSelection(fileName.length());
 				}
 			}
-        	
         });
                         
 		pack();
