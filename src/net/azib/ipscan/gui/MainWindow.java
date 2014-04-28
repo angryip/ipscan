@@ -45,7 +45,7 @@ public class MainWindow {
 	
 	private Composite feederArea;
 	
-	private static int buttonHeight = 22;
+	private int buttonHeight;
 	private Button startStopButton;
 	private Combo feederSelectionCombo;
 	private FeederGUIRegistry feederRegistry;

@@ -44,11 +44,11 @@ public class FileFeederGUI extends AbstractFeederGUI {
 
         // some long text
         fileNameText.setText("255.255.255.255.xxx.xxx");
-        fileNameText.setLayoutData(formData(fileNameText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x, SWT.DEFAULT, new FormAttachment(fileNameLabel), null, new FormAttachment(0), null));
+        fileNameText.setLayoutData(formData(fileNameText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x, SWT.DEFAULT, new FormAttachment(fileNameLabel), null, new FormAttachment(0), new FormAttachment(browseButton, 0, SWT.BOTTOM)));
         fileNameText.setText("");
         
         browseButton.setText(getLabel("feeder.file.browse"));
-        browseButton.setLayoutData(formData(new FormAttachment(fileNameText), null, new FormAttachment(0), new FormAttachment(fileNameText, 0, SWT.BOTTOM)));
+        browseButton.setLayoutData(formData(new FormAttachment(fileNameText), null, new FormAttachment(0), null));
         browseButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog dialog = new FileDialog(getShell());

@@ -6,7 +6,6 @@
 package net.azib.ipscan.gui.feeders;
 
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.RandomFeeder;
 import net.azib.ipscan.gui.actions.FeederActions;
@@ -63,11 +62,15 @@ public class RandomFeederGUI extends AbstractFeederGUI {
         ipPrototypeText.setText("255.255.255.255xx");
         int textWidth = ipPrototypeText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
         ipPrototypeText.setText("");
-        
+
+		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
+		ipUpButton.setText(getLabel("button.ipUp"));
+		int rowHeight = ipUpButton.computeSize(SWT.DEFAULT, SWT.DEFAULT).y - 10;
+
         ipPrototypeLabel.setText(getLabel("feeder.random.prototype")+":");
         ipPrototypeLabel.setLayoutData(formData(null, new FormAttachment(hostnameLabel, 0, SWT.RIGHT), new FormAttachment(ipPrototypeText, 0, SWT.CENTER), null));
         
-        ipPrototypeText.setLayoutData(formData(textWidth, SWT.DEFAULT, new FormAttachment(ipPrototypeLabel), null, new FormAttachment(0), null));
+        ipPrototypeText.setLayoutData(formData(textWidth, rowHeight, new FormAttachment(ipPrototypeLabel), null, new FormAttachment(0), null));
         
         ipMaskLabel.setText(getLabel("feeder.random.mask")+":");
         ipMaskLabel.setLayoutData(formData(new FormAttachment(ipPrototypeText, 3), null, new FormAttachment(ipPrototypeText, 0, SWT.CENTER), null));
@@ -82,19 +85,17 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		ipMaskCombo.add("255..0.255");
 		ipMaskCombo.add("255.0.0.255");
 		ipMaskCombo.select(3);
-		ipMaskCombo.setLayoutData(formData(textWidth - 15, SWT.DEFAULT, new FormAttachment(ipMaskLabel), null, new FormAttachment(0), new FormAttachment(ipPrototypeText, 0, SWT.BOTTOM)));
+		ipMaskCombo.setLayoutData(formData(textWidth - 15, rowHeight, new FormAttachment(ipMaskLabel), null, new FormAttachment(0), new FormAttachment(ipPrototypeText, 0, SWT.BOTTOM)));
         
 		FeederActions.HostnameButton hostnameSelectionListener = new FeederActions.HostnameButton(hostnameText, ipPrototypeText, ipMaskCombo);
         hostnameText.addTraverseListener(hostnameSelectionListener);
-		hostnameText.setLayoutData(formData(textWidth, SWT.DEFAULT, new FormAttachment(ipPrototypeText, 0, SWT.LEFT), null, new FormAttachment(ipPrototypeText), null));
+		hostnameText.setLayoutData(formData(textWidth, rowHeight, new FormAttachment(ipPrototypeText, 0, SWT.LEFT), null, new FormAttachment(ipPrototypeText), null));
         
         hostnameLabel.setText(getLabel("feeder.random.hostname")+":");
 		hostnameLabel.setLayoutData(formData(new FormAttachment(0), null, new FormAttachment(hostnameText, 0, SWT.CENTER), null));
 		
-		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
-		ipUpButton.setText(getLabel("button.ipUp"));
 		ipUpButton.addSelectionListener(hostnameSelectionListener);
-		ipUpButton.setLayoutData(formData(new FormAttachment(hostnameText), null, new FormAttachment(ipPrototypeText), !Platform.MAC_OS ? new FormAttachment(hostnameText, 1, SWT.BOTTOM) : null));
+		ipUpButton.setLayoutData(formData(new FormAttachment(hostnameText), null, new FormAttachment(ipPrototypeText), new FormAttachment(hostnameText, 0, SWT.BOTTOM)));
 		
 		countLabel.setText(getLabel("feeder.random.count"));
 		countLabel.setLayoutData(formData(new FormAttachment(ipUpButton, 3), null, new FormAttachment(ipUpButton, 0, SWT.CENTER), null));
