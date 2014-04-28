@@ -30,11 +30,10 @@ public class FileFeederGUI extends AbstractFeederGUI {
 
 	public FileFeederGUI(Composite parent) {
 		super(parent);
+		feeder = new FileFeeder();
 	}
 
-	protected void initialize() {
-		feeder = new FileFeeder();
-		
+	public void initialize(int rowHeight) {
         fileNameLabel = new Label(this, SWT.NONE);
         fileNameText = new Text(this, SWT.BORDER);
         browseButton = new Button(this, SWT.NONE);
@@ -48,7 +47,7 @@ public class FileFeederGUI extends AbstractFeederGUI {
         fileNameText.setText("");
         
         browseButton.setText(getLabel("feeder.file.browse"));
-        browseButton.setLayoutData(formData(new FormAttachment(fileNameText), null, new FormAttachment(0), null));
+        browseButton.setLayoutData(formData(SWT.DEFAULT, rowHeight, new FormAttachment(fileNameText), null, new FormAttachment(0), null));
         browseButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog dialog = new FileDialog(getShell());

@@ -3,14 +3,14 @@
  */
 package net.azib.ipscan.gui.feeders;
 
-import static org.junit.Assert.assertEquals;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.RangeFeeder;
-
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * AbstractFeederGUITest
@@ -24,7 +24,7 @@ public class AbstractFeederGUITest {
 	@Before
 	public void setUp() throws Exception {
 		feederGUI = new AbstractFeederGUI(new Shell()) {
-			protected void initialize() {
+			public void initialize(int rowHeight) {
 			}
 			public String getFeederName() {
 				return "Mega Feeder";

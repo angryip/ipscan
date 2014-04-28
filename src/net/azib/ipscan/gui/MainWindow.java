@@ -16,10 +16,11 @@ import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.actions.ToolsActions;
+import net.azib.ipscan.gui.feeders.AbstractFeederGUI;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
@@ -45,7 +46,7 @@ public class MainWindow {
 	
 	private Composite feederArea;
 	
-	private int buttonHeight;
+	private int rowHeight;
 	private Button startStopButton;
 	private Combo feederSelectionCombo;
 	private FeederGUIRegistry feederRegistry;
@@ -63,11 +64,13 @@ public class MainWindow {
 		this.statusBar = statusBar;
 		
 		initShell(shell);
-		
+
+		startStopButton.pack();
+		// initialize global standard button height
+		rowHeight = startStopButton.getSize().y;
+
 		initFeederArea(feederArea, feederGUIRegistry);
-		
 		initControlsArea(controlsArea, feederSelectionCombo, startStopButton, startStopScanningAction, preferencesListener, chooseFetchersListsner);
-		
 		initTableAndStatusBar(resultTable, resultsContextMenu, statusBar);
 
 		// after all controls are initialized, resize and open
@@ -149,7 +152,10 @@ public class MainWindow {
 		this.feederArea = feederArea;
 		feederArea.setLayoutData(formData(new FormAttachment(0), null, new FormAttachment(0), null));
 
-		this.feederRegistry = feederRegistry;		
+		this.feederRegistry = feederRegistry;
+		for (AbstractFeederGUI feeder : feederRegistry) {
+			feeder.initialize(rowHeight);
+		}
 	}
 
 	/**
@@ -163,9 +169,6 @@ public class MainWindow {
 		this.startStopButton = startStopButton;
 		shell.setDefaultButton(startStopButton);
 		startStopButton.addSelectionListener(startStopScanningAction);
-		startStopButton.pack();
-		// initialize global standard button height
-		buttonHeight = startStopButton.getSize().y;
 
 		// feeder selection combobox
 		this.feederSelectionCombo = feederSelectionCombo;
@@ -197,16 +200,16 @@ public class MainWindow {
 	}
 	
 	private void relayoutControls() {
-		boolean twoRowToolbar = Math.abs(feederRegistry.current().getSize().y - buttonHeight * 2) <= 10;
+		boolean twoRowToolbar = Math.abs(feederRegistry.current().getSize().y - rowHeight * 2) <= 10;
 		
-		feederSelectionCombo.setLayoutData(formData(SWT.DEFAULT, buttonHeight, new FormAttachment(0), null, new FormAttachment(0), null));
+		feederSelectionCombo.setLayoutData(formData(SWT.DEFAULT, rowHeight, new FormAttachment(0), null, new FormAttachment(0), null));
 		if (twoRowToolbar) {
-			startStopButton.setLayoutData(formData(feederSelectionCombo.getSize().x, buttonHeight, new FormAttachment(0), null, new FormAttachment(feederSelectionCombo, 0), null));
+			startStopButton.setLayoutData(formData(feederSelectionCombo.getSize().x, rowHeight, new FormAttachment(0), null, new FormAttachment(feederSelectionCombo, 0), null));
 			prefsButton.setLayoutData(formData(new FormAttachment(feederSelectionCombo), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
 			fetchersButton.setLayoutData(formData(new FormAttachment(startStopButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
 		}
 		else {
-			startStopButton.setLayoutData(formData(feederSelectionCombo.getSize().x, buttonHeight, new FormAttachment(feederSelectionCombo), null, new FormAttachment(-1), null));
+			startStopButton.setLayoutData(formData(feederSelectionCombo.getSize().x, rowHeight, new FormAttachment(feederSelectionCombo), null, new FormAttachment(-1), null));
 			prefsButton.setLayoutData(formData(new FormAttachment(startStopButton), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
 			fetchersButton.setLayoutData(formData(new FormAttachment(prefsButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
 		}
@@ -215,11 +218,7 @@ public class MainWindow {
 	/**
 	 * IP Feeder selection listener. Updates the GUI according to the IP Feeder selection.
 	 */
-	final class IPFeederSelectionListener implements SelectionListener {
-		public void widgetDefaultSelected(SelectionEvent e) {
-			widgetSelected(e);
-		}
-
+	class IPFeederSelectionListener extends SelectionAdapter {
 		public void widgetSelected(SelectionEvent e) {
 			feederRegistry.select(feederSelectionCombo.getSelectionIndex());
 						

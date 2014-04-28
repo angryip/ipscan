@@ -43,11 +43,10 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 	
 	public RandomFeederGUI(Composite parent) {
 		super(parent);
+		feeder = new RandomFeeder();
 	}
 
-	protected void initialize() {
-		feeder = new RandomFeeder();
-		
+	public void initialize(int rowHeight) {
         ipPrototypeLabel = new Label(this, SWT.NONE);
         ipPrototypeText = new Text(this, SWT.BORDER);
         ipMaskLabel = new Label(this, SWT.NONE);
@@ -63,14 +62,10 @@ public class RandomFeederGUI extends AbstractFeederGUI {
         int textWidth = ipPrototypeText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
         ipPrototypeText.setText("");
 
-		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
-		ipUpButton.setText(getLabel("button.ipUp"));
-		int rowHeight = ipUpButton.computeSize(SWT.DEFAULT, SWT.DEFAULT).y - 10;
-
         ipPrototypeLabel.setText(getLabel("feeder.random.prototype")+":");
         ipPrototypeLabel.setLayoutData(formData(null, new FormAttachment(hostnameLabel, 0, SWT.RIGHT), new FormAttachment(ipPrototypeText, 0, SWT.CENTER), null));
         
-        ipPrototypeText.setLayoutData(formData(textWidth, rowHeight, new FormAttachment(ipPrototypeLabel), null, new FormAttachment(0), null));
+        ipPrototypeText.setLayoutData(formData(textWidth, SWT.DEFAULT, new FormAttachment(ipPrototypeLabel), null, new FormAttachment(0), new FormAttachment(0, rowHeight)));
         
         ipMaskLabel.setText(getLabel("feeder.random.mask")+":");
         ipMaskLabel.setLayoutData(formData(new FormAttachment(ipPrototypeText, 3), null, new FormAttachment(ipPrototypeText, 0, SWT.CENTER), null));
@@ -89,13 +84,15 @@ public class RandomFeederGUI extends AbstractFeederGUI {
         
 		FeederActions.HostnameButton hostnameSelectionListener = new FeederActions.HostnameButton(hostnameText, ipPrototypeText, ipMaskCombo);
         hostnameText.addTraverseListener(hostnameSelectionListener);
-		hostnameText.setLayoutData(formData(textWidth, rowHeight, new FormAttachment(ipPrototypeText, 0, SWT.LEFT), null, new FormAttachment(ipPrototypeText), null));
+		hostnameText.setLayoutData(formData(textWidth, SWT.DEFAULT, new FormAttachment(ipPrototypeText, 0, SWT.LEFT), null, new FormAttachment(ipPrototypeText), new FormAttachment(ipUpButton, 0, SWT.BOTTOM)));
         
         hostnameLabel.setText(getLabel("feeder.random.hostname")+":");
 		hostnameLabel.setLayoutData(formData(new FormAttachment(0), null, new FormAttachment(hostnameText, 0, SWT.CENTER), null));
-		
+
+		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
+		ipUpButton.setText(getLabel("button.ipUp"));
 		ipUpButton.addSelectionListener(hostnameSelectionListener);
-		ipUpButton.setLayoutData(formData(new FormAttachment(hostnameText), null, new FormAttachment(ipPrototypeText), new FormAttachment(hostnameText, 0, SWT.BOTTOM)));
+		ipUpButton.setLayoutData(formData(SWT.DEFAULT, rowHeight, new FormAttachment(hostnameText), null, new FormAttachment(ipPrototypeText), null));
 		
 		countLabel.setText(getLabel("feeder.random.count"));
 		countLabel.setLayoutData(formData(new FormAttachment(ipUpButton, 3), null, new FormAttachment(ipUpButton, 0, SWT.CENTER), null));

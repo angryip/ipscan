@@ -48,11 +48,10 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	
 	public RangeFeederGUI(Composite parent) {
 		super(parent);
+		feeder = new RangeFeeder();
 	}
 
-	protected void initialize() {
-		feeder = new RangeFeeder();
-
+	public void initialize(int rowHeight) {
         ipRangeLabel = new Label(this, SWT.NONE);
         startIPText = new Text(this, SWT.BORDER);
         toLabel = new Label(this, SWT.NONE);
@@ -61,10 +60,6 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         hostnameText = new Text(this, SWT.BORDER);
 		ipUpButton = new Button(this, SWT.NONE);
         netmaskCombo = new Combo(this, SWT.NONE);
-
-		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
-		ipUpButton.setText(getLabel("button.ipUp"));
-		int rowHeight = ipUpButton.computeSize(SWT.DEFAULT, SWT.DEFAULT).y - 10;
 
 		// the longest possible IP
         startIPText.setText("255.255.255.255xx");
@@ -82,13 +77,13 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		ipRangeLabel.setLayoutData(formData(ipHostWidth, SWT.DEFAULT, null, new FormAttachment(hostnameLabel, 0, SWT.RIGHT), new FormAttachment(startIPText, 0, SWT.CENTER), null));
 		hostnameLabel.setLayoutData(formData(ipHostWidth, SWT.DEFAULT, new FormAttachment(0), null, new FormAttachment(hostnameText, 0, SWT.CENTER), null));
 
-		startIPText.setLayoutData(formData(textWidth, rowHeight, new FormAttachment(ipRangeLabel), null, new FormAttachment(0), null));
+		startIPText.setLayoutData(formData(textWidth, SWT.DEFAULT, new FormAttachment(ipRangeLabel), null, new FormAttachment(0), new FormAttachment(0, rowHeight)));
         startIPText.addModifyListener(new StartIPModifyListener());
         
         toLabel.setText(getLabel("feeder.range.to"));
         toLabel.setLayoutData(formData(new FormAttachment(startIPText), null, new FormAttachment(startIPText, 0, SWT.CENTER), null));
                 
-        endIPText.setLayoutData(formData(textWidth, rowHeight, new FormAttachment(toLabel), null, null, null));
+        endIPText.setLayoutData(formData(textWidth, SWT.DEFAULT, new FormAttachment(toLabel), null, new FormAttachment(0), new FormAttachment(0, rowHeight)));
         endIPText.addKeyListener(new EndIPKeyListener());
         
         FeederActions.HostnameButton hostnameListener = new FeederActions.HostnameButton(hostnameText, startIPText, netmaskCombo) {
@@ -103,15 +98,17 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         };
         
         hostnameText.addTraverseListener(hostnameListener);
-		hostnameText.setLayoutData(formData(textWidth, rowHeight, new FormAttachment(startIPText, 0, SWT.LEFT), null, new FormAttachment(startIPText), null));
+		hostnameText.setLayoutData(formData(textWidth, SWT.DEFAULT, new FormAttachment(startIPText, 0, SWT.LEFT), null, new FormAttachment(startIPText), new FormAttachment(ipUpButton, 0, SWT.BOTTOM)));
 		hostnameText.setToolTipText(getLabel("feeder.range.hostname.tooltip"));
 		
 		Listener netmaskResetListener = new NetmaskResetListener();
 		startIPText.addListener(SWT.Modify, netmaskResetListener);
 		endIPText.addListener(SWT.Modify, netmaskResetListener);
 
+		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
+		ipUpButton.setText(getLabel("button.ipUp"));
 		ipUpButton.addSelectionListener(hostnameListener);
-		ipUpButton.setLayoutData(formData(new FormAttachment(hostnameText), null, new FormAttachment(endIPText), new FormAttachment(hostnameText, 0, SWT.BOTTOM)));
+		ipUpButton.setLayoutData(formData(SWT.DEFAULT, rowHeight, new FormAttachment(hostnameText), null, new FormAttachment(endIPText), null));
 
         netmaskCombo.setText(getLabel("feeder.range.netmask"));
 		netmaskCombo.setVisibleItemCount(10);

@@ -35,10 +35,9 @@ public abstract class AbstractFeederGUI extends Composite implements FeederCreat
 		super(parent, SWT.NONE);
 		setVisible(false);
 		setLayout(formLayout(7, 3, 3));
-		initialize();
 	}
 
-	protected abstract void initialize();
+	public abstract void initialize(int rowHeight);
 		
 	/**
 	 * @return the feeder id
