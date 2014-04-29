@@ -143,7 +143,7 @@ public class MainWindow {
 	 * This method initializes resultTable	
 	 */
 	private void initTableAndStatusBar(ResultTable resultTable, CommandsMenu resultsContextMenu, StatusBar statusBar) {
-		resultTable.setLayoutData(formData(new FormAttachment(0), new FormAttachment(100), new FormAttachment(feederArea, 1), new FormAttachment(statusBar.getComposite(), -2)));
+		resultTable.setLayoutData(formData(new FormAttachment(0), new FormAttachment(100), new FormAttachment(feederArea), new FormAttachment(statusBar.getComposite())));
 		resultTable.setMenu(resultsContextMenu);
 	}
 
@@ -162,7 +162,7 @@ public class MainWindow {
 	 * This method initializes main controls of the main window	
 	 */
 	private void initControlsArea(final Composite controlsArea, final Combo feederSelectionCombo, final Button startStopButton, final StartStopScanningAction startStopScanningAction, final ToolsActions.Preferences preferencesListener, final ToolsActions.ChooseFetchers chooseFetchersListsner) {
-		controlsArea.setLayoutData(formData(new FormAttachment(feederArea), new FormAttachment(100), new FormAttachment(0), new FormAttachment(feederArea, 0, SWT.BOTTOM)));
+		controlsArea.setLayoutData(formData(new FormAttachment(feederArea), null, new FormAttachment(feederArea, 0, SWT.TOP), new FormAttachment(feederArea, 0, SWT.BOTTOM)));
 		controlsArea.setLayout(formLayout(3, 3, 3));
 
 		// start/stop button
@@ -200,11 +200,11 @@ public class MainWindow {
 	}
 	
 	private void relayoutControls() {
-		boolean twoRowToolbar = Math.abs(feederRegistry.current().getSize().y - rowHeight * 2) <= 10;
+		boolean twoRowToolbar = Math.abs(feederRegistry.current().getSize().y - rowHeight * 2) <= rowHeight;
 		
 		feederSelectionCombo.setLayoutData(formData(SWT.DEFAULT, rowHeight, new FormAttachment(0), null, new FormAttachment(0), null));
 		if (twoRowToolbar) {
-			startStopButton.setLayoutData(formData(feederSelectionCombo.getSize().x, rowHeight, new FormAttachment(0), null, new FormAttachment(feederSelectionCombo, 0), null));
+			startStopButton.setLayoutData(formData(feederSelectionCombo.getSize().x, rowHeight, new FormAttachment(0), null, new FormAttachment(feederSelectionCombo), null));
 			prefsButton.setLayoutData(formData(new FormAttachment(feederSelectionCombo), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
 			fetchersButton.setLayoutData(formData(new FormAttachment(startStopButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
 		}

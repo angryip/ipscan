@@ -73,7 +73,8 @@ public class InfoDialog extends AbstractModalDialog {
 	/**
 	 * @param message The message to set.
 	 */
-	public void setMessage(String message) {
+	public InfoDialog setMessage(String message) {
 		this.message = message;
+		return this;
 	}
 }
