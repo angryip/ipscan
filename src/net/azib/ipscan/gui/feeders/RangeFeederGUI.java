@@ -52,7 +52,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	}
 
 	public void initialize(int rowHeight) {
-		setLayout(new GridLayout(4, false));
+		setLayout(new GridLayout(5, false));
 
         ipRangeLabel = new Label(this, SWT.NONE);
         startIPText = new Text(this, SWT.BORDER);
@@ -71,6 +71,10 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		endIPText.setLayoutData(new GridData(textWidth, -1));
 		hostnameText.setLayoutData(new GridData(textWidth, -1));
 		netmaskCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		((GridData)endIPText.getLayoutData()).horizontalSpan = 2;
+		GridData ipUpData = new GridData(); ipUpData.horizontalSpan = 2;
+		ipUpButton.setLayoutData(ipUpData);
 
         ipRangeLabel.setText(getLabel("feeder.range") + ":");
 		ipRangeLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
