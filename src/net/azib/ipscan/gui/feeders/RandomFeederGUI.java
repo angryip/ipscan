@@ -46,7 +46,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		feeder = new RandomFeeder();
 	}
 
-	public void initialize(int rowHeight) {
+	public void initialize() {
 		setLayout(new GridLayout(5, false));
 
         ipPrototypeLabel = new Label(this, SWT.NONE);

@@ -33,7 +33,7 @@ public class FileFeederGUI extends AbstractFeederGUI {
 		feeder = new FileFeeder();
 	}
 
-	public void initialize(int rowHeight) {
+	public void initialize() {
 		setLayout(new GridLayout(3, false));
         fileNameLabel = new Label(this, SWT.NONE);
         fileNameText = new Text(this, SWT.BORDER);

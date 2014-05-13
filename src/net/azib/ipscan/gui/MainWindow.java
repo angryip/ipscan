@@ -43,7 +43,6 @@ public class MainWindow {
 	
 	private Composite feederArea;
 	
-	private int rowHeight;
 	private Button startStopButton;
 	private Combo feederSelectionCombo;
 	private FeederGUIRegistry feederRegistry;
@@ -61,11 +60,6 @@ public class MainWindow {
 		this.statusBar = statusBar;
 		
 		initShell(shell);
-
-		startStopButton.pack();
-		// initialize global standard button height
-		rowHeight = startStopButton.getSize().y;
-
 		initFeederArea(feederArea, feederGUIRegistry);
 		initControlsArea(controlsArea, feederSelectionCombo, startStopButton, startStopScanningAction, preferencesListener, chooseFetchersListsner);
 		initTableAndStatusBar(resultTable, resultsContextMenu, statusBar);
@@ -151,7 +145,7 @@ public class MainWindow {
 
 		this.feederRegistry = feederRegistry;
 		for (AbstractFeederGUI feeder : feederRegistry) {
-			feeder.initialize(rowHeight);
+			feeder.initialize();
 		}
 	}
 

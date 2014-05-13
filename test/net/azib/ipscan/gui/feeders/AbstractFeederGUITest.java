@@ -24,7 +24,7 @@ public class AbstractFeederGUITest {
 	@Before
 	public void setUp() throws Exception {
 		feederGUI = new AbstractFeederGUI(new Shell()) {
-			public void initialize(int rowHeight) {
+			public void initialize() {
 			}
 			public String getFeederName() {
 				return "Mega Feeder";

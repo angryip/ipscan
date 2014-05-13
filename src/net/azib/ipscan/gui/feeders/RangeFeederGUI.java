@@ -51,7 +51,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		feeder = new RangeFeeder();
 	}
 
-	public void initialize(int rowHeight) {
+	public void initialize() {
 		setLayout(new GridLayout(5, false));
 
         ipRangeLabel = new Label(this, SWT.NONE);

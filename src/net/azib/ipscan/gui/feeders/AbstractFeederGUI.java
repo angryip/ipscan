@@ -34,7 +34,7 @@ public abstract class AbstractFeederGUI extends Composite implements FeederCreat
 		setVisible(false);
 	}
 
-	public abstract void initialize(int rowHeight);
+	public abstract void initialize();
 		
 	/**
 	 * @return the feeder id
