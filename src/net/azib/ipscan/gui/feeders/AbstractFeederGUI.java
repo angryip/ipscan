@@ -6,7 +6,6 @@
 package net.azib.ipscan.gui.feeders;
 
 import net.azib.ipscan.config.LoggerFactory;
-import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederCreator;
 import net.azib.ipscan.util.InetAddressUtils;
@@ -18,8 +17,6 @@ import org.eclipse.swt.widgets.Text;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Logger;
-
-import static net.azib.ipscan.gui.util.LayoutHelper.formLayout;
 
 /**
  * Base class of feeder GUI classes.
@@ -35,7 +32,6 @@ public abstract class AbstractFeederGUI extends Composite implements FeederCreat
 	public AbstractFeederGUI(Composite parent) {
 		super(parent, SWT.NONE);
 		setVisible(false);
-		setLayout(Platform.MAC_OS ? formLayout(7, 8, 12) : formLayout(7, 3, 3));
 	}
 
 	public abstract void initialize(int rowHeight);

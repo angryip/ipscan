@@ -23,13 +23,10 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
 import static net.azib.ipscan.gui.util.LayoutHelper.formData;
-import static net.azib.ipscan.gui.util.LayoutHelper.formLayout;
 
 /**
  * Main window of Angry IP Scanner.
@@ -162,13 +159,13 @@ public class MainWindow {
 	 * This method initializes main controls of the main window	
 	 */
 	private void initControlsArea(final Composite controlsArea, final Combo feederSelectionCombo, final Button startStopButton, final StartStopScanningAction startStopScanningAction, final ToolsActions.Preferences preferencesListener, final ToolsActions.ChooseFetchers chooseFetchersListsner) {
-		controlsArea.setLayoutData(formData(new FormAttachment(feederArea), null, new FormAttachment(feederArea, 0, SWT.TOP), new FormAttachment(feederArea, 0, SWT.BOTTOM)));
-		controlsArea.setLayout(formLayout(3, 3, 3));
+		controlsArea.setLayoutData(formData(new FormAttachment(feederArea), null, new FormAttachment(0), new FormAttachment(feederArea, 0, SWT.BOTTOM)));
 
 		// start/stop button
 		this.startStopButton = startStopButton;
 		shell.setDefaultButton(startStopButton);
 		startStopButton.addSelectionListener(startStopScanningAction);
+		startStopButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// feeder selection combobox
 		this.feederSelectionCombo = feederSelectionCombo;
@@ -181,14 +178,14 @@ public class MainWindow {
 
 		// traverse the button before the combo (and don't traverse other buttons at all)
 		controlsArea.setTabList(new Control[] {startStopButton, feederSelectionCombo});
-				
+
 		prefsButton = new ToolBar(controlsArea, SWT.FLAT);
 		prefsButton.setCursor(prefsButton.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
 		ToolItem item = new ToolItem(prefsButton, SWT.PUSH);
 		item.setImage(new Image(null, Labels.getInstance().getImageAsStream("button.preferences.img")));
 		item.setToolTipText(Labels.getLabel("title.preferences"));
 		item.addListener(SWT.Selection, preferencesListener);
-		
+
 		fetchersButton = new ToolBar(controlsArea, SWT.FLAT);
 		fetchersButton.setCursor(fetchersButton.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
 		item = new ToolItem(fetchersButton, SWT.PUSH);
@@ -200,18 +197,20 @@ public class MainWindow {
 	}
 	
 	private void relayoutControls() {
-		boolean twoRowToolbar = Math.abs(feederRegistry.current().getSize().y - rowHeight * 2) <= rowHeight;
-		
-		feederSelectionCombo.setLayoutData(formData(SWT.DEFAULT, rowHeight, new FormAttachment(0), null, new FormAttachment(0), null));
+		boolean twoRowToolbar = feederRegistry.current().getSize().y > startStopButton.getSize().y * 1.5;
+
 		if (twoRowToolbar) {
-			startStopButton.setLayoutData(formData(feederSelectionCombo.getSize().x, rowHeight, new FormAttachment(0), null, new FormAttachment(feederSelectionCombo), null));
-			prefsButton.setLayoutData(formData(new FormAttachment(feederSelectionCombo), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
-			fetchersButton.setLayoutData(formData(new FormAttachment(startStopButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
+			GridLayout layout = new GridLayout(2, false);
+			layout.marginTop = -2;
+			layout.marginBottom = 0;
+			layout.verticalSpacing = 3;
+			startStopButton.getParent().setLayout(layout);
+
+			prefsButton.moveAbove(startStopButton);
 		}
 		else {
-			startStopButton.setLayoutData(formData(feederSelectionCombo.getSize().x, rowHeight, new FormAttachment(feederSelectionCombo), null, new FormAttachment(-1), null));
-			prefsButton.setLayoutData(formData(new FormAttachment(startStopButton), null, new FormAttachment(feederSelectionCombo, 0, SWT.CENTER), null));
-			fetchersButton.setLayoutData(formData(new FormAttachment(prefsButton), null, new FormAttachment(startStopButton, 0, SWT.CENTER), null));
+			startStopButton.getParent().setLayout(new GridLayout(4, false));
+			startStopButton.moveAbove(prefsButton);
 		}
 	}
 			

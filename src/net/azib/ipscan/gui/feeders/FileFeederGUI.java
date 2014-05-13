@@ -10,11 +10,11 @@ import net.azib.ipscan.feeders.FileFeeder;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
 import static net.azib.ipscan.config.Labels.getLabel;
-import static net.azib.ipscan.gui.util.LayoutHelper.formData;
 
 /**
  * GUI for initialization of FileFeeder.
@@ -34,20 +34,16 @@ public class FileFeederGUI extends AbstractFeederGUI {
 	}
 
 	public void initialize(int rowHeight) {
+		setLayout(new GridLayout(3, false));
         fileNameLabel = new Label(this, SWT.NONE);
         fileNameText = new Text(this, SWT.BORDER);
         browseButton = new Button(this, SWT.NONE);
         
         fileNameLabel.setText(getLabel("feeder.file.name")+":");
-        fileNameLabel.setLayoutData(formData(new FormAttachment(0), null, new FormAttachment(fileNameText, 0, SWT.CENTER), new FormAttachment(browseButton, 0, SWT.BOTTOM)));
 
-        // some long text
-        fileNameText.setText("255.255.255.255.xxx.xxx");
-        fileNameText.setLayoutData(formData(fileNameText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x, SWT.DEFAULT, new FormAttachment(fileNameLabel), null, new FormAttachment(0), new FormAttachment(browseButton, 0, SWT.BOTTOM)));
-        fileNameText.setText("");
-        
+		fileNameText.setLayoutData(new GridData(160, -1));
+
         browseButton.setText(getLabel("feeder.file.browse"));
-        browseButton.setLayoutData(formData(SWT.DEFAULT, rowHeight, new FormAttachment(fileNameText), null, new FormAttachment(0), null));
         browseButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog dialog = new FileDialog(getShell());
