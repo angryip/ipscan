@@ -22,11 +22,7 @@ import static net.azib.ipscan.config.Labels.getLabel;
  * @author Anton Keks
  */
 public class FileFeederGUI extends AbstractFeederGUI {
-
-	private Label fileNameLabel;
 	private Text fileNameText;
-	
-	private Button browseButton;
 
 	public FileFeederGUI(Composite parent) {
 		super(parent);
@@ -35,11 +31,11 @@ public class FileFeederGUI extends AbstractFeederGUI {
 
 	public void initialize() {
 		setLayout(new GridLayout(3, false));
-        fileNameLabel = new Label(this, SWT.NONE);
+		Label fileNameLabel = new Label(this, SWT.NONE);
         fileNameText = new Text(this, SWT.BORDER);
-        browseButton = new Button(this, SWT.NONE);
+		Button browseButton = new Button(this, SWT.NONE);
         
-        fileNameLabel.setText(getLabel("feeder.file.name")+":");
+        fileNameLabel.setText(getLabel("feeder.file.name") + ":");
 
 		fileNameText.setLayoutData(new GridData(160, -1));
 
@@ -54,7 +50,7 @@ public class FileFeederGUI extends AbstractFeederGUI {
 					fileNameText.setSelection(fileName.length());
 				}
 			}
-        });
+		});
                         
 		pack();
 	}

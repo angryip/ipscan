@@ -30,22 +30,15 @@ import static net.azib.ipscan.config.Labels.getLabel;
  * @author Anton Keks
  */
 public class RangeFeederGUI extends AbstractFeederGUI {
-	
-	private Label ipRangeLabel;
 	private Text startIPText;
-	
-	private Label toLabel;
 	private Text endIPText;
+	private Text hostnameText;
+	private Button ipUpButton;
+	private Combo netmaskCombo;
+
 	private boolean isEndIPUnedited = true;
 	private boolean modifyListenersDisabled = false;
-		
-	private Label hostnameLabel;
-	private Text hostnameText;
-	
-	private Button ipUpButton;
-	
-	private Combo netmaskCombo;
-	
+
 	public RangeFeederGUI(Composite parent) {
 		super(parent);
 		feeder = new RangeFeeder();
@@ -54,11 +47,11 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	public void initialize() {
 		setLayout(new GridLayout(5, false));
 
-        ipRangeLabel = new Label(this, SWT.NONE);
+		Label ipRangeLabel = new Label(this, SWT.NONE);
         startIPText = new Text(this, SWT.BORDER);
-        toLabel = new Label(this, SWT.NONE);
+		Label toLabel = new Label(this, SWT.NONE);
         endIPText = new Text(this, SWT.BORDER);
-        hostnameLabel = new Label(this, SWT.NONE);
+		Label hostnameLabel = new Label(this, SWT.NONE);
         hostnameText = new Text(this, SWT.BORDER);
 		ipUpButton = new Button(this, SWT.NONE);
         netmaskCombo = new Combo(this, SWT.NONE);

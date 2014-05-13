@@ -25,22 +25,12 @@ import static net.azib.ipscan.config.Labels.getLabel;
  * @author Anton Keks
  */
 public class RandomFeederGUI extends AbstractFeederGUI {
-
-	private Label ipPrototypeLabel;
 	private Text ipPrototypeText;
-	
-	private Label ipMaskLabel;
 	private Combo ipMaskCombo;
-	
-	private Label hostnameLabel;
 	private Text hostnameText;
-	
 	private Button ipUpButton;
-	
-	private Label countLabel;
 	private Spinner countSpinner;
 
-	
 	public RandomFeederGUI(Composite parent) {
 		super(parent);
 		feeder = new RandomFeeder();
@@ -49,14 +39,14 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 	public void initialize() {
 		setLayout(new GridLayout(5, false));
 
-        ipPrototypeLabel = new Label(this, SWT.NONE);
+		Label ipPrototypeLabel = new Label(this, SWT.NONE);
         ipPrototypeText = new Text(this, SWT.BORDER);
-        ipMaskLabel = new Label(this, SWT.NONE);
+		Label ipMaskLabel = new Label(this, SWT.NONE);
         ipMaskCombo = new Combo(this, SWT.NONE);
-		hostnameLabel = new Label(this, SWT.NONE);
+		Label hostnameLabel = new Label(this, SWT.NONE);
 		hostnameText = new Text(this, SWT.BORDER);
 		ipUpButton = new Button(this, SWT.NONE);
-        countLabel = new Label(this, SWT.NONE);
+		Label countLabel = new Label(this, SWT.NONE);
         countSpinner = new Spinner(this, SWT.BORDER);
         
         // the longest possible IP
@@ -65,7 +55,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
         ipPrototypeText.setText("");
 		ipPrototypeText.setLayoutData(new GridData(textWidth, -1));
 
-        ipPrototypeLabel.setText(getLabel("feeder.random.prototype")+":");
+        ipPrototypeLabel.setText(getLabel("feeder.random.prototype") + ":");
 		ipPrototypeLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
         
         ipMaskLabel.setText(getLabel("feeder.random.mask") + ":");
@@ -82,7 +72,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		ipMaskCombo.select(3);
 		ipMaskCombo.setLayoutData(new GridData()); ((GridData)ipMaskCombo.getLayoutData()).horizontalSpan = 2;
 
-        hostnameLabel.setText(getLabel("feeder.random.hostname")+":");
+        hostnameLabel.setText(getLabel("feeder.random.hostname") + ":");
 		ipMaskLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
 
 		FeederActions.HostnameButton hostnameSelectionListener = new FeederActions.HostnameButton(hostnameText, ipPrototypeText, ipMaskCombo);
@@ -133,5 +123,4 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 	public String[] serializePartsLabels() {
 		return new String[] {"feeder.random.prototype", "feeder.random.mask", "feeder.random.count"};
 	}
-	
 }
