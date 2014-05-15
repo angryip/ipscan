@@ -68,7 +68,7 @@ public class MainMenu implements Startable {
 		Menu subMenu = initMenu(menu, "menu.scan");
 //		initMenuItem(subMenu, "menu.scan.newWindow", "Ctrl+N", new Integer(SWT.MOD1 | 'N'), initListener(FileActions.NewWindow.class));
 //		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.scan.load", "", SWT.MOD1 | 'S', initListener(ScanMenuActions.LoadFromFile.class), false);
+		initMenuItem(subMenu, "menu.scan.load", "", SWT.MOD1 | 'O', initListener(ScanMenuActions.LoadFromFile.class), false);
 		initMenuItem(subMenu, "menu.scan.exportAll", "Ctrl+S", SWT.MOD1 | 'S', initListener(ScanMenuActions.SaveAll.class), false);
 		initMenuItem(subMenu, "menu.scan.exportSelection", null, null, initListener(ScanMenuActions.SaveSelection.class), false);
 //		initMenuItem(subMenu, null, null, null, null);
@@ -96,7 +96,7 @@ public class MainMenu implements Startable {
 		createFavoritesMenu(menu);
 		
 		subMenu = initMenu(menu, "menu.tools");
-		initMenuItem(subMenu, "menu.tools.preferences", "Ctrl+O", SWT.MOD1 | (Platform.MAC_OS ? ',' : 'O'), initListener(ToolsActions.Preferences.class), true);
+		initMenuItem(subMenu, "menu.tools.preferences", "Ctrl+Shift+P", SWT.MOD1 | (Platform.MAC_OS ? ',' : SWT.MOD2 | 'P'), initListener(ToolsActions.Preferences.class), true);
 		initMenuItem(subMenu, "menu.tools.fetchers", "Ctrl+Shift+O", SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O'), initListener(ToolsActions.ChooseFetchers.class), true);
 		initMenuItem(subMenu, null, null, null, null);
 		Menu selectMenu = initMenu(subMenu, "menu.tools.select");
