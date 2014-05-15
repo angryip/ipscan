@@ -76,77 +76,65 @@ public class ScanMenuActions {
 			fileDialog.setFilterNames(descriptions.toArray(new String[descriptions.size()]));
 
 			String fileName = fileDialog.open();
+			if (fileName == null) return;
 
-			int i = 0;
-
-			// check the received file name
-			if (fileName != null) {
-				BufferedReader br = null;
+			BufferedReader reader = null;
+			try {
+				int i = 0;
 				isLoadedFromFile = true;
+				String line;
 
+				reader = new BufferedReader(new FileReader(fileName));
+
+				resultTable.removeAll();
+				String originalStartIP = null;
+				String startIPAfterLoad = null;
+				String endIp = null;
+
+				while ((line = reader.readLine()) != null) {
+					i++;
+					if (i == 1) {
+						continue;
+					}
+					String[] sp = line.split("\\s+");
+					if (i == 4) {
+						originalStartIP = sp[1];
+						startIPAfterLoad = sp[1];
+						endIp = sp[3];
+					}
+
+					if (sp.length < 3 || i < 8) {
+						continue;
+					}
+					InetAddress addr = InetAddress.getByName(sp[0]);
+					startIPAfterLoad = sp[0];
+
+					ScanningResult r = new ScanningResult(addr, 1);
+					r.setType(ScanningResult.ResultType.ALIVE);
+					if (sp[1].contains("[n/a]")) {
+						r.setType(ScanningResult.ResultType.DEAD);
+					}
+					List<String> values = new ArrayList<String>();
+					int j = 1;
+					for (String s : sp) {
+						j++;
+						values.add(s);
+					}
+					r.setValues(values.toArray());
+					resultTable.addOrUpdateResultRow(r);
+				}
+
+				RangeFeederGUI.startIPText.setText(startIPAfterLoad);
+				RangeFeederGUI.endIPText.setText(endIp);
+
+				stateMachine.transitionToNext();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
 				try {
-					List<ScanningResult> results = new ArrayList<ScanningResult>();
-
-					String line;
-
-					br = new BufferedReader(new FileReader(fileName));
-
-					resultTable.removeAll();
-					String originalStartIP = null;
-					String startIPAfterLoad = null;
-					String endIp = null;
-
-					while ((line = br.readLine()) != null) {
-						i++;
-						if (i == 1) {
-							continue;
-						}
-						String[] sp = line.split("\\s+");
-						if (i == 4) {
-							originalStartIP = sp[1];
-							startIPAfterLoad = sp[1];
-							endIp = sp[3];
-						}
-						
-						System.out.println(i + ": " + sp.length + " : " + line);
-
-						if (sp.length < 3 || i < 8) {
-							continue;
-						}
-						InetAddress addr = InetAddress.getByName(sp[0]);
-						startIPAfterLoad = sp[0];
-
-						ScanningResult r = new ScanningResult(addr, 1);
-						r.setType(ScanningResult.ResultType.ALIVE);
-						if (sp[1].contains("[n/a]")) {
-							r.setType(ScanningResult.ResultType.DEAD);
-						}
-						List<String> values = new ArrayList<String>();
-						int j = 1;
-						for (String s : sp) {
-							j++;
-//							if (s.contains("[n/")) {
-//								values.add(null);
-//							} else {
-								values.add(s);
-//							}
-						}
-						r.setValues(values.toArray());
-						resultTable.addOrUpdateResultRow(r);
-					}
-
-					RangeFeederGUI.startIPText.setText(startIPAfterLoad);
-					RangeFeederGUI.endIPText.setText(endIp);
-
-					stateMachine.transitionToNext();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} finally {
-					try {
-						if (br != null)br.close();
-					} catch (IOException ex) {
-						ex.printStackTrace();
-					}
+					if (reader != null)reader.close();
+				} catch (IOException ex) {
+					ex.printStackTrace();
 				}
 			}
 		}
@@ -206,28 +194,27 @@ public class ScanMenuActions {
 			fileDialog.setFilterNames(descriptions.toArray(new String[descriptions.size()]));
 
 			String fileName = fileDialog.open();
-			if (fileName != null) {
-				Exporter exporter = exporterRegistry.createExporter(fileName);
+			if (fileName == null) return;
 
-				statusBar.setStatusText(Labels.getLabel("state.exporting"));
+			Exporter exporter = exporterRegistry.createExporter(fileName);
 
-				// TODO: expose appending feature in the GUI
-				ExportProcessor exportProcessor = new ExportProcessor(exporter, new File(fileName), false);
+			statusBar.setStatusText(Labels.getLabel("state.exporting"));
 
-				// in case of isSelection we need to create our filter
-				ScanningResultFilter filter = null;
-				if (isSelection) {
-					filter = new ScanningResultFilter() {
-						public boolean apply(int index, ScanningResult result) {
-							return resultTable.isSelected(index);
-						}
-					};
-				}
+			// TODO: expose appending feature in the GUI
+			ExportProcessor exportProcessor = new ExportProcessor(exporter, new File(fileName), false);
 
-				exportProcessor.process(resultTable.getScanningResults(), filter);
-
-				statusBar.setStatusText(null);
+			// in case of isSelection we need to create our filter
+			ScanningResultFilter filter = null;
+			if (isSelection) {
+				filter = new ScanningResultFilter() {
+					public boolean apply(int index, ScanningResult result) {
+						return resultTable.isSelected(index);
+					}
+				};
 			}
+
+			exportProcessor.process(resultTable.getScanningResults(), filter);
+			statusBar.setStatusText(null);
 		}
 
 		private void addFileExtensions(List<String> extensions, List<String> descriptions, StringBuffer sb) {
