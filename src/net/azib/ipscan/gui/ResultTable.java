@@ -20,6 +20,7 @@ import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsMenuActions;
+import net.azib.ipscan.gui.actions.ScanMenuActions;
 import net.azib.ipscan.gui.actions.ToolsActions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -184,6 +185,10 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 	}
 	
 	public void removeAll() {
+
+		if (ScanMenuActions.isLoadedFromFile) {
+			return;
+		}
 		// remove all items from the real storage first
 		scanningResults.clear();
 		super.removeAll();

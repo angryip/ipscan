@@ -5,23 +5,17 @@
  */
 package net.azib.ipscan.core;
 
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
-import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.core.state.StateMachine.Transition;
+import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
+
+import java.net.InetAddress;
+import java.util.*;
 
 /**
  * The holder of scanning results.
@@ -253,6 +247,9 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	}
 	
 	private void updateStatistics(ScanningResult result) {
+		if (info == null) {
+			return;
+		}
 		if (result.getType() == ResultType.ALIVE) {
 			info.numAlive++;
 		}

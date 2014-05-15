@@ -45,7 +45,7 @@ public class ScanningResult {
 	 * @param address
 	 * @param numberOfFetchers the number of currently available fetchers
 	 */
-	ScanningResult(InetAddress address, int numberOfFetchers) {
+	public ScanningResult(InetAddress address, int numberOfFetchers) {
 		this.address = address;
 		values = new Object[numberOfFetchers];
 		values[0] = address.getHostAddress();
@@ -80,10 +80,14 @@ public class ScanningResult {
 		return Arrays.asList(values);
 	}
 	
+	public void setValues(Object[] values) {
+		this.values = values;
+	}
+
 	/**
 	 * Sets scanning result type
 	 */	
-	void setType(ResultType type) {
+	public void setType(ResultType type) {
 		this.type = type;
 	}
 

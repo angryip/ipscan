@@ -113,6 +113,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 			if (!preScanChecks())
 				return;
 		}
+		ScanMenuActions.isLoadedFromFile = false;
 		stateMachine.transitionToNext();
 	}
 

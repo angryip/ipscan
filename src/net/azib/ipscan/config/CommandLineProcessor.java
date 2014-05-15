@@ -6,18 +6,19 @@
 
 package net.azib.ipscan.config;
 
-import java.io.File;
-
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
-import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.core.state.StateMachine.Transition;
+import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.exporters.ExportProcessor;
 import net.azib.ipscan.exporters.Exporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
 import net.azib.ipscan.feeders.FeederCreator;
 import net.azib.ipscan.feeders.FeederRegistry;
+import net.azib.ipscan.gui.actions.ScanMenuActions;
+
+import java.io.File;
 
 /**
  * CommandLineProcessor
@@ -156,8 +157,10 @@ public class CommandLineProcessor implements CommandProcessor, StateTransitionLi
 				feederRegistry.select(feederCreator.getFeederId());
 			
 			// start scanning automatically
-			if (autoStart)
-				stateMachine.transitionToNext();				
+			if (autoStart) {
+				ScanMenuActions.isLoadedFromFile = false;
+				stateMachine.transitionToNext();
+			}
 		}
 		else
 		if (transition == Transition.COMPLETE && state == ScanningState.IDLE && exporter != null) {
