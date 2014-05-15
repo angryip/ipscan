@@ -18,7 +18,7 @@ import net.azib.ipscan.exporters.Exporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
-import net.azib.ipscan.gui.feeders.RangeFeederGUI;
+import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
@@ -50,11 +50,13 @@ public class ScanMenuActions {
 
 	public static class LoadFromFile implements Listener {
 		private final ExporterRegistry exporterRegistry;
+		private FeederGUIRegistry feederRegistry;
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
 
-		public LoadFromFile(ExporterRegistry exporterRegistry, ResultTable resultTable, StateMachine stateMachine) {
+		public LoadFromFile(ExporterRegistry exporterRegistry, FeederGUIRegistry feederRegistry, ResultTable resultTable, StateMachine stateMachine) {
 			this.exporterRegistry = exporterRegistry;
+			this.feederRegistry = feederRegistry;
 			this.resultTable = resultTable;
 			this.stateMachine = stateMachine;
 		}
@@ -78,19 +80,22 @@ public class ScanMenuActions {
 			String fileName = fileDialog.open();
 			if (fileName == null) return;
 
+			loadResultsFrom(fileName);
+		}
+
+		private void loadResultsFrom(String fileName) {
 			BufferedReader reader = null;
 			try {
-				int i = 0;
-				isLoadedFromFile = true;
-				String line;
-
 				reader = new BufferedReader(new FileReader(fileName));
+				isLoadedFromFile = true;
 
 				resultTable.removeAll();
 				String originalStartIP = null;
 				String startIPAfterLoad = null;
 				String endIp = null;
 
+				int i = 0;
+				String line;
 				while ((line = reader.readLine()) != null) {
 					i++;
 					if (i == 1) {
@@ -124,8 +129,8 @@ public class ScanMenuActions {
 					resultTable.addOrUpdateResultRow(r);
 				}
 
-				RangeFeederGUI.startIPText.setText(startIPAfterLoad);
-				RangeFeederGUI.endIPText.setText(endIp);
+				feederRegistry.select("feeder.range");
+				feederRegistry.current().unserialize(startIPAfterLoad, endIp);
 
 				stateMachine.transitionToNext();
 			} catch (IOException e) {

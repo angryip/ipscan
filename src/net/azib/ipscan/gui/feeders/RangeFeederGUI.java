@@ -30,8 +30,8 @@ import static net.azib.ipscan.config.Labels.getLabel;
  * @author Anton Keks
  */
 public class RangeFeederGUI extends AbstractFeederGUI {
-	public static Text startIPText;
-	public static Text endIPText;
+	private Text startIPText;
+	private Text endIPText;
 	private Text hostnameText;
 	private Button ipUpButton;
 	private Combo netmaskCombo;
