@@ -16,7 +16,6 @@ import net.azib.ipscan.exporters.ExportProcessor;
 import net.azib.ipscan.exporters.ExportProcessor.ScanningResultFilter;
 import net.azib.ipscan.exporters.Exporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
-import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.feeders.RangeFeederGUI;
@@ -49,21 +48,15 @@ public class ScanMenuActions {
 		}
 	}
 
-	static abstract class Load implements Listener {
+	public static class LoadFromFile implements Listener {
 		private final ExporterRegistry exporterRegistry;
 		private final ResultTable resultTable;
-		private final StatusBar statusBar;
-		private final boolean isSelection;
 		private final StateMachine stateMachine;
-		private MainWindow mainWindow;
 
-		Load(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, StateMachine stateMachine, boolean isSelection, MainWindow mainWindow) {
+		public LoadFromFile(ExporterRegistry exporterRegistry, ResultTable resultTable, StateMachine stateMachine) {
 			this.exporterRegistry = exporterRegistry;
 			this.resultTable = resultTable;
-			this.statusBar = statusBar;
 			this.stateMachine = stateMachine;
-			this.isSelection = isSelection;
-			this.mainWindow = mainWindow;
 		}
 
 		public void handleEvent(Event event) {
@@ -264,12 +257,6 @@ public class ScanMenuActions {
 			// strip the last comma
 			sb.delete(sb.length() - 2, sb.length());
 			sb.append(")");
-		}
-	}
-
-	public static final class LoadFromFile extends Load {
-		public LoadFromFile(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, StateMachine stateMachine, MainWindow mainWindow) {
-			super(exporterRegistry, resultTable, statusBar, stateMachine, false, mainWindow);
 		}
 	}
 
