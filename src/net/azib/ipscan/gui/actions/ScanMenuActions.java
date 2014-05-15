@@ -16,6 +16,9 @@ import net.azib.ipscan.exporters.ExportProcessor;
 import net.azib.ipscan.exporters.ExportProcessor.ScanningResultFilter;
 import net.azib.ipscan.exporters.Exporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
+import net.azib.ipscan.fetchers.IPFetcher;
+import net.azib.ipscan.fetchers.PingFetcher;
+import net.azib.ipscan.fetchers.PortsFetcher;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
@@ -32,6 +35,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Arrays.asList;
+import static net.azib.ipscan.core.ScanningResult.ResultType.*;
 
 /**
  * FileActions
@@ -94,44 +100,42 @@ public class ScanMenuActions {
 				String startIPAfterLoad = null;
 				String endIp = null;
 
+				int ipIndex = 0, pingIndex = 1, portsIndex = 3;
+				String ipLabel = Labels.getLabel(IPFetcher.ID);
 				int i = 0;
 				String line;
 				while ((line = reader.readLine()) != null) {
 					i++;
-					if (i == 1) {
-						continue;
-					}
+					if (i == 1) continue;
 					String[] sp = line.split("\\s+");
+
 					if (i == 4) {
 						originalStartIP = sp[1];
 						startIPAfterLoad = sp[1];
 						endIp = sp[3];
 					}
 
-					if (sp.length < 3 || i < 8) {
-						continue;
+					if (ipLabel.equals(sp[ipIndex])) {
+						pingIndex = asList(sp).indexOf(Labels.getLabel(PingFetcher.ID));
+						portsIndex = asList(sp).indexOf(Labels.getLabel(PortsFetcher.ID));
 					}
-					InetAddress addr = InetAddress.getByName(sp[0]);
-					startIPAfterLoad = sp[0];
 
-					ScanningResult r = new ScanningResult(addr, 1);
-					r.setType(ScanningResult.ResultType.ALIVE);
-					if (sp[1].contains("[n/a]")) {
-						r.setType(ScanningResult.ResultType.DEAD);
-					}
-					List<String> values = new ArrayList<String>();
-					int j = 1;
-					for (String s : sp) {
-						j++;
-						values.add(s);
-					}
-					r.setValues(values.toArray());
+					if (sp.length < 3 || i < 8) continue;
+
+					InetAddress addr = InetAddress.getByName(sp[ipIndex]);
+					startIPAfterLoad = sp[ipIndex];
+
+					ScanningResult r = new ScanningResult(addr, sp.length);
+					if (portsIndex > 0 && sp[portsIndex].matches("\\d.*")) r.setType(WITH_PORTS);
+					else if (pingIndex > 0 && sp[pingIndex].matches("\\d.*")) r.setType(ALIVE);
+					else r.setType(DEAD);
+
+					r.setValues(sp);
 					resultTable.addOrUpdateResultRow(r);
 				}
 
 				feederRegistry.select("feeder.range");
 				feederRegistry.current().unserialize(startIPAfterLoad, endIp);
-
 				stateMachine.transitionToNext();
 			} catch (IOException e) {
 				e.printStackTrace();
