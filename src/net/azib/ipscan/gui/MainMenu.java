@@ -68,7 +68,7 @@ public class MainMenu implements Startable {
 		Menu subMenu = initMenu(menu, "menu.scan");
 //		initMenuItem(subMenu, "menu.scan.newWindow", "Ctrl+N", new Integer(SWT.MOD1 | 'N'), initListener(FileActions.NewWindow.class));
 //		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.scan.load", "", SWT.MOD1 | 'O', initListener(ScanMenuActions.LoadFromFile.class), false);
+		initMenuItem(subMenu, "menu.scan.load", "", SWT.MOD1 | 'O', initListener(ScanMenuActions.LoadFromFile.class), true);
 		initMenuItem(subMenu, "menu.scan.exportAll", "Ctrl+S", SWT.MOD1 | 'S', initListener(ScanMenuActions.SaveAll.class), false);
 		initMenuItem(subMenu, "menu.scan.exportSelection", null, null, initListener(ScanMenuActions.SaveSelection.class), false);
 //		initMenuItem(subMenu, null, null, null, null);

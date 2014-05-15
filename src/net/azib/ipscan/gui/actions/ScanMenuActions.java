@@ -60,16 +60,6 @@ public class ScanMenuActions {
 		}
 
 		public void handleEvent(Event event) {
-
-			if (!stateMachine.inState(ScanningState.IDLE)) {
-				// ask the user whether to save incomplete results
-				MessageBox box = new MessageBox(resultTable.getShell(), SWT.ICON_WARNING);
-				box.setText(Version.NAME);
-				box.setMessage(Labels.getLabel("exception.ExporterException.scanningInProgress2"));
-				box.open();
-			}
-
-			// create the file dialog
 			FileDialog fileDialog = new FileDialog(resultTable.getShell(), SWT.OPEN);
 
 			// gather lists of extensions and exporter names
@@ -81,12 +71,10 @@ public class ScanMenuActions {
 			List<String> extensions = new ArrayList<String>();
 			extensions.add(extensions2.get(0));
 
-			// initialize other stuff
 			fileDialog.setText(labelBuffer.toString());
 			fileDialog.setFilterExtensions(extensions.toArray(new String[extensions.size()]));
 			fileDialog.setFilterNames(descriptions.toArray(new String[descriptions.size()]));
 
-			// show the dialog and receive the filename
 			String fileName = fileDialog.open();
 
 			int i = 0;
@@ -205,7 +193,6 @@ public class ScanMenuActions {
 					return;
 			}
 
-			// create the file dialog
 			FileDialog fileDialog = new FileDialog(resultTable.getShell(), SWT.SAVE);
 
 			// gather lists of extensions and exporter names
@@ -214,15 +201,11 @@ public class ScanMenuActions {
 			StringBuffer labelBuffer = new StringBuffer(Labels.getLabel(isSelection ? "title.exportSelection" : "title.exportAll"));
 			addFileExtensions(extensions, descriptions, labelBuffer);
 
-			// initialize other stuff
 			fileDialog.setText(labelBuffer.toString());
 			fileDialog.setFilterExtensions(extensions.toArray(new String[extensions.size()]));
 			fileDialog.setFilterNames(descriptions.toArray(new String[descriptions.size()]));
 
-			// show the dialog and receive the filename
 			String fileName = fileDialog.open();
-
-			// check the received file name
 			if (fileName != null) {
 				Exporter exporter = exporterRegistry.createExporter(fileName);
 
