@@ -16,9 +16,7 @@ import net.azib.ipscan.exporters.ExportProcessor;
 import net.azib.ipscan.exporters.ExportProcessor.ScanningResultFilter;
 import net.azib.ipscan.exporters.Exporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
-import net.azib.ipscan.fetchers.IPFetcher;
-import net.azib.ipscan.fetchers.PingFetcher;
-import net.azib.ipscan.fetchers.PortsFetcher;
+import net.azib.ipscan.exporters.TXTExporter;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
@@ -28,16 +26,9 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.Arrays.asList;
-import static net.azib.ipscan.core.ScanningResult.ResultType.*;
-import static net.azib.ipscan.util.IOUtils.closeQuietly;
 
 /**
  * FileActions
@@ -55,12 +46,14 @@ public class ScanMenuActions {
 	}
 
 	public static class LoadFromFile implements Listener {
+		private TXTExporter txtExporter;
 		private final ExporterRegistry exporterRegistry;
 		private FeederGUIRegistry feederRegistry;
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
 
-		public LoadFromFile(ExporterRegistry exporterRegistry, FeederGUIRegistry feederRegistry, ResultTable resultTable, StateMachine stateMachine) {
+		public LoadFromFile(TXTExporter txtExporter, ExporterRegistry exporterRegistry, FeederGUIRegistry feederRegistry, ResultTable resultTable, StateMachine stateMachine) {
+			this.txtExporter = txtExporter;
 			this.exporterRegistry = exporterRegistry;
 			this.feederRegistry = feederRegistry;
 			this.resultTable = resultTable;
@@ -90,59 +83,20 @@ public class ScanMenuActions {
 		}
 
 		private void loadResultsFrom(String fileName) {
-			BufferedReader reader = null;
 			try {
-				reader = new BufferedReader(new FileReader(fileName));
 				isLoadedFromFile = true;
+				feederRegistry.select("feeder.range");
 
-				resultTable.removeAll();
-				String originalStartIP = null;
-				String startIPAfterLoad = null;
-				String endIp = null;
-
-				int ipIndex = 0, pingIndex = 1, portsIndex = 3;
-				String ipLabel = Labels.getLabel(IPFetcher.ID);
-				int i = 0;
-				String line;
-				while ((line = reader.readLine()) != null) {
-					i++;
-					if (i == 1) continue;
-					String[] sp = line.split("\\s+");
-
-					if (i == 4) {
-						originalStartIP = sp[1];
-						startIPAfterLoad = sp[1];
-						endIp = sp[3];
-					}
-
-					if (ipLabel.equals(sp[ipIndex])) {
-						pingIndex = asList(sp).indexOf(Labels.getLabel(PingFetcher.ID));
-						portsIndex = asList(sp).indexOf(Labels.getLabel(PortsFetcher.ID));
-					}
-
-					if (sp.length < 3 || i < 8) continue;
-
-					InetAddress addr = InetAddress.getByName(sp[ipIndex]);
-					startIPAfterLoad = sp[ipIndex];
-
-					ScanningResult r = new ScanningResult(addr, sp.length);
-					if (portsIndex > 0 && sp[portsIndex].matches("\\d.*")) r.setType(WITH_PORTS);
-					else if (pingIndex > 0 && sp[pingIndex].matches("\\d.*")) r.setType(ALIVE);
-					else r.setType(DEAD);
-
-					r.setValues(sp);
-					resultTable.addOrUpdateResultRow(r);
+				List<ScanningResult> results = txtExporter.importResults(fileName, feederRegistry.current());
+				resultTable.clearAll();
+				for (ScanningResult result : results) {
+					resultTable.addOrUpdateResultRow(result);
 				}
 
-				feederRegistry.select("feeder.range");
-				feederRegistry.current().unserialize(startIPAfterLoad, endIp);
 				stateMachine.transitionToNext();
 			}
 			catch (Exception e) {
 				throw new UserErrorException("fileLoad.failed", e);
-			}
-			finally {
-				closeQuietly(reader);
 			}
 		}
 

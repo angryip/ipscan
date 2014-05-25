@@ -3,13 +3,27 @@
  */
 package net.azib.ipscan.exporters;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.text.DateFormat;
-import java.util.Date;
-
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
+import net.azib.ipscan.core.ScanningResult;
+import net.azib.ipscan.fetchers.IPFetcher;
+import net.azib.ipscan.fetchers.PingFetcher;
+import net.azib.ipscan.fetchers.PortsFetcher;
+import net.azib.ipscan.gui.feeders.AbstractFeederGUI;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static net.azib.ipscan.core.ScanningResult.ResultType.*;
+import static net.azib.ipscan.util.IOUtils.closeQuietly;
 
 /**
  * TXT Exporter
@@ -69,7 +83,6 @@ public class TXTExporter extends AbstractExporter {
 	
 	/**
 	 * Pads the passed string with spaces.
-	 * @param s
 	 * @param length the total returned length, minimum is 13
 	 */
 	String pad(Object o, int length) {
@@ -87,5 +100,57 @@ public class TXTExporter extends AbstractExporter {
 		}
 		return s + "                                                                       "
 				   .substring(0, length - s.length());
+	}
+
+	public List<ScanningResult> importResults(String fileName, AbstractFeederGUI feeder) throws IOException {
+		List<ScanningResult> results = new ArrayList<ScanningResult>();
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(fileName));
+
+			String originalStartIP = null;
+			String startIPAfterLoad = null;
+			String endIp = null;
+
+			int ipIndex = 0, pingIndex = 1, portsIndex = 3;
+			String ipLabel = Labels.getLabel(IPFetcher.ID);
+			int i = 0;
+			String line;
+			while ((line = reader.readLine()) != null) {
+				i++;
+				if (i == 1) continue;
+				String[] sp = line.split("\\s+");
+
+				if (i == 4) {
+					originalStartIP = sp[1];
+					startIPAfterLoad = sp[1];
+					endIp = sp[3];
+				}
+
+				if (ipLabel.equals(sp[ipIndex])) {
+					pingIndex = asList(sp).indexOf(Labels.getLabel(PingFetcher.ID));
+					portsIndex = asList(sp).indexOf(Labels.getLabel(PortsFetcher.ID));
+				}
+
+				if (sp.length < 3 || i < 8) continue;
+
+				InetAddress addr = InetAddress.getByName(sp[ipIndex]);
+				startIPAfterLoad = sp[ipIndex];
+
+				ScanningResult r = new ScanningResult(addr, sp.length);
+				if (portsIndex > 0 && sp[portsIndex].matches("\\d.*")) r.setType(WITH_PORTS);
+				else if (pingIndex > 0 && sp[pingIndex].matches("\\d.*")) r.setType(ALIVE);
+				else r.setType(DEAD);
+
+				r.setValues(sp);
+				results.add(r);
+			}
+
+			feeder.unserialize(startIPAfterLoad, endIp);
+			return results;
+		}
+		finally {
+			closeQuietly(reader);
+		}
 	}
 }
