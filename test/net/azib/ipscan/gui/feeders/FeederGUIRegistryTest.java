@@ -7,7 +7,6 @@ package net.azib.ipscan.gui.feeders;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.feeders.Feeder;
-
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -15,6 +14,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -37,6 +37,7 @@ public class FeederGUIRegistryTest {
 		feederSelectionCombo = mock(Combo.class);
 		
 		feederGUI = new RangeFeederGUI(parent);
+		feederGUI.initialize();
 		registry = new FeederGUIRegistry(new AbstractFeederGUI[] {feederGUI}, feederSelectionCombo, null);
 	}
 	
