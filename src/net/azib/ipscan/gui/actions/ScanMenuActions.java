@@ -31,13 +31,13 @@ import org.eclipse.swt.widgets.MessageBox;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static net.azib.ipscan.core.ScanningResult.ResultType.*;
+import static net.azib.ipscan.util.IOUtils.closeQuietly;
 
 /**
  * FileActions
@@ -137,14 +137,12 @@ public class ScanMenuActions {
 				feederRegistry.select("feeder.range");
 				feederRegistry.current().unserialize(startIPAfterLoad, endIp);
 				stateMachine.transitionToNext();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					if (reader != null)reader.close();
-				} catch (IOException ex) {
-					ex.printStackTrace();
-				}
+			}
+			catch (Exception e) {
+				throw new UserErrorException("fileLoad.failed", e);
+			}
+			finally {
+				closeQuietly(reader);
 			}
 		}
 
