@@ -11,7 +11,6 @@ import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederException;
 import net.azib.ipscan.feeders.RangeFeeder;
 import net.azib.ipscan.gui.actions.FeederActions;
-import net.azib.ipscan.util.InetAddressUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Image;
@@ -20,9 +19,11 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
 import java.net.InetAddress;
+import java.net.InterfaceAddress;
 import java.net.UnknownHostException;
 
 import static net.azib.ipscan.config.Labels.getLabel;
+import static net.azib.ipscan.util.InetAddressUtils.*;
 
 /**
  * GUI for initialization of RangeFeeder.
@@ -188,14 +189,8 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 			
 			try {
 				String netmaskString = netmaskCombo.getText();
-				InetAddress netmask = InetAddressUtils.parseNetmask(netmaskString);
 				InetAddress startIP = InetAddress.getByName(startIPText.getText());
-				
-				modifyListenersDisabled = true;
-				startIPText.setText(InetAddressUtils.startRangeByNetmask(startIP, netmask).getHostAddress());
-				endIPText.setText(InetAddressUtils.endRangeByNetmask(startIP, netmask).getHostAddress());
-				modifyListenersDisabled = false;
-				isEndIPUnedited = false;
+				updateStartEndWithNetmask(startIP, netmaskString);
 			}
 			catch (UnknownHostException e) {
 				throw new FeederException("invalidNetmask");
@@ -209,5 +204,26 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 				netmaskCombo.forceFocus();
 			}
 		}
+	}
+
+	private void updateStartEndWithNetmask(InetAddress ip, String netmaskString) {
+		try {
+			InetAddress netmask = parseNetmask(netmaskString);
+			modifyListenersDisabled = true;
+			startIPText.setText(startRangeByNetmask(ip, netmask).getHostAddress());
+			endIPText.setText(endRangeByNetmask(ip, netmask).getHostAddress());
+			modifyListenersDisabled = false;
+			isEndIPUnedited = false;
+		}
+		catch (UnknownHostException e) {
+			LOG.fine(e.toString());
+		}
+	}
+
+	@Override
+	protected void afterLocalHostInfoFilled(InterfaceAddress localInterface) {
+		InetAddress address = localInterface.getAddress();
+		if (!address.isLoopbackAddress())
+			updateStartEndWithNetmask(address, "/" + localInterface.getNetworkPrefixLength());
 	}
 }

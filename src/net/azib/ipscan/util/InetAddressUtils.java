@@ -5,17 +5,15 @@
  */
 package net.azib.ipscan.util;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import net.azib.ipscan.config.LoggerFactory;
+
+import java.net.*;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-import net.azib.ipscan.config.LoggerFactory;
+import static java.net.NetworkInterface.getNetworkInterfaces;
 
 /**
  * This class provides various utility static methods,
@@ -177,36 +175,22 @@ public class InetAddressUtils {
 		return bytes[bytes.length-1] == 0 || bytes[bytes.length-1] == (byte)0xFF;
 	}
 
-	/**
-	 * Returns an IP address by hostname.
-	 * This method correctly resolves the local IP address on Linux.
-	 * @param hostname
-	 * @return IP address as String
-	 * @throws UnknownHostException 
-	 */
-	public static InetAddress getAddressByName(String hostname) throws UnknownHostException {
-		InetAddress address = InetAddress.getByName(hostname);
-		if (address.isLoopbackAddress()) {
-			// loopback address (127.0.0.1) was returned, try to find the local address 
-			// by enumeration of network interfaces		
-			try {
-				outer: 
-				for (Enumeration<NetworkInterface> i = NetworkInterface.getNetworkInterfaces(); i.hasMoreElements(); ) {
-					NetworkInterface networkInterface = i.nextElement();
-					for (Enumeration<InetAddress> i2 = networkInterface.getInetAddresses(); i2.hasMoreElements();) {
-						InetAddress currentAddress = i2.nextElement();
-						if (!currentAddress.isLoopbackAddress() && currentAddress instanceof Inet4Address) {
-							address = currentAddress;
-							break outer;
-						}
-					}
+	public static InterfaceAddress getLocalInterface() {
+		InterfaceAddress anyAddress = null;
+		try {
+			for (Enumeration<NetworkInterface> i = getNetworkInterfaces(); i.hasMoreElements(); ) {
+				NetworkInterface networkInterface = i.nextElement();
+				for (InterfaceAddress ifAddr : networkInterface.getInterfaceAddresses()) {
+					anyAddress = ifAddr;
+					InetAddress addr = ifAddr.getAddress();
+					if (!addr.isLoopbackAddress() && addr instanceof Inet4Address)
+						return ifAddr;
 				}
 			}
-			catch (SocketException e) {
-				LOG.log(Level.FINE, "Cannot enumerate network interfaces", e);
-			}
 		}
-		return address;
-	}		
-
+		catch (SocketException e) {
+			LOG.log(Level.FINE, "Cannot enumerate network interfaces", e);
+		}
+		return anyAddress;
+	}
 }

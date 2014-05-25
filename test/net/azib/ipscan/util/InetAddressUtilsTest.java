@@ -1,15 +1,11 @@
 package net.azib.ipscan.util;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.UnknownHostException;
-import java.util.Enumeration;
 
-import net.azib.ipscan.util.InetAddressUtils;
-
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class InetAddressUtilsTest {
 	
@@ -95,17 +91,4 @@ public class InetAddressUtilsTest {
 		assertTrue(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("127.6.32.255")));
 		assertFalse(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("127.4.5.6")));
 	}
-	
-	@Test
-	public void testGetAddressByName() throws Exception {
-		Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces();
-		ifaces.nextElement();
-		if (ifaces.hasMoreElements()) {		
-			// this test depends on the network configuraton of the system
-			// so we run it only if there are more than 1 network interface in the system (which is a loopback interface) 
-			assertFalse(InetAddress.getByName(InetAddressUtils.getAddressByName(InetAddress.getLocalHost().getHostName()).getHostAddress()).isLoopbackAddress());
-			assertFalse(InetAddress.getByName(InetAddressUtils.getAddressByName("localhost").getHostAddress()).isLoopbackAddress());
-		}
-	}
-	
 }

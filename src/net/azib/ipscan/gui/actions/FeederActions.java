@@ -5,10 +5,9 @@ package net.azib.ipscan.gui.actions;
 
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.feeders.FeederException;
-import net.azib.ipscan.util.InetAddressUtils;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.widgets.*;
@@ -17,6 +16,8 @@ import java.net.*;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static java.net.NetworkInterface.getNetworkInterfaces;
 
 /**
  * FeederActions
@@ -28,11 +29,10 @@ public class FeederActions {
 	
 	static final Logger LOG = LoggerFactory.getLogger();
 
-	public static class HostnameButton implements SelectionListener, TraverseListener {
-		
-		private final Text hostnameText;
-		private final Text ipText;
-        private final Combo netmaskCombo;
+	public static class HostnameButton extends SelectionAdapter implements TraverseListener {
+		private Text hostnameText;
+		private Text ipText;
+        private Combo netmaskCombo;
 
 		public HostnameButton(Text hostnameText, Text ipText, Combo netmaskCombo) {
 			this.hostnameText = hostnameText;
@@ -40,10 +40,6 @@ public class FeederActions {
             this.netmaskCombo = netmaskCombo;
         }
 		
-		public void widgetDefaultSelected(SelectionEvent event) {
-			widgetSelected(event);
-		}
-
 		public void widgetSelected(SelectionEvent event) {
 			String hostname = hostnameText.getText();
 			
@@ -53,7 +49,7 @@ public class FeederActions {
 				}
 				else {
 					// resolve remote address
-					InetAddress address = InetAddressUtils.getAddressByName(hostname);
+					InetAddress address = InetAddress.getByName(hostname);
 					ipText.setText(address.getHostAddress());
 
 					// now update the hostname itself using a reverse lookup
@@ -94,7 +90,7 @@ public class FeederActions {
 					}
 				};
 
-				for (Enumeration<NetworkInterface> i = NetworkInterface.getNetworkInterfaces(); i.hasMoreElements(); ) {
+				for (Enumeration<NetworkInterface> i = getNetworkInterfaces(); i.hasMoreElements(); ) {
 					NetworkInterface networkInterface = i.nextElement();
 					for (InterfaceAddress ifaddr : networkInterface.getInterfaceAddresses()) {
 						if (ifaddr == null) continue;
