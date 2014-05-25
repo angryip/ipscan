@@ -3,15 +3,15 @@
  */
 package net.azib.ipscan.fetchers;
 
-import static org.junit.Assert.*;
+import net.azib.ipscan.core.ScanningSubject;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import net.azib.ipscan.core.ScanningSubject;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * HostnameFetcherTest
@@ -32,7 +32,7 @@ public class HostnameFetcherTest extends AbstractFetcherTestCase {
 			assertEquals(InetAddress.getLocalHost().getCanonicalHostName(), fetcher.scan(new ScanningSubject(InetAddress.getLocalHost())));
 		
 		try {
-			InetAddress googleAddress = InetAddress.getByName("www.google.com");
+			InetAddress googleAddress = InetAddress.getByName("angryip.org");
 			assertEquals(googleAddress.getCanonicalHostName(), fetcher.scan(new ScanningSubject(googleAddress)));
 		}
 		catch (UnknownHostException e) { /* ignore - test is running in off-line environment */ }
