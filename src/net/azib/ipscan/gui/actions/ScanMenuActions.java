@@ -93,7 +93,13 @@ public class ScanMenuActions {
 					resultTable.addOrUpdateResultRow(result);
 				}
 
-				stateMachine.transitionToNext();
+				if (!results.isEmpty()) {
+					String lastLoadedIP = results.get(results.size()-1).getAddress().getHostAddress();
+					String[] feederIPs = feederRegistry.current().serialize();
+					if (!lastLoadedIP.equals(feederIPs[1]))
+						stateMachine.transitionToNext(); // we need to continue previous scan
+				}
+
 			}
 			catch (Exception e) {
 				throw new UserErrorException("fileLoad.failed", e);
