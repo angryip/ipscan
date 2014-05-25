@@ -37,15 +37,15 @@ public class StatusBar {
 	
 	private ScannerConfig scannerConfig;
 	private GUIConfig guiConfig;
-  private StateMachine stateMachine;
-  private ResultTable resultTable;
+	private StateMachine stateMachine;
+	private ResultTable resultTable;
 
 	public StatusBar(Shell shell, GUIConfig guiConfig, ScannerConfig scannerConfig, ResultTable resultTable, StateMachine stateMachine) {
 		this.guiConfig = guiConfig;
 		this.scannerConfig = scannerConfig;
-    this.stateMachine = stateMachine;
-    this.resultTable = resultTable;
-    this.resultTable.addListener(SWT.Selection, new TableSelection(this, stateMachine));
+		this.stateMachine = stateMachine;
+		this.resultTable = resultTable;
+		this.resultTable.addListener(SWT.Selection, new TableSelection(this, stateMachine));
 		
 		composite = new Composite(shell, SWT.NONE);
 		composite.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), null, new FormAttachment(100)));
@@ -134,9 +134,9 @@ public class StatusBar {
 		// enable/disable interactive controls on the status bar
 		displayMethodText.setEnabled(enabled);
 	}
-	
+
 	class DisplayModeChangeListener implements Listener {
-    public void handleEvent(Event event) {
+		public void handleEvent(Event event) {
 			// user clicked the config text, lets ask the display options
 			if (event.type == SWT.MouseDown) {
 				Menu popupMenu = new Menu(getShell(), SWT.POP_UP);
@@ -153,19 +153,19 @@ public class StatusBar {
 				// remember the selected display method
 				guiConfig.displayMethod = (DisplayMethod) event.widget.getData();
 				updateConfigText();
-        if (!resultTable.getScanningResults().areResultsAvailable()) return;
-        switch (guiConfig.displayMethod) {
-          case ALIVE: {
-            new SelectDead(resultTable).handleEvent(event);
-            new Delete(resultTable, stateMachine).handleEvent(event);
-            break;
-          }
-          case PORTS: {
-            new SelectWithoutPorts(resultTable).handleEvent(event);
-            new Delete(resultTable, stateMachine).handleEvent(event);
-            break;
-          }
-        }
+				if (!resultTable.getScanningResults().areResultsAvailable()) return;
+				switch (guiConfig.displayMethod) {
+					case ALIVE: {
+						new SelectDead(resultTable).handleEvent(event);
+						new Delete(resultTable, stateMachine).handleEvent(event);
+						break;
+					}
+					case PORTS: {
+						new SelectWithoutPorts(resultTable).handleEvent(event);
+						new Delete(resultTable, stateMachine).handleEvent(event);
+						break;
+					}
+				}
 			}
 		}
 	}
