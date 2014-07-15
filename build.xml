@@ -218,12 +218,10 @@
 				<fileset dir="${bin}.@{platform}">
 					<include name="version.txt"/>
 					<!-- GTK stuff -->
-					<include name="libswt-atk-gtk-*.so"/>
 					<include name="libswt-awt-gtk-*.so"/>
 					<include name="libswt-glx-gtk-*.so"/>
 					<include name="libswt-mozilla-*.so"/>
-					<include name="libswt-gnome-*.so"/>
-					<include name="libswt-cairo-*.so"/>
+   					<include name="libswt-gnome-*.so"/>
 					<include name="libswt-xpcominit-gtk-*.so"/>
 					<include name="libswt-xulrunner-gtk-*.so"/>
 					<include name="libswt-webkit-gtk-*.so"/>
