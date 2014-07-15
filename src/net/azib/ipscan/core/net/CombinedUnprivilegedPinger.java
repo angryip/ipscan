@@ -6,9 +6,11 @@
 
 package net.azib.ipscan.core.net;
 
+import net.azib.ipscan.core.ScanningSubject;
+
 import java.io.IOException;
 
-import net.azib.ipscan.core.ScanningSubject;
+import static java.lang.Math.max;
 
 /**
  * CombinedUnprivilegedPinger - uses both UDP and TCP for pinging.
@@ -28,7 +30,7 @@ public class CombinedUnprivilegedPinger implements Pinger {
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
 		// try UDP first - it should be more reliable in general
-		PingResult result = udpPinger.ping(subject, count);
+		PingResult result = udpPinger.ping(subject, max(1, count / 2));
 		if (!result.isAlive()) {
 			// fallback to TCP - it may detect some hosts UDP cannot
 			result = tcpPinger.ping(subject, count);
