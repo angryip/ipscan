@@ -3,7 +3,7 @@ Section: net
 Version: VERSION-1
 Priority: optional
 Architecture: ARCH
-Installed-Size: 950
+Installed-Size: 1710
 Depends: openjdk-6-jre | openjdk-7-jre | openjdk-8-jre | sun-java6-jre | oracle-java7-installer | oracle-java8-installer
 Maintainer: Anton Keks <anton@azib.net>
 Description: Angry IP Scanner - fast and friendly IP Scanner
