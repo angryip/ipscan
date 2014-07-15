@@ -1,3 +1,8 @@
+Changes in 3.3.1:
+- Fix Linux 64-bit (and probably 32-bit as well) build - add missing swt native libraries
+- Quicker hostname lookups
+- Small optimizations in UDP/TCP pingers
+
 Changes in 3.3:
 - IP range now defaults to the current netmask on start to make it easier to start scanning the current network
 - Can load previously saved .txt file with incomplete scanning results and resume the scan
