@@ -6,7 +6,6 @@
 package net.azib.ipscan.core.net;
 
 import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.util.ThreadResourceBinder;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -15,7 +14,9 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.logging.Logger;
 
-import static java.util.logging.Level.*;
+import static java.lang.Math.min;
+import static java.util.logging.Level.FINER;
+import static net.azib.ipscan.util.IOUtils.closeQuietly;
 
 /**
  * TCP Pinger. Uses a TCP port to ping, doesn't require root privileges.
@@ -24,14 +25,13 @@ import static java.util.logging.Level.*;
  */
 public class TCPPinger implements Pinger {
 	static final Logger LOG = Logger.getLogger(TCPPinger.class.getName());
-	
+
 	// try different ports in sequence, starting with 80 (which is most probably not filtered)
 	private static final int[] PROBE_TCP_PORTS = {80, 80, 443, 8080, 22, 7};
 
-  private ThreadResourceBinder<Socket> sockets = new ThreadResourceBinder<Socket>();
-  private int timeout;
+	private int timeout;
 
-  public TCPPinger(int timeout) {
+	public TCPPinger(int timeout) {
 		this.timeout = timeout;
 	}
 
@@ -39,21 +39,21 @@ public class TCPPinger implements Pinger {
 		PingResult result = new PingResult(subject.getAddress());
 		int workingPort = -1;
 
-    Socket socket;
+		Socket socket;
 		for (int i = 0; i < count && !Thread.currentThread().isInterrupted(); i++) {
-      socket = sockets.bind(new Socket());
+			socket = new Socket();
+			// cycle through different ports until a working one is found
+			int probePort = workingPort >= 0 ? workingPort : PROBE_TCP_PORTS[i % PROBE_TCP_PORTS.length];
+			// change the first port to the requested one, if it is available
+			if (i == 0 && subject.isAnyPortRequested())
+				probePort = subject.requestedPortsIterator().next();
+
 			long startTime = System.currentTimeMillis();
 			try {
-				// cycle through different ports until a working one is found
-				int probePort = workingPort >= 0 ? workingPort : PROBE_TCP_PORTS[i % PROBE_TCP_PORTS.length];
-				// change the first port to the requested one, if it is available
-				if (i == 0 && subject.isAnyPortRequested()) {
-					probePort = subject.requestedPortsIterator().next();
-				}
-				
 				// set some optimization options
 				socket.setReuseAddress(true);
 				socket.setReceiveBufferSize(32);
+				int timeout = result.isTimeoutAdaptationAllowed() ? min(result.getLongestTime() * 2, this.timeout) : this.timeout;
 				socket.connect(new InetSocketAddress(subject.getAddress(), probePort), timeout);
 				if (socket.isConnected()) {
 					// it worked - success
@@ -70,38 +70,37 @@ public class TCPPinger implements Pinger {
 			}
 			catch (IOException e) {
 				String msg = e.getMessage();
-				
+
 				// RST should result in ConnectException, but not all Java implementations respect that
 				if (msg.contains(/*Connection*/"refused")) {
 					// we've got an RST packet from the host - it is alive
 					success(result, startTime);
 				}
 				else
-				// this should result in NoRouteToHostException or ConnectException, but not all Java implementation respect that
-				if (msg.contains(/*No*/"route to host") || msg.contains(/*Host is*/"down") || msg.contains(/*Network*/"unreachable") || msg.contains(/*Socket*/"closed")) {
-					// host is down
-					break;
-				}
-				else {
-					// something unknown
-					LOG.log(FINER, subject.toString(), e);
-				}
+					// this should result in NoRouteToHostException or ConnectException, but not all Java implementation respect that
+					if (msg.contains(/*No*/"route to host") || msg.contains(/*Host is*/"down") || msg.contains(/*Network*/"unreachable") || msg.contains(/*Socket*/"closed")) {
+						// host is down
+						break;
+					}
+					else {
+						// something unknown
+						LOG.log(FINER, subject.toString(), e);
+					}
 			}
 			finally {
-        sockets.closeAndUnbind(socket);
+				closeQuietly(socket);
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	private void success(PingResult result, long startTime) {
-		result.addReply(System.currentTimeMillis()-startTime);
+		result.addReply(System.currentTimeMillis() - startTime);
 		// one positive result is enough for TCP 
-		result.enableTimeoutAdaptation();		
+		result.enableTimeoutAdaptation();
 	}
 
 	public void close() {
-    sockets.close();
 	}
 }
