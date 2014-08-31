@@ -1,13 +1,14 @@
 package net.azib.ipscan.util;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-public class MDNSResolver {
+public class MDNSResolver implements Closeable {
 	DatagramSocket mdns = new DatagramSocket();
 	InetAddress mdnsIP = InetAddress.getByName("224.0.0.251");
 	private int mdnsPort = 5353;
@@ -67,6 +68,10 @@ public class MDNSResolver {
 		if (response[0] != request[0] && response[1] != request[1]) return null;
 		int offset = request.length + 1;
 		return decodeName(response, offset, respPacket.getLength() - offset);
+	}
+
+	public void close() {
+		mdns.close();
 	}
 
 	public static void main(String[] args) throws IOException {

@@ -62,7 +62,10 @@ public class HostnameFetcher extends AbstractFetcher {
 
 	private String resolveWithMulticastDNS(InetAddress ip) {
 		try {
-			return new MDNSResolver().resolve(ip);
+			MDNSResolver resolver = new MDNSResolver();
+			String name = resolver.resolve(ip);
+			resolver.close();
+			return name;
 		}
 		catch (IOException e) {
 			return null;
