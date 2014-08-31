@@ -5,7 +5,9 @@
 package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.util.MDNSResolver;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -21,7 +23,6 @@ import static java.util.logging.Level.WARNING;
  * @author Anton Keks
  */
 public class HostnameFetcher extends AbstractFetcher {
-
 	private static Object inetAddressImpl;
 	private static Method getHostByAddr;
 
@@ -44,19 +45,33 @@ public class HostnameFetcher extends AbstractFetcher {
 		return ID;
 	}
 
-	public Object scan(ScanningSubject subject) {
+	private String resolveWithRegularDNS(InetAddress ip) {
 		try {
 			// faster way to do lookup - getCanonicalHostName() actually does both reverse and forward lookups inside
-			return getHostByAddr.invoke(inetAddressImpl, subject.getAddress().getAddress());
+			return (String)getHostByAddr.invoke(inetAddressImpl, ip.getAddress());
 		}
 		catch (Exception e) {
 			if (e instanceof InvocationTargetException && e.getCause() instanceof UnknownHostException)
 				return null;
 
 			// return the returned hostname only if it is not the same as the IP address (this is how the above method works)
-			String hostname = subject.getAddress().getCanonicalHostName();
-			return subject.getAddress().getHostAddress().equals(hostname) ? null : hostname;
+			String hostname = ip.getCanonicalHostName();
+			return ip.getHostAddress().equals(hostname) ? null : hostname;
 		}
 	}
 
+	private String resolveWithMulticastDNS(InetAddress ip) {
+		try {
+			return new MDNSResolver().resolve(ip);
+		}
+		catch (IOException e) {
+			return null;
+		}
+	}
+
+	public Object scan(ScanningSubject subject) {
+		String name = resolveWithRegularDNS(subject.getAddress());
+		if (name == null) name = resolveWithMulticastDNS(subject.getAddress());
+		return name;
+	}
 }
