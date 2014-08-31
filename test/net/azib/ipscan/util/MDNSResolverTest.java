@@ -1,0 +1,32 @@
+package net.azib.ipscan.util;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+
+import static org.junit.Assert.assertEquals;
+
+public class MDNSResolverTest {
+	MDNSResolver resolver;
+
+	@Before
+	public void setUp() throws Exception {
+		resolver = new MDNSResolver();
+	}
+
+	@Test
+	public void encodeNameForDNS() throws Exception {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		DataOutputStream out = new DataOutputStream(baos);
+		resolver.writeName(out, "a.bb.ccc.dddd");
+		assertEquals("\u0001a\u0002bb\u0003ccc\u0004dddd\u0000", new String(baos.toByteArray()));
+	}
+
+	@Test
+	public void decodeNameFromDNS() throws Exception {
+		byte[] data = "\u0000\u0000\u0001a\u0002bb\u0003ccc\u0004dddd\u0000".getBytes();
+		assertEquals("a.bb.ccc.dddd", resolver.decodeName(data, 2, data.length - 2));
+	}
+}
