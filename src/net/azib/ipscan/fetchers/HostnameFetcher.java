@@ -62,6 +62,7 @@ public class HostnameFetcher extends AbstractFetcher {
 
 	private String resolveWithMulticastDNS(InetAddress ip) {
 		try {
+			// TODO: do this only in case of local subnet
 			MDNSResolver resolver = new MDNSResolver();
 			String name = resolver.resolve(ip);
 			resolver.close();
@@ -75,6 +76,7 @@ public class HostnameFetcher extends AbstractFetcher {
 	public Object scan(ScanningSubject subject) {
 		String name = resolveWithRegularDNS(subject.getAddress());
 		if (name == null) name = resolveWithMulticastDNS(subject.getAddress());
+		// TODO: incorporate NetBIOS name here as well
 		return name;
 	}
 }
