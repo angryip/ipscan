@@ -49,9 +49,13 @@ public class MDNSResolver {
 		return baos.toByteArray();
 	}
 
+	String reverseName(InetAddress ip) {
+		byte[] addr = ip.getAddress(); // note: only IPv4 is supported here
+		return (addr[3]&0xFF) + "." + (addr[2]&0xFF) + "." + (addr[1]&0xFF) + "." + (addr[0]&0xFF) + ".in-addr.arpa";
+	}
+
 	public String resolve(InetAddress ip) throws IOException {
-		byte[] addr = ip.getAddress();
-		byte[] data = dnsRequest((addr[3]&0xFF) + "." + (addr[2]&0xFF) + "." + (addr[1]&0xFF) + "." + (addr[0]&0xFF) + ".in-addr.arpa");
+		byte[] data = dnsRequest(reverseName(ip));
 
 		DatagramPacket query = new DatagramPacket(data, data.length, mdnsIP, mdnsPort);
 		mdns.send(query);
