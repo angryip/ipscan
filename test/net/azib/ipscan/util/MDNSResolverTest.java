@@ -33,6 +33,6 @@ public class MDNSResolverTest {
 
 	@Test
 	public void reverseLookupName() throws Exception {
-		assertEquals("2.0.168.192.in-addr.arpa", resolver.reverseName(InetAddress.getByName("192.168.0.2")));
+		assertEquals("2.0.168.192.in-addr.arpa", resolver.reverseName(InetAddress.getByName("192.168.0.2").getAddress()));
 	}
 }

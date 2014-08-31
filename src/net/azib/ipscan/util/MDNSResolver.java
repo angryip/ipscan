@@ -39,32 +39,34 @@ public class MDNSResolver {
 		return s.toString();
 	}
 
-	public byte[] dnsRequest(String name) throws IOException {
+	byte[] dnsRequest(int id, String name) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream(baos);
-		out.write(new byte[] {0x17, 0x57, 1, 0x20, 0, 1, 0, 0, 0, 0, 0, 1});
+		out.writeShort(id);
+		out.write(new byte[] { 1, 0x20, 0, 1, 0, 0, 0, 0, 0, 1});
 		writeName(out, name);
 		out.write(new byte[] {0, 0xc, 0, 1});
 		out.write(new byte[]{0, 0, 0x29, 0x10, 0, 0, 0, 0, 0, 0, 0});
 		return baos.toByteArray();
 	}
 
-	String reverseName(InetAddress ip) {
-		byte[] addr = ip.getAddress(); // note: only IPv4 is supported here
+	String reverseName(byte[] addr) {
+		// note: only IPv4 is supported here
 		return (addr[3]&0xFF) + "." + (addr[2]&0xFF) + "." + (addr[1]&0xFF) + "." + (addr[0]&0xFF) + ".in-addr.arpa";
 	}
 
 	public String resolve(InetAddress ip) throws IOException {
-		byte[] data = dnsRequest(reverseName(ip));
+		byte[] addr = ip.getAddress();
+		int requestId = addr[2]*0xFF + addr[3];
+		byte[] request = dnsRequest(requestId, reverseName(addr));
+		mdns.send(new DatagramPacket(request, request.length, mdnsIP, mdnsPort));
 
-		DatagramPacket query = new DatagramPacket(data, data.length, mdnsIP, mdnsPort);
-		mdns.send(query);
-
-		DatagramPacket resp = new DatagramPacket(new byte[512], 512);
-		mdns.receive(resp);
-		data = resp.getData();
-		int offset = query.getLength() - 11 + 12;
-		return decodeName(data, offset, resp.getLength() - offset);
+		DatagramPacket respPacket = new DatagramPacket(new byte[512], 512);
+		mdns.receive(respPacket);
+		byte[] response = respPacket.getData();
+		if (response[0] != request[0] && response[1] != request[1]) return null;
+		int offset = request.length + 1;
+		return decodeName(response, offset, respPacket.getLength() - offset);
 	}
 
 	public static void main(String[] args) throws IOException {
