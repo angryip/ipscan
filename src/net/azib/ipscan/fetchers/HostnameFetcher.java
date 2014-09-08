@@ -6,13 +6,15 @@ package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.util.MDNSResolver;
+import net.azib.ipscan.util.NetBIOSResolver;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.WARNING;
@@ -23,6 +25,8 @@ import static java.util.logging.Level.WARNING;
  * @author Anton Keks
  */
 public class HostnameFetcher extends AbstractFetcher {
+	private static Logger LOG = Logger.getLogger(HostnameFetcher.class.getName());
+
 	private static Object inetAddressImpl;
 	private static Method getHostByAddr;
 
@@ -35,7 +39,7 @@ public class HostnameFetcher extends AbstractFetcher {
 			getHostByAddr.setAccessible(true);
 		}
 		catch (Exception e) {
-			Logger.getLogger(HostnameFetcher.class.getName()).log(WARNING, "Could not get InetAddressImpl", e);
+			LOG.log(WARNING, "Could not get InetAddressImpl", e);
 		}
 	}
 
@@ -68,8 +72,34 @@ public class HostnameFetcher extends AbstractFetcher {
 			resolver.close();
 			return name;
 		}
+		catch (SocketTimeoutException e) {
+			return null;
+		}
+		catch (SocketException e) {
+			return null;
+		}
 		catch (Exception e) {
-			Logger.getLogger(getClass().getName()).log(Level.WARNING, "Failed to query mDNS for " + subject, e);
+			LOG.log(WARNING, "Failed to query mDNS for " + subject, e);
+			return null;
+		}
+	}
+
+	private String resolveWithNetBIOS(ScanningSubject subject) {
+		try {
+			// TODO: do this only in case of local subnet
+			NetBIOSResolver resolver = new NetBIOSResolver(subject.getAdaptedPortTimeout());
+			String[] names = resolver.resolve(subject.getAddress());
+			resolver.close();
+			return names == null ? null : names[0];
+		}
+		catch (SocketTimeoutException e) {
+			return null;
+		}
+		catch (SocketException e) {
+			return null;
+		}
+		catch (Exception e) {
+			LOG.log(WARNING, "Failed to query NetBIOS for " + subject, e);
 			return null;
 		}
 	}
@@ -77,7 +107,7 @@ public class HostnameFetcher extends AbstractFetcher {
 	public Object scan(ScanningSubject subject) {
 		String name = resolveWithRegularDNS(subject.getAddress());
 		if (name == null) name = resolveWithMulticastDNS(subject);
-		// TODO: incorporate NetBIOS name here as well
+		if (name == null) name = resolveWithNetBIOS(subject);
 		return name;
 	}
 }
