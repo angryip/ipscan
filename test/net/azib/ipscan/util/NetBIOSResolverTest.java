@@ -4,25 +4,20 @@
  * Licensed under GPLv2.
  */
 
-package net.azib.ipscan.fetchers;
-
-import static org.junit.Assert.assertEquals;
+package net.azib.ipscan.util;
 
 import org.junit.Test;
 
-/**
- * NetBIOSInfoFetcherTest
- *
- * @author Anton Keks
- */
-public class NetBIOSInfoFetcherTest {
+import static org.junit.Assert.assertArrayEquals;
+
+public class NetBIOSResolverTest {
 	@Test
 	public void extractNamesNoUserNoGroup() throws Exception {
 		byte[] response = ("01234567890123456789012345678901234567890123456789012345\u0001" +
 						   "ComputerName   XYY" + 
 						   "\u00DE\u00AD\u00BE\u00EF\u0000\u0000         XYY" 
 						  ).getBytes("ISO-8859-1");
-		assertEquals("ComputerName [DE-AD-BE-EF-00-00]", NetBIOSInfoFetcher.extractNames(response, 1));
+		assertArrayEquals(new String[]{"ComputerName", null, null, "DE-AD-BE-EF-00-00"}, NetBIOSResolver.extractNames(response, 1));
 	}
 	
 	@Test
@@ -32,7 +27,7 @@ public class NetBIOSInfoFetcherTest {
 						   "GroupName      \u0000\u0080\u0000" +
 						   "\u0001\u0002\u0003\u0004\u0005\u0006         XYY" 
 						  ).getBytes("ISO-8859-1");
-		assertEquals("GroupName\\ComputerName [01-02-03-04-05-06]", NetBIOSInfoFetcher.extractNames(response, 2));
+		assertArrayEquals(new String[] {"ComputerName", null, "GroupName", "01-02-03-04-05-06"}, NetBIOSResolver.extractNames(response, 2));
 	}
 		
 	@Test
@@ -47,7 +42,6 @@ public class NetBIOSInfoFetcherTest {
 						   "SomeName       XYY" +
 						   "\u00DE\u00AD\u00BE\u00EF\u0000\u0000         XYY" 
 						  ).getBytes("ISO-8859-1");
-		assertEquals("GroupName\\UserName@ComputerName [DE-AD-BE-EF-00-00]", NetBIOSInfoFetcher.extractNames(response, 7));
+		assertArrayEquals(new String[] {"ComputerName", "UserName", "GroupName", "DE-AD-BE-EF-00-00"}, NetBIOSResolver.extractNames(response, 7));
 	}
-	
 }
