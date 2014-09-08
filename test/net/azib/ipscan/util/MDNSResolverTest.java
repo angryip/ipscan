@@ -14,7 +14,7 @@ public class MDNSResolverTest {
 
 	@Before
 	public void setUp() throws Exception {
-		resolver = new MDNSResolver();
+		resolver = new MDNSResolver(3000);
 	}
 
 	@Test

@@ -13,8 +13,8 @@ public class MDNSResolver implements Closeable {
 	InetAddress mdnsIP = InetAddress.getByName("224.0.0.251");
 	private int mdnsPort = 5353;
 
-	public MDNSResolver() throws IOException {
-		mdns.setSoTimeout(3000);
+	public MDNSResolver(int pingTimeout) throws IOException {
+		mdns.setSoTimeout(pingTimeout);
 	}
 
 	void writeName(DataOutputStream out, String name) throws IOException {
@@ -75,6 +75,6 @@ public class MDNSResolver implements Closeable {
 	}
 
 	public static void main(String[] args) throws IOException {
-		System.out.println(new MDNSResolver().resolve(InetAddress.getByName("192.168.0.2")));
+		System.out.println(new MDNSResolver(3000).resolve(InetAddress.getByName("192.168.0.2")));
 	}
 }

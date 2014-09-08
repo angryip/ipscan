@@ -3,6 +3,7 @@
  */
 package net.azib.ipscan.fetchers;
 
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +13,7 @@ import java.net.UnknownHostException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
 
 /**
  * HostnameFetcherTest
@@ -22,7 +24,7 @@ public class HostnameFetcherTest extends AbstractFetcherTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		fetcher = new HostnameFetcher();
+		fetcher = new HostnameFetcher(mock(ScannerConfig.class));
 	}
 	
 	@Test
