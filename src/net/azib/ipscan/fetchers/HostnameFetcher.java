@@ -7,12 +7,12 @@ package net.azib.ipscan.fetchers;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.util.MDNSResolver;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.WARNING;
@@ -68,7 +68,8 @@ public class HostnameFetcher extends AbstractFetcher {
 			resolver.close();
 			return name;
 		}
-		catch (IOException e) {
+		catch (Exception e) {
+			Logger.getLogger(getClass().getName()).log(Level.WARNING, "Failed to query mDNS for " + subject, e);
 			return null;
 		}
 	}

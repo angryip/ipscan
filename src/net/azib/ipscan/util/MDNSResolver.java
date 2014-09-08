@@ -44,10 +44,10 @@ public class MDNSResolver implements Closeable {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream(baos);
 		out.writeShort(id);
-		out.write(new byte[] { 1, 0x20, 0, 1, 0, 0, 0, 0, 0, 1});
+		out.write(new byte[] {1, 0x20, 0, 1, 0, 0, 0, 0, 0, 1});
 		writeName(out, name);
 		out.write(new byte[] {0, 0xc, 0, 1});
-		out.write(new byte[]{0, 0, 0x29, 0x10, 0, 0, 0, 0, 0, 0, 0});
+		out.write(new byte[] {0, 0, 0x29, 0x10, 0, 0, 0, 0, 0, 0, 0});
 		return baos.toByteArray();
 	}
 
@@ -58,7 +58,7 @@ public class MDNSResolver implements Closeable {
 
 	public String resolve(InetAddress ip) throws IOException {
 		byte[] addr = ip.getAddress();
-		int requestId = addr[2]*0xFF + addr[3];
+		int requestId = addr[2] * 0xFF + addr[3];
 		byte[] request = dnsRequest(requestId, reverseName(addr));
 		mdns.send(new DatagramPacket(request, request.length, mdnsIP, mdnsPort));
 
