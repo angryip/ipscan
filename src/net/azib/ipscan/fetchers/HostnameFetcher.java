@@ -4,7 +4,6 @@
  */
 package net.azib.ipscan.fetchers;
 
-import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.util.MDNSResolver;
 
@@ -42,12 +41,6 @@ public class HostnameFetcher extends AbstractFetcher {
 
 	public static final String ID = "fetcher.hostname";
 
-	private ScannerConfig config;
-
-	public HostnameFetcher(ScannerConfig config) {
-		this.config = config;
-	}
-
 	public String getId() {
 		return ID;
 	}
@@ -67,11 +60,11 @@ public class HostnameFetcher extends AbstractFetcher {
 		}
 	}
 
-	private String resolveWithMulticastDNS(InetAddress ip) {
+	private String resolveWithMulticastDNS(ScanningSubject subject) {
 		try {
 			// TODO: do this only in case of local subnet
-			MDNSResolver resolver = new MDNSResolver(config.pingTimeout);
-			String name = resolver.resolve(ip);
+			MDNSResolver resolver = new MDNSResolver(subject.getAdaptedPortTimeout());
+			String name = resolver.resolve(subject.getAddress());
 			resolver.close();
 			return name;
 		}
@@ -82,7 +75,7 @@ public class HostnameFetcher extends AbstractFetcher {
 
 	public Object scan(ScanningSubject subject) {
 		String name = resolveWithRegularDNS(subject.getAddress());
-		if (name == null) name = resolveWithMulticastDNS(subject.getAddress());
+		if (name == null) name = resolveWithMulticastDNS(subject);
 		// TODO: incorporate NetBIOS name here as well
 		return name;
 	}
