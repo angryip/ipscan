@@ -66,7 +66,6 @@ public class HostnameFetcher extends AbstractFetcher {
 
 	private String resolveWithMulticastDNS(ScanningSubject subject) {
 		try {
-			// TODO: do this only in case of local subnet
 			MDNSResolver resolver = new MDNSResolver(subject.getAdaptedPortTimeout());
 			String name = resolver.resolve(subject.getAddress());
 			resolver.close();
@@ -86,7 +85,6 @@ public class HostnameFetcher extends AbstractFetcher {
 
 	private String resolveWithNetBIOS(ScanningSubject subject) {
 		try {
-			// TODO: do this only in case of local subnet
 			NetBIOSResolver resolver = new NetBIOSResolver(subject.getAdaptedPortTimeout());
 			String[] names = resolver.resolve(subject.getAddress());
 			resolver.close();
@@ -106,8 +104,8 @@ public class HostnameFetcher extends AbstractFetcher {
 
 	public Object scan(ScanningSubject subject) {
 		String name = resolveWithRegularDNS(subject.getAddress());
-		if (name == null) name = resolveWithMulticastDNS(subject);
-		if (name == null) name = resolveWithNetBIOS(subject);
+		if (name == null && subject.isLocal()) name = resolveWithMulticastDNS(subject);
+		if (name == null && subject.isLocal()) name = resolveWithNetBIOS(subject);
 		return name;
 	}
 }

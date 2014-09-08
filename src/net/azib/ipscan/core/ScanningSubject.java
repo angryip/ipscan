@@ -5,17 +5,13 @@
  */
 package net.azib.ipscan.core;
 
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.net.PingResult;
+
+import java.net.InetAddress;
+import java.util.*;
 
 /**
  * Scanning subject represents a single scanned
@@ -149,6 +145,10 @@ public class ScanningSubject {
 		return config.portTimeout;
 	}
 
+	public boolean isLocal() {
+		return address.isSiteLocalAddress();
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(address.getHostAddress());
@@ -161,5 +161,4 @@ public class ScanningSubject {
 		}
 		return sb.toString();
 	}
-	
 }
