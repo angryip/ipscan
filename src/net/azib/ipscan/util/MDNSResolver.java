@@ -33,10 +33,11 @@ public class MDNSResolver implements Closeable {
 		StringBuilder s = new StringBuilder(length);
 		for (int i = offset; i < offset + length; i++) {
 			byte len = data[i];
+			if (len == 0) break;
 			s.append(new String(data, i + 1, len)).append('.');
 			i += len;
 		}
-		s.setLength(s.length() - 2);
+		s.setLength(s.length() - 1);
 		return s.toString();
 	}
 
