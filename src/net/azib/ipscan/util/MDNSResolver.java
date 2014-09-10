@@ -9,12 +9,12 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 public class MDNSResolver implements Closeable {
-	DatagramSocket mdns = new DatagramSocket();
+	DatagramSocket socket = new DatagramSocket();
 	InetAddress mdnsIP = InetAddress.getByName("224.0.0.251");
 	private int mdnsPort = 5353;
 
-	public MDNSResolver(int pingTimeout) throws IOException {
-		mdns.setSoTimeout(pingTimeout);
+	public MDNSResolver(int timeout) throws IOException {
+		socket.setSoTimeout(timeout);
 	}
 
 	void writeName(DataOutputStream out, String name) throws IOException {
@@ -61,10 +61,10 @@ public class MDNSResolver implements Closeable {
 		byte[] addr = ip.getAddress();
 		int requestId = addr[2] * 0xFF + addr[3];
 		byte[] request = dnsRequest(requestId, reverseName(addr));
-		mdns.send(new DatagramPacket(request, request.length, mdnsIP, mdnsPort));
+		socket.send(new DatagramPacket(request, request.length, mdnsIP, mdnsPort));
 
 		DatagramPacket respPacket = new DatagramPacket(new byte[512], 512);
-		mdns.receive(respPacket);
+		socket.receive(respPacket);
 		byte[] response = respPacket.getData();
 		if (response[0] != request[0] && response[1] != request[1]) return null;
 		int offset = request.length + 1;
@@ -72,10 +72,6 @@ public class MDNSResolver implements Closeable {
 	}
 
 	public void close() {
-		mdns.close();
-	}
-
-	public static void main(String[] args) throws IOException {
-		System.out.println(new MDNSResolver(3000).resolve(InetAddress.getByName("192.168.0.2")));
+		socket.close();
 	}
 }
