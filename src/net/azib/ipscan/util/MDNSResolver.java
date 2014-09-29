@@ -5,16 +5,19 @@ import java.io.Closeable;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.MulticastSocket;
 
 public class MDNSResolver implements Closeable {
-	DatagramSocket socket = new DatagramSocket();
 	InetAddress mdnsIP = InetAddress.getByName("224.0.0.251");
 	private int mdnsPort = 5353;
+	MulticastSocket socket = new MulticastSocket();
 
 	public MDNSResolver(int timeout) throws IOException {
 		socket.setSoTimeout(timeout);
+		socket.setTimeToLive(1);
+		// TODO: iPhones respond only back to the multicast address and port 5353 provided requestId == 0
+		// socket.joinGroup(mdnsIP);
 	}
 
 	void writeName(DataOutputStream out, String name) throws IOException {
@@ -45,10 +48,9 @@ public class MDNSResolver implements Closeable {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream(baos);
 		out.writeShort(id);
-		out.write(new byte[] {1, 0x20, 0, 1, 0, 0, 0, 0, 0, 1});
+		out.write(new byte[] {0, 0, 0, 1, 0, 0, 0, 0, 0, 0});
 		writeName(out, name);
 		out.write(new byte[] {0, 0xc, 0, 1});
-		out.write(new byte[] {0, 0, 0x29, 0x10, 0, 0, 0, 0, 0, 0, 0});
 		return baos.toByteArray();
 	}
 
@@ -67,11 +69,16 @@ public class MDNSResolver implements Closeable {
 		socket.receive(respPacket);
 		byte[] response = respPacket.getData();
 		if (response[0] != request[0] && response[1] != request[1]) return null;
-		int offset = request.length + 1;
+		int numQueries = response[5];
+		int offset = (numQueries == 0 ? 12 : request.length) + 2 + 2 + 2 + 4 + 2;
 		return decodeName(response, offset, respPacket.getLength() - offset);
 	}
 
 	public void close() {
 		socket.close();
+	}
+
+	public static void main(String[] args) throws IOException {
+		System.out.println(new MDNSResolver(2000).resolve(InetAddress.getByName("192.168.0.10")));
 	}
 }
