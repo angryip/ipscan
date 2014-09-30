@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * AbstractFeederGUITest
@@ -18,13 +19,14 @@ import static org.junit.Assert.assertEquals;
  * @author Anton Keks
  */
 public class AbstractFeederGUITest {
-	
+	private boolean initialized;
 	private AbstractFeederGUI feederGUI;
 	
 	@Before
 	public void setUp() throws Exception {
 		feederGUI = new AbstractFeederGUI(new Shell()) {
 			public void initialize() {
+				initialized = true;
 			}
 			public String getFeederName() {
 				return "Mega Feeder";
@@ -45,7 +47,12 @@ public class AbstractFeederGUITest {
 	}
 
 	@Test
-	public void testGetInfo() {
+	public void initializeMustBeCalledInConstructor() throws Exception {
+		assertTrue("otherwise command-line will be broken", initialized);
+	}
+
+	@Test
+	public void getInfo() {
 		assertEquals("Mega Feeder: 127.0.0.1 - 127.0.0.2", feederGUI.getInfo());
 	}
 	
@@ -56,5 +63,4 @@ public class AbstractFeederGUITest {
 			Labels.getLabel(label);
 		}
 	}
-	
 }

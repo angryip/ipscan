@@ -16,7 +16,6 @@ import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.MainMenu.CommandsMenu;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.actions.ToolsActions;
-import net.azib.ipscan.gui.feeders.AbstractFeederGUI;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -142,11 +141,7 @@ public class MainWindow {
 		// feederArea is the placeholder for the visible feeder
 		this.feederArea = feederArea;
 		feederArea.setLayoutData(formData(new FormAttachment(0), null, new FormAttachment(0), null));
-
 		this.feederRegistry = feederRegistry;
-		for (AbstractFeederGUI feeder : feederRegistry) {
-			feeder.initialize();
-		}
 	}
 
 	/**

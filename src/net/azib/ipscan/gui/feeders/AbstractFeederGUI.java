@@ -32,6 +32,7 @@ public abstract class AbstractFeederGUI extends Composite implements FeederCreat
 	public AbstractFeederGUI(Composite parent) {
 		super(parent, SWT.NONE);
 		setVisible(false);
+		initialize();
 	}
 
 	public abstract void initialize();
