@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Main" type="Application" factoryName="Application">
+  <configuration default="false" name="Main" type="Application" factoryName="Application" singleton="true">
     <extension name="coverage" enabled="false" merge="false" runner="idea" />
     <option name="MAIN_CLASS_NAME" value="net.azib.ipscan.Main" />
     <option name="VM_PARAMETERS" value="-Djava.util.logging.config.file=config/logging.properties" />
