@@ -6,7 +6,7 @@ layout: default
 {{ page.title }}
 ================
 
-_Important:_ There are no trojans or viruses in Angry IP Scanner's _ipscan.exe_. Review the [source code](Development) if you wish to check yourself.
+_Important:_ There are no trojans or viruses in Angry IP Scanner's _ipscan.exe_. Review the [source code](http://github.com/angryziber/ipscan/tree/ipscan2) if you wish to check yourself.
 
 Some antivirus software vendors (McAfee, Symantec, and some others) are identifying Angry IP Scanner as 'potentially unwanted program' or risky 'hacktool'.
 Their programs often delete Angry IP Scanner from the disk during virus scanning.
