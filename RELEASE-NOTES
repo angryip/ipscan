@@ -1,3 +1,10 @@
+Changes in 3.3.2:
+- Much smarter HostnameFetcher, which queries mDNS and NetBIOS in case standart DNS reverse lookup doesn't provide results
+- Packaging fix for Windows, which could prevent "display alive only" from working
+- Fixed prepopulation of feeder from command-line
+- Fixed dimensions on command-line usage dialog
+- Updated MAC vendors
+
 Changes in 3.3.1:
 - Fix Linux 64-bit (and probably 32-bit as well) build - add missing swt native libraries
 - Quicker hostname lookups
