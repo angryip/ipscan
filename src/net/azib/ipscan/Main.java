@@ -129,22 +129,9 @@ public class Main {
 		}
 	}
 
-	/**
-	 * @param usageText
-	 */
 	private static void showMessageToConsole(String usageText) {
-		// use console for all platforms except Windows by default
-		boolean haveConsole = !Platform.WINDOWS;
-		
-		try {
-			// determine if we have console attached using Java 6 System.console()
-			haveConsole = System.class.getMethod("console").invoke(null) != null;
-		}
-		catch (Exception e) {
-			// Java 5 will reach here
-		}
-		
-		if (haveConsole) {
+		// check if console is attached to the process
+		if (System.console() != null) {
 			System.err.println(usageText);
 		}
 		else {
