@@ -1,6 +1,6 @@
 This is the source code of Angry IP Scanner, licensed with GPL v2.
 
-[AngryIP.org](http://angryip.org/)
+[Official site - AngryIP.org](http://angryip.org/)
 
 The code is written mostly in Java.
 IntelliJ IDEA is recommended for coding, but Eclipse would do as well.
@@ -16,8 +16,9 @@ only be built on Linux. Building of Windows exe can be done on Linux as well.
 
 On Ubuntu install the following packages:
 ```
-sudo apt-get install openjdk-7-jdk ant rpm
+sudo apt-get install openjdk-7-jdk ant rpm wine
 ```
+Note: *wine* is needed for building of Windows installer.
 
 Install JDK and Ant on other platforms as you usually do it.
 
