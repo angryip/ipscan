@@ -48,12 +48,12 @@ public class InfoDialog extends AbstractModalDialog {
 
 		Text statsText = new Text(shell, SWT.MULTI | SWT.READ_ONLY);
 		statsText.setBackground(shell.getBackground());
-		statsText.setLayoutData(formData(new FormAttachment(iconLabel), new FormAttachment(100), new FormAttachment(titleLabel), null));
+		statsText.setLayoutData(formData(new FormAttachment(iconLabel), new FormAttachment(100, -20), new FormAttachment(titleLabel), null));
 		statsText.setText(message);
 		statsText.pack();
 
 		Point buttonSize = button.getSize();
-		button.setLayoutData(formData(buttonSize.x, buttonSize.y, null, new FormAttachment(statsText, 0, SWT.RIGHT), new FormAttachment(statsText), null));
+		button.setLayoutData(formData(buttonSize.x, buttonSize.y, null, new FormAttachment(100), new FormAttachment(statsText), null));
 
 		shell.pack();
 	}
