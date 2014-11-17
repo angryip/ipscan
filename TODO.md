@@ -1,3 +1,4 @@
+* Replace picocontainer with dagger: http://square.github.io/dagger/
 * Windows: net stop SharedAccess
 * gtk sort direction arrows
 * advanced exporting options dialog (with append checkbox)
