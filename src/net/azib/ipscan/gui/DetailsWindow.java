@@ -7,9 +7,9 @@ import net.azib.ipscan.config.CommentsConfig;
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
+import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.gui.util.LayoutHelper;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -30,13 +30,16 @@ public class DetailsWindow extends AbstractModalDialog {
 	private GUIConfig guiConfig;
 	private CommentsConfig commentsConfig;
 	private ResultTable resultTable;
-	
+	private ScanningResultList scanningResults;
+
+	int resultIndex;
 	private Text commentsText;
 		
-	public DetailsWindow(GUIConfig guiConfig, CommentsConfig commentsConfig, ResultTable resultTable) {
+	public DetailsWindow(GUIConfig guiConfig, CommentsConfig commentsConfig, ResultTable resultTable, ScanningResultList scanningResults) {
 		this.guiConfig = guiConfig;
 		this.commentsConfig = commentsConfig;
 		this.resultTable = resultTable;
+		this.scanningResults = scanningResults;
 	}
 	
 	@Override
@@ -49,7 +52,8 @@ public class DetailsWindow extends AbstractModalDialog {
 		shell.setText(Labels.getLabel("title.details"));
 		shell.setLayout(LayoutHelper.formLayout(3, 3, 3));
 		shell.setSize(guiConfig.detailsWindowSize);
-		
+
+		resultIndex = resultTable.getSelectionIndex();
 		ScanningResult result = resultTable.getSelectedResult();
 		
 		commentsText = new Text(shell, SWT.BORDER); // TODO: change to SWT.SEARCH in SWT 3.5
@@ -101,9 +105,9 @@ public class DetailsWindow extends AbstractModalDialog {
 			String newComment = commentsText.getText();
 			if (!defaultText.equals(newComment)) {
 				// store the new comment
-				commentsConfig.setComment(resultTable.getSelectedResult().getAddress(), newComment);
+				commentsConfig.setComment(scanningResults.getResult(resultIndex).getAddress(), newComment);
 				// now update the result table for user to immediately see the change
-				resultTable.updateResult(resultTable.getSelectionIndex(), CommentFetcher.ID, newComment);
+				resultTable.updateResult(resultIndex, CommentFetcher.ID, newComment);
 			}
 		}
 	}

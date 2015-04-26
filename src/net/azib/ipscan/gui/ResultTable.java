@@ -14,7 +14,6 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
-import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
@@ -159,7 +158,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 	 * @param newValue
 	 */
 	public void updateResult(int index, String fetcherId, Object newValue) {
-		int fetcherIndex = fetcherRegistry.getSelectedFetcherIndex(CommentFetcher.ID);
+		int fetcherIndex = fetcherRegistry.getSelectedFetcherIndex(fetcherId);
 		if (fetcherIndex >= 0) {
 			// update the value in the results
 			scanningResults.getResult(index).setValue(fetcherIndex, newValue);
