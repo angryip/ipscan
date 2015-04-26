@@ -24,7 +24,6 @@ import static net.azib.ipscan.gui.util.LayoutHelper.formData;
  * @author Anton Keks
  */
 public class EditOpenersDialog extends AbstractModalDialog {
-
 	private final FetcherRegistry fetcherRegistry;
 	private final OpenersConfig openersConfig;
 
@@ -146,10 +145,9 @@ public class EditOpenersDialog extends AbstractModalDialog {
 
 	private void saveCurrentFields() {
 		String openerName = openerNameText.getText();
-		if (openerName.length() == 0 || openersList.getItemCount() == 0)
-			return;
+		if (openerName.length() == 0 || openersList.getItemCount() == 0) return;
 
-    currentSelectionIndex = openersList.getSelectionIndex();		
+		currentSelectionIndex = openersList.getSelectionIndex();
 		File workingDir = workingDirText.getText().length() > 0 ? new File(workingDirText.getText()) : null;
 		openersConfig.add(openerName, new OpenersConfig.Opener(openerStringText.getText(), isInTerminalCheckbox.getSelection(), workingDir));
 		openersList.setItem(currentSelectionIndex, openerName);
@@ -157,8 +155,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	
 	private void loadFieldsForSelection() {
 		currentSelectionIndex = openersList.getSelectionIndex();
-    if (currentSelectionIndex < 0)
-      return;
+		if (currentSelectionIndex < 0) return;
     
 		String openerName = openersList.getItem(currentSelectionIndex);
 		editFieldsGroup.setText(openerName);
@@ -170,7 +167,6 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	}
 
 	class HintButtonListener implements Listener {
-		
 		public void handleEvent(Event event) {
 			// compose the message with all available fetchers
 			StringBuilder message = new StringBuilder(Labels.getLabel("text.openers.hintText"));
@@ -186,7 +182,6 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	}
 	
 	class DeleteButtonListener implements Listener {
-		
 		public void handleEvent(Event event) {
 			int firstIndex = openersList.getSelectionIndex();
 			openersList.remove(openersList.getSelectionIndices());
@@ -196,7 +191,6 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	}
 
 	class AddButtonListener implements Listener {
-		
 		public void handleEvent(Event event) {
 			saveCurrentFields();
 			
@@ -221,7 +215,6 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	}
 
 	class ItemSelectListener implements Listener {
-		
 		public void handleEvent(Event event) {
 			if (openersList.getSelectionCount() == 0)
 				return;
@@ -232,12 +225,10 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	}
 	
 	class OpenerNameChange implements Listener {
-
 		public void handleEvent(Event event) {
 			String name = openerNameText.getText();
 			editFieldsGroup.setText(name);
 			openersList.setItem(currentSelectionIndex, name);
 		}
 	}
-
 }
