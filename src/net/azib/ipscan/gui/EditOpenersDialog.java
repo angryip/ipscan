@@ -144,10 +144,9 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	}
 
 	private void saveCurrentFields() {
-		String openerName = openerNameText.getText();
-		if (openerName.length() == 0 || openersList.getItemCount() == 0) return;
+		if (currentSelectionIndex < 0) return;
 
-		currentSelectionIndex = openersList.getSelectionIndex();
+		String openerName = openerNameText.getText();
 		File workingDir = workingDirText.getText().length() > 0 ? new File(workingDirText.getText()) : null;
 		openersConfig.add(openerName, new OpenersConfig.Opener(openerStringText.getText(), isInTerminalCheckbox.getSelection(), workingDir));
 		openersList.setItem(currentSelectionIndex, openerName);
@@ -183,9 +182,10 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	
 	class DeleteButtonListener implements Listener {
 		public void handleEvent(Event event) {
-			int firstIndex = openersList.getSelectionIndex();
+			int oldIndex = openersList.getSelectionIndex();
 			openersList.remove(openersList.getSelectionIndices());
-			openersList.setSelection(firstIndex);
+			if (oldIndex >= openersList.getItemCount()) oldIndex = openersList.getItemCount()-1;
+			openersList.setSelection(oldIndex);
 			loadFieldsForSelection();
 		}
 	}
@@ -226,6 +226,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	
 	class OpenerNameChange implements Listener {
 		public void handleEvent(Event event) {
+			if (currentSelectionIndex < 0) return;
 			String name = openerNameText.getText();
 			editFieldsGroup.setText(name);
 			openersList.setItem(currentSelectionIndex, name);
