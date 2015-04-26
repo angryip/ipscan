@@ -110,8 +110,6 @@ public class ScanningResult {
 	/**
 	 * Returns all results for this IP address as a String.
 	 * This is used in showing the IP Details dialog box.
-	 * 
-	 * @param index
 	 * @return human-friendly text representation of results
 	 */
 	public String toString() {
