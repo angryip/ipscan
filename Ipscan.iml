@@ -21,10 +21,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" scope="TEST" name="lib_testing" level="project" />
-    <orderEntry type="library" name="picocontainer-1.0" level="project" />
-    <orderEntry type="library" name="swt-win64" level="project" />
-    <orderEntry type="library" name="jna-win64" level="project" />
-    <orderEntry type="library" name="junit" level="project" />
-    <orderEntry type="library" name="mockito-all" level="project" />
   </component>
 </module>
+
