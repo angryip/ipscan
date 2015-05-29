@@ -13,6 +13,8 @@
 	<property name="swt" value="lib"/>
 	<property name="ext.src" value="ext/rocksaw/src:ext/vserv-tcpip/src"/>
 
+	<property name="win.installer.dir" value="${basedir}/ext/win-installer"/>
+
     <path id="cobertura.classpath">
         <fileset dir="lib/testing">
             <include name="cobertura.jar" />
@@ -453,16 +455,18 @@
 		<delete file="${dist}/${ant.project.name}-mac-${version}.jar"/>
 	</target>
 
-    <target name="win-installer" depends="clean,compile-win32,compile-win64,package-win32,package-win64">
-        <replace file="ext/win-installer/InstallerConfig.nsh">
-            <replacefilter token="VERSION_MINOR" value="2"/>
-            <replacefilter token="VERSION" value="${version}"/>
-        </replace>
-        <copy file="${dist}/${ant.project.name}-win32-${version}.exe" tofile="ext/win-installer/AppFiles32/ipscan.exe"/>
-        <copy file="${dist}/${ant.project.name}-win64-${version}.exe" tofile="ext/win-installer/AppFiles64/ipscan.exe"/>
-        <exec dir="ext/win-installer" command="NSISPortable/NSISPortable.exe Installer/Installer.nsi"/>
-        <move file="ext/win-installer/ipscan-${version}-setup.exe" todir="${dist}"/>
-        <exec command="git checkout ext/win-installer/InstallerConfig.nsh"/>
-    </target>
+	<target name="win-installer" depends="clean,compile-win32,compile-win64,package-win32,package-win64">
+		<replace file="${win.installer.dir}/InstallerConfig.nsh">
+			<replacefilter token="VERSION_MINOR" value="2"/>
+			<replacefilter token="VERSION" value="${version}"/>
+		</replace>
+		<copy file="${dist}/${ant.project.name}-win32-${version}.exe" tofile="${win.installer.dir}/AppFiles32/ipscan.exe"/>
+		<copy file="${dist}/${ant.project.name}-win64-${version}.exe" tofile="${win.installer.dir}/AppFiles64/ipscan.exe"/>
+		<exec dir="${win.installer.dir}" executable="${win.installer.dir}/NSISPortable/NSISPortable.exe">
+			<arg value="Installer/Installer.nsi"/>
+		</exec>
+		<move file="${win.installer.dir}/ipscan-${version}-setup.exe" todir="${dist}"/>
+		<exec command="git checkout ext/win-installer/InstallerConfig.nsh"/>
+	</target>
 
 </project>
