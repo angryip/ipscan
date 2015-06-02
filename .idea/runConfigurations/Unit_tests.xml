@@ -1,12 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Unit tests" type="JUnit" factoryName="JUnit">
+  <configuration default="false" name="Unit tests" type="JUnit" factoryName="JUnit" singleton="true">
     <extension name="coverage" enabled="true" merge="false" sample_coverage="true" runner="idea">
       <pattern>
         <option name="PATTERN" value="net.azib.ipscan.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
-    <module name="Ipscan" />
+    <module name="ipscan" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />
     <option name="PACKAGE_NAME" value="net.azib.ipscan" />
