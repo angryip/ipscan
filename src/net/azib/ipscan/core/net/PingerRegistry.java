@@ -64,7 +64,7 @@ public class PingerRegistry {
 		Class<? extends Pinger> pingerClass = pingers.get(pingerName);
 		Constructor<? extends Pinger> constructor;
 		try {
-			constructor = pingerClass.getConstructor(new Class[] {int.class});
+			constructor = pingerClass.getConstructor(int.class);
 			return constructor.newInstance(timeout);
 		}
 		catch (Exception e) {
