@@ -259,6 +259,15 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		}
 	}
 
+	public int getFetcherIndex(String fetcherId) {
+		int index = 0;
+		for (Fetcher fetcher : getFetchers()) {
+			if (fetcherId.equals(fetcher.getId())) return index;
+			index++;
+		}
+		return -1;
+	}
+
 	/**
 	 * Additional information about the last scan
 	 */

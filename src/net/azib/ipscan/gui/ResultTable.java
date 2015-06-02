@@ -158,7 +158,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 	 * @param newValue
 	 */
 	public void updateResult(int index, String fetcherId, Object newValue) {
-		int fetcherIndex = fetcherRegistry.getSelectedFetcherIndex(fetcherId);
+		int fetcherIndex = scanningResults.getFetcherIndex(fetcherId);
 		if (fetcherIndex >= 0) {
 			// update the value in the results
 			scanningResults.getResult(index).setValue(fetcherIndex, newValue);
@@ -184,7 +184,6 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 	}
 	
 	public void removeAll() {
-
 		if (ScanMenuActions.isLoadedFromFile) {
 			return;
 		}
@@ -235,12 +234,10 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 			item.setText(resultStrings);
 			item.setImage(0, listImages[scanningResult.getType().ordinal()]);
 		}
-		
 	}
 
 	public void transitionTo(ScanningState state, Transition transition) {
 		// change cursor while scanning
 		setCursor(getDisplay().getSystemCursor(state == ScanningState.IDLE ? SWT.CURSOR_ARROW : SWT.CURSOR_APPSTARTING));
 	}
-
 }
