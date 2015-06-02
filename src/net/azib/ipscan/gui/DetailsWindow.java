@@ -62,13 +62,10 @@ public class DetailsWindow extends AbstractModalDialog {
 		CommentsTextListener commentsTextListener = new CommentsTextListener();
 		commentsText.addFocusListener(commentsTextListener);
 		commentsText.addModifyListener(commentsTextListener);
-		String comment = commentsConfig.getComment(result.getAddress());
-		if (comment != null) {
-			commentsText.setText(comment);
-		}
-		else {
-			commentsTextListener.focusLost(null);
-		}
+
+		String comment = commentsConfig.getComment(scanningResults, resultIndex);
+		if (comment != null) commentsText.setText(comment);
+		else commentsTextListener.focusLost(null);
 
 		Text detailsText = new Text(shell, SWT.BORDER | SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
 		detailsText.setText(result.toString());
@@ -105,7 +102,7 @@ public class DetailsWindow extends AbstractModalDialog {
 			String newComment = commentsText.getText();
 			if (!defaultText.equals(newComment)) {
 				// store the new comment
-				commentsConfig.setComment(scanningResults.getResult(resultIndex).getAddress(), newComment);
+				commentsConfig.setComment(scanningResults, resultIndex, newComment);
 				// now update the result table for user to immediately see the change
 				resultTable.updateResult(resultIndex, CommentFetcher.ID, newComment);
 			}

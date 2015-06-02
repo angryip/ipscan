@@ -13,7 +13,6 @@ import net.azib.ipscan.core.ScanningSubject;
  * @author Anton Keks
  */
 public class CommentFetcher extends AbstractFetcher {
-	
 	public static final String ID = "fetcher.comment";
 	
 	private CommentsConfig commentsConfig;
@@ -27,7 +26,7 @@ public class CommentFetcher extends AbstractFetcher {
 	}
 
 	public Object scan(ScanningSubject subject) {
-		return commentsConfig.getComment(subject.getAddress());
+		String mac = (String) subject.getParameter(MACFetcher.ID);
+		return commentsConfig.getComment(subject.getAddress(), mac);
 	}
-
 }
