@@ -1,6 +1,10 @@
-bin
-ant-bin.linux
-ant-bin.linux64
-ant-bin.mac
-ant-bin.win32
-dist
+/bin
+/out
+/ant-bin.linux
+/ant-bin.linux64
+/ant-bin.mac
+/ant-bin.win32
+/ant-bin.win64
+/dist
+/.idea/workspace.xml
+/.idea/copyright
