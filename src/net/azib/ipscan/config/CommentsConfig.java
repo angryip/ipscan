@@ -36,8 +36,13 @@ public class CommentsConfig {
 	public String getComment(ScanningResultList results, int resultIndex) {
 		ScanningResult result = results.getResult(resultIndex);
 		int macIndex = results.getFetcherIndex(MACFetcher.ID);
-		String mac = macIndex >= 0 ? (String) result.getValues().get(macIndex) : null;
-		return getComment(result.getAddress(), mac);
+		return getComment(result.getAddress(), getMac(macIndex, result));
+	}
+
+	private String getMac(int macIndex, ScanningResult result) {
+		if (macIndex < 0) return null;
+		Object macValue = result.getValues().get(macIndex);
+		return macValue instanceof String ? (String) macValue : null;
 	}
 
 	public void setComment(ScanningResultList results, int resultIndex, String comment) {
@@ -49,7 +54,7 @@ public class CommentsConfig {
 		if (macIndex >= 0) {
 			// remove ip-based comment if we set a mac-based one
 			preferences.remove(key);
-			String mac = (String) result.getValues().get(macIndex);
+			String mac = getMac(macIndex, result);
 			if (mac != null) key = mac;
 		}
 
