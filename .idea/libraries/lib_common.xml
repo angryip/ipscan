@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="lib_common">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/picocontainer-1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/swt-src.zip!/" />
+    </SOURCES>
+  </library>
+</component>

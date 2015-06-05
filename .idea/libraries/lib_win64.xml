@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="lib_win64">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/swt-win64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jna-win64.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
