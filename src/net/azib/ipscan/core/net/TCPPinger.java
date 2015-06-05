@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.core.net;
 
+import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
 
 import java.io.IOException;
@@ -24,7 +25,7 @@ import static net.azib.ipscan.util.IOUtils.closeQuietly;
  * @author Anton Keks
  */
 public class TCPPinger implements Pinger {
-	static final Logger LOG = Logger.getLogger(TCPPinger.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger();
 
 	// try different ports in sequence, starting with 80 (which is most probably not filtered)
 	private static final int[] PROBE_TCP_PORTS = {80, 80, 443, 8080, 22, 7};

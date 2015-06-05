@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.core.net;
 
+import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
 import org.savarese.rocksaw.net.RawSocket;
 import org.savarese.vserv.tcpip.ICMPEchoPacket;
@@ -29,7 +30,7 @@ import static net.azib.ipscan.util.IOUtils.*;
  * @author Anton Keks
  */
 public class ICMPSharedPinger implements Pinger {
-	static final Logger LOG = Logger.getLogger(ICMPSharedPinger.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger();
 
 	/** a single raw socket for sending of all ICMP packets */
 	private final RawSocket sendingSocket;
