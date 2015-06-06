@@ -3,6 +3,7 @@ package net.azib.ipscan.config;
 import dagger.Module;
 import dagger.Provides;
 import net.azib.ipscan.config.ComponentRegistry;
+import net.azib.ipscan.exporters.Exporter;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Module
 public class ConfigModule {
 	@Provides
-	public ComponentRegistry getRegistry(List<Class> plugins) {
-		return new ComponentRegistry(plugins);
+	public ComponentRegistry getRegistry(Class<Exporter>[] exporters, List<Class> plugins) {
+		return new ComponentRegistry(exporters, plugins);
 	}
 }
