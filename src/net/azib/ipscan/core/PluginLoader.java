@@ -1,7 +1,6 @@
 package net.azib.ipscan.core;
 
 import net.azib.ipscan.config.LoggerFactory;
-import org.picocontainer.MutablePicoContainer;
 
 import java.io.File;
 import java.io.FilenameFilter;

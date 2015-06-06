@@ -3,7 +3,6 @@ package net.azib.ipscan.core;
 import net.azib.ipscan.fetchers.AbstractFetcher;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.picocontainer.MutablePicoContainer;
 
 import java.io.File;
 import java.util.List;
