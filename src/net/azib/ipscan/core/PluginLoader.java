@@ -1,5 +1,7 @@
 package net.azib.ipscan.core;
 
+import dagger.Module;
+import dagger.Provides;
 import net.azib.ipscan.config.LoggerFactory;
 
 import java.io.File;
@@ -29,9 +31,11 @@ import java.util.logging.Logger;
  * </ul>
  * In either way, all plugins must implement {@link net.azib.ipscan.core.Plugin} and one or more of the concrete interfaces.
  */
+@Module
 public class PluginLoader {
     private static final Logger LOG = LoggerFactory.getLogger();
 
+	@Provides
 	public List<Class> getClasses() {
 		List<Class> container = new ArrayList<Class>();
 
