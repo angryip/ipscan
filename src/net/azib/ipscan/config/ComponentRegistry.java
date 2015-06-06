@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.config;
 
+import dagger.Module;
 import net.azib.ipscan.core.*;
 import net.azib.ipscan.core.Scanner;
 import net.azib.ipscan.core.net.PingerRegistry;
@@ -26,6 +27,8 @@ import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
+import javax.inject.Inject;
+
 /**
  * This class is the dependency injection configuration using the Pico Container.
  * 
@@ -37,7 +40,8 @@ public class ComponentRegistry {
 
 	private boolean containerStarted;
 
-	public ComponentRegistry() {
+	@Inject
+	public ComponentRegistry(java.util.List<Class> plugins) {
 		MutablePicoContainer container = new DefaultPicoContainer();
 		this.container = container;
 
@@ -148,8 +152,7 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(ToolsActions.ChooseFetchers.class);
 		container.registerComponentImplementation(HelpMenuActions.CheckVersion.class);
 
-		java.util.List<Class> classes = new PluginLoader().getClasses();
-		registerComponentImplementations(container, classes);
+		registerComponentImplementations(container, plugins);
 	}
 
 	private void registerComponentImplementations(MutablePicoContainer container, java.util.List<Class> classes) {
