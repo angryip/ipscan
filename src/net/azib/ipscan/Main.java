@@ -6,6 +6,7 @@
 package net.azib.ipscan;
 
 import net.azib.ipscan.config.*;
+import net.azib.ipscan.core.PluginLoader;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.gui.InfoDialog;
 import net.azib.ipscan.gui.MainWindow;
@@ -58,7 +59,7 @@ public class Main {
 
 			LOG.finer("Labels and Config initialized after " + (System.currentTimeMillis() - startTime));
 
-			ComponentRegistry componentRegistry = new ComponentRegistry();
+			ComponentRegistry componentRegistry = DaggerMainEntrance.create().getRegistry();
 			LOG.finer("ComponentRegistry initialized after " + (System.currentTimeMillis() - startTime));
 
 			processCommandLine(args, componentRegistry);

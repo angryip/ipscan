@@ -7,10 +7,11 @@
       <entry name="?*" />
     </wildcardResourcePatterns>
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="false">
-        <processorPath useClasspath="true" />
+      <profile default="true" name="Default" enabled="true">
+        <processorPath useClasspath="false">
+          <entry name="$PROJECT_DIR$/lib/dagger-compiler-2.0.1.jar" />
+        </processorPath>
       </profile>
     </annotationProcessing>
   </component>
 </project>
-
