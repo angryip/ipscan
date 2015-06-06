@@ -1,11 +1,16 @@
 <component name="libraryTable">
   <library name="lib">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/picocontainer-1.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/swt-linux64.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/swt-mac.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/swt-win64.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jna.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/picocontainer-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/dagger-2.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javax.inject-1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/dagger-compiler-2.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/dagger-producers-2.0-beta.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/guava-18.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
