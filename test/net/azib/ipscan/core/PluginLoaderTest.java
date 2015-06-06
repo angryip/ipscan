@@ -6,6 +6,7 @@ import org.mockito.ArgumentCaptor;
 import org.picocontainer.MutablePicoContainer;
 
 import java.io.File;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -14,13 +15,13 @@ import static org.mockito.Mockito.verify;
 
 public class PluginLoaderTest {
 	PluginLoader loader = new PluginLoader();
-	MutablePicoContainer container = mock(MutablePicoContainer.class);
+	List<Class> container = mock(List.class);
 
 	@Test
     public void loadFromSystemProperty() {
         System.setProperty("ipscan.plugins", DummyFetcher.class.getName());
 		loader.loadPluginsSpecifiedInSystemProperties(container);
-        verify(container).registerComponentImplementation(DummyFetcher.class);
+        verify(container).add(DummyFetcher.class);
     }
 
 	@Test
@@ -36,7 +37,7 @@ public class PluginLoaderTest {
 		loader.loadPluginJars(container, loader.getClassLocation(getClass()));
 
 		ArgumentCaptor<Class> classCaptor = ArgumentCaptor.forClass(Class.class);
-		verify(container).registerComponentImplementation(classCaptor.capture());
+		verify(container).add(classCaptor.capture());
 		Class plugin = classCaptor.getValue();
 		assertEquals("test.TestPlugin", plugin.getName());
 		assertTrue(Plugin.class.isAssignableFrom(plugin));

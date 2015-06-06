@@ -5,10 +5,8 @@
  */
 package net.azib.ipscan.config;
 
-import net.azib.ipscan.core.PluginLoader;
+import net.azib.ipscan.core.*;
 import net.azib.ipscan.core.Scanner;
-import net.azib.ipscan.core.ScannerDispatcherThreadFactory;
-import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.exporters.*;
 import net.azib.ipscan.fetchers.*;
@@ -150,7 +148,14 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(ToolsActions.ChooseFetchers.class);
 		container.registerComponentImplementation(HelpMenuActions.CheckVersion.class);
 
-        new PluginLoader().addTo(container);
+		java.util.List<Class> classes = new PluginLoader().getClasses();
+		registerComponentImplementations(container, classes);
+	}
+
+	private void registerComponentImplementations(MutablePicoContainer container, java.util.List<Class> classes) {
+		for (Class clazz: classes) {
+			container.registerComponentImplementation(clazz);
+		}
 	}
 
 	private void start() {
