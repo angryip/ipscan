@@ -41,7 +41,7 @@ public class ComponentRegistry {
 	private boolean containerStarted;
 
 	@Inject
-	public ComponentRegistry(java.util.List<Class> plugins) {
+	public ComponentRegistry(Class<Exporter>[] exporters, java.util.List<Class> plugins) {
 		MutablePicoContainer container = new DefaultPicoContainer();
 		this.container = container;
 
@@ -60,10 +60,7 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(ConfigDetector.class);
 
 		container.registerComponentImplementation(ExporterRegistry.class);
-		container.registerComponentImplementation(TXTExporter.class);
-		container.registerComponentImplementation(CSVExporter.class);
-		container.registerComponentImplementation(XMLExporter.class);
-		container.registerComponentImplementation(IPListExporter.class);
+		registerComponentImplementations(container, exporters);
 
 		container.registerComponentImplementation(FetcherRegistry.class, FetcherRegistry.class);
 		container.registerComponentImplementation(IPFetcher.class);
@@ -155,7 +152,13 @@ public class ComponentRegistry {
 		registerComponentImplementations(container, plugins);
 	}
 
-	private void registerComponentImplementations(MutablePicoContainer container, java.util.List<Class> classes) {
+	private static void registerComponentImplementations(MutablePicoContainer container, Class<?>[] classes) {
+		for (Class clazz: classes) {
+			container.registerComponentImplementation(clazz);
+		}
+	}
+
+	private static void registerComponentImplementations(MutablePicoContainer container, java.util.List<Class> classes) {
 		for (Class clazz: classes) {
 			container.registerComponentImplementation(clazz);
 		}
