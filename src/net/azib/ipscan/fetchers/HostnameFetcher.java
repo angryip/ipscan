@@ -4,6 +4,7 @@
  */
 package net.azib.ipscan.fetchers;
 
+import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.util.MDNSResolver;
 import net.azib.ipscan.util.NetBIOSResolver;
@@ -25,7 +26,7 @@ import static java.util.logging.Level.WARNING;
  * @author Anton Keks
  */
 public class HostnameFetcher extends AbstractFetcher {
-	private static Logger LOG = Logger.getLogger(HostnameFetcher.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger();
 
 	private static Object inetAddressImpl;
 	private static Method getHostByAddr;

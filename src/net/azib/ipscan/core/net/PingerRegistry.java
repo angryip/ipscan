@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.core.net;
 
+import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
@@ -25,8 +26,7 @@ import static java.util.logging.Level.SEVERE;
  * @author Anton Keks
  */
 public class PingerRegistry {
-	
-	private static final Logger LOG = Logger.getLogger(PingerRegistry.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger();
 	
 	private ScannerConfig scannerConfig;
 	

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="lib_win32">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jna-win32.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/swt-win32.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
