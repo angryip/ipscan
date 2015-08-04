@@ -59,7 +59,7 @@ public class Main {
 
 			LOG.finer("Labels and Config initialized after " + (System.currentTimeMillis() - startTime));
 
-			ComponentRegistry componentRegistry = DaggerMainEntrance.create().getRegistry();
+			ComponentRegistry componentRegistry = DaggerMainComponent.create().get();
 			LOG.finer("ComponentRegistry initialized after " + (System.currentTimeMillis() - startTime));
 
 			processCommandLine(args, componentRegistry);
