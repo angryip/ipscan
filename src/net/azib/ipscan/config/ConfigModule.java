@@ -13,7 +13,7 @@ import java.util.List;
 @Module
 public class ConfigModule {
 	@Provides
-	public ComponentRegistry getRegistry(Class<Exporter>[] exporters, List<Class> plugins) {
-		return new ComponentRegistry(exporters, plugins);
+	public ComponentRegistry getRegistry(List<Class> plugins) {
+		return new ComponentRegistry(plugins);
 	}
 }

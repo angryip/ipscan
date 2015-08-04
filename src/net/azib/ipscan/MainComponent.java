@@ -14,6 +14,6 @@ import net.azib.ipscan.exporters.ExporterModule;
 	PluginLoader.class,
 	ExporterModule.class
 })
-public interface MainEntrance {
-	ComponentRegistry getRegistry();
+public interface MainComponent {
+	ComponentRegistry get();
 }
