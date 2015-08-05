@@ -4,6 +4,7 @@ import dagger.Module;
 import dagger.Provides;
 import net.azib.ipscan.config.LoggerFactory;
 
+import javax.inject.Named;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.net.URL;
@@ -35,7 +36,7 @@ import java.util.logging.Logger;
 public class PluginLoader {
     private static final Logger LOG = LoggerFactory.getLogger();
 
-	@Provides
+	@Provides @Named("plugins")
 	public List<Class> getClasses() {
 		List<Class> container = new ArrayList<Class>();
 
