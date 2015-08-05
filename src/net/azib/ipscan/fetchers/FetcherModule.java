@@ -2,12 +2,16 @@ package net.azib.ipscan.fetchers;
 
 import dagger.Module;
 import dagger.Provides;
+import net.azib.ipscan.config.CommentsConfig;
 import net.azib.ipscan.config.Platform;
+import net.azib.ipscan.config.ScannerConfig;
+import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.exporters.*;
 
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 /**
  * @author Andriy Kryvtsun
@@ -15,24 +19,29 @@ import java.util.List;
 @Module
 public class FetcherModule {
 
-	@Provides @Named("fetchers")
-	public List<Class> provideClasses() {
+	@Provides
+	public Fetcher[] provideFetchers(PingerRegistry pingerRegistry, ScannerConfig scannerConfig, CommentsConfig commentsConfig) {
 
-		List<Class> classes = new ArrayList<Class>();
+		MACFetcher macFetcher = Platform.WINDOWS ? new WinMACFetcher() : new UnixMACFetcher();
 
-		classes.add(IPFetcher.class);
-		classes.add(PingFetcher.class);
-		classes.add(PingTTLFetcher.class);
-		classes.add(HostnameFetcher.class);
-		classes.add(PortsFetcher.class);
-		classes.add(FilteredPortsFetcher.class);
-		classes.add(WebDetectFetcher.class);
-		classes.add(HTTPSenderFetcher.class);
-		classes.add(CommentFetcher.class);
-		classes.add(NetBIOSInfoFetcher.class);
-		classes.add(Platform.WINDOWS ? WinMACFetcher.class : UnixMACFetcher.class);
-		classes.add(MACVendorFetcher.class);
+		return new Fetcher[] {
+			new IPFetcher(),
+			new PingFetcher(pingerRegistry, scannerConfig),
+			new PingTTLFetcher(pingerRegistry, scannerConfig),
+			new HostnameFetcher(),
+			new PortsFetcher(scannerConfig),
+			new FilteredPortsFetcher(scannerConfig),
+			new WebDetectFetcher(scannerConfig),
+			new HTTPSenderFetcher(scannerConfig),
+			new CommentFetcher(commentsConfig),
+			new NetBIOSInfoFetcher(),
+				macFetcher,
+			new MACVendorFetcher(macFetcher),
+		};
+	}
 
-		return classes;
+	@Provides
+	public FetcherRegistry provideFetcherRegistry(Fetcher[] fetchers, Preferences preferences) {
+		return new FetcherRegistry(fetchers, preferences);
 	}
 }
