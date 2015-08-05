@@ -41,7 +41,7 @@ public class ComponentRegistry {
 	private boolean containerStarted;
 
 	@Inject
-	public ComponentRegistry(java.util.List<Class> plugins) {
+	public ComponentRegistry(java.util.List<Class> plugins, java.util.List<Class> fetchers) {
 		MutablePicoContainer container = new DefaultPicoContainer();
 		this.container = container;
 
@@ -65,19 +65,7 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(TXTExporter.class);
 
 		container.registerComponentImplementation(FetcherRegistry.class, FetcherRegistry.class);
-		container.registerComponentImplementation(IPFetcher.class);
-		container.registerComponentImplementation(PingFetcher.class);
-		container.registerComponentImplementation(PingTTLFetcher.class);
-		container.registerComponentImplementation(HostnameFetcher.class);
-		container.registerComponentImplementation(PortsFetcher.class);
-		container.registerComponentImplementation(FilteredPortsFetcher.class);
-		container.registerComponentImplementation(WebDetectFetcher.class);
-		container.registerComponentImplementation(HTTPSenderFetcher.class);
-		container.registerComponentImplementation(CommentFetcher.class);
-		container.registerComponentImplementation(NetBIOSInfoFetcher.class);
-		if (Platform.WINDOWS) container.registerComponentImplementation(WinMACFetcher.class);
-		else container.registerComponentImplementation(UnixMACFetcher.class);
-		container.registerComponentImplementation(MACVendorFetcher.class);
+		registerComponentImplementations(container, fetchers);
 
 		container.registerComponentImplementation(PingerRegistry.class, PingerRegistry.class);
 		container.registerComponentImplementation(ScanningResultList.class);
@@ -152,12 +140,6 @@ public class ComponentRegistry {
 		container.registerComponentImplementation(HelpMenuActions.CheckVersion.class);
 
 		registerComponentImplementations(container, plugins);
-	}
-
-	private static void registerComponentImplementations(MutablePicoContainer container, Class<?>[] classes) {
-		for (Class clazz: classes) {
-			container.registerComponentImplementation(clazz);
-		}
 	}
 
 	private static void registerComponentImplementations(MutablePicoContainer container, java.util.List<Class> classes) {
