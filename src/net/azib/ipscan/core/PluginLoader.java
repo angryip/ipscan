@@ -36,7 +36,7 @@ import java.util.logging.Logger;
 public class PluginLoader {
     private static final Logger LOG = LoggerFactory.getLogger();
 
-	@Provides @Named("plugins")
+	@Provides
 	public List<Class> getClasses() {
 		List<Class> container = new ArrayList<Class>();
 
