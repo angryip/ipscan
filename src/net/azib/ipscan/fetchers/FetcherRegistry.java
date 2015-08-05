@@ -29,14 +29,15 @@ public class FetcherRegistry {
 	private Map<String, Fetcher> selectedFetchers;
 	
 	/** PicoContainer for FetcherPrefs components */
+	// TODO remove local PicoContainer usage here
 	private PicoContainer prefsContainer;
 
 	/** A collection of update listeners - observers of FetcherRegistry */
 	private List<FetcherRegistryUpdateListener> updateListeners = new ArrayList<FetcherRegistryUpdateListener>();
 		
-	public FetcherRegistry(Fetcher[] registeredFetchers, Preferences preferences, PicoContainer parentContainer) {
+	public FetcherRegistry(Fetcher[] registeredFetchers, Preferences preferences) {
 		this.preferences = preferences;
-		MutablePicoContainer prefsContainer = new DefaultPicoContainer(parentContainer);
+		MutablePicoContainer prefsContainer = new DefaultPicoContainer();
 		
 		this.registeredFetchers = new LinkedHashMap<String, Fetcher>(registeredFetchers.length);
 		for (Fetcher fetcher : registeredFetchers) {

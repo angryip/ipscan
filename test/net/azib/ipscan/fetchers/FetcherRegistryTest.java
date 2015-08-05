@@ -39,7 +39,7 @@ public class FetcherRegistryTest {
 		hostnameFetcher = new HostnameFetcher();
 		commentFetcher = new CommentFetcher(null);
 		portsFetcher = new PortsFetcher(null);
-		fetcherRegistry = new FetcherRegistry(new Fetcher[] {ipFetcher, pingFetcher, hostnameFetcher, commentFetcher, portsFetcher}, preferences, null);
+		fetcherRegistry = new FetcherRegistry(new Fetcher[] {ipFetcher, pingFetcher, hostnameFetcher, commentFetcher, portsFetcher}, preferences);
 	}
 	
 	@After
@@ -72,18 +72,18 @@ public class FetcherRegistryTest {
 	@Test
 	public void testLoadPreferences() throws Exception {
 		preferences.remove(FetcherRegistry.PREFERENCE_SELECTED_FETCHERS);
-		fetcherRegistry = new FetcherRegistry(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences, null);
+		fetcherRegistry = new FetcherRegistry(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences);
 		assertEquals(4, fetcherRegistry.getSelectedFetchers().size());
 		
 		preferences.put(FetcherRegistry.PREFERENCE_SELECTED_FETCHERS, hostnameFetcher.getId() + "###" + commentFetcher.getId());
-		fetcherRegistry = new FetcherRegistry(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences, null);
+		fetcherRegistry = new FetcherRegistry(new Fetcher[] {ipFetcher, hostnameFetcher, commentFetcher}, preferences);
 		assertEquals(2, fetcherRegistry.getSelectedFetchers().size());
 		Iterator<?> iterator = fetcherRegistry.getSelectedFetchers().iterator();
 		assertSame(hostnameFetcher, iterator.next());
 		assertSame(commentFetcher, iterator.next());
 		
 		preferences.put(FetcherRegistry.PREFERENCE_SELECTED_FETCHERS, "not-existing-fetcher###" + hostnameFetcher.getId());
-		fetcherRegistry = new FetcherRegistry(new Fetcher[] {ipFetcher, hostnameFetcher}, preferences, null);
+		fetcherRegistry = new FetcherRegistry(new Fetcher[] {ipFetcher, hostnameFetcher}, preferences);
 		assertEquals(1, fetcherRegistry.getSelectedFetchers().size());
 	}
 	
@@ -126,7 +126,7 @@ public class FetcherRegistryTest {
 		container.registerComponentInstance(message);
 		
 		Fetcher editableFetcher = new EditableFetcher();
-		fetcherRegistry = new FetcherRegistry(new Fetcher[] {ipFetcher, editableFetcher}, preferences, container);
+		fetcherRegistry = new FetcherRegistry(new Fetcher[] {ipFetcher, editableFetcher}, preferences);
 		
 		EditableFetcherPrefs.calledWithMessage = null;
 		fetcherRegistry.openPreferencesEditor(editableFetcher);		

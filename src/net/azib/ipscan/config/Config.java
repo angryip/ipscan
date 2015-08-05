@@ -3,6 +3,9 @@
  */
 package net.azib.ipscan.config;
 
+import dagger.Module;
+import dagger.Provides;
+
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
