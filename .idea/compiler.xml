@@ -8,6 +8,7 @@
     </wildcardResourcePatterns>
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true">
+        <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true">
           <entry name="$PROJECT_DIR$/lib/dagger-compiler-2.0.1.jar" />
         </processorPath>
