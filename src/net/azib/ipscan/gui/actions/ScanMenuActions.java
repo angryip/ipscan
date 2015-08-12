@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,14 +47,14 @@ public class ScanMenuActions {
 	}
 
 	public static class LoadFromFile implements Listener {
-		private TXTExporter txtExporter;
+
+		@Inject TXTExporter txtExporter;
 		private final ExporterRegistry exporterRegistry;
 		private FeederGUIRegistry feederRegistry;
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
 
-		public LoadFromFile(TXTExporter txtExporter, ExporterRegistry exporterRegistry, FeederGUIRegistry feederRegistry, ResultTable resultTable, StateMachine stateMachine) {
-			this.txtExporter = txtExporter;
+		public LoadFromFile(ExporterRegistry exporterRegistry, FeederGUIRegistry feederRegistry, ResultTable resultTable, StateMachine stateMachine) {
 			this.exporterRegistry = exporterRegistry;
 			this.feederRegistry = feederRegistry;
 			this.resultTable = resultTable;
