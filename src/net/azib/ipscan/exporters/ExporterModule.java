@@ -3,6 +3,7 @@ package net.azib.ipscan.exporters;
 import dagger.Module;
 import dagger.Provides;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +14,7 @@ import java.util.List;
 public class ExporterModule {
 
 	@Provides
-	public Exporter[] provideExporters() {
-		return new Exporter[] {new TXTExporter(), new CSVExporter(), new XMLExporter(), new IPListExporter()};
-	}
-
-	@Provides
-	public ExporterRegistry provideExporterRegistry(Exporter[] exporters) {
-		return new ExporterRegistry(exporters);
+	public Exporter[] provideExporters(TXTExporter txtExporter) {
+		return new Exporter[] {txtExporter, new CSVExporter(), new XMLExporter(), new IPListExporter()};
 	}
 }
