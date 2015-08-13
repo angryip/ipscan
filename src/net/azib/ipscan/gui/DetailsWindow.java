@@ -38,8 +38,8 @@ public class DetailsWindow extends AbstractModalDialog {
 
 	int resultIndex;
 	private Text commentsText;
-		
-	public DetailsWindow(GUIConfig guiConfig, ResultTable resultTable, ScanningResultList scanningResults) {
+
+	@Inject public DetailsWindow(GUIConfig guiConfig, ResultTable resultTable, ScanningResultList scanningResults) {
 		this.guiConfig = guiConfig;
 		this.resultTable = resultTable;
 		this.scanningResults = scanningResults;

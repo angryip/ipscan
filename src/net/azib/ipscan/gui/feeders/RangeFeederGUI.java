@@ -18,6 +18,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.UnknownHostException;
@@ -40,7 +42,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	private boolean isEndIPUnedited = true;
 	private boolean modifyListenersDisabled = false;
 
-	public RangeFeederGUI(Composite parent) {
+	@Inject public RangeFeederGUI(@Named("feederArea") Composite parent) {
 		super(parent);
 		feeder = new RangeFeeder();
 	}

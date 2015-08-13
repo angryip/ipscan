@@ -18,7 +18,7 @@
       <excludeFolder url="file://$MODULE_DIR$/test-coverage" />
       <excludeFolder url="file://$MODULE_DIR$/test-results" />
     </content>
-    <orderEntry type="jdk" jdkName="1.7.0" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" scope="TEST" name="lib_testing" level="project" />

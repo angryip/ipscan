@@ -18,6 +18,7 @@ import net.azib.ipscan.feeders.FeederCreator;
 import net.azib.ipscan.feeders.FeederRegistry;
 import net.azib.ipscan.gui.actions.ScanMenuActions;
 
+import javax.inject.Inject;
 import java.io.File;
 
 /**
@@ -45,8 +46,8 @@ public class CommandLineProcessor implements CommandProcessor, StateTransitionLi
 		this.feederRegistry = feederCreators;
 		this.exporters = exporters;		
 	}
-	
-	public CommandLineProcessor(FeederRegistry<FeederCreator> feederCreators, ExporterRegistry exporters, StateMachine stateMachine, ScanningResultList scanningResults) {
+
+	@Inject public CommandLineProcessor(FeederRegistry<FeederCreator> feederCreators, ExporterRegistry exporters, StateMachine stateMachine, ScanningResultList scanningResults) {
 		this(feederCreators, exporters);
 		this.stateMachine = stateMachine;
 		this.scanningResults = scanningResults;

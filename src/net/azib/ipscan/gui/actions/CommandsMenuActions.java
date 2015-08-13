@@ -25,6 +25,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
+import javax.inject.Inject;
+
 /**
  * Commands and Context menu Actions.
  * All these operate on the items, selected in the results list.
@@ -49,7 +51,7 @@ public class CommandsMenuActions {
 		private final ResultTable resultTable;
 		private final DetailsWindow detailsWindow;
 		
-		public Details(ResultTable resultTable, DetailsWindow detailsWindow) {
+		@Inject public Details(ResultTable resultTable, DetailsWindow detailsWindow) {
 			this.resultTable = resultTable;
 			this.detailsWindow = detailsWindow;
 			resultTable.addListener(SWT.Traverse, this);
