@@ -22,8 +22,7 @@ import java.util.prefs.Preferences;
 public class CommentsConfig {
 	private Preferences preferences;
 
-	@Inject
-	public CommentsConfig(Preferences preferences) {
+	@Inject public CommentsConfig(Preferences preferences) {
 		// use a separate node for comments - they can get large
 		this.preferences = preferences.node("comments");
 	}

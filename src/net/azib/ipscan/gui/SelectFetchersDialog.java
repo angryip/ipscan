@@ -15,6 +15,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -32,12 +33,11 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 	private List registeredFetchersList;
 	Map<String, String> registeredFetcherIdsByNames = new HashMap<String, String>();
 
-	public SelectFetchersDialog(FetcherRegistry fetcherRegistry) {
+	@Inject public SelectFetchersDialog(FetcherRegistry fetcherRegistry) {
 		this.fetcherRegistry = fetcherRegistry;
 	}
 	
-	@Override
-	protected void populateShell() {
+	@Override protected void populateShell() {
 		Display currentDisplay = Display.getCurrent();
 		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);

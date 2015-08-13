@@ -14,6 +14,7 @@ import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 
+import javax.inject.Inject;
 import java.net.InetAddress;
 import java.util.*;
 
@@ -46,8 +47,8 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	public ScanningResultList(FetcherRegistry fetcherRegistry) {
 		this.fetcherRegistry = fetcherRegistry;
 	}
-	
-	public ScanningResultList(FetcherRegistry fetcherRegistry, StateMachine stateMachine) {
+
+	@Inject public ScanningResultList(FetcherRegistry fetcherRegistry, StateMachine stateMachine) {
 		this(fetcherRegistry);
 		stateMachine.addTransitionListener(new StopScanningListener());
 	}

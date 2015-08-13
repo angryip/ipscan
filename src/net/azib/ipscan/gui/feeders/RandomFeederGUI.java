@@ -17,6 +17,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import static net.azib.ipscan.config.Labels.getLabel;
 
 /**
@@ -31,7 +34,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 	private Button ipUpButton;
 	private Spinner countSpinner;
 
-	public RandomFeederGUI(Composite parent) {
+	@Inject public RandomFeederGUI(@Named("feederArea") Composite parent) {
 		super(parent);
 		feeder = new RandomFeeder();
 	}

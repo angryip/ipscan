@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 
+import javax.inject.Inject;
 import java.net.InetAddress;
 
 /**
@@ -75,7 +76,8 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		buttonTexts[ScanningState.STOPPING.ordinal()] = Labels.getLabel("button.kill");
 		buttonTexts[ScanningState.KILLING.ordinal()] = Labels.getLabel("button.kill");
 	}
-	
+
+	@Inject
 	public StartStopScanningAction(ScannerDispatcherThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, PingerRegistry pingerRegistry, Button startStopButton, GUIConfig guiConfig) {
 		this(startStopButton.getDisplay());
 
