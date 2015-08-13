@@ -15,6 +15,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -38,7 +40,7 @@ public class FeederGUIRegistryTest {
 		
 		feederGUI = new RangeFeederGUI(parent);
 		feederGUI.initialize();
-		registry = new FeederGUIRegistry(new AbstractFeederGUI[] {feederGUI}, feederSelectionCombo, null);
+		registry = new FeederGUIRegistry(Collections.<AbstractFeederGUI>singletonList(feederGUI), feederSelectionCombo, null);
 	}
 	
 	@After
@@ -49,7 +51,7 @@ public class FeederGUIRegistryTest {
 	@Test
 	public void addFeederNamesToTheCombo() throws Exception {
 		reset(feederSelectionCombo);
-		new FeederGUIRegistry(new AbstractFeederGUI[] {feederGUI}, feederSelectionCombo, null);
+		new FeederGUIRegistry(Collections.<AbstractFeederGUI>singletonList(feederGUI), feederSelectionCombo, null);
         verify(feederSelectionCombo).add(Labels.getLabel(feederGUI.getFeederId()));
 	}
 

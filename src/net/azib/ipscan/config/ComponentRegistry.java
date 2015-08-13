@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.*;
 import org.picocontainer.MutablePicoContainer;
 
 import javax.inject.Named;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -66,18 +67,18 @@ public class ComponentRegistry {
 		return feederRegistry;
 	}
 
-	@Provides public AbstractFeederGUI[] feeders(RangeFeederGUI f1, RandomFeederGUI f2, FileFeederGUI f3) {
-		return new AbstractFeederGUI[] {f1, f2, f3};
+	@Provides public List<AbstractFeederGUI> feeders(RangeFeederGUI f1, RandomFeederGUI f2, FileFeederGUI f3) {
+		return Arrays.asList(f1, f2, f3);
 	}
 
-	@Provides public Exporter[] exporters(TXTExporter e1, CSVExporter e2, XMLExporter e3, IPListExporter e4) {
-		return new Exporter[] {e1, e2, e3, e4};
+	@Provides public List<Exporter> exporters(TXTExporter e1, CSVExporter e2, XMLExporter e3, IPListExporter e4) {
+		return Arrays.<Exporter>asList(e1, e2, e3, e4);
 	}
 
-	@Provides public Fetcher[] fetchers(IPFetcher f1, PingFetcher f2, PingTTLFetcher f3, HostnameFetcher f4, PortsFetcher f5,
+	@Provides public List<Fetcher> fetchers(IPFetcher f1, PingFetcher f2, PingTTLFetcher f3, HostnameFetcher f4, PortsFetcher f5,
 										  	   FilteredPortsFetcher f6, WebDetectFetcher f7, HTTPSenderFetcher f8, CommentFetcher f9,
 									 		   NetBIOSInfoFetcher f10, MACFetcher f11, MACVendorFetcher f12) {
-		return new Fetcher[] {f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12};
+		return Arrays.<Fetcher>asList(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12);
 	}
 
 	@Provides MACFetcher selectMacFetcher() {

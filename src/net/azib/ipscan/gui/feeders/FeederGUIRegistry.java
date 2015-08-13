@@ -16,7 +16,6 @@ import org.eclipse.swt.widgets.TableItem;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,14 +33,14 @@ public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
 	Feeder lastScanFeeder;
 	private AbstractFeederGUI currentFeederGUI;
 	
-	@Inject public FeederGUIRegistry(AbstractFeederGUI[] allTheFeeders, @Named("feederSelectionCombo") Combo feederSelectionCombo, GUIConfig guiConfig) {
-		this.feederGUIList = Arrays.asList(allTheFeeders);
+	@Inject public FeederGUIRegistry(List<AbstractFeederGUI> allTheFeeders, @Named("feederSelectionCombo") Combo feederSelectionCombo, GUIConfig guiConfig) {
+		this.feederGUIList = allTheFeeders;
 		this.feederSelectionCombo = feederSelectionCombo;
 		for (AbstractFeederGUI feederGUI : feederGUIList) {
 			feederSelectionCombo.add(feederGUI.getFeederName());	
 		}
 		this.guiConfig = guiConfig;
-		this.currentFeederGUI = allTheFeeders[0];
+		this.currentFeederGUI = allTheFeeders.get(0);
 	}
 	
 	public AbstractFeederGUI current() {

@@ -3,11 +3,12 @@
  */
 package net.azib.ipscan.exporters;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * ExporterRegistryTest
@@ -16,7 +17,7 @@ import org.junit.Test;
  */
 public class ExporterRegistryTest {
 	
-	private ExporterRegistry exporterRegistry = new ExporterRegistry(new Exporter[] {new TXTExporter(), new CSVExporter()});
+	private ExporterRegistry exporterRegistry = new ExporterRegistry(Arrays.<Exporter>asList(new TXTExporter(), new CSVExporter()));
 	
 	@Test
 	public void testIterator() {
