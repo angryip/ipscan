@@ -8,6 +8,7 @@ package net.azib.ipscan.exporters;
 import javax.inject.Inject;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,7 +23,7 @@ public class ExporterRegistry implements Iterable<Exporter> {
 	private Map<String, Exporter> exporters;
 
 	@Inject
-	public ExporterRegistry(Exporter[] registeredExporters) {
+	public ExporterRegistry(List<Exporter> registeredExporters) {
 		exporters = new LinkedHashMap<String, Exporter>();
 
 		for (Exporter exporter : registeredExporters) {

@@ -36,11 +36,11 @@ public class FetcherRegistry {
 	/** A collection of update listeners - observers of FetcherRegistry */
 	private List<FetcherRegistryUpdateListener> updateListeners = new ArrayList<FetcherRegistryUpdateListener>();
 		
-	@Inject public FetcherRegistry(Fetcher[] registeredFetchers, Preferences preferences) {
+	@Inject public FetcherRegistry(List<Fetcher> registeredFetchers, Preferences preferences) {
 		this.preferences = preferences;
 		MutablePicoContainer prefsContainer = new DefaultPicoContainer();
 		
-		this.registeredFetchers = new LinkedHashMap<String, Fetcher>(registeredFetchers.length);
+		this.registeredFetchers = new LinkedHashMap<String, Fetcher>(registeredFetchers.size());
 		for (Fetcher fetcher : registeredFetchers) {
 			this.registeredFetchers.put(fetcher.getId(), fetcher);
 			Class<? extends FetcherPrefs> prefsClass = fetcher.getPreferencesClass();
