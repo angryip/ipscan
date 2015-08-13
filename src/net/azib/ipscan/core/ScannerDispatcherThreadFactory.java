@@ -9,6 +9,8 @@ import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.feeders.Feeder;
 
+import javax.inject.Inject;
+
 /**
  * ScannerThreadFactory.
  * 
@@ -22,8 +24,8 @@ public class ScannerDispatcherThreadFactory {
 	private Scanner scanner;
 	private StateMachine stateMachine;
 	private ScannerConfig scannerConfig;
-	
-	public ScannerDispatcherThreadFactory(ScanningResultList scanningResults, Scanner scanner, StateMachine stateMachine, ScannerConfig scannerConfig) {
+
+	@Inject public ScannerDispatcherThreadFactory(ScanningResultList scanningResults, Scanner scanner, StateMachine stateMachine, ScannerConfig scannerConfig) {
 		this.scanningResults = scanningResults;
 		this.scanner = scanner;
 		this.stateMachine = stateMachine;

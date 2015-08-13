@@ -19,7 +19,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -89,7 +88,7 @@ public class HelpMenuActions {
 	public static final class CheckVersion implements Listener {
 		private final StatusBar statusBar;
 		
-		public CheckVersion(StatusBar statusBar) {
+		@Inject public CheckVersion(StatusBar statusBar) {
 			this.statusBar = statusBar;
 		}
 

@@ -5,25 +5,27 @@
  */
 package net.azib.ipscan.gui.feeders;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
+import dagger.Module;
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederException;
 import net.azib.ipscan.feeders.FeederRegistry;
 import net.azib.ipscan.feeders.RescanFeeder;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.TableItem;
+
+import javax.inject.Inject;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * FeederGUIRegistry
  *
  * @author Anton Keks
  */
+@Module
 public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
 	
 	private final List<AbstractFeederGUI> feederGUIList;
@@ -33,7 +35,7 @@ public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
 	Feeder lastScanFeeder;
 	private AbstractFeederGUI currentFeederGUI;
 	
-	public FeederGUIRegistry(AbstractFeederGUI[] allTheFeeders, Combo feederSelectionCombo, GUIConfig guiConfig) {
+	@Inject public FeederGUIRegistry(AbstractFeederGUI[] allTheFeeders, Combo feederSelectionCombo, GUIConfig guiConfig) {
 		this.feederGUIList = Arrays.asList(allTheFeeders);
 		this.feederSelectionCombo = feederSelectionCombo;
 		for (AbstractFeederGUI feederGUI : feederGUIList) {
