@@ -25,6 +25,9 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import static net.azib.ipscan.gui.util.LayoutHelper.formData;
 
 /**
@@ -53,7 +56,10 @@ public class MainWindow {
 	/**
 	 * Creates and initializes the main window.
 	 */
-	public MainWindow(Shell shell, GUIConfig guiConfig, Composite feederArea, Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry, final StateMachine stateMachine, ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListsner) {
+	@Inject
+	public MainWindow(@Named("mainShell") Shell shell, GUIConfig guiConfig, @Named("feederArea") Composite feederArea,
+					  @Named("controlsArea") Composite controlsArea, @Named("feederSelectionCombo") Combo feederSelectionCombo,
+					  @Named("startStopButton") Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry, final StateMachine stateMachine, ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListsner) {
 		this.shell = shell;
 		this.guiConfig = guiConfig;
 		this.statusBar = statusBar;

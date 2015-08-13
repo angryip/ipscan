@@ -15,6 +15,7 @@ import java.util.prefs.Preferences;
  * 
  * @author Anton Keks
  */
+@Module
 public final class Config {
 	
 	/** Singleton instance */
@@ -44,7 +45,7 @@ public final class Config {
 	/**
 	 * Initializes the singleton instance
 	 */
-	public static Config getConfig() {
+	@Provides public static Config getConfig() {
 		if (globalConfig == null) {
 			globalConfig = new Config();
 		}
@@ -59,35 +60,35 @@ public final class Config {
 		openersConfig.store();
 	}
 
-	public Preferences getPreferences() {
+	@Provides public Preferences getPreferences() {
 		return preferences;
 	}
 
 	/** 
 	 * @return ScannerConfig instance (quick access)
 	 */
-	public ScannerConfig forScanner() {
+	@Provides public ScannerConfig forScanner() {
 		return scannerConfig;
 	}
 	
 	/**
 	 * @return Favorites config (only local access)
 	 */
-	NamedListConfig forFavorites() {
+	@Provides NamedListConfig forFavorites() {
 		return favoritesConfig;
 	}
 
 	/**
 	 * @return Openers config (only local access);
 	 */
-	OpenersConfig forOpeners() {
+	@Provides public OpenersConfig forOpeners() {
 		return openersConfig;
 	}
 	
 	/**
 	 * @return Dimensions config (quick access);
 	 */
-	public GUIConfig forGUI() {
+	@Provides public GUIConfig forGUI() {
 		return guiConfig;
 	}
 

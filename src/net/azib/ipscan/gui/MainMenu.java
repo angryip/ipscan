@@ -21,6 +21,7 @@ import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * MainMenu
@@ -31,7 +32,7 @@ public class MainMenu implements Startable {
 
 	private MutablePicoContainer container;
 	
-	public MainMenu(Shell shell, Menu mainMenu, CommandsMenu resultsContextMenu, StateMachine stateMachine, PicoContainer parentContainer) {
+	@Inject public MainMenu(@Named("mainShell") Shell shell, @Named("mainMenu") Menu mainMenu, @Named("commandsMenu") CommandsMenu resultsContextMenu, StateMachine stateMachine, PicoContainer parentContainer) {
 		
 		// create the menu-specific child container
 		container = new DefaultPicoContainer(parentContainer);
@@ -203,7 +204,7 @@ public class MainMenu implements Startable {
 	 * CommandsMenu wrapper for type-safety
 	 */
 	public static class CommandsMenu extends Menu {
-		public CommandsMenu(Decorations parent) {
+		@Inject public CommandsMenu(Decorations parent) {
 			super(parent, SWT.POP_UP);
 		}
 		
@@ -251,7 +252,7 @@ public class MainMenu implements Startable {
 	 * This is the menu when clicking on a column header.
 	 */
 	public static class ColumnsMenu extends Menu {
-		public ColumnsMenu(Decorations parent, ColumnsActions.SortBy sortByListener, ColumnsActions.AboutFetcher aboutListener, ColumnsActions.FetcherPreferences preferencesListener) {
+		@Inject public ColumnsMenu(@Named("mainShell") Decorations parent, ColumnsActions.SortBy sortByListener, ColumnsActions.AboutFetcher aboutListener, ColumnsActions.FetcherPreferences preferencesListener) {
 			super(parent, SWT.POP_UP);
 			
 			initMenuItem(this, "menu.columns.sortBy", null, null, sortByListener);

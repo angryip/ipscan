@@ -5,20 +5,21 @@
  */
 package net.azib.ipscan.gui.actions;
 
+import net.azib.ipscan.config.OpenersConfig.Opener;
+import net.azib.ipscan.config.Platform;
+import net.azib.ipscan.core.ScanningResultList;
+import net.azib.ipscan.core.UserErrorException;
+import net.azib.ipscan.core.values.Empty;
+import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.fetchers.HostnameFetcher;
+
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import net.azib.ipscan.config.Platform;
-import net.azib.ipscan.config.OpenersConfig.Opener;
-import net.azib.ipscan.core.ScanningResultList;
-import net.azib.ipscan.core.UserErrorException;
-import net.azib.ipscan.core.values.Empty;
-import net.azib.ipscan.fetchers.FetcherRegistry;
-import net.azib.ipscan.fetchers.HostnameFetcher;
 
 /**
  * OpenerLauncher
@@ -30,7 +31,7 @@ public class OpenerLauncher {
 	private final FetcherRegistry fetcherRegistry;
 	private final ScanningResultList scanningResults;
 	
-	public OpenerLauncher(FetcherRegistry fetcherRegistry, ScanningResultList scanningResults) {
+	@Inject public OpenerLauncher(FetcherRegistry fetcherRegistry, ScanningResultList scanningResults) {
 		this.fetcherRegistry = fetcherRegistry;
 		this.scanningResults = scanningResults;
 	}

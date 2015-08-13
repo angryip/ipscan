@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 
+import javax.inject.Inject;
+
 import static net.azib.ipscan.core.ScanningResult.ResultType.*;
 
 /**
@@ -35,7 +37,7 @@ public class ToolsActions {
 		private final ResultTable resultTable;
 		private final StatusBar statusBar;
 		
-		public Preferences(PreferencesDialog preferencesDialog, ResultTable resultTable, StatusBar statusBar) {
+		@Inject public Preferences(PreferencesDialog preferencesDialog, ResultTable resultTable, StatusBar statusBar) {
 			this.preferencesDialog = preferencesDialog;
 			this.resultTable = resultTable;
 			this.statusBar = statusBar;
@@ -53,10 +55,9 @@ public class ToolsActions {
 	}
 
 	public static final class ChooseFetchers implements Listener {
-		
 		private final SelectFetchersDialog selectFetchersDialog;
 		
-		public ChooseFetchers(SelectFetchersDialog selectFetchersDialog) {
+		@Inject public ChooseFetchers(SelectFetchersDialog selectFetchersDialog) {
 			this.selectFetchersDialog = selectFetchersDialog;
 		}
 
