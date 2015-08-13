@@ -33,7 +33,7 @@ public class GUIConfig {
 	
 	public Point detailsWindowSize;
 	
-	public static enum DisplayMethod {ALL, ALIVE, PORTS}
+	public enum DisplayMethod {ALL, ALIVE, PORTS}
 
 	// package local constructor
 	GUIConfig(Preferences preferences) {

@@ -17,18 +17,12 @@ import javax.inject.Inject;
  * in order to conform better to Mac standards.
  */
 public class MacApplicationMenu implements Startable {
-	@Inject
-	AboutDialog aboutDialog;
+	@Inject AboutDialog aboutDialog;
+	@Inject PreferencesDialog preferencesDialog;
+	@Inject SelectFetchersDialog selectFetchersDialog;
+	@Inject CheckVersion checkVersionListener;
 
-	private final PreferencesDialog preferencesDialog;
-	private final SelectFetchersDialog selectFetchersDialog;
-	private final CheckVersion checkVersionListener;
-
-	public MacApplicationMenu(PreferencesDialog preferencesDialog, SelectFetchersDialog selectFetchersDialog, CheckVersion checkVersionListener) {
-		this.preferencesDialog = preferencesDialog;
-		this.selectFetchersDialog = selectFetchersDialog;
-		this.checkVersionListener = checkVersionListener;
-	}
+	@Inject public MacApplicationMenu() {}
 
 	public void start() {
 		final Display display = Display.getDefault();

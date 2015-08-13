@@ -14,11 +14,12 @@ import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.core.values.IntegerWithUnit;
 import net.azib.ipscan.gui.fetchers.PingFetcherPrefs;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static net.azib.ipscan.core.ScanningSubject.*;
+import static net.azib.ipscan.core.ScanningSubject.PARAMETER_PING_RESULT;
 
 /**
  * PingFetcher is able to ping IP addresses.
@@ -27,7 +28,6 @@ import static net.azib.ipscan.core.ScanningSubject.*;
  * @author Anton Keks
  */
 public class PingFetcher extends AbstractFetcher {
-	
 	public static final String ID = "fetcher.ping";
 
 	private static final Logger LOG = LoggerFactory.getLogger();
@@ -40,7 +40,7 @@ public class PingFetcher extends AbstractFetcher {
 	/** The registry used for creation of Pinger instances */
 	private PingerRegistry pingerRegistry;
 	
-	public PingFetcher(PingerRegistry pingerRegistry, ScannerConfig scannerConfig) {
+	@Inject public PingFetcher(PingerRegistry pingerRegistry, ScannerConfig scannerConfig) {
 		this.pingerRegistry = pingerRegistry;
 		this.config = scannerConfig;
 	}

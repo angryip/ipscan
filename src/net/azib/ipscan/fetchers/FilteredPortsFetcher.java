@@ -5,12 +5,13 @@
  */
 package net.azib.ipscan.fetchers;
 
-import java.util.SortedSet;
-
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.core.values.NumericRangeList;
+
+import javax.inject.Inject;
+import java.util.SortedSet;
 
 /**
  * FilteredPortsFetcher uses the scanning results of PortsFetcher to display filtered ports.
@@ -19,7 +20,7 @@ import net.azib.ipscan.core.values.NumericRangeList;
  */
 public class FilteredPortsFetcher extends PortsFetcher {
 
-	public FilteredPortsFetcher(ScannerConfig scannerConfig) {
+	@Inject public FilteredPortsFetcher(ScannerConfig scannerConfig) {
 		super(scannerConfig);
 	}
 

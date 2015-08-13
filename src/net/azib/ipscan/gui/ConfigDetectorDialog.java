@@ -5,25 +5,16 @@
  */
 package net.azib.ipscan.gui;
 
-import java.net.InetSocketAddress;
-
 import net.azib.ipscan.config.ConfigDetector;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.gui.util.LayoutHelper;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.*;
 
 import javax.inject.Inject;
+import java.net.InetSocketAddress;
 
 /**
  * ConfigDetectorDialog - a GUI for {@link ConfigDetector}
@@ -31,9 +22,7 @@ import javax.inject.Inject;
  * @author Anton Keks
  */
 public class ConfigDetectorDialog extends AbstractModalDialog implements ConfigDetector.DetectorCallback {
-
-	@Inject
-	ScannerConfig config;
+	@Inject ScannerConfig config;
 
 	private ConfigDetector configDetector;
 	private ProgressBar tryProgressBar;
@@ -47,7 +36,7 @@ public class ConfigDetectorDialog extends AbstractModalDialog implements ConfigD
 	private Text hostText;
 	private Text portText;
 	
-	public ConfigDetectorDialog(ConfigDetector configDetector) {
+	@Inject public ConfigDetectorDialog(ConfigDetector configDetector) {
 		this.configDetector = configDetector;
 		this.configDetector.setCallback(this);
 	}

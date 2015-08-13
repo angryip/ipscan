@@ -20,11 +20,9 @@ import javax.inject.Inject;
  * @author Anton Keks
  */
 public class SWTAwareStateMachine extends StateMachine {
-	
 	private Display display;
 
-	@Inject
-	public SWTAwareStateMachine(Display display) {
+	@Inject public SWTAwareStateMachine(Display display) {
 		this.display = display;
 	}
 

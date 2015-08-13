@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.net.InetAddress;
 
 /**
@@ -78,7 +79,9 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	}
 
 	@Inject
-	public StartStopScanningAction(ScannerDispatcherThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable, StatusBar statusBar, FeederGUIRegistry feederRegistry, PingerRegistry pingerRegistry, Button startStopButton, GUIConfig guiConfig) {
+	public StartStopScanningAction(ScannerDispatcherThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable,
+								   StatusBar statusBar, FeederGUIRegistry feederRegistry, PingerRegistry pingerRegistry,
+								   @Named("startStopButton") Button startStopButton, GUIConfig guiConfig) {
 		this(startStopButton.getDisplay());
 
 		this.scannerThreadFactory = scannerThreadFactory;
