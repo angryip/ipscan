@@ -10,6 +10,7 @@ import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.util.NetBIOSResolver;
 
+import javax.inject.Inject;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.logging.Logger;
@@ -23,7 +24,8 @@ import static java.util.logging.Level.WARNING;
  * @author Anton Keks
  */
 public class NetBIOSInfoFetcher extends AbstractFetcher {
-	
+	@Inject public NetBIOSInfoFetcher() {}
+
 	private static final Logger LOG = LoggerFactory.getLogger();
 
 	public String getId() {

@@ -57,8 +57,7 @@ public class HelpMenuActions {
 	public static final class About implements Listener {
 		private AboutDialog aboutDialog;
 
-		@Inject
-		public About(AboutDialog aboutDialog) {
+		@Inject public About(AboutDialog aboutDialog) {
 			this.aboutDialog = aboutDialog;
 		}
 

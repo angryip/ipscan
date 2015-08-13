@@ -8,6 +8,8 @@ package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.config.ScannerConfig;
 
+import javax.inject.Inject;
+
 /**
  * WebDetectFetcher - detects the Web server software running on scanned hosts.
  *
@@ -15,7 +17,7 @@ import net.azib.ipscan.config.ScannerConfig;
  */
 public class WebDetectFetcher extends PortTextFetcher {
 
-	public WebDetectFetcher(ScannerConfig scannerConfig) {
+	@Inject public WebDetectFetcher(ScannerConfig scannerConfig) {
 		super(scannerConfig, 80, "HEAD /robots.txt HTTP/1.0\r\n\r\n", "^[Ss]erver:\\s+(.*)$");
 	}
 	

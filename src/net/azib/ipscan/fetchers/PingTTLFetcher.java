@@ -10,6 +10,8 @@ import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.net.PingResult;
 import net.azib.ipscan.core.net.PingerRegistry;
 
+import javax.inject.Inject;
+
 /**
  * PingTTLFetcher shares pinging results with PingFetcher
  * and returns the TTL field of the last received packet.
@@ -18,7 +20,7 @@ import net.azib.ipscan.core.net.PingerRegistry;
  */
 public class PingTTLFetcher extends PingFetcher {
 	
-	public PingTTLFetcher(PingerRegistry pingerRegistry, ScannerConfig scannerConfig) {
+	@Inject public PingTTLFetcher(PingerRegistry pingerRegistry, ScannerConfig scannerConfig) {
 		super(pingerRegistry, scannerConfig);
 	}
 

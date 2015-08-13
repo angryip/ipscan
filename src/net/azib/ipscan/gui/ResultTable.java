@@ -46,7 +46,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 
 	private Listener columnResizeListener;
 
-	@Inject public ResultTable(@Named("mainShell") Composite parent, GUIConfig guiConfig, FetcherRegistry fetcherRegistry, ScanningResultList scanningResultList, StateMachine stateMachine, ColumnsActions.ColumnClick columnClickListener, ColumnsActions.ColumnResize columnResizeListener) {
+	@Inject public ResultTable(@Named("mainShell") Shell parent, GUIConfig guiConfig, FetcherRegistry fetcherRegistry, ScanningResultList scanningResultList, StateMachine stateMachine, ColumnsActions.ColumnClick columnClickListener, ColumnsActions.ColumnResize columnResizeListener) {
 		super(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		this.guiConfig = guiConfig;
 		this.scanningResults = scanningResultList;
