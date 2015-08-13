@@ -56,7 +56,6 @@ public class ComponentRegistry {
 		container.registerComponentInstance(globalConfig.forOpeners());
 		container.registerComponentInstance(globalConfig.forFavorites());
 		container.registerComponentInstance(Labels.getInstance());
-		container.registerComponentImplementation(CommentsConfig.class);
 
 		container.registerComponentInstance(DaggerExporterComponent.create().get());
 		container.registerComponentInstance(DaggerFetcherComponent.create().get());
