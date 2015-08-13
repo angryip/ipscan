@@ -10,6 +10,7 @@ import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.fetchers.MACFetcher;
 
+import javax.inject.Inject;
 import java.net.InetAddress;
 import java.util.prefs.Preferences;
 
@@ -21,6 +22,7 @@ import java.util.prefs.Preferences;
 public class CommentsConfig {
 	private Preferences preferences;
 
+	@Inject
 	public CommentsConfig(Preferences preferences) {
 		// use a separate node for comments - they can get large
 		this.preferences = preferences.node("comments");
