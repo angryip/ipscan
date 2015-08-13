@@ -57,11 +57,8 @@ public class ComponentRegistry {
 		container.registerComponentInstance(globalConfig.forFavorites());
 		container.registerComponentInstance(Labels.getInstance());
 		container.registerComponentImplementation(CommentsConfig.class);
-		container.registerComponentImplementation(ConfigDetector.class);
 
 		container.registerComponentInstance(DaggerExporterComponent.create().get());
-		container.registerComponentImplementation(TXTExporter.class);
-
 		container.registerComponentInstance(DaggerFetcherComponent.create().get());
 
 		container.registerComponentImplementation(PingerRegistry.class, PingerRegistry.class);
@@ -119,7 +116,6 @@ public class ComponentRegistry {
 
 		container.registerComponentImplementation(AboutDialog.class);
 		container.registerComponentImplementation(PreferencesDialog.class);
-		container.registerComponentImplementation(ConfigDetectorDialog.class);
 		container.registerComponentImplementation(SelectFetchersDialog.class);
 		container.registerComponentImplementation(DetailsWindow.class);
 		container.registerComponentImplementation(StatisticsDialog.class);
