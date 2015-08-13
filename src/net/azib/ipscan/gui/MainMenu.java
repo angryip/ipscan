@@ -20,13 +20,15 @@ import org.picocontainer.Startable;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
+import javax.inject.Inject;
+
 /**
  * MainMenu
  *
  * @author Anton Keks
  */
 public class MainMenu implements Startable {
-	
+
 	private MutablePicoContainer container;
 	
 	public MainMenu(Shell shell, Menu mainMenu, CommandsMenu resultsContextMenu, StateMachine stateMachine, PicoContainer parentContainer) {
@@ -123,7 +125,7 @@ public class MainMenu implements Startable {
 			initMenuItem(subMenu, null, null, null, null);
 			initMenuItem(subMenu, "menu.help.checkVersion", null, null, initListener(HelpMenuActions.CheckVersion.class));
 			initMenuItem(subMenu, null, null, null, null);
-			initMenuItem(subMenu, "menu.help.about", null, null, initListener(HelpMenuActions.About.class));
+			initMenuItem(subMenu, "menu.help.about", null, null, DaggerListenerComponent.create().getHelpMenuAboutListener());
 		}
 	}
 

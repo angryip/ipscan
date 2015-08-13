@@ -10,18 +10,21 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.picocontainer.Startable;
 
+import javax.inject.Inject;
+
 /**
  * Mac-specific application menu handler
  * in order to conform better to Mac standards.
  */
 public class MacApplicationMenu implements Startable {
-	private final AboutDialog aboutDialog;
+	@Inject
+	AboutDialog aboutDialog;
+
 	private final PreferencesDialog preferencesDialog;
 	private final SelectFetchersDialog selectFetchersDialog;
 	private final CheckVersion checkVersionListener;
 
-	public MacApplicationMenu(AboutDialog aboutDialog, PreferencesDialog preferencesDialog, SelectFetchersDialog selectFetchersDialog, CheckVersion checkVersionListener) {
-		this.aboutDialog = aboutDialog;
+	public MacApplicationMenu(PreferencesDialog preferencesDialog, SelectFetchersDialog selectFetchersDialog, CheckVersion checkVersionListener) {
 		this.preferencesDialog = preferencesDialog;
 		this.selectFetchersDialog = selectFetchersDialog;
 		this.checkVersionListener = checkVersionListener;

@@ -113,7 +113,6 @@ public class ComponentRegistry {
 		if (Platform.MAC_OS)
 			container.registerComponentImplementation(MacApplicationMenu.class);
 
-		container.registerComponentImplementation(AboutDialog.class);
 		container.registerComponentImplementation(PreferencesDialog.class);
 		container.registerComponentImplementation(SelectFetchersDialog.class);
 		container.registerComponentImplementation(DetailsWindow.class);

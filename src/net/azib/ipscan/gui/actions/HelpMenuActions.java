@@ -18,6 +18,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -56,8 +58,8 @@ public class HelpMenuActions {
 	public static final class About implements Listener {
 		private AboutDialog aboutDialog;
 
+		@Inject
 		public About(AboutDialog aboutDialog) {
-			super();
 			this.aboutDialog = aboutDialog;
 		}
 
