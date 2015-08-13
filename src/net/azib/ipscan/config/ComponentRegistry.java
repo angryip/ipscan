@@ -12,17 +12,12 @@ import net.azib.ipscan.exporters.*;
 import net.azib.ipscan.feeders.FeederCreator;
 import net.azib.ipscan.feeders.FeederRegistry;
 import net.azib.ipscan.fetchers.*;
-import net.azib.ipscan.gui.MacApplicationMenu;
-import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.SWTAwareStateMachine;
 import net.azib.ipscan.gui.feeders.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
 
@@ -33,20 +28,7 @@ import java.util.List;
  */
 @Module
 public class ComponentRegistry {
-
-	private PicoContainer container;
-
 	private boolean containerStarted;
-
-	@Inject public ComponentRegistry(@Named("plugins") List<Class> plugins) {
-		MutablePicoContainer container = new DefaultPicoContainer();
-		this.container = container;
-
-		if (Platform.MAC_OS)
-			container.registerComponentImplementation(MacApplicationMenu.class);
-
-		registerComponentImplementations(container, plugins);
-	}
 
 	@Provides public Display getDisplay() {
 		return Display.getDefault();
@@ -103,7 +85,9 @@ public class ComponentRegistry {
 	}
 
 
-	private static void registerComponentImplementations(MutablePicoContainer container, List<Class> classes) {
+	private void registerComponentImplementations(MutablePicoContainer container, List<Class> classes) {
+		// TODO: @Named("plugins") List<Class> plugins
+
 		for (Class clazz: classes) {
 			container.registerComponentImplementation(clazz);
 		}
@@ -112,19 +96,7 @@ public class ComponentRegistry {
 	private void start() {
 		if (!containerStarted) {
 			containerStarted = true;
-			container.start();
+//			container.start();
 		}
-	}
-
-	public MainWindow getMainWindow() {
-		// initialize all startable components
-		start();
-		// initialize and return the main window
-		return (MainWindow) container.getComponentInstance(MainWindow.class);
-	}
-
-	public CommandLineProcessor getCommandLineProcessor() {
-		start();
-		return (CommandLineProcessor) container.getComponentInstance(CommandLineProcessor.class);
 	}
 }
