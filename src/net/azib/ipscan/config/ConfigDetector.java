@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.config;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -32,7 +33,8 @@ public class ConfigDetector {
 	private DetectorCallback callback;
 	private AtomicInteger expectedConnects;
 	private AtomicInteger actualConnects;
-	
+
+	@Inject
 	public ConfigDetector(ScannerConfig config) {
 		this.config = config;
 	}
