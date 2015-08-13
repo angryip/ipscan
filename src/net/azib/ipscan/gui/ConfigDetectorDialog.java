@@ -23,14 +23,18 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Text;
 
+import javax.inject.Inject;
+
 /**
  * ConfigDetectorDialog - a GUI for {@link ConfigDetector}
  *
  * @author Anton Keks
  */
 public class ConfigDetectorDialog extends AbstractModalDialog implements ConfigDetector.DetectorCallback {
-	
-	private ScannerConfig config;
+
+	@Inject
+	ScannerConfig config;
+
 	private ConfigDetector configDetector;
 	private ProgressBar tryProgressBar;
 	private int tryCount;
@@ -43,8 +47,7 @@ public class ConfigDetectorDialog extends AbstractModalDialog implements ConfigD
 	private Text hostText;
 	private Text portText;
 	
-	public ConfigDetectorDialog(ScannerConfig config, ConfigDetector configDetector) {
-		this.config = config;
+	public ConfigDetectorDialog(ConfigDetector configDetector) {
 		this.configDetector = configDetector;
 		this.configDetector.setCallback(this);
 	}
