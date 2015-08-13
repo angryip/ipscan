@@ -8,6 +8,8 @@ package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.config.ScannerConfig;
 
+import javax.inject.Inject;
+
 /**
  * WebDetectFetcher - detects the Web server software running on scanned hosts.
  *
@@ -15,7 +17,7 @@ import net.azib.ipscan.config.ScannerConfig;
  */
 public class HTTPSenderFetcher extends PortTextFetcher {
 	
-	public HTTPSenderFetcher(ScannerConfig scannerConfig) {
+	@Inject public HTTPSenderFetcher(ScannerConfig scannerConfig) {
 		super(scannerConfig, 3128, "GET http://www.google.com HTTP/1.0\r\n\r\n", "Location: (https?.*)$");
 	}
 	

@@ -126,7 +126,7 @@ public class MainMenu implements Startable {
 			initMenuItem(subMenu, null, null, null, null);
 			initMenuItem(subMenu, "menu.help.checkVersion", null, null, initListener(HelpMenuActions.CheckVersion.class));
 			initMenuItem(subMenu, null, null, null, null);
-			initMenuItem(subMenu, "menu.help.about", null, null, DaggerListenerComponent.create().getHelpMenuAboutListener());
+			initMenuItem(subMenu, "menu.help.about", null, null, initListener(HelpMenuActions.About.class));
 		}
 	}
 
@@ -204,7 +204,7 @@ public class MainMenu implements Startable {
 	 * CommandsMenu wrapper for type-safety
 	 */
 	public static class CommandsMenu extends Menu {
-		@Inject public CommandsMenu(Decorations parent) {
+		@Inject public CommandsMenu(@Named("mainShell") Shell parent) {
 			super(parent, SWT.POP_UP);
 		}
 		
@@ -252,7 +252,7 @@ public class MainMenu implements Startable {
 	 * This is the menu when clicking on a column header.
 	 */
 	public static class ColumnsMenu extends Menu {
-		@Inject public ColumnsMenu(@Named("mainShell") Decorations parent, ColumnsActions.SortBy sortByListener, ColumnsActions.AboutFetcher aboutListener, ColumnsActions.FetcherPreferences preferencesListener) {
+		@Inject public ColumnsMenu(@Named("mainShell") Shell parent, ColumnsActions.SortBy sortByListener, ColumnsActions.AboutFetcher aboutListener, ColumnsActions.FetcherPreferences preferencesListener) {
 			super(parent, SWT.POP_UP);
 			
 			initMenuItem(this, "menu.columns.sortBy", null, null, sortByListener);

@@ -122,8 +122,7 @@ public class ColumnsActions {
 		
 		private final FetcherRegistry fetcherRegistry;
 
-		@Inject
-		public FetcherPreferences(FetcherRegistry fetcherRegistry) {
+		@Inject public FetcherPreferences(FetcherRegistry fetcherRegistry) {
 			this.fetcherRegistry = fetcherRegistry;
 		}
 

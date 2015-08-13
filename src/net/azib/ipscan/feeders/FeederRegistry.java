@@ -12,5 +12,5 @@ package net.azib.ipscan.feeders;
  * @author Anton Keks
  */
 public interface FeederRegistry<T extends FeederCreator> extends Iterable<T> {
-	public void select(String feederId);
+	void select(String feederId);
 }

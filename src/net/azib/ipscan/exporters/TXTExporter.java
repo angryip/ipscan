@@ -32,12 +32,9 @@ import static net.azib.ipscan.util.IOUtils.closeQuietly;
  * @author Anton Keks
  */
 public class TXTExporter extends AbstractExporter {
-	
 	int[] padLengths;
 
-	@Inject
-	public TXTExporter() {
-	}
+	@Inject public TXTExporter() {}
 
 	public String getId() {
 		return "exporter.txt";
