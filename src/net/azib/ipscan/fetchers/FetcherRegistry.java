@@ -9,6 +9,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
+import javax.inject.Inject;
 import java.util.*;
 import java.util.prefs.Preferences;
 
@@ -35,7 +36,7 @@ public class FetcherRegistry {
 	/** A collection of update listeners - observers of FetcherRegistry */
 	private List<FetcherRegistryUpdateListener> updateListeners = new ArrayList<FetcherRegistryUpdateListener>();
 		
-	public FetcherRegistry(Fetcher[] registeredFetchers, Preferences preferences) {
+	@Inject public FetcherRegistry(Fetcher[] registeredFetchers, Preferences preferences) {
 		this.preferences = preferences;
 		MutablePicoContainer prefsContainer = new DefaultPicoContainer();
 		

@@ -4,13 +4,13 @@ import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
 import net.azib.ipscan.core.net.WinIpHlpDll.IpAddrByVal;
 
+import javax.inject.Inject;
 import java.net.InetAddress;
 
 import static net.azib.ipscan.core.net.WinIpHlpDll.dll;
 
 public class WinMACFetcher extends MACFetcher {
-	@Override public void init() {
-	}
+	@Inject public WinMACFetcher() {}
 
 	@Override public String resolveMAC(InetAddress address) {
 		IpAddrByVal destIP = new IpAddrByVal();

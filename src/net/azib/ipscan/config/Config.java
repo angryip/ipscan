@@ -33,7 +33,7 @@ public final class Config {
 	/** openers are stored here */
 	private OpenersConfig openersConfig;
 
-	private Config() {
+	Config() {
 		preferences = Preferences.userRoot().node("ipscan");
 		scannerConfig = new ScannerConfig(preferences);
 		guiConfig = new GUIConfig(preferences);

@@ -5,15 +5,12 @@
  */
 package net.azib.ipscan.exporters;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import net.azib.ipscan.config.Version;
+
+import javax.inject.Inject;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import net.azib.ipscan.config.Version;
 
 /**
  * XMLExporter
@@ -21,8 +18,9 @@ import net.azib.ipscan.config.Version;
  * @author Anton Keks
  */
 public class XMLExporter extends AbstractExporter {
-	
 	static final String ENCODING = "UTF-8";
+
+	@Inject public XMLExporter() {}
 
 	private int ipFetcherIndex;
 	private String[] fetcherNames;

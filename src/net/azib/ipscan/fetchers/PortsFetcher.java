@@ -15,6 +15,7 @@ import net.azib.ipscan.gui.fetchers.PortsFetcherPrefs;
 import net.azib.ipscan.util.SequenceIterator;
 import net.azib.ipscan.util.ThreadResourceBinder;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
@@ -38,13 +39,13 @@ public class PortsFetcher extends AbstractFetcher {
 	private static final String PARAMETER_FILTERED_PORTS = "filteredPorts";
 	
 	private ScannerConfig config;
-  private ThreadResourceBinder<Socket> sockets = new ThreadResourceBinder<Socket>();
+	private ThreadResourceBinder<Socket> sockets = new ThreadResourceBinder<Socket>();
 	
 	// initialize preferences for this scan
 	private PortIterator portIteratorPrototype;
 	protected boolean displayAsRanges = true;	// TODO: make configurable
 	
-	public PortsFetcher(ScannerConfig scannerConfig) {
+	@Inject public PortsFetcher(ScannerConfig scannerConfig) {
 		this.config = scannerConfig;
 	}
 

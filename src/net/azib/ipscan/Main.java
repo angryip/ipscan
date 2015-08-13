@@ -6,7 +6,6 @@
 package net.azib.ipscan;
 
 import net.azib.ipscan.config.*;
-import net.azib.ipscan.core.PluginLoader;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.gui.InfoDialog;
 import net.azib.ipscan.gui.MainWindow;
@@ -59,13 +58,13 @@ public class Main {
 
 			LOG.finer("Labels and Config initialized after " + (System.currentTimeMillis() - startTime));
 
-			ComponentRegistry componentRegistry = DaggerMainComponent.create().get();
+			MainComponent mainComponent = DaggerMainComponent.create();
 			LOG.finer("ComponentRegistry initialized after " + (System.currentTimeMillis() - startTime));
 
-			processCommandLine(args, componentRegistry);
+			processCommandLine(args, mainComponent);
 
 			// create the main window using dependency injection
-			MainWindow mainWindow = componentRegistry.getMainWindow();
+			MainWindow mainWindow = mainComponent.getMainWindow();
 			LOG.fine("Startup time: " + (System.currentTimeMillis() - startTime));
 
 			while (!mainWindow.isDisposed()) {
@@ -117,9 +116,9 @@ public class Main {
 		Security.setProperty("networkaddress.cache.negative.ttl", "0");
 	}
 
-	private static void processCommandLine(String[] args, ComponentRegistry componentRegistry) {
+	private static void processCommandLine(String[] args, MainComponent mainComponent) {
 		if (args.length != 0) {
-			CommandLineProcessor cli = componentRegistry.getCommandLineProcessor();
+			CommandLineProcessor cli = mainComponent.getCommandLineProcessor();
 			try {
 				cli.parse(args);
 			}
