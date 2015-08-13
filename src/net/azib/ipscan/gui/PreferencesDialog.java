@@ -25,19 +25,23 @@ import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.*;
 
+import javax.inject.Inject;
+
 /**
  * Preferences Dialog
  *
  * @author Anton Keks
  */
 public class PreferencesDialog extends AbstractModalDialog {
-	
+
+	@Inject
+	ConfigDetectorDialog configDetectorDialog;
+
 	private PingerRegistry pingerRegistry;
 	private Config globalConfig;
 	private ScannerConfig scannerConfig;
 	private GUIConfig guiConfig;
-	private ConfigDetectorDialog configDetectorDialog;
-	
+
 	private Button okButton;
 	private Button cancelButton;
 
@@ -68,12 +72,11 @@ public class PreferencesDialog extends AbstractModalDialog {
 	private Combo languageCombo;
 	private String[] languages = { "system", "en", "hu", "lt", "es", "ku" };
 	
-	public PreferencesDialog(PingerRegistry pingerRegistry, Config globalConfig, ScannerConfig scannerConfig, GUIConfig guiConfig, ConfigDetectorDialog configDetectorDialog) {
+	public PreferencesDialog(PingerRegistry pingerRegistry, Config globalConfig, ScannerConfig scannerConfig, GUIConfig guiConfig) {
 		this.pingerRegistry = pingerRegistry;
 		this.globalConfig = globalConfig;
 		this.scannerConfig = scannerConfig;
 		this.guiConfig = guiConfig;
-		this.configDetectorDialog = configDetectorDialog;
 	}
 	
 	@Override
