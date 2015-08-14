@@ -5,10 +5,6 @@
  */
 package net.azib.ipscan.fetchers;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
-
 import javax.inject.Inject;
 import java.util.*;
 import java.util.prefs.Preferences;
@@ -29,27 +25,18 @@ public class FetcherRegistry {
 	/** Selected for scanning Fetcher implementations, keys are fetcher labels, values are Fetcher instances */
 	private Map<String, Fetcher> selectedFetchers;
 	
-	/** PicoContainer for FetcherPrefs components */
-	// TODO remove local PicoContainer usage here
-	private PicoContainer prefsContainer;
-
 	/** A collection of update listeners - observers of FetcherRegistry */
 	private List<FetcherRegistryUpdateListener> updateListeners = new ArrayList<FetcherRegistryUpdateListener>();
 		
 	@Inject public FetcherRegistry(List<Fetcher> registeredFetchers, Preferences preferences) {
 		this.preferences = preferences;
-		MutablePicoContainer prefsContainer = new DefaultPicoContainer();
-		
+
 		this.registeredFetchers = new LinkedHashMap<String, Fetcher>(registeredFetchers.size());
 		for (Fetcher fetcher : registeredFetchers) {
 			this.registeredFetchers.put(fetcher.getId(), fetcher);
-			Class<? extends FetcherPrefs> prefsClass = fetcher.getPreferencesClass();
-			if (prefsClass != null && prefsContainer.getComponentAdapterOfType(prefsClass) == null)
-				prefsContainer.registerComponentImplementation(prefsClass);
 		}
 		this.registeredFetchers = Collections.unmodifiableMap(this.registeredFetchers);
-		this.prefsContainer = prefsContainer;
-		
+
 		// now load the preferences to init selected fetchers
 		loadSelectedFetchers(preferences);
 	}
@@ -160,7 +147,12 @@ public class FetcherRegistry {
 		if (prefsClass == null)
 			throw new FetcherException("preferences.notAvailable");
 
-		FetcherPrefs prefs = (FetcherPrefs) prefsContainer.getComponentInstanceOfType(prefsClass);
-		prefs.openFor(fetcher);
+		try {
+			FetcherPrefs prefs = prefsClass.newInstance();
+			prefs.openFor(fetcher);
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Cannot instantiate fetcher preference editor: " + prefsClass.getName());
+		}
 	}
 }
