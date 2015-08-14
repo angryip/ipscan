@@ -72,6 +72,7 @@ public class CommandsMenuActions {
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
 
+		@Inject
 		public Delete(ResultTable resultTable, StateMachine stateMachine) {
 			this.resultTable = resultTable;
 			this.stateMachine = stateMachine;
@@ -97,7 +98,8 @@ public class CommandsMenuActions {
 	public static final class Rescan implements Listener {
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
-		
+
+		@Inject
 		public Rescan(ResultTable resultTable, StateMachine stateMachine) {
 			this.resultTable = resultTable;
 			this.stateMachine = stateMachine;
@@ -115,7 +117,8 @@ public class CommandsMenuActions {
 	 */
 	public static final class CopyIP implements Listener {
 		private final ResultTable resultTable;
-		
+
+		@Inject
 		public CopyIP(ResultTable resultTable) {
 			this.resultTable = resultTable;
 		}
@@ -138,7 +141,8 @@ public class CommandsMenuActions {
 	
 	public static final class CopyIPDetails implements Listener {
 		private final ResultTable resultTable;
-		
+
+		@Inject
 		public CopyIPDetails(ResultTable resultTable) {
 			this.resultTable = resultTable;
 		}
@@ -156,6 +160,7 @@ public class CommandsMenuActions {
 		private final Listener openersSelectListener;
 		private final OpenersConfig openersConfig;
 
+		@Inject
 		public ShowOpenersMenu(OpenersConfig openersConfig, SelectOpener selectOpener) {
 			this.openersConfig = openersConfig;
 			this.openersSelectListener = selectOpener;
@@ -192,6 +197,7 @@ public class CommandsMenuActions {
 		private final FetcherRegistry fetcherRegistry;
 		private final OpenersConfig openersConfig;
 
+		@Inject
 		public EditOpeners(FetcherRegistry fetcherRegistry, OpenersConfig openersConfig) {
 			this.fetcherRegistry = fetcherRegistry;
 			this.openersConfig = openersConfig;
@@ -208,7 +214,8 @@ public class CommandsMenuActions {
 		private final ResultTable resultTable;
 		private final OpenerLauncher openerLauncher;
 		private final OpenersConfig openersConfig;
-		
+
+		@Inject
 		public SelectOpener(OpenersConfig openersConfig, StatusBar statusBar, ResultTable resultTable, OpenerLauncher openerLauncher) {
 			this.openersConfig = openersConfig;
 			this.statusBar = statusBar;
