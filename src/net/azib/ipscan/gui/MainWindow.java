@@ -52,6 +52,9 @@ public class MainWindow {
 	private StatusBar statusBar;
 	private ToolBar prefsButton;
 	private ToolBar fetchersButton;
+
+	@Inject
+	MainMenu menu; // initiates MainMenu constructor execution
 		
 	/**
 	 * Creates and initializes the main window.
@@ -59,7 +62,10 @@ public class MainWindow {
 	@Inject
 	public MainWindow(@Named("mainShell") Shell shell, GUIConfig guiConfig, @Named("feederArea") Composite feederArea,
 					  @Named("controlsArea") Composite controlsArea, @Named("feederSelectionCombo") Combo feederSelectionCombo,
-					  @Named("startStopButton") Button startStopButton, StartStopScanningAction startStopScanningAction, ResultTable resultTable, StatusBar statusBar, CommandsMenu resultsContextMenu, FeederGUIRegistry feederGUIRegistry, final StateMachine stateMachine, ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListsner) {
+					  @Named("startStopButton") Button startStopButton, StartStopScanningAction startStopScanningAction,
+					  ResultTable resultTable, StatusBar statusBar, @Named("commandsMenu") Menu resultsContextMenu,
+					  FeederGUIRegistry feederGUIRegistry, final StateMachine stateMachine,
+					  ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListsner) {
 		this.shell = shell;
 		this.guiConfig = guiConfig;
 		this.statusBar = statusBar;
@@ -138,7 +144,7 @@ public class MainWindow {
 	/**
 	 * This method initializes resultTable	
 	 */
-	private void initTableAndStatusBar(ResultTable resultTable, CommandsMenu resultsContextMenu, StatusBar statusBar) {
+	private void initTableAndStatusBar(ResultTable resultTable, Menu resultsContextMenu, StatusBar statusBar) {
 		resultTable.setLayoutData(formData(new FormAttachment(0), new FormAttachment(100), new FormAttachment(feederArea), new FormAttachment(statusBar.getComposite())));
 		resultTable.setMenu(resultsContextMenu);
 	}
