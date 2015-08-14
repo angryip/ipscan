@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.*;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import static net.azib.ipscan.config.Labels.getLabel;
 
@@ -27,6 +28,7 @@ import static net.azib.ipscan.config.Labels.getLabel;
  *
  * @author Anton Keks
  */
+@Singleton
 public class RandomFeederGUI extends AbstractFeederGUI {
 	private Text ipPrototypeText;
 	private Combo ipMaskCombo;
