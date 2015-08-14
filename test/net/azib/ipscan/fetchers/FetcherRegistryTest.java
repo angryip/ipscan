@@ -3,7 +3,6 @@
  */
 package net.azib.ipscan.fetchers;
 
-import net.azib.ipscan.core.ScanningSubject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +12,8 @@ import java.util.prefs.Preferences;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Anton Keks
@@ -127,28 +128,17 @@ public class FetcherRegistryTest {
 	
 	@Test
 	public void openPreferencesEditor() {
-		Fetcher editableFetcher = new EditableFetcher();
+		Fetcher editableFetcher = mock(Fetcher.class);
+		doReturn(EditableFetcherPrefs.class).when(editableFetcher).getPreferencesClass();
 		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, editableFetcher), preferences);
-		EditableFetcherPrefs.calledWithMessage = null;
 
+		EditableFetcherPrefs.calledWithMessage = null;
 		fetcherRegistry.openPreferencesEditor(editableFetcher);
 
 		assertSame(MESSAGE, EditableFetcherPrefs.calledWithMessage);
 		assertSame(editableFetcher, EditableFetcherPrefs.calledForFetcher);
 	}
 
-	public static class EditableFetcher extends AbstractFetcher {
-		@Override public String getId() {
-			return null;
-		}
-		@Override public Object scan(ScanningSubject subject) {
-			return null;
-		}
-		@Override public Class<? extends FetcherPrefs> getPreferencesClass() {
-			return EditableFetcherPrefs.class;
-		}
-	}
-	
 	public static class EditableFetcherPrefs implements FetcherPrefs {
 		private static String calledWithMessage;
 		private static Fetcher calledForFetcher;
