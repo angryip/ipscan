@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.*;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.UnknownHostException;
@@ -32,6 +33,7 @@ import static net.azib.ipscan.util.InetAddressUtils.*;
  * 
  * @author Anton Keks
  */
+@Singleton
 public class RangeFeederGUI extends AbstractFeederGUI {
 	private Text startIPText;
 	private Text endIPText;
