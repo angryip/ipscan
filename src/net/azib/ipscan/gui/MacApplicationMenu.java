@@ -8,7 +8,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.picocontainer.Startable;
 
 import javax.inject.Inject;
 
@@ -16,16 +15,14 @@ import javax.inject.Inject;
  * Mac-specific application menu handler
  * in order to conform better to Mac standards.
  */
-public class MacApplicationMenu implements Startable {
+public class MacApplicationMenu {
+
 	@Inject AboutDialog aboutDialog;
 	@Inject PreferencesDialog preferencesDialog;
 	@Inject SelectFetchersDialog selectFetchersDialog;
 	@Inject CheckVersion checkVersionListener;
 
-	@Inject public MacApplicationMenu() {}
-
-	public void start() {
-		final Display display = Display.getDefault();
+	@Inject public MacApplicationMenu(final Display display) {
 		display.syncExec(new Runnable() {
 			public void run() {
 				initApplicationMenu(display);
@@ -33,10 +30,7 @@ public class MacApplicationMenu implements Startable {
 		});
 	}
 
-	public void stop() {
-	}
-
-	void initApplicationMenu(Display display) {
+	private void initApplicationMenu(Display display) {
 		Menu systemMenu = display.getSystemMenu();
 		if (systemMenu == null) return;
 
@@ -76,7 +70,7 @@ public class MacApplicationMenu implements Startable {
 		});
 	}
 
-	static MenuItem getItem(Menu menu, int id) {
+	private static MenuItem getItem(Menu menu, int id) {
 		MenuItem[] items = menu.getItems();
 		for (MenuItem item : items) {
 			if (item.getID() == id) return item;
