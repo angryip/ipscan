@@ -7,6 +7,7 @@ package net.azib.ipscan.gui.actions;
 
 import net.azib.ipscan.Main;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.UserErrorException;
@@ -40,21 +41,17 @@ public class ScanMenuActions {
 
 	public static boolean isLoadedFromFile = false;
 
-	public static final class Quit implements Listener {
-		public void handleEvent(Event event) {
-			event.display.getActiveShell().close();
-		}
-	}
-
 	public static class LoadFromFile implements Listener {
 
-		@Inject TXTExporter txtExporter;
+		private final TXTExporter txtExporter;
 		private final ExporterRegistry exporterRegistry;
-		private FeederGUIRegistry feederRegistry;
+		private final FeederGUIRegistry feederRegistry;
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
 
-		public LoadFromFile(ExporterRegistry exporterRegistry, FeederGUIRegistry feederRegistry, ResultTable resultTable, StateMachine stateMachine) {
+		@Inject
+		public LoadFromFile(TXTExporter txtExporter, ExporterRegistry exporterRegistry, FeederGUIRegistry feederRegistry, ResultTable resultTable, StateMachine stateMachine) {
+			this.txtExporter = txtExporter;
 			this.exporterRegistry = exporterRegistry;
 			this.feederRegistry = feederRegistry;
 			this.resultTable = resultTable;
@@ -199,14 +196,26 @@ public class ScanMenuActions {
 	}
 
 	public static final class SaveAll extends SaveResults {
+		@Inject
 		public SaveAll(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, StateMachine stateMachine) {
 			super(exporterRegistry, resultTable, statusBar, stateMachine, false);
 		}
 	}
 
 	public static final class SaveSelection extends SaveResults {
+		@Inject
 		public SaveSelection(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, StateMachine stateMachine) {
 			super(exporterRegistry, resultTable, statusBar, stateMachine, true);
+		}
+	}
+
+	public static final class Quit implements Listener {
+		@Inject
+		public Quit() {
+		}
+
+		public void handleEvent(Event event) {
+			event.display.getActiveShell().close();
 		}
 	}
 

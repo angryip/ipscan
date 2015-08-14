@@ -9,6 +9,8 @@ import java.util.prefs.Preferences;
 
 import net.azib.ipscan.feeders.FeederCreator;
 
+import javax.inject.Inject;
+
 /**
  * FavoritesConfig
  *
@@ -16,6 +18,7 @@ import net.azib.ipscan.feeders.FeederCreator;
  */
 public class FavoritesConfig extends NamedListConfig {
 
+	@Inject
 	public FavoritesConfig(Preferences preferences) {
 		super(preferences, "favorites");
 	}

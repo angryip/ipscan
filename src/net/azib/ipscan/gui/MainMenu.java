@@ -5,8 +5,6 @@
  */
 package net.azib.ipscan.gui;
 
-import dagger.Module;
-import dagger.Provides;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.core.state.ScanningState;
@@ -16,57 +14,73 @@ import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.actions.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.Startable;
-import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Singleton;
+import javax.inject.Provider;
 
 /**
  * MainMenu
  *
  * @author Anton Keks
  */
-public class MainMenu implements Startable {
+public class MainMenu {
 
-	private MutablePicoContainer container;
-	
+	@Inject ScanMenuActions.LoadFromFile loadFromFile;
+	@Inject ScanMenuActions.SaveAll saveAll;
+	@Inject ScanMenuActions.SaveSelection saveSelection;
+	@Inject ScanMenuActions.Quit quit;
+
+	@Inject GotoMenuActions.NextAliveHost nextAliveHost;
+	@Inject GotoMenuActions.NextHostWithInfo nextHostWithInfo;
+	@Inject GotoMenuActions.NextDeadHost nextDeadHost;
+	@Inject GotoMenuActions.PrevAliveHost prevAliveHost;
+	@Inject GotoMenuActions.PrevHostWithInfo prevHostWithInfo;
+	@Inject GotoMenuActions.PrevDeadHost prevDeadHost;
+	@Inject GotoMenuActions.Find find;
+
+	@Inject ToolsActions.Preferences preferences;
+	@Inject ToolsActions.ChooseFetchers chooseFetchers;
+	@Inject ToolsActions.ScanStatistics scanStatistics;
+	@Inject ToolsActions.SelectAlive selectAlive;
+	@Inject ToolsActions.SelectDead selectDead;
+	@Inject ToolsActions.SelectWithPorts selectWithPorts;
+	@Inject ToolsActions.SelectWithoutPorts selectWithoutPorts;
+	@Inject ToolsActions.SelectInvert selectInvert;
+
+	@Inject HelpMenuActions.GettingStarted gettingStarted;
+	@Inject HelpMenuActions.Website website;
+	@Inject HelpMenuActions.FAQ faq;
+	@Inject HelpMenuActions.Plugins plugins;
+	@Inject HelpMenuActions.CommandLineUsage commandLineUsage;
+	@Inject HelpMenuActions.CheckVersion checkVersion;
+	@Inject HelpMenuActions.About about;
+
+	@Inject CommandsMenuActions.Details details;
+	@Inject CommandsMenuActions.Rescan rescan;
+	@Inject CommandsMenuActions.Delete delete;
+	@Inject CommandsMenuActions.CopyIP copyIP;
+	@Inject CommandsMenuActions.CopyIPDetails copyIPDetails;
+
+	@Inject Provider<OpenersMenu> openersMenuProvider;
+	@Inject Provider<FavoritesMenu> favoritesMenuProvider;
+
+	private final Menu mainMenu, resultsContextMenu;
+
 	@Inject public MainMenu(@Named("mainShell") Shell shell, @Named("mainMenu") Menu mainMenu, @Named("commandsMenu") Menu resultsContextMenu, StateMachine stateMachine) {
-		
-		// create the menu-specific child container
-		container = new DefaultPicoContainer();
-		
-		// register some components not registered in the main menu
-		container.registerComponentImplementation(FavoritesMenu.class);
-		container.registerComponentImplementation(FavoritesMenuActions.ShowMenu.class);
-		container.registerComponentImplementation(FavoritesMenuActions.Select.class);		
-		container.registerComponentImplementation(FavoritesMenuActions.Add.class);		
-		container.registerComponentImplementation(FavoritesMenuActions.Edit.class);
-		
-		container.registerComponentImplementation(CommandsMenuActions.EditOpeners.class);
-		container.registerComponentImplementation(CommandsMenuActions.SelectOpener.class);
-		container.registerComponentImplementation(CommandsMenuActions.ShowOpenersMenu.class);
-		// this one is not cached because we need 2 instances of it - in the Commands menu and in the context menu
-		container.registerComponent(new ConstructorInjectionComponentAdapter(OpenersMenu.class, OpenersMenu.class)); 
-		
+
+		this.mainMenu = mainMenu;
+		this.resultsContextMenu = resultsContextMenu;
+
 		shell.setMenuBar(mainMenu);		
-		createMainMenuItems(mainMenu);
-				
-		createCommandsMenuItems(resultsContextMenu);
-		
+
 		stateMachine.addTransitionListener(new MenuEnablerDisabler(mainMenu));
 		stateMachine.addTransitionListener(new MenuEnablerDisabler(resultsContextMenu));
 	}
 
-	public void start() {
-		// constructor starts everything
-	}
-
-	public void stop() {
+	void prepare() {
+		createMainMenuItems(mainMenu);
+		createCommandsMenuItems(resultsContextMenu);
 	}
 
 	private void createMainMenuItems(Menu menu) {
@@ -74,27 +88,26 @@ public class MainMenu implements Startable {
 		Menu subMenu = initMenu(menu, "menu.scan");
 //		initMenuItem(subMenu, "menu.scan.newWindow", "Ctrl+N", new Integer(SWT.MOD1 | 'N'), initListener(FileActions.NewWindow.class));
 //		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.scan.load", "", SWT.MOD1 | 'O', initListener(ScanMenuActions.LoadFromFile.class), true);
-		initMenuItem(subMenu, "menu.scan.exportAll", "Ctrl+S", SWT.MOD1 | 'S', initListener(ScanMenuActions.SaveAll.class), false);
-		initMenuItem(subMenu, "menu.scan.exportSelection", null, null, initListener(ScanMenuActions.SaveSelection.class), false);
+		initMenuItem(subMenu, "menu.scan.load", "", SWT.MOD1 | 'O', loadFromFile, true);
+		initMenuItem(subMenu, "menu.scan.exportAll", "Ctrl+S", SWT.MOD1 | 'S', saveAll, false);
+		initMenuItem(subMenu, "menu.scan.exportSelection", null, null, saveSelection, false);
 //		initMenuItem(subMenu, null, null, null, null);
 //		initMenuItem(subMenu, "menu.scan.exportPreferences", null, null, null);
 //		initMenuItem(subMenu, "menu.scan.importPreferences", null, null, null);
 		if (!Platform.MAC_OS) {
 			initMenuItem(subMenu, null, null, null, null);
-			initMenuItem(subMenu, "menu.scan.quit", "Ctrl+Q", SWT.MOD1 | 'Q', initListener(ScanMenuActions.Quit.class));
+			initMenuItem(subMenu, "menu.scan.quit", "Ctrl+Q", SWT.MOD1 | 'Q', quit);
 		}
-		
-		subMenu = initMenu(menu, "menu.goto");
-		initMenuItem(subMenu, "menu.goto.next.aliveHost", "Ctrl+H", SWT.MOD1 | 'H', initListener(GotoMenuActions.NextAliveHost.class));
-		initMenuItem(subMenu, "menu.goto.next.openPort", "Ctrl+J", SWT.MOD1 | 'J', initListener(GotoMenuActions.NextHostWithInfo.class));
-		initMenuItem(subMenu, "menu.goto.next.deadHost", "Ctrl+K", SWT.MOD1 | 'K', initListener(GotoMenuActions.NextDeadHost.class));
+				subMenu = initMenu(menu, "menu.goto");
+		initMenuItem(subMenu, "menu.goto.next.aliveHost", "Ctrl+H", SWT.MOD1 | 'H', nextAliveHost);
+		initMenuItem(subMenu, "menu.goto.next.openPort", "Ctrl+J", SWT.MOD1 | 'J', nextHostWithInfo);
+		initMenuItem(subMenu, "menu.goto.next.deadHost", "Ctrl+K", SWT.MOD1 | 'K', nextDeadHost);
 		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.goto.prev.aliveHost", "Ctrl+Shift+H", SWT.MOD1 | SWT.MOD2 | 'H', initListener(GotoMenuActions.PrevAliveHost.class));
-		initMenuItem(subMenu, "menu.goto.prev.openPort", "Ctrl+Shift+J", SWT.MOD1 | SWT.MOD2 | 'J', initListener(GotoMenuActions.PrevHostWithInfo.class));
-		initMenuItem(subMenu, "menu.goto.prev.deadHost", "Ctrl+Shift+K", SWT.MOD1 | SWT.MOD2 | 'K', initListener(GotoMenuActions.PrevDeadHost.class));
+		initMenuItem(subMenu, "menu.goto.prev.aliveHost", "Ctrl+Shift+H", SWT.MOD1 | SWT.MOD2 | 'H', prevAliveHost);
+		initMenuItem(subMenu, "menu.goto.prev.openPort", "Ctrl+Shift+J", SWT.MOD1 | SWT.MOD2 | 'J', prevHostWithInfo);
+		initMenuItem(subMenu, "menu.goto.prev.deadHost", "Ctrl+Shift+K", SWT.MOD1 | SWT.MOD2 | 'K', prevDeadHost);
 		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.goto.find", "Ctrl+F", SWT.MOD1 | 'F', initListener(GotoMenuActions.Find.class));
+		initMenuItem(subMenu, "menu.goto.find", "Ctrl+F", SWT.MOD1 | 'F', find);
 		
 		subMenu = initMenu(menu, "menu.commands");
 		createCommandsMenuItems(subMenu);
@@ -102,52 +115,52 @@ public class MainMenu implements Startable {
 		createFavoritesMenu(menu);
 		
 		subMenu = initMenu(menu, "menu.tools");
-		initMenuItem(subMenu, "menu.tools.preferences", "Ctrl+Shift+P", SWT.MOD1 | (Platform.MAC_OS ? ',' : SWT.MOD2 | 'P'), initListener(ToolsActions.Preferences.class), true);
-		initMenuItem(subMenu, "menu.tools.fetchers", "Ctrl+Shift+O", SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O'), initListener(ToolsActions.ChooseFetchers.class), true);
+		initMenuItem(subMenu, "menu.tools.preferences", "Ctrl+Shift+P", SWT.MOD1 | (Platform.MAC_OS ? ',' : SWT.MOD2 | 'P'), preferences, true);
+		initMenuItem(subMenu, "menu.tools.fetchers", "Ctrl+Shift+O", SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O'), chooseFetchers, true);
 		initMenuItem(subMenu, null, null, null, null);
 		Menu selectMenu = initMenu(subMenu, "menu.tools.select");
-		initMenuItem(subMenu, "menu.tools.scanStatistics", "Ctrl+T", SWT.MOD1 | 'T', initListener(ToolsActions.ScanStatistics.class));
+		initMenuItem(subMenu, "menu.tools.scanStatistics", "Ctrl+T", SWT.MOD1 | 'T', scanStatistics);
 
-		initMenuItem(selectMenu, "menu.tools.select.alive", null, null, initListener(ToolsActions.SelectAlive.class), true);
-		initMenuItem(selectMenu, "menu.tools.select.dead", null, null, initListener(ToolsActions.SelectDead.class), true);
-		initMenuItem(selectMenu, "menu.tools.select.withPorts", null, null, initListener(ToolsActions.SelectWithPorts.class), true);
-		initMenuItem(selectMenu, "menu.tools.select.withoutPorts", null, null, initListener(ToolsActions.SelectWithoutPorts.class), true);
+		initMenuItem(selectMenu, "menu.tools.select.alive", null, null, selectAlive, true);
+		initMenuItem(selectMenu, "menu.tools.select.dead", null, null, selectDead, true);
+		initMenuItem(selectMenu, "menu.tools.select.withPorts", null, null, selectWithPorts, true);
+		initMenuItem(selectMenu, "menu.tools.select.withoutPorts", null, null, selectWithoutPorts, true);
 		initMenuItem(selectMenu, null, null, null, null);
-		initMenuItem(selectMenu, "menu.tools.select.invert", "Ctrl+I", SWT.MOD1 | 'I', initListener(ToolsActions.SelectInvert.class), true);
+		initMenuItem(selectMenu, "menu.tools.select.invert", "Ctrl+I", SWT.MOD1 | 'I', selectInvert, true);
 		
 		subMenu = initMenu(menu, "menu.help");
-		initMenuItem(subMenu, "menu.help.gettingStarted", !Platform.MAC_OS ? "F1" : null, Platform.MAC_OS ? SWT.HELP : SWT.F1, initListener(HelpMenuActions.GettingStarted.class));
+		initMenuItem(subMenu, "menu.help.gettingStarted", !Platform.MAC_OS ? "F1" : null, Platform.MAC_OS ? SWT.HELP : SWT.F1, gettingStarted);
 		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.help.website", null, null, initListener(HelpMenuActions.Website.class));
-		initMenuItem(subMenu, "menu.help.faq", null, null, initListener(HelpMenuActions.FAQ.class));
-		initMenuItem(subMenu, "menu.help.plugins", null, null, initListener(HelpMenuActions.Plugins.class));
+		initMenuItem(subMenu, "menu.help.website", null, null, website);
+		initMenuItem(subMenu, "menu.help.faq", null, null, faq);
+		initMenuItem(subMenu, "menu.help.plugins", null, null, plugins);
 		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.help.cmdLine", null, null, initListener(HelpMenuActions.CommandLineUsage.class));
+		initMenuItem(subMenu, "menu.help.cmdLine", null, null, commandLineUsage);
 		
 		if (!Platform.MAC_OS) {
 			// mac will have these in the 'application' menu
 			initMenuItem(subMenu, null, null, null, null);
-			initMenuItem(subMenu, "menu.help.checkVersion", null, null, initListener(HelpMenuActions.CheckVersion.class));
+			initMenuItem(subMenu, "menu.help.checkVersion", null, null, checkVersion);
 			initMenuItem(subMenu, null, null, null, null);
-			initMenuItem(subMenu, "menu.help.about", null, null, initListener(HelpMenuActions.About.class));
+			initMenuItem(subMenu, "menu.help.about", null, null, about);
 		}
 	}
 
 	private void createCommandsMenuItems(Menu menu) {
-		initMenuItem(menu, "menu.commands.details", null, null, initListener(CommandsMenuActions.Details.class));
+		initMenuItem(menu, "menu.commands.details", null, null, details);
 		initMenuItem(menu, null, null, null, null);
-		initMenuItem(menu, "menu.commands.rescan", "Ctrl+R", SWT.MOD1 | 'R', initListener(CommandsMenuActions.Rescan.class), true);
-		initMenuItem(menu, "menu.commands.delete", Platform.MAC_OS ? "⌦" : "Del", /* this is not a global key binding */ null, initListener(CommandsMenuActions.Delete.class), true);
+		initMenuItem(menu, "menu.commands.rescan", "Ctrl+R", SWT.MOD1 | 'R', rescan, true);
+		initMenuItem(menu, "menu.commands.delete", Platform.MAC_OS ? "⌦" : "Del", /* this is not a global key binding */ null, delete, true);
 		initMenuItem(menu, null, null, null, null);
-		initMenuItem(menu, "menu.commands.copy", Platform.MAC_OS ? "⌘C" : "Ctrl+C", /* this is not a global key binding */ null, initListener(CommandsMenuActions.CopyIP.class));
-		initMenuItem(menu, "menu.commands.copyDetails", null, null, initListener(CommandsMenuActions.CopyIPDetails.class));
+		initMenuItem(menu, "menu.commands.copy", Platform.MAC_OS ? "⌘C" : "Ctrl+C", /* this is not a global key binding */ null, copyIP);
+		initMenuItem(menu, "menu.commands.copyDetails", null, null, copyIPDetails);
 		initMenuItem(menu, null, null, null, null);		
 		createOpenersMenu(menu);
 		// initMenuItem(subMenu, "menu.commands.show", null, initListener());
 	}
 
 	private void createOpenersMenu(Menu parentMenu) {
-		OpenersMenu openersMenu = (OpenersMenu) container.getComponentInstance(OpenersMenu.class);
+		OpenersMenu openersMenu = openersMenuProvider.get();
 		MenuItem openersMenuItem = new MenuItem(parentMenu, SWT.CASCADE);
 		openersMenuItem.setText(Labels.getLabel("menu.commands.open"));
 		openersMenuItem.setMenu(openersMenu);
@@ -156,7 +169,7 @@ public class MainMenu implements Startable {
 	private void createFavoritesMenu(Menu parentMenu) {
 		MenuItem favoritesMenuItem = new MenuItem(parentMenu, SWT.CASCADE);
 		favoritesMenuItem.setText(Labels.getLabel("menu.favorites"));
-		Menu favoritesMenu = (Menu) container.getComponentInstance(FavoritesMenu.class);
+		Menu favoritesMenu = favoritesMenuProvider.get();
 		favoritesMenuItem.setMenu(favoritesMenu);
 	}
 
@@ -169,15 +182,7 @@ public class MainMenu implements Startable {
 		
 		return subMenu;
 	}
-	
-	private Listener initListener(Class<? extends Listener> listenerClass) {
-		// register the component if it is not registered yet
-		if (container.getComponentAdapter(listenerClass) == null)
-			container.registerComponentImplementation(listenerClass);
-		// .. and create the instance, satisfying all the dependencies
-		return (Listener) container.getComponentInstance(listenerClass);
-	}
-	
+
 	static MenuItem initMenuItem(Menu parent, String label, String acceleratorText, Integer accelerator, Listener listener) {
 		return initMenuItem(parent, label, acceleratorText, accelerator, listener, false);
 	}
@@ -218,7 +223,8 @@ public class MainMenu implements Startable {
 	 * OpenersMenu wrapper for type-safety
 	 */
 	public static class OpenersMenu extends Menu {
-		public OpenersMenu(Decorations parent, CommandsMenuActions.EditOpeners editOpenersListener, CommandsMenuActions.ShowOpenersMenu showOpenersMenuListener) {
+		@Inject
+		public OpenersMenu(@Named("mainShell") Shell parent, CommandsMenuActions.EditOpeners editOpenersListener, CommandsMenuActions.ShowOpenersMenu showOpenersMenuListener) {
 			super(parent, SWT.DROP_DOWN);
 
 			initMenuItem(this, "menu.commands.open.edit", null, null, editOpenersListener);
@@ -238,7 +244,8 @@ public class MainMenu implements Startable {
 	 * FavoritesMenu wrapper for type-safety
 	 */
 	public static class FavoritesMenu extends Menu {
-		public FavoritesMenu(Decorations parent, FavoritesMenuActions.Add addListener, FavoritesMenuActions.Edit editListener, FavoritesMenuActions.ShowMenu showFavoritesMenuListener) {
+		@Inject
+		public FavoritesMenu(@Named("mainShell") Shell parent, FavoritesMenuActions.Add addListener, FavoritesMenuActions.Edit editListener, FavoritesMenuActions.ShowMenu showFavoritesMenuListener) {
 			super(parent, SWT.DROP_DOWN);
 
 			initMenuItem(this, "menu.favorites.add", "Ctrl+D", SWT.MOD1 | 'D', addListener);

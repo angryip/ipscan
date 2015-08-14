@@ -23,6 +23,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
+import javax.inject.Inject;
+
 /**
  * FavoritesActions
  *
@@ -33,7 +35,8 @@ public class FavoritesMenuActions {
 	public static final class Add implements Listener {
 		private final FeederGUIRegistry feederRegistry;
 		private final FavoritesConfig favoritesConfig;
-		
+
+		@Inject
 		public Add(FavoritesConfig favoritesConfig, FeederGUIRegistry feederRegistry) {
 			this.favoritesConfig = favoritesConfig;
 			this.feederRegistry = feederRegistry;
@@ -60,7 +63,8 @@ public class FavoritesMenuActions {
 		private final FeederGUIRegistry feederRegistry;
 		private final FavoritesConfig favoritesConfig;
 		private final StartStopScanningAction startStopAction;
-		
+
+		@Inject
 		public Select(FavoritesConfig favoritesConfig, FeederGUIRegistry feederRegistry, StartStopScanningAction startStopAction) {
 			this.favoritesConfig = favoritesConfig;
 			this.feederRegistry = feederRegistry;
@@ -86,7 +90,8 @@ public class FavoritesMenuActions {
 	
 	public static final class Edit implements Listener {
 		private final FavoritesConfig favoritesConfig;
-		
+
+		@Inject
 		public Edit(FavoritesConfig favoritesConfig) {
 			this.favoritesConfig = favoritesConfig;
 		}
@@ -100,7 +105,8 @@ public class FavoritesMenuActions {
 		private final SelectionListener favoritesSelectListener;
 		private final FavoritesConfig favoritesConfig;
 		private final StateMachine stateMachine;
-		
+
+		@Inject
 		public ShowMenu(FavoritesConfig favoritesConfig, Select favoritesSelectListener, StateMachine stateMachine) {
 			this.favoritesConfig = favoritesConfig;
 			// the listener for favorites selections from the menu

@@ -53,9 +53,6 @@ public class MainWindow {
 	private ToolBar prefsButton;
 	private ToolBar fetchersButton;
 
-	@Inject
-	MainMenu menu; // initiates MainMenu constructor execution
-		
 	/**
 	 * Creates and initializes the main window.
 	 */
@@ -65,14 +62,18 @@ public class MainWindow {
 					  @Named("startStopButton") Button startStopButton, StartStopScanningAction startStopScanningAction,
 					  ResultTable resultTable, StatusBar statusBar, @Named("commandsMenu") Menu resultsContextMenu,
 					  FeederGUIRegistry feederGUIRegistry, final StateMachine stateMachine,
-					  ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListsner) {
+					  ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListener,
+					  MainMenu menuBar) {
+
 		this.shell = shell;
 		this.guiConfig = guiConfig;
 		this.statusBar = statusBar;
-		
+
+		menuBar.prepare();
+
 		initShell(shell);
 		initFeederArea(feederArea, feederGUIRegistry);
-		initControlsArea(controlsArea, feederSelectionCombo, startStopButton, startStopScanningAction, preferencesListener, chooseFetchersListsner);
+		initControlsArea(controlsArea, feederSelectionCombo, startStopButton, startStopScanningAction, preferencesListener, chooseFetchersListener);
 		initTableAndStatusBar(resultTable, resultsContextMenu, statusBar);
 
 		// after all controls are initialized, resize and open

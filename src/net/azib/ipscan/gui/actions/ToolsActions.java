@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.gui.actions;
 
+import net.azib.ipscan.config.CommandLineProcessor;
 import net.azib.ipscan.config.CommandProcessor;
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
@@ -71,8 +72,9 @@ public class ToolsActions {
 		
 		private final StatisticsDialog statisticsDialog;
 		private final GUIConfig guiConfig;
-		
-		public ScanStatistics(GUIConfig guiConfig, StatisticsDialog statisticsDialog, StateMachine stateMachine, CommandProcessor commandProcessor) {
+
+		@Inject
+		public ScanStatistics(GUIConfig guiConfig, StatisticsDialog statisticsDialog, StateMachine stateMachine, CommandLineProcessor commandProcessor) {
 			this.guiConfig = guiConfig;
 			this.statisticsDialog = statisticsDialog;
 			// register for state changes
@@ -142,6 +144,7 @@ public class ToolsActions {
 	}
 	
 	public static final class SelectAlive extends SelectDesired {
+		@Inject
 		public SelectAlive(ResultTable resultTable) {
 			super(resultTable);
 		}
@@ -152,6 +155,7 @@ public class ToolsActions {
 	}
 
 	public static final class SelectDead extends SelectDesired {
+		@Inject
 		public SelectDead(ResultTable resultTable) {
 			super(resultTable);
 		}
@@ -162,6 +166,7 @@ public class ToolsActions {
 	}
 	
 	public static final class SelectWithPorts extends SelectDesired {
+		@Inject
 		public SelectWithPorts(ResultTable resultTable) {
 			super(resultTable);
 		}
@@ -172,6 +177,7 @@ public class ToolsActions {
 	}
 	
 	public static final class SelectWithoutPorts extends SelectDesired {
+		@Inject
 		public SelectWithoutPorts(ResultTable resultTable) {
 			super(resultTable);
 		}
@@ -198,7 +204,7 @@ public class ToolsActions {
 				resultTable.selectAll();
 				// update selection status
 				event.widget = resultTable;
-        resultTable.notifyListeners(SWT.Selection, event);
+        		resultTable.notifyListeners(SWT.Selection, event);
 				event.doit = false;
 			}
 		}
@@ -207,6 +213,7 @@ public class ToolsActions {
 	public static final class SelectInvert implements Listener {
 		private final ResultTable resultTable;
 
+		@Inject
 		public SelectInvert(ResultTable resultTable) {
 			this.resultTable = resultTable;
 		}
