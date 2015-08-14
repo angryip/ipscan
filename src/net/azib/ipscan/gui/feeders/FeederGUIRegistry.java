@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.TableItem;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import java.util.List;
  *
  * @author Anton Keks
  */
+@Singleton
 public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
 	
 	private final List<AbstractFeederGUI> feederGUIList;
