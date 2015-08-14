@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.MessageBox;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import java.net.InetAddress;
 
 /**
@@ -36,6 +37,7 @@ import java.net.InetAddress;
  * 
  * @author Anton Keks
  */
+@Singleton
 public class StartStopScanningAction implements SelectionListener, ScanningProgressCallback, StateTransitionListener {
 	
 	private ScannerDispatcherThreadFactory scannerThreadFactory;

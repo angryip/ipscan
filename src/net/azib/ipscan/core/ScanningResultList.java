@@ -15,6 +15,7 @@ import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.net.InetAddress;
 import java.util.*;
 
@@ -23,6 +24,7 @@ import java.util.*;
  *
  * @author Anton Keks
  */
+@Singleton
 public class ScanningResultList implements Iterable<ScanningResult> {
 	
 	private static final int RESULT_LIST_INITIAL_SIZE = 1024;
