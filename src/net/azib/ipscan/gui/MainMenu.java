@@ -5,6 +5,8 @@
  */
 package net.azib.ipscan.gui;
 
+import dagger.Module;
+import dagger.Provides;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.core.state.ScanningState;
@@ -22,6 +24,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * MainMenu
@@ -32,10 +35,10 @@ public class MainMenu implements Startable {
 
 	private MutablePicoContainer container;
 	
-	@Inject public MainMenu(@Named("mainShell") Shell shell, @Named("mainMenu") Menu mainMenu, @Named("commandsMenu") CommandsMenu resultsContextMenu, StateMachine stateMachine, PicoContainer parentContainer) {
+	@Inject public MainMenu(@Named("mainShell") Shell shell, @Named("mainMenu") Menu mainMenu, @Named("commandsMenu") Menu resultsContextMenu, StateMachine stateMachine) {
 		
 		// create the menu-specific child container
-		container = new DefaultPicoContainer(parentContainer);
+		container = new DefaultPicoContainer();
 		
 		// register some components not registered in the main menu
 		container.registerComponentImplementation(FavoritesMenu.class);
@@ -199,12 +202,12 @@ public class MainMenu implements Startable {
 		
 		return menuItem;
 	}
-			
+
 	/**
 	 * CommandsMenu wrapper for type-safety
 	 */
 	public static class CommandsMenu extends Menu {
-		@Inject public CommandsMenu(@Named("mainShell") Shell parent) {
+		public CommandsMenu(Shell parent) {
 			super(parent, SWT.POP_UP);
 		}
 		
