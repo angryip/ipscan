@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.*;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import java.util.List;
 
 /**
@@ -34,6 +35,7 @@ import java.util.List;
  * 
  * @author Anton Keks
  */
+@Singleton
 public class ResultTable extends Table implements FetcherRegistryUpdateListener, StateTransitionListener {
 	
 	private ScanningResultList scanningResults;
