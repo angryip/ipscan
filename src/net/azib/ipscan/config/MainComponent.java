@@ -3,9 +3,7 @@ package net.azib.ipscan.config;
 import dagger.Component;
 import net.azib.ipscan.core.PluginLoader;
 import net.azib.ipscan.gui.MacApplicationMenu;
-import net.azib.ipscan.gui.MainMenu;
 import net.azib.ipscan.gui.MainWindow;
-import net.azib.ipscan.gui.MenuModule;
 
 import javax.inject.Singleton;
 
@@ -13,8 +11,7 @@ import javax.inject.Singleton;
 		Config.class,
 		Labels.class,
 		PluginLoader.class,
-		ComponentRegistry.class,
-		MenuModule.class
+		ComponentRegistry.class
 })
 @Singleton
 public interface MainComponent {
