@@ -8,8 +8,7 @@ import net.azib.ipscan.gui.MainWindow;
 import javax.inject.Singleton;
 
 @Component(modules = {
-		Config.class,
-		Labels.class,
+		ConfigModule.class,
 		PluginLoader.class,
 		ComponentRegistry.class
 })

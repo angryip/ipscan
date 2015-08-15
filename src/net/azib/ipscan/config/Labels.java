@@ -5,9 +5,6 @@
  */
 package net.azib.ipscan.config;
 
-import dagger.Module;
-import dagger.Provides;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,7 +23,6 @@ import java.util.logging.Logger;
  * 
  * @author Anton Keks
  */
-@Module
 public final class Labels {
 
 	private static final Logger LOG = Logger.getLogger(Labels.class.getName());
@@ -45,7 +41,7 @@ public final class Labels {
 		// private constructor
 	}
 
-	@Provides public static Labels getInstance() {
+	public static Labels getInstance() {
 		return instance;
 	}
 	
