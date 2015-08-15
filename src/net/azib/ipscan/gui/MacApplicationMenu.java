@@ -16,7 +16,6 @@ import javax.inject.Inject;
  * in order to conform better to Mac standards.
  */
 public class MacApplicationMenu {
-
 	@Inject AboutDialog aboutDialog;
 	@Inject PreferencesDialog preferencesDialog;
 	@Inject SelectFetchersDialog selectFetchersDialog;
