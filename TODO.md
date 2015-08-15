@@ -1,4 +1,3 @@
-* Replace picocontainer with dagger: http://square.github.io/dagger/
 * Add URLFetcher with configurable URL and JSON/XPath expression
 * WHOIS fetcher
 
