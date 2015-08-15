@@ -15,7 +15,7 @@ import javax.inject.Singleton;
 })
 @Singleton
 public interface MainComponent {
-	MainWindow getMainWindow();
-	MacApplicationMenu getMacApplicationMenu();
-	CommandLineProcessor getCommandLineProcessor();
+	MainWindow createMainWindow();
+	MacApplicationMenu createMacApplicationMenu();
+	CommandLineProcessor createCommandLineProcessor();
 }
