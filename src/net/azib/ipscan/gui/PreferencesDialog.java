@@ -26,19 +26,19 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.*;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Preferences Dialog
  *
  * @author Anton Keks
  */
+@Singleton
 public class PreferencesDialog extends AbstractModalDialog {
-
-	private final ConfigDetectorDialog configDetectorDialog;
-	private final PingerRegistry pingerRegistry;
-	private final Config globalConfig;
-	private final ScannerConfig scannerConfig;
-	private final GUIConfig guiConfig;
+	@Inject PingerRegistry pingerRegistry;
+	@Inject Config globalConfig;
+	@Inject ScannerConfig scannerConfig;
+	@Inject GUIConfig guiConfig;
 
 	private Button okButton;
 	private Button cancelButton;
@@ -54,7 +54,6 @@ public class PreferencesDialog extends AbstractModalDialog {
 	private Text pingingCountText;
 	private Combo pingersCombo;
 	private Button skipBroadcastsCheckbox;
-//	private Composite fetchersTab;
 	private Composite portsTab;
 	private TabItem portsTabItem;
 	private Text portTimeoutText;
@@ -70,15 +69,8 @@ public class PreferencesDialog extends AbstractModalDialog {
 	private Combo languageCombo;
 	private String[] languages = { "system", "en", "hu", "lt", "es", "ku" };
 
-	@Inject
-	public PreferencesDialog(ConfigDetectorDialog configDetectorDialog, PingerRegistry pingerRegistry, Config globalConfig, ScannerConfig scannerConfig, GUIConfig guiConfig) {
-		this.configDetectorDialog = configDetectorDialog;
-		this.pingerRegistry = pingerRegistry;
-		this.globalConfig = globalConfig;
-		this.scannerConfig = scannerConfig;
-		this.guiConfig = guiConfig;
-	}
-	
+	@Inject public PreferencesDialog() {}
+
 	@Override
 	public void open() {
 		openTab(0);
@@ -157,11 +149,6 @@ public class PreferencesDialog extends AbstractModalDialog {
 		tabItem.setText(Labels.getLabel("title.preferences.display"));
 		tabItem.setControl(displayTab);		
 
-//		createFetchersTab();
-//		tabItem = new TabItem(tabFolder, SWT.NONE);
-//		tabItem.setText(Labels.getLabel("title.preferences.fetchers"));
-//		tabItem.setControl(fetchersTab);
-		
 		tabFolder.pack();
 	}
 
@@ -192,11 +179,6 @@ public class PreferencesDialog extends AbstractModalDialog {
 		label.setText(Labels.getLabel("preferences.threads.maxThreads"));
 		maxThreadsText = new Text(threadsGroup, SWT.BORDER);
 		maxThreadsText.setLayoutData(gridData);
-//		new Label(threadsGroup, SWT.NONE);
-//		Button checkButton = new Button(threadsGroup, SWT.NONE);
-//		checkButton.setText(Labels.getLabel("button.check"));
-//		checkButton.setLayoutData(gridData);
-//		checkButton.addListener(SWT.Selection, new CheckButtonListener());
 
 		Group pingingGroup = new Group(scanningTab, SWT.NONE);
 		pingingGroup.setLayout(groupLayout);
@@ -372,18 +354,6 @@ public class PreferencesDialog extends AbstractModalDialog {
 	}
 
 	/**
-	 * This method initializes fetchersTab	
-	 */
-//	private void createFetchersTab() {
-//		GridLayout gridLayout = new GridLayout();
-//		gridLayout.numColumns = 1;
-//		fetchersTab = new Composite(tabFolder, SWT.NONE);
-//		fetchersTab.setLayout(gridLayout);
-//		Label label = new Label(fetchersTab, SWT.NONE);
-//		label.setText(Labels.getLabel("preferences.fetchers.info"));
-//	}
-
-	/**
 	 * @return a pre-initialized RowLayout suitable for option tabs.
 	 */
 	private RowLayout createRowLayout() {
@@ -535,13 +505,6 @@ public class PreferencesDialog extends AbstractModalDialog {
 		}
 
 		public void keyReleased(KeyEvent e) {
-		}
-	}
-	
-	class CheckButtonListener implements Listener {
-		public void handleEvent(Event event) {
-			scannerConfig.maxThreads = Integer.parseInt(maxThreadsText.getText());
-			configDetectorDialog.open();
 		}
 	}
 }
