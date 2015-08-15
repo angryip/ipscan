@@ -13,6 +13,7 @@ import net.azib.ipscan.exporters.*;
 import net.azib.ipscan.feeders.FeederCreator;
 import net.azib.ipscan.feeders.FeederRegistry;
 import net.azib.ipscan.fetchers.*;
+import net.azib.ipscan.gui.MainMenu;
 import net.azib.ipscan.gui.SWTAwareStateMachine;
 import net.azib.ipscan.gui.feeders.*;
 import org.eclipse.swt.SWT;
@@ -36,27 +37,31 @@ public class ComponentRegistry {
 		return Display.getDefault();
 	}
 
-	@Provides @Named("mainShell") @Singleton public Shell createMainShell() {
+	@Provides @Named("mainShell") @Singleton public Shell mainShell() {
 		return new Shell();
 	}
 
-	@Provides @Named("mainMenu") @Singleton public Menu createMainMenu(@Named("mainShell") Shell mainShell) {
+	@Provides @Named("mainMenu") @Singleton public Menu mainMenu(@Named("mainShell") Shell mainShell) {
 		return new Menu(mainShell, SWT.BAR);
 	}
 
-	@Provides @Named("feederArea") @Singleton public Composite createFeederArea(@Named("mainShell") Shell mainShell) {
+	@Provides @Named("commandsMenu") @Singleton public Menu commandsMenu(@Named("mainShell") Shell mainShell) {
+		return new MainMenu.CommandsMenu(mainShell);
+	}
+
+	@Provides @Named("feederArea") @Singleton public Composite feederArea(@Named("mainShell") Shell mainShell) {
 		return new Composite(mainShell, SWT.NONE);
 	}
 
-	@Provides @Named("controlsArea") @Singleton public Composite createControlsArea(@Named("mainShell") Shell mainShell) {
+	@Provides @Named("controlsArea") @Singleton public Composite controlsArea(@Named("mainShell") Shell mainShell) {
 		return new Composite(mainShell, SWT.NONE);
 	}
 
-	@Provides @Named("startStopButton") @Singleton public Button createStartStopButton(@Named("controlsArea") Composite controlsArea) {
+	@Provides @Named("startStopButton") @Singleton public Button startStopButton(@Named("controlsArea") Composite controlsArea) {
 		return new Button(controlsArea, SWT.NONE);
 	}
 
-	@Provides @Named("feederSelectionCombo") @Singleton public Combo createFeederSelectionCombo(@Named("controlsArea") Composite controlsArea) {
+	@Provides @Named("feederSelectionCombo") @Singleton public Combo feederSelectionCombo(@Named("controlsArea") Composite controlsArea) {
 		return new Combo(controlsArea, SWT.READ_ONLY);
 	}
 
