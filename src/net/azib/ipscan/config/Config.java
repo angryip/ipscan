@@ -3,9 +3,6 @@
  */
 package net.azib.ipscan.config;
 
-import dagger.Module;
-import dagger.Provides;
-
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
@@ -15,7 +12,6 @@ import java.util.prefs.Preferences;
  * 
  * @author Anton Keks
  */
-@Module
 public final class Config {
 	
 	/** Singleton instance */
@@ -41,11 +37,11 @@ public final class Config {
 		openersConfig = new OpenersConfig(preferences);
 		language = preferences.get("language", "system");
 	}
-	
+
 	/**
 	 * Initializes the singleton instance
 	 */
-	@Provides public static Config getConfig() {
+	public static Config getConfig() {
 		if (globalConfig == null) {
 			globalConfig = new Config();
 		}
@@ -60,35 +56,35 @@ public final class Config {
 		openersConfig.store();
 	}
 
-	@Provides public Preferences getPreferences() {
+	public Preferences getPreferences() {
 		return preferences;
 	}
 
 	/** 
 	 * @return ScannerConfig instance (quick access)
 	 */
-	@Provides public ScannerConfig forScanner() {
+	public ScannerConfig forScanner() {
 		return scannerConfig;
 	}
 	
 	/**
 	 * @return Favorites config (only local access)
 	 */
-	@Provides NamedListConfig forFavorites() {
+	NamedListConfig forFavorites() {
 		return favoritesConfig;
 	}
 
 	/**
 	 * @return Openers config (only local access);
 	 */
-	@Provides public OpenersConfig forOpeners() {
+	public OpenersConfig forOpeners() {
 		return openersConfig;
 	}
 	
 	/**
 	 * @return Dimensions config (quick access);
 	 */
-	@Provides public GUIConfig forGUI() {
+	public GUIConfig forGUI() {
 		return guiConfig;
 	}
 
