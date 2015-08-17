@@ -5,7 +5,11 @@
  */
 package net.azib.ipscan.fetchers;
 
+import net.azib.ipscan.gui.PreferencesDialog;
+
 import javax.inject.Inject;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.prefs.Preferences;
 
@@ -17,7 +21,9 @@ import java.util.prefs.Preferences;
  */
 public class FetcherRegistry {
 	static final String PREFERENCE_SELECTED_FETCHERS = "selectedFetchers";
-	private Preferences preferences;
+
+	private final Preferences preferences;
+	private final PreferencesDialog preferencesDialog;
 	
 	/** All available Fetcher implementations, List of Fetcher instances */
 	private Map<String, Fetcher> registeredFetchers;
@@ -28,17 +34,22 @@ public class FetcherRegistry {
 	/** A collection of update listeners - observers of FetcherRegistry */
 	private List<FetcherRegistryUpdateListener> updateListeners = new ArrayList<FetcherRegistryUpdateListener>();
 		
-	@Inject public FetcherRegistry(List<Fetcher> registeredFetchers, Preferences preferences) {
+	@Inject public FetcherRegistry(List<Fetcher> fetchers, Preferences preferences, PreferencesDialog preferencesDialog) {
 		this.preferences = preferences;
+		this.preferencesDialog = preferencesDialog;
 
-		this.registeredFetchers = new LinkedHashMap<String, Fetcher>(registeredFetchers.size());
-		for (Fetcher fetcher : registeredFetchers) {
-			this.registeredFetchers.put(fetcher.getId(), fetcher);
-		}
-		this.registeredFetchers = Collections.unmodifiableMap(this.registeredFetchers);
+		registeredFetchers = createFetchersMap(fetchers);
 
 		// now load the preferences to init selected fetchers
 		loadSelectedFetchers(preferences);
+	}
+
+	private Map<String, Fetcher> createFetchersMap(List<Fetcher> fetchers) {
+		Map<String, Fetcher> registeredFetchers = new LinkedHashMap<String, Fetcher>(fetchers.size());
+		for (Fetcher fetcher : fetchers) {
+			registeredFetchers.put(fetcher.getId(), fetcher);
+		}
+		return Collections.unmodifiableMap(registeredFetchers);
 	}
 
 	private void loadSelectedFetchers(Preferences preferences) {
@@ -143,16 +154,26 @@ public class FetcherRegistry {
    * @throws FetcherException if preferences editor doesn't exist
    */
 	public void openPreferencesEditor(Fetcher fetcher) throws FetcherException {
-		Class<? extends FetcherPrefs> prefsClass = fetcher.getPreferencesClass();
-		if (prefsClass == null)
+		Class<? extends FetcherPrefs> prefsEditorClass = fetcher.getPreferencesClass();
+		if (prefsEditorClass == null)
 			throw new FetcherException("preferences.notAvailable");
 
 		try {
-			FetcherPrefs prefs = prefsClass.newInstance();
+			FetcherPrefs prefs = createFetcherPrefsEditor(prefsEditorClass);
 			prefs.openFor(fetcher);
 		}
 		catch (Exception e) {
-			throw new RuntimeException("Cannot instantiate fetcher preference editor: " + prefsClass.getName());
+			throw new RuntimeException("Cannot instantiate fetcher preference editor: " + prefsEditorClass.getName());
+		}
+	}
+
+	private FetcherPrefs createFetcherPrefsEditor(Class<? extends FetcherPrefs> prefsClass) throws Exception {
+		try {
+			Constructor<? extends FetcherPrefs> constructor = prefsClass.getConstructor(PreferencesDialog.class);
+			return constructor.newInstance(preferencesDialog);
+		}
+		catch (NoSuchMethodException e) {
+			return prefsClass.newInstance();
 		}
 	}
 }

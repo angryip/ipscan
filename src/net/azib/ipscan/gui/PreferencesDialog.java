@@ -35,10 +35,10 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class PreferencesDialog extends AbstractModalDialog {
-	@Inject PingerRegistry pingerRegistry;
-	@Inject Config globalConfig;
-	@Inject ScannerConfig scannerConfig;
-	@Inject GUIConfig guiConfig;
+	private final PingerRegistry pingerRegistry;
+	private final Config globalConfig;
+	private final ScannerConfig scannerConfig;
+	private final GUIConfig guiConfig;
 
 	private Button okButton;
 	private Button cancelButton;
@@ -69,7 +69,12 @@ public class PreferencesDialog extends AbstractModalDialog {
 	private Combo languageCombo;
 	private String[] languages = { "system", "en", "hu", "lt", "es", "ku" };
 
-	@Inject public PreferencesDialog() {}
+	@Inject public PreferencesDialog(PingerRegistry pingerRegistry, Config globalConfig, ScannerConfig scannerConfig, GUIConfig guiConfig) {
+		this.pingerRegistry = pingerRegistry;
+		this.globalConfig = globalConfig;
+		this.scannerConfig = scannerConfig;
+		this.guiConfig = guiConfig;
+	}
 
 	@Override
 	public void open() {
