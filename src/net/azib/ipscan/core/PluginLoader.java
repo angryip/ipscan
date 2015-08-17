@@ -5,6 +5,7 @@ import dagger.Provides;
 import net.azib.ipscan.config.LoggerFactory;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.net.URL;
@@ -36,9 +37,9 @@ import java.util.logging.Logger;
 public class PluginLoader {
     private static final Logger LOG = LoggerFactory.getLogger();
 
-	@Provides @Named("plugins")
-	public List<Class> getClasses() {
-		List<Class> container = new ArrayList<Class>();
+	@Provides @Singleton
+	public List<Class<? extends Plugin>> getClasses() {
+		List<Class<? extends Plugin>> container = new ArrayList<Class<? extends Plugin>>();
 
 		loadPluginsSpecifiedInSystemProperties(container);
 		loadPluginJars(container, getOwnFile());
@@ -47,14 +48,14 @@ public class PluginLoader {
 		return container;
 	}
 
-	void loadPluginsSpecifiedInSystemProperties(List<Class> container) {
+	void loadPluginsSpecifiedInSystemProperties(List<Class<? extends Plugin>> container) {
 		String plugins = System.getProperty("ipscan.plugins");
 		if (plugins != null) {
 			loadPluginClasses(container, getClass().getClassLoader(), plugins);
 		}
 	}
 
-	private void loadPluginClasses(List<Class> container, ClassLoader classLoader, String csvNames) {
+	private void loadPluginClasses(List<Class<? extends Plugin>> container, ClassLoader classLoader, String csvNames) {
 		String[] classes = csvNames.split("\\s*,\\s*");
 		for (String className : classes) {
 			try {
@@ -70,7 +71,7 @@ public class PluginLoader {
 		}
 	}
 
-	void loadPluginJars(List<Class> container, final File ownFile) {
+	void loadPluginJars(List<Class<? extends Plugin>> container, final File ownFile) {
 		if (!ownFile.getParentFile().exists()) return;
 
 		File[] jars = ownFile.getParentFile().listFiles(new FilenameFilter() {
