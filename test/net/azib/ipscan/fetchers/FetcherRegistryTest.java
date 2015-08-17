@@ -39,7 +39,7 @@ public class FetcherRegistryTest {
 		hostnameFetcher = new HostnameFetcher();
 		commentFetcher = new CommentFetcher(null);
 		portsFetcher = new PortsFetcher(null);
-		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, pingFetcher, hostnameFetcher, commentFetcher, portsFetcher), preferences);
+		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, pingFetcher, hostnameFetcher, commentFetcher, portsFetcher), preferences, null);
 	}
 	
 	@After
@@ -72,18 +72,18 @@ public class FetcherRegistryTest {
 	@Test
 	public void testLoadPreferences() throws Exception {
 		preferences.remove(FetcherRegistry.PREFERENCE_SELECTED_FETCHERS);
-		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, hostnameFetcher, commentFetcher), preferences);
+		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, hostnameFetcher, commentFetcher), preferences, null);
 		assertEquals(4, fetcherRegistry.getSelectedFetchers().size());
 		
 		preferences.put(FetcherRegistry.PREFERENCE_SELECTED_FETCHERS, hostnameFetcher.getId() + "###" + commentFetcher.getId());
-		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, hostnameFetcher, commentFetcher), preferences);
+		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, hostnameFetcher, commentFetcher), preferences, null);
 		assertEquals(2, fetcherRegistry.getSelectedFetchers().size());
 		Iterator<?> iterator = fetcherRegistry.getSelectedFetchers().iterator();
 		assertSame(hostnameFetcher, iterator.next());
 		assertSame(commentFetcher, iterator.next());
 		
 		preferences.put(FetcherRegistry.PREFERENCE_SELECTED_FETCHERS, "not-existing-fetcher###" + hostnameFetcher.getId());
-		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, hostnameFetcher), preferences);
+		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, hostnameFetcher), preferences, null);
 		assertEquals(1, fetcherRegistry.getSelectedFetchers().size());
 	}
 	
@@ -130,7 +130,7 @@ public class FetcherRegistryTest {
 	public void openPreferencesEditor() {
 		Fetcher editableFetcher = mock(Fetcher.class);
 		doReturn(EditableFetcherPrefs.class).when(editableFetcher).getPreferencesClass();
-		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, editableFetcher), preferences);
+		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, editableFetcher), preferences, null);
 
 		EditableFetcherPrefs.calledWithMessage = null;
 		fetcherRegistry.openPreferencesEditor(editableFetcher);
