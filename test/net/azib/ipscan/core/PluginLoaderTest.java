@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 
 public class PluginLoaderTest {
 	PluginLoader loader = new PluginLoader();
-	List<Class> container = mock(List.class);
+	List<Class<? extends Plugin>> container = mock(List.class);
 
 	@Test
     public void loadFromSystemProperty() {

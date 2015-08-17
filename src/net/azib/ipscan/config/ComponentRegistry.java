@@ -77,11 +77,11 @@ public class ComponentRegistry {
 		return Arrays.asList(f1, f2, f3);
 	}
 
-	@Provides @Singleton public List<Exporter> exporters(@Named("plugins") List<Class> plugins, TXTExporter e1, CSVExporter e2, XMLExporter e3, IPListExporter e4) {
+	@Provides @Singleton public List<Exporter> exporters(List<Class<? extends Plugin>> plugins, TXTExporter e1, CSVExporter e2, XMLExporter e3, IPListExporter e4) {
 		return addPlugins(Arrays.<Exporter>asList(e1, e2, e3, e4), Exporter.class, plugins);
 	}
 
-	@Provides @Singleton public List<Fetcher> fetchers(@Named("plugins") List<Class> plugins,
+	@Provides @Singleton public List<Fetcher> fetchers(List<Class<? extends Plugin>> plugins,
 											IPFetcher f1, PingFetcher f2, PingTTLFetcher f3, HostnameFetcher f4, PortsFetcher f5,
 											FilteredPortsFetcher f6, WebDetectFetcher f7, HTTPSenderFetcher f8, CommentFetcher f9,
 											NetBIOSInfoFetcher f10, MACFetcher f11, MACVendorFetcher f12) {
@@ -93,7 +93,7 @@ public class ComponentRegistry {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T extends Plugin> List<T> addPlugins(List<T> original, Class<T> type, List<Class> classes) {
+	private <T extends Plugin> List<T> addPlugins(List<T> original, Class<T> type, List<Class<? extends Plugin>> classes) {
 		List<T> result = new ArrayList<T>(original);
 		for (Class clazz: classes) {
 			try {
