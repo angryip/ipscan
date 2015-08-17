@@ -37,23 +37,23 @@ public class ComponentRegistry {
 		return Display.getDefault();
 	}
 
-	@Provides @Named("mainShell") @Singleton public Shell mainShell() {
+	@Provides @Singleton public Shell mainShell() {
 		return new Shell();
 	}
 
-	@Provides @Named("mainMenu") @Singleton public Menu mainMenu(@Named("mainShell") Shell mainShell) {
+	@Provides @Named("mainMenu") @Singleton public Menu mainMenu(Shell mainShell) {
 		return new Menu(mainShell, SWT.BAR);
 	}
 
-	@Provides @Named("commandsMenu") @Singleton public Menu commandsMenu(@Named("mainShell") Shell mainShell) {
+	@Provides @Named("commandsMenu") @Singleton public Menu commandsMenu(Shell mainShell) {
 		return new MainMenu.CommandsMenu(mainShell);
 	}
 
-	@Provides @Named("feederArea") @Singleton public Composite feederArea(@Named("mainShell") Shell mainShell) {
+	@Provides @Named("feederArea") @Singleton public Composite feederArea(Shell mainShell) {
 		return new Composite(mainShell, SWT.NONE);
 	}
 
-	@Provides @Named("controlsArea") @Singleton public Composite controlsArea(@Named("mainShell") Shell mainShell) {
+	@Provides @Named("controlsArea") @Singleton public Composite controlsArea(Shell mainShell) {
 		return new Composite(mainShell, SWT.NONE);
 	}
 

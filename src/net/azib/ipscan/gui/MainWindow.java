@@ -57,7 +57,7 @@ public class MainWindow {
 	 * Creates and initializes the main window.
 	 */
 	@Inject
-	public MainWindow(@Named("mainShell") Shell shell, GUIConfig guiConfig, @Named("feederArea") Composite feederArea,
+	public MainWindow(Shell shell, GUIConfig guiConfig, @Named("feederArea") Composite feederArea,
 					  @Named("controlsArea") Composite controlsArea, @Named("feederSelectionCombo") Combo feederSelectionCombo,
 					  @Named("startStopButton") Button startStopButton, StartStopScanningAction startStopScanningAction,
 					  ResultTable resultTable, StatusBar statusBar, @Named("commandsMenu") Menu resultsContextMenu,

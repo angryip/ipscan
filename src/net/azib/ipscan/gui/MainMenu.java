@@ -67,7 +67,7 @@ public class MainMenu {
 
 	private final Menu mainMenu, resultsContextMenu;
 
-	@Inject public MainMenu(@Named("mainShell") Shell shell, @Named("mainMenu") Menu mainMenu, @Named("commandsMenu") Menu resultsContextMenu, StateMachine stateMachine) {
+	@Inject public MainMenu(Shell shell, @Named("mainMenu") Menu mainMenu, @Named("commandsMenu") Menu resultsContextMenu, StateMachine stateMachine) {
 
 		this.mainMenu = mainMenu;
 		this.resultsContextMenu = resultsContextMenu;
@@ -224,7 +224,7 @@ public class MainMenu {
 	 */
 	public static class OpenersMenu extends Menu {
 		@Inject
-		public OpenersMenu(@Named("mainShell") Shell parent, CommandsMenuActions.EditOpeners editOpenersListener, CommandsMenuActions.ShowOpenersMenu showOpenersMenuListener) {
+		public OpenersMenu(Shell parent, CommandsMenuActions.EditOpeners editOpenersListener, CommandsMenuActions.ShowOpenersMenu showOpenersMenuListener) {
 			super(parent, SWT.DROP_DOWN);
 
 			initMenuItem(this, "menu.commands.open.edit", null, null, editOpenersListener);
@@ -245,7 +245,7 @@ public class MainMenu {
 	 */
 	public static class FavoritesMenu extends Menu {
 		@Inject
-		public FavoritesMenu(@Named("mainShell") Shell parent, FavoritesMenuActions.Add addListener, FavoritesMenuActions.Edit editListener, FavoritesMenuActions.ShowMenu showFavoritesMenuListener) {
+		public FavoritesMenu(Shell parent, FavoritesMenuActions.Add addListener, FavoritesMenuActions.Edit editListener, FavoritesMenuActions.ShowMenu showFavoritesMenuListener) {
 			super(parent, SWT.DROP_DOWN);
 
 			initMenuItem(this, "menu.favorites.add", "Ctrl+D", SWT.MOD1 | 'D', addListener);
@@ -262,7 +262,7 @@ public class MainMenu {
 	 * This is the menu when clicking on a column header.
 	 */
 	public static class ColumnsMenu extends Menu {
-		@Inject public ColumnsMenu(@Named("mainShell") Shell parent, ColumnsActions.SortBy sortByListener, ColumnsActions.AboutFetcher aboutListener, ColumnsActions.FetcherPreferences preferencesListener) {
+		@Inject public ColumnsMenu(Shell parent, ColumnsActions.SortBy sortByListener, ColumnsActions.AboutFetcher aboutListener, ColumnsActions.FetcherPreferences preferencesListener) {
 			super(parent, SWT.POP_UP);
 			
 			initMenuItem(this, "menu.columns.sortBy", null, null, sortByListener);
