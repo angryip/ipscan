@@ -43,7 +43,7 @@ public class StatusBar {
 	private StateMachine stateMachine;
 	private ResultTable resultTable;
 
-	@Inject public StatusBar(@Named("mainShell") Shell shell, GUIConfig guiConfig, ScannerConfig scannerConfig, ResultTable resultTable, StateMachine stateMachine) {
+	@Inject public StatusBar(Shell shell, GUIConfig guiConfig, ScannerConfig scannerConfig, ResultTable resultTable, StateMachine stateMachine) {
 		this.guiConfig = guiConfig;
 		this.scannerConfig = scannerConfig;
 		this.stateMachine = stateMachine;
