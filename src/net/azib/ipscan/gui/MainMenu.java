@@ -39,6 +39,12 @@ public class MainMenu {
 	@Inject GotoMenuActions.PrevDeadHost prevDeadHost;
 	@Inject GotoMenuActions.Find find;
 
+	@Inject CommandsMenuActions.Details details;
+	@Inject CommandsMenuActions.Rescan rescan;
+	@Inject CommandsMenuActions.Delete delete;
+	@Inject CommandsMenuActions.CopyIP copyIP;
+	@Inject CommandsMenuActions.CopyIPDetails copyIPDetails;
+
 	@Inject ToolsActions.Preferences preferences;
 	@Inject ToolsActions.ChooseFetchers chooseFetchers;
 	@Inject ToolsActions.ScanStatistics scanStatistics;
@@ -48,19 +54,7 @@ public class MainMenu {
 	@Inject ToolsActions.SelectWithoutPorts selectWithoutPorts;
 	@Inject ToolsActions.SelectInvert selectInvert;
 
-	@Inject HelpMenuActions.GettingStarted gettingStarted;
-	@Inject HelpMenuActions.Website website;
-	@Inject HelpMenuActions.FAQ faq;
-	@Inject HelpMenuActions.Plugins plugins;
-	@Inject HelpMenuActions.CommandLineUsage commandLineUsage;
-	@Inject HelpMenuActions.CheckVersion checkVersion;
-	@Inject HelpMenuActions.About about;
-
-	@Inject CommandsMenuActions.Details details;
-	@Inject CommandsMenuActions.Rescan rescan;
-	@Inject CommandsMenuActions.Delete delete;
-	@Inject CommandsMenuActions.CopyIP copyIP;
-	@Inject CommandsMenuActions.CopyIPDetails copyIPDetails;
+	@Inject @Named("menu.help") Menu helpMenu;
 
 	@Inject Provider<OpenersMenu> openersMenuProvider;
 	@Inject Provider<FavoritesMenu> favoritesMenuProvider;
@@ -72,7 +66,7 @@ public class MainMenu {
 		this.mainMenu = mainMenu;
 		this.resultsContextMenu = resultsContextMenu;
 
-		shell.setMenuBar(mainMenu);		
+		shell.setMenuBar(mainMenu);
 
 		stateMachine.addTransitionListener(new MenuEnablerDisabler(mainMenu));
 		stateMachine.addTransitionListener(new MenuEnablerDisabler(resultsContextMenu));
@@ -98,7 +92,8 @@ public class MainMenu {
 			initMenuItem(subMenu, null, null, null, null);
 			initMenuItem(subMenu, "menu.scan.quit", "Ctrl+Q", SWT.MOD1 | 'Q', quit);
 		}
-				subMenu = initMenu(menu, "menu.goto");
+
+		subMenu = initMenu(menu, "menu.goto");
 		initMenuItem(subMenu, "menu.goto.next.aliveHost", "Ctrl+H", SWT.MOD1 | 'H', nextAliveHost);
 		initMenuItem(subMenu, "menu.goto.next.openPort", "Ctrl+J", SWT.MOD1 | 'J', nextHostWithInfo);
 		initMenuItem(subMenu, "menu.goto.next.deadHost", "Ctrl+K", SWT.MOD1 | 'K', nextDeadHost);
@@ -127,23 +122,13 @@ public class MainMenu {
 		initMenuItem(selectMenu, "menu.tools.select.withoutPorts", null, null, selectWithoutPorts, true);
 		initMenuItem(selectMenu, null, null, null, null);
 		initMenuItem(selectMenu, "menu.tools.select.invert", "Ctrl+I", SWT.MOD1 | 'I', selectInvert, true);
-		
-		subMenu = initMenu(menu, "menu.help");
-		initMenuItem(subMenu, "menu.help.gettingStarted", !Platform.MAC_OS ? "F1" : null, Platform.MAC_OS ? SWT.HELP : SWT.F1, gettingStarted);
-		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.help.website", null, null, website);
-		initMenuItem(subMenu, "menu.help.faq", null, null, faq);
-		initMenuItem(subMenu, "menu.help.plugins", null, null, plugins);
-		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.help.cmdLine", null, null, commandLineUsage);
-		
-		if (!Platform.MAC_OS) {
-			// mac will have these in the 'application' menu
-			initMenuItem(subMenu, null, null, null, null);
-			initMenuItem(subMenu, "menu.help.checkVersion", null, null, checkVersion);
-			initMenuItem(subMenu, null, null, null, null);
-			initMenuItem(subMenu, "menu.help.about", null, null, about);
-		}
+
+		//// help
+
+		MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
+		menuItem.setText(Labels.getLabel("menu.help"));
+
+		menuItem.setMenu(helpMenu);
 	}
 
 	private void createCommandsMenuItems(Menu menu) {
