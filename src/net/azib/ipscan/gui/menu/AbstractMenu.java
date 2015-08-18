@@ -2,12 +2,15 @@ package net.azib.ipscan.gui.menu;
 
 import net.azib.ipscan.config.Labels;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 
 abstract class AbstractMenu extends Menu {
 
-	public AbstractMenu(Shell shell, int style) {
-		super(shell, style);
+	public AbstractMenu(Shell parent, int style) {
+		super(parent, style);
 	}
 
 	static MenuItem initMenuItem(Menu parent, String label, String acceleratorText, Integer accelerator, Listener listener) {
