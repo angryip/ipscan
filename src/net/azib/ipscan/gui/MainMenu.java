@@ -18,86 +18,44 @@ import org.eclipse.swt.widgets.Shell;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * MainMenu
  *
  * @author Anton Keks
  */
+@Singleton
 public class MainMenu {
 
-	@Inject ScanMenu scanMenu;
-	@Inject GotoMenu gotoMenu;
-	@Inject CommandsMenu commandsMenu;
-	@Inject FavoritesMenu favoritesMenu;
-	@Inject ToolsMenu toolsMenu;
-	@Inject HelpMenu helpMenu;
-
-	private final Menu mainMenu;
-
-	@Inject public MainMenu(Shell parent, @Named("mainMenu") Menu mainMenu, ResultsContextMenu resultsContextMenu, StateMachine stateMachine) {
-
-		this.mainMenu = mainMenu;
+	@Inject
+	public MainMenu(Shell parent, @Named("mainMenu") Menu mainMenu,
+					ScanMenu scanMenu,
+					GotoMenu gotoMenu,
+					CommandsMenu commandsMenu,
+					FavoritesMenu favoritesMenu,
+					ToolsMenu toolsMenu,
+					HelpMenu helpMenu,
+					ResultsContextMenu resultsContextMenu, StateMachine stateMachine) {
 
 		parent.setMenuBar(mainMenu);
+
+		addMenuItem(mainMenu, scanMenu, "menu.scan");
+		addMenuItem(mainMenu, gotoMenu, "menu.goto");
+		addMenuItem(mainMenu, commandsMenu, "menu.commands");
+		addMenuItem(mainMenu, favoritesMenu, "menu.favorites");
+		addMenuItem(mainMenu, toolsMenu, "menu.tools");
+		addMenuItem(mainMenu, helpMenu, "menu.help");
 
 		stateMachine.addTransitionListener(new MenuEnablerDisabler(mainMenu));
 		stateMachine.addTransitionListener(new MenuEnablerDisabler(resultsContextMenu));
 	}
 
-	void prepare() {
-		createMainMenuItems(mainMenu);
-	}
+	private void addMenuItem(Menu mainMenu, Menu menu, String name) {
+		MenuItem menuItem = new MenuItem(mainMenu, SWT.CASCADE);
+		menuItem.setText(Labels.getLabel(name));
 
-	private void createMainMenuItems(Menu menu) {
-		
-		//// scan
-		{
-			MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
-			menuItem.setText(Labels.getLabel("menu.scan"));
-
-			menuItem.setMenu(scanMenu);
-		}
-
-		//// goto
-		{
-			MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
-			menuItem.setText(Labels.getLabel("menu.goto"));
-
-			menuItem.setMenu(gotoMenu);
-		}
-
-		//// commands
-		{
-			MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
-			menuItem.setText(Labels.getLabel("menu.commands"));
-
-			menuItem.setMenu(commandsMenu);
-		}
-
-		//// favorites
-		{
-			MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
-			menuItem.setText(Labels.getLabel("menu.favorites"));
-
-			menuItem.setMenu(favoritesMenu);
-		}
-
-		//// tools
-		{
-			MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
-			menuItem.setText(Labels.getLabel("menu.tools"));
-
-			menuItem.setMenu(toolsMenu);
-		}
-
-		//// help
-		{
-			MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
-			menuItem.setText(Labels.getLabel("menu.help"));
-
-			menuItem.setMenu(helpMenu);
-		}
+		menuItem.setMenu(menu);
 	}
 
 	/**
