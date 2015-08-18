@@ -8,9 +8,6 @@ import org.eclipse.swt.widgets.Shell;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-/**
- * @author Andriy Kryvtsun
- */
 @Singleton
 public class ScanMenu extends AbstractMenu {
 
@@ -21,7 +18,7 @@ public class ScanMenu extends AbstractMenu {
 					ScanMenuActions.SaveSelection saveSelection,
 					ScanMenuActions.Quit quit) {
 
-		super(parent, SWT.DROP_DOWN);
+		super(parent);
 
 //		initMenuItem(subMenu, "menu.scan.newWindow", "Ctrl+N", new Integer(SWT.MOD1 | 'N'), initListener(FileActions.NewWindow.class));
 //		initMenuItem(subMenu, null, null, null, null);
@@ -35,5 +32,10 @@ public class ScanMenu extends AbstractMenu {
 			initMenuItem(this, null, null, null, null);
 			initMenuItem(this, "menu.scan.quit", "Ctrl+Q", SWT.MOD1 | 'Q', quit);
 		}
+	}
+
+	@Override
+	public String getId() {
+		return "menu.scan";
 	}
 }

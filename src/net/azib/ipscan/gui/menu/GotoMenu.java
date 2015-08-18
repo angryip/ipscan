@@ -7,9 +7,6 @@ import org.eclipse.swt.widgets.Shell;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-/**
- * @author Andriy Kryvtsun
- */
 @Singleton
 public class GotoMenu extends AbstractMenu {
 
@@ -23,7 +20,7 @@ public class GotoMenu extends AbstractMenu {
 					GotoMenuActions.PrevDeadHost prevDeadHost,
 					GotoMenuActions.Find find) {
 
-		super(parent, SWT.DROP_DOWN);
+		super(parent);
 
 		initMenuItem(this, "menu.goto.next.aliveHost", "Ctrl+H", SWT.MOD1 | 'H', nextAliveHost);
 		initMenuItem(this, "menu.goto.next.openPort", "Ctrl+J", SWT.MOD1 | 'J', nextHostWithInfo);
@@ -34,5 +31,10 @@ public class GotoMenu extends AbstractMenu {
 		initMenuItem(this, "menu.goto.prev.deadHost", "Ctrl+Shift+K", SWT.MOD1 | SWT.MOD2 | 'K', prevDeadHost);
 		initMenuItem(this, null, null, null, null);
 		initMenuItem(this, "menu.goto.find", "Ctrl+F", SWT.MOD1 | 'F', find);
+	}
+
+	@Override
+	public String getId() {
+		return "menu.goto";
 	}
 }
