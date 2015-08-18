@@ -13,6 +13,7 @@ import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.actions.*;
 import net.azib.ipscan.gui.menu.HelpMenu;
+import net.azib.ipscan.gui.menu.ToolsMenu;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 
@@ -46,15 +47,7 @@ public class MainMenu {
 	@Inject CommandsMenuActions.CopyIP copyIP;
 	@Inject CommandsMenuActions.CopyIPDetails copyIPDetails;
 
-	@Inject ToolsActions.Preferences preferences;
-	@Inject ToolsActions.ChooseFetchers chooseFetchers;
-	@Inject ToolsActions.ScanStatistics scanStatistics;
-	@Inject ToolsActions.SelectAlive selectAlive;
-	@Inject ToolsActions.SelectDead selectDead;
-	@Inject ToolsActions.SelectWithPorts selectWithPorts;
-	@Inject ToolsActions.SelectWithoutPorts selectWithoutPorts;
-	@Inject ToolsActions.SelectInvert selectInvert;
-
+	@Inject ToolsMenu toolsMenu;
 	@Inject HelpMenu helpMenu;
 
 	@Inject Provider<OpenersMenu> openersMenuProvider;
@@ -110,26 +103,21 @@ public class MainMenu {
 
 		createFavoritesMenu(menu);
 		
-		subMenu = initMenu(menu, "menu.tools");
-		initMenuItem(subMenu, "menu.tools.preferences", "Ctrl+Shift+P", SWT.MOD1 | (Platform.MAC_OS ? ',' : SWT.MOD2 | 'P'), preferences, true);
-		initMenuItem(subMenu, "menu.tools.fetchers", "Ctrl+Shift+O", SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O'), chooseFetchers, true);
-		initMenuItem(subMenu, null, null, null, null);
-		Menu selectMenu = initMenu(subMenu, "menu.tools.select");
-		initMenuItem(subMenu, "menu.tools.scanStatistics", "Ctrl+T", SWT.MOD1 | 'T', scanStatistics);
+		//// tools
+		{
+			MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
+			menuItem.setText(Labels.getLabel("menu.tools"));
 
-		initMenuItem(selectMenu, "menu.tools.select.alive", null, null, selectAlive, true);
-		initMenuItem(selectMenu, "menu.tools.select.dead", null, null, selectDead, true);
-		initMenuItem(selectMenu, "menu.tools.select.withPorts", null, null, selectWithPorts, true);
-		initMenuItem(selectMenu, "menu.tools.select.withoutPorts", null, null, selectWithoutPorts, true);
-		initMenuItem(selectMenu, null, null, null, null);
-		initMenuItem(selectMenu, "menu.tools.select.invert", "Ctrl+I", SWT.MOD1 | 'I', selectInvert, true);
+			menuItem.setMenu(toolsMenu);
+		}
 
 		//// help
+		{
+			MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
+			menuItem.setText(Labels.getLabel("menu.help"));
 
-		MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
-		menuItem.setText(Labels.getLabel("menu.help"));
-
-		menuItem.setMenu(helpMenu);
+			menuItem.setMenu(helpMenu);
+		}
 	}
 
 	private void createCommandsMenuItems(Menu menu) {
