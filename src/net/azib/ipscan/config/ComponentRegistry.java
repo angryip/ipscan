@@ -13,7 +13,6 @@ import net.azib.ipscan.exporters.*;
 import net.azib.ipscan.feeders.FeederCreator;
 import net.azib.ipscan.feeders.FeederRegistry;
 import net.azib.ipscan.fetchers.*;
-import net.azib.ipscan.gui.MainMenu;
 import net.azib.ipscan.gui.SWTAwareStateMachine;
 import net.azib.ipscan.gui.feeders.*;
 import org.eclipse.swt.SWT;
@@ -43,10 +42,6 @@ public class ComponentRegistry {
 
 	@Provides @Named("mainMenu") @Singleton public Menu mainMenu(Shell mainShell) {
 		return new Menu(mainShell, SWT.BAR);
-	}
-
-	@Provides @Named("commandsMenu") @Singleton public Menu commandsMenu(Shell mainShell) {
-		return new MainMenu.CommandsMenu(mainShell);
 	}
 
 	@Provides @Named("feederArea") @Singleton public Composite feederArea(Shell mainShell) {

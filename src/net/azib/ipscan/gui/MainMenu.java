@@ -11,7 +11,8 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
-import net.azib.ipscan.gui.actions.*;
+import net.azib.ipscan.gui.actions.ColumnsActions;
+import net.azib.ipscan.gui.actions.CommandsMenuActions;
 import net.azib.ipscan.gui.menu.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
@@ -44,7 +45,7 @@ public class MainMenu {
 
 	private final Menu mainMenu, resultsContextMenu;
 
-	@Inject public MainMenu(Shell parent, @Named("mainMenu") Menu mainMenu, @Named("commandsMenu") Menu resultsContextMenu, StateMachine stateMachine) {
+	@Inject public MainMenu(Shell parent, @Named("mainMenu") Menu mainMenu, ResultsContextMenu resultsContextMenu, StateMachine stateMachine) {
 
 		this.mainMenu = mainMenu;
 		this.resultsContextMenu = resultsContextMenu;
@@ -57,7 +58,6 @@ public class MainMenu {
 
 	void prepare() {
 		createMainMenuItems(mainMenu);
-		createCommandsMenuItems(resultsContextMenu);
 	}
 
 	private void createMainMenuItems(Menu menu) {
@@ -161,17 +161,6 @@ public class MainMenu {
 		return menuItem;
 	}
 
-	/**
-	 * CommandsMenu wrapper for type-safety
-	 */
-	public static class CommandsMenu extends Menu {
-		public CommandsMenu(Shell parent) {
-			super(parent, SWT.POP_UP);
-		}
-		
-		protected void checkSubclass() { } // allow extending of Menu class
-	}
-	
 	/**
 	 * OpenersMenu wrapper for type-safety
 	 */
