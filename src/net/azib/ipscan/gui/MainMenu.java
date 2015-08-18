@@ -12,10 +12,7 @@ import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.actions.*;
-import net.azib.ipscan.gui.menu.GotoMenu;
-import net.azib.ipscan.gui.menu.HelpMenu;
-import net.azib.ipscan.gui.menu.ScanMenu;
-import net.azib.ipscan.gui.menu.ToolsMenu;
+import net.azib.ipscan.gui.menu.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 
@@ -39,20 +36,20 @@ public class MainMenu {
 	@Inject CommandsMenuActions.CopyIP copyIP;
 	@Inject CommandsMenuActions.CopyIPDetails copyIPDetails;
 
+	@Inject FavoritesMenu favoritesMenu;
 	@Inject ToolsMenu toolsMenu;
 	@Inject HelpMenu helpMenu;
 
 	@Inject Provider<OpenersMenu> openersMenuProvider;
-	@Inject Provider<FavoritesMenu> favoritesMenuProvider;
 
 	private final Menu mainMenu, resultsContextMenu;
 
-	@Inject public MainMenu(Shell shell, @Named("mainMenu") Menu mainMenu, @Named("commandsMenu") Menu resultsContextMenu, StateMachine stateMachine) {
+	@Inject public MainMenu(Shell parent, @Named("mainMenu") Menu mainMenu, @Named("commandsMenu") Menu resultsContextMenu, StateMachine stateMachine) {
 
 		this.mainMenu = mainMenu;
 		this.resultsContextMenu = resultsContextMenu;
 
-		shell.setMenuBar(mainMenu);
+		parent.setMenuBar(mainMenu);
 
 		stateMachine.addTransitionListener(new MenuEnablerDisabler(mainMenu));
 		stateMachine.addTransitionListener(new MenuEnablerDisabler(resultsContextMenu));
@@ -84,8 +81,14 @@ public class MainMenu {
 		Menu subMenu = initMenu(menu, "menu.commands");
 		createCommandsMenuItems(subMenu);
 
-		createFavoritesMenu(menu);
-		
+		//// favorites
+		{
+			MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
+			menuItem.setText(Labels.getLabel("menu.favorites"));
+
+			menuItem.setMenu(favoritesMenu);
+		}
+
 		//// tools
 		{
 			MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
@@ -121,13 +124,6 @@ public class MainMenu {
 		MenuItem openersMenuItem = new MenuItem(parentMenu, SWT.CASCADE);
 		openersMenuItem.setText(Labels.getLabel("menu.commands.open"));
 		openersMenuItem.setMenu(openersMenu);
-	}
-
-	private void createFavoritesMenu(Menu parentMenu) {
-		MenuItem favoritesMenuItem = new MenuItem(parentMenu, SWT.CASCADE);
-		favoritesMenuItem.setText(Labels.getLabel("menu.favorites"));
-		Menu favoritesMenu = favoritesMenuProvider.get();
-		favoritesMenuItem.setMenu(favoritesMenu);
 	}
 
 	private static Menu initMenu(Menu menu, String label) {
@@ -197,23 +193,6 @@ public class MainMenu {
 		protected void checkSubclass() { } // allow extending of Menu class
 	}
 
-	/**
-	 * FavoritesMenu wrapper for type-safety
-	 */
-	public static class FavoritesMenu extends Menu {
-		@Inject
-		public FavoritesMenu(Shell parent, FavoritesMenuActions.Add addListener, FavoritesMenuActions.Edit editListener, FavoritesMenuActions.ShowMenu showFavoritesMenuListener) {
-			super(parent, SWT.DROP_DOWN);
-
-			initMenuItem(this, "menu.favorites.add", "Ctrl+D", SWT.MOD1 | 'D', addListener);
-			initMenuItem(this, "menu.favorites.edit", null, null, editListener);
-			initMenuItem(this, null, null, null, null);
-			
-			addListener(SWT.Show, showFavoritesMenuListener);
-		}
-		protected void checkSubclass() { } // allow extending of Menu class
-	}
-	
 	/**
 	 * ColumnsMenu wrapper for type-safety.
 	 * This is the menu when clicking on a column header.

@@ -15,13 +15,13 @@ import javax.inject.Singleton;
 public class ScanMenu extends AbstractMenu {
 
 	@Inject
-	public ScanMenu(Shell shell,
+	public ScanMenu(Shell parent,
 					ScanMenuActions.LoadFromFile loadFromFile,
 					ScanMenuActions.SaveAll saveAll,
 					ScanMenuActions.SaveSelection saveSelection,
 					ScanMenuActions.Quit quit) {
 
-		super(shell, SWT.DROP_DOWN);
+		super(parent, SWT.DROP_DOWN);
 
 //		initMenuItem(subMenu, "menu.scan.newWindow", "Ctrl+N", new Integer(SWT.MOD1 | 'N'), initListener(FileActions.NewWindow.class));
 //		initMenuItem(subMenu, null, null, null, null);
