@@ -10,7 +10,7 @@ import javax.inject.Singleton;
  * CommandsMenu wrapper for type-safety
  */
 @Singleton
-public class ResultsContextMenu extends AbstractMenu {
+public class ResultsContextMenu extends ExtendableMenu {
 
 	@Inject
 	public ResultsContextMenu(Shell parent) {

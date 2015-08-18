@@ -22,7 +22,7 @@ public class CommandsMenu extends AbstractMenu {
 						CommandsMenuActions.CopyIPDetails copyIPDetails,
 						OpenersMenu openersMenu) {
 
-		super(parent, SWT.DROP_DOWN);
+		super(parent);
 
 		initMenuItem(this, "menu.commands.details", null, null, details);
 		initMenuItem(this, null, null, null, null);
@@ -34,9 +34,14 @@ public class CommandsMenu extends AbstractMenu {
 		initMenuItem(this, null, null, null, null);
 
 		MenuItem openersMenuItem = new MenuItem(this, SWT.CASCADE);
-		openersMenuItem.setText(Labels.getLabel("menu.commands.open"));
+		openersMenuItem.setText(Labels.getLabel(openersMenu.getId()));
 		openersMenuItem.setMenu(openersMenu);
 
 		// initMenuItem(subMenu, "menu.commands.show", null, initListener());
+	}
+
+	@Override
+	public String getId() {
+		return "menu.commands";
 	}
 }

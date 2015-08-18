@@ -19,7 +19,7 @@ public class OpenersMenu extends AbstractMenu {
 					   CommandsMenuActions.EditOpeners editOpenersListener,
 					   CommandsMenuActions.ShowOpenersMenu showOpenersMenuListener) {
 
-		super(parent, SWT.DROP_DOWN);
+		super(parent);
 
 		initMenuItem(this, "menu.commands.open.edit", null, null, editOpenersListener);
 		initMenuItem(this, null, null, null, null);
@@ -30,5 +30,10 @@ public class OpenersMenu extends AbstractMenu {
 		Event e = new Event();
 		e.widget = this;
 		showOpenersMenuListener.handleEvent(e);
+	}
+
+	@Override
+	public String getId() {
+		return "menu.commands.open";
 	}
 }

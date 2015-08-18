@@ -9,8 +9,6 @@ import javax.inject.Singleton;
 
 /**
  * FavoritesMenu wrapper for type-safety
- *
- * @author Andriy Kryvtsun
  */
 @Singleton
 public class FavoritesMenu extends AbstractMenu {
@@ -21,12 +19,17 @@ public class FavoritesMenu extends AbstractMenu {
 						 FavoritesMenuActions.Edit editListener,
 						 FavoritesMenuActions.ShowMenu showFavoritesMenuListener) {
 
-		super(parent, SWT.DROP_DOWN);
+		super(parent);
 
 		initMenuItem(this, "menu.favorites.add", "Ctrl+D", SWT.MOD1 | 'D', addListener);
 		initMenuItem(this, "menu.favorites.edit", null, null, editListener);
 		initMenuItem(this, null, null, null, null);
 
 		addListener(SWT.Show, showFavoritesMenuListener);
+	}
+
+	@Override
+	public String getId() {
+		return "menu.favorites";
 	}
 }

@@ -40,21 +40,20 @@ public class MainMenu {
 
 		parent.setMenuBar(mainMenu);
 
-		addMenuItem(mainMenu, scanMenu, "menu.scan");
-		addMenuItem(mainMenu, gotoMenu, "menu.goto");
-		addMenuItem(mainMenu, commandsMenu, "menu.commands");
-		addMenuItem(mainMenu, favoritesMenu, "menu.favorites");
-		addMenuItem(mainMenu, toolsMenu, "menu.tools");
-		addMenuItem(mainMenu, helpMenu, "menu.help");
+		addMenuItem(mainMenu, scanMenu);
+		addMenuItem(mainMenu, gotoMenu);
+		addMenuItem(mainMenu, commandsMenu);
+		addMenuItem(mainMenu, favoritesMenu);
+		addMenuItem(mainMenu, toolsMenu);
+		addMenuItem(mainMenu, helpMenu);
 
 		stateMachine.addTransitionListener(new MenuEnablerDisabler(mainMenu));
 		stateMachine.addTransitionListener(new MenuEnablerDisabler(resultsContextMenu));
 	}
 
-	private void addMenuItem(Menu mainMenu, Menu menu, String name) {
+	private void addMenuItem(Menu mainMenu, AbstractMenu menu) {
 		MenuItem menuItem = new MenuItem(mainMenu, SWT.CASCADE);
-		menuItem.setText(Labels.getLabel(name));
-
+		menuItem.setText(Labels.getLabel(menu.getId()));
 		menuItem.setMenu(menu);
 	}
 

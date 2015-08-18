@@ -12,7 +12,7 @@ import javax.inject.Singleton;
  * This is the menu when clicking on a column header.
  */
 @Singleton
-public class ColumnsMenu extends AbstractMenu {
+public class ColumnsMenu extends ExtendableMenu {
 
 	@Inject
 	public ColumnsMenu(Shell parent,

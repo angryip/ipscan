@@ -1,21 +1,13 @@
 package net.azib.ipscan.gui.menu;
 
-import dagger.Module;
-import dagger.Provides;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.gui.actions.HelpMenuActions;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Decorations;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
 
-/**
- * @author Andriy Kryvtsun
- */
 @Singleton
 public class HelpMenu extends AbstractMenu {
 
@@ -29,7 +21,7 @@ public class HelpMenu extends AbstractMenu {
 					HelpMenuActions.CheckVersion checkVersion,
 					HelpMenuActions.About about) {
 
-		super(parent, SWT.DROP_DOWN);
+		super(parent);
 
 		initMenuItem(this, "menu.help.gettingStarted", !Platform.MAC_OS ? "F1" : null, Platform.MAC_OS ? SWT.HELP : SWT.F1, gettingStarted);
 		initMenuItem(this, null, null, null, null);
@@ -46,5 +38,10 @@ public class HelpMenu extends AbstractMenu {
 			initMenuItem(this, null, null, null, null);
 			initMenuItem(this, "menu.help.about", null, null, about);
 		}
+	}
+
+	@Override
+	public String getId() {
+		return "menu.help";
 	}
 }

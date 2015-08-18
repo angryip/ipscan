@@ -11,9 +11,6 @@ import org.eclipse.swt.widgets.Shell;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-/**
- * @author Andriy Kryvtsun
- */
 @Singleton
 public class ToolsMenu extends AbstractMenu {
 
@@ -28,7 +25,7 @@ public class ToolsMenu extends AbstractMenu {
 				ToolsActions.SelectWithoutPorts selectWithoutPorts,
 				ToolsActions.SelectInvert selectInvert) {
 
-		super(parent, SWT.DROP_DOWN);
+		super(parent);
 
 		initMenuItem(this, "menu.tools.preferences", "Ctrl+Shift+P", SWT.MOD1 | (Platform.MAC_OS ? ',' : SWT.MOD2 | 'P'), preferences, true);
 		initMenuItem(this, "menu.tools.fetchers", "Ctrl+Shift+O", SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O'), chooseFetchers, true);
@@ -52,5 +49,10 @@ public class ToolsMenu extends AbstractMenu {
 		menuItem.setMenu(subMenu);
 
 		return subMenu;
+	}
+
+	@Override
+	public String getId() {
+		return "menu.tools";
 	}
 }
