@@ -14,7 +14,7 @@ import javax.inject.Singleton;
 public class GotoMenu extends AbstractMenu {
 
 	@Inject
-	public GotoMenu(Shell shell,
+	public GotoMenu(Shell parent,
 					GotoMenuActions.NextAliveHost nextAliveHost,
 					GotoMenuActions.NextHostWithInfo nextHostWithInfo,
 					GotoMenuActions.NextDeadHost nextDeadHost,
@@ -23,7 +23,7 @@ public class GotoMenu extends AbstractMenu {
 					GotoMenuActions.PrevDeadHost prevDeadHost,
 					GotoMenuActions.Find find) {
 
-		super(shell, SWT.DROP_DOWN);
+		super(parent, SWT.DROP_DOWN);
 
 		initMenuItem(this, "menu.goto.next.aliveHost", "Ctrl+H", SWT.MOD1 | 'H', nextAliveHost);
 		initMenuItem(this, "menu.goto.next.openPort", "Ctrl+J", SWT.MOD1 | 'J', nextHostWithInfo);

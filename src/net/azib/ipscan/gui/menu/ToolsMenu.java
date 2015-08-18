@@ -18,7 +18,7 @@ import javax.inject.Singleton;
 public class ToolsMenu extends AbstractMenu {
 
 	@Inject
-		public ToolsMenu(Shell shell,
+		public ToolsMenu(Shell parent,
 				ToolsActions.Preferences preferences,
 				ToolsActions.ChooseFetchers chooseFetchers,
 				ToolsActions.ScanStatistics scanStatistics,
@@ -28,7 +28,7 @@ public class ToolsMenu extends AbstractMenu {
 				ToolsActions.SelectWithoutPorts selectWithoutPorts,
 				ToolsActions.SelectInvert selectInvert) {
 
-		super(shell, SWT.DROP_DOWN);
+		super(parent, SWT.DROP_DOWN);
 
 		initMenuItem(this, "menu.tools.preferences", "Ctrl+Shift+P", SWT.MOD1 | (Platform.MAC_OS ? ',' : SWT.MOD2 | 'P'), preferences, true);
 		initMenuItem(this, "menu.tools.fetchers", "Ctrl+Shift+O", SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O'), chooseFetchers, true);
