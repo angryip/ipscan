@@ -43,12 +43,11 @@ public class MainMenu {
 
 	@Inject Provider<OpenersMenu> openersMenuProvider;
 
-	private final Menu mainMenu, resultsContextMenu;
+	private final Menu mainMenu;
 
 	@Inject public MainMenu(Shell parent, @Named("mainMenu") Menu mainMenu, ResultsContextMenu resultsContextMenu, StateMachine stateMachine) {
 
 		this.mainMenu = mainMenu;
-		this.resultsContextMenu = resultsContextMenu;
 
 		parent.setMenuBar(mainMenu);
 
