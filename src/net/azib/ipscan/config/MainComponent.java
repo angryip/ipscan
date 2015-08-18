@@ -13,7 +13,6 @@ import javax.inject.Singleton;
 		ConfigModule.class,
 		PluginLoader.class,
 		ComponentRegistry.class,
-		HelpMenu.class
 })
 @Singleton
 public interface MainComponent {

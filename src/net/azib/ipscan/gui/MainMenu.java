@@ -12,6 +12,7 @@ import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.actions.*;
+import net.azib.ipscan.gui.menu.HelpMenu;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 
@@ -54,7 +55,7 @@ public class MainMenu {
 	@Inject ToolsActions.SelectWithoutPorts selectWithoutPorts;
 	@Inject ToolsActions.SelectInvert selectInvert;
 
-	@Inject @Named("menu.help") Menu helpMenu;
+	@Inject HelpMenu helpMenu;
 
 	@Inject Provider<OpenersMenu> openersMenuProvider;
 	@Inject Provider<FavoritesMenu> favoritesMenuProvider;
