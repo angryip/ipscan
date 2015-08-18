@@ -6,19 +6,18 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
-import net.azib.ipscan.gui.actions.CommandsMenuActions;
 import net.azib.ipscan.gui.menu.*;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Provider;
 
 /**
  * MainMenu
@@ -29,18 +28,10 @@ public class MainMenu {
 
 	@Inject ScanMenu scanMenu;
 	@Inject GotoMenu gotoMenu;
-
-	@Inject CommandsMenuActions.Details details;
-	@Inject CommandsMenuActions.Rescan rescan;
-	@Inject CommandsMenuActions.Delete delete;
-	@Inject CommandsMenuActions.CopyIP copyIP;
-	@Inject CommandsMenuActions.CopyIPDetails copyIPDetails;
-
+	@Inject CommandsMenu commandsMenu;
 	@Inject FavoritesMenu favoritesMenu;
 	@Inject ToolsMenu toolsMenu;
 	@Inject HelpMenu helpMenu;
-
-	@Inject Provider<OpenersMenu> openersMenuProvider;
 
 	private final Menu mainMenu;
 
@@ -76,8 +67,13 @@ public class MainMenu {
 			menuItem.setMenu(gotoMenu);
 		}
 
-		Menu subMenu = initMenu(menu, "menu.commands");
-		createCommandsMenuItems(subMenu);
+		//// commands
+		{
+			MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
+			menuItem.setText(Labels.getLabel("menu.commands"));
+
+			menuItem.setMenu(commandsMenu);
+		}
 
 		//// favorites
 		{
@@ -102,82 +98,6 @@ public class MainMenu {
 
 			menuItem.setMenu(helpMenu);
 		}
-	}
-
-	private void createCommandsMenuItems(Menu menu) {
-		initMenuItem(menu, "menu.commands.details", null, null, details);
-		initMenuItem(menu, null, null, null, null);
-		initMenuItem(menu, "menu.commands.rescan", "Ctrl+R", SWT.MOD1 | 'R', rescan, true);
-		initMenuItem(menu, "menu.commands.delete", Platform.MAC_OS ? "⌦" : "Del", /* this is not a global key binding */ null, delete, true);
-		initMenuItem(menu, null, null, null, null);
-		initMenuItem(menu, "menu.commands.copy", Platform.MAC_OS ? "⌘C" : "Ctrl+C", /* this is not a global key binding */ null, copyIP);
-		initMenuItem(menu, "menu.commands.copyDetails", null, null, copyIPDetails);
-		initMenuItem(menu, null, null, null, null);		
-		createOpenersMenu(menu);
-		// initMenuItem(subMenu, "menu.commands.show", null, initListener());
-	}
-
-	private void createOpenersMenu(Menu parentMenu) {
-		OpenersMenu openersMenu = openersMenuProvider.get();
-		MenuItem openersMenuItem = new MenuItem(parentMenu, SWT.CASCADE);
-		openersMenuItem.setText(Labels.getLabel("menu.commands.open"));
-		openersMenuItem.setMenu(openersMenu);
-	}
-
-	private static Menu initMenu(Menu menu, String label) {
-		MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
-		menuItem.setText(Labels.getLabel(label));
-		
-		Menu subMenu = new Menu(menu.getShell(), SWT.DROP_DOWN);
-		menuItem.setMenu(subMenu);
-		
-		return subMenu;
-	}
-
-	static MenuItem initMenuItem(Menu parent, String label, String acceleratorText, Integer accelerator, Listener listener) {
-		return initMenuItem(parent, label, acceleratorText, accelerator, listener, false);
-	}
-	
-	static MenuItem initMenuItem(Menu parent, String label, String acceleratorText, Integer accelerator, Listener listener, boolean disableDuringScanning) {
-		MenuItem menuItem = new MenuItem(parent, label == null ? SWT.SEPARATOR : SWT.PUSH);
-		
-		if (label != null) 
-			menuItem.setText(Labels.getLabel(label) + (acceleratorText != null ? "\t" + acceleratorText : ""));
-		
-		if (accelerator != null)
-			menuItem.setAccelerator(accelerator);
-		
-		if (listener != null)
-			menuItem.addListener(SWT.Selection, listener);
-		else
-			menuItem.setEnabled(false);
-		
-		if (disableDuringScanning) {
-			menuItem.setData("disableDuringScanning", true);
-		}
-		
-		return menuItem;
-	}
-
-	/**
-	 * OpenersMenu wrapper for type-safety
-	 */
-	public static class OpenersMenu extends Menu {
-		@Inject
-		public OpenersMenu(Shell parent, CommandsMenuActions.EditOpeners editOpenersListener, CommandsMenuActions.ShowOpenersMenu showOpenersMenuListener) {
-			super(parent, SWT.DROP_DOWN);
-
-			initMenuItem(this, "menu.commands.open.edit", null, null, editOpenersListener);
-			initMenuItem(this, null, null, null, null);
-			
-			addListener(SWT.Show, showOpenersMenuListener);
-
-			// run the listener to populate the menu initially and initialize accelerators
-			Event e = new Event();
-			e.widget = this;
-			showOpenersMenuListener.handleEvent(e);
-		}
-		protected void checkSubclass() { } // allow extending of Menu class
 	}
 
 	/**
