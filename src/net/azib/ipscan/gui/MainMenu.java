@@ -11,7 +11,6 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
-import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsMenuActions;
 import net.azib.ipscan.gui.menu.*;
 import org.eclipse.swt.SWT;
@@ -177,21 +176,6 @@ public class MainMenu {
 			Event e = new Event();
 			e.widget = this;
 			showOpenersMenuListener.handleEvent(e);
-		}
-		protected void checkSubclass() { } // allow extending of Menu class
-	}
-
-	/**
-	 * ColumnsMenu wrapper for type-safety.
-	 * This is the menu when clicking on a column header.
-	 */
-	public static class ColumnsMenu extends Menu {
-		@Inject public ColumnsMenu(Shell parent, ColumnsActions.SortBy sortByListener, ColumnsActions.AboutFetcher aboutListener, ColumnsActions.FetcherPreferences preferencesListener) {
-			super(parent, SWT.POP_UP);
-			
-			initMenuItem(this, "menu.columns.sortBy", null, null, sortByListener);
-			initMenuItem(this, "menu.columns.preferences", null, null, preferencesListener);
-			initMenuItem(this, "menu.columns.about", null, null, aboutListener);
 		}
 		protected void checkSubclass() { } // allow extending of Menu class
 	}
