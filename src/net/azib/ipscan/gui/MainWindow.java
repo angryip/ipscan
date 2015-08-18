@@ -63,13 +63,11 @@ public class MainWindow {
 					  ResultTable resultTable, StatusBar statusBar, ResultsContextMenu resultsContextMenu,
 					  FeederGUIRegistry feederGUIRegistry, final StateMachine stateMachine,
 					  ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListener,
-					  MainMenu menuBar) {
+					  MainMenu menuBar /* don't delete: initiates main menu creation */ ) {
 
 		this.shell = shell;
 		this.guiConfig = guiConfig;
 		this.statusBar = statusBar;
-
-		menuBar.prepare();
 
 		initShell(shell);
 		initFeederArea(feederArea, feederGUIRegistry);
