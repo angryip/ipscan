@@ -12,6 +12,7 @@ import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.actions.*;
+import net.azib.ipscan.gui.menu.GotoMenu;
 import net.azib.ipscan.gui.menu.HelpMenu;
 import net.azib.ipscan.gui.menu.ScanMenu;
 import net.azib.ipscan.gui.menu.ToolsMenu;
@@ -30,14 +31,7 @@ import javax.inject.Provider;
 public class MainMenu {
 
 	@Inject ScanMenu scanMenu;
-
-	@Inject GotoMenuActions.NextAliveHost nextAliveHost;
-	@Inject GotoMenuActions.NextHostWithInfo nextHostWithInfo;
-	@Inject GotoMenuActions.NextDeadHost nextDeadHost;
-	@Inject GotoMenuActions.PrevAliveHost prevAliveHost;
-	@Inject GotoMenuActions.PrevHostWithInfo prevHostWithInfo;
-	@Inject GotoMenuActions.PrevDeadHost prevDeadHost;
-	@Inject GotoMenuActions.Find find;
+	@Inject GotoMenu gotoMenu;
 
 	@Inject CommandsMenuActions.Details details;
 	@Inject CommandsMenuActions.Rescan rescan;
@@ -79,18 +73,15 @@ public class MainMenu {
 			menuItem.setMenu(scanMenu);
 		}
 
-		Menu subMenu = initMenu(menu, "menu.goto");
-		initMenuItem(subMenu, "menu.goto.next.aliveHost", "Ctrl+H", SWT.MOD1 | 'H', nextAliveHost);
-		initMenuItem(subMenu, "menu.goto.next.openPort", "Ctrl+J", SWT.MOD1 | 'J', nextHostWithInfo);
-		initMenuItem(subMenu, "menu.goto.next.deadHost", "Ctrl+K", SWT.MOD1 | 'K', nextDeadHost);
-		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.goto.prev.aliveHost", "Ctrl+Shift+H", SWT.MOD1 | SWT.MOD2 | 'H', prevAliveHost);
-		initMenuItem(subMenu, "menu.goto.prev.openPort", "Ctrl+Shift+J", SWT.MOD1 | SWT.MOD2 | 'J', prevHostWithInfo);
-		initMenuItem(subMenu, "menu.goto.prev.deadHost", "Ctrl+Shift+K", SWT.MOD1 | SWT.MOD2 | 'K', prevDeadHost);
-		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.goto.find", "Ctrl+F", SWT.MOD1 | 'F', find);
-		
-		subMenu = initMenu(menu, "menu.commands");
+		//// goto
+		{
+			MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
+			menuItem.setText(Labels.getLabel("menu.goto"));
+
+			menuItem.setMenu(gotoMenu);
+		}
+
+		Menu subMenu = initMenu(menu, "menu.commands");
 		createCommandsMenuItems(subMenu);
 
 		createFavoritesMenu(menu);
