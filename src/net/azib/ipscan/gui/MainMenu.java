@@ -13,6 +13,7 @@ import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.actions.*;
 import net.azib.ipscan.gui.menu.HelpMenu;
+import net.azib.ipscan.gui.menu.ScanMenu;
 import net.azib.ipscan.gui.menu.ToolsMenu;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
@@ -28,10 +29,7 @@ import javax.inject.Provider;
  */
 public class MainMenu {
 
-	@Inject ScanMenuActions.LoadFromFile loadFromFile;
-	@Inject ScanMenuActions.SaveAll saveAll;
-	@Inject ScanMenuActions.SaveSelection saveSelection;
-	@Inject ScanMenuActions.Quit quit;
+	@Inject ScanMenu scanMenu;
 
 	@Inject GotoMenuActions.NextAliveHost nextAliveHost;
 	@Inject GotoMenuActions.NextHostWithInfo nextHostWithInfo;
@@ -73,21 +71,15 @@ public class MainMenu {
 
 	private void createMainMenuItems(Menu menu) {
 		
-		Menu subMenu = initMenu(menu, "menu.scan");
-//		initMenuItem(subMenu, "menu.scan.newWindow", "Ctrl+N", new Integer(SWT.MOD1 | 'N'), initListener(FileActions.NewWindow.class));
-//		initMenuItem(subMenu, null, null, null, null);
-		initMenuItem(subMenu, "menu.scan.load", "", SWT.MOD1 | 'O', loadFromFile, true);
-		initMenuItem(subMenu, "menu.scan.exportAll", "Ctrl+S", SWT.MOD1 | 'S', saveAll, false);
-		initMenuItem(subMenu, "menu.scan.exportSelection", null, null, saveSelection, false);
-//		initMenuItem(subMenu, null, null, null, null);
-//		initMenuItem(subMenu, "menu.scan.exportPreferences", null, null, null);
-//		initMenuItem(subMenu, "menu.scan.importPreferences", null, null, null);
-		if (!Platform.MAC_OS) {
-			initMenuItem(subMenu, null, null, null, null);
-			initMenuItem(subMenu, "menu.scan.quit", "Ctrl+Q", SWT.MOD1 | 'Q', quit);
+		//// scan
+		{
+			MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
+			menuItem.setText(Labels.getLabel("menu.scan"));
+
+			menuItem.setMenu(scanMenu);
 		}
 
-		subMenu = initMenu(menu, "menu.goto");
+		Menu subMenu = initMenu(menu, "menu.goto");
 		initMenuItem(subMenu, "menu.goto.next.aliveHost", "Ctrl+H", SWT.MOD1 | 'H', nextAliveHost);
 		initMenuItem(subMenu, "menu.goto.next.openPort", "Ctrl+J", SWT.MOD1 | 'J', nextHostWithInfo);
 		initMenuItem(subMenu, "menu.goto.next.deadHost", "Ctrl+K", SWT.MOD1 | 'K', nextDeadHost);
