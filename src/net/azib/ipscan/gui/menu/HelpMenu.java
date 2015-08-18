@@ -31,20 +31,20 @@ public class HelpMenu extends AbstractMenu {
 
 		super(parent, SWT.DROP_DOWN);
 
-		initMenuItem("menu.help.gettingStarted", !Platform.MAC_OS ? "F1" : null, Platform.MAC_OS ? SWT.HELP : SWT.F1, gettingStarted);
-		initMenuItem(null, null, null, null);
-		initMenuItem("menu.help.website", null, null, website);
-		initMenuItem("menu.help.faq", null, null, faq);
-		initMenuItem("menu.help.plugins", null, null, plugins);
-		initMenuItem(null, null, null, null);
-		initMenuItem("menu.help.cmdLine", null, null, commandLineUsage);
+		initMenuItem(this, "menu.help.gettingStarted", !Platform.MAC_OS ? "F1" : null, Platform.MAC_OS ? SWT.HELP : SWT.F1, gettingStarted);
+		initMenuItem(this, null, null, null, null);
+		initMenuItem(this, "menu.help.website", null, null, website);
+		initMenuItem(this, "menu.help.faq", null, null, faq);
+		initMenuItem(this, "menu.help.plugins", null, null, plugins);
+		initMenuItem(this, null, null, null, null);
+		initMenuItem(this, "menu.help.cmdLine", null, null, commandLineUsage);
 
 		if (!Platform.MAC_OS) {
 			// mac will have these in the 'application' menu
-			initMenuItem(null, null, null, null);
-			initMenuItem("menu.help.checkVersion", null, null, checkVersion);
-			initMenuItem(null, null, null, null);
-			initMenuItem("menu.help.about", null, null, about);
+			initMenuItem(this, null, null, null, null);
+			initMenuItem(this, "menu.help.checkVersion", null, null, checkVersion);
+			initMenuItem(this, null, null, null, null);
+			initMenuItem(this, "menu.help.about", null, null, about);
 		}
 	}
 }

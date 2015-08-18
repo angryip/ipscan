@@ -10,12 +10,12 @@ abstract class AbstractMenu extends Menu {
 		super(shell, style);
 	}
 
-	MenuItem initMenuItem(String label, String acceleratorText, Integer accelerator, Listener listener) {
-		return initMenuItem(label, acceleratorText, accelerator, listener, false);
+	static MenuItem initMenuItem(Menu parent, String label, String acceleratorText, Integer accelerator, Listener listener) {
+		return initMenuItem(parent, label, acceleratorText, accelerator, listener, false);
 	}
 
-	MenuItem initMenuItem(String label, String acceleratorText, Integer accelerator, Listener listener, boolean disableDuringScanning) {
-		MenuItem menuItem = new MenuItem(this, label == null ? SWT.SEPARATOR : SWT.PUSH);
+	static MenuItem initMenuItem(Menu parent, String label, String acceleratorText, Integer accelerator, Listener listener, boolean disableDuringScanning) {
+		MenuItem menuItem = new MenuItem(parent, label == null ? SWT.SEPARATOR : SWT.PUSH);
 
 		if (label != null)
 			menuItem.setText(Labels.getLabel(label) + (acceleratorText != null ? "\t" + acceleratorText : ""));
