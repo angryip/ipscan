@@ -11,6 +11,7 @@ import net.azib.ipscan.core.state.StateTransitionListener;
 import org.eclipse.swt.widgets.Display;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Extends the generic {@link StateMachine} in order to run state transition notifications
@@ -19,6 +20,7 @@ import javax.inject.Inject;
  *
  * @author Anton Keks
  */
+@Singleton
 public class SWTAwareStateMachine extends StateMachine {
 	private Display display;
 
