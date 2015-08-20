@@ -9,12 +9,13 @@
       <sourceFolder url="file://$MODULE_DIR$/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ext/vserv-tcpip/src/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ext/rocksaw/src/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/generated" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/generated" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/ant-bin.linux" />
       <excludeFolder url="file://$MODULE_DIR$/ant-bin.linux64" />
       <excludeFolder url="file://$MODULE_DIR$/ant-bin.mac" />
       <excludeFolder url="file://$MODULE_DIR$/ant-bin.win32" />
       <excludeFolder url="file://$MODULE_DIR$/ant-tests" />
+      <excludeFolder url="file://$MODULE_DIR$/generated_tests" />
       <excludeFolder url="file://$MODULE_DIR$/test-coverage" />
       <excludeFolder url="file://$MODULE_DIR$/test-results" />
     </content>
