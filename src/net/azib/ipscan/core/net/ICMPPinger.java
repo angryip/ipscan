@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.core.net;
 
+import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
 import org.savarese.rocksaw.net.RawSocket;
 import org.savarese.vserv.tcpip.ICMPEchoPacket;
@@ -19,7 +20,7 @@ import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static net.azib.ipscan.util.IOUtils.*;
+import static net.azib.ipscan.util.IOUtils.closeQuietly;
 
 /**
  * Pinging code is encapsulated here.
@@ -27,7 +28,7 @@ import static net.azib.ipscan.util.IOUtils.*;
  * @author Anton Keks
  */
 public class ICMPPinger implements Pinger {
-	private static final Logger LOG = Logger.getLogger(ICMPPinger.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger();
 
 	private int timeout;
 	

@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.core.net;
 
+import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ import static net.azib.ipscan.util.IOUtils.closeQuietly;
  * @author Anton Keks
  */
 public class UDPPinger implements Pinger {
-	static final Logger LOG = Logger.getLogger(UDPPinger.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger();
 
 	private static final int PROBE_UDP_PORT = 37381;
 

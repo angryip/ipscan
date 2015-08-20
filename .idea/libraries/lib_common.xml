@@ -1,10 +1,6 @@
 <component name="libraryTable">
-  <library name="lib">
+  <library name="lib_common">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/swt-linux64.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/swt-mac.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/swt-win64.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/jna.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/dagger-2.0.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/javax.inject-1.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/dagger-compiler-2.0.1.jar!/" />
