@@ -21,7 +21,7 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
 import javax.inject.Inject;
-import javax.inject.Named;
+import javax.inject.Singleton;
 
 import static net.azib.ipscan.config.GUIConfig.DisplayMethod.PORTS;
 
@@ -30,6 +30,7 @@ import static net.azib.ipscan.config.GUIConfig.DisplayMethod.PORTS;
  *
  * @author Anton Keks
  */
+@Singleton
 public class StatusBar {
 	private Composite composite;
 	private Label statusText;
