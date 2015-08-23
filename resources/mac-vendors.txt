@@ -82,7 +82,7 @@
 000051HobElect
 000052Intrusio
 000053Compucor
-000054Schniede
+000054Schneide
 000055AT&T
 000056DrBStruc
 000057Scitex
@@ -3449,7 +3449,7 @@
 000D94AfarComm
 000D95Opti-Cel
 000D96VteraTec
-000D97TroposNe
+000D97Abb/Trop
 000D98SWACSchm
 000D99OrbitalS
 000D9AInfotec
@@ -8177,7 +8177,7 @@
 00200CAdastra
 00200DCarlZeis
 00200ESatellit
-00200FTanbac
+00200FEbrains
 002010JeolSyst
 002011Canopus
 002012Camtroni
@@ -8929,7 +8929,7 @@
 0022FCNokiaDan
 0022FDNokiaDan
 0022FEAdvanced
-0022FFIwdlTech
+0022FFNivisLlc
 002300CayeeCom
 002301WitronTe
 002302CobaltDi
@@ -10768,6 +10768,7 @@
 005218WuxiKebo
 0054AFContinen
 005500Xerox
+0055DAIeeeRegi
 005907Lenovoem
 005A39Shenzhen
 005CB1GospellD
@@ -11035,6 +11036,7 @@
 006B8EShanghai
 006B9EVizio
 006BA0Shenzhen
+006D52Apple
 006DFBVutrixUk
 0070B0M/A-ComC
 0070B3DataReca
@@ -11207,7 +11209,7 @@
 00809CLuxcom
 00809DCommscra
 00809EDatus
-00809FAlcatel-
+00809FAleInter
 0080A0EdisaHew
 0080A1Microtes
 0080A2Creative
@@ -11304,6 +11306,7 @@
 0080FDExsceedC
 0080FEAzureTec
 0080FFSocDeTel
+0084EDPrivate
 0086A0Private
 008865Apple
 008B43Rftech
@@ -12157,6 +12160,7 @@
 00C2C6IntelCor
 00C5DBDatatech
 00C610Apple
+00CB00Private
 00CBBDCambridg
 00CD90MasElekt
 00CF1CCommunic
@@ -12782,10 +12786,12 @@
 045D56CamtronI
 045FA7Shenzhen
 046169MediaGlo
+046273Cisco
 0462D7AlstomHy
 0463E0NomeOy
 046785ScemtecH
 0469F8Apple
+046C9DCisco
 046D42Bryston
 046E49TaiyearE
 0470BCGlobalst
@@ -12804,6 +12810,7 @@
 048D38NetcoreT
 0492EEIway
 0494A1CatchWin
+049645WuxiSkyC
 0498F3AlpsElec
 0499E6Shenzhen
 049B9CEadingco
@@ -13006,6 +13013,7 @@
 0808C2SamsungE
 0808EAAmsc
 0809B6Masimo
+080A4EPlanetBi
 080C0BSysmikDr
 080CC9MissionT
 080D84Geco
@@ -13041,7 +13049,7 @@
 083F3EWsh
 083F76Intellia
 084027Gridstor
-084656VodalysI
+084656Veo-Labs
 08482CRaycoreT
 084E1CH2aLlc
 084EBFBroadNet
@@ -13073,6 +13081,7 @@
 0881BCHongkong
 0881F4JuniperN
 08863BBelkinIn
+088C2CSamsungE
 088DC8RyowaEle
 088E4FSfSoftwa
 088F2CHillsSou
@@ -13138,6 +13147,7 @@
 0C15C5Sdtec
 0C17F1Telecsys
 0C191FInformEl
+0C1A10Acoustic
 0C1DAFBeijingX
 0C1DC2SeahNetw
 0C2026NoaxTech
@@ -13161,6 +13171,7 @@
 0C4F5AAsa-RtSR
 0C51F7ChauvinA
 0C54A5Pegatron
+0C54B9Alcatel-
 0C5521Axiros
 0C565CHybroadV
 0C57EBMueller
@@ -13185,6 +13196,7 @@
 0C8484ZenoviaE
 0C84DCHonHaiPr
 0C8525Cisco
+0C8610JuniperN
 0C8910SamsungE
 0C8BFDIntelCor
 0C8C8FKamoTech
@@ -13398,6 +13410,7 @@
 10FC54ShanyEle
 10FEEDTp-LinkT
 1100AAPrivate
+1402ECHewlettP
 140708Private
 1407E0Abrantix
 140C76FreeboxS
@@ -13692,6 +13705,7 @@
 1C5C55PrimaCin
 1C5C60Shenzhen
 1C5FFFBeijingE
+1C60DEShenzhen
 1C62B8SamsungE
 1C63B7Openprod
 1C659DLiteonTe
@@ -13752,6 +13766,7 @@
 1CC63CArcadyan
 1CC72DShenzhen
 1CCAE3IeeeRegi
+1CCDE5Shanghai
 1CD40CKriwanIn
 1CDEA7Cisco
 1CDF0FCisco
@@ -13835,6 +13850,7 @@
 207D74Apple
 20858CAssa
 2087ACAesMotom
+20896FFiberhom
 208984CompalIn
 208986Zte
 209148TexasIns
@@ -13868,6 +13884,7 @@
 20CD39TexasIns
 20CEC4PerasoTe
 20CF30AsustekC
+20D160Private
 20D21FWincalTe
 20D390SamsungE
 20D5ABKoreaInf
@@ -13916,6 +13933,7 @@
 24240EApple
 242642Sharp
 242FFAToshibaG
+243184Sharp
 24336CPrivate
 24374CCiscoSpv
 2437EFEmcElect
@@ -13986,6 +14004,7 @@
 24D13FMexus
 24D2CCSmartdri
 24D921Avaya
+24DA9BMotorola
 24DAB6Sistemas
 24DBACShenzhen
 24DBADShoppert
@@ -14011,6 +14030,7 @@
 280B5CApple
 280CB8Mikrosay
 280DFCSonyComp
+280E8BBeijingS
 28107BD-LinkIn
 281471Lantis
 28162E2wire
@@ -14132,6 +14152,7 @@
 28F3582c-Trifo
 28F532Add-Engi
 28F606SyesSrl
+28FAA0VivoMobi
 28FBD3Ragentek
 28FC51Electric
 28FCF6Shenzhen
@@ -14147,6 +14168,7 @@
 2C18AETrendEle
 2C1984IdnTelec
 2C1A31Electron
+2C1BC8HunanTop
 2C1EEAAerodev
 2C1F23Apple
 2C2172JuniperN
@@ -14185,6 +14207,7 @@
 2C59E5HewlettP
 2C5A05Nokia
 2C5AA3PromateE
+2C5BB8Guangdon
 2C5BE1Centripe
 2C5D93RuckusWi
 2C5FF3Pertroni
@@ -14223,6 +14246,7 @@
 2CAB25Shenzhen
 2CABA4CiscoSpv
 2CAD13Shenzhen
+2CAE2BSamsungE
 2CB05DNetgear
 2CB0DFSolitonT
 2CB43AApple
@@ -14298,10 +14322,12 @@
 304EC3TianjinT
 3051F8Byk-Gard
 30525ANst
+3052CBLiteonTe
 3055EDTrexNetw
 3057ACIrlab
 30595BStreamno
 3059B7Microsof
+305A3AAsustekC
 305D38Beissbar
 306023ArrisGro
 306112Pav
@@ -14398,7 +14424,7 @@
 3431C4Avm
 34363BApple
 3438AFInlabSof
-343D98FujianJi
+343D98Jinqianm
 3440B5Ibm
 34466FHitemEng
 344B3DFiberhom
@@ -14419,6 +14445,7 @@
 3464A9HewlettP
 34684ATerawork
 346895HonHaiPr
+346987Zte
 346BD3HuaweiTe
 346C0FPramodTe
 346E8AEcosense
@@ -14483,6 +14510,7 @@
 34C731Alps
 34C803Nokia
 34C99DEidolonC
+34C9F0LmTechno
 34CC28Nexpring
 34CD6DCommskyT
 34CDBEHuaweiTe
@@ -14530,6 +14558,8 @@
 381C1ACisco
 381C23HilanTec
 381C4ASimcomWi
+382056Cisco
+382187MideaGro
 38229DPirelliT
 3822D6H3cTechn
 38262BUtranTec
@@ -14572,6 +14602,7 @@
 3889DCOpticonS
 388AB7ItcNetwo
 388EE7Fanhatta
+3891D5Hangzhou
 3891FBXenoxBv
 389496SamsungE
 389592BeijingT
@@ -14616,12 +14647,14 @@
 38EE9DAnedo
 38F098VaporSto
 38F33FTatsuno
+38F557Jolata
 38F597Home2net
 38F708National
 38F889HuaweiTe
 38F8B7V2comPar
 38FACASkyworth
 38FEC5EllipsBV
+38FF36RuckusWi
 3C00003Com
 3C02B1Creation
 3C04BFPravis
@@ -14690,6 +14723,7 @@
 3C7437Rim
 3C754AArrisGro
 3C77E6HonHaiPr
+3C7873Airsonic
 3C7A8AArrisGro
 3C7DB1TexasIns
 3C81D8Sagemcom
@@ -14702,6 +14736,7 @@
 3C8AE5TensunIn
 3C8BFESamsungE
 3C8C40Hangzhou
+3C8CF8Trendnet
 3C912BVexata
 3C9157Hangzhou
 3C9174AlongCom
@@ -14723,9 +14758,11 @@
 3CAE69EsaElekt
 3CB15BAvaya
 3CB17FWattwatc
+3CB72BPlumgrid
 3CB792HitachiM
 3CB87APrivate
 3CB9A6BeldenDe
+3CBBFDSamsungE
 3CBDD8LgElectr
 3CC0C6D&BAudio
 3CC12CAes
@@ -14755,6 +14792,7 @@
 3CE624LgDispla
 3CEA4F2wire
 3CEAFBNse
+3CEF8CZhejiang
 3CF392Virtualt
 3CF52CDspecial
 3CF72ANokia
@@ -14804,6 +14842,7 @@
 4050E0MiltonSe
 40516CGrandexI
 40520DPicoTech
+4054E4Wearsafe
 405539Cisco
 40560CInHomeDi
 405A9BAnovo
@@ -14831,6 +14870,7 @@
 408256Continen
 4083DEZebraTec
 408493Claviste
+40862EJdmMobil
 4088E0BeijingE
 408A9ATiteng
 408B07Actionte
@@ -15078,6 +15118,7 @@
 488E42Digalog
 489153Weinmann
 4891F6Shenzhen
+489A42Technoma
 489BE2SciInnov
 489D18Flashbay
 489D24Research
@@ -15093,6 +15134,7 @@
 48B977PulseonO
 48B9C2Teletics
 48BE2DSymanitr
+48BF74Baicells
 48C093Xirrus
 48C1ACPlantron
 48C862SimoWire
@@ -15182,7 +15224,7 @@
 4C72B9Pegatron
 4C7367GeniusBy
 4C73A5Kove
-4C7403MundoRea
+4C7403Bq
 4C7625Dell
 4C774FEmbedded
 4C7897Arrowhea
@@ -15197,6 +15239,7 @@
 4C8B55GrupoDig
 4C8BEFHuaweiTe
 4C8D79Apple
+4C8ECCSilkanSa
 4C8FA5Jastec
 4C9614JuniperN
 4C98EFZeo
@@ -15331,6 +15374,7 @@
 50A715Aboundi
 50A72BHuaweiTe
 50A733RuckusWi
+50A9DESmartcom
 50ABBFHoseoTel
 50ADD5Dynalec
 50AF73Shenzhen
@@ -15343,9 +15387,11 @@
 50C271Securete
 50C58DJuniperN
 50C7BFTp-LinkT
+50C8E5SamsungE
 50C971GnNetcom
 50C9A0SkipperE
 50CCF8SamsungE
+50CD22Avaya
 50CD32NanjingC
 50CE75MeasyEle
 50D274Steffes
@@ -15407,6 +15453,7 @@
 544A00Cisco
 544A05WenglorS
 544A16TexasIns
+544B8CJuniperN
 544E45Private
 544E90Apple
 545146Amg
@@ -15452,6 +15499,7 @@
 54A54BNscCommu
 54A619Alcatel-
 54A9D4Minibar
+54AB3AQuantaCo
 54AE27Apple
 54B620SuhdolE&
 54B753HunanFen
@@ -15510,6 +15558,7 @@
 582136KmbSRO
 58238CTechnico
 582AF7HuaweiTe
+582BDBPax
 582EFELighting
 582F42Universa
 58343BGlovastT
@@ -15517,6 +15566,7 @@
 583CC6Omnealit
 583F54LgElectr
 5842E4SigmaInt
+584498Xiaomi
 58468FKoncarEl
 5846E1BaxterHe
 584704Shenzhen
@@ -15540,6 +15590,7 @@
 5866BAHangzhou
 58671ABarnes&N
 58677FClareCon
+58685DTempoAus
 58696CFujianRu
 5869F9FusionTr
 586AB1Hangzhou
@@ -15552,9 +15603,11 @@
 587A4DStonesof
 587BE9AirproTe
 587E61HisenseE
+587F57Apple
 587F66HuaweiTe
 587FB7SonarInd
 587FC8S2m
+5882A8Microsof
 5884E4Ip500All
 58856EQsc
 58874CLite-OnC
@@ -15603,9 +15656,11 @@
 58F102BluProdu
 58F387Hccp
 58F39CCisco
+58F496SourceCh
 58F67BXiaMenUn
 58F6BFKyotoUni
 58F98ESecudos
+58FC73ArriaLiv
 58FCDBIeeeRegi
 58FD20BravidaS
 5C026AAppliedV
@@ -15644,6 +15699,7 @@
 5C41E7WiatecIn
 5C43D2Hazemeye
 5C4527JuniperN
+5C4979AvmAudio
 5C4A26EnguityT
 5C4CA9Shenzhen
 5C5015Cisco
@@ -15686,6 +15742,7 @@
 5CA48ACisco
 5CAAFDSonos
 5CAC4CHonHaiPr
+5CADCFApple
 5CB395HuaweiTe
 5CB43EHuaweiTe
 5CB524SonyEric
@@ -15717,6 +15774,7 @@
 5CE223DelphinT
 5CE286NortelNe
 5CE2F4AcsipTec
+5CE3B6Fiberhom
 5CE7BFNewSingu
 5CE8EBSamsungE
 5CEB4ERStahlHm
@@ -15930,6 +15988,7 @@
 64680CComtrend
 6469BCHyteraCo
 646A52Avaya
+646A74Auth-Ser
 646CB2SamsungE
 646E6CRadioDat
 646EEAIskratel
@@ -15979,6 +16038,7 @@
 64B853SamsungE
 64B9E8Apple
 64BABDSdjTechn
+64BC0CLgElectr
 64BC11Combiq
 64C354Avaya
 64C5AASouthAfr
@@ -16023,6 +16083,7 @@
 680AD7Yancheng
 68122DSpecialI
 681295LupineLi
+681401HonHaiPr
 681590Sagemcom
 6815D3ZakladyE
 681605AndElect
@@ -16097,6 +16158,7 @@
 68A378FreeboxS
 68A3C4LiteonTe
 68A40EBshBosch
+68A828HuaweiTe
 68A86DApple
 68AAD2Datecs
 68AB8ARfIdeas
@@ -16206,6 +16268,7 @@
 6C8D65Wireless
 6C90B1Sanlogic
 6C92BFInspurEl
+6C9354YaojinTe
 6C94F8Apple
 6C98EBOcedo
 6C9989Cisco
@@ -16300,6 +16363,7 @@
 703EACApple
 7041B7EdwardsL
 704642ChyngHon
+70480FApple
 704AAEXstreamF
 704AE4Rinstrum
 704CEDTmrg
@@ -16336,6 +16400,7 @@
 7076F0Levelone
 7076FFKerlink
 707781HonHaiPr
+707938WuxiZhan
 707BE8HuaweiTe
 707C18AdataTec
 707E43ArrisGro
@@ -16409,6 +16474,7 @@
 740EDBOptowiz
 741489SrtWirel
 7415E2Tri-Sen
+741865Shanghai
 7419F8IeeeRegi
 741E93Fiberhom
 741F4AHangzhou
@@ -16444,10 +16510,12 @@
 7463DFVts
 7465D1Atlinks
 746630T:MiYtti
+7467F7ZebraTec
 746A3AAperi
 746A89Rezolt
 746A8FVsVision
 746B82Movek
+746F19Icarvisi
 746F3DContec
 7472F2ChipsipT
 747336Microdig
@@ -16486,7 +16554,7 @@
 74ADB7ChinaMob
 74AE76InovoBro
 74B00CNetworkV
-74B9EBFujianJi
+74B9EBJinqianm
 74BADBLongconn
 74BE08AtekProd
 74BFA1Hyunteck
@@ -16501,6 +16569,7 @@
 74D435Giga-Byt
 74D675WymaTecn
 74D6EATexasIns
+74D7CAPanasoni
 74D850Evrisko
 74DA38EdimaxTe
 74DBD1Ebay
@@ -16652,6 +16721,7 @@
 78D38DHongkong
 78D5B5Navielek
 78D66FAristocr
+78D6B2Toshiba
 78D6F0SamsungE
 78D752HuaweiTe
 78D75FApple
@@ -16683,6 +16753,7 @@
 78FEE2Shanghai
 78FF57IntelCor
 7C0187CurtisIn
+7C0191Apple
 7C02BCHansungE
 7C034CSagemcom
 7C03D8Sagemcom
@@ -16727,6 +16798,7 @@
 7C4FB5Arcadyan
 7C534AMetamako
 7C55E7Ysi
+7C5A67Jnc
 7C5CF8IntelCor
 7C6097HuaweiTe
 7C6193Htc
@@ -16744,6 +16816,7 @@
 7C6F06Caterpil
 7C6FF8Shenzhen
 7C70BCIeeeRegi
+7C7176WuxiIdat
 7C72E4UnikeyTe
 7C7673Enmas
 7C7A53PhytrexT
@@ -16920,6 +16993,7 @@
 80B289Forworld
 80B32AAlstomGr
 80B686HuaweiTe
+80B709Viptela
 80B95CElftech
 80BAACTeleadap
 80BAE6Neets
@@ -16938,6 +17012,7 @@
 80D18BHangzhou
 80D21DAzurewav
 80D433Lzlabs
+80D605Apple
 80D733QsrAutom
 80DB31PowerQuo
 80E01DCisco
@@ -16961,6 +17036,7 @@
 8401A7Greyware
 840B2DSamsungE
 840F45Shanghai
+84100DMotorola
 84119ESamsungE
 841715GpElectr
 841766WeifangG
@@ -17044,6 +17120,7 @@
 8497B8Memjet
 849CA6Arcadyan
 849DC5CenteraP
+84A423Sagemcom
 84A466SamsungE
 84A6C8IntelCor
 84A783AlcatelL
@@ -17053,6 +17130,7 @@
 84ACA4BeijingN
 84AF1FBeatSyst
 84B153Apple
+84B261Cisco
 84B517Cisco
 84B59CJuniperN
 84B802Cisco
@@ -17064,7 +17142,9 @@
 84C9B2D-LinkIn
 84CFBFFairphon
 84D32AIeee1905
+84D47EArubaNet
 84D4C8Widex
+84D6D0AmazonTe
 84D9C8Unipatte
 84DB2FSierraWi
 84DBACHuaweiTe
@@ -17088,6 +17168,7 @@
 84FE9ERtcIndus
 880355Arcadyan
 880905Mtmcommu
+8809AFMasimo
 880F10HuamiInf
 880FB6JabilCir
 881036PanodicS
@@ -17152,6 +17233,7 @@
 889166Viewcoop
 8891DDRacktivi
 889471BrocadeC
+88947EFiberhom
 8894F9GemicomT
 8895B9UnifiedP
 889676TtcMarco
@@ -17172,6 +17254,7 @@
 88B627GembirdE
 88BA7FQfiednet
 88BFD5SimpleAu
+88C242Poynt
 88C36EBeijingE
 88C626Logitech
 88C663Apple
@@ -17274,6 +17357,7 @@
 8C9109Toyoshim
 8C9236AusLinxT
 8C94CFEncellTe
+8C99E6TctMobil
 8CA048BeijingN
 8CA982IntelCor
 8CAE4CPlugable
@@ -17304,6 +17388,7 @@
 8CDE99Comlab
 8CDF9DNec
 8CE081Zte
+8CE2DACircleMe
 8CE748Private
 8CE78CDkNetwor
 8CE7B3Sonardyn
@@ -17402,6 +17487,7 @@
 908C63GzWeedon
 908D1DGhTechno
 908D6CApple
+908D78D-LinkIn
 908FCFUnoSyste
 90903CTrisonTe
 909060RsiVideo
@@ -17430,6 +17516,7 @@
 90C35FNanjingJ
 90C682IeeeRegi
 90C792ArrisGro
+90C99BRecore
 90CC24Synaptic
 90CF15Nokia
 90CF6FDlogixs
@@ -17532,6 +17619,7 @@
 94ACCATrivumTe
 94AE61AlcatelL
 94AEE3BeldenHi
+94B10ASamsungE
 94B40FArubaNet
 94B8C5Ruggedco
 94B9B4AptosTec
@@ -17644,6 +17732,7 @@
 988217Disrupti
 988389SamsungE
 9886B1Flyaudio
+988744WuxiHong
 9889EDAnademIn
 988B5DSagemCom
 988BADCorintec
@@ -17675,10 +17764,12 @@
 98E0D9Apple
 98E165Accutome
 98E79AFoxconnN
+98E848Axiim
 98EC65CosesyAp
 98EECBWistronI
 98F0ABApple
 98F170MurataMa
+98F428Zte
 98F537Zte
 98F5A9OhsungEl
 98F8C1IdtTechn
@@ -17732,6 +17823,7 @@
 9C54CAZhengzho
 9C55B4ISESRL
 9C5711FeitianX
+9C57ADCisco
 9C5B96Nmr
 9C5C8DFiremaxI
 9C5D12Aerohive
@@ -17754,6 +17846,7 @@
 9C80DFArcadyan
 9C86DAPhoenixG
 9C8888SimacTec
+9C88ADFiberhom
 9C8BF1Warehous
 9C8D1AIntegPro
 9C8DD3LeontonT
@@ -17846,6 +17939,7 @@ A036FAEttusRes
 A039F7LgElectr
 A03A75PssBelgi
 A03B1BInspireT
+A03E6BIeeeRegi
 A04025Actionca
 A04041Samwonfa
 A041A7NlMinist
@@ -17952,6 +18046,7 @@ A0F459Fn-LinkT
 A0F6FDTexasIns
 A0F849Cisco
 A0F895TinnoMob
+A0F9E0Vivatel
 A0FC6ETelegraf
 A0FE91AvatAuto
 A40130Abisyste
@@ -18019,6 +18114,7 @@ A47C14Chargest
 A47C1FCobham
 A47E39Zte
 A481EENokia
+A48431SamsungE
 A4856BQElectro
 A4895BArkInfos
 A48CDBLenovo
@@ -18049,6 +18145,7 @@ A4B1E9Technico
 A4B1EEHZander
 A4B2A7AdaxysSo
 A4B36AJscSdoCh
+A4B805Apple
 A4B818PentaGes
 A4B980ParkingB
 A4BADBDell
@@ -18061,6 +18158,7 @@ A4C2ABHangzhou
 A4C361Apple
 A4C494IntelCor
 A4C7DECambridg
+A4CC32Inficomm
 A4D094ErwinPet
 A4D18FShenzhen
 A4D1D1Ecotalit
@@ -18072,6 +18170,7 @@ A4DB2EKingspan
 A4DB30LiteonTe
 A4DCBEHuaweiTe
 A4DE50TotalWal
+A4DEC9QloveMob
 A4E0E6Filizola
 A4E32ESiliconS
 A4E391DenyFont
@@ -18114,6 +18213,7 @@ A84041DraginoT
 A84481Nokia
 A845CDSiselect
 A845E9FirichEn
+A8474AHonHaiPr
 A849A5Lisantec
 A854B2WistronN
 A8556APocketne
@@ -18178,6 +18278,7 @@ A8D0E3SystechE
 A8D0E5JuniperN
 A8D236Lightwar
 A8D3C8Wachendo
+A8D3F7Arcadyan
 A8D409Usa111
 A8D828BayerHea
 A8D88AWyconn
@@ -18212,6 +18313,7 @@ AC162DHewlettP
 AC1702FibarGro
 AC1826SeikoEps
 AC199FSungrowP
+AC1FD7RealVisi
 AC20AADmatek
 AC220BAsustekC
 AC293AApple
@@ -18375,6 +18477,7 @@ B050BCShenzhen
 B0518EHollTech
 B05706ValloxOy
 B058C4Broadcas
+B05ADAHewlettP
 B05B1FThermoFi
 B05B67HuaweiTe
 B05CE5Nokia
@@ -18531,6 +18634,7 @@ B4944EWeteleco
 B49842Zte
 B4994CTexasIns
 B499BAHewlett-
+B49D0BBq
 B49DB4AxionTec
 B49EACImagikIn
 B49EE6Shenzhen
@@ -18572,6 +18676,7 @@ B4ED19PieDigit
 B4ED54WohlerTe
 B4EEB4AskeyCom
 B4EED4TexasIns
+B4EF04DaihanSc
 B4EF39SamsungE
 B4F0ABApple
 B4F2E8Pace
@@ -18583,6 +18688,7 @@ B80415BayanAud
 B808CFIntelCor
 B8098AApple
 B80B9DRopexInd
+B813E9TraceLiv
 B81413KeenHigh
 B81619ArrisGro
 B817C2Apple
@@ -18672,6 +18778,7 @@ B8AE6ENintendo
 B8AEEDElitegro
 B8AF67Hewlett-
 B8B1C7Bt&Com
+B8B2EBGoogolTe
 B8B3DCDerekSha
 B8B42EGioneeCo
 B8B7D72gigTech
@@ -18747,7 +18854,7 @@ BC2C55BearFlag
 BC2D98Thinglob
 BC305BDell
 BC307DWistronN
-BC307EPrivate
+BC307EWistronN
 BC3400IeeeRegi
 BC35E5Hydro
 BC38D2Pandachi
@@ -18781,6 +18888,7 @@ BC6A16Tdvine
 BC6A29TexasIns
 BC6A2FHengeDoc
 BC6B4DAlcatel-
+BC6C21Apple
 BC6E64SonyMobi
 BC6E76GreenEne
 BC71C1Xtrillio
@@ -18805,6 +18913,7 @@ BC926BApple
 BC9680Shenzhen
 BC9889Fiberhom
 BC99BCFonseeTe
+BC9C31HuaweiTe
 BC9CC5BeijingH
 BC9DA5DascomEu
 BCA4E1Nabto
@@ -18828,6 +18937,7 @@ BCC810CiscoSpv
 BCCAB5ArrisGro
 BCCD45Voismart
 BCCFCCHtc
+BCD11FSamsungE
 BCD165CiscoSpv
 BCD177Tp-LinkT
 BCD1D3TinnoMob
@@ -18968,6 +19078,7 @@ C0F8DAHonHaiPr
 C0F991GmeStand
 C0FFD4Netgear
 C40006LipiData
+C40049Kamama
 C40142Maxmedia
 C4017CRuckusWi
 C401B1Seektech
@@ -19064,13 +19175,16 @@ C49380Speedyte
 C495A2Shenzhen
 C49805MinieumN
 C49A02LgElectr
+C49E41G24Power
 C49FF3MciaoTec
 C4A81DD-LinkIn
 C4AAA1SummitDe
 C4AD21Mediaedg
+C4ADF1Gopeace
 C4B512GeneralE
 C4BA99I+MeActi
 C4BAA3BeijingW
+C4BBEAPakedgeD
 C4BD6ASkf
 C4BE84TexasIns
 C4C0AEMidoriEl
@@ -19094,6 +19208,7 @@ C4EBE3RrcnSas
 C4EDBATexasIns
 C4EEAEVssMonit
 C4EEF5Oclaro
+C4EF70HomeSkin
 C4F464SpicaInt
 C4F57CBrocadeC
 C4FCE4DishtvNz
@@ -19141,6 +19256,7 @@ C85645Intermas
 C85663SunflexE
 C86000AsustekC
 C864C7Zte
+C869CDApple
 C86C1EDisplay
 C86C87ZyxelCom
 C86CB6Optcom
@@ -19156,6 +19272,7 @@ C88550Apple
 C8873BNetOptic
 C88A83Dongguan
 C88B47Nolangro
+C88ED1IeeeRegi
 C8903EPaktonTe
 C891F9Sagemcom
 C89346Mxchip
@@ -19169,6 +19286,7 @@ C89F42VdiiInno
 C8A030TexasIns
 C8A1B6Shenzhen
 C8A1BANeul
+C8A2CEOasisMed
 C8A620Nebula
 C8A70AVerizonB
 C8A729Systroni
@@ -19186,6 +19304,7 @@ C8BCC8Apple
 C8BE19D-LinkIn
 C8C126ZpmIndus
 C8C13CRuggedte
+C8C2C6Shanghai
 C8C50EShenzhen
 C8C791Zero1Tv
 C8CBB8HewlettP
@@ -19242,7 +19361,9 @@ CC14A6YichunMy
 CC187BManzanit
 CC19A8PtInovaç
 CC1AFAZte
+CC1BE0IeeeRegi
 CC1EFFMetrolog
+CC20E8Apple
 CC2218Innodigi
 CC262DVerifiLl
 CC29F5Apple
@@ -19335,6 +19456,7 @@ CCD539Cisco
 CCD811AiconnTe
 CCD8C1Cisco
 CCD9E9ScrEngin
+CCE0C3Mangstor
 CCE17FJuniperN
 CCE1D5Buffalo
 CCE798MySocial
@@ -19362,6 +19484,7 @@ D00790TexasIns
 D00AABYokogawa
 D00EA4PorscheC
 D00ED9TaicangT
+D00F6DT&WElect
 D01242Bios
 D0131ESunrexTe
 D0154AZte
@@ -19383,6 +19506,7 @@ D03742YulongCo
 D03761TexasIns
 D03972TexasIns
 D039B3ArrisGro
+D03E5CHuaweiTe
 D0431EDell
 D046DCSouthwes
 D048F3Dattus
@@ -19422,6 +19546,7 @@ D073D5LifiLabs
 D075BERenoA&E
 D07650IeeeRegi
 D07AB5HuaweiTe
+D07C2DLeieIotT
 D07DE5ForwardP
 D07E28HewlettP
 D07E35IntelCor
@@ -19557,6 +19682,7 @@ D46CDACsm
 D46D50Cisco
 D46E5CHuaweiTe
 D46F42WaxessUs
+D47208Bragi
 D479C3Camerone
 D47B35NeoMonit
 D47B75HartingE
@@ -19699,6 +19825,7 @@ D881CEAhn
 D88466ExtremeN
 D888CERfTechno
 D88A3BUnit-Em
+D88B4CKingting
 D88D5CElentec
 D890E8SamsungE
 D89341GeneralE
@@ -19733,6 +19860,7 @@ D8BB2CApple
 D8BF4CVictoryC
 D8C068Netgenet
 D8C3FBDetracom
+D8C4E9SamsungE
 D8C691HichanTe
 D8C7C8ArubaNet
 D8C99DEaDispla
@@ -19820,8 +19948,10 @@ DC7144SamsungE
 DC7B94Cisco
 DC7FA42wire
 DC825BJanusSpo
+DC82F6Iport
 DC85DEAzurewav
 DC86D8Apple
+DC9A8ENanjingC
 DC9B1EIntercom
 DC9B9CApple
 DC9C52Sapphire
@@ -19847,6 +19977,7 @@ DCC793Nokia
 DCCBA8ExploraT
 DCCE41FeGlobal
 DCCEBCShenzhen
+DCCEC1Cisco
 DCCF94BeijingR
 DCD0F7Bentek
 DCD2FCHuaweiTe
@@ -19855,6 +19986,7 @@ DCD52ASunnyHea
 DCD87FShenzhen
 DCDA4FGetckTec
 DCDB70TonfunkS
+DCDC07TrpBv
 DCDECAAkyllor
 DCE026PatrolTa
 DCE1ADShenzhen
@@ -19863,12 +19995,14 @@ DCE578Experime
 DCE71CAugElekt
 DCEB94Cisco
 DCEC06HeimiNet
+DCEF09Netgear
 DCF05DLettaTek
 DCF110Nokia
 DCF755Sitronik
 DCF858LorentNe
 DCFAD5StrongGe
 DCFB02Buffalo
+DCFE07Pegatron
 E00370Shenzhen
 E005C5Tp-LinkT
 E006E6HonHaiPr
@@ -19897,7 +20031,9 @@ E02F6DCisco
 E03005Alcatel-
 E0319EValve
 E031D0SzTelsta
+E034E4FeitElec
 E03560Challeng
+E03676HuaweiTe
 E036E3StageOne
 E039D7Plexxi
 E03C5BShenzhen
@@ -20026,6 +20162,7 @@ E42F26Fiberhom
 E42FF6UnicoreC
 E432CBSamsungE
 E43593Hangzhou
+E435C8HuaweiTe
 E435FBSabreTec
 E437D7HenriDep
 E438F2Advantag
@@ -20041,6 +20178,7 @@ E44F5FEdsElekt
 E455EADedicate
 E45614SuttleAp
 E457A8StuartMa
+E458B8SamsungE
 E458E7SamsungE
 E45AA2VivoMobi
 E45D52Avaya
@@ -20075,8 +20213,10 @@ E497F0Shanghai
 E498D1Microsof
 E498D6Apple
 E4A32FShanghai
+E4A387ControlS
 E4A5EFTronLink
 E4A7FDCellcoPa
+E4AA5DCisco
 E4AB46UabSelte
 E4AD7DSclEleme
 E4AFA1Hes-So
@@ -20127,6 +20267,7 @@ E80C75Syncbak
 E8102EReallySi
 E81132SamsungE
 E81324Guangzho
+E81363Comstock
 E8150ENokia
 E8162BIdeoSecu
 E817FCNifty
@@ -20136,6 +20277,7 @@ E828D5CotsTech
 E82AEAIntelCor
 E82E24OutOfFog
 E83381ArrisGro
+E8343EBeijingI
 E8377AZyxelCom
 E83935HewlettP
 E839DFAskeyCom
@@ -20222,6 +20364,7 @@ E8D4E0BeijingB
 E8DA96ZhuhaiTi
 E8DAAAVideohom
 E8DE27Tp-LinkT
+E8DED6Intrisin
 E8DFF2Prf
 E8E08FGravotec
 E8E0B7Toshiba
@@ -20269,6 +20412,7 @@ EC2C49Universi
 EC2E4EHitachi-
 EC3091Cisco
 EC3586Apple
+EC388FHuaweiTe
 EC3BF0Novelsat
 EC3C5AShenZhen
 EC3C88Mcnex
@@ -20292,6 +20436,7 @@ EC5C69Mitsubis
 EC60E0Avi-OnLa
 EC6264Global41
 EC63E5EpboardD
+EC64E7Mocacare
 EC66D1B&WGroup
 EC6C9FChengduV
 EC71DBShenzhen
@@ -20313,6 +20458,7 @@ EC986CLufftMes
 EC98C1BeijingR
 EC9A74HewlettP
 EC9B5BNokia
+EC9BF3SamsungE
 EC9ECDArtesynE
 ECA29BKemppiOy
 ECA86BElitegro
@@ -20325,6 +20471,7 @@ ECB907Cloudgen
 ECBAFEGiroptic
 ECBBAEDigivoic
 ECBD09FusionEl
+ECBD1DCisco
 ECC38AAccuener
 ECC882Cisco
 ECCB30HuaweiTe
@@ -20523,11 +20670,13 @@ F43D80FagIndus
 F43E61Shenzhen
 F43E9DBenuNetw
 F44227SSResear
+F4428FSamsungE
 F44450Bnd
 F445EDPortable
 F44713LeadingP
 F4472ANanjingR
 F44848Amscreen
+F44D30Elitegro
 F44E05Cisco
 F44EFDActionsS
 F450EBTelechip
@@ -20651,7 +20800,6 @@ F835DDGemtekTe
 F83D4ESoftlink
 F83DFFHuaweiTe
 F842FBYasudaJo
-F84360Private
 F845ADKonkaGro
 F8462DSyntecIn
 F8472DX2genDig
@@ -20717,6 +20865,7 @@ F8BF09HuaweiTe
 F8C001JuniperN
 F8C091Highgate
 F8C288Cisco
+F8C372TsuzukiD
 F8C397Nzxt
 F8C678Carefusi
 F8C96CFiberhom
@@ -20852,6 +21001,7 @@ FCC2DEMurataMa
 FCC734SamsungE
 FCC897Zte
 FCCCE4Ascon
+FCCF43HuizhouC
 FCCF62Ibm
 FCD4F2CocaCola
 FCD4F6MessanaA
