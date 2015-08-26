@@ -15,14 +15,6 @@
 
 	<property name="win.installer.dir" value="${basedir}/ext/win-installer"/>
 
-    <path id="cobertura.classpath">
-        <fileset dir="lib/testing">
-            <include name="cobertura.jar" />
-            <include name="*.jar" />
-        </fileset>
-    </path>
-    <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
-
 	<taskdef resource="proguard/ant/task.properties" classpath="ext/proguard/proguard.jar"/>
 	
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="ext/launch4j/launch4j.jar:ext/launch4j/xstream.jar"/>
@@ -72,9 +64,6 @@
 	<target name="current">
 		<antcall target="${platform}"/>
 	</target>
-	
-	<!-- this is run by cruise control continous integration -->
-	<target name="cruise" depends="clean,compile,compile-tests,package,clean_end"/>
 
 	<target name="info">
 		<echo message="This script will build ${name} ${version}"/>
@@ -161,37 +150,26 @@
         <copy todir="${testbin}" overwrite="true" verbose="true">
             <fileset dir="test" excludes="**/*.java"/>
         </copy>
-        <cobertura-instrument todir="${testbin}.instr">
-            <ignore regex="org.apache.log4j.*" />
-            <fileset dir="${testbin}">
-                <include name="**/*.class" />
-                <exclude name="**/*Test.class" />
-            </fileset>
-        </cobertura-instrument>
         <copy todir="${testbin}" overwrite="true">
-            <fileset dir="${testbin}.instr" includes="**/*.class"/>
+            <fileset dir="${testbin}" includes="**/*.class"/>
         </copy>
-        <delete dir="${testbin}.instr"/>
 	</target>
 	
-	<target name="test">
+	<target name="test" depends="clean,compile,compile-tests">
 		<delete dir="${testresults}"/>
 		<mkdir dir="${testresults}"/>
 		<delete file="coverage.ec"/>
 		<junit haltonfailure="true" showoutput="true" fork="yes">
-            <sysproperty key="net.sourceforge.cobertura.datafile" file="${testresults}/cobertura.ser"/>
 			<classpath>
 				<path location="${testbin}"/>
 				<fileset dir="lib" includes="swt-${platform}.jar"/>
 				<fileset dir="lib" includes="**/*.jar"/>
 			</classpath>
-			<formatter type="xml"/>
+			<formatter type="brief" usefile="no"/>
 			<batchtest todir="${testresults}">
 				<fileset dir="${testbin}" includes="**/*Test.class"/>
 			</batchtest>
 		</junit>
-        <cobertura-report format="xml" destdir="test-coverage" srcdir="src" datafile="${testresults}/cobertura.ser"/>
-        <cobertura-report format="html" destdir="test-coverage" srcdir="src" datafile="${testresults}/cobertura.ser"/>
 	</target>
 	
 	<condition property="isRunningOnLinux">
