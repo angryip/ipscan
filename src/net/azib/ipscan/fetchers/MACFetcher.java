@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public abstract class MACFetcher extends AbstractFetcher {
 	public static final String ID = "fetcher.mac";
 	static final Pattern macAddressPattern = Pattern.compile("([a-fA-F0-9]{1,2}(-|:)){5}[a-fA-F0-9]{1,2}");
-	static final Pattern leadingZeroesPattern = Pattern.compile("(^|-|:)([A-F0-9])(-|:|$)");
+	static final Pattern leadingZeroesPattern = Pattern.compile("(?<=^|-|:)([A-F0-9])(?=-|:|$)");
 
 	@Override public String getId() {
 		return ID;
@@ -38,6 +38,6 @@ public abstract class MACFetcher extends AbstractFetcher {
 	}
 
 	private static String addLeadingZeroes(String mac) {
-		return leadingZeroesPattern.matcher(mac).replaceAll("$10$2$3");
+		return leadingZeroesPattern.matcher(mac).replaceAll("0$1");
 	}
 }
