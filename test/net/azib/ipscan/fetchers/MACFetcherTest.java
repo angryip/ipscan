@@ -11,6 +11,11 @@ public class MACFetcherTest {
 	}
 
 	@Test
+	public void extractMACAddsLeadingZeroesOnOsX() throws Exception {
+		assertEquals("04:48:07:EE:28:02", UnixMACFetcher.extractMAC("? (192.168.0.1) at 4:48:7:ee:28:2 [ether] on wlan0"));
+	}
+
+	@Test
 	public void bytesToMAC() throws Exception {
 		assertEquals("", WinMACFetcher.bytesToMAC(new byte[0]));
 		assertEquals("00:01:02:0D", WinMACFetcher.bytesToMAC(new byte[] {0, 1, 2, 13}));
