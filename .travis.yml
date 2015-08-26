@@ -1,7 +1,10 @@
 language: java
+sudo: false
 
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq rpm wine
+addons:
+  apt:
+    packages:
+    - rpm
+    - wine
 
 script: xvfb-run -a ant all
