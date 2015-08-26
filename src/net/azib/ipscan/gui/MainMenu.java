@@ -36,7 +36,8 @@ public class MainMenu {
 					FavoritesMenu favoritesMenu,
 					ToolsMenu toolsMenu,
 					HelpMenu helpMenu,
-					ResultsContextMenu resultsContextMenu, StateMachine stateMachine) {
+					ResultsContextMenu resultsContextMenu,
+					StateMachine stateMachine) {
 
 		parent.setMenuBar(mainMenu);
 

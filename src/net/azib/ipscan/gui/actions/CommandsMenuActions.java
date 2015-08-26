@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Commands and Context menu Actions.
@@ -33,7 +34,19 @@ import javax.inject.Inject;
  *
  * @author Anton Keks
  */
+@Singleton
 public class CommandsMenuActions {
+	@Inject public Details details;
+	@Inject public Delete delete;
+	@Inject public Rescan rescan;
+	@Inject public CopyIP copyIP;
+	@Inject public CopyIPDetails copyIPDetails;
+	@Inject public ShowOpenersMenu showOpenersMenu;
+	@Inject public EditOpeners editOpeners;
+	@Inject public SelectOpener selectOpener;
+
+	@Inject public CommandsMenuActions() {}
+
 	/**
 	 * Checks that there is at least one item selected in the results list.
 	 */
@@ -72,8 +85,7 @@ public class CommandsMenuActions {
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
 
-		@Inject
-		public Delete(ResultTable resultTable, StateMachine stateMachine) {
+		@Inject public Delete(ResultTable resultTable, StateMachine stateMachine) {
 			this.resultTable = resultTable;
 			this.stateMachine = stateMachine;
 		}
@@ -86,12 +98,12 @@ public class CommandsMenuActions {
 			if (!stateMachine.inState(ScanningState.IDLE)) return;
 			
 			int firstSelection = resultTable.getSelectionIndex();
-      if (firstSelection < 0) return;
+			if (firstSelection < 0) return;
 
 			resultTable.remove(resultTable.getSelectionIndices());
 			resultTable.setSelection(firstSelection);
-      event.widget = resultTable;
-      resultTable.notifyListeners(SWT.Selection, event);
+			event.widget = resultTable;
+			resultTable.notifyListeners(SWT.Selection, event);
 		}
 	}
 
@@ -244,7 +256,7 @@ public class CommandsMenuActions {
 				// TODO: somehow wait until the process is started
 				Thread.sleep(500);
 			}
-			catch (InterruptedException e) {}
+			catch (InterruptedException ignore) {}
 			finally {
 				statusBar.setStatusText(null);
 			}
