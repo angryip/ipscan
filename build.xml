@@ -165,7 +165,7 @@
 				<fileset dir="lib" includes="swt-${platform}.jar"/>
 				<fileset dir="lib" includes="**/*.jar"/>
 			</classpath>
-			<formatter type="plain" usefile="no"/>
+			<formatter type="brief" usefile="no"/>
 			<batchtest todir="${testresults}">
 				<fileset dir="${testbin}" includes="**/*Test.class"/>
 			</batchtest>
