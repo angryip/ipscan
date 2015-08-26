@@ -72,9 +72,6 @@
 	<target name="current">
 		<antcall target="${platform}"/>
 	</target>
-	
-	<!-- this is run by cruise control continous integration -->
-	<target name="cruise" depends="clean,compile,compile-tests,package,clean_end"/>
 
 	<target name="info">
 		<echo message="This script will build ${name} ${version}"/>
@@ -174,7 +171,7 @@
         <delete dir="${testbin}.instr"/>
 	</target>
 	
-	<target name="test">
+	<target name="test" depends="clean,compile,compile-tests">
 		<delete dir="${testresults}"/>
 		<mkdir dir="${testresults}"/>
 		<delete file="coverage.ec"/>
