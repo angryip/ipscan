@@ -1,2 +1,2 @@
 language: java
-script: xvfb-run -a ant test
+script: xvfb-run -a ant all
