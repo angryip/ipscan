@@ -1,5 +1,6 @@
 package net.azib.ipscan.fetchers;
 
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.util.IOUtils;
 
 import java.io.BufferedReader;
@@ -9,7 +10,13 @@ import java.net.NetworkInterface;
 import java.util.Enumeration;
 
 public class UnixMACFetcher extends MACFetcher {
+	private String arp;
+
 	@Override public void init() {
+		if (Platform.LINUX)
+			arp = "arp -an "; // use BSD-style output
+		else
+			arp = "arp -n ";  // Mac and other BSD
 	}
 
 	@Override public String resolveMAC(InetAddress address) {
@@ -17,7 +24,7 @@ public class UnixMACFetcher extends MACFetcher {
 		BufferedReader reader = null;
 		try {
 			// highly inefficient implementation, there must be a better way (using JNA?)
-			Process process = Runtime.getRuntime().exec("arp -an " + ip);
+			Process process = Runtime.getRuntime().exec(arp + ip);
 			reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			String line;
 			while ((line = reader.readLine()) != null) {
