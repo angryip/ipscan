@@ -2,6 +2,6 @@ language: java
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -qq rpm
+  - sudo apt-get install -qq rpm wine
 
 script: xvfb-run -a ant all
