@@ -1,1 +1,2 @@
 language: java
+script: xvfb-run -a ant test
