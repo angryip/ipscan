@@ -6,16 +6,10 @@ package net.azib.ipscan.gui;
 import net.azib.ipscan.config.FavoritesConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.gui.util.LayoutHelper;
-
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.*;
 
 /**
  * EditFavoritesDialog
@@ -82,13 +76,13 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 		
 		shell.pack();
 		
-		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				saveFavorites();
 				shell.close();
 			}
 		});
-		cancelButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+		cancelButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				shell.close();
 			}

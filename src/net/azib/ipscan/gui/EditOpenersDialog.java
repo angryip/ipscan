@@ -10,6 +10,7 @@ import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.*;
@@ -129,13 +130,13 @@ public class EditOpenersDialog extends AbstractModalDialog {
 
 		shell.pack();
 
-		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				saveOpeners();
 				shell.close();
 			}
 		});
-		cancelButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+		cancelButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				shell.close();
 			}
