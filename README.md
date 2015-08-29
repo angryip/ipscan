@@ -1,14 +1,13 @@
-This is the source code of Angry IP Scanner, licensed with GPL v2.
+# Angry IP Scanner
 
-[Official site - AngryIP.org](http://angryip.org/)
+This is the source code of Angry IP Scanner, licensed with GPL v2. [Official site](http://angryip.org/)
 
 The code is written mostly in Java.
 IntelliJ IDEA is recommended for coding, but Eclipse would do as well.
 
 After loading the project in IDEA, make sure you select the appropriate for your platform lib_xxx library in module dependencies.
 
-Building
-========
+## Building [![Build Status](https://travis-ci.org/angryziber/ipscan.svg?branch=master)](https://travis-ci.org/angryziber/ipscan)
 
 JDK 1.6+ as well as Ant are required for building.
 

@@ -10,6 +10,7 @@ import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.*;
@@ -63,11 +64,21 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		
 		Button upButton = new Button(shell, SWT.NONE);
 		upButton.setText(Labels.getLabel("button.up"));
-		upButton.addListener(SWT.Selection, new UpButtonListener(openersList));
+		upButton.addListener(SWT.Selection, new UpButtonListener(openersList) {
+			@Override public void handleEvent(Event event) {
+				super.handleEvent(event);
+				currentSelectionIndex = openersList.getSelectionIndex();
+			}
+		});
 		
 		Button downButton = new Button(shell, SWT.NONE);
 		downButton.setText(Labels.getLabel("button.down"));	
-		downButton.addListener(SWT.Selection, new DownButtonListener(openersList));
+		downButton.addListener(SWT.Selection, new DownButtonListener(openersList) {
+			@Override public void handleEvent(Event event) {
+				super.handleEvent(event);
+				currentSelectionIndex = openersList.getSelectionIndex();
+			}
+		});
 		
 		Button addButton = new Button(shell, SWT.NONE);
 		addButton.setText(Labels.getLabel("button.add"));
@@ -119,19 +130,30 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		editFieldsGroup.layout();
 		editFieldsGroup.pack();
 
-		Button closeButton = createCloseButton();
-		closeButton.setLayoutData(formData(85, SWT.DEFAULT, null, new FormAttachment(editFieldsGroup, 0, SWT.RIGHT), new FormAttachment(editFieldsGroup, 6), null));
-			
+		Button okButton = new Button(shell, SWT.NONE);
+		okButton.setText(Labels.getLabel("button.OK"));
+
+		Button cancelButton = new Button(shell, SWT.NONE);
+		cancelButton.setText(Labels.getLabel("button.cancel"));
+
+		positionButtonsInFormLayout(okButton, cancelButton, editFieldsGroup);
+
 		shell.pack();
+
+		okButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				saveOpeners();
+				shell.close();
+			}
+		});
+		cancelButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				shell.close();
+			}
+		});
 
 		openersList.select(0);
 		loadFieldsForSelection();
-		
-		shell.addListener(SWT.Close, new Listener() {
-			public void handleEvent(Event e) {
-				saveOpeners();
-			}
-		});
 	}
 	
 	private void saveOpeners() {
@@ -193,7 +215,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	class AddButtonListener implements Listener {
 		public void handleEvent(Event event) {
 			saveCurrentFields();
-			
+
 			currentSelectionIndex = openersList.getSelectionIndex();
 			if (currentSelectionIndex < 0) {
 				currentSelectionIndex = openersList.getItemCount();
@@ -201,14 +223,14 @@ public class EditOpenersDialog extends AbstractModalDialog {
 			String newName = Labels.getLabel("text.openers.new");
 			openersList.add(newName, currentSelectionIndex);
 			openersList.setSelection(currentSelectionIndex);
-			
+
 			// reset fields
 			editFieldsGroup.setText(newName);
 			openerNameText.setText(newName);
 			openerStringText.setText("${fetcher.ip}");
 			workingDirText.setText("");
 			isInTerminalCheckbox.setSelection(false);
-			
+
 			openerNameText.forceFocus();
 			openerNameText.setSelection(0, newName.length());
 		}
@@ -218,7 +240,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		public void handleEvent(Event event) {
 			if (openersList.getSelectionCount() == 0)
 				return;
-			
+
 			saveCurrentFields();
 			loadFieldsForSelection();
 		}
