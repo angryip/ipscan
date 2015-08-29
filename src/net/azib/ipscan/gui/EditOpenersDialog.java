@@ -119,19 +119,30 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		editFieldsGroup.layout();
 		editFieldsGroup.pack();
 
-		Button closeButton = createCloseButton();
-		closeButton.setLayoutData(formData(85, SWT.DEFAULT, null, new FormAttachment(editFieldsGroup, 0, SWT.RIGHT), new FormAttachment(editFieldsGroup, 6), null));
-			
+		Button okButton = new Button(shell, SWT.NONE);
+		okButton.setText(Labels.getLabel("button.OK"));
+
+		Button cancelButton = new Button(shell, SWT.NONE);
+		cancelButton.setText(Labels.getLabel("button.cancel"));
+
+		positionButtonsInFormLayout(okButton, cancelButton, editFieldsGroup);
+
 		shell.pack();
+
+		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				saveOpeners();
+				shell.close();
+			}
+		});
+		cancelButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				shell.close();
+			}
+		});
 
 		openersList.select(0);
 		loadFieldsForSelection();
-		
-		shell.addListener(SWT.Close, new Listener() {
-			public void handleEvent(Event e) {
-				saveOpeners();
-			}
-		});
 	}
 	
 	private void saveOpeners() {
