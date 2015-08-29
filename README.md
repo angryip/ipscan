@@ -1,6 +1,6 @@
 This is the source code of Angry IP Scanner, licensed with GPL v2.
 
-[!(https://travis-ci.org/angryziber/ipscan.svg?branch=master)](https://travis-ci.org/angryziber/ipscan)
+[![Build Status](https://travis-ci.org/angryziber/ipscan.svg?branch=master)](https://travis-ci.org/angryziber/ipscan)
 
 [Official site - AngryIP.org](http://angryip.org/)
 
