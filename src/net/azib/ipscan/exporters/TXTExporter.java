@@ -110,7 +110,6 @@ public class TXTExporter extends AbstractExporter {
 		try {
 			reader = new BufferedReader(new FileReader(fileName));
 
-			String originalStartIP = null;
 			String startIPAfterLoad = null;
 			String endIp = null;
 
@@ -124,7 +123,6 @@ public class TXTExporter extends AbstractExporter {
 				String[] sp = line.split("\\s+");
 
 				if (i == 4) {
-					originalStartIP = sp[1];
 					startIPAfterLoad = sp[1];
 					endIp = sp[3];
 				}
