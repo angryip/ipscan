@@ -7,7 +7,6 @@ package net.azib.ipscan.gui.actions;
 
 import net.azib.ipscan.Main;
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.UserErrorException;
@@ -94,8 +93,10 @@ public class ScanMenuActions {
 				if (!results.isEmpty()) {
 					String lastLoadedIP = results.get(results.size()-1).getAddress().getHostAddress();
 					String[] feederIPs = feederRegistry.current().serialize();
+
+					// TODO: ask the user whether to continue the previous scan
 					if (!lastLoadedIP.equals(feederIPs[1]))
-						stateMachine.transitionToNext(); // we need to continue previous scan
+						stateMachine.transitionToNext();
 				}
 
 			}
