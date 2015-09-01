@@ -77,8 +77,13 @@ Angry IP Scanner source code is in the net.azib.ipscan Java package.
 ### Dependency injection
 
 Angry IP Scanner uses [dependency injection pattern](http://en.wikipedia.org/wiki/Dependency_injection) in its design,
-provided by the [PicoContainer library](http://www.picocontainer.org/), which was chosen for being lightweight (adds about 60 kb).
+provided by the [Dagger 2](http://google.github.io/dagger/), which was chosen for working at compile time. 
+PicoContainer is not used anymore. 
 
-PicoContainer encourages constructor injection, i.e. classes declare all required dependencies in their constrcutors, and container then resolves these dependencies (mostly) automatically, so that the classes themselves don't have to worry where these dependencies come from. This eases both development and unit testing of the code.
+Dagger uses `javax.inject` annotations, thus all classes that can be injected must have an @Inject-annotated constructor.
+Dependent objects that are required to be provided by the injection are then either annotated as fields or constructor parameters.
+
+Dagger then resolves these dependencies automatically, so that the classes themselves don't have to worry where their dependencies 
+come from. This eases both development and unit testing of the code.
+
 Components are registered in the [ComponentRegistry](https://github.com/angryziber/ipscan/blob/master/src/net/azib/ipscan/core/ComponentRegistry.java) class.
-
