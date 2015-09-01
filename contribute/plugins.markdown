@@ -20,7 +20,7 @@ Writing plugins
 ---------------
 
 The plugin's jar file must have a META-INF/MANIFEST.MF entry 'IPScan-Plugins' that lists full Java class names of all plugins
-container in the jar file.
+contained in the jar file.
 
 A plugin is an implementation of one of the following interfaces:
 
@@ -28,5 +28,7 @@ A plugin is an implementation of one of the following interfaces:
 - Pinger - these guys detect whether an IP is dead or alive
 - Exporter - used for exporting the scanning results
 - Feeder - these guys generate IP address sequence to scan (feed the scanner)
+
+Plugin classes should generally have a non-arg constructor. 
 
 Look at [the source code](https://github.com/angryziber/ipscan) for examples of how the core plugins are implemented.
