@@ -6,12 +6,10 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * OpenersMenu wrapper for type-safety
  */
-@Singleton
 public class OpenersMenu extends AbstractMenu {
 
 	@Inject
