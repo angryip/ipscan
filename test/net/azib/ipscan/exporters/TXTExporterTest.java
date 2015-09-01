@@ -14,6 +14,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * TXT Exporter Test
@@ -79,5 +80,6 @@ public class TXTExporterTest extends AbstractExporterTestCase {
 		List<ScanningResult> results = ((TXTExporter) exporter).importResults(file, feederGUI);
 
 		assertEquals(7, results.size());
+		verify(feederGUI).unserialize("192.168.0.19", "192.168.0.255");
 	}
 }
