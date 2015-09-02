@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import static java.net.NetworkInterface.getNetworkInterfaces;
+import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
 /**
  * This class provides various utility static methods,
@@ -27,6 +28,7 @@ public class InetAddressUtils {
 	
 	// Warning! IPv4 specific code
 	public static final Pattern IP_ADDRESS_REGEX = Pattern.compile("\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b");
+	public static final Pattern HOSTNAME_REGEX = Pattern.compile("\\b(([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\.)+([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\b", CASE_INSENSITIVE);
 
 	public static InetAddress startRangeByNetmask(InetAddress address, InetAddress netmask) {
 		byte[] netmaskBytes = netmask.getAddress();
