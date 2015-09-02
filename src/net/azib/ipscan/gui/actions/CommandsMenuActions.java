@@ -243,24 +243,23 @@ public class CommandsMenuActions {
 				name = name.substring(0, indexOf);
 			}
 			Opener opener = openersConfig.getOpener(name);
-			
-			int selectedItem = resultTable.getSelectionIndex();
-			if (selectedItem < 0) {
+
+			int[] selectionIndices = resultTable.getSelectionIndices();
+			if (selectionIndices.length == 0)
 				throw new UserErrorException("commands.noSelection");
-			}				
-					
-			try {
-				statusBar.setStatusText(Labels.getLabel("state.opening") + name);
-				openerLauncher.launch(opener, selectedItem);
-				// wait a bit to make status visible
-				// TODO: somehow wait until the process is started
-				Thread.sleep(500);
-			}
-			catch (InterruptedException ignore) {}
-			finally {
-				statusBar.setStatusText(null);
+
+			for (int i : selectionIndices) {
+				try {
+					statusBar.setStatusText(Labels.getLabel("state.opening") + name);
+					openerLauncher.launch(opener, i);
+					// wait a bit to make status visible
+					Thread.sleep(100);
+				}
+				catch (InterruptedException ignore) {}
+				finally {
+					statusBar.setStatusText(null);
+				}
 			}
 		}
 	}
-
 }
