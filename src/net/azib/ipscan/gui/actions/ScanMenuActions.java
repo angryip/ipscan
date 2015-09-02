@@ -94,8 +94,7 @@ public class ScanMenuActions {
 					String lastLoadedIP = results.get(results.size()-1).getAddress().getHostAddress();
 					String[] feederIPs = feederRegistry.current().serialize();
 
-					// TODO: ask the user whether to continue the previous scan
-					if (!lastLoadedIP.equals(feederIPs[1]))
+					if (resumePreviousScan(lastLoadedIP, feederIPs[1]))
 						stateMachine.transitionToNext();
 				}
 
@@ -103,6 +102,15 @@ public class ScanMenuActions {
 			catch (Exception e) {
 				throw new UserErrorException("fileLoad.failed", e);
 			}
+		}
+
+		private boolean resumePreviousScan(String lastIP, String endIP) {
+			if (lastIP.equals(endIP)) return false;
+
+			MessageBox box = new MessageBox(resultTable.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.SHEET);
+			box.setText(Labels.getLabel("menu.scan.load").replace("&", ""));
+			box.setMessage(Labels.getLabel("text.scan.resume").replace("%LASTIP", lastIP).replace("%ENDIP", endIP));
+			return box.open() == SWT.YES;
 		}
 
 		private void addFileExtensions(List<String> extensions, List<String> descriptions, StringBuffer sb) {

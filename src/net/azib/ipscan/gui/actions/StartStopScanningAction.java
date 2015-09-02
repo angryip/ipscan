@@ -124,7 +124,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		stateMachine.transitionToNext();
 	}
 
-	private final boolean preScanChecks() {
+	private boolean preScanChecks() {
 		// autodetect usable pingers and silently ignore any changes - 
 		// user should see any errors only if they have explicitly selected a pinger
 		pingerRegistry.checkSelectedPinger();
@@ -198,7 +198,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	/**
 	 * @return the appropriate ResultsCallback instance, depending on the configured display method.
 	 */
-	private final ScanningResultCallback createResultsCallback(ScanningState state) {
+	private ScanningResultCallback createResultsCallback(ScanningState state) {
 		// rescanning must follow the same strategy of displaying all hosts (even the dead ones), because the results are already in the list
 		if (guiConfig.displayMethod == DisplayMethod.ALL || state == ScanningState.RESTARTING) {
 			return new ScanningResultCallback() {
