@@ -5,8 +5,7 @@
 	<property name="dist" value="dist"/>
 	<property name="test" value="test"/>
 	<property name="resources" value="resources"/>
-	<property name="testresults" value="test-results"/>
-			
+
 	<property name="name" value="Angry IP Scanner"/>
 	<property name="version" value="3.4"/>
 	<property name="main.class" value="net.azib.ipscan.Main"/>
@@ -91,7 +90,6 @@
 		<delete dir="${bin}.win32"/>
 		<delete dir="${bin}.win64"/>
 		<delete dir="${bin}.mac"/>
-		<delete dir="${testresults}"/>
     </target>
 
 	<macrodef name="compile">
@@ -156,8 +154,6 @@
 	</target>
 	
 	<target name="test" depends="clean,compile,compile-tests">
-		<delete dir="${testresults}"/>
-		<mkdir dir="${testresults}"/>
 		<delete file="coverage.ec"/>
 		<junit haltonfailure="true" showoutput="true" fork="yes">
 			<classpath>
@@ -166,7 +162,7 @@
 				<fileset dir="lib" includes="**/*.jar"/>
 			</classpath>
 			<formatter type="brief" usefile="no"/>
-			<batchtest todir="${testresults}">
+			<batchtest>
 				<fileset dir="${testbin}" includes="**/*Test.class"/>
 			</batchtest>
 		</junit>
