@@ -20,12 +20,13 @@ import org.eclipse.swt.widgets.MessageBox;
 
 import javax.inject.Inject;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static net.azib.ipscan.util.IOUtils.closeQuietly;
 
 /**
  * HelpActions
@@ -140,12 +141,8 @@ public class HelpMenuActions {
 						Logger.getLogger(getClass().getName()).log(Level.WARNING, message, e);
 					}
 					finally {
-						try {
-							if (reader != null)
-								reader.close();
-						}
-						catch (IOException e) {}
-						
+						closeQuietly(reader);
+
 						// show the box in the SWT thread
 						final String messageToShow = message;
 						final int messageStyleToShow = messageStyle;
