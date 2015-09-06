@@ -12,6 +12,7 @@ import net.azib.ipscan.gui.AboutDialog;
 import net.azib.ipscan.gui.GettingStartedDialog;
 import net.azib.ipscan.gui.InfoDialog;
 import net.azib.ipscan.gui.StatusBar;
+import net.azib.ipscan.util.GoogleAnalytics;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -111,7 +112,10 @@ public class HelpMenuActions {
 		
 		public void check() {
 			statusBar.setStatusText(Labels.getLabel("state.retrievingVersion"));
-			
+
+			new GoogleAnalytics().asyncReport(Version.getVersion() + " jvm " + System.getProperty("java.runtime.version") + " " +
+					System.getProperty("os.name") + " " + System.getProperty("os.version") + " " + System.getProperty("os.arch"));
+
 			Runnable checkVersionCode = new Runnable() {
 				public void run() {
 					BufferedReader reader = null;
