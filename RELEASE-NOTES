@@ -1,5 +1,5 @@
 Changes in 3.4:
-- Openers can open several IPs at ones
+- Openers can open several IPs at once
 - More bugfixes in opener editor + OK/Cancel buttons
 - File Feeder now supports extracting of hostnames in addition to IP addresses
 - Loading of exported files will no longer try to rescan the last loaded IP
