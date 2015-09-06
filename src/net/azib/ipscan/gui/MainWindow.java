@@ -17,6 +17,7 @@ import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.actions.ToolsActions;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import net.azib.ipscan.gui.menu.ResultsContextMenu;
+import net.azib.ipscan.util.GoogleAnalytics;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -82,6 +83,7 @@ public class MainWindow {
 		}
 
 		if (guiConfig.isFirstRun) {
+			new GoogleAnalytics().report("First run");
 			Display.getCurrent().asyncExec(new Runnable() {
 				public void run() {
 					GettingStartedDialog dialog = new GettingStartedDialog();
