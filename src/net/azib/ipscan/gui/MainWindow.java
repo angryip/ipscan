@@ -98,6 +98,10 @@ public class MainWindow {
 				}
 			});
 		}
+		else if (!Version.getVersion().equals(guiConfig.lastRunVersion)) {
+			new GoogleAnalytics().asyncReport("Update " + guiConfig.lastRunVersion + " to " + Version.getVersion());
+			guiConfig.lastRunVersion = Version.getVersion();
+		}
 
 		stateMachine.addTransitionListener(new EnablerDisabler());
 
