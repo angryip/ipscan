@@ -29,16 +29,10 @@ import java.util.logging.Logger;
 
 import static net.azib.ipscan.util.IOUtils.closeQuietly;
 
-/**
- * HelpActions
- *
- * @author Anton Keks
- */
 public class HelpMenuActions {
 
 	public static final class GettingStarted implements Listener {
-		@Inject
-		public GettingStarted() {}
+		@Inject public GettingStarted() {}
 
 		public void handleEvent(Event event) {
 			new GettingStartedDialog().open();
@@ -48,8 +42,7 @@ public class HelpMenuActions {
 	public static final class CommandLineUsage implements Listener {
 		private CommandLineProcessor cli;
 
-		@Inject
-		public CommandLineUsage(CommandLineProcessor cli) {
+		@Inject public CommandLineUsage(CommandLineProcessor cli) {
 			this.cli = cli;
 		}
 
@@ -73,8 +66,7 @@ public class HelpMenuActions {
 	}
 
 	public static final class Website implements Listener {
-		@Inject
-		public Website() {}
+		@Inject public Website() {}
 
 		public void handleEvent(Event event) {
 			BrowserLauncher.openURL(Version.WEBSITE);
@@ -82,17 +74,23 @@ public class HelpMenuActions {
 	}
 
 	public static final class FAQ implements Listener {
-		@Inject
-		public FAQ() {}
+		@Inject public FAQ() {}
 
 		public void handleEvent(Event event) {
 			BrowserLauncher.openURL(Version.FAQ_URL);
 		}
 	}
 
+	public static final class Issues implements Listener {
+		@Inject public Issues() {}
+
+		public void handleEvent(Event event) {
+			BrowserLauncher.openURL(Version.ISSUES_URL);
+		}
+	}
+
 	public static final class Plugins implements Listener {
-		@Inject
-		public Plugins() {}
+		@Inject public Plugins() {}
 
 		public void handleEvent(Event event) {
 			BrowserLauncher.openURL(Version.PLUGINS_URL);

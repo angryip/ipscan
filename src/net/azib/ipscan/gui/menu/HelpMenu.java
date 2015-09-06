@@ -16,6 +16,7 @@ public class HelpMenu extends AbstractMenu {
 					HelpMenuActions.GettingStarted gettingStarted,
 					HelpMenuActions.Website website,
 					HelpMenuActions.FAQ faq,
+					HelpMenuActions.Issues issues,
 					HelpMenuActions.Plugins plugins,
 					HelpMenuActions.CommandLineUsage commandLineUsage,
 					HelpMenuActions.CheckVersion checkVersion,
@@ -27,6 +28,7 @@ public class HelpMenu extends AbstractMenu {
 		initMenuItem(this, null, null, null, null);
 		initMenuItem(this, "menu.help.website", null, null, website);
 		initMenuItem(this, "menu.help.faq", null, null, faq);
+		initMenuItem(this, "menu.help.issues", null, null, issues);
 		initMenuItem(this, "menu.help.plugins", null, null, plugins);
 		initMenuItem(this, null, null, null, null);
 		initMenuItem(this, "menu.help.cmdLine", null, null, commandLineUsage);
