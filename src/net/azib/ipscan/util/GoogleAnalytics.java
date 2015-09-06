@@ -24,12 +24,14 @@ public class GoogleAnalytics {
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-			conn.setRequestProperty("User-Agent", "Java/" + System.getProperty("java.version") + "-" + System.getProperty("os.name") + "-" + System.getProperty("os.version") + "-" + System.getProperty("os.arch"));
 			conn.setDoOutput(true);
 			OutputStream os = conn.getOutputStream();
 			String contentParam = "exception".equals(type) ? "exd" : "cd";
-			String payload = "v=1&t=" + type + "&tid=" + Version.GA_ID + "&cid=" + config.getUUID() + "&an=ipscan&av=" + Version.getVersion() + "&" +
-							 contentParam + "=" + URLEncoder.encode(content, "UTF-8") + "&ul=" + config.getLocale();
+			String payload = "v=1&t=" + type + "&tid=" + Version.GA_ID + "&cid=" + config.getUUID() + "&an=ipscan&av=" + Version.getVersion() +
+					         "&" + contentParam + "=" + URLEncoder.encode(content, "UTF-8") +
+					         "&ul=" + config.getLocale() +
+							 "&cd1=" + URLEncoder.encode(System.getProperty("os.name") + " " + System.getProperty("os.version") + " " + System.getProperty("os.arch"), "UTF-8") +
+							 "&cd2=" + URLEncoder.encode("Java " + System.getProperty("java.version"), "UTF-8");
 			os.write(payload.getBytes());
 			os.close();
 			conn.getContent();
