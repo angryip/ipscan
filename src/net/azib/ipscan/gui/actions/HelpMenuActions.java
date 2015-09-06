@@ -113,8 +113,7 @@ public class HelpMenuActions {
 		public void check() {
 			statusBar.setStatusText(Labels.getLabel("state.retrievingVersion"));
 
-			new GoogleAnalytics().asyncReport(Version.getVersion() + " jvm " + System.getProperty("java.runtime.version") + " " +
-					System.getProperty("os.name") + " " + System.getProperty("os.version") + " " + System.getProperty("os.arch"));
+			new GoogleAnalytics().asyncReport("Version check " + Version.getVersion());
 
 			Runnable checkVersionCode = new Runnable() {
 				public void run() {

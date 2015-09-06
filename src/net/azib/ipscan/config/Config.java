@@ -4,6 +4,7 @@
 package net.azib.ipscan.config;
 
 import java.util.Locale;
+import java.util.UUID;
 import java.util.prefs.Preferences;
 
 /**
@@ -19,6 +20,7 @@ public final class Config {
 	
 	private Preferences preferences;
 	public String language;
+	public String uuid;
 
 	/** easily accessible scanner configuration */
 	private ScannerConfig scannerConfig;
@@ -36,6 +38,11 @@ public final class Config {
 		favoritesConfig = new FavoritesConfig(preferences);
 		openersConfig = new OpenersConfig(preferences);
 		language = preferences.get("language", "system");
+		uuid = preferences.get("uuid", null);
+		if (uuid == null) {
+			uuid = UUID.randomUUID().toString();
+			preferences.put("uuid", uuid);
+		}
 	}
 
 	/**
@@ -50,6 +57,7 @@ public final class Config {
 
 	public void store() {
 		preferences.put("language", language);
+		preferences.put("uuid", uuid);
 		scannerConfig.store();
 		guiConfig.store();
 		favoritesConfig.store();
@@ -95,5 +103,9 @@ public final class Config {
 		else {
 			return new Locale(language);
 		}
+	}
+
+	public String getUUID() {
+		return uuid;
 	}
 }

@@ -9,6 +9,7 @@ import net.azib.ipscan.config.*;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.gui.InfoDialog;
 import net.azib.ipscan.gui.MainWindow;
+import net.azib.ipscan.util.GoogleAnalytics;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Display;
@@ -95,10 +96,12 @@ public class Main {
 		catch (UnsatisfiedLinkError e) {
 			JOptionPane.showMessageDialog(null, "Failed to load native code. Probably you are using a binary built for wrong OS or CPU. If 64-bit binary doesn't work for you, try 32-bit version, or vice versa.");
 			e.printStackTrace();
+			new GoogleAnalytics().report(e);
 		}
 		catch (Throwable e) {
 			JOptionPane.showMessageDialog(null, e + "\nPlease submit a bug report mentioning your OS and what were you doing.");
 			e.printStackTrace();
+			new GoogleAnalytics().report(e);
 		}
 	}
 
