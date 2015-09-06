@@ -12,6 +12,10 @@ import java.util.logging.Logger;
 
 import static java.util.logging.Level.WARNING;
 
+/**
+ * Utility class to send statistics to Google Analytics.
+ * API builder: https://ga-dev-tools.appspot.com/hit-builder/
+ */
 public class GoogleAnalytics {
 	public void report(String screen) {
 		report("screenview", screen);
@@ -30,6 +34,7 @@ public class GoogleAnalytics {
 			String payload = "v=1&t=" + type + "&tid=" + Version.GA_ID + "&cid=" + config.getUUID() + "&an=ipscan&av=" + Version.getVersion() +
 					         "&" + contentParam + "=" + URLEncoder.encode(content, "UTF-8") +
 					         "&ul=" + config.getLocale() +
+							 "&vp=" + config.forGUI().mainWindowSize.x + "x" + config.forGUI().mainWindowSize.y +
 							 "&cd1=" + URLEncoder.encode(System.getProperty("os.name") + " " + System.getProperty("os.version") + " " + System.getProperty("os.arch"), "UTF-8") +
 							 "&cd2=" + URLEncoder.encode("Java " + System.getProperty("java.version"), "UTF-8");
 			os.write(payload.getBytes());
