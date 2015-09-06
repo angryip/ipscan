@@ -11,7 +11,7 @@ Changes in 3.4:
 - New translations: Turkish, German
 
 Changes in 3.3.3:
-- Fixed a bug in opener editor when swithing between openers could overwrite them
+- Fixed a bug in opener editor when switching between openers could overwrite them
 - Bind comments to MAC addresses if possible, making comments for local hosts persist even for dynamic IPs
 
 Changes in 3.3.2:
