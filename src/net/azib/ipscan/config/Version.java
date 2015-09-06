@@ -19,8 +19,6 @@ public class Version {
 	
 	public static final String WEBSITE = "http://angryip.org";
 	
-	public static final String MAILTO = "support@azib.net";
-
 	public static final String FAQ_URL = WEBSITE + "/faq/";
 
 	public static final String PRIVACY_URL = WEBSITE + "/about/privacy.html";
