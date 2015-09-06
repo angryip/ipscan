@@ -6,6 +6,7 @@ Changes in 3.4:
 - User is asked whether to resume the loaded scan if it seems unfinished
 - Fixed MAC address fetcher for Mac OS
 - MAC vendors updated
+- Check for new version automatically once per month
 - Internal and plugins: Dagger is now used instead of PicoContainer for dependency injection
 - New translations: Turkish, German
 
