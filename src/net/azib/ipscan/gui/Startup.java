@@ -38,7 +38,6 @@ public class Startup {
 		else if (!Version.getVersion().equals(guiConfig.lastRunVersion)) {
 			new GoogleAnalytics().asyncReport("Update " + guiConfig.lastRunVersion + " to " + Version.getVersion());
 			guiConfig.lastRunVersion = Version.getVersion();
-			guiConfig.lastVersionCheck = System.currentTimeMillis();
 		}
 		else if (System.currentTimeMillis() - guiConfig.lastVersionCheck > 30L * 24 * 3600 * 1000) {
 			checkVersion.check();
