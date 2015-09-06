@@ -24,6 +24,7 @@ public class GUIConfig {
 	
 	public boolean isFirstRun;
 	public String lastRunVersion;
+	public long lastVersionCheck;
 	public int activeFeeder;
 	public DisplayMethod displayMethod;
 	public boolean showScanStats;
@@ -45,6 +46,7 @@ public class GUIConfig {
 	private void load() {
 		isFirstRun = preferences.getBoolean("firstRun", true);
 		lastRunVersion = preferences.get("lastRunVersion", "Unknown");
+		lastVersionCheck = preferences.getLong("lastVersionCheck", 0);
 		activeFeeder = preferences.getInt("activeFeeder", 0);
 		displayMethod = DisplayMethod.valueOf(preferences.get("displayMethod", DisplayMethod.ALL.toString()));
 		showScanStats = preferences.getBoolean("showScanStats", true);
@@ -63,6 +65,7 @@ public class GUIConfig {
 	public void store() {
 		preferences.putBoolean("firstRun", isFirstRun);
 		preferences.put("lastRunVersion", lastRunVersion);
+		preferences.putLong("lastVersionCheck", lastVersionCheck);
 		preferences.putInt("activeFeeder", activeFeeder);
 		preferences.put("displayMethod", displayMethod.toString());
 		preferences.putBoolean("showScanStats", showScanStats);

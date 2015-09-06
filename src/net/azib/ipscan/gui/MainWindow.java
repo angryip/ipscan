@@ -7,7 +7,6 @@ package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
@@ -17,7 +16,6 @@ import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.actions.ToolsActions;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import net.azib.ipscan.gui.menu.ResultsContextMenu;
-import net.azib.ipscan.util.GoogleAnalytics;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -64,7 +62,8 @@ public class MainWindow {
 					  ResultTable resultTable, StatusBar statusBar, ResultsContextMenu resultsContextMenu,
 					  FeederGUIRegistry feederGUIRegistry, final StateMachine stateMachine,
 					  ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListener,
-					  MainMenu menuBar /* don't delete: initiates main menu creation */ ) {
+					  MainMenu menuBar /* don't delete: initiates main menu creation */,
+					  Startup startup) {
 
 		this.shell = shell;
 		this.guiConfig = guiConfig;
@@ -82,29 +81,9 @@ public class MainWindow {
 			shell.setMaximized(true);
 		}
 
-		if (guiConfig.isFirstRun) {
-			new GoogleAnalytics().report("First run");
-			Display.getCurrent().asyncExec(new Runnable() {
-				public void run() {
-					GettingStartedDialog dialog = new GettingStartedDialog();
-					if (Platform.CRIPPLED_WINDOWS)
-						dialog.prependText(Labels.getLabel("text.crippledWindowsInfo"));
-					if (Platform.GNU_JAVA)
-						dialog.prependText(Labels.getLabel("text.gnuJavaInfo"));
-
-					MainWindow.this.shell.forceActive();
-					dialog.open();
-					MainWindow.this.guiConfig.isFirstRun = false;
-				}
-			});
-		}
-		else if (!Version.getVersion().equals(guiConfig.lastRunVersion)) {
-			new GoogleAnalytics().asyncReport("Update " + guiConfig.lastRunVersion + " to " + Version.getVersion());
-			guiConfig.lastRunVersion = Version.getVersion();
-		}
+		startup.onStart();
 
 		stateMachine.addTransitionListener(new EnablerDisabler());
-
 		Display.getCurrent().asyncExec(new Runnable() {
 			public void run() {
 				// asynchronously run init handlers outside of the constructor
