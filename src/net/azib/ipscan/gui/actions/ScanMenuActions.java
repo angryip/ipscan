@@ -9,6 +9,7 @@ import net.azib.ipscan.Main;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.core.ScanningResult;
+import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
@@ -45,14 +46,16 @@ public class ScanMenuActions {
 		private final TXTExporter txtExporter;
 		private final ExporterRegistry exporterRegistry;
 		private final FeederGUIRegistry feederRegistry;
+		private final ScanningResultList scanningResults;
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
 
 		@Inject
-		public LoadFromFile(TXTExporter txtExporter, ExporterRegistry exporterRegistry, FeederGUIRegistry feederRegistry, ResultTable resultTable, StateMachine stateMachine) {
+		public LoadFromFile(TXTExporter txtExporter, ExporterRegistry exporterRegistry, FeederGUIRegistry feederRegistry, ScanningResultList scanningResults, ResultTable resultTable, StateMachine stateMachine) {
 			this.txtExporter = txtExporter;
 			this.exporterRegistry = exporterRegistry;
 			this.feederRegistry = feederRegistry;
+			this.scanningResults = scanningResults;
 			this.resultTable = resultTable;
 			this.stateMachine = stateMachine;
 		}
@@ -83,6 +86,7 @@ public class ScanMenuActions {
 			try {
 				isLoadedFromFile = true;
 				feederRegistry.select("feeder.range");
+				scanningResults.initNewScan(feederRegistry.current().createFeeder());
 
 				List<ScanningResult> results = txtExporter.importResults(fileName, feederRegistry.current());
 				resultTable.clearAll();
