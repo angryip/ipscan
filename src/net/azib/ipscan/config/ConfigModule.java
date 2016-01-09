@@ -27,6 +27,10 @@ public class ConfigModule {
 		return getConfig().forOpeners();
 	}
 
+	@Provides public FavoritesConfig forFavorites() {
+		return getConfig().forFavorites();
+	}
+
 	@Provides public GUIConfig forGUI() {
 		return getConfig().forGUI();
 	}

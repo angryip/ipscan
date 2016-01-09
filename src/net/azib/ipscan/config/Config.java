@@ -27,7 +27,7 @@ public final class Config {
 	/** various GUI preferences and dimensions are stored here */
 	private GUIConfig guiConfig;
 	/** favorites are stored here */
-	private NamedListConfig favoritesConfig;
+	private FavoritesConfig favoritesConfig;
 	/** openers are stored here */
 	private OpenersConfig openersConfig;
 
@@ -78,7 +78,7 @@ public final class Config {
 	/**
 	 * @return Favorites config (only local access)
 	 */
-	NamedListConfig forFavorites() {
+	FavoritesConfig forFavorites() {
 		return favoritesConfig;
 	}
 
