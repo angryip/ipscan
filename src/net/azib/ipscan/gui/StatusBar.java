@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import static net.azib.ipscan.config.GUIConfig.DisplayMethod.PORTS;
+import static net.azib.ipscan.gui.util.LayoutHelper.formData;
 
 /**
  * The status bar of the main window.
@@ -52,29 +53,29 @@ public class StatusBar {
 		this.resultTable.addListener(SWT.Selection, new TableSelection(this, stateMachine));
 		
 		composite = new Composite(shell, SWT.NONE);
-		composite.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), null, new FormAttachment(100)));
+		composite.setLayoutData(formData(new FormAttachment(0), new FormAttachment(100), null, new FormAttachment(100)));
 		
 		composite.setLayout(LayoutHelper.formLayout(1, 1, 2));
 		
 		statusText = new Label(composite, SWT.BORDER);
-		statusText.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(35), new FormAttachment(0), new FormAttachment(100)));
+		statusText.setLayoutData(formData(new FormAttachment(0), new FormAttachment(35), new FormAttachment(0), new FormAttachment(100)));
 		setStatusText(null);
 		
 		displayMethodText = new Label(composite, SWT.BORDER);
 		displayMethodText.setText(Labels.getLabel("text.display." + PORTS));
 		displayMethodText.pack();
-		displayMethodText.setLayoutData(LayoutHelper.formData(displayMethodText.getSize().x, SWT.DEFAULT, new FormAttachment(statusText), null, new FormAttachment(0), new FormAttachment(100)));
+		displayMethodText.setLayoutData(formData(displayMethodText.getSize().x, SWT.DEFAULT, new FormAttachment(statusText), null, new FormAttachment(0), new FormAttachment(100)));
 		displayMethodText.addListener(SWT.MouseDown, new DisplayModeChangeListener());
 		updateConfigText();
 
 		threadsText = new Label(composite, SWT.BORDER);
 		setRunningThreads(Math.min(scannerConfig.maxThreads, 200)); // this should set the longest possible text		
 		threadsText.pack(); // calculate the width
-		threadsText.setLayoutData(LayoutHelper.formData(threadsText.getSize().x, SWT.DEFAULT, new FormAttachment(displayMethodText), null, new FormAttachment(0), new FormAttachment(100)));
+		threadsText.setLayoutData(formData(threadsText.getSize().x, SWT.DEFAULT, new FormAttachment(displayMethodText), null, new FormAttachment(0), new FormAttachment(100)));
 		setRunningThreads(0); // set back to 0 at startup
 		
 		progressBar = new ProgressBar(composite, SWT.BORDER);
-		progressBar.setLayoutData(LayoutHelper.formData(new FormAttachment(threadsText), new FormAttachment(100, 0), new FormAttachment(0), new FormAttachment(100)));
+		progressBar.setLayoutData(formData(new FormAttachment(threadsText), new FormAttachment(100, 0), new FormAttachment(0), new FormAttachment(100)));
 		progressBar.setSelection(0);
 	}
 	
