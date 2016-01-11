@@ -117,25 +117,34 @@ public class TXTExporter extends AbstractExporter {
 			String lastLoadedIP = null;
 
 			int ipIndex = 0, pingIndex = 1, portsIndex = 3;
-			String ipLabel = Labels.getLabel(IPFetcher.ID);
-			int i = 0;
+
+			String[] lookingFor = {
+					Labels.getLabel("exporter.txt.scanned"),
+					Labels.getLabel(IPFetcher.ID)
+			};
+			int lookingForIndex = 0;
+
 			String line;
 			while ((line = reader.readLine()) != null) {
-				i++;
-				if (i == 1) continue;
 				String[] sp = line.split("\\s+");
 
-				if (i == 4) {
-					startIP = sp[1];
-					endIP = sp[3];
+				if (lookingForIndex < lookingFor.length) {
+					if (lookingFor[lookingForIndex].equals(sp[0])) {
+						if (lookingForIndex == 0) {
+							startIP = sp[1];
+							endIP = sp[3];
+							lookingForIndex++;
+						}
+						else if (lookingForIndex == 1) {
+							pingIndex = asList(sp).indexOf(Labels.getLabel(PingFetcher.ID));
+							portsIndex = asList(sp).indexOf(Labels.getLabel(PortsFetcher.ID));
+							lookingForIndex++;
+						}
+					}
+					continue;
 				}
 
-				if (ipLabel.equals(sp[ipIndex])) {
-					pingIndex = asList(sp).indexOf(Labels.getLabel(PingFetcher.ID));
-					portsIndex = asList(sp).indexOf(Labels.getLabel(PortsFetcher.ID));
-				}
-
-				if (sp.length < 3 || i < 8) continue;
+				if (sp.length < 2) continue;
 
 				InetAddress addr = InetAddress.getByName(sp[ipIndex]);
 				lastLoadedIP = sp[ipIndex];
