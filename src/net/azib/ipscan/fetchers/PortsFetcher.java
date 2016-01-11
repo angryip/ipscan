@@ -119,7 +119,7 @@ public class PortsFetcher extends AbstractFetcher {
 					assert e instanceof ConnectException : e;
 				}
 				finally {
-          sockets.closeAndUnbind(socket);
+					sockets.closeAndUnbind(socket);
 				}
 			}
 		}
@@ -145,11 +145,11 @@ public class PortsFetcher extends AbstractFetcher {
 			return NotScanned.VALUE;
 		
 		SortedSet<Integer> openPorts = getOpenPorts(subject);
-		boolean portsFound = openPorts.size() > 0;
-		if (portsFound) {
+		if (!openPorts.isEmpty()) {
 			subject.setResultType(ResultType.WITH_PORTS);
+			return new NumericRangeList(openPorts, displayAsRanges);
 		}
-		return portsFound ? new NumericRangeList(openPorts, displayAsRanges) : null;
+		return null;
 	}
 
 	public void init() {
