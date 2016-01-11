@@ -16,9 +16,9 @@ import net.azib.ipscan.exporters.Exporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
 import net.azib.ipscan.feeders.FeederCreator;
 import net.azib.ipscan.feeders.FeederRegistry;
-import net.azib.ipscan.gui.actions.ScanMenuActions;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.File;
 
 /**
@@ -26,6 +26,7 @@ import java.io.File;
  *
  * @author Anton Keks
  */
+@Singleton
 public class CommandLineProcessor implements CommandProcessor, StateTransitionListener {
 	private final FeederRegistry<? extends FeederCreator> feederRegistry;
 	private final ExporterRegistry exporters;
@@ -158,7 +159,6 @@ public class CommandLineProcessor implements CommandProcessor, StateTransitionLi
 			
 			// start scanning automatically
 			if (autoStart) {
-				ScanMenuActions.isLoadedFromFile = false;
 				stateMachine.transitionToNext();
 			}
 		}
