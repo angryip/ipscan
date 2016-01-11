@@ -49,14 +49,15 @@ public class TXTExporter extends AbstractExporter {
 		super.start(outputStream, feederInfo);
 
 		if (!append) {
-			output.write(Labels.getLabel("exporter.txt.generated"));
+			output.print(Labels.getLabel("exporter.txt.generated"));
+			output.print(' ');
 			output.println(Version.getFullName());
 			output.println(Version.WEBSITE);
 			output.println();
-			
-			String scanned = Labels.getLabel("exporter.txt.scanned");
-			scanned = scanned.replaceFirst("%INFO", feederInfo);  
-			output.println(scanned);
+
+			output.print(Labels.getLabel("exporter.txt.scanned"));
+			output.print(' ');
+			output.println(feederInfo);
 			output.println(DateFormat.getDateTimeInstance().format(new Date()));
 			output.println();
 		}
