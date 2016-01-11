@@ -39,8 +39,6 @@ import java.util.List;
  */
 public class ScanMenuActions {
 
-	public static boolean isLoadedFromFile = false;
-
 	public static class LoadFromFile implements Listener {
 
 		private final TXTExporter txtExporter;
@@ -84,7 +82,6 @@ public class ScanMenuActions {
 
 		private void loadResultsFrom(String fileName) {
 			try {
-				isLoadedFromFile = true;
 				feederRegistry.select("feeder.range");
 				scanningResults.initNewScan(feederRegistry.current().createFeeder());
 
@@ -99,7 +96,7 @@ public class ScanMenuActions {
 					String[] feederIPs = feederRegistry.current().serialize();
 
 					if (resumePreviousScan(lastLoadedIP, feederIPs[1]))
-						stateMachine.transitionToNext();
+						stateMachine.continueScanning();
 				}
 
 			}

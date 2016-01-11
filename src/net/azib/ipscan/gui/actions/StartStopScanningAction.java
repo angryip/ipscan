@@ -120,7 +120,6 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 			if (!preScanChecks())
 				return;
 		}
-		ScanMenuActions.isLoadedFromFile = false;
 		stateMachine.transitionToNext();
 	}
 
@@ -155,7 +154,9 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				break;
 			case STARTING:
 				// start the scan from scratch!
-				resultTable.removeAll();
+				if (transition != Transition.CONTINUE)
+					resultTable.removeAll();
+
 				try {
 					scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createFeeder(), StartStopScanningAction.this, createResultsCallback(state));
 					stateMachine.startScanning();

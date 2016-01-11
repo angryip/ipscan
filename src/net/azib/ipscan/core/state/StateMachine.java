@@ -20,7 +20,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public abstract class StateMachine {
 	
-	public enum Transition {INIT, START, STOP, NEXT, COMPLETE, RESET, RESCAN}
+	public enum Transition {INIT, START, STOP, NEXT, COMPLETE, RESET, RESCAN, CONTINUE}
 	
 	private volatile ScanningState state = ScanningState.IDLE;
 	
@@ -150,6 +150,18 @@ public abstract class StateMachine {
 		}
 		else {
 			throw new IllegalStateException("Attempt to go scanning from " + state);
+		}
+	}
+
+	/**
+	 * Continues previously aborted scanning process
+	 */
+	public void continueScanning() {
+		if (state == ScanningState.IDLE) {
+			transitionTo(ScanningState.STARTING, Transition.CONTINUE);
+		}
+		else {
+			throw new IllegalStateException("Attempt to continue scanning from " + state);
 		}
 	}
 
