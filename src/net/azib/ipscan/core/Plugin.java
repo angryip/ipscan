@@ -15,11 +15,11 @@ public interface Plugin {
 	/**
 	 * @return unique ID of the pluggable, representing it
 	 */
-	public String getId();
+	String getId();
 	
 	/**
 	 * @return localized name of this pluggable (most likely resolved using it's id)
 	 */
-	public String getName();
+	String getName();
 	
 }

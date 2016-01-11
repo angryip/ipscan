@@ -30,13 +30,13 @@ public interface Exporter extends Cloneable, Plugin {
 	/**
 	 * @return the filename extension of the file type this Exporter produces (like txt, html, etc)
 	 */
-	public String getFilenameExtension();
+	String getFilenameExtension();
 	
 	/**
 	 * Tells the exporter that it should append to the specified file instead of creating a new one.
 	 * @param file the file that the appending will be directed to, so that the Exporter can prepare the file before it will start appending. 
 	 */
-	public void shouldAppendTo(File file);
+	void shouldAppendTo(File file);
 	
 	/**
 	 * Called on start of the exporting.
@@ -44,21 +44,21 @@ public interface Exporter extends Cloneable, Plugin {
 	 * @param feederInfo summary of feeder preferences, which were used for this scan
 	 * @throws IOException 
 	 */
-	public void start(OutputStream outputStream, String feederInfo) throws IOException;
+	void start(OutputStream outputStream, String feederInfo) throws IOException;
 	
 	/**
 	 * Called when no more data is available for exporting. This is the last
 	 * method, which is called on any exporter.
 	 * @throws IOException 
 	 */
-	public void end() throws IOException;
+	void end() throws IOException;
 	
 	/**
 	 * Called after the start to provide the whole list of fetchers
 	 * @param fetcherNames
 	 * @throws IOException 
 	 */
-	public void setFetchers(String[] fetcherNames) throws IOException;
+	void setFetchers(String[] fetcherNames) throws IOException;
 	
 	/**
 	 * Called to provide the actual scanning results for the IP address.
@@ -68,16 +68,16 @@ public interface Exporter extends Cloneable, Plugin {
 	 * Any element of results can be null.
 	 * @throws IOException 
 	 */
-	public void nextAddressResults(Object[] results) throws IOException;
+	void nextAddressResults(Object[] results) throws IOException;
 
 	/**
 	 * @deprecated mispelled method for backwards-compatibility
 	 */
-	public void nextAdressResults(Object[] results) throws IOException;
+	void nextAdressResults(Object[] results) throws IOException;
 	
 	/**
 	 * Clones the Exporter instance
 	 */
-	public Object clone() throws CloneNotSupportedException;
+	Object clone() throws CloneNotSupportedException;
 	
 }

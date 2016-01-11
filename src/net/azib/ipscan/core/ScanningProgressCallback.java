@@ -24,5 +24,5 @@ public interface ScanningProgressCallback {
 	 * @param percentageComplete value from 0 to 100, showing how much work
 	 * 		is already done.
 	 */
-	public void updateProgress(InetAddress currentAddress, int runningThreads, int percentageComplete);
+	void updateProgress(InetAddress currentAddress, int runningThreads, int percentageComplete);
 }

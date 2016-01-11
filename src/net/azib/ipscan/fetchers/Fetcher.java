@@ -30,18 +30,18 @@ public interface Fetcher extends Cloneable, Plugin {
 	 * @return full name to be displayed in the result table column. 
 	 * It may contain a suffix useful to inform users about the fetcher's preferences.
 	 */
-	public String getFullName();
+	String getFullName();
 	
 	/**
 	 * @return localized help text about the fetcher
 	 */
-	public String getInfo();
+	String getInfo();
 	
 	/**
 	 * @return the preferences class that may be used for editing of this fetcher's preferences
 	 * or null if no preferences editing is possible
 	 */
-	public Class<? extends FetcherPrefs> getPreferencesClass();
+	Class<? extends FetcherPrefs> getPreferencesClass();
 	
 	/**
 	 * Does the actual fetching.
@@ -49,15 +49,15 @@ public interface Fetcher extends Cloneable, Plugin {
 	 * @return the fetched data (a String in most cases), null in case of any error. 
 	 * Special values may also be returned, such as {@link NotAvailable} or {@link NotScanned}
 	 */
-	public Object scan(ScanningSubject subject);
+	Object scan(ScanningSubject subject);
 	
 	/**
 	 * Called before scanning has started to do any intialization stuff
 	 */
-	public void init();
+	void init();
 	
 	/**
 	 * Called after the scanning has been completed to do any cleanup needed
 	 */
-	public void cleanup();
+	void cleanup();
 }

@@ -22,6 +22,6 @@ public interface Pinger extends Closeable {
 	 * 
 	 * @param count number of pings to perform
 	 */
-	public PingResult ping(ScanningSubject subject, int count) throws IOException;
+	PingResult ping(ScanningSubject subject, int count) throws IOException;
 
 }

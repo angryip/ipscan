@@ -16,5 +16,5 @@ public interface FetcherPrefs {
 	 * Opens a self-maintained GUI editor of concrete fetcher preferences.
 	 * @param fetcher to edit
 	 */
-	public void openFor(Fetcher fetcher);
+	void openFor(Fetcher fetcher);
 }

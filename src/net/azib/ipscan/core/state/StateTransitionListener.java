@@ -20,6 +20,6 @@ public interface StateTransitionListener {
 	 * @param state 
 	 * @param transition 
 	 */
-	public void transitionTo(ScanningState state, Transition transition);
+	void transitionTo(ScanningState state, Transition transition);
 
 }

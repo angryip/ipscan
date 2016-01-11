@@ -18,12 +18,12 @@ public interface ScanningResultCallback {
 	 * @param result empty results holder for a single address
 	 * @return the method should return an int
 	 */
-	public void prepareForResults(ScanningResult result);
+	void prepareForResults(ScanningResult result);
 	
 	/**
 	 * This method is called when scanning results are ready.
 	 * @param results filled results holder for a single address
 	 */
-	public void consumeResults(ScanningResult results);
+	void consumeResults(ScanningResult results);
 	
 }
