@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static net.azib.ipscan.core.ScanningResult.ResultType.*;
 import static net.azib.ipscan.util.IOUtils.closeQuietly;
 import static net.azib.ipscan.util.InetAddressUtils.increment;
@@ -115,6 +116,7 @@ public class TXTExporter extends AbstractExporter {
 			String startIP = null;
 			String endIP = null;
 			String lastLoadedIP = null;
+			List<String> columns = emptyList();
 
 			int ipIndex = 0, pingIndex = 1, portsIndex = 3;
 
@@ -126,9 +128,11 @@ public class TXTExporter extends AbstractExporter {
 
 			String line;
 			while ((line = reader.readLine()) != null) {
-				String[] sp = line.split("\\s+");
+				String[] sp;
 
 				if (lookingForIndex < lookingFor.length) {
+					sp = line.split("\\s");
+
 					if (lookingFor[lookingForIndex].equals(sp[0])) {
 						if (lookingForIndex == 0) {
 							startIP = sp[1];
@@ -136,15 +140,18 @@ public class TXTExporter extends AbstractExporter {
 							lookingForIndex++;
 						}
 						else if (lookingForIndex == 1) {
-							pingIndex = asList(sp).indexOf(Labels.getLabel(PingFetcher.ID));
-							portsIndex = asList(sp).indexOf(Labels.getLabel(PortsFetcher.ID));
+							sp = line.split("\\s{2,}");
+							columns = asList(sp);
+							pingIndex = columns.indexOf(Labels.getLabel(PingFetcher.ID));
+							portsIndex = columns.indexOf(Labels.getLabel(PortsFetcher.ID));
 							lookingForIndex++;
 						}
 					}
 					continue;
 				}
 
-				if (sp.length < 2) continue;
+				sp = line.split("\\s{2,}");
+				if (sp.length < columns.size()) continue;
 
 				InetAddress addr = InetAddress.getByName(sp[ipIndex]);
 				lastLoadedIP = sp[ipIndex];

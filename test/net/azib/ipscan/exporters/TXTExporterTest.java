@@ -82,4 +82,15 @@ public class TXTExporterTest extends AbstractExporterTestCase {
 		assertEquals(7, results.size());
 		verify(feederGUI).unserialize("192.168.0.19", "192.168.0.255");
 	}
+
+	@Test
+	public void importFromBrokenFile() throws Exception {
+		String file = getClass().getResource("import-broken.txt").getPath();
+		AbstractFeederGUI feederGUI = mock(AbstractFeederGUI.class);
+
+		List<ScanningResult> results = ((TXTExporter) exporter).importResults(file, feederGUI);
+
+		assertEquals(7, results.size());
+		verify(feederGUI).unserialize("192.168.0.19", "192.168.0.255");
+	}
 }
