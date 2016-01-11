@@ -56,9 +56,15 @@ public class FeederGUIRegistryTest {
 	}
 
 	@Test
+	public void lastFeederIsNeverNull() throws Exception {
+		assertNotNull(registry.lastFeeder);
+		assertNotNull(registry.lastFeeder.toString());
+	}
+
+	@Test
 	public void createFeederRemembersTheLastOne() throws Exception {
 		Feeder lastFeeder = registry.createFeeder();
-		assertSame(lastFeeder, registry.lastScanFeeder);
+		assertSame(lastFeeder, registry.lastFeeder);
 		assertNotSame(lastFeeder, registry.createFeeder());
 	}
 

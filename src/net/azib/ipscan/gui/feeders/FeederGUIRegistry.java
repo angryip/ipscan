@@ -32,7 +32,7 @@ public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
 	private final Combo feederSelectionCombo;
 	private final GUIConfig guiConfig;
 	
-	Feeder lastScanFeeder;
+	Feeder lastFeeder;
 	private AbstractFeederGUI currentFeederGUI;
 	
 	@Inject public FeederGUIRegistry(List<AbstractFeederGUI> allTheFeeders, @Named("feederSelectionCombo") Combo feederSelectionCombo, GUIConfig guiConfig) {
@@ -43,6 +43,7 @@ public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
 		}
 		this.guiConfig = guiConfig;
 		this.currentFeederGUI = allTheFeeders.get(0);
+		this.lastFeeder = currentFeederGUI.createFeeder();
 	}
 	
 	public AbstractFeederGUI current() {
@@ -89,8 +90,8 @@ public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
 	 * @return new Feeder initialized using the currently selected Feeder GUI
 	 */
 	public Feeder createFeeder() {
-		lastScanFeeder = current().createFeeder(); 
-		return lastScanFeeder;
+		lastFeeder = current().createFeeder();
+		return lastFeeder;
 	}
 
 	/**
@@ -102,6 +103,6 @@ public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
 		for (int i = 0; i < selection.length; i++) {
 			addresses[i] = selection[i].getText();
 		}
-		return new RescanFeeder(lastScanFeeder, addresses);
+		return new RescanFeeder(lastFeeder, addresses);
 	}
 }
