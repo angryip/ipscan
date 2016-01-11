@@ -58,7 +58,7 @@ public class IPListExporter extends AbstractExporter {
 		throw new ExporterException("fetcher.notFound");
 	}
 
-	public void nextAdressResults(Object[] results) throws IOException {
+	public void nextAddressResults(Object[] results) throws IOException {
 		String address = results[ipFetcherIndex].toString(); 
 		Object ports = results[portsFetcherIndex];
 		

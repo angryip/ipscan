@@ -3,12 +3,12 @@
  */
 package net.azib.ipscan.exporters;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetAddress;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 /**
  * CSV Exporter Test
@@ -44,7 +44,7 @@ public class CSVExporterTest extends AbstractExporterTestCase {
 	public void testNextAddressResults() throws IOException {
 		exporter.start(outputStream, null);
 		exporter.setFetchers(new String[] {"fet1", "hello2"});
-		exporter.nextAdressResults(new Object[] {InetAddress.getLocalHost(), "oops, comma"});
+		exporter.nextAddressResults(new Object[] {InetAddress.getLocalHost(), "oops, comma"});
 		exporter.end();
 		assertContains("oops. comma");
 	}

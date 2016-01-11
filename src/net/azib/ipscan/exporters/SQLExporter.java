@@ -29,7 +29,7 @@ public class SQLExporter extends AbstractExporter {
 	public void setFetchers(String[] fetcherNames) throws IOException {
 	}
 	
-	public void nextAdressResults(Object[] results) throws IOException {
+	public void nextAddressResults(Object[] results) throws IOException {
 	
 	}
 }

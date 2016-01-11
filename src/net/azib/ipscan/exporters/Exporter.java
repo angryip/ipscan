@@ -68,6 +68,11 @@ public interface Exporter extends Cloneable, Plugin {
 	 * Any element of results can be null.
 	 * @throws IOException 
 	 */
+	public void nextAddressResults(Object[] results) throws IOException;
+
+	/**
+	 * @deprecated mispelled method for backwards-compatibility
+	 */
 	public void nextAdressResults(Object[] results) throws IOException;
 	
 	/**

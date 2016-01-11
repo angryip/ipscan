@@ -3,20 +3,19 @@
  */
 package net.azib.ipscan.exporters;
 
-import static org.junit.Assert.*;
+import junit.framework.ComparisonFailure;
+import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.fetchers.IPFetcher;
+import net.azib.ipscan.fetchers.PortsFetcher;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
 
-import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.fetchers.IPFetcher;
-import net.azib.ipscan.fetchers.PortsFetcher;
-import junit.framework.ComparisonFailure;
-
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * TestCase for Exporters.
@@ -65,7 +64,7 @@ public abstract class AbstractExporterTestCase {
 		exporter2.start(mockOutputStream, "feederstuff");
 		// output something to ensure that the flush will be called
 		exporter2.setFetchers(new String[] {Labels.getLabel("fetcher.ip"), Labels.getLabel("fetcher.ports")});
-		exporter2.nextAdressResults(new Object[] {"1", "2"});
+		exporter2.nextAddressResults(new Object[] {"1", "2"});
 		// this should invoke flush among other things
 		exporter2.end();
 		// close: no
@@ -78,8 +77,8 @@ public abstract class AbstractExporterTestCase {
 	public void testBasic() throws Exception {
 		exporter.start(outputStream, "feederstuff");
 		exporter.setFetchers(new String[] {"IP", "hello", "fetcher2"});
-		exporter.nextAdressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "world", new Integer(53)});
-		exporter.nextAdressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "buga", new Integer(-1)});
+		exporter.nextAddressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "world", new Integer(53)});
+		exporter.nextAddressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "buga", new Integer(-1)});
 		exporter.end();
 		assertContains(InetAddress.getLocalHost().getHostAddress());
 		assertContains("hello");
@@ -121,7 +120,7 @@ public abstract class AbstractExporterTestCase {
 	public void testNextAddressResultsWithNulls() throws IOException {
 		exporter.start(outputStream, "feederstuff");
 		exporter.setFetchers(new String[] {Labels.getLabel(IPFetcher.ID), "fetcher1", Labels.getLabel(PortsFetcher.ID)});
-		exporter.nextAdressResults(new Object[] {InetAddress.getLocalHost(), null, null});
+		exporter.nextAddressResults(new Object[] {InetAddress.getLocalHost(), null, null});
 		exporter.end();
 	}
 

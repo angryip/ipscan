@@ -58,7 +58,7 @@ public class ExportProcessor {
 			int index = 0;
 			for (ScanningResult scanningResult : scanningResults) {
 				if (filter == null || filter.apply(index++, scanningResult)) {
-					exporter.nextAdressResults(scanningResult.getValues().toArray());
+					exporter.nextAddressResults(scanningResult.getValues().toArray());
 				}
 			}
 			
@@ -83,7 +83,7 @@ public class ExportProcessor {
 	/**
 	 * ScanningResultSelector can be implemented and passed to {@link ExportProcessor#process(ScanningResultList, ScanningResultFilter)}
 	 */
-	public static interface ScanningResultFilter {
+	public interface ScanningResultFilter {
 		boolean apply(int index, ScanningResult result);
 	}
 }

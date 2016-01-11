@@ -3,21 +3,20 @@
  */
 package net.azib.ipscan.exporters;
 
-import static org.junit.Assert.*;
+import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.Version;
+import org.junit.Before;
+import org.junit.Test;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Locale;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.Version;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * XML Exporter Test
@@ -48,7 +47,7 @@ public class XMLExporterTest extends AbstractExporterTestCase {
 	public void testFetchersWithoutAppend() throws IOException {
 		exporter.start(outputStream, "feederstuff");
 		exporter.setFetchers(new String[] {"fetcher1", Labels.getLabel("fetcher.ip"), "mega long fetcher 2"});
-		exporter.nextAdressResults(new Object[] {"", "123", ""});
+		exporter.nextAddressResults(new Object[] {"", "123", ""});
 		exporter.end();
 		assertContains("IP");
 		assertContains("address=\"123\"");
@@ -86,8 +85,8 @@ public class XMLExporterTest extends AbstractExporterTestCase {
 	public void testValidXML() throws Exception {
 		exporter.start(outputStream, "<megaInfo'''");
 		exporter.setFetchers(new String[] {"IP", "hello", "fet::cher2"});
-		exporter.nextAdressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "w?:orld'", new Integer(53)});
-		exporter.nextAdressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "bug>>a", new Integer(-1)});
+		exporter.nextAddressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "w?:orld'", new Integer(53)});
+		exporter.nextAddressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "bug>>a", new Integer(-1)});
 		exporter.end();
 		assertContains("<megaInfo'''");
 		

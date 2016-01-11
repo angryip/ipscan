@@ -78,7 +78,7 @@ public class XMLExporter extends AbstractExporter {
 		this.fetcherNames = fetcherNames;
 	}
 
-	public void nextAdressResults(Object[] results) throws IOException {		
+	public void nextAddressResults(Object[] results) throws IOException {
 		output.println("\t\t<host address=\"" + results[ipFetcherIndex] + "\">");
 		
 		for (int i = 0; i < results.length; i++) {

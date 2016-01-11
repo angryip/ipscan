@@ -75,7 +75,7 @@ public class TXTExporter extends AbstractExporter {
 		}
 	}
 
-	public void nextAdressResults(Object[] results) throws IOException {
+	public void nextAddressResults(Object[] results) throws IOException {
 		output.write(pad(results[0], padLengths[0]));
 		for (int i = 1; i < results.length; i++) {
 			Object result = results[i];
