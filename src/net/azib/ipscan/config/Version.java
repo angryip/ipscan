@@ -31,6 +31,8 @@ public class Version {
 
 	public static final String ISSUES_URL = WEBSITE + "/issues/";
 
+	public static final String IP_LOCATE_URL = WEBSITE + "/iplocate";
+
 	public static final String LATEST_VERSION_URL = WEBSITE + "/ipscan/IPSCAN.VERSION";
 
 	public static final String GA_ID = "UA-10776159-2";
