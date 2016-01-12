@@ -40,9 +40,8 @@ public class InetAddressUtils {
 			return InetAddress.getByAddress(addressBytes);
 		} 
 		catch (UnknownHostException e) {
-			// this should never happen as we are modifying the same bytes
-			// received from the InetAddress
-			return null;
+			// this should never happen as we are modifying the same bytes received from the InetAddress
+			throw new IllegalArgumentException(e);
 		}
 	}
 
@@ -54,11 +53,10 @@ public class InetAddressUtils {
 		}
 		try {
 			return InetAddress.getByAddress(addressBytes);
-		} catch (UnknownHostException e) {
-			// this should never happen as we are modifying the same bytes
-			// received from the InetAddress
-			return null;
 		}
+		catch (UnknownHostException e) {
+			// this should never happen as we are modifying the same bytes received from the InetAddress
+			throw new IllegalArgumentException(e);		}
 	}
 	
 	/**
