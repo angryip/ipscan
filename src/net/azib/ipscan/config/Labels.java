@@ -59,7 +59,7 @@ public final class Labels {
 		instance = new Labels();
 		
 		instance.locale = locale;
-		InputStream labelsStream = null;
+		InputStream labelsStream;
 		try {
 			labelsStream = Labels.class.getClassLoader().getResourceAsStream("messages.properties");
 			if (labelsStream == null) {

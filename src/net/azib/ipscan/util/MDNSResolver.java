@@ -21,7 +21,7 @@ public class MDNSResolver implements Closeable {
 	}
 
 	void writeName(DataOutputStream out, String name) throws IOException {
-		int s = 0, e = 0;
+		int s = 0, e;
 		while ((e = name.indexOf('.', s)) != -1) {
 			out.writeByte(e - s);
 			out.write(name.substring(s, e).getBytes());
