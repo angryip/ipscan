@@ -5,13 +5,13 @@
  */
 package net.azib.ipscan.feeders;
 
+import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.ScanningSubject;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.core.ScanningSubject;
 
 /**
  * A Feeder for rescanning - takes a predefined list of IP addresses.
@@ -48,7 +48,6 @@ public class RescanFeeder extends AbstractFeeder {
 
 	/**
 	 * Initializes the RescanFeeder with required parameters
-	 * @see Feeder#initialize(String[])
 	 * @param ips an array of IP addresses as Strings
 	 */
 	private int initAddresses(String ... ips) {
