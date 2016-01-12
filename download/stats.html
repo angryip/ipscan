@@ -6,6 +6,12 @@ priority: 0.5
 
 <h1>{{ page.title }}</h1>
 
+<style>
+  #assets li.current {
+    font-weight: bold;
+  }
+</style>
+
 <ul id="assets">
   <li>Loading...</li>
 </ul>
@@ -35,7 +41,7 @@ priority: 0.5
       var li = $('<li><a href="' + asset.browser_download_url + '">' + asset.name + '</a>: ' +
           asset.download_count + ' downloads since ' + asset.created_at.replace(/T.*/, '') + '</li>')
           .appendTo(list);
-      if (asset.current_release) li.find('a').wrap('<b></b>');
+      if (asset.current_release) li.find('a').addClass('current');
     });
   });
 </script>
