@@ -48,7 +48,13 @@ public class GoogleAnalytics {
 	}
 
 	public void report(Throwable e) {
-		report("exception", e.toString());
+		report("exception", extractFirstStackFrame(e));
+	}
+
+	static String extractFirstStackFrame(Throwable e) {
+		StackTraceElement[] stackTrace = e.getStackTrace();
+		return e.toString() + (stackTrace.length == 0 ? "" : "\n" +
+			   stackTrace[0].getClassName() + "." + stackTrace[0].getMethodName() + ":" + stackTrace[0].getLineNumber());
 	}
 
 	public void asyncReport(final String screen) {
