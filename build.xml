@@ -7,7 +7,7 @@
 	<property name="resources" value="resources"/>
 
 	<property name="name" value="Angry IP Scanner"/>
-	<property name="version" value="3.4"/>
+	<property name="version" value="3.4.1"/>
 	<property name="main.class" value="net.azib.ipscan.Main"/>
 	<property name="swt" value="lib"/>
 	<property name="ext.src" value="ext/rocksaw/src:ext/vserv-tcpip/src"/>

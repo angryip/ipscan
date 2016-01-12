@@ -1,3 +1,10 @@
+Changes in 3.4.1:
+- Favorites saving bug fixed
+- More forgiving importing of previously saved scanning results
+- IP details and some other functions now work properly for imported results
+- Mac vendors updated
+- Other small stability improvements
+
 Changes in 3.4:
 - Openers can open several IPs at once
 - More bugfixes in opener editor + OK/Cancel buttons
