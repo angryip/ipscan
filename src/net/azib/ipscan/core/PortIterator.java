@@ -96,8 +96,7 @@ public final class PortIterator implements Iterator<Integer>, Cloneable {
 			return (PortIterator) super.clone();
 		}
 		catch (CloneNotSupportedException e) {
-			assert false : "this should never happen";
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 

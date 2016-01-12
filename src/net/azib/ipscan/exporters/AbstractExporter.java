@@ -50,8 +50,7 @@ public abstract class AbstractExporter implements Exporter {
 			return (Exporter) super.clone();
 		}
 		catch (CloneNotSupportedException e) {
-			// this cannot happen
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 }
