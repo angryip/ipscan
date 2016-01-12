@@ -34,7 +34,7 @@ public class MacApplicationMenu {
 		if (systemMenu == null) return;
 
 		MenuItem prefs = getItem(systemMenu, SWT.ID_PREFERENCES);
-		prefs.addSelectionListener(new SelectionAdapter() {
+		if (prefs != null) prefs.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				preferencesDialog.open();
@@ -42,8 +42,7 @@ public class MacApplicationMenu {
 		});
 
 		MenuItem about = getItem(systemMenu, SWT.ID_ABOUT);
-		// about.setText(Labels.getLabel("title.about") + " " + Version.NAME);
-		about.addSelectionListener(new SelectionAdapter() {
+		if (about != null) about.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				aboutDialog.open();
