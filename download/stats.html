@@ -1,0 +1,20 @@
+---
+title: Download stats
+layout: default
+priority: 0.5
+---
+
+<ul id="assets">
+</ul>
+
+<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script>
+  var list = $('#assets');
+  $.get('https://api.github.com/repos/angryziber/ipscan/releases', function(releases) {
+    $.each(releases, function(i, release) {
+      $.each(release.assets, function(j, asset) {
+        list.append('<li>' + asset.name + ': ' + asset.download_count + '</li>');
+      });
+    });
+  });
+</script>
