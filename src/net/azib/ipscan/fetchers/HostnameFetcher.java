@@ -53,10 +53,11 @@ public class HostnameFetcher extends AbstractFetcher {
 		return ID;
 	}
 
+	@SuppressWarnings("PrimitiveArrayArgumentToVariableArgMethod")
 	private String resolveWithRegularDNS(InetAddress ip) {
 		try {
 			// faster way to do lookup - getCanonicalHostName() actually does both reverse and forward lookups inside
-			return (String)getHostByAddr.invoke(inetAddressImpl, ip.getAddress());
+			return (String) getHostByAddr.invoke(inetAddressImpl, ip.getAddress());
 		}
 		catch (Exception e) {
 			if (e instanceof InvocationTargetException && e.getCause() instanceof UnknownHostException)
