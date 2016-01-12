@@ -4,17 +4,38 @@ layout: default
 priority: 0.5
 ---
 
+<h1>{{ page.title }}</h1>
+
 <ul id="assets">
+  <li>Loading...</li>
 </ul>
 
 <script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
 <script>
   var list = $('#assets');
   $.get('https://api.github.com/repos/angryziber/ipscan/releases', function(releases) {
+    list.empty();
+    var assets = [];
+    var total = 0;
     $.each(releases, function(i, release) {
       $.each(release.assets, function(j, asset) {
-        list.append('<li>' + asset.name + ': ' + asset.download_count + '</li>');
+        if (i == 0) asset.current_release = true;
+        assets.push(asset);
+        total += asset.download_count;
       });
+    });
+
+    list.append('Total ' + total + ' downloads');
+
+    assets.sort(function(a1, a2) {
+      return a2.download_count - a1.download_count;
+    });
+
+    $.each(assets, function(i, asset) {
+      var li = $('<li><a href="' + asset.browser_download_url + '">' + asset.name + '</a>: ' +
+          asset.download_count + ' downloads since ' + asset.created_at.replace(/T.*/, '') + '</li>')
+          .appendTo(list);
+      if (asset.current_release) li.find('a').wrap('<b></b>');
     });
   });
 </script>
