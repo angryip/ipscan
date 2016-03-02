@@ -105,6 +105,23 @@ footer a {
   text-decoration: underline;
 }
 
+a.button {
+  display: inline-block;
+  padding: 0.4em 2em;
+  border: 1px solid #2b983b;
+  border-radius: 0.5em;
+  background: #39d44c;
+  text-shadow: #1b5f25 1px 1px 1px;
+  font-size: 1.3em;
+  color: #ffffff;
+  text-decoration: none;
+  margin-bottom: 0.5em;
+}
+
+a.button:hover, a.button:focus {
+  background: #4fe16d;
+}
+
 em {
   font-style: italic;
 }
@@ -115,7 +132,6 @@ strong {
 
 img {
   position: relative;
-  margin: 0 auto;
   max-width: 739px;
   padding: 5px;
   margin: 10px 0 10px 0;
