@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Angry IP Scanner downloaded at least 18 million times"
+title:  "Over 18 million downloads"
 date:   2015-03-01
 ---
 

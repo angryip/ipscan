@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Angry IP Scanner mentioned in Linux Journal"
+title:  "Mentioned in Linux Journal"
 date:   2014-04-16
 ---
 
