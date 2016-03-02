@@ -107,9 +107,9 @@ footer a {
 
 a.button {
   display: inline-block;
-  padding: 0.4em 2em;
+  padding: 0.3em 1.5em;
   border: 1px solid #2b983b;
-  border-radius: 0.5em;
+  border-radius: 3px;
   background: #39d44c;
   text-shadow: #1b5f25 1px 1px 1px;
   font-size: 1.3em;
@@ -375,17 +375,19 @@ img.featured {
 #menu ul {
   list-style: none;
   margin: 0 -10px 0 0;
-  padding: 0;  
+  padding: 0;
+  background-color: rgba(0,0,0,0.3);
+  border-radius: 3px;
 }
 
 #menu ul li {
   display: inline-block;
   padding: 3px 10px;
+  border-radius: 3px;
 }
 
 #menu ul li.active {
   background: rgba(255,255,255,0.3);
-  border-radius: 3px;
 }
 
 #menu ul li a {
