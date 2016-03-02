@@ -353,6 +353,7 @@ img.featured {
   box-shadow: none;
   width: 450px;
   float: right;
+  margin-left: 15px;
   margin-right: -15px;
   margin-bottom: -35px;
 }
