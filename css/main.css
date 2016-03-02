@@ -200,6 +200,10 @@ ul {
   padding-left: 20px;
 }
 
+#home ul {
+  padding-left: 0;
+}
+
 ol {
   list-style: decimal inside;
   padding-left: 20px;
