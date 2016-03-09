@@ -24,9 +24,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static java.util.logging.Level.WARNING;
 import static net.azib.ipscan.util.IOUtils.closeQuietly;
 
 public class HelpMenuActions {
@@ -104,11 +104,11 @@ public class HelpMenuActions {
 			this.statusBar = statusBar;
 		}
 
-		public void handleEvent(final Event event) {
-			check();
+		public void handleEvent(Event event) {
+			check(true);
 		}
 		
-		public void check() {
+		public void check(final boolean userEvent) {
 			statusBar.setStatusText(Labels.getLabel("state.retrievingVersion"));
 
 			new GoogleAnalytics().asyncReport("Version check " + Version.getVersion());
@@ -132,14 +132,14 @@ public class HelpMenuActions {
 							message = message.replaceFirst("%VERSION", Version.getVersion());
 							messageStyle = SWT.ICON_QUESTION | SWT.YES | SWT.NO;
 						}
-						else {
+						else if (userEvent) {
 							message = Labels.getLabel("text.version.latest");
 							messageStyle = SWT.ICON_INFORMATION;
 						}
 					}
 					catch (Exception e) {
-						message = Labels.getLabel("exception.UserErrorException.version.latestFailed");
-						Logger.getLogger(getClass().getName()).log(Level.WARNING, message, e);
+						if (userEvent) message = Labels.getLabel("exception.UserErrorException.version.latestFailed");
+						Logger.getLogger(getClass().getName()).log(WARNING, message, e);
 					}
 					finally {
 						closeQuietly(reader);
@@ -150,6 +150,7 @@ public class HelpMenuActions {
 						Display.getDefault().asyncExec(new Runnable() {
 							public void run() {
 								statusBar.setStatusText(null);
+								if (messageToShow == null) return;
 								MessageBox messageBox = new MessageBox(statusBar.getShell(), messageStyleToShow | SWT.SHEET);
 								messageBox.setText(Version.getFullName());
 								messageBox.setMessage(messageToShow);

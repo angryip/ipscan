@@ -61,9 +61,8 @@ public class MacApplicationMenu {
 		MenuItem checkVersion = new MenuItem(systemMenu, SWT.NONE, systemMenu.indexOf(about) + 1);
 		checkVersion.setText(Labels.getLabel("menu.help.checkVersion"));
 		checkVersion.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				checkVersionListener.check();
+			@Override public void widgetSelected(SelectionEvent e) {
+				checkVersionListener.check(true);
 			}
 		});
 	}

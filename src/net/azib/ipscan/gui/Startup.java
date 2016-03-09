@@ -40,7 +40,7 @@ public class Startup {
 			guiConfig.lastRunVersion = Version.getVersion();
 		}
 		else if (System.currentTimeMillis() - guiConfig.lastVersionCheck > 30L * 24 * 3600 * 1000) {
-			checkVersion.check();
+			checkVersion.check(false);
 			guiConfig.lastVersionCheck = System.currentTimeMillis();
 		}
 	}
