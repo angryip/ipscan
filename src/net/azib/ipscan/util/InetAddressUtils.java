@@ -149,7 +149,6 @@ public class InetAddressUtils {
 
 		// IP-like netmask (IPv4)
 		netmaskString = netmaskString.replaceAll("\\.\\.", ".255.");
-		netmaskString = netmaskString.replaceAll("\\.\\.", ".255.");
 		return InetAddress.getByName(netmaskString);
 	}
 
