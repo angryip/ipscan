@@ -23,6 +23,10 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib_common" level="project" />
     <orderEntry type="library" name="lib_linux64" level="project" />
+    <orderEntry type="library" name="lib_linux" level="project" />
+    <orderEntry type="library" name="lib_mac" level="project" />
+    <orderEntry type="library" name="lib_win32" level="project" />
+    <orderEntry type="library" name="lib_win64" level="project" />
     <orderEntry type="library" scope="TEST" name="lib_testing" level="project" />
   </component>
 </module>
