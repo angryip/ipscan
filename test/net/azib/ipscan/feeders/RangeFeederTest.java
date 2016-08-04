@@ -31,7 +31,7 @@ public class RangeFeederTest {
 	@Test
 	public void malformedIP() {
 		try {
-			new RangeFeeder("10.11.12.abc.", "10.11.12.10");
+			new RangeFeeder("10.11.12.blah.", "10.11.12.10");
 			fail();
 		}
 		catch (FeederException e) {
