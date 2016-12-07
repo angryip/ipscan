@@ -7,7 +7,7 @@ Group:              Applications/Internet
 BuildRoot: 			%{_builddir}/%{name}
 URL:                http://angryip.org
 Packager:			Anton Keks
-Requires:			jre >= 1.6.0
+Requires:			jre >= 1.7.0
 
 %description
 Angry IP Scanner is a cross-platform network scanner written in Java.
