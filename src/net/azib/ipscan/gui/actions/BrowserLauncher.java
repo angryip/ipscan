@@ -6,9 +6,7 @@
 package net.azib.ipscan.gui.actions;
 
 import net.azib.ipscan.core.UserErrorException;
-
-import java.awt.*;
-import java.net.URI;
+import org.eclipse.swt.program.Program;
 
 /**
  * The cross-platform browser launcher
@@ -23,7 +21,7 @@ public class BrowserLauncher {
 	 */
 	public static void openURL(String url) {
 		try {
-      		Desktop.getDesktop().browse(new URI(url));
+			Program.launch(url);
 		}
 		catch (Exception e) {
 			throw new UserErrorException("openURL.failed", url);
