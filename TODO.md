@@ -2,6 +2,7 @@ HiDPI:
 * New flat and retina-compatible icons :-)
 * GTK3 crashes URL opening with Desktop.getDesktop()
 * GTK3 startup is slow
+* GTK3 progress bar - can it be centered?
 * Fewer problems when starting with SWT_GTK3=0
 * Edit openers dialog doesn't fit
 * Scan complete Close button is partly outside of the window
