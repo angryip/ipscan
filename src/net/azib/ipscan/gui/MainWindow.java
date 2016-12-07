@@ -20,6 +20,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
@@ -96,8 +97,7 @@ public class MainWindow {
 	 * This method initializes shell
 	 */
 	private void initShell(final Shell shell) {
-		FormLayout formLayout = new FormLayout();
-		shell.setLayout(formLayout);
+		shell.setLayout(new FormLayout());
 		
 		// load and set icon
 		Image image = new Image(shell.getDisplay(), Labels.getInstance().getImageAsStream("icon"));
@@ -149,6 +149,7 @@ public class MainWindow {
 		// start/stop button
 		this.startStopButton = startStopButton;
 		shell.setDefaultButton(startStopButton);
+		startStopButton.pack();
 		startStopButton.addSelectionListener(startStopScanningAction);
 		startStopButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
@@ -182,13 +183,15 @@ public class MainWindow {
 	}
 	
 	private void relayoutControls() {
-		boolean twoRowToolbar = feederRegistry.current().getSize().y > startStopButton.getSize().y * 1.5;
+		Point feederSize = feederRegistry.current().getSize();
+		Point buttonSize = startStopButton.getSize();
+		Point comboSize = feederSelectionCombo.getSize();
 
-		if (twoRowToolbar) {
+		int sizeDiff = feederSize.y - buttonSize.y - comboSize.y;
+
+		if (sizeDiff >= 0) {
 			GridLayout layout = new GridLayout(2, false);
-			layout.marginTop = -2;
-			layout.marginBottom = 0;
-			layout.verticalSpacing = 3;
+			layout.verticalSpacing = sizeDiff/3;
 			startStopButton.getParent().setLayout(layout);
 
 			prefsButton.moveAbove(startStopButton);
