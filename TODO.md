@@ -1,4 +1,10 @@
+HiDPI:
 * New flat and retina-compatible icons :-)
+* GTK3 crashes URL opening with Desktop.getDesktop()
+* GTK3 startup is slow
+* Fewer problems when starting with SWT_GTK3=0
+* Edit openers dialog doesn't fit
+* Scan complete Close button is partly outside of the window
 
 * Add URLFetcher with configurable URL and JSON/XPath expression
 * WHOIS fetcher
