@@ -23,7 +23,7 @@ public class BrowserLauncher {
 	 */
 	public static void openURL(String url) {
 		try {
-      Desktop.getDesktop().browse(new URI(url));
+      		Desktop.getDesktop().browse(new URI(url));
 		}
 		catch (Exception e) {
 			throw new UserErrorException("openURL.failed", url);
