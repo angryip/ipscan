@@ -6,6 +6,8 @@ HiDPI:
 * Edit openers dialog doesn't fit
 * Scan complete Close button is partly outside of the window
 
+* Remember InfoDialog size
+
 * Add URLFetcher with configurable URL and JSON/XPath expression
 * WHOIS fetcher
 
