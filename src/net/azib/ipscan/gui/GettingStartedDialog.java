@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
@@ -11,11 +8,6 @@ import org.eclipse.swt.widgets.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * About Window
- *
- * @author Anton Keks
- */
 public class GettingStartedDialog extends AbstractModalDialog {
 	private int activePage;
 	private List<String> texts = new ArrayList<String>();
@@ -33,7 +25,7 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		catch (Exception noMoreTexts) {}
 	}
 
-	public GettingStartedDialog prependText(String text) {
+	GettingStartedDialog prependText(String text) {
 		texts.add(0, text);
 		return this;
 	}
@@ -90,7 +82,7 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		return super.getShellStyle() | SWT.SHEET;
 	}
 
-	void displayActivePage() {
+	private void displayActivePage() {
 		gettingStartedText.setText(texts.get(activePage++));
 		
 		if (activePage >= texts.size()) {
