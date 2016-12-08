@@ -15,9 +15,9 @@
         sodipodi:version="0.32"
         inkscape:version="0.91 r13725"
         sodipodi:docname="stop.svg"
-        inkscape:export-filename="/mnt/work/svn_sf/ipscan/resources/images/buttons/stop.png"
-        inkscape:export-xdpi="90.639999"
-        inkscape:export-ydpi="90.639999"
+        inkscape:export-filename="/home/anton/dev/ipscan/resources/images/buttons/stop@2x.png"
+        inkscape:export-xdpi="180"
+        inkscape:export-ydpi="180"
         version="1.1">
   <defs
      id="defs1874">
@@ -168,12 +168,12 @@
        inkscape:collect="always"
        xlink:href="#linearGradient2947"
        id="linearGradient2965"
-       x1="3.0138614"
-       y1="7.9811878"
-       x2="13.068812"
-       y2="7.9811878"
+       x1="-2.5099597"
+       y1="8.0224857"
+       x2="15.355021"
+       y2="7.9261241"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.196255,0,0,1.196255,-1.578155,-1.56635)" />
+       gradientTransform="matrix(1.2007078,0,0,1.1884339,-1.6139609,-1.5118914)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -182,18 +182,22 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="44.395604"
-     inkscape:cx="14.383949"
-     inkscape:cy="7.0687265"
+     inkscape:zoom="64"
+     inkscape:cx="10.026318"
+     inkscape:cy="5.0448187"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:grid-bbox="true"
      inkscape:document-units="px"
-     inkscape:window-width="2105"
-     inkscape:window-height="1286"
-     inkscape:window-x="6"
+     inkscape:window-width="3200"
+     inkscape:window-height="1752"
+     inkscape:window-x="0"
      inkscape:window-y="48"
-     inkscape:window-maximized="0" />
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3219" />
+  </sodipodi:namedview>
   <metadata
      id="metadata1877">
     <rdf:RDF>
@@ -202,6 +206,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -210,8 +215,9 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <path
-       style="fill:url(#linearGradient2965);fill-opacity:1;fill-rule:evenodd;stroke:#400;stroke-width:1.19625533px;stroke-linecap:butt;stroke-linejoin:bevel;stroke-opacity:1"
-       d="M 2.6253205,2.5382265 L 2.6253205,13.424149 L 13.457353,13.424149 L 13.457353,2.5921172 L 2.6253205,2.5382265 z "
-       id="path2957" />
+       style="fill:url(#linearGradient2965);fill-opacity:1;fill-rule:evenodd;stroke:#780000;stroke-width:1.04859674;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 2.605161,2.5658491 0,10.8147499 10.872351,0 0,-10.7612115 -10.872351,-0.053538 z"
+       id="path2957"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>
