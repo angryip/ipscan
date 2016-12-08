@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
@@ -11,6 +8,7 @@ import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.*;
@@ -18,12 +16,8 @@ import org.eclipse.swt.widgets.*;
 import java.io.File;
 
 import static net.azib.ipscan.gui.util.LayoutHelper.formData;
+import static net.azib.ipscan.gui.util.LayoutHelper.iconFont;
 
-/**
- * EditOpenersDialog
- *
- * @author Anton Keks
- */
 public class EditOpenersDialog extends AbstractModalDialog {
 	private final FetcherRegistry fetcherRegistry;
 	private final OpenersConfig openersConfig;
@@ -61,9 +55,12 @@ public class EditOpenersDialog extends AbstractModalDialog {
 			openersList.add(name);
 		}
 		openersList.addListener(SWT.Selection, new ItemSelectListener());
-		
+
+		Font iconFont = iconFont(shell);
+
 		Button upButton = new Button(shell, SWT.NONE);
 		upButton.setText(Labels.getLabel("button.up"));
+		upButton.setFont(iconFont);
 		upButton.addListener(SWT.Selection, new UpButtonListener(openersList) {
 			@Override public void handleEvent(Event event) {
 				super.handleEvent(event);
@@ -72,7 +69,8 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		});
 		
 		Button downButton = new Button(shell, SWT.NONE);
-		downButton.setText(Labels.getLabel("button.down"));	
+		downButton.setText(Labels.getLabel("button.down"));
+		downButton.setFont(iconFont);
 		downButton.addListener(SWT.Selection, new DownButtonListener(openersList) {
 			@Override public void handleEvent(Event event) {
 				super.handleEvent(event);

@@ -12,7 +12,6 @@ import net.azib.ipscan.fetchers.IPFetcher;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
@@ -23,6 +22,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import static net.azib.ipscan.gui.util.LayoutHelper.formData;
+import static net.azib.ipscan.gui.util.LayoutHelper.iconFont;
 
 /**
  * SelectFetchersDialog
@@ -65,9 +65,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 			selectedFetchersList.add(fetcher.getName());
 		}
 
-		FontData fontData = messageLabel.getFont().getFontData()[0];
-		fontData.setHeight(fontData.getHeight() * 4/3);
-		Font iconFont = new Font(messageLabel.getDisplay(), fontData);
+		Font iconFont = iconFont(shell);
 
 		Button upButton = new Button(shell, SWT.NONE);
 		upButton.setText(Labels.getLabel("button.up"));
@@ -151,7 +149,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 			}
 		});
 	}
-	
+
 	/**
 	 * Saves passed selected fetchers to the fetcher registry.
 	 * @param fetchersNamesToSave an array obtained by selectedFetchersList.getItems() 

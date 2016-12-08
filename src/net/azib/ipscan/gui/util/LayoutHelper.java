@@ -7,9 +7,12 @@
 package net.azib.ipscan.gui.util;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * A helper class to create FormLayout and FormData object more conveniently.
@@ -37,5 +40,11 @@ public class LayoutHelper {
 	
 	public static FormData formData(FormAttachment left, FormAttachment right, FormAttachment top, FormAttachment bottom) {
 		return formData(SWT.DEFAULT, SWT.DEFAULT, left, right, top, bottom);
+	}
+
+	public static Font iconFont(Shell shell) {
+		FontData fontData = shell.getFont().getFontData()[0];
+		fontData.setHeight(fontData.getHeight() * 4/3);
+		return new Font(shell.getDisplay(), fontData);
 	}
 }
