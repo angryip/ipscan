@@ -1,25 +1,17 @@
 package net.azib.ipscan.config;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import junit.framework.AssertionFailedError;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import junit.framework.AssertionFailedError;
-
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class LabelsTest {
 
@@ -59,18 +51,18 @@ public class LabelsTest {
 			// exception is good
 		}
 	}
-	
+
 	@Test
 	public void testImageAsStream() throws IOException {
 		InputStream stream = Labels.getInstance().getImageAsStream("button.start.img");
-		// Now check the first bytes of GIF image header
+		// Now check the first bytes of GIF buttonImage header
 		stream.read();
 		assertEquals((int)'P', stream.read());
 		assertEquals((int)'N', stream.read());
 		assertEquals((int)'G', stream.read());
 		stream.close();
 	}
-	
+
 	/**
 	 * This test recursively processes all source files and tries
 	 * to resolve every label it finds. 

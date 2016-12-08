@@ -31,6 +31,8 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import java.net.InetAddress;
 
+import static net.azib.ipscan.gui.util.LayoutHelper.buttonImage;
+
 /**
  * Start/Stop button action class.
  * It listens to presses on the buttons as well as updates gui statuses
@@ -64,11 +66,11 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		this.display = display;
 		
 		// preload button images
-		buttonImages[ScanningState.IDLE.ordinal()] = new Image(display, Labels.getInstance().getImageAsStream("button.start.img"));
-		buttonImages[ScanningState.SCANNING.ordinal()] = new Image(display, Labels.getInstance().getImageAsStream("button.stop.img"));
+		buttonImages[ScanningState.IDLE.ordinal()] = buttonImage("start");
+		buttonImages[ScanningState.SCANNING.ordinal()] = buttonImage("stop");
 		buttonImages[ScanningState.STARTING.ordinal()] = buttonImages[ScanningState.SCANNING.ordinal()]; 
 		buttonImages[ScanningState.RESTARTING.ordinal()] = buttonImages[ScanningState.SCANNING.ordinal()];
-		buttonImages[ScanningState.STOPPING.ordinal()] = new Image(display, Labels.getInstance().getImageAsStream("button.kill.img"));
+		buttonImages[ScanningState.STOPPING.ordinal()] = buttonImage("kill");
 		buttonImages[ScanningState.KILLING.ordinal()] = buttonImages[ScanningState.STOPPING.ordinal()];
 		
 		// preload button texts
@@ -98,7 +100,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		// add listeners to all state changes
 		stateMachine.addTransitionListener(this);
 		
-		// set the default image
+		// set the default buttonImage
 		ScanningState state = stateMachine.getState();
 		button.setImage(buttonImages[state.ordinal()]);
 		button.setText(buttonTexts[state.ordinal()]);
@@ -191,7 +193,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				statusBar.setStatusText(Labels.getLabel("state.killingThreads"));
 				break;
 		}
-		// change button image
+		// change button buttonImage
 		button.setImage(buttonImages[state.ordinal()]);
 		button.setText(buttonTexts[state.ordinal()]);
 	}
@@ -255,7 +257,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				else
 					statusBar.getShell().setText(mainWindowTitle);
 
-				// change button image according to the current state
+				// change button buttonImage according to the current state
 				button.setImage(buttonImages[stateMachine.getState().ordinal()]);
 			}
 		});

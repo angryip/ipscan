@@ -7,11 +7,11 @@
 package net.azib.ipscan.gui.util;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -46,5 +46,14 @@ public class LayoutHelper {
 		FontData fontData = shell.getFont().getFontData()[0];
 		fontData.setHeight(fontData.getHeight() * 4/3);
 		return new Font(shell.getDisplay(), fontData);
+	}
+
+	public static Image buttonImage(final String baseName) {
+		return new Image(Display.getCurrent(), new ImageDataProvider() {
+			@Override public ImageData getImageData(int zoom) {
+				String suffix = zoom >= 200 ? "@2x.png" : ".png";
+				return new ImageData(getClass().getResourceAsStream("/images/buttons/" + baseName + suffix));
+			}
+		});
 	}
 }

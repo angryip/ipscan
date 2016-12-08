@@ -19,13 +19,16 @@ import net.azib.ipscan.gui.menu.ResultsContextMenu;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import static net.azib.ipscan.gui.util.LayoutHelper.buttonImage;
 import static net.azib.ipscan.gui.util.LayoutHelper.formData;
 
 /**
@@ -166,26 +169,17 @@ public class MainWindow {
 
 		prefsButton = createToolbarButton(controlsArea);
 		ToolItem item = new ToolItem(prefsButton, SWT.PUSH);
-		item.setImage(image("prefs"));
+		item.setImage(buttonImage("prefs"));
 		item.setToolTipText(Labels.getLabel("title.preferences"));
 		item.addListener(SWT.Selection, preferencesListener);
 
 		fetchersButton = createToolbarButton(controlsArea);
 		item = new ToolItem(fetchersButton, SWT.PUSH);
-		item.setImage(image("fetchers"));
+		item.setImage(buttonImage("fetchers"));
 		item.setToolTipText(Labels.getLabel("title.fetchers.select"));
 		item.addListener(SWT.Selection, chooseFetchersListsner);
 
 		feederSelectionListener.widgetSelected(null);
-	}
-
-	private Image image(final String baseName) {
-		return new Image(Display.getCurrent(), new ImageDataProvider() {
-			@Override public ImageData getImageData(int zoom) {
-				String suffix = zoom >= 200 ? "@2x.png" : ".png";
-				return new ImageData(getClass().getResourceAsStream("/images/buttons/" + baseName + suffix));
-			}
-		});
 	}
 
 	private ToolBar createToolbarButton(Composite controlsArea) {
