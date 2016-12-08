@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://web.resource.org/cc/"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="16px"
-   height="16px"
-   id="svg1872"
-   sodipodi:version="0.32"
-   inkscape:version="0.44.1"
-   sodipodi:docbase="/mnt/work/svn_sf/ipscan/resources/images/list"
-   sodipodi:docname="unknown.svg"
-   inkscape:export-filename="/mnt/work/svn_sf/ipscan/resources/images/list/unknown.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+        xmlns:dc="http://purl.org/dc/elements/1.1/"
+        xmlns:cc="http://creativecommons.org/ns#"
+        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+        xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+        width="16px"
+        height="16px"
+        id="svg1872"
+        sodipodi:version="0.32"
+        inkscape:version="0.91 r13725"
+        sodipodi:docname="unknown.svg"
+        inkscape:export-filename="/mnt/work/svn_sf/ipscan/resources/images/list/unknown.png"
+        inkscape:export-xdpi="90"
+        inkscape:export-ydpi="90"
+        version="1.1">
   <defs
      id="defs1874">
     <linearGradient
@@ -217,17 +217,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="22.197802"
-     inkscape:cx="8"
-     inkscape:cy="9.2698308"
+     inkscape:zoom="62.784865"
+     inkscape:cx="3.6698457"
+     inkscape:cy="9.6823155"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:grid-bbox="true"
      inkscape:document-units="px"
-     inkscape:window-width="1012"
-     inkscape:window-height="716"
-     inkscape:window-x="6"
-     inkscape:window-y="21" />
+     inkscape:window-width="3200"
+     inkscape:window-height="1752"
+     inkscape:window-x="0"
+     inkscape:window-y="48"
+     inkscape:window-maximized="1" />
   <metadata
      id="metadata1877">
     <rdf:RDF>
@@ -243,18 +244,6 @@
      id="layer1"
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
-    <text
-       id="text5336"
-       y="16.115181"
-       x="3.3766122"
-       style="font-size:21.2743187px;font-style:normal;font-weight:normal;fill:#acaa94;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;font-family:Arial Black"
-       xml:space="preserve"
-       transform="scale(1.013346,0.98683)"><tspan
-         style="font-size:19.14689255px;fill:#acaa94;fill-opacity:1;stroke:none;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         y="16.115181"
-         x="3.3766122"
-         id="tspan5338"
-         sodipodi:role="line">?</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:21.27429008px;font-style:normal;font-weight:normal;fill:url(#linearGradient5334);fill-opacity:1;stroke:url(#linearGradient5348);stroke-width:0.90000004;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;font-family:Arial Black"

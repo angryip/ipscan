@@ -28,8 +28,8 @@ import org.eclipse.swt.widgets.*;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import static net.azib.ipscan.gui.util.LayoutHelper.buttonImage;
 import static net.azib.ipscan.gui.util.LayoutHelper.formData;
+import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 
 /**
  * Main window of Angry IP Scanner.
@@ -169,13 +169,13 @@ public class MainWindow {
 
 		prefsButton = createToolbarButton(controlsArea);
 		ToolItem item = new ToolItem(prefsButton, SWT.PUSH);
-		item.setImage(buttonImage("prefs"));
+		item.setImage(icon("buttons/prefs"));
 		item.setToolTipText(Labels.getLabel("title.preferences"));
 		item.addListener(SWT.Selection, preferencesListener);
 
 		fetchersButton = createToolbarButton(controlsArea);
 		item = new ToolItem(fetchersButton, SWT.PUSH);
-		item.setImage(buttonImage("fetchers"));
+		item.setImage(icon("buttons/fetchers"));
 		item.setToolTipText(Labels.getLabel("title.fetchers.select"));
 		item.addListener(SWT.Selection, chooseFetchersListsner);
 

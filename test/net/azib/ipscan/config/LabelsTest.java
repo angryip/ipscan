@@ -55,7 +55,7 @@ public class LabelsTest {
 	@Test
 	public void testImageAsStream() throws IOException {
 		InputStream stream = Labels.getInstance().getImageAsStream("button.start.img");
-		// Now check the first bytes of GIF buttonImage header
+		// Now check the first bytes of PNG image header
 		stream.read();
 		assertEquals((int)'P', stream.read());
 		assertEquals((int)'N', stream.read());

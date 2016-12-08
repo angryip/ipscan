@@ -6,7 +6,6 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.GUIConfig;
-import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.ScanningResultList;
@@ -27,6 +26,9 @@ import org.eclipse.swt.widgets.*;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
+
+import static net.azib.ipscan.core.ScanningResult.ResultType.*;
+import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 
 /**
  * Table of scanning results.
@@ -62,10 +64,10 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 		handleUpdateOfSelectedFetchers(fetcherRegistry);
 		
 		// load button images
-		listImages[ResultType.UNKNOWN.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.unknown.img"));
-		listImages[ResultType.DEAD.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.dead.img"));
-		listImages[ResultType.ALIVE.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.alive.img"));
-		listImages[ResultType.WITH_PORTS.ordinal()] = new Image(null, Labels.getInstance().getImageAsStream("list.addinfo.img"));
+		listImages[UNKNOWN.ordinal()] = icon("list/unknown");
+		listImages[DEAD.ordinal()] = icon("list/dead");
+		listImages[ALIVE.ordinal()] = icon("list/alive");
+		listImages[WITH_PORTS.ordinal()] = icon("list/ports");
 		
 		addListener(SWT.KeyDown, new CommandsMenuActions.Delete(this, stateMachine));
 		addListener(SWT.KeyDown, new CommandsMenuActions.CopyIP(this));

@@ -31,7 +31,8 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import java.net.InetAddress;
 
-import static net.azib.ipscan.gui.util.LayoutHelper.buttonImage;
+import static net.azib.ipscan.core.state.ScanningState.*;
+import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 
 /**
  * Start/Stop button action class.
@@ -66,20 +67,20 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		this.display = display;
 		
 		// preload button images
-		buttonImages[ScanningState.IDLE.ordinal()] = buttonImage("start");
-		buttonImages[ScanningState.SCANNING.ordinal()] = buttonImage("stop");
-		buttonImages[ScanningState.STARTING.ordinal()] = buttonImages[ScanningState.SCANNING.ordinal()]; 
-		buttonImages[ScanningState.RESTARTING.ordinal()] = buttonImages[ScanningState.SCANNING.ordinal()];
-		buttonImages[ScanningState.STOPPING.ordinal()] = buttonImage("kill");
-		buttonImages[ScanningState.KILLING.ordinal()] = buttonImages[ScanningState.STOPPING.ordinal()];
+		buttonImages[IDLE.ordinal()] = icon("buttons/start");
+		buttonImages[SCANNING.ordinal()] = icon("buttons/stop");
+		buttonImages[STARTING.ordinal()] = buttonImages[SCANNING.ordinal()];
+		buttonImages[RESTARTING.ordinal()] = buttonImages[SCANNING.ordinal()];
+		buttonImages[STOPPING.ordinal()] = icon("buttons/kill");
+		buttonImages[KILLING.ordinal()] = buttonImages[STOPPING.ordinal()];
 		
 		// preload button texts
-		buttonTexts[ScanningState.IDLE.ordinal()] = Labels.getLabel("button.start");
-		buttonTexts[ScanningState.SCANNING.ordinal()] = Labels.getLabel("button.stop");
-		buttonTexts[ScanningState.STARTING.ordinal()] = buttonTexts[ScanningState.SCANNING.ordinal()]; 
-		buttonTexts[ScanningState.RESTARTING.ordinal()] = buttonTexts[ScanningState.SCANNING.ordinal()];
-		buttonTexts[ScanningState.STOPPING.ordinal()] = Labels.getLabel("button.kill");
-		buttonTexts[ScanningState.KILLING.ordinal()] = Labels.getLabel("button.kill");
+		buttonTexts[IDLE.ordinal()] = Labels.getLabel("button.start");
+		buttonTexts[SCANNING.ordinal()] = Labels.getLabel("button.stop");
+		buttonTexts[STARTING.ordinal()] = buttonTexts[SCANNING.ordinal()];
+		buttonTexts[RESTARTING.ordinal()] = buttonTexts[SCANNING.ordinal()];
+		buttonTexts[STOPPING.ordinal()] = Labels.getLabel("button.kill");
+		buttonTexts[KILLING.ordinal()] = Labels.getLabel("button.kill");
 	}
 
 	@Inject
@@ -100,7 +101,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		// add listeners to all state changes
 		stateMachine.addTransitionListener(this);
 		
-		// set the default buttonImage
+		// set the default image
 		ScanningState state = stateMachine.getState();
 		button.setImage(buttonImages[state.ordinal()]);
 		button.setText(buttonTexts[state.ordinal()]);
@@ -118,7 +119,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	 */
 	public void widgetSelected(SelectionEvent event) {
 		// ask for confirmation before erasing scanning results
-		if (stateMachine.inState(ScanningState.IDLE)) {
+		if (stateMachine.inState(IDLE)) {
 			if (!preScanChecks())
 				return;
 		}
@@ -193,7 +194,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				statusBar.setStatusText(Labels.getLabel("state.killingThreads"));
 				break;
 		}
-		// change button buttonImage
+		// change button image
 		button.setImage(buttonImages[state.ordinal()]);
 		button.setText(buttonTexts[state.ordinal()]);
 	}
@@ -203,7 +204,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	 */
 	private ScanningResultCallback createResultsCallback(ScanningState state) {
 		// rescanning must follow the same strategy of displaying all hosts (even the dead ones), because the results are already in the list
-		if (guiConfig.displayMethod == DisplayMethod.ALL || state == ScanningState.RESTARTING) {
+		if (guiConfig.displayMethod == DisplayMethod.ALL || state == RESTARTING) {
 			return new ScanningResultCallback() {
 				public void prepareForResults(ScanningResult result) {
 					resultTable.addOrUpdateResultRow(result);
@@ -252,12 +253,12 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				statusBar.setProgress(percentageComplete);
 				
 				// show percentage in main window title
-				if (!stateMachine.inState(ScanningState.IDLE)) 
+				if (!stateMachine.inState(IDLE))
 					statusBar.getShell().setText(percentageComplete + "% - " + mainWindowTitle);
 				else
 					statusBar.getShell().setText(mainWindowTitle);
 
-				// change button buttonImage according to the current state
+				// change button image according to the current state
 				button.setImage(buttonImages[stateMachine.getState().ordinal()]);
 			}
 		});

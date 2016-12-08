@@ -49,12 +49,12 @@ public class LayoutHelper {
 		return new Font(shell.getDisplay(), fontData);
 	}
 
-	public static Image buttonImage(final String baseName) {
+	public static Image icon(final String baseName) {
 		final Display display = Display.getCurrent();
 		return new Image(display, new ImageDataProvider() {
 			@Override public ImageData getImageData(int zoom) {
 				String suffix = zoom == 200 ? "@2x.png" : ".png";
-				ImageData imageData = new ImageData(getClass().getResourceAsStream("/images/buttons/" + baseName + suffix));
+				ImageData imageData = new ImageData(getClass().getResourceAsStream("/images/" + baseName + suffix));
 				if (zoom != 100 & zoom != 200)
 					imageData = DPIUtil.autoScaleUp(display, imageData);
 				return imageData;
