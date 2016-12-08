@@ -19,9 +19,7 @@ import net.azib.ipscan.gui.menu.ResultsContextMenu;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
@@ -158,30 +156,44 @@ public class MainWindow {
 		feederSelectionCombo.pack();
 		IPFeederSelectionListener feederSelectionListener = new IPFeederSelectionListener();
 		feederSelectionCombo.addSelectionListener(feederSelectionListener);
-		// initialize the selected feeder GUI 
+
+		// initialize the selected feeder GUI
 		feederSelectionCombo.select(guiConfig.activeFeeder);
 		feederSelectionCombo.setToolTipText(Labels.getLabel("combobox.feeder.tooltip"));
 
 		// traverse the button before the combo (and don't traverse other buttons at all)
 		controlsArea.setTabList(new Control[] {startStopButton, feederSelectionCombo});
 
-		prefsButton = new ToolBar(controlsArea, SWT.FLAT);
-		prefsButton.setCursor(prefsButton.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
+		prefsButton = createToolbarButton(controlsArea);
 		ToolItem item = new ToolItem(prefsButton, SWT.PUSH);
-		item.setImage(new Image(null, Labels.getInstance().getImageAsStream("button.preferences.img")));
+		item.setImage(image("prefs"));
 		item.setToolTipText(Labels.getLabel("title.preferences"));
 		item.addListener(SWT.Selection, preferencesListener);
 
-		fetchersButton = new ToolBar(controlsArea, SWT.FLAT);
-		fetchersButton.setCursor(fetchersButton.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
+		fetchersButton = createToolbarButton(controlsArea);
 		item = new ToolItem(fetchersButton, SWT.PUSH);
-		item.setImage(new Image(null, Labels.getInstance().getImageAsStream("button.fetchers.img")));
+		item.setImage(image("fetchers"));
 		item.setToolTipText(Labels.getLabel("title.fetchers.select"));
 		item.addListener(SWT.Selection, chooseFetchersListsner);
 
 		feederSelectionListener.widgetSelected(null);
 	}
-	
+
+	private Image image(final String baseName) {
+		return new Image(Display.getCurrent(), new ImageDataProvider() {
+			@Override public ImageData getImageData(int zoom) {
+				String suffix = zoom >= 200 ? "@2x.png" : ".png";
+				return new ImageData(getClass().getResourceAsStream("/images/buttons/" + baseName + suffix));
+			}
+		});
+	}
+
+	private ToolBar createToolbarButton(Composite controlsArea) {
+		ToolBar bar = new ToolBar(controlsArea, SWT.FLAT);
+		bar.setCursor(bar.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
+		return bar;
+	}
+
 	private void relayoutControls() {
 		Point feederSize = feederRegistry.current().getSize();
 		Point buttonSize = startStopButton.getSize();
