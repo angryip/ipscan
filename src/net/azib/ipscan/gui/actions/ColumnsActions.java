@@ -91,7 +91,6 @@ public class ColumnsActions {
 	}
 
 	public static final class SortBy implements Listener {
-		
 		private final ScanningResultList scanningResultList;
 
 		@Inject
@@ -119,7 +118,6 @@ public class ColumnsActions {
 	}
 	
 	public static final class FetcherPreferences implements Listener {
-		
 		private final FetcherRegistry fetcherRegistry;
 
 		@Inject public FetcherPreferences(FetcherRegistry fetcherRegistry) {
