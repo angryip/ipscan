@@ -1,2 +1,2 @@
 #!/bin/sh
-java -jar /usr/lib/ipscan/ipscan*.jar "$@"
+SWT_GTK3=0 java -jar /usr/lib/ipscan/ipscan*.jar "$@"

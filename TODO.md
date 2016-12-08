@@ -1,8 +1,5 @@
 HiDPI:
 * New flat and retina-compatible icons :-)
-* GTK3 startup is slow
-* GTK3 progress bar - can it be centered?
-* Fewer problems when starting with SWT_GTK3=0
 * Scan complete Close button is partly outside of the window
 
 * Remember InfoDialog size
@@ -10,6 +7,7 @@ HiDPI:
 * Add URLFetcher with configurable URL and JSON/XPath expression
 * WHOIS fetcher
 
+* Switch to GTK3 on Linux (currently, startup is slow, progress bar is not nice)
 * Windows: net stop SharedAccess
 * gtk sort direction arrows
 * advanced exporting options dialog (with append checkbox)
