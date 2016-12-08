@@ -22,9 +22,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.*;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -50,6 +48,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 
 	private String mainWindowTitle;
 	private StatusBar statusBar;
+	private TaskItem taskBarItem;
 	private ResultTable resultTable;
 	private FeederGUIRegistry feederRegistry;
 	private Button button;
@@ -97,6 +96,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		this.button = startStopButton;
 		this.stateMachine = stateMachine;
 		this.guiConfig = guiConfig;
+		this.taskBarItem = getTaskBarItem();
 		
 		// add listeners to all state changes
 		stateMachine.addTransitionListener(this);
@@ -105,6 +105,14 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		ScanningState state = stateMachine.getState();
 		button.setImage(buttonImages[state.ordinal()]);
 		button.setText(buttonTexts[state.ordinal()]);
+	}
+
+	private TaskItem getTaskBarItem() {
+		TaskBar bar = display.getSystemTaskBar();
+		if (bar == null) return null;
+		TaskItem item = bar.getItem(statusBar.getShell());
+		if (item == null) item = bar.getItem(null);
+		return item;
 	}
 
 	/**
@@ -238,12 +246,10 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	}
 
 	public void updateProgress(final InetAddress currentAddress, final int runningThreads, final int percentageComplete) {
-		if (display.isDisposed())
-			return;
+		if (display.isDisposed()) return;
 		display.asyncExec(new Runnable() {
 			public void run() {
-				if (statusBar.isDisposed())
-					return;
+				if (statusBar.isDisposed()) return;
 				
 				// update status bar
 				if (currentAddress != null) {
@@ -251,6 +257,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				}					
 				statusBar.setRunningThreads(runningThreads);
 				statusBar.setProgress(percentageComplete);
+				if (taskBarItem != null) taskBarItem.setProgress(percentageComplete);
 				
 				// show percentage in main window title
 				if (!stateMachine.inState(IDLE))
