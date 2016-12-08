@@ -60,6 +60,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 
 		Button upButton = new Button(shell, SWT.NONE);
 		upButton.setText(Labels.getLabel("button.up"));
+		upButton.setToolTipText(Labels.getLabel("button.up.hint"));
 		upButton.setFont(iconFont);
 		upButton.addListener(SWT.Selection, new UpButtonListener(openersList) {
 			@Override public void handleEvent(Event event) {
@@ -70,6 +71,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		
 		Button downButton = new Button(shell, SWT.NONE);
 		downButton.setText(Labels.getLabel("button.down"));
+		downButton.setToolTipText(Labels.getLabel("button.down.hint"));
 		downButton.setFont(iconFont);
 		downButton.addListener(SWT.Selection, new DownButtonListener(openersList) {
 			@Override public void handleEvent(Event event) {

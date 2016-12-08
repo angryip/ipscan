@@ -69,18 +69,22 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 
 		Button upButton = new Button(shell, SWT.NONE);
 		upButton.setText(Labels.getLabel("button.up"));
+		upButton.setToolTipText(Labels.getLabel("button.up.hint"));
 		upButton.setFont(iconFont);
 
 		Button downButton = new Button(shell, SWT.NONE);
 		downButton.setText(Labels.getLabel("button.down"));
+		downButton.setToolTipText(Labels.getLabel("button.down.hint"));
 		downButton.setFont(iconFont);
 		
 		Button addButton = new Button(shell, SWT.NONE);
 		addButton.setText(Labels.getLabel("button.left"));
+		addButton.setToolTipText(Labels.getLabel("button.left.hint"));
 		addButton.setFont(iconFont);
 
 		Button removeButton = new Button(shell, SWT.NONE);
 		removeButton.setText(Labels.getLabel("button.right"));
+		removeButton.setToolTipText(Labels.getLabel("button.right.hint"));
 		removeButton.setFont(iconFont);
 		
 		Button prefsButton = new Button(shell, SWT.NONE);
