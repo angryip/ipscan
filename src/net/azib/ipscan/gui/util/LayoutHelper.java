@@ -8,6 +8,7 @@ package net.azib.ipscan.gui.util;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.internal.DPIUtil;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -49,10 +50,14 @@ public class LayoutHelper {
 	}
 
 	public static Image buttonImage(final String baseName) {
-		return new Image(Display.getCurrent(), new ImageDataProvider() {
+		final Display display = Display.getCurrent();
+		return new Image(display, new ImageDataProvider() {
 			@Override public ImageData getImageData(int zoom) {
-				String suffix = zoom >= 200 ? "@2x.png" : ".png";
-				return new ImageData(getClass().getResourceAsStream("/images/buttons/" + baseName + suffix));
+				String suffix = zoom == 200 ? "@2x.png" : ".png";
+				ImageData imageData = new ImageData(getClass().getResourceAsStream("/images/buttons/" + baseName + suffix));
+				if (zoom != 100 & zoom != 200)
+					imageData = DPIUtil.autoScaleUp(display, imageData);
+				return imageData;
 			}
 		});
 	}
