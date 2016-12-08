@@ -5,14 +5,12 @@
  */
 package net.azib.ipscan.gui.feeders;
 
-import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.RandomFeeder;
 import net.azib.ipscan.gui.actions.FeederActions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
@@ -84,7 +82,6 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		hostnameText.addTraverseListener(hostnameSelectionListener);
 		hostnameText.setLayoutData(new GridData(textWidth, -1));
 
-		ipUpButton.setImage(new Image(getDisplay(), Labels.getInstance().getImageAsStream("button.ipUp.img")));
 		ipUpButton.setText(getLabel("button.ipUp"));
 		ipUpButton.addSelectionListener(hostnameSelectionListener);
 
