@@ -50,7 +50,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		openersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		editFieldsGroup = new Group(shell, SWT.NONE);
 
-		openersList.setLayoutData(formData(135, 200, null, null, new FormAttachment(messageLabel, 10), new FormAttachment(editFieldsGroup, 0, SWT.BOTTOM)));
+		openersList.setLayoutData(formData(140, 200, null, null, new FormAttachment(messageLabel, 10), new FormAttachment(editFieldsGroup, 0, SWT.BOTTOM)));
 		for (String name : openersConfig) {
 			openersList.add(name);
 		}
@@ -95,7 +95,9 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
 		rowLayout.fill = true;
 		rowLayout.justify = true; 
-		rowLayout.marginTop = 13;
+		rowLayout.marginTop = 5;
+		rowLayout.marginBottom = 20;
+		rowLayout.marginWidth = 5;
 		editFieldsGroup.setLayout(rowLayout);
 		
 		Label openerNameLabel = new Label(editFieldsGroup, SWT.NONE);
@@ -125,7 +127,6 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		workingDirText = new Text(editFieldsGroup, SWT.BORDER);
 		workingDirText.setSize(SWT.DEFAULT, 22);
 				
-		editFieldsGroup.layout();
 		editFieldsGroup.pack();
 
 		Button okButton = new Button(shell, SWT.NONE);
