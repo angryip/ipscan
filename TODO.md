@@ -1,7 +1,3 @@
-HiDPI:
-* New flat and retina-compatible icons :-)
-* Scan complete Close button is partly outside of the window
-
 * Remember InfoDialog size
 
 * Add URLFetcher with configurable URL and JSON/XPath expression

@@ -6,7 +6,6 @@
 
 package net.azib.ipscan.gui;
 
-import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -17,9 +16,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import static net.azib.ipscan.gui.util.LayoutHelper.formData;
+import static net.azib.ipscan.gui.util.LayoutHelper.formLayout;
 
 public class InfoDialog extends AbstractModalDialog {
-	
 	String title;
 	String title2;
 	String message;
@@ -32,7 +31,7 @@ public class InfoDialog extends AbstractModalDialog {
 	@Override
 	protected void populateShell() {
 		shell.setText(title);
-		shell.setLayout(LayoutHelper.formLayout(10, 10, 15));
+		shell.setLayout(formLayout(10, 10, 15));
 		
 		Label iconLabel = new Label(shell, SWT.ICON);
 		iconLabel.setLayoutData(formData(new FormAttachment(0), null, new FormAttachment(0), null));
@@ -44,16 +43,16 @@ public class InfoDialog extends AbstractModalDialog {
 		titleLabel.setFont(new Font(null, sysFontData.getName(), sysFontData.getHeight()+3, sysFontData.getStyle() | SWT.BOLD));
 		titleLabel.setText(title2);
 
-		Button button = createCloseButton();
-
 		Text statsText = new Text(shell, SWT.MULTI | SWT.READ_ONLY);
 		statsText.setBackground(shell.getBackground());
 		statsText.setLayoutData(formData(new FormAttachment(iconLabel), new FormAttachment(100, -20), new FormAttachment(titleLabel), null));
 		statsText.setText(message);
 		statsText.pack();
 
+		Button button = createCloseButton();
+
 		Point buttonSize = button.getSize();
-		button.setLayoutData(formData(buttonSize.x, buttonSize.y, null, new FormAttachment(100), new FormAttachment(statsText), null));
+		button.setLayoutData(formData(buttonSize.x, buttonSize.y, null, new FormAttachment(100), new FormAttachment(statsText, 10), null));
 
 		shell.pack();
 	}
