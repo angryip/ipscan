@@ -11,6 +11,8 @@ import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.IPFetcher;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
@@ -19,6 +21,8 @@ import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import static net.azib.ipscan.gui.util.LayoutHelper.formData;
 
 /**
  * SelectFetchersDialog
@@ -50,45 +54,54 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		
 		Label selectedLabel = new Label(shell, SWT.NONE);
 		selectedLabel.setText(Labels.getLabel("text.fetchers.selectedList"));		
-		selectedLabel.setLayoutData(LayoutHelper.formData(null, null, new FormAttachment(messageLabel, 5), null));
+		selectedLabel.setLayoutData(formData(null, null, new FormAttachment(messageLabel, 5), null));
 				
 		selectedFetchersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		selectedFetchersList.setLayoutData(LayoutHelper.formData(140, 200, new FormAttachment(0), new FormAttachment(selectedLabel, 80, SWT.RIGHT), new FormAttachment(selectedLabel), null));
+		selectedFetchersList.setLayoutData(formData(160, 200, new FormAttachment(0), null, new FormAttachment(selectedLabel), null));
 		Iterator<Fetcher> i = fetcherRegistry.getSelectedFetchers().iterator();
 		i.next();	// skip IP
 		while (i.hasNext()) {
 			Fetcher fetcher = i.next();
 			selectedFetchersList.add(fetcher.getName());
 		}
-		
+
+		FontData fontData = messageLabel.getFont().getFontData()[0];
+		fontData.setHeight(fontData.getHeight() * 4/3);
+		Font iconFont = new Font(messageLabel.getDisplay(), fontData);
+
 		Button upButton = new Button(shell, SWT.NONE);
-		upButton.setText(Labels.getLabel("button.up"));	
-		
+		upButton.setText(Labels.getLabel("button.up"));
+		upButton.setFont(iconFont);
+
 		Button downButton = new Button(shell, SWT.NONE);
 		downButton.setText(Labels.getLabel("button.down"));
+		downButton.setFont(iconFont);
 		
 		Button addButton = new Button(shell, SWT.NONE);
 		addButton.setText(Labels.getLabel("button.left"));
+		addButton.setFont(iconFont);
 
 		Button removeButton = new Button(shell, SWT.NONE);
 		removeButton.setText(Labels.getLabel("button.right"));
+		removeButton.setFont(iconFont);
 		
 		Button prefsButton = new Button(shell, SWT.NONE);
 		prefsButton.setText(Labels.getLabel("button.fetcherPrefs"));
 		prefsButton.setToolTipText(Labels.getLabel("text.fetchers.preferences"));
+		prefsButton.setFont(iconFont);
 		
-		upButton.setLayoutData(LayoutHelper.formData(new FormAttachment(selectedFetchersList), new FormAttachment(downButton, 0, SWT.RIGHT), new FormAttachment(selectedLabel), null));
-		downButton.setLayoutData(LayoutHelper.formData(new FormAttachment(selectedFetchersList), null, new FormAttachment(upButton), null));
-		addButton.setLayoutData(LayoutHelper.formData(new FormAttachment(selectedFetchersList), new FormAttachment(downButton, 0, SWT.RIGHT), new FormAttachment(downButton, 16), null));	
-		removeButton.setLayoutData(LayoutHelper.formData(new FormAttachment(selectedFetchersList), new FormAttachment(downButton, 0, SWT.RIGHT), new FormAttachment(addButton), null));
-		prefsButton.setLayoutData(LayoutHelper.formData(new FormAttachment(selectedFetchersList), new FormAttachment(downButton, 0, SWT.RIGHT), new FormAttachment(removeButton, 16), null));
+		upButton.setLayoutData(formData(new FormAttachment(selectedFetchersList), null, new FormAttachment(selectedLabel), null));
+		downButton.setLayoutData(formData(new FormAttachment(selectedFetchersList), null, new FormAttachment(upButton), null));
+		addButton.setLayoutData(formData(new FormAttachment(selectedFetchersList), null, new FormAttachment(downButton, 16), null));
+		removeButton.setLayoutData(formData(new FormAttachment(selectedFetchersList), null, new FormAttachment(addButton), null));
+		prefsButton.setLayoutData(formData(new FormAttachment(selectedFetchersList), null, new FormAttachment(removeButton, 16), null));
 		
 		Label registeredLabel = new Label(shell, SWT.NONE);
 		registeredLabel.setText(Labels.getLabel("text.fetchers.availableList"));		
-		registeredLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(downButton, 10), null, new FormAttachment(messageLabel, 5), null));
+		registeredLabel.setLayoutData(formData(new FormAttachment(upButton, 10), null, new FormAttachment(messageLabel, 5), null));
 		
 		registeredFetchersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		registeredFetchersList.setLayoutData(LayoutHelper.formData(140, 200, new FormAttachment(downButton, 10), null, new FormAttachment(registeredLabel), null));
+		registeredFetchersList.setLayoutData(formData(160, 200, new FormAttachment(upButton, 10), null, new FormAttachment(registeredLabel), null));
 		i = fetcherRegistry.getRegisteredFetchers().iterator();
 		i.next(); // skip IP
 		while (i.hasNext()) {
@@ -120,7 +133,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		// this is a workaround for limitation of FormLayout to remove the extra edge below the form
 		shell.layout();
 		Rectangle bounds = registeredFetchersList.getBounds();
-		messageLabel.setLayoutData(LayoutHelper.formData(bounds.x + bounds.width - 10, SWT.DEFAULT, new FormAttachment(0), null, null, null));
+		messageLabel.setLayoutData(formData(bounds.x + bounds.width - 10, SWT.DEFAULT, new FormAttachment(0), null, null, null));
 		
 		shell.pack();
 		
