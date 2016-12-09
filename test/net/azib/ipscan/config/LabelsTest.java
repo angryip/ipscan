@@ -4,7 +4,10 @@ import junit.framework.AssertionFailedError;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -50,17 +53,6 @@ public class LabelsTest {
 		catch (Exception e) {
 			// exception is good
 		}
-	}
-
-	@Test
-	public void testImageAsStream() throws IOException {
-		InputStream stream = Labels.getInstance().getImageAsStream("button.start.img");
-		// Now check the first bytes of PNG image header
-		stream.read();
-		assertEquals((int)'P', stream.read());
-		assertEquals((int)'N', stream.read());
-		assertEquals((int)'G', stream.read());
-		stream.close();
 	}
 
 	/**

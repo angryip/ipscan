@@ -101,7 +101,7 @@ public class MainWindow {
 		shell.setLayout(new FormLayout());
 		
 		// load and set icon
-		Image image = new Image(shell.getDisplay(), Labels.getInstance().getImageAsStream("icon"));
+		Image image = new Image(shell.getDisplay(), getClass().getResourceAsStream("images/icon.png"));
 		shell.setImage(image);
 				
 		shell.addListener(SWT.Close, new Listener() {

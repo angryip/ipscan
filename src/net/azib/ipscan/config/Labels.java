@@ -83,15 +83,6 @@ public final class Labels {
 	}
 
 	/**
-	 * Retrieves an InputStream to load the image, specified by a key in resource file.
-	 * @param key
-	 */
-	public InputStream getImageAsStream(String key) {
-		String imagePath = get(key);
-		return getClass().getClassLoader().getResourceAsStream(imagePath);
-	}
-
-	/**
 	 * Retrieves a String specified by the label key
 	 * @param key
 	 */

@@ -52,7 +52,7 @@ public class InfoDialog extends AbstractModalDialog {
 		Button button = createCloseButton();
 
 		Point buttonSize = button.getSize();
-		button.setLayoutData(formData(buttonSize.x, buttonSize.y, null, new FormAttachment(100), new FormAttachment(statsText, 10), null));
+		button.setLayoutData(formData(buttonSize.x, buttonSize.y, null, new FormAttachment(100), new FormAttachment(statsText, 0, SWT.BOTTOM), null));
 
 		shell.pack();
 	}
