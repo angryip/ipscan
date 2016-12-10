@@ -10,3 +10,6 @@
 /test-coverage
 /.idea/workspace.xml
 /.idea/copyright
+/nbproject/private/
+/build/
+/nbdist/

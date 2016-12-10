@@ -1,5 +1,7 @@
 # Angry IP Scanner
 
+*** Forked to remove Google Analytics ***
+
 This is the source code of Angry IP Scanner, licensed with GPL v2. [Official site](http://angryip.org/)
 
 The code is written mostly in Java.
