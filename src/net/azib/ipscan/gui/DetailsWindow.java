@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.CommentsConfig;
@@ -28,9 +25,7 @@ import javax.inject.Inject;
  * @author Anton Keks
  */
 public class DetailsWindow extends AbstractModalDialog {
-
-	@Inject
-	CommentsConfig commentsConfig;
+	@Inject CommentsConfig commentsConfig;
 
 	private GUIConfig guiConfig;
 	private ResultTable resultTable;
@@ -82,6 +77,12 @@ public class DetailsWindow extends AbstractModalDialog {
 		
 		shell.layout();
 		detailsText.forceFocus();
+
+		shell.addListener(SWT.Close, new Listener() {
+			@Override public void handleEvent(Event event) {
+				guiConfig.detailsWindowSize = shell.getSize();
+			}
+		});
 	}
 	
 	class CommentsTextListener implements FocusListener, ModifyListener {
@@ -115,7 +116,6 @@ public class DetailsWindow extends AbstractModalDialog {
 	class TraverseListener implements Listener {
 		public void handleEvent(Event e) {
 			if (e.detail == SWT.TRAVERSE_RETURN) {
-				guiConfig.detailsWindowSize = shell.getSize();				
 				shell.close();
 				shell.dispose();
 			}
