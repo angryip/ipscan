@@ -432,12 +432,13 @@
 
 	<target name="win-installer" depends="clean,compile-win32,compile-win64,package-win32,package-win64">
 		<replace file="${win.installer.dir}/InstallerConfig.nsh">
-			<replacefilter token="VERSION_MINOR" value="2"/>
+			<replacefilter token="VERSION_MINOR" value="5"/>
 			<replacefilter token="VERSION" value="${version}"/>
 		</replace>
 		<copy file="${dist}/${ant.project.name}-win32-${version}.exe" tofile="${win.installer.dir}/AppFiles32/ipscan.exe"/>
 		<copy file="${dist}/${ant.project.name}-win64-${version}.exe" tofile="${win.installer.dir}/AppFiles64/ipscan.exe"/>
-		<exec dir="${win.installer.dir}" executable="${win.installer.dir}/NSISPortable/App/NSIS/makensis.exe">
+		<exec dir="${win.installer.dir}" executable="wine">
+			<arg value="${win.installer.dir}/NSISPortable/App/NSIS/makensis.exe"/>
 			<arg value="Installer/Installer.nsi"/>
 		</exec>
 		<move file="${win.installer.dir}/ipscan-${version}-setup.exe" todir="${dist}"/>
