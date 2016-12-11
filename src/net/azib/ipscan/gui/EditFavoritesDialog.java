@@ -96,7 +96,9 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 
 	class RenameListener implements Listener {
 		public void handleEvent(Event event) {
-			int index = favoritesList.getSelectionIndex();
+			if (favoritesConfig.size() == 0) return;
+			int index = Math.max(favoritesList.getSelectionIndex(), 0);
+
 			InputDialog prompt = new InputDialog(Labels.getLabel("title.rename"), "");
 			String oldName = favoritesList.getItem(index);
 			String newName = prompt.open(oldName);
