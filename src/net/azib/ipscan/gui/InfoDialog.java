@@ -38,9 +38,9 @@ public class InfoDialog extends AbstractModalDialog {
 		iconLabel.setImage(shell.getImage());
 		
 		Label titleLabel = new Label(shell, SWT.NONE);
-		FontData sysFontData = shell.getDisplay().getSystemFont().getFontData()[0];
+		FontData sysFontData = shell.getFont().getFontData()[0];
 		titleLabel.setLayoutData(formData(new FormAttachment(iconLabel), null, new FormAttachment(0), null));
-		titleLabel.setFont(new Font(null, sysFontData.getName(), sysFontData.getHeight()+3, sysFontData.getStyle() | SWT.BOLD));
+		titleLabel.setFont(new Font(null, sysFontData.getName(), sysFontData.getHeight() + 3, sysFontData.getStyle() | SWT.BOLD));
 		titleLabel.setText(title2);
 
 		Text statsText = new Text(shell, SWT.MULTI | SWT.READ_ONLY);
