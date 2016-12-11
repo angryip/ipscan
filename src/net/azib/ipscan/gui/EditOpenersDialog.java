@@ -88,12 +88,12 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		deleteButton.setText(Labels.getLabel("button.delete"));
 		deleteButton.addListener(SWT.Selection, new DeleteButtonListener());
 
-		upButton.setLayoutData(formData(new FormAttachment(openersList), new FormAttachment(deleteButton, 0, SWT.RIGHT), new FormAttachment(messageLabel, 10), null));
-		downButton.setLayoutData(formData(new FormAttachment(openersList), new FormAttachment(deleteButton, 0, SWT.RIGHT), new FormAttachment(upButton), null));
+		upButton.setLayoutData(formData(new FormAttachment(openersList), null, new FormAttachment(messageLabel, 10), null));
+		downButton.setLayoutData(formData(new FormAttachment(openersList), null, new FormAttachment(upButton), null));
 		addButton.setLayoutData(formData(new FormAttachment(openersList), new FormAttachment(deleteButton, 0, SWT.RIGHT), new FormAttachment(downButton, 16), null));
 		deleteButton.setLayoutData(formData(new FormAttachment(openersList), null, new FormAttachment(addButton), null));
 						
-		editFieldsGroup.setLayoutData(formData(new FormAttachment(upButton, 10), null, new FormAttachment(messageLabel, 10), null));
+		editFieldsGroup.setLayoutData(formData(new FormAttachment(deleteButton, 10), null, new FormAttachment(messageLabel, 10), null));
 		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
 		rowLayout.fill = true;
 		rowLayout.justify = true; 
