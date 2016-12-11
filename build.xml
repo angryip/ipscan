@@ -186,7 +186,7 @@
 		<attribute name="platform"/>
 		<sequential>
 			<mkdir dir="${dist}"/>
-			<unzip src="lib/dagger-2.0.1.jar" dest="${bin}.@{platform}"/>
+			<unzip src="lib/dagger-2.8.jar" dest="${bin}.@{platform}"/>
 			<unzip src="lib/javax.inject-1.jar" dest="${bin}.@{platform}"/>
 			<unzip src="${swt}/swt-@{platform}.jar" dest="${bin}.@{platform}"/>
 			<delete includeemptydirs="true" failonerror="false">
