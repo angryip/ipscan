@@ -176,7 +176,7 @@ public class MainWindow {
 		fetchersButton = createToolbarButton(controlsArea);
 		item = new ToolItem(fetchersButton, SWT.PUSH);
 		item.setImage(icon("buttons/fetchers"));
-		item.setToolTipText(Labels.getLabel("title.fetchers.select"));
+		item.setToolTipText(Labels.getLabel("title.fetchers"));
 		item.addListener(SWT.Selection, chooseFetchersListsner);
 
 		feederSelectionListener.widgetSelected(null);

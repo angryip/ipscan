@@ -46,7 +46,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
-		shell.setText(Labels.getLabel("title.fetchers.select"));
+		shell.setText(Labels.getLabel("title.fetchers"));
 		shell.setLayout(LayoutHelper.formLayout(10, 10, 4));
 		
 		Label messageLabel = new Label(shell, SWT.WRAP);
