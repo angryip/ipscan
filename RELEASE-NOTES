@@ -4,7 +4,9 @@ Changes in 3.5:
 - Select fetchers added to columns menu for easier discoverability
 - Show scanning progress in the system taskbar (no Linux support due to SWT)
 - Details window size is really persisted now
+- Mac vendors updated and are no longer cut to 8 characters
 - Smaller bugfixes
+- Java 6 support dropped due to SWT update
 
 Changes in 3.4.2:
 - Launch4J upgraded to fix finding the 1.8.0b101 JRE on Windows
