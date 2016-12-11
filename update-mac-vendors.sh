@@ -5,11 +5,11 @@ curl 'http://standards-oui.ieee.org/oui.txt' |\
 #cat oui.txt |\
 fgrep '(base 16)' | sed -r '
 	s/\r//g; s/     \(base 16\)\t\t//;
-	s/,? ?(Inc|INC|inc)\.?$//;
-	s/,? ?(Ltd|LTD|ltd|Limited|LIMITED|GmbH|GMBH|LLC|A\/S|AB|AS|SAS|AG|KG|plc|PLC|SRL|srl|OY|Oy)\.?$//;
-	s/,? ?(Co|CO|CORP|Corp|co|Corporation|CORPORATION|COMPANY)\.?$//;
+	s/,? ?(Inc)\.?$//I;
+	s/(,|, | )(Ltd|Limited|GmbH|LLC|A\/S|AB|AS|SAS|AG|KG|PLC|SRL|OY|Oy|BV)\.?$//I;
+	s/(,|, | )(Co|Corp|Corporation|COMPANY)\.?$//I;
 	s/\(.+\)//;
-	s/ ?(Electronics?|ELECTRONICS?|Technology|technology|TECHNOLOGY|Technologies|TECHNOLOGIES|Telecommunication|TELECOMMUNICATION|COMMUNICATION|Communication|Communications|Corporation|CORPORATION|corporation|Systems|Solutions) ?//g
+	s/ (Electronics?|Technology|Technologies|Telecommunication|Communications?|Corporation|Systems|Solutions) ?//Ig
 	s/ Registration Authority//
 ' | sort \
 > resources/mac-vendors.txt
