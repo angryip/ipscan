@@ -64,7 +64,7 @@ public class FileFeeder extends AbstractFeeder {
 		BufferedReader fileReader = new BufferedReader(reader);
 		
 		currentIndex = 0;
-		foundHosts = new LinkedHashMap<String, ScanningSubject>();
+		foundHosts = new LinkedHashMap<>();
 		try {
 			String fileLine;
 			while ((fileLine = fileReader.readLine()) != null) {
