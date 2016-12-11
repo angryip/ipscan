@@ -1,5 +1,3 @@
-* Remember InfoDialog size
-
 * Add URLFetcher with configurable URL and JSON/XPath expression
 * WHOIS fetcher
 
