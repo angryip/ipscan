@@ -1,5 +1,4 @@
 name: Angry IP Scanner
-pygments: true
 url: http://angryip.org
 version: 3.5
 permalink: /:year/:month/:title.html
