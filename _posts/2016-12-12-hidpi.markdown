@@ -1,0 +1,23 @@
+---
+layout: post
+title:  "HiDPI support arrived"
+date:   2016-12-12
+---
+
+Angry IP Scanner now proudly supports HiDPI/Retina screens on Windows and Linux
+starting with version *3.5* released today.
+
+Mac OS X retina support was already available before.
+
+This works thanks to an update in SWT (the GUI toolkit) to version *4.7M3*, which in addition to
+scaled fonts now also scales images as well. Also, HiDPI versions of all icons was
+also provided, updating most of the icons to a flatter style.
+
+Support for running with **Java 6** is also now dropped, so that the last version
+compatible with Java 6 is *3.4.2*. According to the statistics, there are a
+very few users still running Java 6. All of them are recommended to upgrade 
+their Java.
+
+Running on **Windows XP** is no longer officially supported, however it may still work.
+Angry IP Scanner now uses some Unicode characters in the UI that may not be
+rendered correctly by this version of Windows.
