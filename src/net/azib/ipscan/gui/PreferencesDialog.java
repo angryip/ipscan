@@ -67,7 +67,6 @@ public class PreferencesDialog extends AbstractModalDialog {
 	private Button showInfoCheckbox;
 	private Button askConfirmationCheckbox;
 	private Combo languageCombo;
-	private String[] languages = { "system", "en", "de", "hu", "lt", "es", "it", "ku", "tr", "gr" };
 
 	@Inject public PreferencesDialog(PingerRegistry pingerRegistry, Config globalConfig, ScannerConfig scannerConfig, GUIConfig guiConfig) {
 		this.pingerRegistry = pingerRegistry;
@@ -290,7 +289,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		languageGroup.setText(Labels.getLabel("preferences.language"));
 		
 		languageCombo = new Combo(languageGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
-		for (String language : languages) {
+		for (String language : Labels.LANGUAGES) {
 			languageCombo.add(Labels.getLabel("language." + language));
 		}
 		languageCombo.select(0);
@@ -395,8 +394,8 @@ public class PreferencesDialog extends AbstractModalDialog {
 		displayMethod[guiConfig.displayMethod.ordinal()].setSelection(true);
 		showInfoCheckbox.setSelection(guiConfig.showScanStats);
 		askConfirmationCheckbox.setSelection(guiConfig.askScanConfirmation);
-		for (int i = 0; i < languages.length; i++) {
-			if (globalConfig.language.equals(languages[i])) {
+		for (int i = 0; i < Labels.LANGUAGES.length; i++) {
+			if (globalConfig.language.equals(Labels.LANGUAGES[i])) {
 				languageCombo.select(i);
 			}
 		}
@@ -439,7 +438,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		}
 		guiConfig.showScanStats = showInfoCheckbox.getSelection();
 		guiConfig.askScanConfirmation = askConfirmationCheckbox.getSelection();
-		String newLanguage = languages[languageCombo.getSelectionIndex()];
+		String newLanguage = Labels.LANGUAGES[languageCombo.getSelectionIndex()];
 		if (!newLanguage.equals(globalConfig.language)) {
 			globalConfig.language = newLanguage;
 			MessageBox msgBox = new MessageBox(shell);
