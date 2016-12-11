@@ -1,21 +1,15 @@
-/**
- * 
- */
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.FavoritesConfig;
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
-/**
- * EditFavoritesDialog
- *
- * @author Anton Keks
- */
+import static net.azib.ipscan.gui.util.LayoutHelper.formData;
+import static net.azib.ipscan.gui.util.LayoutHelper.formLayout;
+
 public class EditFavoritesDialog extends AbstractModalDialog {
 
 	private final FavoritesConfig favoritesConfig;
@@ -32,13 +26,13 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(Labels.getLabel("title.favorite.edit"));
-		shell.setLayout(LayoutHelper.formLayout(10, 10, 4));		
+		shell.setLayout(formLayout(10, 10, 4));
 		
 		Label messageLabel = new Label(shell, SWT.NONE);
 		messageLabel.setText(Labels.getLabel("text.favorite.edit"));
 		
 		favoritesList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		favoritesList.setLayoutData(LayoutHelper.formData(330, 200, new FormAttachment(0), null, new FormAttachment(messageLabel), null));
+		favoritesList.setLayoutData(formData(330, 200, new FormAttachment(0), null, new FormAttachment(messageLabel), null));
 		for (String name : favoritesConfig) {
 			favoritesList.add(name);
 		}
@@ -61,10 +55,10 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 		deleteButton.setText(Labels.getLabel("button.delete"));
 		deleteButton.addListener(SWT.Selection, new DeleteListener());
 		
-		upButton.setLayoutData(LayoutHelper.formData(new FormAttachment(favoritesList), new FormAttachment(renameButton, 0, SWT.RIGHT), new FormAttachment(messageLabel), null));
-		downButton.setLayoutData(LayoutHelper.formData(new FormAttachment(favoritesList), new FormAttachment(renameButton, 0, SWT.RIGHT), new FormAttachment(upButton), null));
-		renameButton.setLayoutData(LayoutHelper.formData(new FormAttachment(favoritesList), null, new FormAttachment(downButton, 10), null));
-		deleteButton.setLayoutData(LayoutHelper.formData(new FormAttachment(favoritesList), new FormAttachment(renameButton, 0, SWT.RIGHT), new FormAttachment(renameButton), null));
+		upButton.setLayoutData(formData(new FormAttachment(favoritesList), new FormAttachment(renameButton, 0, SWT.RIGHT), new FormAttachment(messageLabel), null));
+		downButton.setLayoutData(formData(new FormAttachment(favoritesList), new FormAttachment(renameButton, 0, SWT.RIGHT), new FormAttachment(upButton), null));
+		renameButton.setLayoutData(formData(new FormAttachment(favoritesList), null, new FormAttachment(downButton, 10), null));
+		deleteButton.setLayoutData(formData(new FormAttachment(favoritesList), new FormAttachment(renameButton, 0, SWT.RIGHT), new FormAttachment(renameButton), null));
 		
 		Button okButton = new Button(shell, SWT.NONE);
 		okButton.setText(Labels.getLabel("button.OK"));		
