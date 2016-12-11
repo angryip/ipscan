@@ -33,8 +33,8 @@ public abstract class AbstractModalDialog {
 		if (shell.getParent() != null) {
 			Rectangle parentBounds = shell.getParent().getBounds();
 			Rectangle childBounds = shell.getBounds();
-			int x = parentBounds.x + (parentBounds.width - childBounds.width) / 2;
-			int y = parentBounds.y + (parentBounds.height - childBounds.height) / 2;
+			int x = Math.max(0, parentBounds.x + (parentBounds.width - childBounds.width) / 2);
+			int y = Math.max(0, parentBounds.y + (parentBounds.height - childBounds.height) / 2);
 			shell.setLocation(x, y);
 		}
 		
