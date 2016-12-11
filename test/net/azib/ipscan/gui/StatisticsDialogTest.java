@@ -6,18 +6,16 @@
 
 package net.azib.ipscan.gui;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Locale;
-
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.ScanningResultList.ScanInfo;
-
 import org.junit.Test;
+
+import java.util.Locale;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * StatisticsDialogTest
@@ -30,13 +28,14 @@ public class StatisticsDialogTest {
 	public void timeToText() throws Exception {
 		Labels.initialize(new Locale("en")); 
 		assertEquals("0\u00A0sec", StatisticsDialog.timeToText(0));
+		assertEquals("0.01\u00A0sec", StatisticsDialog.timeToText(10));
 		assertEquals("0.5\u00A0sec", StatisticsDialog.timeToText(499));
-		assertEquals("0.3\u00A0sec", StatisticsDialog.timeToText(265));
+		assertEquals("0.27\u00A0sec", StatisticsDialog.timeToText(265));
 		assertEquals("1\u00A0sec", StatisticsDialog.timeToText(1001));
 		assertEquals("1.5\u00A0min", StatisticsDialog.timeToText(90025));
 		assertEquals("10\u00A0min", StatisticsDialog.timeToText(600000));
 		assertEquals("1\u00A0h", StatisticsDialog.timeToText(3600000));
-		assertEquals("2.5\u00A0h", StatisticsDialog.timeToText(9036000));
+		assertEquals("2.51\u00A0h", StatisticsDialog.timeToText(9036000));
 	}
 	
 	@Test
