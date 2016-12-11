@@ -67,7 +67,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 	private Button showInfoCheckbox;
 	private Button askConfirmationCheckbox;
 	private Combo languageCombo;
-	private String[] languages = { "system", "en", "de", "hu", "lt", "es", "it", "ku", "tr" };
+	private String[] languages = { "system", "en", "de", "hu", "lt", "es", "it", "ku", "tr", "gr" };
 
 	@Inject public PreferencesDialog(PingerRegistry pingerRegistry, Config globalConfig, ScannerConfig scannerConfig, GUIConfig guiConfig) {
 		this.pingerRegistry = pingerRegistry;
