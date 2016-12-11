@@ -112,6 +112,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		if (bar == null) return null;
 		TaskItem item = bar.getItem(statusBar.getShell());
 		if (item == null) item = bar.getItem(null);
+		if (item != null) item.setProgressState(SWT.NORMAL);
 		return item;
 	}
 
