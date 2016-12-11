@@ -77,7 +77,7 @@ public class StatisticsDialog extends InfoDialog {
 		double totalSeconds = scanTime/1000;
 		double totalMinutes = totalSeconds/60;
 		double totalHours = totalMinutes/60;
-		NumberFormat format = new DecimalFormat("#.#");
+		NumberFormat format = new DecimalFormat("#.##");
 		if (totalHours >= 1)
 			return format.format(totalHours) + Labels.getLabel("unit.hour");
 		if (totalMinutes >= 1)
