@@ -194,17 +194,13 @@ ul, ol, dl {
 }
 
 ul {
-  list-style: inside;
-  padding-left: 20px;
-}
-
-#home ul {
-  padding-left: 0;
+  list-style: outside;
+  padding-left: 1em;
 }
 
 ol {
   list-style: decimal inside;
-  padding-left: 20px;
+  padding-left: 1em;
 }
 
 dl dt {
@@ -212,12 +208,12 @@ dl dt {
 }
 
 dl dd {
-  padding-left: 20px;
+  padding-left: 1em;
   font-style: italic;
 }
 
 dl p {
-  padding-left: 20px;
+  padding-left: 1em;
   font-style: italic;
 }
 
@@ -490,7 +486,7 @@ Small Device Styles
   }
 }
 
-@media screen and (max-width: 570px) {
+@media screen and (max-width: 625px) {
   body {
     font-size:14px;
   }
