@@ -354,14 +354,14 @@ a.featured {
   height: 420px;
   padding: 0;
   margin: 0;
-  background-image: url(/screenshots/ipscan-ubuntu.png);
+  background-image: url(/screenshots/ipscan-ubuntu-lores.png);
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
 }
 
 a.featured.windows {
-  background-image: url(/screenshots/ipscan-win10.png);
+  background-image: url(/screenshots/ipscan-win10-lores.png);
 }
 
 a.featured:after {
