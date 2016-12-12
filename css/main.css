@@ -84,6 +84,11 @@ h6 {
   font-size: 16px;
 }
 
+small {
+  font-size: 70%;
+  color: gray;
+}
+
 p {
   margin: 10px 0 15px 0;
 }
