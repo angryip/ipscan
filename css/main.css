@@ -65,7 +65,7 @@ h1 {
 h2 {
   padding-bottom: 10px;
   font-size: 32px;
-  background: url('../images/bg_hr.png') repeat-x bottom;
+  background: url(/images/bg_hr.png) repeat-x bottom;
 }
 
 h3 {
@@ -231,7 +231,7 @@ hr {
   height: 1px;
   margin-bottom: 5px;
   border: none;
-  background: url('../images/bg_hr.png') repeat-x center;
+  background: url(/images/bg_hr.png) repeat-x center;
 }
 
 table {
@@ -280,7 +280,7 @@ Full-Width Styles
   z-index: 10;
   padding: 10px 50px 10px 10px;
   color: #fff;
-  background: url('../images/blacktocat.png') rgba(0,0,0,0.4) no-repeat 95% 50%;
+  background: url(/images/blacktocat.png) rgba(0,0,0,0.4) no-repeat 95% 50%;
   font-weight: 700;
   box-shadow: 0 0 10px rgba(0,0,0,.5);
   border-bottom-left-radius: 2px;
@@ -289,10 +289,8 @@ Full-Width Styles
 
 #header_wrap {
   background-color: rgba(0,0,0,0.85);
-  background-image: -webkit-linear-gradient(left,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
-  background-image: -moz-linear-gradient(left,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
-  background-image: -o-linear-gradient(left,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
-  background-image: linear-gradient(to right,rgba(153,93,179,0.6),rgba(44,155,219,0.6));}
+  background-image: linear-gradient(to right,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
+}
 
 #header_wrap .inner {
   padding: 40px 10px 10px 10px;
@@ -303,7 +301,7 @@ Full-Width Styles
   color: #fff;
   font-size: 42px;
   font-weight: 700;
-  text-shadow: #111 0px 0px 10px;
+  text-shadow: #111 0 0 10px;
   position: relative;
 }
 
@@ -355,14 +353,31 @@ img.logo {
   top: 20px;
 }
 
-img.featured {
-  border: none;
-  box-shadow: none;
-  width: 450px;
+a.featured {
+  display: block;
   float: right;
-  margin-left: 15px;
-  margin-right: -15px;
-  margin-bottom: -35px;
+  width: 450px;
+  height: 420px;
+  padding: 0;
+  margin: 0;
+  background-image: url(/screenshots/ipscan-ubuntu.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+a.featured.windows {
+  background-image: url(/screenshots/ipscan-win10.png);
+}
+
+a.featured:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  right: 0;
+  background: linear-gradient(to right, transparent, white);
 }
 
 .clearfix:after {
@@ -426,9 +441,6 @@ img.featured {
   color:white;
   text-decoration:none;
   background-color: rgba(0,0,0,0.85);
-  background-image: -webkit-linear-gradient(left,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
-  background-image: -moz-linear-gradient(left,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
-  background-image: -o-linear-gradient(left,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
   background-image: linear-gradient(to right,rgba(153,93,179,0.6),rgba(44,155,219,0.6));
 }
 

@@ -12,7 +12,7 @@ redirect_from:
 ---
 
 <div id="home" class="clearfix">
-  <a href="/screenshots/"><img src="images/ipscan-screen.png" class="featured"></a>
+  <a href="/screenshots/" class="featured"></a>
   <h1>Features</h1>
 
   <ul>
@@ -52,4 +52,9 @@ redirect_from:
     {% endfor %}
   </ul>
 </div>
+
+<script>
+  if (navigator.userAgent.indexOf('Win') >= 0)
+    document.querySelector('.featured').classList.add('windows');
+</script>
 
