@@ -1,6 +1,9 @@
 ---
 title: Feedback
 layout: default
+redirect_from: 
+  - /w/Feedback/
+  - /w/Forum/
 ---
 
 Feedback

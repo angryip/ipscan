@@ -1,6 +1,7 @@
 ---
 title: Privacy
 layout: default
+redirect_from: /w/Privacy/
 ---
 
 Privacy

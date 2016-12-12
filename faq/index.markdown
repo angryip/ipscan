@@ -1,6 +1,7 @@
 ---
 title: FAQ
 layout: default
+redirect_from: /w/FAQ/
 ---
 
 FAQ

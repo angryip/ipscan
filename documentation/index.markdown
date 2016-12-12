@@ -1,6 +1,7 @@
 ---
 title: Documentation
 layout: default
+redirect_from: /w/Documentation/
 ---
 
 # Introduction #

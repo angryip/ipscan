@@ -1,6 +1,7 @@
 ---
 title: Contribute
 layout: default
+redirect_from: /w/Development/
 ---
 
 Contribute
