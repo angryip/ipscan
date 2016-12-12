@@ -2,3 +2,6 @@ name: Angry IP Scanner
 url: http://angryip.org
 version: 3.5
 permalink: /:year/:month/:title.html
+
+gems:
+  - jekyll-redirect-from

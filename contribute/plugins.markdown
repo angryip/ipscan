@@ -1,6 +1,7 @@
 ---
 title: Plugins
 layout: default
+redirect_from: /w/FAQ%3A_Plugins/
 ---
 
 Plugins

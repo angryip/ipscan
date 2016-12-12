@@ -1,6 +1,7 @@
 ---
 title: Crippled Windows
 layout: default
+redirect_from: /w/FAQ%3A_Crippled_Windows/
 ---
 
 Why is scanning slow on Windows?
