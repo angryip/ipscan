@@ -323,7 +323,7 @@ img.logo {
   font-size: 21px;
   font-weight: 300;
   background: none;
-  text-shadow: #111 0px 0px 10px;
+  text-shadow: #111 0 0 10px;
 }
 
 #main_content_wrap {
