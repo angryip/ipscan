@@ -512,13 +512,12 @@ Small Device Styles
   }
 
   img {
-    max-width: 96%;
+    max-width: 100%;
   }
 
-  img.featured {
+  a.featured {
     float: none;
-    margin: 0 auto -10px auto;
-    display: block;
+    width: 96%;
   }
 
   h1 {
