@@ -3,6 +3,7 @@ Changes in 3.5.1:
 - Improve fetchers prefs icon for MacOS X
 - Allow editing of preferences even of deselected fetchers
 - Improve detection of IPs/hostnames in file import and file feeder
+- New HTTPProxyFetcher that checks for working HTTP proxies
 
 Changes in 3.5:
 - HiDPI/retina display support
