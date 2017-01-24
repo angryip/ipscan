@@ -59,21 +59,17 @@ public final class Labels {
 		instance = new Labels();
 		
 		instance.locale = locale;
-		InputStream labelsStream;
-		try {
-			labelsStream = Labels.class.getClassLoader().getResourceAsStream("messages.properties");
+		try (InputStream labelsStream = Labels.class.getClassLoader().getResourceAsStream("messages.properties")) {
 			if (labelsStream == null) {
 				throw new MissingResourceException("Labels not found!", Labels.class.getName(), "messages");
 			}
 			instance.labelsFallback = new PropertyResourceBundle(new InputStreamReader(labelsStream, "UTF-8"));
-			labelsStream.close();
 		}
 		catch (IOException e) {
 			throw new MissingResourceException(e.toString(), Labels.class.getName(), "messages");
 		}
 		
-		try {
-			labelsStream = Labels.class.getClassLoader().getResourceAsStream("messages_" + locale.getLanguage() + ".properties");
+		try (InputStream labelsStream = Labels.class.getClassLoader().getResourceAsStream("messages_" + locale.getLanguage() + ".properties")) {
 			instance.labels = new PropertyResourceBundle(new InputStreamReader(labelsStream, "UTF-8"));
 			labelsStream.close();
 		}
