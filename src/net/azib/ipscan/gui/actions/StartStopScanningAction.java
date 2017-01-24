@@ -8,6 +8,7 @@ package net.azib.ipscan.gui.actions;
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.GUIConfig.DisplayMethod;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.core.*;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.net.PingerRegistry;
@@ -109,7 +110,8 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 
 	private TaskItem getTaskBarItem() {
 		TaskBar bar = display.getSystemTaskBar();
-		if (bar == null) return null;
+		// TODO: test on Mac and re-enable this feature (see issue #82)
+		if (bar == null || Platform.MAC_OS) return null;
 		TaskItem item = bar.getItem(statusBar.getShell());
 		if (item == null) item = bar.getItem(null);
 		if (item != null) item.setProgressState(SWT.NORMAL);

@@ -1,9 +1,10 @@
 Changes in 3.5.1:
 - Restore support for Java 7
-- Improve fetchers prefs icon for MacOS X
 - Allow editing of preferences even of deselected fetchers
 - Improve detection of IPs/hostnames in file import and file feeder
 - New HTTPProxyFetcher that checks for working HTTP proxies
+- Remove scanning progress from Dock on MacOS X, as it reverts to an incorrect icon
+- Improve fetchers prefs icon for MacOS X
 
 Changes in 3.5:
 - HiDPI/retina display support
