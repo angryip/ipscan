@@ -21,8 +21,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import static net.azib.ipscan.gui.util.LayoutHelper.formData;
-import static net.azib.ipscan.gui.util.LayoutHelper.iconFont;
+import static net.azib.ipscan.gui.util.LayoutHelper.*;
 
 /**
  * SelectFetchersDialog
@@ -88,7 +87,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		removeButton.setFont(iconFont);
 		
 		Button prefsButton = new Button(shell, SWT.NONE);
-		prefsButton.setText(Labels.getLabel("button.fetcherPrefs"));
+		prefsButton.setImage(icon("buttons/prefs"));
 		prefsButton.setToolTipText(Labels.getLabel("text.fetchers.preferences"));
 		prefsButton.setFont(iconFont);
 		
@@ -96,7 +95,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		downButton.setLayoutData(formData(new FormAttachment(selectedFetchersList), null, new FormAttachment(upButton), null));
 		addButton.setLayoutData(formData(new FormAttachment(selectedFetchersList), null, new FormAttachment(downButton, 16), null));
 		removeButton.setLayoutData(formData(new FormAttachment(selectedFetchersList), null, new FormAttachment(addButton), null));
-		prefsButton.setLayoutData(formData(new FormAttachment(selectedFetchersList), null, new FormAttachment(removeButton, 16), null));
+		prefsButton.setLayoutData(formData(new FormAttachment(selectedFetchersList), new FormAttachment(removeButton, 0, SWT.RIGHT), new FormAttachment(removeButton, 16), null));
 		
 		Label registeredLabel = new Label(shell, SWT.NONE);
 		registeredLabel.setText(Labels.getLabel("text.fetchers.availableList"));		
