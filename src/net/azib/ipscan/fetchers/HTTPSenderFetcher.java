@@ -18,7 +18,7 @@ import javax.inject.Inject;
 public class HTTPSenderFetcher extends PortTextFetcher {
 	
 	@Inject public HTTPSenderFetcher(ScannerConfig scannerConfig) {
-		super(scannerConfig, 3128, "HEAD http://www.google.com HTTP/1.0\r\n\r\n", "Location: (https?.*)$");
+		super(scannerConfig, 80, "HEAD / HTTP/1.0\r\n\r\n", "Date: (.*)$");
 	}
 	
 	public String getId() {
