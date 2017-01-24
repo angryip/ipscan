@@ -11,6 +11,8 @@ import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.IPFetcher;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
@@ -31,10 +33,11 @@ import static net.azib.ipscan.gui.util.LayoutHelper.*;
 public class SelectFetchersDialog extends AbstractModalDialog {
 	
 	private FetcherRegistry fetcherRegistry;
-	
+
+	private List lastFocusList;
 	private List selectedFetchersList;
 	private List registeredFetchersList;
-	Map<String, String> registeredFetcherIdsByNames = new HashMap<String, String>();
+	Map<String, String> registeredFetcherIdsByNames = new HashMap<>();
 
 	@Inject public SelectFetchersDialog(FetcherRegistry fetcherRegistry) {
 		this.fetcherRegistry = fetcherRegistry;
@@ -55,7 +58,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		selectedLabel.setText(Labels.getLabel("text.fetchers.selectedList"));		
 		selectedLabel.setLayoutData(formData(null, null, new FormAttachment(messageLabel, 5), null));
 				
-		selectedFetchersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+		selectedFetchersList = lastFocusList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		selectedFetchersList.setLayoutData(formData(160, 200, new FormAttachment(0), null, new FormAttachment(selectedLabel), null));
 		Iterator<Fetcher> i = fetcherRegistry.getSelectedFetchers().iterator();
 		i.next();	// skip IP
@@ -131,6 +134,9 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		selectedFetchersList.addListener(SWT.MouseDoubleClick, removeButtonListener);
 		prefsButton.addListener(SWT.Selection, new PrefsListener());
 
+		registeredFetchersList.addSelectionListener(new ListFocusListener());
+		selectedFetchersList.addSelectionListener(new ListFocusListener());
+
 		// this is a workaround for limitation of FormLayout to remove the extra edge below the form
 		shell.layout();
 		Rectangle bounds = registeredFetchersList.getBounds();
@@ -168,11 +174,17 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		fetcherRegistry.updateSelectedFetchers(fetchersLabelsToRetain);
 	}
 
+	class ListFocusListener extends SelectionAdapter {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			lastFocusList = (List) e.getSource();
+		}
+	}
+
 	class PrefsListener implements Listener {
-		
 		public void handleEvent(Event event) {
-			String[] selection = selectedFetchersList.getSelection();
-			String fetcherName = selection.length > 0 ? selection[0] : selectedFetchersList.getItem(0);
+			String[] selection = lastFocusList.getSelection();
+			String fetcherName = selection.length > 0 ? selection[0] : lastFocusList.getItem(0);
 			for (Fetcher fetcher : fetcherRegistry.getRegisteredFetchers()) {
 				if (fetcherName.equals(fetcher.getName())) {
 					fetcherRegistry.openPreferencesEditor(fetcher);
@@ -204,5 +216,4 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 			fromList.remove(selectedItems);
 		}
 	}
-	
 }
