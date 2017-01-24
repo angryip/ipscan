@@ -88,13 +88,11 @@ public class FileFeederTest {
 		
 		assertAddressCount("255.255.255.255\n\n\n\t0.0.0.0", 2);
 
-		// This test fails under GCJ, probably it doesn't normalize IP addresses,
-		// passed to the InetAddress and throws UnknownHostException because of the leading zero
-		// assertAddressCount("09.001.005.006", 1);
+		assertAddressCount("09.001.005.006", 1);
 
 		assertAddressCount("999.999.999.999,1.1.01.1", 1);
 
-		assertAddressCount("<xml>66.87.99.128</xml>\n<xml>000.87.99.129</xml>0000.1.1.1", 3);
+		assertAddressCount("<xml>66.87.99.128</xml>\n<xml>000.87.99.129</xml>000.1.1.1", 3);
 	}
 			
 	@Test

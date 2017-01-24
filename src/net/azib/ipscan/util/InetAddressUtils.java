@@ -27,7 +27,7 @@ public class InetAddressUtils {
 	static final Logger LOG = LoggerFactory.getLogger();
 	
 	// Warning! IPv4 specific code
-	public static final Pattern HOSTNAME_REGEX = Pattern.compile("\\b(([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\.)+([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\b", CASE_INSENSITIVE);
+	public static final Pattern HOSTNAME_REGEX = Pattern.compile("\\b((([a-z]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\.)+([a-z]{2,})|\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})\\b", CASE_INSENSITIVE);
 
 	public static InetAddress startRangeByNetmask(InetAddress address, InetAddress netmask) {
 		byte[] netmaskBytes = netmask.getAddress();
