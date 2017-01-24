@@ -45,7 +45,7 @@ public class ScanningSubject {
 	 */
 	public ScanningSubject(InetAddress address) {
 		this.address = address;
-		this.parameters = new HashMap<String, Object>(); // single-threaded access only
+		this.parameters = new HashMap<>(); // single-threaded access only
 		this.config = Config.getConfig().forScanner();
 	}
 	
@@ -121,7 +121,7 @@ public class ScanningSubject {
 	 */
 	public void addRequestedPort(Integer requestedPort) {
 		if (requestedPorts == null)
-			requestedPorts = new ArrayList<Integer>();
+			requestedPorts = new ArrayList<>();
 		requestedPorts.add(requestedPort);
 	}
 
