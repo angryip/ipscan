@@ -11,14 +11,14 @@ import net.azib.ipscan.config.ScannerConfig;
 import javax.inject.Inject;
 
 /**
- * WebDetectFetcher - detects the Web server software running on scanned hosts.
+ * HTTPSenderFetcher - allows sending of arbitrary info port and showing the result.
  *
  * @author Anton Keks
  */
 public class HTTPSenderFetcher extends PortTextFetcher {
 	
 	@Inject public HTTPSenderFetcher(ScannerConfig scannerConfig) {
-		super(scannerConfig, 3128, "GET http://www.google.com HTTP/1.0\r\n\r\n", "Location: (https?.*)$");
+		super(scannerConfig, 3128, "HEAD http://www.google.com HTTP/1.0\r\n\r\n", "Location: (https?.*)$");
 	}
 	
 	public String getId() {
