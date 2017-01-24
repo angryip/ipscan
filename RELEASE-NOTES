@@ -1,3 +1,8 @@
+Changes in 3.5.1:
+- Restore support for Java 7
+- Improve fetchers prefs icon for MacOS X
+- Improve detection of IPs/hostnames in FileFeeder
+
 Changes in 3.5:
 - HiDPI/retina display support
 - Flatter icons
