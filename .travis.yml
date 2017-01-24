@@ -1,4 +1,6 @@
 language: java
+jdk:
+  - oraclejdk7
 
 before_install:
   - sudo apt-get update -qq
