@@ -246,6 +246,7 @@
 			<jar destfile="${dist}/${ant.project.name}-@{platform}-orig.jar" >
 				<manifest>
 					<attribute name="Main-Class" value="${main.class}"/>
+					<attribute name="Class-Path" value="."/>
 					<attribute name="Title" value="${name}"/>
 					<attribute name="Version" value="${version}"/>
 					<attribute name="Git-SHA1" value="${build.sha1}"/>
