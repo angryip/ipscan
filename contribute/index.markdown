@@ -49,7 +49,7 @@ copy it with the ISO 2-letter language suffix (eg messages_et.properties), trans
 
 To test your translations, run Angry IP Scanner from the command-line (assuming that the translated file is in the same directory as the original jar or exe):
 
-    java -cp . -jar ipscan-xxx.jar
+    java -cp .:ipscan-xxx.jar net.azib.ipscan.Main
 
 Source structure
 ----------------
