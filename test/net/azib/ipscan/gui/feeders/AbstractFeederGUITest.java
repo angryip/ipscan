@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.azib.ipscan.gui.feeders;
 
 import net.azib.ipscan.config.Labels;

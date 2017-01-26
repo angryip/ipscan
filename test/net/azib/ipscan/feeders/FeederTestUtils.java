@@ -1,10 +1,7 @@
-/**
- * 
- */
 package net.azib.ipscan.feeders;
 
-import net.azib.ipscan.config.Labels;
 import junit.framework.Assert;
+import net.azib.ipscan.config.Labels;
 
 /**
  * FeederTestUtils

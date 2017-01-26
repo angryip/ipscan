@@ -1,13 +1,10 @@
-/**
- * 
- */
 package net.azib.ipscan.core.values;
+
+import net.azib.ipscan.config.Config;
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import net.azib.ipscan.config.Config;
-
-import org.junit.Test;
 
 /**
  * NotAvailableValueTest

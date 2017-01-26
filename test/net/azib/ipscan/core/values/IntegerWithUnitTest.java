@@ -1,15 +1,9 @@
-/**
- * 
- */
 package net.azib.ipscan.core.values;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.core.values.IntegerWithUnit;
-
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * IntegerWithUnitTest

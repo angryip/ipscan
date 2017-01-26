@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.azib.ipscan.gui.actions;
 
 import net.azib.ipscan.config.LoggerFactory;

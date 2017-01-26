@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.azib.ipscan.config;
 
 import net.azib.ipscan.fetchers.Fetcher;
@@ -12,7 +9,8 @@ import org.junit.Test;
 import java.util.prefs.Preferences;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * DimensionsConfigTest

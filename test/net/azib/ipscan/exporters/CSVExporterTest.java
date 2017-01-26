@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.azib.ipscan.exporters;
 
 import org.junit.Test;

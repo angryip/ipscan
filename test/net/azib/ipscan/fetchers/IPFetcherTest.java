@@ -1,17 +1,13 @@
-/**
- * 
- */
 package net.azib.ipscan.fetchers;
 
-import static org.junit.Assert.assertEquals;
+import net.azib.ipscan.core.ScanningSubject;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import net.azib.ipscan.core.ScanningSubject;
-
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 /**
  * IPFetcherTest

@@ -1,21 +1,4 @@
-/**
- * 
- */
 package net.azib.ipscan.core;
-
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.values.NotAvailable;
@@ -23,10 +6,18 @@ import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.fetchers.AbstractFetcher;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * ScannerTest

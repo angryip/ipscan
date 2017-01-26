@@ -1,16 +1,12 @@
-/**
- * 
- */
 package net.azib.ipscan.core.net;
 
-import static org.junit.Assert.assertTrue;
+import net.azib.ipscan.core.ScanningSubject;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.net.InetAddress;
 
-import net.azib.ipscan.core.ScanningSubject;
-
-import org.junit.Ignore;
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 /**
  * SharedPingerTest

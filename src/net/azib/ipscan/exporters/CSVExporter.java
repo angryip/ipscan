@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.azib.ipscan.exporters;
 
 import javax.inject.Inject;

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.core.ScanningSubject;

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.azib.ipscan.fetchers;
 
 import org.junit.After;

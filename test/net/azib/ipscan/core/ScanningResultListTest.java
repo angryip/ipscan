@@ -1,24 +1,4 @@
-/**
- * 
- */
 package net.azib.ipscan.core;
-
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.ScanningResultList.ScanInfo;
@@ -30,10 +10,18 @@ import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * ScanningResultListTest

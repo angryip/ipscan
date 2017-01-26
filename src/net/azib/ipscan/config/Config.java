@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.azib.ipscan.config;
 
 import java.util.Locale;

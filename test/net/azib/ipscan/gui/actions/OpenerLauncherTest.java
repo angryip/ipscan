@@ -1,14 +1,4 @@
-/**
- * 
- */
 package net.azib.ipscan.gui.actions;
-
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Collections;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
@@ -18,13 +8,16 @@ import net.azib.ipscan.core.values.InetAddressHolder;
 import net.azib.ipscan.core.values.IntegerWithUnit;
 import net.azib.ipscan.core.values.NotAvailable;
 import net.azib.ipscan.feeders.Feeder;
-import net.azib.ipscan.fetchers.Fetcher;
-import net.azib.ipscan.fetchers.FetcherRegistry;
-import net.azib.ipscan.fetchers.HostnameFetcher;
-import net.azib.ipscan.fetchers.IPFetcher;
-import net.azib.ipscan.fetchers.PingFetcher;
-
+import net.azib.ipscan.fetchers.*;
 import org.junit.Test;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Collections;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * OpenerLauncherTest

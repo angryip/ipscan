@@ -1,10 +1,6 @@
-/**
- * 
- */
 package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.config.Config;
-
 import org.junit.Before;
 
 /**

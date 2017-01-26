@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.azib.ipscan.core.values;
 
 import net.azib.ipscan.config.Config;

@@ -1,25 +1,18 @@
-/**
- * 
- */
 package net.azib.ipscan.fetchers;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import net.azib.ipscan.config.ScannerConfig;
+import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.core.values.NumericRangeList;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import net.azib.ipscan.config.ScannerConfig;
-import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.core.values.NumericRangeList;
-
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 /**
  * PortsFetcherTest

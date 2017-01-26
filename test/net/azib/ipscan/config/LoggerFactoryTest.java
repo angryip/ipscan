@@ -1,11 +1,8 @@
-/**
- * 
- */
 package net.azib.ipscan.config;
 
-import java.util.logging.Logger;
-
 import junit.framework.TestCase;
+
+import java.util.logging.Logger;
 
 /**
  * @author Anton Keks
