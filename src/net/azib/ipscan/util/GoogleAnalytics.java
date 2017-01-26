@@ -51,6 +51,10 @@ public class GoogleAnalytics {
 		report("exception", extractFirstStackFrame(e));
 	}
 
+	public void report(String message, Throwable e) {
+		report("exception", message + "\n" + extractFirstStackFrame(e));
+	}
+
 	static String extractFirstStackFrame(Throwable e) {
 		StackTraceElement[] stackTrace = e.getStackTrace();
 		StackTraceElement element = null;

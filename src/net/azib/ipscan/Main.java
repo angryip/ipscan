@@ -106,10 +106,16 @@ public class Main {
 	}
 
 	private static void showMessage(Shell parent, int flags, String title, String localizedMessage) {
-		MessageBox messageBox = new MessageBox(parent, SWT.OK | SWT.SHEET | flags);
-		messageBox.setText(title);
-		messageBox.setMessage(localizedMessage);
-		messageBox.open();
+		try {
+			MessageBox messageBox = new MessageBox(parent, SWT.OK | SWT.SHEET | flags);
+			messageBox.setText(title);
+			messageBox.setMessage(localizedMessage);
+			messageBox.open();
+		}
+		catch (NoClassDefFoundError e) {
+			new GoogleAnalytics().report(localizedMessage, e);
+			JOptionPane.showMessageDialog(null, localizedMessage);
+		}
 	}
 
 	private static void initSystemProperties() {
