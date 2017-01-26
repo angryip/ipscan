@@ -74,9 +74,9 @@ public class Main {
 					if (!display.readAndDispatch())
 						display.sleep();
 				}
-				catch (Throwable e) {
-					if (e instanceof SWTException && e.getCause() != null)
-						e = e.getCause();
+				catch (Exception e) {
+					if (e instanceof SWTException && e.getCause() instanceof Exception)
+						e = (Exception) e.getCause();
 
 					// display a nice error message
 					String localizedMessage = getLocalizedMessage(e);
