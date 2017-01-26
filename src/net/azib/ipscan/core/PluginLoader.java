@@ -4,7 +4,6 @@ import dagger.Module;
 import dagger.Provides;
 import net.azib.ipscan.config.LoggerFactory;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -72,14 +71,16 @@ public class PluginLoader {
 	}
 
 	void loadPluginJars(List<Class<? extends Plugin>> container, final File ownFile) {
-		if (!ownFile.getParentFile().exists()) return;
+		File parentDir = ownFile.getParentFile();
+		if (parentDir == null || !parentDir.exists()) return;
 
-		File[] jars = ownFile.getParentFile().listFiles(new FilenameFilter() {
+		File[] jars = parentDir.listFiles(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
 				return name.endsWith(".jar") && !name.equals(ownFile.getName());
 			}
 		});
+		if (jars == null) return;
 
 		PluginClassLoader loader = new PluginClassLoader();
 		for (File jar : jars) {
