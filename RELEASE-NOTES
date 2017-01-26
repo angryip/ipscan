@@ -1,3 +1,7 @@
+Changes in 3.5.2:
+- Easier testing of new translations by adding Class-Path to the manifest
+- Support for lang_COUNTRY locales, e.g. pt_BR
+
 Changes in 3.5.1:
 - Restore support for Java 7
 - Allow editing of preferences even of deselected fetchers
