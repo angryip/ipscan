@@ -53,8 +53,13 @@ public class GoogleAnalytics {
 
 	static String extractFirstStackFrame(Throwable e) {
 		StackTraceElement[] stackTrace = e.getStackTrace();
-		return e.toString() + (stackTrace.length == 0 ? "" : "\n" +
-			   stackTrace[0].getClassName() + "." + stackTrace[0].getMethodName() + ":" + stackTrace[0].getLineNumber());
+		StackTraceElement element = null;
+		for (int i = 0; i < stackTrace.length; i++) {
+			element = stackTrace[i];
+			if (element.getClassName().startsWith("net.azib.ipscan")) break;
+		}
+		return e.toString() + (element == null ? "" : "\n" +
+			   element.getClassName() + "." + element.getMethodName() + ":" + element.getLineNumber());
 	}
 
 	public void asyncReport(final String screen) {
