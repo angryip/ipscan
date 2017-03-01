@@ -88,7 +88,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		countLabel.setText(getLabel("feeder.random.count"));
 
 		countSpinner.setSelection(100);
-		countSpinner.setMaximum(100000);
+		countSpinner.setMaximum(100000000);
 		countSpinner.setMinimum(1);
 		countSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		countSpinner.addTraverseListener(new TraverseListener() {
