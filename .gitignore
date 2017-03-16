@@ -8,5 +8,5 @@
 /dist
 /generated
 /test-coverage
-/.idea/workspace.xml
-/.idea/copyright
+ipscan.iml
+.idea
