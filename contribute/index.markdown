@@ -9,15 +9,15 @@ Contribute
 
 The easiest way to extend functionality of Angry IP Scanner is to [write a plugin](plugins.html).
 
-Angry IP Scanner's source code is hosted is hosted on [Github](https://github.com/angryziber/ipscan).
+Angry IP Scanner's source code is hosted is hosted on [Github](https://github.com/angryip/ipscan).
 Forking and pull-requests are very welcome! If you want to get an idea of what to do, check the [bug reports](https://sourceforge.net/p/ipscan/bugs/).
 
 In order to get the source code, the following command must be run (make sure you have git installed):
 
-    git clone git://github.com/angryziber/ipscan.git
+    git clone git://github.com/angryip/ipscan.git
 
 This command will fetch the current source code of the program with full history into local directory named 'ipscan'.
-Or just [browse the code repository on Github](https://github.com/angryziber/ipscan).
+Or just [browse the code repository on Github](https://github.com/angryip/ipscan).
 
 If the source of particular release is required, then you can later switch to particular tag using:
 
@@ -44,7 +44,7 @@ Translations
 
 If you know some language other than English well, then please help translating Angry IP Scanner into that language.
 
-For that, you need to take the latest [resources/messages.properties](https://github.com/angryziber/ipscan/blob/master/resources/messages.properties) file,
+For that, you need to take the latest [resources/messages.properties](https://github.com/angryip/ipscan/blob/master/resources/messages.properties) file,
 copy it with the ISO 2-letter language suffix (eg messages_et.properties), translate all the messages and send to me by email (or make a pull request).
 
 To test your translations, run Angry IP Scanner from the command-line (assuming that the translated file is in the same directory as the original jar or exe):
@@ -66,14 +66,14 @@ Source structure
 
 Angry IP Scanner source code is in the net.azib.ipscan Java package.
 
-* [net.azib.ipscan.config](https://github.com/angryziber/ipscan/blob/master/src/net/azib/ipscan/config) - classes, related to configuration
-* [net.azib.ipscan.core](https://github.com/angryziber/ipscan/blob/master/src/net/azib/ipscan/core) - core scanner classes
-* [net.azib.ipscan.core.state](https://github.com/angryziber/ipscan/blob/master/src/net/azib/ipscan/core/state) - scanner's state machine implementation
-* [net.azib.ipscan.feeders](https://github.com/angryziber/ipscan/blob/master/src/net/azib/ipscan/feeders) - all [feeder](plugins.html) implementations
-* [net.azib.ipscan.fetchers](https://github.com/angryziber/ipscan/blob/master/src/net/azib/ipscan/fetchers) - all [fetcher](plugins.html) implementations
-* [net.azib.ipscan.exporters](https://github.com/angryziber/ipscan/blob/master/src/net/azib/ipscan/exporters) - all [exporter](plugins.html) implementations
-* [net.azib.ipscan.gui](https://github.com/angryziber/ipscan/blob/master/src/net/azib/ipscan/gui) - for GUI packages and classes (which are separate from the core functionality)
-* [net.azib.ipscan.gui.actions](https://github.com/angryziber/ipscan/blob/master/src/net/azib/ipscan/gui/actions) - most GUI listeners, such as menu item and button handlers
+* [net.azib.ipscan.config](https://github.com/angryip/ipscan/blob/master/src/net/azib/ipscan/config) - classes, related to configuration
+* [net.azib.ipscan.core](https://github.com/angryip/ipscan/blob/master/src/net/azib/ipscan/core) - core scanner classes
+* [net.azib.ipscan.core.state](https://github.com/angryip/ipscan/blob/master/src/net/azib/ipscan/core/state) - scanner's state machine implementation
+* [net.azib.ipscan.feeders](https://github.com/angryip/ipscan/blob/master/src/net/azib/ipscan/feeders) - all [feeder](plugins.html) implementations
+* [net.azib.ipscan.fetchers](https://github.com/angryip/ipscan/blob/master/src/net/azib/ipscan/fetchers) - all [fetcher](plugins.html) implementations
+* [net.azib.ipscan.exporters](https://github.com/angryip/ipscan/blob/master/src/net/azib/ipscan/exporters) - all [exporter](plugins.html) implementations
+* [net.azib.ipscan.gui](https://github.com/angryip/ipscan/blob/master/src/net/azib/ipscan/gui) - for GUI packages and classes (which are separate from the core functionality)
+* [net.azib.ipscan.gui.actions](https://github.com/angryip/ipscan/blob/master/src/net/azib/ipscan/gui/actions) - most GUI listeners, such as menu item and button handlers
 
 ### Dependency injection
 
@@ -87,4 +87,4 @@ Dependent objects that are required to be provided by the injection are then eit
 Dagger then resolves these dependencies automatically, so that the classes themselves don't have to worry where their dependencies 
 come from. This eases both development and unit testing of the code.
 
-Components are registered in the [ComponentRegistry](https://github.com/angryziber/ipscan/blob/master/src/net/azib/ipscan/core/ComponentRegistry.java) class.
+Components are registered in the [ComponentRegistry](https://github.com/angryip/ipscan/blob/master/src/net/azib/ipscan/core/ComponentRegistry.java) class.

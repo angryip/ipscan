@@ -15,7 +15,7 @@ Angry IP Scanner looks for plugin .jar files on start in:
 - The same directory where ipscan binary is located (.jar or .exe)
 - User-specific $HOME/.ipscan directory
 
-For more info on how plugin loading works, see [PluginLoader.java](https://github.com/angryziber/ipscan/blob/master/src/net/azib/ipscan/core/PluginLoader.java).
+For more info on how plugin loading works, see [PluginLoader.java](https://github.com/angryip/ipscan/blob/master/src/net/azib/ipscan/core/PluginLoader.java).
 
 Writing plugins
 ---------------
@@ -32,4 +32,4 @@ A plugin is an implementation of one of the following interfaces:
 
 Plugin classes should generally have a non-arg constructor. 
 
-Look at [the source code](https://github.com/angryziber/ipscan) for examples of how the core plugins are implemented.
+Look at [the source code](https://github.com/angryip/ipscan) for examples of how the core plugins are implemented.

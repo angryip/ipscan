@@ -9,8 +9,8 @@ redirect_from:
 Feedback
 ========
 
-Please use Github's [issues](https://github.com/angryziber/ipscan/issues)
-and [pull-requests](https://github.com/angryziber/ipscan/pulls).
+Please use Github's [issues](https://github.com/angryip/ipscan/issues)
+and [pull-requests](https://github.com/angryip/ipscan/pulls).
 
 Previously, there was a bug tracker provided by [Sourceforge.net](http://sourceforge.net/projects/ipscan),
 but it is not in active use anymore.
