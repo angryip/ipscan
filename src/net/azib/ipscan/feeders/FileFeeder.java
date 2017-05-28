@@ -7,7 +7,6 @@ package net.azib.ipscan.feeders;
 
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.util.InetAddressUtils;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -21,6 +20,7 @@ import java.util.regex.Pattern;
 
 import static java.util.logging.Level.WARNING;
 import static net.azib.ipscan.util.IOUtils.closeQuietly;
+import static net.azib.ipscan.util.InetAddressUtils.HOSTNAME_REGEX;
 
 /**
  * Feeder, taking IP addresses from text files in any format.
@@ -49,7 +49,7 @@ public class FileFeeder extends AbstractFeeder {
 	
 	public FileFeeder(String fileName) {
 		try {
-			readAddresses(new FileReader(fileName));
+			findHosts(new FileReader(fileName));
 		}
 		catch (FileNotFoundException e) {
 			throw new FeederException("file.notExists");
@@ -57,10 +57,10 @@ public class FileFeeder extends AbstractFeeder {
 	}
 	
 	public FileFeeder(Reader reader) {
-		readAddresses(reader);
+		findHosts(reader);
 	}
 	
-	private void readAddresses(Reader reader) {
+	private void findHosts(Reader reader) {
 		BufferedReader fileReader = new BufferedReader(reader);
 		
 		currentIndex = 0;
@@ -68,7 +68,7 @@ public class FileFeeder extends AbstractFeeder {
 		try {
 			String fileLine;
 			while ((fileLine = fileReader.readLine()) != null) {
-				Matcher matcher = InetAddressUtils.HOSTNAME_REGEX.matcher(fileLine);
+				Matcher matcher = HOSTNAME_REGEX.matcher(fileLine);
 				while (matcher.find()) {
 					try {
 						String address = matcher.group();						
