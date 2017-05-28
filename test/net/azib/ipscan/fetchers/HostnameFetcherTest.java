@@ -23,14 +23,14 @@ public class HostnameFetcherTest extends AbstractFetcherTestCase {
 	}
 	
 	@Test
-	public void testScan() throws UnknownHostException {
+	public void resolveForReal() throws UnknownHostException {
 		// Some of these tests are run inside of if's to prevent their failing on certain network configurations
 		if (!InetAddress.getLocalHost().getCanonicalHostName().equals(InetAddress.getLocalHost().getHostAddress()))
 			assertEquals(InetAddress.getLocalHost().getCanonicalHostName(), fetcher.scan(new ScanningSubject(InetAddress.getLocalHost())));
 		
 		try {
-			InetAddress address = InetAddress.getByName("angryip.org");
-			assertEquals("pages.github.com", fetcher.scan(new ScanningSubject(address)));
+			InetAddress address = InetAddress.getByName("era.ee");
+			assertEquals("era.ee", fetcher.scan(new ScanningSubject(address)));
 		}
 		catch (UnknownHostException e) { /* ignore - test is running in off-line environment */ }
 		
