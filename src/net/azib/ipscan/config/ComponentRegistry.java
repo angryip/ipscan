@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * This class is the dependency injection configuration using the Pico Container.
+ * This class is the dependency injection configuration using Dagger2.
  * 
  * @author Anton Keks
  */
@@ -89,7 +89,7 @@ public class ComponentRegistry {
 
 	@SuppressWarnings("unchecked")
 	private <T extends Plugin> List<T> addPlugins(List<T> original, Class<T> type, List<Class<? extends Plugin>> classes) {
-		List<T> result = new ArrayList<T>(original);
+		List<T> result = new ArrayList<>(original);
 		for (Class clazz: classes) {
 			try {
 				if (type.isAssignableFrom(clazz))
