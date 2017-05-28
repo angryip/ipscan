@@ -76,10 +76,7 @@ public class HostnameFetcher extends AbstractFetcher {
 			resolver.close();
 			return name;
 		}
-		catch (SocketTimeoutException e) {
-			return null;
-		}
-		catch (SocketException e) {
+		catch (SocketTimeoutException | SocketException e) {
 			return null;
 		}
 		catch (Exception e) {
@@ -95,10 +92,7 @@ public class HostnameFetcher extends AbstractFetcher {
 			resolver.close();
 			return names == null ? null : names[0];
 		}
-		catch (SocketTimeoutException e) {
-			return null;
-		}
-		catch (SocketException e) {
+		catch (SocketTimeoutException | SocketException e) {
 			return null;
 		}
 		catch (Exception e) {
