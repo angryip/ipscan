@@ -45,7 +45,11 @@ Translations
 If you know some language other than English well, then please help translating Angry IP Scanner into that language.
 
 For that, you need to take the latest [resources/messages.properties](https://github.com/angryip/ipscan/blob/master/resources/messages.properties) file,
-copy it with the ISO 2-letter language suffix (eg messages_et.properties), translate all the messages and send to me by email (or make a pull request).
+copy it with the ISO 2-letter language suffix (eg messages_et.properties), translate all the messages and make a pull request or attach to an issue.
+
+Note:
+* ISO language codes sometimes are different than country codes
+* All messages files and other sources are in UTF-8 encoding that supports all languages of the World
 
 To test your translations, run Angry IP Scanner from the command-line (assuming that the translated file is in the same directory as the original jar or exe):
 
