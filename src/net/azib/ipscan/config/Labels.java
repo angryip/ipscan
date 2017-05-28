@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * @author Anton Keks
  */
 public final class Labels {
-	public static final String[] LANGUAGES = { "system", "en", "de", "hu", "lt", "es", "it", "ku", "tr", "gr" };
+	public static final String[] LANGUAGES = { "system", "en", "ru", "de", "hu", "lt", "es", "it", "ku", "tr", "gr"};
 	private static final Logger LOG = Logger.getLogger(Labels.class.getName());
 	private static Labels instance;
 
