@@ -8,7 +8,7 @@ IntelliJ IDEA is recommended for coding (Community Edition is fine).
 **Important:** after loading the project in IDEA, make sure you select the appropriate for your platform **lib_xxx library in module dependencies**
 *(File -> Project Structure -> Modules -> ipscan -> Dependencies - move the right lib_xxx to the top)*.
 
-## Building [![Build Status](https://travis-ci.org/angryip/ipscan.svg?branch=master)](https://travis-ci.org/angryziber/ipscan)
+## Building [![Build Status](https://travis-ci.org/angryip/ipscan.svg?branch=master)](https://travis-ci.org/angryip/ipscan)
 
 JDK 1.7+ as well as Ant are required for building.
 
