@@ -19,7 +19,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.logging.Level.WARNING;
-import static net.azib.ipscan.util.IOUtils.closeQuietly;
 import static net.azib.ipscan.util.InetAddressUtils.HOSTNAME_REGEX;
 
 /**
@@ -61,11 +60,9 @@ public class FileFeeder extends AbstractFeeder {
 	}
 	
 	private void findHosts(Reader reader) {
-		BufferedReader fileReader = new BufferedReader(reader);
-		
 		currentIndex = 0;
 		foundHosts = new LinkedHashMap<>();
-		try {
+		try (BufferedReader fileReader = new BufferedReader(reader)) {
 			String fileLine;
 			while ((fileLine = fileReader.readLine()) != null) {
 				Matcher matcher = HOSTNAME_REGEX.matcher(fileLine);
@@ -98,10 +95,7 @@ public class FileFeeder extends AbstractFeeder {
 		catch (IOException e) {
 			throw new FeederException("file.errorWhileReading");
 		}
-		finally {
-			closeQuietly(fileReader);
-		}
-		
+
 		foundIPAddressesIterator = foundHosts.values().iterator();
 	}
 	
