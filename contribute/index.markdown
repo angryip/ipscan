@@ -23,7 +23,7 @@ If the source of particular release is required, then you can later switch to pa
 
     git checkout tag-name
 
-where tag-name is the released version number (eg 3.0-beta4), for full list of available tags use:
+where tag-name is the released version number (eg 3.5.2), for full list of available tags use:
 
     git tag
 
@@ -51,9 +51,9 @@ Note:
 * ISO language codes sometimes are different than country codes
 * All messages files and other sources are in UTF-8 encoding that supports all languages of the World
 
-To test your translations, run Angry IP Scanner from the command-line (assuming that the translated file is in the same directory as the original jar or exe):
+To test your translations, run Angry IP Scanner from the command-line after putting the translated file is in the same directory as the original jar or exe:
 
-    java -cp .:ipscan-xxx.jar net.azib.ipscan.Main
+    java -jar ipscan*.jar
 
 Source structure
 ----------------
