@@ -1,4 +1,5 @@
 Changes in 3.5.2:
+- Support for Java 9 in Windows installer and executable as well as deb packages
 - Easier testing of new translations by adding Class-Path to the manifest
 - Support for lang_COUNTRY locales, e.g. pt_BR
 - Some common error cases improved (using gathered data from GA)
