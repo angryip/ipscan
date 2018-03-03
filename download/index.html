@@ -151,15 +151,17 @@ redirect_from: /w/Download/
   </section>
 </div>
 
-<script type="text/javascript">
+<script>
   (function() {
+    window.onhashchange = function() {
+      window.scrollTo(0, 0);
+    };
     if (location.hash) return;
     var oses = ['Linux', 'Mac', 'Windows'];
     for (var i in oses) {
       var os = oses[i];
       if (navigator.userAgent.indexOf(os) > 0) {
         location.hash = os.toLowerCase();
-        setTimeout(function() {window.scrollTo(0, 0);}, 0);
       }
     }
   })();
