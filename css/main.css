@@ -442,11 +442,17 @@ a.featured:after {
   max-height: 0;
   padding: 0 10px 10px 10px;
   overflow: hidden;
-  transition: 0.2s;
 }
 
 .accordion section:target .content {
   max-height: 800px;
+}
+
+.accordion.with-transition section .content {
+  transition: 0.2s;
+}
+
+.accordion.with-transition section:target .content {
   transition: 0.6s;
 }
 

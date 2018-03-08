@@ -156,8 +156,13 @@ redirect_from: /w/Download/
   (function() {
     window.onhashchange = function() {
       window.scrollTo(0, 0);
+      document.querySelector('.accordion').classList.add('with-transition');
     };
-    if (location.hash) return;
+    if (location.hash) {
+      window.onhashchange();
+      return;
+    }
+
     var oses = ['Linux', 'Mac', 'Windows'];
     for (var i in oses) {
       var os = oses[i];
