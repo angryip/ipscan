@@ -154,6 +154,10 @@ redirect_from: /w/Download/
 
 <script>
   (function() {
+    window.onscroll = function() {
+      window.scrollTo(0, 0);
+      window.onscroll = null;
+    };
     window.onhashchange = function() {
       window.scrollTo(0, 0);
       document.querySelector('.accordion').classList.add('with-transition');
