@@ -11,59 +11,6 @@ redirect_from: /w/Download/
 <h1>{{ page.title }}</h1>
 
 <div class="accordion">
-  <section id="linux">
-    <h2><a href="#linux">Linux</a></h2>
-    <div class="content">
-      <p>
-        Download version <b>{{ site.version }}</b> below or
-        <a href="{{ page.releases_url }}">browse more releases</a> or
-        <a href="{{ page.sourceforge_url }}">even older releases</a>.
-      </p>
-      <ul>
-        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_amd64.deb">DEB Package</a> for <i>Ubuntu/Debian/Mint, 64-bit</i></li>
-        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-1.x86_64.rpm">RPM Package</a> for Fedora/RedHat/Mageia/openSUSE, 64-bit</li>
-        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_i386.deb">DEB Package</a> for <i>Ubuntu/Debian/Mint, 32-bit</i></li>
-        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-1.i386.rpm">RPM Package</a> for Fedora/RedHat/Mageia/openSUSE, 32-bit</li>
-      </ul>
-      <h4>Running</h4>
-      <p>Make sure you have <a href="http://java.com/download">Oracle Java</a> or <a href="http://en.wikipedia.org/wiki/OpenJDK">OpenJDK</a> installed - check your distribution. <a href="http://en.wikipedia.org/wiki/GNU_Compiler_for_Java">GCJ</a> is not recommended.</p>
-      <p>DEB and RPM packages will install appropriate 'desktop' files, so <i>Angry IP Scanner</i> will appear in the applications menu, under either <b>Internet</b> or <b>Networking</b>. Alternatively, you can just type <code>ipscan</code> to launch the application.</p>
-      <p><i>Jar</i> files are launched by either double-clicking or typing <code>java -jar <i>jar-file</i></code>.</p>
-    </div>
-  </section>
-
-  <section id="mac">
-    <h2><a href="#mac">Mac OS X</a></h2>
-    <div class="content">
-      <p>
-        Download version <b>{{ site.version }}</b> below or
-        <a href="{{ page.releases_url }}">browse more releases</a> or
-        <a href="{{ page.sourceforge_url }}">even older releases</a>
-      </p>
-      <ul>
-        <li>
-          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-mac-{{ site.version }}.zip">Zipped Application Bundle</a>
-        </li>
-      </ul>
-
-      <h4>Running</h4>
-      <p>
-        Make sure you have <a href="https://java.com">Java 7</a> or later installed. The last version that supported built-in Java 1.6 is <b>3.4.2</b>.
-      </p>
-      <p>
-        The zip file contains Mac application bundle: just save it and double-click to extract.
-      </p>
-      <p>
-        On <i>newer OS X</i> versions right-click and select <i>Open</i> for the first time or go to Settings/Security and allow
-        installing apps from other sources besides Mac Store.
-      </p>
-
-      <p>
-        You can then run it by double-clicking the <i>Angry IP Scanner</i> icon. Or drag it to the applications menu in
-        Finder if you want.
-      </p>
-    </div>
-  </section>
 
   <section id="windows">
     <h2><a href="#windows">Windows</a></h2>
@@ -121,6 +68,60 @@ redirect_from: /w/Download/
         No installation is needed. However, you may use the <i>Install program...</i> from the <i>Utils</i> menu in
         order to create shortcuts, etc.
       </p>
+    </div>
+  </section>
+
+  <section id="mac">
+    <h2><a href="#mac">Mac OS X</a></h2>
+    <div class="content">
+      <p>
+        Download version <b>{{ site.version }}</b> below or
+        <a href="{{ page.releases_url }}">browse more releases</a> or
+        <a href="{{ page.sourceforge_url }}">even older releases</a>
+      </p>
+      <ul>
+        <li>
+          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-mac-{{ site.version }}.zip">Zipped Application Bundle</a>
+        </li>
+      </ul>
+
+      <h4>Running</h4>
+      <p>
+        Make sure you have <a href="https://java.com">Java 7</a> or later installed. The last version that supported built-in Java 1.6 is <b>3.4.2</b>.
+      </p>
+      <p>
+        The zip file contains Mac application bundle: just save it and double-click to extract.
+      </p>
+      <p>
+        On <i>newer OS X</i> versions right-click and select <i>Open</i> for the first time or go to Settings/Security and allow
+        installing apps from other sources besides Mac Store.
+      </p>
+
+      <p>
+        You can then run it by double-clicking the <i>Angry IP Scanner</i> icon. Or drag it to the applications menu in
+        Finder if you want.
+      </p>
+    </div>
+  </section>
+
+  <section id="linux">
+    <h2><a href="#linux">Linux</a></h2>
+    <div class="content">
+      <p>
+        Download version <b>{{ site.version }}</b> below or
+        <a href="{{ page.releases_url }}">browse more releases</a> or
+        <a href="{{ page.sourceforge_url }}">even older releases</a>.
+      </p>
+      <ul>
+        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_amd64.deb">DEB Package</a> for <i>Ubuntu/Debian/Mint, 64-bit</i></li>
+        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-1.x86_64.rpm">RPM Package</a> for Fedora/RedHat/Mageia/openSUSE, 64-bit</li>
+        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_i386.deb">DEB Package</a> for <i>Ubuntu/Debian/Mint, 32-bit</i></li>
+        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-1.i386.rpm">RPM Package</a> for Fedora/RedHat/Mageia/openSUSE, 32-bit</li>
+      </ul>
+      <h4>Running</h4>
+      <p>Make sure you have <a href="http://java.com/download">Oracle Java</a> or <a href="http://en.wikipedia.org/wiki/OpenJDK">OpenJDK</a> installed - check your distribution. <a href="http://en.wikipedia.org/wiki/GNU_Compiler_for_Java">GCJ</a> is not recommended.</p>
+      <p>DEB and RPM packages will install appropriate 'desktop' files, so <i>Angry IP Scanner</i> will appear in the applications menu, under either <b>Internet</b> or <b>Networking</b>. Alternatively, you can just type <code>ipscan</code> to launch the application.</p>
+      <p><i>Jar</i> files are launched by either double-clicking or typing <code>java -jar <i>jar-file</i></code>.</p>
     </div>
   </section>
 
