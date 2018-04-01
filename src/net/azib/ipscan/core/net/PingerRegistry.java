@@ -39,7 +39,7 @@ public class PingerRegistry {
 	@Inject public PingerRegistry(ScannerConfig scannerConfig) {
 		this.scannerConfig = scannerConfig;
 		
-		pingers = new LinkedHashMap<String, Class<? extends Pinger>>();
+		pingers = new LinkedHashMap<>();
 		if (Platform.WINDOWS)
 			pingers.put("pinger.windows", WindowsPinger.class);
 		pingers.put("pinger.icmp", ICMPSharedPinger.class);

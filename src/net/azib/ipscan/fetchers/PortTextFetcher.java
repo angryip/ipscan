@@ -15,12 +15,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static java.lang.Thread.currentThread;
+import static java.util.Collections.singleton;
 
 /**
  * PortTextFetcher - generic configurable fetcher to read some particular information from a port.
@@ -46,9 +48,9 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 	}
 
 	public Object scan(ScanningSubject subject) {
-		Iterator<Integer> portIterator = subject.isAnyPortRequested() ? subject.requestedPortsIterator() : Collections.singleton(defaultPort).iterator();
+		Iterator<Integer> portIterator = subject.isAnyPortRequested() ? subject.requestedPortsIterator() : singleton(defaultPort).iterator();
 
-		while (portIterator.hasNext() && !Thread.currentThread().isInterrupted()) {
+		while (portIterator.hasNext() && !currentThread().isInterrupted()) {
 			Socket socket = new Socket();
 			try {
 				socket.connect(new InetSocketAddress(subject.getAddress(), portIterator.next()), subject.getAdaptedPortTimeout());
@@ -86,7 +88,7 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 				try {
 					socket.close();
 				}
-				catch (IOException e) {}
+				catch (IOException ignore) {}
 			}
 		}
 		return null;
