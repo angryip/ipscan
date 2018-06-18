@@ -30,7 +30,7 @@ public class HostnameFetcherTest extends AbstractFetcherTestCase {
 		
 		try {
 			InetAddress address = InetAddress.getByName("era.ee");
-			assertEquals("era.ee", fetcher.scan(new ScanningSubject(address)));
+			assertEquals("ns.era.ee", fetcher.scan(new ScanningSubject(address)));
 		}
 		catch (UnknownHostException e) { /* ignore - test is running in off-line environment */ }
 		
