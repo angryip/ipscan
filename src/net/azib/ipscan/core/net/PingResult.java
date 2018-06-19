@@ -16,16 +16,19 @@ public class PingResult {
 
 	InetAddress address;
 
+
 	private int ttl;
 	private long totalTime;
 	private long longestTime;
 	private int replyCount;
+	private int packetCount;
 	private boolean timeoutAdaptationAllowed;
 	
-	public PingResult(InetAddress address) {
+	public PingResult(InetAddress address, int packagesCount) {
 		this.address = address;
+		this.packetCount = packagesCount;
 	}
-	
+
 	public void addReply(long time) {
 		replyCount++;
 		if (time > longestTime)
@@ -50,7 +53,23 @@ public class PingResult {
 	public int getLongestTime() {
 		return (int)longestTime;
 	}
-	
+
+	public int getPacketLoss() {
+		return (int)(packetCount - replyCount);
+	}
+
+	public int getPacketLossPercent() {
+		if(this.replyCount>0){
+				return (int) ((this.getPacketLoss() * 100) / packetCount);
+		}else{
+			return 100;
+		}
+	}
+
+	public int getPacketCount() {
+		return (int)(packetCount);
+	}
+
 	public int getReplyCount() {
 		return replyCount;
 	}

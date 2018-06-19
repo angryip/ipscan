@@ -31,12 +31,12 @@ public class ScanningSubjectTest {
 		subject.config = config;
 		config.portTimeout = 1000;
 		config.adaptPortTimeout = true;
-		pingResult = new PingResult(null);
+		pingResult = new PingResult(null,0);
 		subject.setParameter(ScanningSubject.PARAMETER_PING_RESULT, pingResult);
 	}
 	
 	@Test
-	public void adaptedPortTimeoutUsingReplies() throws Exception {
+		public void adaptedPortTimeoutUsingReplies() throws Exception {
 		subject.setParameter(ScanningSubject.PARAMETER_PING_RESULT, null);
 		// no ping replies yet
 		assertEquals(config.portTimeout, subject.getAdaptedPortTimeout());

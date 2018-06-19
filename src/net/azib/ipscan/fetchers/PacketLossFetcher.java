@@ -1,22 +1,33 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
- */
 package net.azib.ipscan.fetchers;
 
-import net.azib.ipscan.config.ScannerConfig;
-import net.azib.ipscan.core.net.PingerRegistry;
+		import net.azib.ipscan.config.ScannerConfig;
+		import net.azib.ipscan.core.ScanningResult;
+		import net.azib.ipscan.core.ScanningSubject;
+		import net.azib.ipscan.core.net.PingResult;
+		import net.azib.ipscan.core.net.PingerRegistry;
+
+		import javax.inject.Inject;
 
 /**
- * TODO: write PacketLossFetcher
+ * PacketLossFetcher shares pinging results with PingFetcher
+ * and returns the Package loss field of the received packet.
  *
- * @author Anton Keks
+ * @author Gustavo Pistore
  */
 public class PacketLossFetcher extends PingFetcher {
 
-	public PacketLossFetcher(PingerRegistry pingerRegistry, ScannerConfig scannerConfig) {
+	@Inject public PacketLossFetcher(PingerRegistry pingerRegistry, ScannerConfig scannerConfig) {
 		super(pingerRegistry, scannerConfig);
 	}
 
+	public String getId() {
+		return "fetcher.packetloss";
+	}
+
+	public Object scan(ScanningSubject subject) {
+		PingResult result = executePing(subject);
+		subject.setResultType(result.isAlive() ? ScanningResult.ResultType.ALIVE : ScanningResult.ResultType.DEAD);
+
+		return result.getPacketLoss() + "/" + result.getPacketCount()+" ("+result.getPacketLossPercent()+"%)";
+	}
 }

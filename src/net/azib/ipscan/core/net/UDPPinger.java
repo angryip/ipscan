@@ -33,7 +33,7 @@ public class UDPPinger implements Pinger {
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
-		PingResult result = new PingResult(subject.getAddress());
+		PingResult result = new PingResult(subject.getAddress(),count);
 
 		DatagramSocket socket = null;
 		try {

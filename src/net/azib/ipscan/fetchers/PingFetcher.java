@@ -66,7 +66,7 @@ public class PingFetcher extends AbstractFetcher {
       // if this is not a timeout
       LOG.log(Level.WARNING, "Pinging failed", e);
       // return an empty ping result
-      result = new PingResult(subject.getAddress());
+      result = new PingResult(subject.getAddress(),config.pingCount);
     }
     // remember the result for other fetchers to use
     subject.setParameter(PARAMETER_PING_RESULT, result);

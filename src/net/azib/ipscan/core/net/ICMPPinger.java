@@ -116,7 +116,7 @@ public class ICMPPinger implements Pinger {
 	 * @param count number of pings to perform
 	 */
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
-		PingResult result = new PingResult(subject.getAddress());
+		PingResult result = new PingResult(subject.getAddress(),count);
 		RawSocket socket = createRawSocket();
 		
 		try {
