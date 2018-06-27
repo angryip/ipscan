@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script>if (location.href.indexOf('http:') === 0) location.href = location.href.replace('http:', 'https:')</script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="canonical" href="{{ site.url }}{{ page.url | remove:'index.html' }}">
+    <script>if (location.href.indexOf('http:') === 0) location.href = location.href.replace('http:', 'https:')</script>
     {%if page.keywords != null%}<meta name="keywords" content="{{ page.keywords }}">{%endif%}
     {%if page.description != null%}<meta name="description" content="{{ page.description }}">{%endif%}
     <title>{{ site.name }} - {{ page.title }}</title>
