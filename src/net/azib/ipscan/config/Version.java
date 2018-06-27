@@ -17,7 +17,7 @@ public class Version {
 	
 	public static final String COPYLEFT = "© 2017 Anton Keks and contributors";
 	
-	public static final String WEBSITE = "http://angryip.org";
+	public static final String WEBSITE = "https://angryip.org";
 	
 	public static final String FAQ_URL = WEBSITE + "/faq/";
 
