@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script>if (location.href.indexOf('http:') === 0) location.href = location.href.replace('http:', 'https:')</script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     {%if page.keywords != null%}<meta name="keywords" content="{{ page.keywords }}">{%endif%}
@@ -31,7 +32,7 @@
           <script>
             var menuItems = document.querySelectorAll('#menu a');
             for (var i = 0; i < menuItems.length; i++) {
-              if (location.href.indexOf(menuItems[i].href) == 0) menuItems[i].parentNode.classList.add('active');
+              if (location.href.indexOf(menuItems[i].href) === 0) menuItems[i].parentNode.classList.add('active');
             }
           </script>
         </header>
