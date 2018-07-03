@@ -332,11 +332,6 @@ img.logo {
   padding-top: 20px;
 }
 
-#horizontal_ad {
-  max-width: 100%;
-  overflow: auto;
-}
-
 #vertical_ad {
   position: absolute;
   right: -200px;
