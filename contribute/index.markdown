@@ -9,7 +9,7 @@ Contribute
 
 The easiest way to extend functionality of Angry IP Scanner is to [write a plugin](plugins.html).
 
-Angry IP Scanner's source code is hosted is hosted on [Github](https://github.com/angryip/ipscan).
+Angry IP Scanner's source code is hosted on [Github](https://github.com/angryip/ipscan).
 Forking and pull-requests are very welcome! If you want to get an idea of what to do, check the [bug reports](https://sourceforge.net/p/ipscan/bugs/).
 
 In order to get the source code, the following command must be run (make sure you have git installed):
