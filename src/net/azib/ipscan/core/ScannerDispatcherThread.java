@@ -160,14 +160,15 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 	public Thread newThread(Runnable r) {
 		// create IP threads in the specified group
 		return new Thread(threadGroup, r) {
-      // IP threads must be daemons, not preventing the JVM to terminate
-      { setDaemon(true); }
-      @Override
-      public void interrupt() {
-        scanner.interrupt(this);
-        super.interrupt();
-      }
-    };
+			// IP threads must be daemons, not preventing the JVM to terminate
+			{ setDaemon(true); }
+
+			@Override
+			public void interrupt() {
+				scanner.interrupt(this);
+				super.interrupt();
+			}
+		};
 	}
 	
 	/**
