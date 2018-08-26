@@ -1,6 +1,6 @@
 # Angry IP Scanner
 
-This is the source code of Angry IP Scanner, licensed with GPL v2. [Official site](http://angryip.org/)
+This is the source code of Angry IP Scanner, licensed with GPL v2. [Official site](https://angryip.org/)
 
 The code is written mostly in Java.
 IntelliJ IDEA is recommended for coding (Community Edition is fine).

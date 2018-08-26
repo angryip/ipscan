@@ -5,7 +5,7 @@ Release:			1%{?dist}
 License:            GPLv2+
 Group:              Applications/Internet
 BuildRoot: 			%{_builddir}/%{name}
-URL:                http://angryip.org
+URL:                https://angryip.org/
 Packager:			Anton Keks
 Requires:			jre >= 1.7.0
 
@@ -15,7 +15,7 @@ It can scan IP-based networks in any range, scan ports, and resolve
 other information.
 
 The program provides an easy to use GUI interface and is very extensible,
-see http://angryip.org/ for more information.
+see https://angryip.org/ for more information.
 
 %prep
 

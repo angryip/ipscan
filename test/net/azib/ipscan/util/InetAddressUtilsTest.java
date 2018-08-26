@@ -42,7 +42,7 @@ public class InetAddressUtilsTest {
 
 	@Test
 	public void findHostnames() throws Exception {
-		Matcher matcher = InetAddressUtils.HOSTNAME_REGEX.matcher("Angry IP Scanner's official site it http://angryip.org, not http://www.angryziber.com. Isn't it cool?");
+		Matcher matcher = InetAddressUtils.HOSTNAME_REGEX.matcher("Angry IP Scanner's official site is https://angryip.org, not http://www.angryziber.com. Isn't it cool?");
 		assertTrue(matcher.find());
 		assertEquals("angryip.org", matcher.group());
 		assertTrue(matcher.find());
