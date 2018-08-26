@@ -53,19 +53,18 @@ public class PingResult {
 	}
 
 	public int getPacketLoss() {
-		return (int)(packetCount - replyCount);
+		return packetCount - replyCount;
 	}
 
 	public int getPacketLossPercent() {
-		if(this.replyCount>0){
-				return (int) ((this.getPacketLoss() * 100) / packetCount);
-		}else{
+		if (replyCount > 0)
+			return (this.getPacketLoss() * 100) / packetCount;
+		else
 			return 100;
-		}
 	}
 
 	public int getPacketCount() {
-		return (int)(packetCount);
+		return packetCount;
 	}
 
 	public int getReplyCount() {
@@ -86,5 +85,11 @@ public class PingResult {
 	
 	public boolean isTimeoutAdaptationAllowed() {
 		return timeoutAdaptationAllowed;
+	}
+
+	PingResult merge(PingResult result) {
+		this.packetCount += result.packetCount;
+		this.replyCount += result.replyCount;
+		return this;
 	}
 }

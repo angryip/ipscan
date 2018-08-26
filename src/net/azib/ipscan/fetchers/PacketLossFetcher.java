@@ -30,6 +30,6 @@ public class PacketLossFetcher extends PingFetcher {
 		PingResult result = executePing(subject);
 		subject.setResultType(result.isAlive() ? ALIVE : DEAD);
 
-		return result.getPacketLoss() + "/" + result.getPacketCount() + " ("+ result.getPacketLossPercent() + "%)";
+		return result.getPacketLoss() + "/" + result.getPacketCount() + " (" + result.getPacketLossPercent() + "%)";
 	}
 }
