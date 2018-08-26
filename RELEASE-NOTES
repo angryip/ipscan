@@ -1,3 +1,9 @@
+Changes in 3.5.3:
+- Translation updates
+- Ping Packet Loss fetcher
+- Mac vendor updates
+- Debian packages have updated licensing and Java 10 support
+
 Changes in 3.5.2:
 - Support for Java 9 in Windows installer and executable as well as deb packages
 - Easier testing of new translations by putting the messages* file to the same directory as executable
