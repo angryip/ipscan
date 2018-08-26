@@ -10,7 +10,8 @@ IntelliJ IDEA is recommended for coding (Community Edition is fine).
 
 ## Building [![Build Status](https://travis-ci.org/angryip/ipscan.svg?branch=master)](https://travis-ci.org/angryip/ipscan)
 
-JDK 1.7+ as well as Ant are required for building.
+JDK 1.7/1.8 as well as Ant are required for building.
+Note: the build script currently doesn't work with JDK 9 and 10.
 
 Using these tools you can build on any platform. The binaries are in the form of
 `.jar` files and can be run with `java -jar <jar-file>`. Deb and rpm packages can
