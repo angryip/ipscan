@@ -47,7 +47,7 @@ public class WindowsPinger implements Pinger {
 		sendData.clear(sendDataSize);
 		Pointer replyData = new Memory(replyDataSize);
 
-		PingResult result = new PingResult(subject.getAddress(),count);
+		PingResult result = new PingResult(subject.getAddress(), count);
 		try {
 			for (int i = 1; i <= count && !currentThread().isInterrupted(); i++) {
 				int numReplies = dll.IcmpSendEcho(handle, ipaddr, sendData, (short) sendDataSize, null, replyData, replyDataSize, timeout);

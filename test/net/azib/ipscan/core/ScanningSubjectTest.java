@@ -5,13 +5,13 @@
  */
 package net.azib.ipscan.core;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.net.PingResult;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 /**
  * ScanningSubjectTest
@@ -31,12 +31,12 @@ public class ScanningSubjectTest {
 		subject.config = config;
 		config.portTimeout = 1000;
 		config.adaptPortTimeout = true;
-		pingResult = new PingResult(null,0);
+		pingResult = new PingResult(null, 0);
 		subject.setParameter(ScanningSubject.PARAMETER_PING_RESULT, pingResult);
 	}
 	
 	@Test
-		public void adaptedPortTimeoutUsingReplies() throws Exception {
+	public void adaptedPortTimeoutUsingReplies() {
 		subject.setParameter(ScanningSubject.PARAMETER_PING_RESULT, null);
 		// no ping replies yet
 		assertEquals(config.portTimeout, subject.getAdaptedPortTimeout());
@@ -67,7 +67,7 @@ public class ScanningSubjectTest {
 	}
 	
 	@Test
-	public void forcedAdaptedTimeout() throws Exception {
+	public void forcedAdaptedTimeout() {
 		pingResult.enableTimeoutAdaptation();
 		// cannot force yet - no replies
 		assertEquals(config.portTimeout, subject.getAdaptedPortTimeout());
@@ -78,7 +78,7 @@ public class ScanningSubjectTest {
 	}
 	
 	@Test
-	public void adaptedTimeoutTooShort() throws Exception {
+	public void adaptedTimeoutTooShort() {
 		config.minPortTimeout = 100;
 		pingResult.addReply(0);
 		pingResult.enableTimeoutAdaptation();

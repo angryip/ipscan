@@ -37,7 +37,7 @@ public class TCPPinger implements Pinger {
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
-		PingResult result = new PingResult(subject.getAddress(),count);
+		PingResult result = new PingResult(subject.getAddress(), count);
 		int workingPort = -1;
 
 		Socket socket;

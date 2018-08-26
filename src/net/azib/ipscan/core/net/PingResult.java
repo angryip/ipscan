@@ -13,20 +13,18 @@ import java.net.InetAddress;
  * @author Anton Keks
  */
 public class PingResult {
-
 	InetAddress address;
-
 
 	private int ttl;
 	private long totalTime;
 	private long longestTime;
-	private int replyCount;
 	private int packetCount;
+	private int replyCount;
 	private boolean timeoutAdaptationAllowed;
 	
-	public PingResult(InetAddress address, int packagesCount) {
+	public PingResult(InetAddress address, int packetCount) {
 		this.address = address;
-		this.packetCount = packagesCount;
+		this.packetCount = packetCount;
 	}
 
 	public void addReply(long time) {

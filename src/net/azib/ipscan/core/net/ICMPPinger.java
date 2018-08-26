@@ -74,13 +74,9 @@ public class ICMPPinger implements Pinger {
 		socket.write(address, data, offset, length);
 
 		try {
-			int skippedCount = 0;
 			do {
 				socket.read(address, data);
-				skippedCount++;
-				//if (packet.getType() == ICMPPacket.TYPE_ECHO_REPLY)
-				//	System.err.println(Thread.currentThread() + " " + packet.getSourceAsInetAddress().getHostAddress() + ": " + skippedCount);
-			} 
+			}
 			while (packet.getType() != ICMPPacket.TYPE_ECHO_REPLY || 
 				  packet.getIdentifier() != (hashCode() & 0xFFFF) ||
 				  packet.getSequenceNumber() != sequence);
@@ -116,7 +112,7 @@ public class ICMPPinger implements Pinger {
 	 * @param count number of pings to perform
 	 */
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
-		PingResult result = new PingResult(subject.getAddress(),count);
+		PingResult result = new PingResult(subject.getAddress(), count);
 		RawSocket socket = createRawSocket();
 		
 		try {
@@ -131,7 +127,7 @@ public class ICMPPinger implements Pinger {
 			}
 		}
 		finally {
-      closeQuietly(socket);
+			closeQuietly(socket);
 		}
 		
 		return result;
