@@ -79,8 +79,8 @@ public class ComponentRegistry {
 	@Provides @Singleton public List<Fetcher> fetchers(List<Class<? extends Plugin>> plugins,
 											IPFetcher f1, PingFetcher f2, PingTTLFetcher f3, HostnameFetcher f4, PortsFetcher f5,
 											FilteredPortsFetcher f6, WebDetectFetcher f7, HTTPSenderFetcher f8, CommentFetcher f9,
-											NetBIOSInfoFetcher f10, MACFetcher f11, MACVendorFetcher f12) {
-		return addPlugins(Arrays.<Fetcher>asList(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12), Fetcher.class, plugins);
+											NetBIOSInfoFetcher f10, MACFetcher f11, MACVendorFetcher f12, PacketLossFetcher f13) {
+			return addPlugins(Arrays.<Fetcher>asList(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13), Fetcher.class, plugins);
 	}
 
 	@Provides @Singleton MACFetcher selectMacFetcher() {

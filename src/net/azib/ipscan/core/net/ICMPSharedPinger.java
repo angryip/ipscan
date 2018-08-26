@@ -79,7 +79,7 @@ public class ICMPSharedPinger implements Pinger {
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
 		InetAddress address = subject.getAddress();
-		PingResult result = new PingResult(address);
+		PingResult result = new PingResult(address,count);
 		results.put(address, result);
 		
 		// TODO: make ICMPEchoPacket accept byte array in the constructor
