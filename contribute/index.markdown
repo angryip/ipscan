@@ -23,7 +23,7 @@ If the source of particular release is required, then you can later switch to pa
 
     git checkout tag-name
 
-where tag-name is the released version number (eg 3.5.2), for full list of available tags use:
+where tag-name is the released version number (eg {{ site.version }}), for full list of available tags use:
 
     git tag
 
