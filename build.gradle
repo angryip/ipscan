@@ -1,0 +1,31 @@
+plugins {
+    id "net.ltgt.apt" version "0.10"
+}
+
+apply plugin: 'java'
+
+sourceSets {
+    main {
+        java { srcDir "src" }
+        java { srcDir "ext/rocksaw/src" }
+        java { srcDir "ext/vserv-tcpip/src/java" }
+        resources { srcDirs "config", "src" }
+    }
+    test {
+        java { srcDir "test" }
+        resources { srcDir "test" }
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'com.google.dagger:dagger:2.19'
+    compile files('lib/swt-linux64.jar')
+    compile files('lib/jna.jar')
+    apt 'com.google.dagger:dagger-compiler:2.19'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.23.0'
+}

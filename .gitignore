@@ -10,3 +10,5 @@
 /test-coverage
 ipscan.iml
 .idea
+/.gradle
+/build
