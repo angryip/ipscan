@@ -1,3 +1,5 @@
+import java.time.LocalDate
+
 plugins {
     id "net.ltgt.apt" version "0.10"
 }
@@ -40,9 +42,10 @@ task fatJar(type: Jar) {
             'Class-Path': '.',
             'Title': 'Angry IP Scanner',
             'Version': version,
+            'Build-Date': LocalDate.now().toString(),
             'URL': 'https://angryip.org/'
     }
-    baseName = project.name + '-all'
+    baseName = project.name + '-linux64'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
