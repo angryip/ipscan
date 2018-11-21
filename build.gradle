@@ -45,5 +45,30 @@ task linux64(type: Jar) {
     }
     baseName = project.name + '-linux64'
     from { (configurations.compile + files('lib/swt-linux64.jar')).collect { it.isDirectory() ? it : zipTree(it) } }
+    exclude(
+        'version.txt',
+        'images/**/*.svg',
+        'chrome.manifest',
+        'swt.js',
+        'swt.xpt',
+        // GTK stuff
+        'libswt-awt-gtk-*.so',
+        'libswt-glx-gtk-*.so',
+        'libswt-mozilla-*.so',
+        'libswt-gnome-*.so',
+        'libswt-xpcominit-gtk-*.so',
+        'libswt-xulrunner-*.so',
+        'libswt-webkit-gtk-*.so',
+        // Win32 stuff
+        'swt-awt-*.dll',
+        'swt-wgl-*.dll',
+        'swt-gdip-*.dll',
+        'swt-xpcominit-*.dll',
+        'swt-xulrunner-*.dll',
+        'swt-webkit-*.dll',
+        // Mac stuff
+        'libswt-awt-*.jnilib',
+        'libswt-xulrunner-*.jnilib'
+    )
     with jar
 }
