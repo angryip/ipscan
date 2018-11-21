@@ -44,7 +44,10 @@ task linux64(type: Jar) {
             'URL': 'https://angryip.org/'
     }
     baseName = project.name + '-linux64'
-    from { (configurations.compile + files('lib/swt-linux64.jar')).collect { it.isDirectory() ? it : zipTree(it) } }
+    from {
+        (configurations.compile + files('lib/swt-linux64.jar')).collect { it.isDirectory() ? it : zipTree(it) } +
+        'ext/rocksaw/lib/librocksaw64.so'
+    }
     exclude(
         'version.txt',
         'images/**/*.svg',
