@@ -68,7 +68,33 @@ task linux64(type: Jar) {
         'swt-webkit-*.dll',
         // Mac stuff
         'libswt-awt-*.jnilib',
-        'libswt-xulrunner-*.jnilib'
+        'libswt-xulrunner-*.jnilib',
+        // swt classes
+        'org/eclipse/swt/dnd/D*',    
+        'org/eclipse/swt/dnd/H*',    
+        'org/eclipse/swt/dnd/F*',    
+        'org/eclipse/swt/dnd/N*',    
+        'org/eclipse/swt/dnd/R*',    
+        'org/eclipse/swt/dnd/S*',    
+        'org/eclipse/swt/dnd/Table*',    
+        'org/eclipse/swt/dnd/Tree*',    
+        'org/eclipse/swt/browser/**',
+        'org/eclipse/swt/ole/**',
+        'org/eclipse/swt/opengl/**',
+        'org/eclipse/swt/internal/opengl/**',
+        'org/eclipse/swt/internal/cde/**',
+        'org/eclipse/swt/internal/theme/**',
+        'org/eclipse/swt/internal/mozilla/**',
+        'org/eclipse/swt/internal/webkit/**',
+        'org/eclipse/swt/internal/gnome/**',
+        'org/eclipse/swt/internal/image/JPEG*',
+        'org/eclipse/swt/internal/image/OS2*',
+        'org/eclipse/swt/internal/image/GIF*',
+        'org/eclipse/swt/internal/image/LZW*',
+        'org/eclipse/swt/internal/image/TIFF*',
+        'org/eclipse/swt/internal/image/Win*',
+        'org/eclipse/swt/custom/**',
+        'org/eclipse/swt/awt/**'
     )
     with jar
 }
