@@ -112,3 +112,19 @@ packageTask('win64', 'lib/jna-win64.jar', [])
 packageTask('mac', [], [])
 
 task all(dependsOn: ['linux', 'linux64', 'win32', 'win64', 'mac'])
+
+task info {
+    doLast {
+        println "This script will build ${project.name} ${version}"
+        println 'Targets (some may work only on Linux):'
+        println '  all           - runs tests and builds binaries for all OSs'
+        println '  linux         - builds only Linux 32-bit binary'
+        println '  linux64       - builds only Linux 64-bit binary'
+        println '  mac           - builds only Mac binary'
+        println '  win32         - builds only Windows binary'
+        println '  win64         - builds only Windows 64-bit binary'
+        println '  win-installer - packages a Windows installer (including both 32 and 64-bit binaries)'
+    }
+}
+
+defaultTasks 'info'
