@@ -25,79 +25,90 @@ repositories {
 
 dependencies {
     compile 'com.google.dagger:dagger:2.19'
-    compileOnly files('lib/swt-linux64.jar')
+    compileOnly files('lib/swt-win32.jar')
     compileOnly files('lib/jna.jar')
     apt 'com.google.dagger:dagger-compiler:2.19'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.23.0'
 }
 
-task linux64(type: Jar) {
-	manifest {
-        attributes 'Implementation-Title': 'Angry IP Scanner',
-            'Implementation-Version': version,
-            'Main-Class': 'net.azib.ipscan.Main',
-            'Class-Path': '.',
-            'Title': 'Angry IP Scanner',
-            'Version': version,
-            'Build-Date': java.time.LocalDate.now().toString(),
-            'URL': 'https://angryip.org/'
+def packageTask(def platform, def moreJars, def moreLibs) {
+    return tasks.create(platform, Jar) {
+        manifest {
+           attributes 'Implementation-Title': 'Angry IP Scanner',
+               'Implementation-Version': version,
+               'Main-Class': 'net.azib.ipscan.Main',
+               'Class-Path': '.',
+               'Title': 'Angry IP Scanner',
+               'Version': version,
+               'Build-Date': java.time.LocalDate.now().toString(),
+               'URL': 'https://angryip.org/'
+       }
+       baseName = project.name + '-' + platform
+       from {
+           (configurations.compile + files("lib/swt-${platform}.jar") + files(moreJars))
+                   .collect { it.isDirectory() ? it : zipTree(it) } +
+           moreLibs
+       }
+       exclude(
+           'version.txt',
+           'images/**/*.svg',
+           'chrome.manifest',
+           'swt.js',
+           'swt.xpt',
+           // GTK stuff
+           'libswt-awt-gtk-*.so',
+           'libswt-glx-gtk-*.so',
+           'libswt-mozilla-*.so',
+           'libswt-gnome-*.so',
+           'libswt-xpcominit-gtk-*.so',
+           'libswt-xulrunner-*.so',
+           'libswt-webkit-gtk-*.so',
+           // Win32 stuff
+           'swt-awt-*.dll',
+           'swt-wgl-*.dll',
+           'swt-gdip-*.dll',
+           'swt-xpcominit-*.dll',
+           'swt-xulrunner-*.dll',
+           'swt-webkit-*.dll',
+           // Mac stuff
+           'libswt-awt-*.jnilib',
+           'libswt-xulrunner-*.jnilib',
+           // swt classes
+           'org/eclipse/swt/dnd/D*',
+           'org/eclipse/swt/dnd/H*',
+           'org/eclipse/swt/dnd/F*',
+           'org/eclipse/swt/dnd/N*',
+           'org/eclipse/swt/dnd/R*',
+           'org/eclipse/swt/dnd/S*',
+           'org/eclipse/swt/dnd/Table*',
+           'org/eclipse/swt/dnd/Tree*',
+           'org/eclipse/swt/browser/**',
+           'org/eclipse/swt/ole/**',
+           'org/eclipse/swt/opengl/**',
+           'org/eclipse/swt/internal/opengl/**',
+           'org/eclipse/swt/internal/cde/**',
+           'org/eclipse/swt/internal/theme/**',
+           'org/eclipse/swt/internal/mozilla/**',
+           'org/eclipse/swt/internal/webkit/**',
+           'org/eclipse/swt/internal/gnome/**',
+           'org/eclipse/swt/internal/image/JPEG*',
+           'org/eclipse/swt/internal/image/OS2*',
+           'org/eclipse/swt/internal/image/GIF*',
+           'org/eclipse/swt/internal/image/LZW*',
+           'org/eclipse/swt/internal/image/TIFF*',
+           'org/eclipse/swt/internal/image/Win*',
+           'org/eclipse/swt/custom/**',
+           'org/eclipse/swt/awt/**'
+       )
+       with jar
     }
-    baseName = project.name + '-linux64'
-    from {
-        (configurations.compile + files('lib/swt-linux64.jar')).collect { it.isDirectory() ? it : zipTree(it) } +
-        'ext/rocksaw/lib/librocksaw64.so'
-    }
-    exclude(
-        'version.txt',
-        'images/**/*.svg',
-        'chrome.manifest',
-        'swt.js',
-        'swt.xpt',
-        // GTK stuff
-        'libswt-awt-gtk-*.so',
-        'libswt-glx-gtk-*.so',
-        'libswt-mozilla-*.so',
-        'libswt-gnome-*.so',
-        'libswt-xpcominit-gtk-*.so',
-        'libswt-xulrunner-*.so',
-        'libswt-webkit-gtk-*.so',
-        // Win32 stuff
-        'swt-awt-*.dll',
-        'swt-wgl-*.dll',
-        'swt-gdip-*.dll',
-        'swt-xpcominit-*.dll',
-        'swt-xulrunner-*.dll',
-        'swt-webkit-*.dll',
-        // Mac stuff
-        'libswt-awt-*.jnilib',
-        'libswt-xulrunner-*.jnilib',
-        // swt classes
-        'org/eclipse/swt/dnd/D*',    
-        'org/eclipse/swt/dnd/H*',    
-        'org/eclipse/swt/dnd/F*',    
-        'org/eclipse/swt/dnd/N*',    
-        'org/eclipse/swt/dnd/R*',    
-        'org/eclipse/swt/dnd/S*',    
-        'org/eclipse/swt/dnd/Table*',    
-        'org/eclipse/swt/dnd/Tree*',    
-        'org/eclipse/swt/browser/**',
-        'org/eclipse/swt/ole/**',
-        'org/eclipse/swt/opengl/**',
-        'org/eclipse/swt/internal/opengl/**',
-        'org/eclipse/swt/internal/cde/**',
-        'org/eclipse/swt/internal/theme/**',
-        'org/eclipse/swt/internal/mozilla/**',
-        'org/eclipse/swt/internal/webkit/**',
-        'org/eclipse/swt/internal/gnome/**',
-        'org/eclipse/swt/internal/image/JPEG*',
-        'org/eclipse/swt/internal/image/OS2*',
-        'org/eclipse/swt/internal/image/GIF*',
-        'org/eclipse/swt/internal/image/LZW*',
-        'org/eclipse/swt/internal/image/TIFF*',
-        'org/eclipse/swt/internal/image/Win*',
-        'org/eclipse/swt/custom/**',
-        'org/eclipse/swt/awt/**'
-    )
-    with jar
 }
+
+packageTask('linux', [], 'ext/rocksaw/lib/linux/librocksaw.so')
+packageTask('linux64', [], 'ext/rocksaw/lib/linux64/librocksaw64.so')
+packageTask('win32', 'lib/jna-win32.jar', 'ext/rocksaw/lib/rocksaw.dll')
+packageTask('win64', 'lib/jna-win64.jar', [])
+packageTask('mac', [], [])
+
+task all(dependsOn: ['linux', 'linux64', 'win32', 'win64', 'mac'])
