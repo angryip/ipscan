@@ -1,3 +1,5 @@
+* Use ServiceLoader for plugins
+* Use ipify for /iplocate
 * Add URLFetcher with configurable URL and JSON/XPath expression
 * WHOIS fetcher
 
