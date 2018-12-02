@@ -120,12 +120,11 @@ def launch4j(def platform) {
 }
 
 def deb(def platform, def arch) {
-    def dist = 'build/libs/deb'
+    def dist = buildDir.path + '/libs/deb'
     ant.mkdir(dir: dist)
     ant.copy(todir: dist) {
         ant.fileset(dir: "ext/deb-bundle")
     }
-
     ant.copy(file: "build/libs/${project.name}-${platform}-${version}.jar", todir:"${dist}/usr/lib/ipscan")
     ant.copy(file: "resources/images/icon128.png", tofile:"${dist}/usr/share/pixmaps/ipscan.png")
 
@@ -134,22 +133,48 @@ def deb(def platform, def arch) {
         ant.replacefilter(token: "ARCH", value: arch)
     }
 
-    ant.exec(executable: "chmod", dir: dist) {
+    ant.exec(executable: "chmod", dir: dist, failonerror: true) {
         ant.arg(line: "a+x usr/bin/ipscan usr/lib/ipscan/${project.name}-${platform}-${version}.jar")
     }
-    ant.exec(executable: 'fakeroot', dir: dist + '/..') {
+    ant.exec(executable: 'fakeroot', dir: dist + '/..', failonerror: true) {
         ant.arg(line: "dpkg-deb -b deb ${project.name}_${version}_${arch}.deb")
     }
     ant.delete(dir: dist)
 }
 
-packageTask('linux', [], 'ext/rocksaw/lib/linux/librocksaw.so') { deb('linux', 'i386') }
+def rpm(def platform, def arch) {
+    def dist = buildDir.path + '/libs/rpm'
+    ant.mkdir(dir: dist)
+    ant.copy(todir: dist) {
+        ant.fileset(dir: "ext/rpmbuild")
+    }
+    ant.replace(file: "${dist}/SPECS/ipscan.spec") {
+        ant.replacefilter(token: "VERSION", value: version)
+    }
+    ant.exec(executable: "rpmbuild", dir: dist, failonerror: true) {
+        ant.arg(line: "--target ${arch} --define \"_topdir ${new File(dist).absolutePath}\" --define \"platform ${platform}\" -bb SPECS/ipscan.spec")
+    }
+    ant.move(file: "${dist}/RPMS/${arch}/ipscan-${version}-1.${arch}.rpm", todir:'build/libs')
+    ant.delete(dir: dist)
+}
 
-packageTask('linux64', [], 'ext/rocksaw/lib/linux64/librocksaw64.so') { deb('linux64', 'amd64') }
+packageTask('linux', [], 'ext/rocksaw/lib/linux/librocksaw.so') {
+    deb('linux', 'i386')
+    rpm('linux', 'i386')
+}
 
-packageTask('win32', 'lib/jna-win32.jar', 'ext/rocksaw/lib/rocksaw.dll') { launch4j('win32') }
+packageTask('linux64', [], 'ext/rocksaw/lib/linux64/librocksaw64.so') {
+    deb('linux64', 'amd64')
+    rpm('linux64', 'x86_64')
+}
 
-packageTask('win64', 'lib/jna-win64.jar', []) { launch4j('win64') }
+packageTask('win32', 'lib/jna-win32.jar', 'ext/rocksaw/lib/rocksaw.dll') {
+    launch4j('win32')
+}
+
+packageTask('win64', 'lib/jna-win64.jar', []) {
+    launch4j('win64')
+}
 
 packageTask('mac', [], []) {}
 
