@@ -176,7 +176,29 @@ packageTask('win64', 'lib/jna-win64.jar', []) {
     launch4j('win64')
 }
 
-packageTask('mac', [], []) {}
+packageTask('mac', [], []) {
+    def dist = buildDir.path + '/libs'
+    def name = 'Angry IP Scanner'
+    ant.copy(todir: dist) {
+        ant.fileset(dir: "ext/mac-bundle")
+    }
+
+    ant.copy(file: "${dist}/${project.name}-mac-${version}.jar", todir: "${dist}/${name}.app/Contents/MacOS")
+
+    ant.replace(file: "${dist}/${name}.app/Contents/Info.plist") {
+        ant.replacefilter(token: "APPNAME", value: name)
+        ant.replacefilter(token: "VERSION", value: version)
+    }
+
+    ant.zip(destfile: "${dist}/${project.name}-mac-${version}.zip") {
+        ant.zipfileset(dir: "${dist}/${name}.app", excludes: "Contents/MacOS/ipscan", prefix: "${name}.app")
+        // this one should be executable
+        ant.zipfileset(dir: "${dist}/${name}.app", includes: "Contents/MacOS/ipscan", prefix: "${name}.app", filemode: "755")
+    }
+
+    ant.delete(dir: "${dist}/${name}.app")
+    ant.delete(file: "${dist}/${project.name}-mac-${version}.jar")
+}
 
 task 'win-installer'(dependsOn: ['win32', 'win64']) {
     doLast {
