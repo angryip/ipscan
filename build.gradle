@@ -34,6 +34,7 @@ dependencies {
 
 def packageTask(def platform, def moreJars, def moreLibs, Closure doMore) {
     return tasks.create(platform, Jar) {
+        dependsOn = ['classes']
         manifest {
            attributes 'Implementation-Title': 'Angry IP Scanner',
                'Implementation-Version': version,
