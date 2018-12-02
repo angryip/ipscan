@@ -119,9 +119,32 @@ def launch4j(def platform) {
     ant.launch4j(configFile: configFile)
 }
 
-packageTask('linux', [], 'ext/rocksaw/lib/linux/librocksaw.so') {}
+def deb(def platform, def arch) {
+    def dist = 'build/libs'
+    ant.mkdir(dir: "${dist}/deb")
+    ant.copy(todir: "${dist}/deb") {
+        ant.fileset(dir: "ext/deb-bundle")
+    }
 
-packageTask('linux64', [], 'ext/rocksaw/lib/linux64/librocksaw64.so') {}
+    ant.copy(file: "build/libs/${project.name}-${platform}-${version}.jar", todir:"${dist}/deb/usr/lib/ipscan")
+    ant.copy(file: "resources/images/icon128.png", tofile:"${dist}/deb/usr/share/pixmaps/ipscan.png")
+
+    ant.replace(file: "${dist}/deb/DEBIAN/control") {
+        ant.replacefilter(token: "VERSION", value: version)
+        ant.replacefilter(token: "ARCH", value: "@{arch}")
+    }
+
+    ant.exec(executable: "chmod", dir: dist) {
+        ant.arg(line: "a+x deb/usr/bin/ipscan deb/usr/lib/ipscan/${project.name}-${platform}-${version}.jar")
+    }
+    ant.exec(executable: 'fakeroot', dir: dist) {
+        ant.arg(line: "dpkg-deb -b deb ${project.name}_${version}_${arch}.deb")
+    }
+}
+
+packageTask('linux', [], 'ext/rocksaw/lib/linux/librocksaw.so') { deb('linux', 'i386') }
+
+packageTask('linux64', [], 'ext/rocksaw/lib/linux64/librocksaw64.so') { deb('linux64', 'amd64') }
 
 packageTask('win32', 'lib/jna-win32.jar', 'ext/rocksaw/lib/rocksaw.dll') { launch4j('win32') }
 
