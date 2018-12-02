@@ -1,32 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
+<module external.linked.project.id="ipscan" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$" external.system.id="GRADLE" external.system.module.group="" external.system.module.version="3.5.3" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/out/production/classes" />
+    <output-test url="file://$MODULE_DIR$/out/test/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/ext/rocksaw/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ext/vserv-tcpip/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/config" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/config" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ext/vserv-tcpip/src/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ext/rocksaw/src/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/generated" isTestSource="false" generated="true" />
+      <excludeFolder url="file://$MODULE_DIR$/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/ant-bin.linux" />
       <excludeFolder url="file://$MODULE_DIR$/ant-bin.linux64" />
       <excludeFolder url="file://$MODULE_DIR$/ant-bin.mac" />
       <excludeFolder url="file://$MODULE_DIR$/ant-bin.win32" />
       <excludeFolder url="file://$MODULE_DIR$/ant-tests" />
+      <excludeFolder url="file://$MODULE_DIR$/build" />
       <excludeFolder url="file://$MODULE_DIR$/generated_tests" />
+      <excludeFolder url="file://$MODULE_DIR$/out" />
       <excludeFolder url="file://$MODULE_DIR$/test-coverage" />
       <excludeFolder url="file://$MODULE_DIR$/test-results" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="lib_common" level="project" />
-    <orderEntry type="library" name="lib_linux64" level="project" />
-    <orderEntry type="library" name="lib_linux" level="project" />
-    <orderEntry type="library" name="lib_mac" level="project" />
-    <orderEntry type="library" name="lib_win32" level="project" />
-    <orderEntry type="library" name="lib_win64" level="project" />
-    <orderEntry type="library" scope="TEST" name="lib_testing" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.dagger:dagger:2.19" level="project" />
+    <orderEntry type="library" name="Gradle: javax.inject:javax.inject:1" level="project" />
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library name="Gradle: swt-win32">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/swt-win32.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library name="Gradle: jna">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/jna.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.12" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.mockito:mockito-core:2.23.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: net.bytebuddy:byte-buddy:1.9.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: net.bytebuddy:byte-buddy-agent:1.9.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.objenesis:objenesis:2.6" level="project" />
+    <orderEntry type="module-library" scope="TEST">
+      <library name="Gradle: swt-linux64">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/swt-linux64.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

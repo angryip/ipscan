@@ -30,6 +30,7 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2.19'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.23.0'
+    testCompile files('lib/swt-linux64.jar')
 }
 
 def packageTask(def platform, def moreJars, def moreLibs, Closure doMore) {
