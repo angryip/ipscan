@@ -120,26 +120,27 @@ def launch4j(def platform) {
 }
 
 def deb(def platform, def arch) {
-    def dist = 'build/libs'
-    ant.mkdir(dir: "${dist}/deb")
-    ant.copy(todir: "${dist}/deb") {
+    def dist = 'build/libs/deb'
+    ant.mkdir(dir: dist)
+    ant.copy(todir: dist) {
         ant.fileset(dir: "ext/deb-bundle")
     }
 
-    ant.copy(file: "build/libs/${project.name}-${platform}-${version}.jar", todir:"${dist}/deb/usr/lib/ipscan")
-    ant.copy(file: "resources/images/icon128.png", tofile:"${dist}/deb/usr/share/pixmaps/ipscan.png")
+    ant.copy(file: "build/libs/${project.name}-${platform}-${version}.jar", todir:"${dist}/usr/lib/ipscan")
+    ant.copy(file: "resources/images/icon128.png", tofile:"${dist}/usr/share/pixmaps/ipscan.png")
 
-    ant.replace(file: "${dist}/deb/DEBIAN/control") {
+    ant.replace(file: "${dist}/DEBIAN/control") {
         ant.replacefilter(token: "VERSION", value: version)
-        ant.replacefilter(token: "ARCH", value: "@{arch}")
+        ant.replacefilter(token: "ARCH", value: arch)
     }
 
     ant.exec(executable: "chmod", dir: dist) {
-        ant.arg(line: "a+x deb/usr/bin/ipscan deb/usr/lib/ipscan/${project.name}-${platform}-${version}.jar")
+        ant.arg(line: "a+x usr/bin/ipscan usr/lib/ipscan/${project.name}-${platform}-${version}.jar")
     }
-    ant.exec(executable: 'fakeroot', dir: dist) {
+    ant.exec(executable: 'fakeroot', dir: dist + '/..') {
         ant.arg(line: "dpkg-deb -b deb ${project.name}_${version}_${arch}.deb")
     }
+    ant.delete(dir: dist)
 }
 
 packageTask('linux', [], 'ext/rocksaw/lib/linux/librocksaw.so') { deb('linux', 'i386') }
