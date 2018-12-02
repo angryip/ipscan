@@ -7,4 +7,4 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq rpm wine fakeroot
 
-script: xvfb-run -a ./gradle test all
+script: xvfb-run -a ./gradlew test all
