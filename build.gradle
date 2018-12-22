@@ -1,0 +1,247 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+
+version = '3.6.0'
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+def osName = System.getProperty("os.name")
+def is64 = System.getProperty("os.arch").contains("64")
+def platform = osName.contains("Linux") ? 'linux' + (is64 ? '64' : '') :
+               osName.contains("Windows") ? 'win' + (is64 ? '64' : '32') :
+               osName.contains("OS X") ? 'mac' : 'unknown'
+
+sourceSets {
+    main {
+        java { srcDirs "src", "ext/rocksaw/src", "ext/vserv-tcpip/src/java" }
+        resources { srcDirs "config", "src", "resources" }
+    }
+    test {
+        java { srcDir "test" }
+        resources { srcDir "test" }
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'com.google.dagger:dagger:2.19'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.19'
+    compileOnly files("lib/swt-${platform}.jar")
+    compileOnly files('lib/jna.jar')
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.23.0'
+}
+
+configurations {
+    testImplementation.extendsFrom compileOnly
+}
+
+compileJava.options.annotationProcessorGeneratedSourcesDirectory = new File('build/generated')
+
+def packageTask(def platform, def moreJars, def moreLibs, Closure doMore) {
+    return tasks.create(platform, Jar) {
+        dependsOn = ['classes']
+        manifest {
+           attributes 'Implementation-Title': 'Angry IP Scanner',
+               'Implementation-Version': version,
+               'Main-Class': 'net.azib.ipscan.Main',
+               'Class-Path': '.',
+               'Title': 'Angry IP Scanner',
+               'Version': version,
+               'Build-Date': java.time.LocalDate.now().toString(),
+               'URL': 'https://angryip.org/'
+       }
+       baseName = project.name + '-' + platform
+       from {
+           (configurations.compile + files("lib/swt-${platform}.jar") + files(moreJars))
+                   .collect { it.isDirectory() ? it : zipTree(it) } +
+           moreLibs
+       }
+       exclude(
+           'version.txt',
+           'images/**/*.svg',
+           'chrome.manifest',
+           'swt.js',
+           'swt.xpt',
+           // GTK stuff
+           'libswt-awt-gtk-*.so',
+           'libswt-glx-gtk-*.so',
+           'libswt-mozilla-*.so',
+           'libswt-gnome-*.so',
+           'libswt-xpcominit-gtk-*.so',
+           'libswt-xulrunner-*.so',
+           'libswt-webkit-gtk-*.so',
+           // Win32 stuff
+           'swt-awt-*.dll',
+           'swt-wgl-*.dll',
+           'swt-gdip-*.dll',
+           'swt-xpcominit-*.dll',
+           'swt-xulrunner-*.dll',
+           'swt-webkit-*.dll',
+           // Mac stuff
+           'libswt-awt-*.jnilib',
+           'libswt-xulrunner-*.jnilib',
+           // swt classes
+           'org/eclipse/swt/dnd/D*',
+           'org/eclipse/swt/dnd/H*',
+           'org/eclipse/swt/dnd/F*',
+           'org/eclipse/swt/dnd/N*',
+           'org/eclipse/swt/dnd/R*',
+           'org/eclipse/swt/dnd/S*',
+           'org/eclipse/swt/dnd/Table*',
+           'org/eclipse/swt/dnd/Tree*',
+           'org/eclipse/swt/browser/**',
+           'org/eclipse/swt/ole/**',
+           'org/eclipse/swt/opengl/**',
+           'org/eclipse/swt/internal/opengl/**',
+           'org/eclipse/swt/internal/cde/**',
+           'org/eclipse/swt/internal/theme/**',
+           'org/eclipse/swt/internal/mozilla/**',
+           'org/eclipse/swt/internal/webkit/**',
+           'org/eclipse/swt/internal/gnome/**',
+           'org/eclipse/swt/internal/image/JPEG*',
+           'org/eclipse/swt/internal/image/OS2*',
+           'org/eclipse/swt/internal/image/GIF*',
+           'org/eclipse/swt/internal/image/LZW*',
+           'org/eclipse/swt/internal/image/TIFF*',
+           'org/eclipse/swt/internal/image/Win*',
+           'org/eclipse/swt/custom/**',
+           'org/eclipse/swt/awt/**'
+       )
+       with jar
+       doLast(doMore)
+    }
+}
+
+def launch4j(def platform) {
+    ant.taskdef(name: 'launch4j', classname: 'net.sf.launch4j.ant.Launch4jTask', classpath: 'ext/launch4j/launch4j.jar:ext/launch4j/xstream.jar')
+    def configFile = "build/libs/launch4j-${platform}.xml"
+    ant.copy(file: "ext/launch4j/ipscan.xml", tofile: configFile)
+    ant.replace(file: configFile) {
+        ant.replacefilter(token: "BASENAME", value: "${project.name}-${platform}-${version}")
+        ant.replacefilter(token: "VERSION", value: version)
+    }
+    ant.launch4j(configFile: configFile)
+}
+
+def deb(def platform, def arch) {
+    def dist = buildDir.path + '/libs/deb'
+    ant.mkdir(dir: dist)
+    ant.copy(todir: dist) {
+        ant.fileset(dir: "ext/deb-bundle")
+    }
+    ant.copy(file: "build/libs/${project.name}-${platform}-${version}.jar", todir:"${dist}/usr/lib/ipscan")
+    ant.copy(file: "resources/images/icon128.png", tofile:"${dist}/usr/share/pixmaps/ipscan.png")
+
+    ant.replace(file: "${dist}/DEBIAN/control") {
+        ant.replacefilter(token: "VERSION", value: version)
+        ant.replacefilter(token: "ARCH", value: arch)
+    }
+
+    ant.exec(executable: "chmod", dir: dist, failonerror: true) {
+        ant.arg(line: "a+x usr/bin/ipscan usr/lib/ipscan/${project.name}-${platform}-${version}.jar")
+    }
+    ant.exec(executable: 'fakeroot', dir: dist + '/..', failonerror: true) {
+        ant.arg(line: "dpkg-deb -b deb ${project.name}_${version}_${arch}.deb")
+    }
+    ant.delete(dir: dist)
+}
+
+def rpm(def platform, def arch) {
+    def dist = buildDir.path + '/libs/rpm'
+    ant.mkdir(dir: dist)
+    ant.copy(todir: dist) {
+        ant.fileset(dir: "ext/rpmbuild")
+    }
+    ant.replace(file: "${dist}/SPECS/ipscan.spec") {
+        ant.replacefilter(token: "VERSION", value: version)
+    }
+    ant.exec(executable: "rpmbuild", dir: dist, failonerror: true) {
+        ant.arg(line: "--target ${arch} --define \"_topdir ${new File(dist).absolutePath}\" --define \"platform ${platform}\" -bb SPECS/ipscan.spec")
+    }
+    ant.move(file: "${dist}/RPMS/${arch}/ipscan-${version}-1.${arch}.rpm", todir:'build/libs')
+    ant.delete(dir: dist)
+}
+
+packageTask('linux', [], 'ext/rocksaw/lib/linux/librocksaw.so') {
+    deb('linux', 'i386')
+    rpm('linux', 'i386')
+}
+
+packageTask('linux64', [], 'ext/rocksaw/lib/linux64/librocksaw64.so') {
+    deb('linux64', 'amd64')
+    rpm('linux64', 'x86_64')
+}
+
+packageTask('win32', 'lib/jna-win32.jar', 'ext/rocksaw/lib/rocksaw.dll') {
+    launch4j('win32')
+}
+
+packageTask('win64', 'lib/jna-win64.jar', []) {
+    launch4j('win64')
+}
+
+packageTask('mac', [], []) {
+    def dist = buildDir.path + '/libs'
+    def name = 'Angry IP Scanner'
+    ant.copy(todir: dist) {
+        ant.fileset(dir: "ext/mac-bundle")
+    }
+
+    ant.copy(file: "${dist}/${project.name}-mac-${version}.jar", todir: "${dist}/${name}.app/Contents/MacOS")
+
+    ant.replace(file: "${dist}/${name}.app/Contents/Info.plist") {
+        ant.replacefilter(token: "APPNAME", value: name)
+        ant.replacefilter(token: "VERSION", value: version)
+    }
+
+    ant.zip(destfile: "${dist}/${project.name}-mac-${version}.zip") {
+        ant.zipfileset(dir: "${dist}/${name}.app", excludes: "Contents/MacOS/ipscan", prefix: "${name}.app")
+        // this one should be executable
+        ant.zipfileset(dir: "${dist}/${name}.app", includes: "Contents/MacOS/ipscan", prefix: "${name}.app", filemode: "755")
+    }
+
+    ant.delete(dir: "${dist}/${name}.app")
+    ant.delete(file: "${dist}/${project.name}-mac-${version}.jar")
+}
+
+task 'win-installer'(dependsOn: ['win32', 'win64']) {
+    doLast {
+        def installerDir = 'ext/win-installer'
+        ant.replace(file: "${installerDir}/InstallerConfig.nsh") {
+            ant.replacefilter(token: "VERSION_MINOR", value: "5")
+            ant.replacefilter(token: "VERSION", value: version)
+        }
+        ant.copy(file: "build/libs/${project.name}-win32-${version}.exe", tofile:"${installerDir}/AppFiles32/ipscan.exe")
+        ant.copy(file: "build/libs/${project.name}-win64-${version}.exe", tofile:"${installerDir}/AppFiles64/ipscan.exe")
+        ant.exec(dir: "${installerDir}", executable: "wine") {
+            ant.arg(value: "NSISPortable/App/NSIS/makensis.exe")
+            ant.arg(value: "Installer/Installer.nsi")
+        }
+        ant.move(file: "${installerDir}/ipscan-${version}-setup.exe", todir:"build/libs")
+        ant.exec(command: "git checkout ${installerDir}/InstallerConfig.nsh")
+    }
+}
+
+task all(dependsOn: ['clean', 'linux', 'linux64', 'mac', 'win-installer'])
+task current(dependsOn: ['clean', platform])
+
+task info {
+    doLast {
+        println "This script will build ${project.name} ${version}"
+        println "Targets (some may work only on Linux):"
+        println "  all           - runs tests and builds binaries for all OSs"
+        println "  current       - build for current platform ($platform)"
+        println "  linux         - builds only Linux 32-bit binary"
+        println "  linux64       - builds only Linux 64-bit binary"
+        println "  mac           - builds only Mac binary"
+        println "  win32         - builds only Windows binary"
+        println "  win64         - builds only Windows 64-bit binary"
+        println "  win-installer - packages a Windows installer (including both 32 and 64-bit binaries)"
+    }
+}
+
+defaultTasks 'info'

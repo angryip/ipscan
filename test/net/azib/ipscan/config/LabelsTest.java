@@ -68,7 +68,7 @@ public class LabelsTest {
 	public static File findBaseDir() {
 		URL url = LabelsTest.class.getClassLoader().getResource("messages.properties");
         File parent = new File(url.getPath());
-        while (!new File(parent, "build.xml").exists())
+        while (!new File(parent, "build.gradle").exists())
             parent = parent.getParentFile();
 		return parent;
 	}

@@ -1,16 +1,16 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>FILENAME_IN</jar>
-  <outfile>FILENAME_OUT</outfile>
+  <jar>BASENAME.jar</jar>
+  <outfile>BASENAME.exe</outfile>
   <errTitle>Angry IP Scanner</errTitle>
   <priority>normal</priority>
   <downloadUrl>http://java.com/download</downloadUrl>
-  <supportUrl>http://www.angryip.org/</supportUrl>
+  <supportUrl>https://angryip.org/</supportUrl>
   <customProcName>true</customProcName>
   <stayAlive>false</stayAlive>
-  <manifest>../ext/launch4j/ipscan.manifest</manifest>
-  <icon>../resources/images/icon.ico</icon>
+  <manifest>../../ext/launch4j/ipscan.manifest</manifest>
+  <icon>../../resources/images/icon.ico</icon>
   <jre>
     <minVersion>1.7.0</minVersion>
   </jre>
@@ -19,7 +19,7 @@
     <txtFileVersion>VERSION</txtFileVersion>
     <fileDescription>Angry IP Scanner - fast and friendly network scanner</fileDescription>
     <copyright>Anton Keks</copyright>
-    <productVersion>3.2.0.0</productVersion>
+    <productVersion>3.5.0.0</productVersion>
     <txtProductVersion>VERSION</txtProductVersion>
     <productName>Angry IP Scanner</productName>
     <internalName>ipscan</internalName>

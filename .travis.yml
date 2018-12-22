@@ -1,10 +1,17 @@
-dist: trusty
+os:
+  - linux
+  - osx
+
+dist: xenial
 language: java
-jdk:
-  - oraclejdk8
 
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq rpm wine fakeroot
+addons:
+  apt:
+    packages:
+      - rpm
+      - wine
+      - fakeroot
 
-script: xvfb-run -a ant all
+script:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run -a ./gradlew test all; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./gradlew current; fi

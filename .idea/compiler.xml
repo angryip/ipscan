@@ -6,6 +6,8 @@
     </wildcardResourcePatterns>
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true">
+        <sourceOutputDir name="build/generated" />
+        <sourceTestOutputDir name="build/generated" />
         <outputRelativeToContentRoot value="true" />
       </profile>
     </annotationProcessing>

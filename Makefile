@@ -1,30 +1,30 @@
 # This file is for those not familiar with Java
-# Use ant instead of make!
+# Use ./gradlew instead of make!
 
 info:
-	ant info
+	./gradlew info
 	
 clean:
-	ant clean
+	./gradlew clean
 
 all:
-	ant all
+	./gradlew all
 	
 current:
-	ant current
+	./gradlew current
 	
 linux:
-	ant linux
+	./gradlew linux
 	
 linux64:
-	ant linux64
+	./gradlew linux64
 	
 win32:
-	ant win32
+	./gradlew win32
 	
 win64:
-	ant win64
+	./gradlew win64
 	
 mac:
-	ant mac
+	./gradlew mac
 	

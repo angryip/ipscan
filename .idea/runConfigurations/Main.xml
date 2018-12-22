@@ -1,19 +1,13 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Main" type="Application" factoryName="Application" singleton="true">
-    <extension name="coverage" enabled="false" merge="false" runner="idea" />
-    <option name="MAIN_CLASS_NAME" value="net.azib.ipscan.Main" />
-    <option name="VM_PARAMETERS" value="-Djava.util.logging.config.file=config/logging.properties" />
-    <option name="PROGRAM_PARAMETERS" value="" />
-    <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
-    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-    <option name="ALTERNATIVE_JRE_PATH" />
-    <option name="ENABLE_SWING_INSPECTOR" value="false" />
-    <option name="ENV_VARIABLES" />
-    <option name="PASS_PARENT_ENVS" value="true" />
-    <module name="ipscan" />
     <envs>
       <env name="SWT_GTK3" value="0" />
     </envs>
+    <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
+    <option name="MAIN_CLASS_NAME" value="net.azib.ipscan.Main" />
+    <module name="ipscan" />
+    <option name="VM_PARAMETERS" value="-Djava.util.logging.config.file=config/logging.properties" />
+    <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
     <RunnerSettings RunnerId="Debug">
       <option name="DEBUG_PORT" value="" />
       <option name="TRANSPORT" value="0" />
@@ -22,6 +16,8 @@
     <RunnerSettings RunnerId="Run" />
     <ConfigurationWrapper RunnerId="Debug" />
     <ConfigurationWrapper RunnerId="Run" />
-    <method />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
   </configuration>
 </component>
