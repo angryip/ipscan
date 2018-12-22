@@ -1,4 +1,7 @@
-dist: xenial
+os:
+  - linux
+  - osx
+
 language: java
 
 addons:
