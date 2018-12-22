@@ -9,6 +9,12 @@ version = '3.6.0'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+def osName = System.getProperty("os.name")
+def is64 = System.getProperty("os.arch").contains("64")
+def platform = osName.contains("Linux") ? 'linux' + (is64 ? '64' : '') :
+               osName.contains("Windows") ? 'win' + (is64 ? '64' : '32') :
+               osName.contains("OS X") ? 'mac' : 'unknown'        
+
 sourceSets {
     main {
         java { srcDirs "src", "ext/rocksaw/src", "ext/vserv-tcpip/src/java", "build/generated/source/apt/main" }
@@ -229,18 +235,20 @@ task 'win-installer'(dependsOn: ['win32', 'win64']) {
 }
 
 task all(dependsOn: ['linux', 'linux64', 'mac', 'win-installer'])
+task current(dependsOn: [platform])
 
 task info {
     doLast {
         println "This script will build ${project.name} ${version}"
-        println 'Targets (some may work only on Linux):'
-        println '  all           - runs tests and builds binaries for all OSs'
-        println '  linux         - builds only Linux 32-bit binary'
-        println '  linux64       - builds only Linux 64-bit binary'
-        println '  mac           - builds only Mac binary'
-        println '  win32         - builds only Windows binary'
-        println '  win64         - builds only Windows 64-bit binary'
-        println '  win-installer - packages a Windows installer (including both 32 and 64-bit binaries)'
+        println "Targets (some may work only on Linux):"
+        println "  all           - runs tests and builds binaries for all OSs"
+        println "  current       - build for current platform ($platform)"
+        println "  linux         - builds only Linux 32-bit binary"
+        println "  linux64       - builds only Linux 64-bit binary"
+        println "  mac           - builds only Mac binary"
+        println "  win32         - builds only Windows binary"
+        println "  win64         - builds only Windows 64-bit binary"
+        println "  win-installer - packages a Windows installer (including both 32 and 64-bit binaries)"
     }
 }
 
