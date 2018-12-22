@@ -9,8 +9,6 @@
       <sourceFolder url="file://$MODULE_DIR$/ext/vserv-tcpip/src/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/apt/main" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/apt/test" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/config" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
@@ -29,19 +27,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: com.google.dagger:dagger:2.19" level="project" />
     <orderEntry type="library" name="Gradle: javax.inject:javax.inject:1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.dagger:dagger-compiler:2.19" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.dagger:dagger-spi:2.19" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.dagger:dagger-producers:2.19" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.googlejavaformat:google-java-format:1.5" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.guava:guava:25.0-jre" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.squareup:javapoet:1.11.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: javax.annotation:jsr250-api:1.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.checkerframework:checker-compat-qual:2.5.3" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.errorprone:javac-shaded:9-dev-r4023-3" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.code.findbugs:jsr305:1.3.9" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.errorprone:error_prone_annotations:2.1.3" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" level="project" />
     <orderEntry type="module-library" scope="PROVIDED">
       <library name="Gradle: swt-linux64">
         <CLASSES>

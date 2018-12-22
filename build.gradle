@@ -1,7 +1,3 @@
-plugins {
-    id "net.ltgt.apt" version "0.10"
-}
-
 apply plugin: 'java'
 apply plugin: 'idea'
 
@@ -17,18 +13,12 @@ def platform = osName.contains("Linux") ? 'linux' + (is64 ? '64' : '') :
 
 sourceSets {
     main {
-        java { srcDirs "src", "ext/rocksaw/src", "ext/vserv-tcpip/src/java", "build/generated/source/apt/main" }
+        java { srcDirs "src", "ext/rocksaw/src", "ext/vserv-tcpip/src/java" }
         resources { srcDirs "config", "src", "resources" }
     }
     test {
         java { srcDir "test" }
         resources { srcDir "test" }
-    }
-}
-
-idea {
-    module {
-        generatedSourceDirs += file("build/generated/source/apt/main")
     }
 }
 
@@ -38,9 +28,9 @@ repositories {
 
 dependencies {
     compile 'com.google.dagger:dagger:2.19'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.19'
     compileOnly files("lib/swt-${platform}.jar")
     compileOnly files('lib/jna.jar')
-    apt 'com.google.dagger:dagger-compiler:2.19'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.23.0'
 }
@@ -48,6 +38,8 @@ dependencies {
 configurations {
     testImplementation.extendsFrom compileOnly
 }
+
+compileJava.options.annotationProcessorGeneratedSourcesDirectory = new File('build/generated')
 
 def packageTask(def platform, def moreJars, def moreLibs, Closure doMore) {
     return tasks.create(platform, Jar) {
