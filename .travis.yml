@@ -4,6 +4,7 @@ os:
   - windows
 
 dist: xenial
+language: c
 
 addons:
   apt:
