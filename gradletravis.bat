@@ -1,0 +1,2 @@
+refreshenv
+gradle.bat %*
