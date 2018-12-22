@@ -1,6 +1,7 @@
 os:
   - linux
   - osx
+  - windows
 
 dist: xenial
 language: java
@@ -15,3 +16,4 @@ addons:
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run -a ./gradlew test all; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./gradlew current; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install jdk8 && ./gradlew current; fi
