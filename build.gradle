@@ -13,7 +13,7 @@ def osName = System.getProperty("os.name")
 def is64 = System.getProperty("os.arch").contains("64")
 def platform = osName.contains("Linux") ? 'linux' + (is64 ? '64' : '') :
                osName.contains("Windows") ? 'win' + (is64 ? '64' : '32') :
-               osName.contains("OS X") ? 'mac' : 'unknown'        
+               osName.contains("OS X") ? 'mac' : 'unknown'
 
 sourceSets {
     main {
@@ -38,7 +38,7 @@ repositories {
 
 dependencies {
     compile 'com.google.dagger:dagger:2.19'
-    compileOnly files('lib/swt-linux64.jar')
+    compileOnly files("lib/swt-${platform}.jar")
     compileOnly files('lib/jna.jar')
     apt 'com.google.dagger:dagger-compiler:2.19'
     testCompile 'junit:junit:4.12'
