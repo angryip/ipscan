@@ -13,7 +13,7 @@ only be built on Linux. Building of Windows installer can be done on Linux as we
 
 On Ubuntu install the following packages:
 ```
-sudo apt-get install openjdk-8-jdk rpm fakeroot wine
+sudo apt-get install openjdk-11-jdk rpm fakeroot wine
 ```
 Note: *wine* is needed for building of Windows installer.
 
