@@ -3,6 +3,7 @@ plugins {
 }
 
 apply plugin: 'java'
+apply plugin: 'idea'
 
 version = '3.5.3'
 sourceCompatibility = 1.7
@@ -10,12 +11,18 @@ targetCompatibility = 1.7
 
 sourceSets {
     main {
-        java { srcDirs "src", "ext/rocksaw/src", "ext/vserv-tcpip/src/java" }
+        java { srcDirs "src", "ext/rocksaw/src", "ext/vserv-tcpip/src/java", "build/generated/source/apt/main" }
         resources { srcDirs "config", "src", "resources" }
     }
     test {
         java { srcDir "test" }
         resources { srcDir "test" }
+    }
+}
+
+idea {
+    module {
+        generatedSourceDirs += file("build/generated/source/apt/main")
     }
 }
 
@@ -25,12 +32,15 @@ repositories {
 
 dependencies {
     compile 'com.google.dagger:dagger:2.19'
-    compileOnly files('lib/swt-win32.jar')
+    compileOnly files('lib/swt-linux64.jar')
     compileOnly files('lib/jna.jar')
     apt 'com.google.dagger:dagger-compiler:2.19'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.23.0'
-    testCompile files('lib/swt-linux64.jar')
+}
+
+configurations {
+    testImplementation.extendsFrom compileOnly
 }
 
 def packageTask(def platform, def moreJars, def moreLibs, Closure doMore) {

@@ -5,9 +5,6 @@ This is the source code of Angry IP Scanner, licensed with GPL v2. [Official sit
 The code is written mostly in Java (currently, source level 1.7).
 IntelliJ IDEA is recommended for coding (Community Edition is fine).
 
-**Important:** after loading the project in IDEA, make sure you select the appropriate for your platform **lib_xxx library in module dependencies**
-*(File -> Project Structure -> Modules -> ipscan -> Dependencies - move the correct lib_xxx to the top)*.
-
 ## Building [![Build Status](https://travis-ci.org/angryip/ipscan.svg?branch=master)](https://travis-ci.org/angryip/ipscan)
 
 Using these tools you can build on any platform. The binaries are in the form of
