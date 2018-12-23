@@ -1,5 +1,4 @@
 apply plugin: 'java'
-apply plugin: 'idea'
 
 version = '3.6.0'
 sourceCompatibility = 1.7
