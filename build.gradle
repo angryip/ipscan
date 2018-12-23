@@ -224,7 +224,7 @@ task 'win-installer'(dependsOn: ['win32', 'win64']) {
             }
         }
         else {
-            ant.exec(dir: installerDir, executable: "NSISPortable/App/NSIS/makensis.exe", failOnError: true) {
+            ant.exec(dir: installerDir, executable: "NSISPortable/App/NSIS/makensis.exe", vmlauncher: false, failOnError: true) {
                 ant.arg(value: "Installer/Installer.nsi")
             }
         }
