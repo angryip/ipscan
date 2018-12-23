@@ -52,6 +52,7 @@ public class Scanner {
 			result.setValue(fetcherIndex, value);
 			fetcherIndex++;
 		}
+		activeFetchers.remove(Thread.currentThread().getId());
 		
 		result.setType(subject.getResultType());
 	}
