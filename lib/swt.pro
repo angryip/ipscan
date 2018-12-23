@@ -145,6 +145,6 @@
 
 # image file format parsing is done via reflection.
 
--keep class org.eclipse.swt.internal.image.*FileFormat {
+-keep class org.eclipse.swt.internal.image.PNGFileFormat {
    <init>();
  }
