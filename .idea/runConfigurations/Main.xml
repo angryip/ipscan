@@ -1,8 +1,5 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Main" type="Application" factoryName="Application" singleton="true">
-    <envs>
-      <env name="SWT_GTK3" value="0" />
-    </envs>
     <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
     <option name="MAIN_CLASS_NAME" value="net.azib.ipscan.Main" />
     <module name="ipscan" />
