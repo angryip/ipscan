@@ -55,13 +55,12 @@ task minimize(type: proguard.gradle.ProGuardTask, dependsOn: 'linux64') {
     outjars "build/libs/ipscan-linux64-${version}.min.jar"
     libraryjars '/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar' //System.getProperty('java.home') + "/lib/rt.jar"
     libraryjars 'lib/jna-win32.jar'
-    printmapping 'build/libs/proguard.map'
     dontobfuscate
     dontoptimize
+    dontnote '**'
     configuration 'lib/swt.pro'
 
     def keepClasses = [
-        'javax.inject.Provider',
         'net.azib.ipscan.**',
         'org.savarese.rocksaw.**',
     ]
@@ -116,33 +115,7 @@ def packageTask(def platform, def moreJars, def moreLibs, Closure doMore) {
            'swt-webkit-*.dll',
            // Mac stuff
            'libswt-awt-*.jnilib',
-           'libswt-xulrunner-*.jnilib',
-           // swt classes
-//           'org/eclipse/swt/dnd/D*',
-//           'org/eclipse/swt/dnd/H*',
-//           'org/eclipse/swt/dnd/F*',
-//           'org/eclipse/swt/dnd/N*',
-//           'org/eclipse/swt/dnd/R*',
-//           'org/eclipse/swt/dnd/S*',
-//           'org/eclipse/swt/dnd/Table*',
-//           'org/eclipse/swt/dnd/Tree*',
-//           'org/eclipse/swt/browser/**',
-//           'org/eclipse/swt/ole/**',
-//           'org/eclipse/swt/opengl/**',
-//           'org/eclipse/swt/internal/opengl/**',
-//           'org/eclipse/swt/internal/cde/**',
-//           'org/eclipse/swt/internal/theme/**',
-//           'org/eclipse/swt/internal/mozilla/**',
-//           'org/eclipse/swt/internal/webkit/**',
-//           'org/eclipse/swt/internal/gnome/**',
-//           'org/eclipse/swt/internal/image/JPEG*',
-//           'org/eclipse/swt/internal/image/OS2*',
-//           'org/eclipse/swt/internal/image/GIF*',
-//           'org/eclipse/swt/internal/image/LZW*',
-//           'org/eclipse/swt/internal/image/TIFF*',
-//           'org/eclipse/swt/internal/image/Win*',
-//           'org/eclipse/swt/custom/**',
-//           'org/eclipse/swt/awt/**'
+           'libswt-xulrunner-*.jnilib'
        )
        with jar
        doLast(doMore)

@@ -20,13 +20,7 @@
 # the following methods are called via reflection:
 
 -keepclassmembers class org.eclipse.swt.graphics.Device {
-   *** XErrorProc(...);
-   *** XIOErrorProc(...);
-   *** logProc(...);
-   *** EnumFontFamProc(...);
-   *** drawPatternProc(...);
-   *** axialShadingProc(...);
-   *** releaseProc(...);
+   *** *Proc(...);
  }
 -keepclassmembers class org.eclipse.swt.graphics.GC {
    *** convertRgn(...);
