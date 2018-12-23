@@ -39,7 +39,7 @@ public class PortsFetcher extends AbstractFetcher {
 	private static final String PARAMETER_FILTERED_PORTS = "filteredPorts";
 	
 	private ScannerConfig config;
-	private ThreadResourceBinder<Socket> sockets = new ThreadResourceBinder<Socket>();
+	private ThreadResourceBinder<Socket> sockets = new ThreadResourceBinder<>();
 	
 	// initialize preferences for this scan
 	private PortIterator portIteratorPrototype;
@@ -76,8 +76,8 @@ public class PortsFetcher extends AbstractFetcher {
 					
 		if (openPorts == null) {
 			// no results are available yet, let's proceed with the scanning
-			openPorts = new TreeSet<Integer>();
-			SortedSet<Integer> filteredPorts = new TreeSet<Integer>();
+			openPorts = new TreeSet<>();
+			SortedSet<Integer> filteredPorts = new TreeSet<>();
 			subject.setParameter(PARAMETER_OPEN_PORTS, openPorts);
 			subject.setParameter(PARAMETER_FILTERED_PORTS, filteredPorts);
 
@@ -87,7 +87,7 @@ public class PortsFetcher extends AbstractFetcher {
 			Iterator<Integer> portsIterator = portIteratorPrototype.copy();
 			if (config.useRequestedPorts && subject.isAnyPortRequested()) {
 				// add requested ports to the iteration
-				portsIterator = new SequenceIterator<Integer>(portsIterator, subject.requestedPortsIterator());
+				portsIterator = new SequenceIterator<>(portsIterator, subject.requestedPortsIterator());
 			}
 			if (!portsIterator.hasNext()) {
 				// no ports are configured for scanning
