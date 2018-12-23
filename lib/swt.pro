@@ -45,24 +45,6 @@
    *** regionToRects(...);
    *** convertRgn(...);
  }
--keepclassmembers class org.eclipse.swt.browser.MozillaDelegate {
-   *** eventProc(...);
-   *** eventProc3(...);
- }
--keepclassmembers class org.eclipse.swt.browser.Safari {
-   *** eventProc3(...);
-   *** eventProc7(...);
- }
--keepclassmembers class org.eclipse.swt.browser.WebKit {
-   *** Proc(...);
-   *** JSObjectHasPropertyProc(...);
-   *** JSObjectGetPropertyProc(...);
-   *** JSObjectCallAsFunctionProc(...);
-   *** JSDOMEventProc(...);
-   *** eventProc3(...);
-   *** eventProc7(...);
-   *** browserProc(...);
- }
 -keepclassmembers class org.eclipse.swt.printing.Printer {
    *** GtkPrinterFunc_List(...);
    *** GtkPrinterFunc_Default(...);
