@@ -45,14 +45,6 @@
    *** regionToRects(...);
    *** convertRgn(...);
  }
--keepclassmembers class org.eclipse.swt.printing.Printer {
-   *** GtkPrinterFunc_List(...);
-   *** GtkPrinterFunc_Default(...);
-   *** GtkPrinterFunc_FindNamedPrinter(...);
- }
--keepclassmembers class org.eclipse.swt.printing.PrintDialog {
-   *** GtkPrintSettingsFunc(...);
- }
 -keepclassmembers class org.eclipse.swt.dnd.DragSource {
    *** DragGetData(...);
    *** DragEnd(...);
@@ -77,17 +69,11 @@
 -keepclassmembers class org.eclipse.swt.dnd.TreeDropTargetEffect {
    *** AcceptDragProc(...);
  }
--keepclassmembers class org.eclipse.swt.internal.mozilla.XPCOMObject {
-   <methods>;
- }
 -keepclassmembers class org.eclipse.swt.widgets.Control {
    *** regionToRects(...);
  }
 -keepclassmembers class org.eclipse.swt.widgets.Display {
    *** *Proc(...);
- }
--keepclassmembers class org.eclipse.swt.widgets.FontDialog {
-   *** fontProc(...);
  }
 -keepclassmembers class org.eclipse.swt.accessibility.AccessibleFactory {
    <methods>;
