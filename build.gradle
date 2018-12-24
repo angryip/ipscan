@@ -95,17 +95,25 @@ def packageTask(def platform, def moreJars, def moreLibs, Closure doMore) {
            'libswt-xulrunner-*.jnilib'
         )
         with jar
-        
-        finalizedBy minimizeTask(platform, doMore)
+
+        def rtJar = new File(System.getProperty('java.home') + "/jre/lib/rt.jar")
+        if (!rtJar.exists()) rtJar = new File('/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar') // try Ubuntu version of Java 8 if current Java doesn't have rt.jar
+
+        if (rtJar.exists())
+            finalizedBy minimizeTask(rtJar, platform, doMore)
+        else {
+            println "WARNING: not minimizing, Java 8 is currently required for that"
+            doLast(doMore)
+        }
     }
 }
 
-def minimizeTask(def platform, Closure doMore) {
+def minimizeTask(File rtJar, String platform, Closure doMore) {
     return tasks.create("${platform}.min", proguard.gradle.ProGuardTask) {
         injars "build/libs/ipscan-${platform}-${version}.jar"
         outjars "build/libs/ipscan-${platform}-${version}.min.jar"
-        libraryjars System.getProperty('java.home') + "/jre/lib/rt.jar" // "jmods/java.base.jmod" after Java 9
-        libraryjars '/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar' // try Ubuntu version of Java 8 if current Java doesn't have rt.jar
+        libraryjars rtJar.absolutePath
+        // libraryjars System.getProperty('java.home') + "/jmods/java.base.jmod" - proguard doesn't support Java 11 yet
         libraryjars 'lib/jna-win32.jar'
         dontobfuscate
         dontoptimize
@@ -123,10 +131,10 @@ def minimizeTask(def platform, Closure doMore) {
                 method access: 'private'
             }
         }
-        
+
         doLast {
             ant.move(file: "build/libs/ipscan-${platform}-${version}.min.jar", tofile: "build/libs/ipscan-${platform}-${version}.jar")
-            doMore()                
+            doMore()
         }
     }
 }
