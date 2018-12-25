@@ -117,6 +117,7 @@ def minimizeTask(File rtJar, String platform, Closure doMore) {
         injars "build/libs/ipscan-${platform}-${version}.jar"
         outjars "build/libs/ipscan-${platform}-${version}.min.jar"
         libraryjars rtJar.absolutePath
+        libraryjars 'ext/jna.jar'
         dontobfuscate
         dontoptimize
         dontnote '**'
