@@ -4,13 +4,11 @@ os:
   - windows
 
 dist: xenial
-osx_image: xcode9.3
 language: c
 
 addons:
   apt:
     packages:
-      - openjdk-8-jdk
       - rpm
       - wine
       - fakeroot

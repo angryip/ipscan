@@ -101,8 +101,10 @@ def packageTask(def platform, def moreJars, def moreLibs, Closure doMore) {
         if (!rtJar.exists()) rtJar = new File('/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar') // try Ubuntu version of Java 8 if current Java doesn't have rt.jar
         if (!rtJar.exists()) rtJar = new File('/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar') // try Ubuntu version of OpenJDK 8
 
-        if (rtJar.exists())
+        if (rtJar.exists()) {
+            print "Using $rtJar for proguard minimization"
             finalizedBy minimizeTask(rtJar, platform, doMore)
+        }
         else {
             println "WARNING: not minimizing, Java 8 is currently required for that"
             doLast(doMore)
