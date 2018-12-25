@@ -117,8 +117,6 @@ def minimizeTask(File rtJar, String platform, Closure doMore) {
         injars "build/libs/ipscan-${platform}-${version}.jar"
         outjars "build/libs/ipscan-${platform}-${version}.min.jar"
         libraryjars rtJar.absolutePath
-        // libraryjars System.getProperty('java.home') + "/jmods/java.base.jmod" - proguard doesn't support Java 11 yet
-        libraryjars 'lib/jna-win32.jar'
         dontobfuscate
         dontoptimize
         dontnote '**'
@@ -127,12 +125,13 @@ def minimizeTask(File rtJar, String platform, Closure doMore) {
         def keepClasses = [
             'net.azib.ipscan.**',
             'org.savarese.rocksaw.**',
+            'com.sun.jna.**',
         ]
 
         for (keepClass in keepClasses) {
             keep access: 'public', name: keepClass, {
-                method access: 'public'
-                method access: 'private'
+                method name: '*'
+                field name: '*'
             }
         }
 
