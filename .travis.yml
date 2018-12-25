@@ -3,6 +3,10 @@ os:
   - osx
   - windows
 
+matrix:
+  allow_failures:
+    - os: windows
+
 dist: xenial
 language: c
 
