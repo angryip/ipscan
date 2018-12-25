@@ -25,7 +25,7 @@ Building of Windows installer can be done on Linux as well.
 
 On Ubuntu install the following packages:
 ```
-sudo apt-get install openjdk-11-jdk rpm fakeroot wine
+sudo apt-get install openjdk-11-jdk rpm fakeroot wine-stable
 ```
 Note: *wine* is needed for building of Windows installer.
 
