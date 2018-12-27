@@ -30,13 +30,11 @@ where tag-name is the released version number (eg {{ site.version }}), for full 
 Building
 --------
 
-In order to build the binaries, you need only to run 'ant' in the 'ipscan' directory.
-Ant will use the standard build.xml script there and compile, test, and package the program for all platforms.
+In order to build the binaries, you need only to run './gradlew' in the 'ipscan' directory.
+Gradle will use the standard build.gradle script there and compile, test, and package the program for all platforms.
 Note: some packaging features were tested only on Linux.
 
 The source code tree also includes the preconfigured Intellij IDEA project for convenience.
-After opening the project in IDEA, make sure you add to the build path the appropriate directory from src-platform
-according to the OS you are currently using as well as the correct swt jar file from ext/swt.
 Then, it can be run using the net.azib.ipscan.Main class.
 
 Translations
