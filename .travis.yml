@@ -18,6 +18,7 @@ addons:
       - fakeroot
 
 script:
+  - echo $JAVA_HOME
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run -a ./gradlew test all; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./gradlew current; fi
   - |

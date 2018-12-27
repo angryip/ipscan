@@ -1,3 +1,11 @@
+Changes in 3.5.4:
+- Translation updates
+- Small bugfixes
+- Mac vendor updates
+- JDK 11 support in Windows exe
+- New build system using gradle and proguard
+- This is the last release to support running under Java 7
+
 Changes in 3.5.3:
 - Translation updates
 - Ping Packet Loss fetcher
