@@ -1,8 +1,9 @@
 Changes in 3.5.4:
-- Translation updates
+- Translation updates, added Brazilian Portuguese
 - Small bugfixes
 - Mac vendor updates
 - JDK 11 support in Windows exe
+- Linux version will now use GTK 3 by default, enabling touch screen support
 - New build system using gradle and proguard
 - This is the last release to support running under Java 7
 

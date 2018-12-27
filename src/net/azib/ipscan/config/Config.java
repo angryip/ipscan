@@ -95,11 +95,15 @@ public final class Config {
 
 	public Locale getLocale() {
 		if (language == null || "system".equals(language)) {
-			return System.getProperty("locale") == null ? Locale.getDefault() : new Locale(System.getProperty("locale"));
+			return System.getProperty("locale") == null ? Locale.getDefault() : createLocale(System.getProperty("locale"));
 		}
 		else {
-			return new Locale(language);
+			return createLocale(language);
 		}
+	}
+
+	private Locale createLocale(String locale) {
+		return Locale.forLanguageTag(locale.replace('_', '-'));
 	}
 
 	public String getUUID() {
