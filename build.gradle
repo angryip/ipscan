@@ -122,17 +122,16 @@ def minimizeTask(File rtJar, String platform, Closure doMore) {
         dontoptimize
         dontnote '**'
         configuration 'lib/swt.pro'
+        configuration 'lib/jna.pro'
 
         def keepClasses = [
             'net.azib.ipscan.**',
             'org.savarese.rocksaw.**',
-            'com.sun.jna.**',
         ]
 
         for (keepClass in keepClasses) {
             keep access: 'public', name: keepClass, {
-                method name: '*'
-                field name: '*'
+                method access: 'public'
             }
         }
 
