@@ -92,7 +92,7 @@ public final class Labels {
 		}
 		catch (MissingResourceException e) {
 			String text = labelsFallback.getString(key);
-			LOG.warning("Used fallback label for " + key);
+			if (!key.startsWith("language.")) LOG.warning("Used fallback label for " + key);
 			return text;
 		}
 	}
