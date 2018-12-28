@@ -151,6 +151,8 @@ def launch4j(def platform) {
         ant.replacefilter(token: "VERSION", value: version)
     }
     ant.launch4j(configFile: configFile)
+    ant.delete(file: configFile)
+    ant.delete(file: "${project.name}-${platform}-${version}.jar")
 }
 
 def deb(def platform, def arch) {
