@@ -119,8 +119,6 @@ public class Main {
 	}
 
 	private static void initSystemProperties() {
-		// currently we support IPv4 only
-		System.setProperty("java.net.preferIPv4Stack", "true");
 		// disable DNS caches
 		Security.setProperty("networkaddress.cache.ttl", "0");
 		Security.setProperty("networkaddress.cache.negative.ttl", "0");
