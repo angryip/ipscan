@@ -50,7 +50,7 @@ public class WindowsPinger implements Pinger {
 		Pointer handle = dll.IcmpCreateFile();
 		if (handle == null) throw new IOException("Unable to create Windows native ICMP handle");
 
-		int sendDataSize = 56;
+		int sendDataSize = 32;
 		int replyDataSize = sendDataSize + (new IcmpEchoReply().size()) + 10;
 		Pointer sendData = new Memory(sendDataSize);
 		sendData.clear(sendDataSize);
@@ -58,8 +58,8 @@ public class WindowsPinger implements Pinger {
 
 		PingResult result = new PingResult(subject.getAddress(), count);
 		try {
+			IpAddrByVal ipaddr = toIpAddr(subject.getAddress());
 			for (int i = 1; i <= count && !currentThread().isInterrupted(); i++) {
-				IpAddrByVal ipaddr = toIpAddr(subject.getAddress());
 				int numReplies = dll.IcmpSendEcho(handle, ipaddr, sendData, (short) sendDataSize, null, replyData, replyDataSize, timeout);
 				IcmpEchoReply echoReply = new IcmpEchoReply(replyData);
 				if (numReplies > 0 && echoReply.status == 0 && Arrays.equals(echoReply.address.bytes, ipaddr.bytes)) {
@@ -78,7 +78,7 @@ public class WindowsPinger implements Pinger {
 		Pointer handle = dll.Icmp6CreateFile();
 		if (handle == null) throw new IOException("Unable to create Windows native ICMP6 handle");
 
-		int sendDataSize = 56;
+		int sendDataSize = 32;
 		int replyDataSize = sendDataSize + (new Icmp6EchoReply().size()) + 10;
 		Pointer sendData = new Memory(sendDataSize);
 		sendData.clear(sendDataSize);
@@ -88,14 +88,12 @@ public class WindowsPinger implements Pinger {
 		try {
 			Ip6SockAddrByRef ipaddr = toIp6Addr(subject.getAddress());
 			for (int i = 1; i <= count && !currentThread().isInterrupted(); i++) {
-				int numReplies = dll.Icmp6SendEcho2(handle, null, null, null, anyIp6SourceAddr, toIp6Addr(subject.getAddress()), sendData, (short) sendDataSize, null, replyData, replyDataSize, timeout);
+				int numReplies = dll.Icmp6SendEcho2(handle, null, null, null, anyIp6SourceAddr, toIp6Addr(subject.getAddress()),
+						sendData, (short) sendDataSize, null, replyData, replyDataSize, timeout);
 				Icmp6EchoReply echoReply = new Icmp6EchoReply(replyData);
 				if (numReplies > 0 && echoReply.status == 0 && Arrays.equals(echoReply.addressBytes, ipaddr.bytes)) {
 					result.addReply(echoReply.roundTripTime);
-					//result.setTTL(echoReply.options.ttl & 0xFF);
 				}
-				System.err.println("Icmp6SendEcho2 response: " + numReplies + " " + echoReply.status + " " + InetAddress.getByAddress(echoReply.addressBytes) + " " + Arrays.toString(echoReply.addressBytes) + " vs " + InetAddress.getByAddress(ipaddr.bytes));
-				System.err.println(echoReply.getFieldOrder());
 			}
 		}
 		finally {
