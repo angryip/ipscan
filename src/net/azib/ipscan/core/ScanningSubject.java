@@ -10,6 +10,7 @@ import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.net.PingResult;
 
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.util.*;
 
@@ -51,6 +52,10 @@ public class ScanningSubject {
 	
 	public InetAddress getAddress() {
 		return address;
+	}
+
+	public boolean isIPv6() {
+		return address instanceof Inet6Address;
 	}
 	
 	/**
