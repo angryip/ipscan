@@ -5,3 +5,4 @@ ipscan.iml
 .idea
 /.gradle
 /build
+.DS_Store
