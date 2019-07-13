@@ -15,7 +15,7 @@ Use Gradle for building a package for your desired platform:
 
 `./gradlew current` would build the app for your current platform
 
-The resulting binaries will be put into the `build/lib` directory.
+The resulting binaries will be put into the `build/libs` directory.
 Run jar files with `java -jar <jar-file>`.
 
 Deb and rpm packages can only be built on Linux (tested on Ubuntu). 
