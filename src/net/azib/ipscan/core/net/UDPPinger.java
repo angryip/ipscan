@@ -66,6 +66,8 @@ public class UDPPinger implements Pinger {
 					}
 				}
 				catch (IOException e) {
+					if (e.getMessage().startsWith("Network is unreachable"))
+						break;
 					LOG.log(FINER, subject.toString(), e);
 				}
 			}
