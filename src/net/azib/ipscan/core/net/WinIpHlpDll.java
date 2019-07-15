@@ -30,7 +30,7 @@ public interface WinIpHlpDll extends Library {
 	class AutoOrderedStructure extends Structure {
 		// this is a requirement of newer JNA, possibly it won't work on some JVM, but probability is quite small
 		@Override protected List<String> getFieldOrder() {
-			ArrayList<String> fields = new ArrayList<String>();
+			ArrayList<String> fields = new ArrayList<>();
 			for (Field field : getClass().getFields()) {
 				if (!isStatic(field.getModifiers()))
 					fields.add(field.getName());

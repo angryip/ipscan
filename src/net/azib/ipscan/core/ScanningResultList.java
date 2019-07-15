@@ -33,8 +33,8 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	// selected fetchers are cached here, because they may be changed in the registry already
 	private List<Fetcher> selectedFetchers;
 	
-	private List<ScanningResult> resultList = new ArrayList<ScanningResult>(RESULT_LIST_INITIAL_SIZE);
-	private Map<InetAddress, Integer> resultIndexes = new HashMap<InetAddress, Integer>(RESULT_LIST_INITIAL_SIZE);
+	private List<ScanningResult> resultList = new ArrayList<>(RESULT_LIST_INITIAL_SIZE);
+	private Map<InetAddress, Integer> resultIndexes = new HashMap<>(RESULT_LIST_INITIAL_SIZE);
 		
 	/** Feeder information that was used for this scan */
 	private String feederInfo;
@@ -160,7 +160,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	 */
 	public synchronized void initNewScan(Feeder feeder) {
 		// reload currently selected fetchers
-		selectedFetchers = new ArrayList<Fetcher>(fetcherRegistry.getSelectedFetchers());		
+		selectedFetchers = new ArrayList<>(fetcherRegistry.getSelectedFetchers());
 		// store feeder info for later
 		this.feederInfo = feeder.getInfo();
 		this.feederName = feeder.getName();
@@ -199,8 +199,8 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	public synchronized void remove(int[] indices) {
 		// this rebuild is faster then a number of calls to remove()
 		// however, a further speedup may be obtained by using a Set instead of binarySearch()
-		List<ScanningResult> newList = new ArrayList<ScanningResult>(RESULT_LIST_INITIAL_SIZE);
-		Map<InetAddress, Integer> newMap = new HashMap<InetAddress, Integer>(RESULT_LIST_INITIAL_SIZE);
+		List<ScanningResult> newList = new ArrayList<>(RESULT_LIST_INITIAL_SIZE);
+		Map<InetAddress, Integer> newMap = new HashMap<>(RESULT_LIST_INITIAL_SIZE);
 		for (int i = 0; i < resultList.size(); i++) {
 			if (Arrays.binarySearch(indices, i) < 0) {
 				newList.add(resultList.get(i));
@@ -222,7 +222,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		Collections.sort(resultList, resultsComparator);
 		
 		// now rebuild indexes
-		resultIndexes = new HashMap<InetAddress, Integer>(RESULT_LIST_INITIAL_SIZE);
+		resultIndexes = new HashMap<>(RESULT_LIST_INITIAL_SIZE);
 		for (int i = 0; i < resultList.size(); i++) {
 			resultIndexes.put(resultList.get(i).getAddress(), i);
 		}

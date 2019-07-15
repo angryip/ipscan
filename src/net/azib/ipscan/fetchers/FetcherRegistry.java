@@ -33,7 +33,7 @@ public class FetcherRegistry {
 	private Map<String, Fetcher> selectedFetchers;
 	
 	/** A collection of update listeners - observers of FetcherRegistry */
-	private List<FetcherRegistryUpdateListener> updateListeners = new ArrayList<FetcherRegistryUpdateListener>();
+	private List<FetcherRegistryUpdateListener> updateListeners = new ArrayList<>();
 		
 	@Inject public FetcherRegistry(List<Fetcher> fetchers, Preferences preferences, PreferencesDialog preferencesDialog) {
 		this.preferences = preferences;
@@ -46,7 +46,7 @@ public class FetcherRegistry {
 	}
 
 	private Map<String, Fetcher> createFetchersMap(List<Fetcher> fetchers) {
-		Map<String, Fetcher> registeredFetchers = new LinkedHashMap<String, Fetcher>(fetchers.size());
+		Map<String, Fetcher> registeredFetchers = new LinkedHashMap<>(fetchers.size());
 		for (Fetcher fetcher : fetchers) {
 			registeredFetchers.put(fetcher.getId(), fetcher);
 		}
@@ -57,7 +57,7 @@ public class FetcherRegistry {
 		String fetcherPrefValue = preferences.get(PREFERENCE_SELECTED_FETCHERS, null);
 		if (fetcherPrefValue == null) {
 			// no preferences previously saved, use these default values
-			selectedFetchers = new LinkedHashMap<String, Fetcher>();
+			selectedFetchers = new LinkedHashMap<>();
 			selectedFetchers.put(IPFetcher.ID, registeredFetchers.get(IPFetcher.ID));
 			selectedFetchers.put(PingFetcher.ID, registeredFetchers.get(PingFetcher.ID));
 			selectedFetchers.put(HostnameFetcher.ID, registeredFetchers.get(HostnameFetcher.ID));
@@ -65,7 +65,7 @@ public class FetcherRegistry {
 		}
 		else {
 			String[] fetcherPrefs = fetcherPrefValue.split("###");
-			selectedFetchers = new LinkedHashMap<String, Fetcher>(registeredFetchers.size());
+			selectedFetchers = new LinkedHashMap<>(registeredFetchers.size());
 			// initialize saved selected fetchers
 			for (String fetcherPref : fetcherPrefs) {
 				Fetcher fetcher = registeredFetchers.get(fetcherPref);
@@ -134,7 +134,7 @@ public class FetcherRegistry {
    */
 	public void updateSelectedFetchers(String[] labels) {
 		// rebuild the map (to recreate the new order of elements)
-		Map<String, Fetcher> newList = new LinkedHashMap<String, Fetcher>();
+		Map<String, Fetcher> newList = new LinkedHashMap<>();
 		for (String label : labels) {
 			newList.put(label, registeredFetchers.get(label));
 		}

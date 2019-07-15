@@ -62,12 +62,12 @@ public class ScanMenuActions {
 			FileDialog fileDialog = new FileDialog(resultTable.getShell(), SWT.OPEN);
 
 			// gather lists of extensions and exporter names
-			List<String> extensions2 = new ArrayList<String>();
-			List<String> descriptions = new ArrayList<String>();
+			List<String> extensions2 = new ArrayList<>();
+			List<String> descriptions = new ArrayList<>();
 			StringBuffer labelBuffer = new StringBuffer(Labels.getLabel("title.load"));
 			addFileExtensions(extensions2, descriptions, labelBuffer);
 
-			List<String> extensions = new ArrayList<String>();
+			List<String> extensions = new ArrayList<>();
 			extensions.add(extensions2.get(0));
 
 			fileDialog.setText(labelBuffer.toString());
@@ -159,8 +159,8 @@ public class ScanMenuActions {
 			FileDialog fileDialog = new FileDialog(resultTable.getShell(), SWT.SAVE);
 
 			// gather lists of extensions and exporter names
-			List<String> extensions = new ArrayList<String>();
-			List<String> descriptions = new ArrayList<String>();
+			List<String> extensions = new ArrayList<>();
+			List<String> descriptions = new ArrayList<>();
 			StringBuffer labelBuffer = new StringBuffer(Labels.getLabel(isSelection ? "title.exportSelection" : "title.exportAll"));
 			addFileExtensions(extensions, descriptions, labelBuffer);
 

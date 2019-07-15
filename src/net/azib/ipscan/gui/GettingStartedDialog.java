@@ -10,7 +10,7 @@ import java.util.List;
 
 public class GettingStartedDialog extends AbstractModalDialog {
 	private int activePage;
-	private List<String> texts = new ArrayList<String>();
+	private List<String> texts = new ArrayList<>();
 	private Text gettingStartedText;
 	private Button closeButton;
 	private Button nextButton;

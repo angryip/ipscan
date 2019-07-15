@@ -25,7 +25,7 @@ public class ExporterRegistry implements Iterable<Exporter> {
 	private Map<String, Exporter> exporters;
 
 	@Inject public ExporterRegistry(List<Exporter> registeredExporters) {
-		exporters = new LinkedHashMap<String, Exporter>();
+		exporters = new LinkedHashMap<>();
 
 		for (Exporter exporter : registeredExporters) {
 			exporters.put(exporter.getFilenameExtension(), exporter);

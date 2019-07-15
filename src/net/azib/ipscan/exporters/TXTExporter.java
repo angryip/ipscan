@@ -105,7 +105,7 @@ public class TXTExporter extends AbstractExporter {
 	}
 
 	public List<ScanningResult> importResults(String fileName, AbstractFeederGUI feeder) throws IOException {
-		List<ScanningResult> results = new ArrayList<ScanningResult>();
+		List<ScanningResult> results = new ArrayList<>();
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(fileName));

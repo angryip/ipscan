@@ -72,7 +72,7 @@ public class OpenerLauncher {
 	 */
 	static String[] splitCommand(String command) {
 		StringTokenizer tokenizer = new StringTokenizer(command);
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 		while (tokenizer.hasMoreTokens()) {
 			String token = tokenizer.nextToken(" \t");
 			

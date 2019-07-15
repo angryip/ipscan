@@ -6,10 +6,10 @@ import java.net.Socket;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static net.azib.ipscan.util.IOUtils.*;
+import static net.azib.ipscan.util.IOUtils.closeQuietly;
 
 public class ThreadResourceBinder<T> {
-  private Map<Long, T> resources = new ConcurrentHashMap<Long, T>(256);
+  private Map<Long, T> resources = new ConcurrentHashMap<>(256);
 
   public T bind(T resource) {
     resources.put(Thread.currentThread().getId(), resource);

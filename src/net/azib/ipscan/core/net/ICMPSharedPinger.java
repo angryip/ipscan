@@ -37,7 +37,7 @@ public class ICMPSharedPinger implements Pinger {
 	/** a single raw socket for receiving of all ICMP packets */
 	private final RawSocket receivingSocket;
 	/** the map with PingResults, keys are InetAddress */
-	private Map<InetAddress, PingResult> results = new ConcurrentHashMap<InetAddress, PingResult>();
+	private Map<InetAddress, PingResult> results = new ConcurrentHashMap<>();
 	
 	private Thread receiverThread;
 	

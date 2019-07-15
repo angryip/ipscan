@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class MACVendorFetcher extends AbstractFetcher {
 	public static final String ID = "fetcher.mac.vendor";
-	private static Map<String, String> vendors = new HashMap<String, String>();
+	private static Map<String, String> vendors = new HashMap<>();
 	private MACFetcher macFetcher;
 
 	@Inject public MACVendorFetcher(MACFetcher macFetcher) {

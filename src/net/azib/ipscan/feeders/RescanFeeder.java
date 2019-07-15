@@ -55,7 +55,7 @@ public class RescanFeeder extends AbstractFeeder {
 			throw new IllegalArgumentException("no IP addresses specified");
 		
 		try {
-			addresses = new ArrayList<InetAddress>(ips.length);
+			addresses = new ArrayList<>(ips.length);
 			for (String s : ips) {
 				addresses.add(InetAddress.getByName(s));
 			}

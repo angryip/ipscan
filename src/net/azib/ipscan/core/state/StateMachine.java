@@ -25,7 +25,7 @@ public abstract class StateMachine {
 	private volatile ScanningState state = ScanningState.IDLE;
 	
 	private ReentrantReadWriteLock listenersLock = new ReentrantReadWriteLock();
-	private List<StateTransitionListener> transitionListeners = new ArrayList<StateTransitionListener>();
+	private List<StateTransitionListener> transitionListeners = new ArrayList<>();
 	
 	/**
 	 * @return true if current state is as specified
