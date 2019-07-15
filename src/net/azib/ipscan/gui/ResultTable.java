@@ -225,6 +225,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 		public void handleEvent(Event event) {
 			TableItem item = (TableItem)event.item;
 			int tableIndex = indexOf(item);
+			if (tableIndex < 0) return;
 			
 			ScanningResult scanningResult = scanningResults.getResult(tableIndex);
 			List<?> values = scanningResult.getValues();
