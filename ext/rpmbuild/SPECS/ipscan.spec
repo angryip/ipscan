@@ -27,8 +27,7 @@ mkdir -p $RPM_BUILD_ROOT/%{_libdir}/ipscan $RPM_BUILD_ROOT/%{_datadir}/applicati
 cp ../../%{name}-%{platform}-%{version}.jar $RPM_BUILD_ROOT/%{_libdir}/ipscan/
 cp ../../../../ext/deb-bundle/usr/share/applications/ipscan.desktop $RPM_BUILD_ROOT/%{_datadir}/applications/
 cp ../../../../resources/images/icon128.png $RPM_BUILD_ROOT/%{_datadir}/pixmaps/ipscan.png
-echo "#/bin/sh" > $RPM_BUILD_ROOT/%{_bindir}/ipscan
-echo "java -jar %{_libdir}/ipscan/ipscan*.jar" >> $RPM_BUILD_ROOT/%{_bindir}/ipscan
+cp ../../../../ext/deb-bundle/usr/bin/ipscan $RPM_BUILD_ROOT/%{_bindir}/
 chmod a+x $RPM_BUILD_ROOT/%{_bindir}/ipscan
 
 %clean
