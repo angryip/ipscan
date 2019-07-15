@@ -84,11 +84,8 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 
 		FeederActions.HostnameButton hostnameListener = new FeederActions.HostnameButton(hostnameText, startIPText, netmaskCombo) {
 			public void widgetSelected(SelectionEvent event) {
-				// raise the flag
 				isEndIPUnedited = true;
-				// reset the netmask combo
 				netmaskCombo.setText(getLabel("feeder.range.netmask"));
-				// now do the stuff
 				super.widgetSelected(event);
 			}
         };
@@ -138,7 +135,6 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		// TODO: netmask support from the command-line
 		startIPText.setText(parts[0]);
 		endIPText.setText(parts[1]);
-		// reset the netmask combo
 		netmaskCombo.setText(getLabel("feeder.range.netmask"));
 	}
 
@@ -224,7 +220,9 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	@Override
 	protected void afterLocalHostInfoFilled(InterfaceAddress localInterface) {
 		InetAddress address = localInterface.getAddress();
-		if (!address.isLoopbackAddress())
+		if (!address.isLoopbackAddress()) {
 			updateStartEndWithNetmask(address, "/" + localInterface.getNetworkPrefixLength());
+			isEndIPUnedited = true;
+		}
 	}
 }
