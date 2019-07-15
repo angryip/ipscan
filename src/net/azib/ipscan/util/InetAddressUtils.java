@@ -8,12 +8,14 @@ package net.azib.ipscan.util;
 import net.azib.ipscan.config.LoggerFactory;
 
 import java.net.*;
-import java.util.Enumeration;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import static java.net.NetworkInterface.getNetworkInterfaces;
+import static java.util.Collections.list;
+import static java.util.Collections.reverse;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
 /**
@@ -23,7 +25,6 @@ import static java.util.regex.Pattern.CASE_INSENSITIVE;
  * @author Anton Keks
  */
 public class InetAddressUtils {
-	
 	static final Logger LOG = LoggerFactory.getLogger();
 	
 	// Warning! IPv4 specific code
@@ -75,16 +76,10 @@ public class InetAddressUtils {
 		return false;
 	}
 	
-	/**
-	 * Increments an IP address by 1.
-	 */
 	public static InetAddress increment(InetAddress address) {
 		return modifyInetAddress(address, true);
 	}
 
-	/**
-	 * Decrements an IP address by 1.
-	 */
 	public static InetAddress decrement(InetAddress address) {
 		return modifyInetAddress(address, false);
 	}
@@ -97,8 +92,7 @@ public class InetAddressUtils {
 	 * @param isIncrement
 	 * @return incremented/decremented IP address
 	 */
-	private static InetAddress modifyInetAddress(InetAddress address,
-			boolean isIncrement) {
+	private static InetAddress modifyInetAddress(InetAddress address, boolean isIncrement) {
 		try {
 			byte[] newAddress = address.getAddress();
 			for (int i = newAddress.length-1; i >= 0; i--) {
@@ -177,8 +171,9 @@ public class InetAddressUtils {
 	public static InterfaceAddress getLocalInterface() {
 		InterfaceAddress anyAddress = null;
 		try {
-			for (Enumeration<NetworkInterface> i = getNetworkInterfaces(); i.hasMoreElements(); ) {
-				NetworkInterface networkInterface = i.nextElement();
+			List<NetworkInterface> interfaces = list(getNetworkInterfaces());
+			reverse(interfaces);
+			for (NetworkInterface networkInterface : interfaces) {
 				for (InterfaceAddress ifAddr : networkInterface.getInterfaceAddresses()) {
 					anyAddress = ifAddr;
 					InetAddress addr = ifAddr.getAddress();
