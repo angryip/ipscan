@@ -1,16 +1,16 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.feeders;
+
+import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.util.InetAddressUtils;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.SecureRandom;
-
-import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.util.InetAddressUtils;
 
 /**
  * A feeder, that generates random IP addresses.

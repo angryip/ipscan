@@ -1,12 +1,11 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui.actions;
 
 import net.azib.ipscan.config.CommandLineProcessor;
-import net.azib.ipscan.config.CommandProcessor;
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult.ResultType;

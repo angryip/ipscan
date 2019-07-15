@@ -1,19 +1,19 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui.actions;
+
+import net.azib.ipscan.config.LoggerFactory;
+import net.azib.ipscan.config.Platform;
+import net.azib.ipscan.core.UserErrorException;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import net.azib.ipscan.config.LoggerFactory;
-import net.azib.ipscan.config.Platform;
-import net.azib.ipscan.core.UserErrorException;
 
 /**
  * The cross-platform terminal launcher

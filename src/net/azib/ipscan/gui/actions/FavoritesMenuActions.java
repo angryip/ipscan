@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui.actions;
 
@@ -14,7 +14,6 @@ import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.gui.EditFavoritesDialog;
 import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;

@@ -1,6 +1,6 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
  */
 package net.azib.ipscan.fetchers;
 

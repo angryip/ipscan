@@ -1,5 +1,5 @@
-/**
- * This is a part of Angry IP Scanner source.
+/*
+  This is a part of Angry IP Scanner source.
  */
 package net.azib.ipscan.config;
 
