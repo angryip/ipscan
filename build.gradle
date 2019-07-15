@@ -1,8 +1,8 @@
 apply plugin: 'java'
 
-version = '3.5.5'
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+version = '3.6.0'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 def osName = System.getProperty("os.name")
 def is64 = System.getProperty("os.arch").contains("64")
