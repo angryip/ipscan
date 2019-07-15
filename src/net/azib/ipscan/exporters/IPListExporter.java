@@ -59,7 +59,7 @@ public class IPListExporter extends AbstractExporter {
 		String address = results[ipFetcherIndex].toString(); 
 		Object ports = results[portsFetcherIndex];
 		
-		if (ports != null && ports instanceof NumericRangeList) {
+		if (ports instanceof NumericRangeList) {
 			for (PortIterator i = new PortIterator(ports.toString()); i.hasNext(); ) {
 				output.println(address + DELIMETER + i.next());
 			}
