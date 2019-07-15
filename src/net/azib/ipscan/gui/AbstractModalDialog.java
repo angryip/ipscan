@@ -150,11 +150,9 @@ public abstract class AbstractModalDialog {
 		button.setText(Labels.getLabel("button.close"));
 		positionButtons(button, null);
 		
-		button.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
-				shell.close();
-				shell.dispose();
-			}
+		button.addListener(SWT.Selection, event -> {
+			shell.close();
+			shell.dispose();
 		});
 		
 		button.setFocus();

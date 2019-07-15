@@ -147,16 +147,14 @@ public class HelpMenuActions {
 						// show the box in the SWT thread
 						final String messageToShow = message;
 						final int messageStyleToShow = messageStyle;
-						Display.getDefault().asyncExec(new Runnable() {
-							public void run() {
-								statusBar.setStatusText(null);
-								if (messageToShow == null) return;
-								MessageBox messageBox = new MessageBox(statusBar.getShell(), messageStyleToShow | SWT.SHEET);
-								messageBox.setText(Version.getFullName());
-								messageBox.setMessage(messageToShow);
-								if (messageBox.open() == SWT.YES) {
-									BrowserLauncher.openURL(Version.DOWNLOAD_URL);
-								}
+						Display.getDefault().asyncExec(() -> {
+							statusBar.setStatusText(null);
+							if (messageToShow == null) return;
+							MessageBox messageBox = new MessageBox(statusBar.getShell(), messageStyleToShow | SWT.SHEET);
+							messageBox.setText(Version.getFullName());
+							messageBox.setMessage(messageToShow);
+							if (messageBox.open() == SWT.YES) {
+								BrowserLauncher.openURL(Version.DOWNLOAD_URL);
 							}
 						});
 					}

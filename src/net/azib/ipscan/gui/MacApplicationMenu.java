@@ -22,11 +22,7 @@ public class MacApplicationMenu {
 	@Inject CheckVersion checkVersionListener;
 
 	@Inject public MacApplicationMenu(final Display display) {
-		display.syncExec(new Runnable() {
-			public void run() {
-				initApplicationMenu(display);
-			}
-		});
+		display.syncExec(() -> initApplicationMenu(display));
 	}
 
 	private void initApplicationMenu(Display display) {

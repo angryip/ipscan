@@ -21,18 +21,16 @@ public class Startup {
 	public void onStart() {
 		if (guiConfig.isFirstRun) {
 			new GoogleAnalytics().asyncReport("First run");
-			Display.getCurrent().asyncExec(new Runnable() {
-				public void run() {
-					GettingStartedDialog dialog = new GettingStartedDialog();
-					if (Platform.CRIPPLED_WINDOWS)
-						dialog.prependText(Labels.getLabel("text.crippledWindowsInfo"));
-					if (Platform.GNU_JAVA)
-						dialog.prependText(Labels.getLabel("text.gnuJavaInfo"));
+			Display.getCurrent().asyncExec(() -> {
+				GettingStartedDialog dialog = new GettingStartedDialog();
+				if (Platform.CRIPPLED_WINDOWS)
+					dialog.prependText(Labels.getLabel("text.crippledWindowsInfo"));
+				if (Platform.GNU_JAVA)
+					dialog.prependText(Labels.getLabel("text.gnuJavaInfo"));
 
-					shell.forceActive();
-					dialog.open();
-					guiConfig.isFirstRun = false;
-				}
+				shell.forceActive();
+				dialog.open();
+				guiConfig.isFirstRun = false;
 			});
 		}
 		else if (!Version.getVersion().equals(guiConfig.lastRunVersion)) {

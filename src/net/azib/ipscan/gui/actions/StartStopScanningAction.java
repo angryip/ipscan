@@ -250,27 +250,25 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 
 	public void updateProgress(final InetAddress currentAddress, final int runningThreads, final int percentageComplete) {
 		if (display.isDisposed()) return;
-		display.asyncExec(new Runnable() {
-			public void run() {
-				if (statusBar.isDisposed()) return;
-				
-				// update status bar
-				if (currentAddress != null) {
-					statusBar.setStatusText(Labels.getLabel("state.scanning") + currentAddress.getHostAddress());
-				}					
-				statusBar.setRunningThreads(runningThreads);
-				statusBar.setProgress(percentageComplete);
-				if (taskBarItem != null) taskBarItem.setProgress(percentageComplete);
-				
-				// show percentage in main window title
-				if (!stateMachine.inState(IDLE))
-					statusBar.getShell().setText(percentageComplete + "% - " + mainWindowTitle);
-				else
-					statusBar.getShell().setText(mainWindowTitle);
+		display.asyncExec(() -> {
+			if (statusBar.isDisposed()) return;
 
-				// change button image according to the current state
-				button.setImage(buttonImages[stateMachine.getState().ordinal()]);
+			// update status bar
+			if (currentAddress != null) {
+				statusBar.setStatusText(Labels.getLabel("state.scanning") + currentAddress.getHostAddress());
 			}
+			statusBar.setRunningThreads(runningThreads);
+			statusBar.setProgress(percentageComplete);
+			if (taskBarItem != null) taskBarItem.setProgress(percentageComplete);
+
+			// show percentage in main window title
+			if (!stateMachine.inState(IDLE))
+				statusBar.getShell().setText(percentageComplete + "% - " + mainWindowTitle);
+			else
+				statusBar.getShell().setText(mainWindowTitle);
+
+			// change button image according to the current state
+			button.setImage(buttonImages[stateMachine.getState().ordinal()]);
 		});
 	}
 

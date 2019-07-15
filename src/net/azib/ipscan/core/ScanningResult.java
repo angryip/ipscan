@@ -128,6 +128,4 @@ public class ScanningResult {
 		}
 		return details.toString();	
 	}
-
-	
 }

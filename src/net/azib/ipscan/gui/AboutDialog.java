@@ -6,7 +6,9 @@ import net.azib.ipscan.gui.actions.BrowserLauncher;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
 import javax.inject.Inject;
 
@@ -91,11 +93,9 @@ public class AboutDialog extends AbstractModalDialog {
 		link.setForeground(new Color(null, 0, 0, 0xCC));
 		link.setCursor(shell.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
 		link.setText(text);
-		link.addListener(SWT.MouseUp, new Listener() {
-			public void handleEvent(Event event) {
-				BrowserLauncher.openURL(url);
-				link.setForeground(new Color(null, 0x88, 0, 0xAA));
-			}
+		link.addListener(SWT.MouseUp, event -> {
+			BrowserLauncher.openURL(url);
+			link.setForeground(new Color(null, 0x88, 0, 0xAA));
 		});
 		link.pack();
 		return link;

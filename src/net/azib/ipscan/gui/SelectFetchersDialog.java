@@ -144,18 +144,14 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		
 		shell.pack();
 		
-		cancelButton.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				shell.close();
-				shell.dispose();
-			}
+		cancelButton.addListener(SWT.Selection, e -> {
+			shell.close();
+			shell.dispose();
 		});
-		okButton.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
-				saveFetchersToRegistry(selectedFetchersList.getItems());
-				shell.close();
-				shell.dispose();
-			}
+		okButton.addListener(SWT.Selection, event -> {
+			saveFetchersToRegistry(selectedFetchersList.getItems());
+			shell.close();
+			shell.dispose();
 		});
 	}
 

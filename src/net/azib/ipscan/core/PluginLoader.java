@@ -6,7 +6,6 @@ import net.azib.ipscan.config.LoggerFactory;
 
 import javax.inject.Singleton;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -74,12 +73,7 @@ public class PluginLoader {
 		File parentDir = ownFile.getParentFile();
 		if (parentDir == null || !parentDir.exists()) return;
 
-		File[] jars = parentDir.listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.endsWith(".jar") && !name.equals(ownFile.getName());
-			}
-		});
+		File[] jars = parentDir.listFiles((dir, name) -> name.endsWith(".jar") && !name.equals(ownFile.getName()));
 		if (jars == null) return;
 
 		PluginClassLoader loader = new PluginClassLoader();

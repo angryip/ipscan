@@ -9,8 +9,6 @@ import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.RandomFeeder;
 import net.azib.ipscan.gui.actions.FeederActions;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
@@ -91,14 +89,12 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		countSpinner.setMaximum(100000000);
 		countSpinner.setMinimum(1);
 		countSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		countSpinner.addTraverseListener(new TraverseListener() {
-			public void keyTraversed(TraverseEvent e) {
-				// this due to a bug either in SWT or GTK:
-				// spinner getText() returns the new value only if
-				// it has lost the focus first
-				ipPrototypeText.forceFocus();
-				countSpinner.forceFocus();
-			}
+		countSpinner.addTraverseListener(e -> {
+			// this due to a bug either in SWT or GTK:
+			// spinner getText() returns the new value only if
+			// it has lost the focus first
+			ipPrototypeText.forceFocus();
+			countSpinner.forceFocus();
 		});
 		
 		pack();

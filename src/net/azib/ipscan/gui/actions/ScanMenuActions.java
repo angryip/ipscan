@@ -181,11 +181,7 @@ public class ScanMenuActions {
 			// in case of isSelection we need to create our filter
 			ScanningResultFilter filter = null;
 			if (isSelection) {
-				filter = new ScanningResultFilter() {
-					public boolean apply(int index, ScanningResult result) {
-						return resultTable.isSelected(index);
-					}
-				};
+				filter = (index, result) -> resultTable.isSelected(index);
 			}
 
 			exportProcessor.process(resultTable.getScanningResults(), filter);

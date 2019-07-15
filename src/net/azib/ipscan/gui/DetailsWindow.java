@@ -78,11 +78,7 @@ public class DetailsWindow extends AbstractModalDialog {
 		shell.layout();
 		detailsText.forceFocus();
 
-		shell.addListener(SWT.Close, new Listener() {
-			@Override public void handleEvent(Event event) {
-				guiConfig.detailsWindowSize = shell.getSize();
-			}
-		});
+		shell.addListener(SWT.Close, event -> guiConfig.detailsWindowSize = shell.getSize());
 	}
 	
 	class CommentsTextListener implements FocusListener, ModifyListener {

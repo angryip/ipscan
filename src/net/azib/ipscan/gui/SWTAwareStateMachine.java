@@ -34,11 +34,7 @@ public class SWTAwareStateMachine extends StateMachine {
 			return;
 
 		// call super asynchronously in the correct thread
-		display.asyncExec(new Runnable() {
-			public void run() {
-				SWTAwareStateMachine.super.notifyAboutTransition(transition);				
-			}
-		});
+		display.asyncExec(() -> SWTAwareStateMachine.super.notifyAboutTransition(transition));
 	}
 	
 }

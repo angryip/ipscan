@@ -86,11 +86,9 @@ public class MainWindow {
 		startup.onStart();
 
 		stateMachine.addTransitionListener(new EnablerDisabler());
-		Display.getCurrent().asyncExec(new Runnable() {
-			public void run() {
-				// asynchronously run init handlers outside of the constructor
-				stateMachine.init();
-			}
+		Display.getCurrent().asyncExec(() -> {
+			// asynchronously run init handlers outside of the constructor
+			stateMachine.init();
 		});
 	}
 
@@ -104,11 +102,9 @@ public class MainWindow {
 		Image image = new Image(shell.getDisplay(), getClass().getResourceAsStream("/images/icon.png"));
 		shell.setImage(image);
 				
-		shell.addListener(SWT.Close, new Listener() {
-			public void handleEvent(Event event) {
-				// save dimensions!
-				guiConfig.setMainWindowSize(shell.getSize(), shell.getMaximized());
-			}
+		shell.addListener(SWT.Close, event -> {
+			// save dimensions!
+			guiConfig.setMainWindowSize(shell.getSize(), shell.getMaximized());
 		});
 	}
 

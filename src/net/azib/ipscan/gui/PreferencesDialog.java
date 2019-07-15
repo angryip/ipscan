@@ -325,11 +325,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		adaptTimeoutCheckbox = new Button(timingGroup, SWT.CHECK);
 		adaptTimeoutCheckbox.setText(Labels.getLabel("preferences.ports.timing.adaptTimeout"));
 		adaptTimeoutCheckbox.setLayoutData(gridData1);
-		adaptTimeoutCheckbox.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
-				minPortTimeoutText.setEnabled(adaptTimeoutCheckbox.getSelection());
-			}
-		});
+		adaptTimeoutCheckbox.addListener(SWT.Selection, event -> minPortTimeoutText.setEnabled(adaptTimeoutCheckbox.getSelection()));
 
 		label = new Label(timingGroup, SWT.NONE);
 		label.setText(Labels.getLabel("preferences.ports.timing.minTimeout"));

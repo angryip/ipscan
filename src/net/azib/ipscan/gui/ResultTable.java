@@ -130,23 +130,21 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 	public void addOrUpdateResultRow(final ScanningResult result) {
 		if (isDisposed())
 			return;
-		getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				if (isDisposed())
-					return;
-				
-				if (scanningResults.isRegistered(result)) {
-					// just redraw the item
-					int index = scanningResults.update(result);
-					clear(index);
-				}
-				else {
-					// first register, then add - otherwise first redraw may fail (the table is virtual)
-					int index = getItemCount();
-					scanningResults.registerAtIndex(index, result);
-					// setItemCount(index+1) - this seems to rebuild TableItems inside, so is slower
-					new TableItem(ResultTable.this, SWT.NONE);
-				}
+		getDisplay().asyncExec(() -> {
+			if (isDisposed())
+				return;
+
+			if (scanningResults.isRegistered(result)) {
+				// just redraw the item
+				int index = scanningResults.update(result);
+				clear(index);
+			}
+			else {
+				// first register, then add - otherwise first redraw may fail (the table is virtual)
+				int index = getItemCount();
+				scanningResults.registerAtIndex(index, result);
+				// setItemCount(index+1) - this seems to rebuild TableItems inside, so is slower
+				new TableItem(ResultTable.this, SWT.NONE);
 			}
 		});
 	}
