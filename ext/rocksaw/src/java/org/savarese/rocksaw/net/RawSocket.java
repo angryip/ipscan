@@ -19,12 +19,12 @@
 
 package org.savarese.rocksaw.net;
 
+import net.azib.ipscan.core.LibraryLoader;
+
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.InetAddress;
 import java.net.SocketException;
-
-import net.azib.ipscan.core.LibraryLoader;
 
 /**
  * <p>The RawSocket class provides a strictly utilitarian API for
@@ -84,11 +84,7 @@ public class RawSocket {
     if(__RockSawStartup() != 0)
       throw new UnsatisfiedLinkError(__getErrorMessage());
 
-    Runtime.getRuntime().addShutdownHook(new Thread() {
-        public void run() {
-          __RockSawShutdown();
-        }
-      });
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> __RockSawShutdown()));
   }
 
   private static final int __UNDEFINED = -1;

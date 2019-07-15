@@ -69,31 +69,29 @@ public abstract class AbstractFeederGUI extends Composite implements FeederCreat
 	 * The idea is to show GUI faster.
 	 */
 	protected void asyncFillLocalHostInfo(final Text hostnameText, final Text ipText) {
-		new Thread() {
-			public void run() {
-				// this method is called for multiple Feeders simultaneously
-				synchronized (localResolveLock) {
-					if (localInterface == null) {
-						localInterface = InetAddressUtils.getLocalInterface();
-						try {
-							localName = InetAddress.getLocalHost().getHostName();
-						}
-						catch (UnknownHostException e) {
-							localName = localInterface.getAddress().getHostName();
-						}
+		new Thread(() -> {
+			// this method is called for multiple Feeders simultaneously
+			synchronized (localResolveLock) {
+				if (localInterface == null) {
+					localInterface = InetAddressUtils.getLocalInterface();
+					try {
+						localName = InetAddress.getLocalHost().getHostName();
 					}
-					Display.getDefault().asyncExec(() -> {
-						// fill the IP and hostname fields with local hostname and IP addresses
-						if ("".equals(hostnameText.getText()))
-							hostnameText.setText(localName);
-						if ("".equals(ipText.getText())) {
-							ipText.setText(localInterface.getAddress().getHostAddress());
-							afterLocalHostInfoFilled(localInterface);
-						}
-					});
+					catch (UnknownHostException e) {
+						localName = localInterface.getAddress().getHostName();
+					}
 				}
+				Display.getDefault().asyncExec(() -> {
+					// fill the IP and hostname fields with local hostname and IP addresses
+					if ("".equals(hostnameText.getText()))
+						hostnameText.setText(localName);
+					if ("".equals(ipText.getText())) {
+						ipText.setText(localInterface.getAddress().getHostAddress());
+						afterLocalHostInfoFilled(localInterface);
+					}
+				});
 			}
-		}.start();		
+		}).start();
 	}
 
 	protected void afterLocalHostInfoFilled(InterfaceAddress localInterface) {

@@ -67,10 +67,6 @@ public class GoogleAnalytics {
 	}
 
 	public void asyncReport(final String screen) {
-		new Thread() {
-			@Override public void run() {
-				report(screen);
-			}
-		}.start();
+		new Thread(() -> report(screen)).start();
 	}
 }
