@@ -58,15 +58,16 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         hostnameText = new Text(this, SWT.BORDER);
 		ipUpButton = new Button(this, SWT.NONE);
         netmaskCombo = new Combo(this, SWT.NONE);
+        int height = ipUpButton.computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
 
 		// the longest possible IP
         startIPText.setText("255.255.255.255xx");
         int textWidth = startIPText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
         startIPText.setText("");
-		startIPText.setLayoutData(new GridData(textWidth, -1));
-		endIPText.setLayoutData(new GridData(textWidth, -1));
-		hostnameText.setLayoutData(new GridData(textWidth, -1));
-		netmaskCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		startIPText.setLayoutData(new GridData(textWidth, height));
+		endIPText.setLayoutData(new GridData(textWidth, height));
+		hostnameText.setLayoutData(new GridData(textWidth, height));
+		netmaskCombo.setLayoutData(new GridData(textWidth, height));
 
 		((GridData)endIPText.getLayoutData()).horizontalSpan = 2;
 		GridData ipUpData = new GridData(); ipUpData.horizontalSpan = 2;
