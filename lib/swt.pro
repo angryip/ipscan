@@ -65,6 +65,7 @@
  }
 -keepclassmembers class org.eclipse.swt.widgets.Control {
    *** regionToRects(...);
+   *** enterNotifyEventProc(...);
  }
 -keepclassmembers class org.eclipse.swt.widgets.Display {
    *** *Proc(...);
