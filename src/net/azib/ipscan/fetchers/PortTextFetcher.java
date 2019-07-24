@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
 import java.util.Iterator;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -23,6 +25,7 @@ import java.util.regex.Pattern;
 
 import static java.lang.Thread.currentThread;
 import static java.util.Collections.singleton;
+import static net.azib.ipscan.fetchers.PortsFetcher.PARAMETER_OPEN_PORTS;
 
 /**
  * PortTextFetcher - generic configurable fetcher to read some particular information from a port.
@@ -35,6 +38,7 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 	private ScannerConfig scannerConfig;
 
 	private int defaultPort;
+	protected boolean scanOpenPorts;
 	protected String textToSend;
 	protected Pattern matchingRegexp;
 	protected int extractGroup;
@@ -42,13 +46,14 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 	public PortTextFetcher(ScannerConfig scannerConfig, int defaultPort, String textToSend, String matchingRegexp) {
 		this.scannerConfig = scannerConfig;
 		this.defaultPort = defaultPort;
+		this.scanOpenPorts = scanOpenPorts;
 		this.textToSend = getPreferences().get("textToSend", textToSend);
 		this.matchingRegexp = Pattern.compile(getPreferences().get("matchingRegexp", matchingRegexp));
 		this.extractGroup = getPreferences().getInt("extractGroup", 1);
 	}
 
 	public Object scan(ScanningSubject subject) {
-		Iterator<Integer> portIterator = subject.isAnyPortRequested() ? subject.requestedPortsIterator() : singleton(defaultPort).iterator();
+		Iterator<Integer> portIterator = getPortIterator(subject);
 
 		while (portIterator.hasNext() && !currentThread().isInterrupted()) {
 			try (Socket socket = new Socket()) {
@@ -86,7 +91,20 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 		}
 		return null;
 	}
-	
+
+	private Iterator<Integer> getPortIterator(ScanningSubject subject) {
+		if (scanOpenPorts) {
+			@SuppressWarnings("unchecked")
+			SortedSet<Integer> openPorts = (SortedSet<Integer>) subject.getParameter(PARAMETER_OPEN_PORTS);
+			if (openPorts != null) {
+				SortedSet<Integer> ports = new TreeSet<>(openPorts);
+				ports.add(defaultPort);
+				return ports.iterator();
+			}
+		}
+		return subject.isAnyPortRequested() ? subject.requestedPortsIterator() : singleton(defaultPort).iterator();
+	}
+
 	@Override
 	public Class<? extends FetcherPrefs> getPreferencesClass() {
 		return PortTextFetcherPrefs.class;

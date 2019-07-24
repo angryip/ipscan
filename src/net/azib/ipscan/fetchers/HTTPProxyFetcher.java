@@ -18,6 +18,7 @@ import javax.inject.Inject;
 public class HTTPProxyFetcher extends PortTextFetcher {
 	@Inject public HTTPProxyFetcher(ScannerConfig scannerConfig) {
 		super(scannerConfig, 3128, "HEAD http://www.google.com HTTP/1.0\r\n\r\n", "^(HTTP/[\\d\\.]+ [23].*)$");
+		this.scanOpenPorts = true;
 	}
 	
 	public String getId() {

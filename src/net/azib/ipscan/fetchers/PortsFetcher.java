@@ -35,8 +35,8 @@ public class PortsFetcher extends AbstractFetcher {
 	
 	public static final String ID = "fetcher.ports";
 	
-	private static final String PARAMETER_OPEN_PORTS = "openPorts";
-	private static final String PARAMETER_FILTERED_PORTS = "filteredPorts";
+	static final String PARAMETER_OPEN_PORTS = "openPorts";
+	static final String PARAMETER_FILTERED_PORTS = "filteredPorts";
 	
 	private ScannerConfig config;
 	private ThreadResourceBinder<Socket> sockets = new ThreadResourceBinder<>();
