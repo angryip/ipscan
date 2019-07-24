@@ -15,14 +15,17 @@
     <minVersion>1.8.0</minVersion>
   </jre>
   <versionInfo>
-    <fileVersion>3.0.0.0</fileVersion>
+    <fileVersion>3.6.0.0</fileVersion>
     <txtFileVersion>VERSION</txtFileVersion>
     <fileDescription>Angry IP Scanner - fast and friendly network scanner</fileDescription>
     <copyright>Anton Keks</copyright>
-    <productVersion>3.5.0.0</productVersion>
+    <productVersion>3.6.0.0</productVersion>
     <txtProductVersion>VERSION</txtProductVersion>
     <productName>Angry IP Scanner</productName>
     <internalName>ipscan</internalName>
     <originalFilename>ipscan.exe</originalFilename>
   </versionInfo>
+  <messages>
+    <jreVersionErr>Java 8 or newer is required to start. Press OK to download. If your installed Java is not detected, try running it manually with `javaw.exe ipscan*.exe'</jreVersionErr>
+  </messages>
 </launch4jConfig>
