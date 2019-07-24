@@ -26,6 +26,6 @@
     <originalFilename>ipscan.exe</originalFilename>
   </versionInfo>
   <messages>
-    <jreVersionErr>Java 8 or newer is required to start. Press OK to download. If your installed Java is not detected, try running it manually with `javaw.exe ipscan*.exe'</jreVersionErr>
+    <jreVersionErr>Java 8 or newer is required to start. Press OK to download. If your installed Java is not detected, try running it manually with `javaw.exe -jar ipscan*.exe'</jreVersionErr>
   </messages>
 </launch4jConfig>
