@@ -45,7 +45,6 @@ public class ExporterRegistry implements Iterable<Exporter> {
 	 * @throws ExporterException in case such exporter is not registered
 	 */
 	public Exporter createExporter(String fileName) throws ExporterException {
-		
 		int extensionPos = fileName.lastIndexOf('.') + 1;
 		String extension = fileName.substring(extensionPos);
 		

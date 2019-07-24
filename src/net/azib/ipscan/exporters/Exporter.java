@@ -56,7 +56,7 @@ public interface Exporter extends Cloneable, Plugin {
 	/**
 	 * Called after the start to provide the whole list of fetchers
 	 * @param fetcherNames
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	void setFetchers(String[] fetcherNames) throws IOException;
 	
