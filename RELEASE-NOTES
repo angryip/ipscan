@@ -1,11 +1,12 @@
 Draft Changes in 3.6.0:
 - HTTP Proxy is now available
-- Translation updates, added Chinese traditional and simplified
-- Java 8 is now the minimal required
+- Java 8 is now the minimum required
 - Experimental (and incomplete yet) IPv6 support
 - Try to select the real network interface by default on launch
 - KDE launching support & other small fixes
 - Windows Java detection has an improved error message
+- Translation updates, added Chinese traditional and simplified
+- Mac vendors updated
 
 Changes in 3.5.5:
 - Translation updates, added Brazilian Portuguese
