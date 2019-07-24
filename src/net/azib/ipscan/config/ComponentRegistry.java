@@ -21,8 +21,9 @@ import org.eclipse.swt.widgets.*;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 /**
  * This class is the dependency injection configuration using Dagger2.
@@ -69,18 +70,18 @@ public class ComponentRegistry {
 	}
 
 	@Provides @Singleton public List<AbstractFeederGUI> feeders(RangeFeederGUI f1, RandomFeederGUI f2, FileFeederGUI f3) {
-		return Arrays.asList(f1, f2, f3);
+		return asList(f1, f2, f3);
 	}
 
 	@Provides @Singleton public List<Exporter> exporters(List<Class<? extends Plugin>> plugins, TXTExporter e1, CSVExporter e2, XMLExporter e3, IPListExporter e4) {
-		return addPlugins(Arrays.<Exporter>asList(e1, e2, e3, e4), Exporter.class, plugins);
+		return addPlugins(asList(e1, e2, e3, e4), Exporter.class, plugins);
 	}
 
 	@Provides @Singleton public List<Fetcher> fetchers(List<Class<? extends Plugin>> plugins,
 											IPFetcher f1, PingFetcher f2, PingTTLFetcher f3, HostnameFetcher f4, PortsFetcher f5,
 											FilteredPortsFetcher f6, WebDetectFetcher f7, HTTPSenderFetcher f8, CommentFetcher f9,
 											NetBIOSInfoFetcher f10, MACFetcher f11, MACVendorFetcher f12, PacketLossFetcher f13) {
-		return addPlugins(Arrays.<Fetcher>asList(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13), Fetcher.class, plugins);
+		return addPlugins(asList(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13), Fetcher.class, plugins);
 	}
 
 	@Provides @Singleton MACFetcher selectMacFetcher() {
