@@ -9,6 +9,7 @@ package net.azib.ipscan.fetchers;
 import net.azib.ipscan.config.ScannerConfig;
 
 import javax.inject.Inject;
+import java.util.regex.Matcher;
 
 /**
  * HTTPProxyFetcher - detects HTTP proxy on port 3128 (or other requested port)
@@ -23,5 +24,10 @@ public class HTTPProxyFetcher extends PortTextFetcher {
 	
 	public String getId() {
 		return "fetcher.httpProxy";
+	}
+
+	@Override
+	protected String getResult(Matcher matcher, int port) {
+		return port + ": " + super.getResult(matcher, port);
 	}
 }

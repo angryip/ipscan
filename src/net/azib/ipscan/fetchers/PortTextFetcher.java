@@ -46,7 +46,6 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 	public PortTextFetcher(ScannerConfig scannerConfig, int defaultPort, String textToSend, String matchingRegexp) {
 		this.scannerConfig = scannerConfig;
 		this.defaultPort = defaultPort;
-		this.scanOpenPorts = scanOpenPorts;
 		this.textToSend = getPreferences().get("textToSend", textToSend);
 		this.matchingRegexp = Pattern.compile(getPreferences().get("matchingRegexp", matchingRegexp));
 		this.extractGroup = getPreferences().getInt("extractGroup", 1);
@@ -72,7 +71,7 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 						// mark that additional info is available
 						subject.setResultType(ResultType.WITH_PORTS);
 						// return the required contents
-						return matcher.group(extractGroup);
+						return getResult(matcher, socket.getPort());
 					}
 				}
 			}
@@ -90,6 +89,11 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 			}
 		}
 		return null;
+	}
+
+	protected String getResult(Matcher matcher, int port) {
+		String result = matcher.group(extractGroup);
+		return result.isEmpty() ? String.valueOf(port) : result;
 	}
 
 	private Iterator<Integer> getPortIterator(ScanningSubject subject) {
