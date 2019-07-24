@@ -1,3 +1,10 @@
+Draft Changes in 3.6.0:
+- Translation updates, added Chinese traditional and simplified
+- Java 8 is now the minimal required
+- Experimental (and incomplete yet) IPv6 support
+- Try to select the real network interface by default on launch
+- KDE launching support & other small fixes
+
 Changes in 3.5.5:
 - Translation updates, added Brazilian Portuguese
 - Small bugfixes
