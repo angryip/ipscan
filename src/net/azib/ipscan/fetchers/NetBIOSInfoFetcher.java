@@ -33,9 +33,7 @@ public class NetBIOSInfoFetcher extends AbstractFetcher {
 	}
 
 	public Object scan(ScanningSubject subject) {
-		NetBIOSResolver netbios = null;
-		try {
-			netbios = new NetBIOSResolver(subject.getAdaptedPortTimeout());
+		try (NetBIOSResolver netbios = new NetBIOSResolver(subject.getAdaptedPortTimeout())) {
 			String[] names = netbios.resolve(subject.getAddress());
 			if (names == null) return null;
 
@@ -60,9 +58,6 @@ public class NetBIOSInfoFetcher extends AbstractFetcher {
 			// bugs?
 			LOG.log(WARNING, null, e);
 			return null;
-		}
-		finally {
-			if (netbios != null) netbios.close();
 		}
 	}
 }

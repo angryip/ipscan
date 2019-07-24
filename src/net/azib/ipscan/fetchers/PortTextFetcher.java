@@ -51,15 +51,14 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 		Iterator<Integer> portIterator = subject.isAnyPortRequested() ? subject.requestedPortsIterator() : singleton(defaultPort).iterator();
 
 		while (portIterator.hasNext() && !currentThread().isInterrupted()) {
-			Socket socket = new Socket();
-			try {
+			try (Socket socket = new Socket()) {
 				socket.connect(new InetSocketAddress(subject.getAddress(), portIterator.next()), subject.getAdaptedPortTimeout());
 				socket.setTcpNoDelay(true);
-				socket.setSoTimeout(scannerConfig.portTimeout*2);
+				socket.setSoTimeout(scannerConfig.portTimeout * 2);
 				socket.setSoLinger(true, 0);
-				
+
 				socket.getOutputStream().write(textToSend.getBytes());
-				
+
 				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				String line;
 				while ((line = in.readLine()) != null) {
@@ -83,12 +82,6 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 			}
 			catch (IOException e) {
 				LOG.log(Level.FINE, subject.getAddress().toString(), e);
-			}
-			finally {
-				try {
-					socket.close();
-				}
-				catch (IOException ignore) {}
 			}
 		}
 		return null;
