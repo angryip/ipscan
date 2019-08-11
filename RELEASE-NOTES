@@ -1,4 +1,4 @@
-Draft Changes in 3.6.0:
+Changes in 3.6.0:
 - HTTP Proxy is now available
 - Java 8 is now the minimum required
 - Experimental (and incomplete yet) IPv6 support
