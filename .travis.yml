@@ -24,5 +24,5 @@ script:
   - |
     if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
       choco install jdk8
-      JAVA_HOME='c:/Program Files/Java/jdk1.8.0_191' ./gradlew --info test win-installer
+      JAVA_HOME=c:/Program Files/Java/jdk1.8.0_* ./gradlew --info test win-installer
     fi
