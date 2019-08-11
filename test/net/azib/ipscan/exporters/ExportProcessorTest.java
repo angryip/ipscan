@@ -4,36 +4,32 @@ import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.exporters.ExportProcessor.ScanningResultFilter;
 import net.azib.ipscan.feeders.Feeder;
-import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.IPFetcher;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.InetAddress;
-import java.util.Collections;
 
+import static java.util.Collections.singletonList;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * ExportProcessorTest
- *
- * @author Anton Keks
- */
 public class ExportProcessorTest {
-	
 	private FetcherRegistry fetcherRegistry;
 	
 	@Before
 	public void setUp() {
 		fetcherRegistry = mock(FetcherRegistry.class);
-		when(fetcherRegistry.getSelectedFetchers())
-			.thenReturn(Collections.<Fetcher>singletonList(new IPFetcher()));
+		when(fetcherRegistry.getSelectedFetchers()).thenReturn(singletonList(new IPFetcher()));
 	}
-	
+
 	@Test
 	public void testProcess() throws Exception {
 		File file = File.createTempFile("exportTest", "txt");
@@ -46,10 +42,10 @@ public class ExportProcessorTest {
 		
 		String content = readFileContent(file);
 		
-		assertTrue(content.indexOf("megaFeeder") > 0);
-		assertTrue(content.indexOf(new IPFetcher().getName()) > 0);
-		assertTrue(content.indexOf("fooBar") < 0);		
-		assertTrue(content.indexOf("192.168.0.13") > 0);		
+		assertTrue(content.contains("megaFeeder"));
+		assertTrue(content.contains(new IPFetcher().getName()));
+		assertFalse(content.contains("fooBar"));
+		assertTrue(content.contains("192.168.0.13"));
 	}
 	
 	@Test
@@ -73,10 +69,10 @@ public class ExportProcessorTest {
 		
 		String content = readFileContent(file);
 		
-		assertTrue(content.indexOf("feeder2") > 0);
-		assertTrue(content.indexOf("192.168.13.66") > 0);
-		assertTrue(content.indexOf("192.168.13.67") < 0);		
-		assertTrue(content.indexOf("192.168.13.76") > 0);		
+		assertTrue(content.contains("feeder2"));
+		assertTrue(content.contains("192.168.13.66"));
+		assertFalse(content.contains("192.168.13.67"));
+		assertTrue(content.contains("192.168.13.76"));
 	}
 	
 	private Feeder mockFeeder(String feederInfo) {
@@ -86,8 +82,8 @@ public class ExportProcessorTest {
 		return feeder;
 	}
 
-	private String readFileContent(File file) throws FileNotFoundException, IOException {
-		StringBuffer buffer = new StringBuffer();
+	private String readFileContent(File file) throws IOException {
+		StringBuilder buffer = new StringBuilder();
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		String line;
 		while((line = reader.readLine()) != null) {
