@@ -6,6 +6,7 @@
 package net.azib.ipscan.feeders;
 
 import net.azib.ipscan.config.LoggerFactory;
+import net.azib.ipscan.config.Version;
 import net.azib.ipscan.core.ScanningSubject;
 
 import java.io.*;
@@ -68,10 +69,11 @@ public class FileFeeder extends AbstractFeeder {
 				Matcher matcher = HOSTNAME_REGEX.matcher(fileLine);
 				while (matcher.find()) {
 					try {
-						String address = matcher.group();						
-						ScanningSubject subject = foundHosts.get(address);
+						String host = matcher.group();
+						if (host.equals(Version.OWN_HOST)) continue;
+						ScanningSubject subject = foundHosts.get(host);
 						if (subject == null)
-							subject = new ScanningSubject(InetAddress.getByName(address));
+							subject = new ScanningSubject(InetAddress.getByName(host));
 						
 						if (!matcher.hitEnd() && fileLine.charAt(matcher.end()) == ':') {
 							// see if any valid port is requested
@@ -81,7 +83,7 @@ public class FileFeeder extends AbstractFeeder {
 							}
 						}
 						
-						foundHosts.put(address, subject);
+						foundHosts.put(host, subject);
 					}
 					catch (UnknownHostException e) {
 						LOG.log(WARNING, e.toString());
