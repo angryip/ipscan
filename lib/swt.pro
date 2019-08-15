@@ -123,6 +123,9 @@
 -keepclassmembers class org.eclipse.swt.ole.win32.OleFrame {
    *** getMsgProc(...);
  }
+-keepclassmembers class org.eclipse.swt.widgets.FileDialog {
+   <methods>;
+ }
 
 # image file format parsing is done via reflection.
 
