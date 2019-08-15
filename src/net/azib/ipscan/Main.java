@@ -45,6 +45,7 @@ public class Main {
 	 * <tt>-XstartOnFirstThread</tt>
 	 */
 	public static void main(String... args) {
+		MainWindow mainWindow = null;
 		try {
 			long startTime = System.currentTimeMillis();
 			initSystemProperties();
@@ -66,7 +67,7 @@ public class Main {
 			processCommandLine(args, mainComponent);
 
 			// create the main window using dependency injection
-			MainWindow mainWindow = mainComponent.createMainWindow();
+			mainWindow = mainComponent.createMainWindow();
 			LOG.fine("Startup time: " + (System.currentTimeMillis() - startTime));
 
 			while (!mainWindow.isDisposed()) {
@@ -80,8 +81,7 @@ public class Main {
 
 					// display a nice error message
 					String localizedMessage = getLocalizedMessage(e);
-					Shell parent = display.getActiveShell();
-					showMessage(parent != null ? parent : mainWindow.getShell(),
+					showMessage(mainWindow,
 							e instanceof UserErrorException ? SWT.ICON_WARNING : SWT.ICON_ERROR,
 							Labels.getLabel(e instanceof UserErrorException ? "text.userError" : "text.error"), localizedMessage);
 				}
@@ -101,18 +101,20 @@ public class Main {
 		catch (Throwable e) {
 			e.printStackTrace();
 			new GoogleAnalytics().report(e);
-			showMessage(null, 0, "Fatal Error", e + "\nPlease submit a bug report mentioning your OS and what were you doing.");
+			showMessage(mainWindow, 0, "Fatal Error", e + "\nPlease submit a bug report mentioning your OS and what were you doing.");
 		}
 	}
 
-	private static void showMessage(Shell parent, int flags, String title, String localizedMessage) {
+	private static void showMessage(MainWindow mainWindow, int flags, String title, String localizedMessage) {
 		try {
+			Shell parent = Display.getDefault().getActiveShell();
+			if (parent == null) parent = mainWindow.getShell();
 			MessageBox messageBox = new MessageBox(parent, SWT.OK | SWT.SHEET | flags);
 			messageBox.setText(title);
 			messageBox.setMessage(localizedMessage);
 			messageBox.open();
 		}
-		catch (NoClassDefFoundError e) {
+		catch (Throwable e) {
 			new GoogleAnalytics().report(localizedMessage, e);
 			JOptionPane.showMessageDialog(null, localizedMessage);
 		}
