@@ -101,7 +101,7 @@ public class Main {
 		catch (Throwable e) {
 			e.printStackTrace();
 			new GoogleAnalytics().report(e);
-			JOptionPane.showMessageDialog(null, e + "\nPlease submit a bug report mentioning your OS and what were you doing.");
+			showMessage(null, 0, "Fatal Error", e + "\nPlease submit a bug report mentioning your OS and what were you doing.");
 		}
 	}
 
