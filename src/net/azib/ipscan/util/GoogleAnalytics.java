@@ -3,7 +3,6 @@ package net.azib.ipscan.util;
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Version;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -42,7 +41,7 @@ public class GoogleAnalytics {
 			conn.getContent();
 			conn.disconnect();
 		}
-		catch (IOException e) {
+		catch (Exception e) {
 			Logger.getLogger(getClass().getName()).log(WARNING, "Failed to report", e);
 		}
 	}
