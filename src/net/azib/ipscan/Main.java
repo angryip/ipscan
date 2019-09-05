@@ -22,6 +22,8 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static javax.swing.SwingUtilities.invokeAndWait;
+
 /**
  * The main executable class.
  * It initializes all the needed stuff and launches the user interface.
@@ -96,12 +98,22 @@ public class Main {
 		catch (UnsatisfiedLinkError e) {
 			e.printStackTrace();
 			new GoogleAnalytics().report(e);
-			JOptionPane.showMessageDialog(null, "Failed to load native code: " + e.getMessage() + "\nProbably you are using a binary built for wrong OS or CPU. If 64-bit binary doesn't work for you, try 32-bit version, or vice versa.");
+			swingErrorDialog("Failed to load native code: " + e.getMessage() + "\nProbably you are using a binary built for wrong OS or CPU. If 64-bit binary doesn't work for you, try 32-bit version, or vice versa.");
 		}
 		catch (Throwable e) {
 			e.printStackTrace();
 			new GoogleAnalytics().report(e);
 			showMessage(mainWindow, 0, "Fatal Error", e + "\nPlease submit a bug report mentioning your OS and what were you doing.");
+		}
+	}
+
+	private static void swingErrorDialog(String message) {
+		try {
+			invokeAndWait(() -> JOptionPane.showMessageDialog(null, message));
+		}
+		catch (Exception e) {
+			System.err.println(message);
+			e.printStackTrace();
 		}
 	}
 
@@ -116,7 +128,7 @@ public class Main {
 		}
 		catch (Throwable e) {
 			new GoogleAnalytics().report(localizedMessage, e);
-			JOptionPane.showMessageDialog(null, localizedMessage);
+			swingErrorDialog(localizedMessage);
 		}
 	}
 
