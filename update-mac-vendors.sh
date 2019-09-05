@@ -9,7 +9,6 @@ if [ "$(uname)" = "Darwin" ]; then
 fi
 
 curl 'http://standards-oui.ieee.org/oui.txt' |\
-#cat oui.txt |\
 fgrep '(base 16)' | $SED_APP -r '
 	s/\r//g; s/     \(base 16\)\t\t//
 	s/,? ?(Inc)\.?$//I
