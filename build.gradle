@@ -1,6 +1,6 @@
 apply plugin: 'java'
 
-version = '3.6.0'
+version = '3.6.1'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 

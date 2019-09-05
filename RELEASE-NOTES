@@ -1,3 +1,8 @@
+Changes 3.6.1:
+- Fix exporting for Mac
+- Improve display of unexpected errors on Mac
+- Mac vendors updated
+
 Changes in 3.6.0:
 - HTTP Proxy is now available
 - Java 8 is now the minimum required
