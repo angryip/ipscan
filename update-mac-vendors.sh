@@ -1,13 +1,11 @@
 #!/bin/bash
 # This scripts downloads and optimizes IEEE MAC vendor list
-#
-# FILE: update-mac-vendors.sh
-# Mac users: Install Gnu-Sed via brew install gnu-sed then change sed into gsed (why? Option -r did not exist on OSX)(cheers Zwilla)
 
 SED_APP='sed'
 if [ "$(uname)" = "Darwin" ]; then
-  brew install gnu-sed;
-  SED_APP='gsed';
+  # Mac users: bundled sed doesn't have -r
+  brew install gnu-sed
+  SED_APP='gsed'
 fi
 
 curl 'http://standards-oui.ieee.org/oui.txt' |\
