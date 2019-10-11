@@ -25,23 +25,21 @@ redirect_from: /w/Download/
       <ul>
         <li>
           <a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-setup.exe">32/64-bit Installer</a>
-          - recommended, autodetects 32/64-bit Java, for Windows <i>Vista/7/8/10</i>
+          - autodetects 32/64-bit Java, for Windows <i>7/8/10</i>
         </li>
         <li>
-          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-win32-{{ site.version }}.exe">32-bit Executable</a>
-          - if you prefer no installation <i>(most Windows machines have 32-bit Java)</i>
+          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-win32-{{ site.version }}.exe">for 32-bit Java</a>
+          - if you prefer no installation <i>(Java 8 on Windows is often 32-bit)</i>
         </li>
         <li>
-          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-win64-{{ site.version }}.exe">64-bit Executable</a>
-          - for 64-bit Java on Windows <i>Vista/7/8/10</i>
+          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-win64-{{ site.version }}.exe">for 64-bit Java</a>
+          - for 64-bit Java (eg AdoptOpenJDK) on Windows <i>7/8/10</i>
         </li>
       </ul>
 
-      <p>Make sure you have <a href="http://java.com/download">Java</a> installed.</p>
-
       <p>
-        Note that 32 or 64-bit refers to the version of Java that you have installed, not the operating system.
-        Most Windows machines (even 64-bit) have 32-bit Java. Download the installer if you are unsure.
+        Make sure you have at least <a href="http://java.com/download">Java 8</a> installed.
+        Or get newer Java from <a href="https://adoptopenjdk.net/">AdoptOpenJDK</a> enabling <i>JavaSoft (Oracle) registry keys</i> during its installation for compatibility.
       </p>
 
       <h4>Legacy</h4>
