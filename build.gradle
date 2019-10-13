@@ -142,17 +142,12 @@ def minimizeTask(File rtJar, String platform, Closure doMore) {
     }
 }
 
-def launch4j(def platform) {
-    ant.taskdef(name: 'launch4j', classname: 'net.sf.launch4j.ant.Launch4jTask', classpath: 'ext/launch4j/launch4j.jar:ext/launch4j/xstream.jar')
-    def configFile = "build/libs/launch4j-${platform}.xml"
-    ant.copy(file: "ext/launch4j/ipscan.xml", tofile: configFile)
-    ant.replace(file: configFile) {
-        ant.replacefilter(token: "BASENAME", value: "${project.name}-${platform}-${version}")
-        ant.replacefilter(token: "VERSION", value: version)
+def winLauncher(def platform) {
+    ant.concat(destfile: "build/libs/${project.name}-${platform}-${version}.exe", binary: true) {
+        ant.fileset(file: "ext/win-launcher/launcher.exe")
+        ant.fileset(file: "build/libs/${project.name}-${platform}-${version}.jar")
     }
-    ant.launch4j(configFile: configFile)
-    ant.delete(file: configFile)
-    ant.delete(file: "${project.name}-${platform}-${version}.jar")
+    ant.delete(file: "build/libs/${project.name}-${platform}-${version}.jar")
 }
 
 def deb(def platform, def arch) {
@@ -205,11 +200,11 @@ packageTask('linux64', [], 'ext/rocksaw/lib/linux64/librocksaw.so') {
 }
 
 packageTask('win32', 'lib/jna-win32.jar', 'ext/rocksaw/lib/rocksaw.dll') {
-    launch4j('win32')
+    winLauncher('win32')
 }
 
 packageTask('win64', 'lib/jna-win64.jar', []) {
-    launch4j('win64')
+    winLauncher('win64')
 }
 
 packageTask('mac', [], []) {
