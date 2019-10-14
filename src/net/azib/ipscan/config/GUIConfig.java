@@ -19,7 +19,6 @@ import java.util.prefs.Preferences;
  * @author Anton Keks
  */
 public class GUIConfig {
-
 	private Preferences preferences;
 	
 	public boolean isFirstRun;
@@ -54,12 +53,12 @@ public class GUIConfig {
 
 		isMainWindowMaximized = preferences.getBoolean("windowMaximized", false);
 		mainWindowSize = new Point(
-			preferences.getInt("windowWidth", 600),
-			preferences.getInt("windowHeight", 360));
+			preferences.getInt("windowWidth", 800),
+			preferences.getInt("windowHeight", 450));
 		
 		detailsWindowSize = new Point(
-			preferences.getInt("detailsWidth", 300),
-			preferences.getInt("detailsHeight", 200));
+			preferences.getInt("detailsWidth", 400),
+			preferences.getInt("detailsHeight", 300));
 	}
 
 	public void store() {
