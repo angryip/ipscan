@@ -16,13 +16,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-import javax.swing.*;
 import java.security.Security;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static javax.swing.SwingUtilities.invokeAndWait;
 
 /**
  * The main executable class.
@@ -109,11 +106,12 @@ public class Main {
 
 	private static void swingErrorDialog(String message) {
 		try {
-			invokeAndWait(() -> JOptionPane.showMessageDialog(null, message));
+			Class.forName("javax.swing.JOptionPane").getMethod("showMessageDialog", Class.forName("java.awt.Component"), Object.class)
+				.invoke(null, null, message);
 		}
 		catch (Exception e) {
+			System.err.println(e.toString());
 			System.err.println(message);
-			e.printStackTrace();
 		}
 	}
 
