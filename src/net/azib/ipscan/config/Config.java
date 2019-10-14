@@ -11,13 +11,12 @@ import java.util.prefs.Preferences;
  * @author Anton Keks
  */
 public final class Config {
-	
-	/** Singleton instance */
 	private static Config globalConfig;
 	
 	private Preferences preferences;
 	public String language;
 	public String uuid;
+	public boolean skipReports;
 
 	/** easily accessible scanner configuration */
 	private ScannerConfig scannerConfig;
@@ -40,6 +39,7 @@ public final class Config {
 			uuid = UUID.randomUUID().toString();
 			preferences.put("uuid", uuid);
 		}
+		skipReports = preferences.getBoolean("skipReports", false);
 	}
 
 	/**

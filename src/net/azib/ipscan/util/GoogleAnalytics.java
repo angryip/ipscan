@@ -23,6 +23,7 @@ public class GoogleAnalytics {
 	public void report(String type, String content) {
 		try {
 			Config config = Config.getConfig();
+			if (config.skipReports) return;
 			URL url = new URL("https://www.google-analytics.com/collect");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
@@ -57,8 +58,8 @@ public class GoogleAnalytics {
 	static String extractFirstStackFrame(Throwable e) {
 		StackTraceElement[] stackTrace = e.getStackTrace();
 		StackTraceElement element = null;
-		for (int i = 0; i < stackTrace.length; i++) {
-			element = stackTrace[i];
+		for (StackTraceElement stackTraceElement : stackTrace) {
+			element = stackTraceElement;
 			if (element.getClassName().startsWith("net.azib.ipscan")) break;
 		}
 		return e.toString() + (element == null ? "" : "\n" +
