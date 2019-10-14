@@ -30,9 +30,9 @@ BOOL execute(LPSTR cmdline, DWORD *exitCode) {
 }
 
 void buildCmdLine(LPSTR buf, LPCSTR ownFilename, LPSTR args) {
-	strncat(buf, " -jar ", MAX_PATH - strlen(buf));
+	strncat(buf, " -jar \"", MAX_PATH - strlen(buf));
 	strncat(buf, ownFilename, MAX_PATH - strlen(buf));
-	strncat(buf, " ", MAX_PATH - strlen(buf));
+	strncat(buf, "\" ", MAX_PATH - strlen(buf));
 	strncat(buf, args, MAX_PATH - strlen(buf));
 }
 
