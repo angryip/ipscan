@@ -1,6 +1,6 @@
 Changes in 3.6.2:
 - New launcher for Windows that respects JAVA_HOME and PATH environment variables and thus works with AdoptOpenJDK
-- Fix detection of 32/64-bit JVM in Windows installer
+- Improve detection of 32/64-bit JVM in Windows installer. Assume 64-bit if detection fails (was 32-bit before)
 - Checkbox allowing opt-out of crash reports to Google Analytics to Getting Started dialog
 - Mac vendors updates
 
