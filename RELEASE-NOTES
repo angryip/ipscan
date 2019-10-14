@@ -1,4 +1,10 @@
-Changes 3.6.1:
+Changes in 3.6.2:
+- New launcher for Windows that respects JAVA_HOME and PATH environment variables and thus works with AdoptOpenJDK
+- Fix detection of 32/64-bit JVM in Windows installer
+- Checkbox allowing opt-out of crash reports to Google Analytics to Getting Started dialog
+- Mac vendors updates
+
+Changes in 3.6.1:
 - Fix exporting for Mac
 - Improve display of unexpected errors on Mac
 - Mac vendors updated
