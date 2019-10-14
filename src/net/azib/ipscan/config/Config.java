@@ -16,7 +16,7 @@ public final class Config {
 	private Preferences preferences;
 	public String language;
 	public String uuid;
-	public boolean skipReports;
+	public boolean allowReports;
 
 	/** easily accessible scanner configuration */
 	private ScannerConfig scannerConfig;
@@ -39,7 +39,7 @@ public final class Config {
 			uuid = UUID.randomUUID().toString();
 			preferences.put("uuid", uuid);
 		}
-		skipReports = preferences.getBoolean("skipReports", false);
+		allowReports = preferences.getBoolean("allowReports", true);
 	}
 
 	/**
@@ -55,6 +55,7 @@ public final class Config {
 	public void store() {
 		preferences.put("language", language);
 		preferences.put("uuid", uuid);
+		preferences.putBoolean("allowReports", allowReports);
 		scannerConfig.store();
 		guiConfig.store();
 		favoritesConfig.store();

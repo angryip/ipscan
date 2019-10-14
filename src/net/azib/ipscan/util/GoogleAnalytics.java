@@ -10,6 +10,7 @@ import java.net.URLEncoder;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.WARNING;
+import static net.azib.ipscan.config.Config.getConfig;
 
 /**
  * Utility class to send statistics to Google Analytics.
@@ -22,8 +23,8 @@ public class GoogleAnalytics {
 
 	public void report(String type, String content) {
 		try {
-			Config config = Config.getConfig();
-			if (config.skipReports) return;
+			Config config = getConfig();
+			if (!config.allowReports) return;
 			URL url = new URL("https://www.google-analytics.com/collect");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");

@@ -21,6 +21,8 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static net.azib.ipscan.config.Labels.getLabel;
+
 /**
  * The main executable class.
  * It initializes all the needed stuff and launches the user interface.
@@ -82,7 +84,7 @@ public class Main {
 					String localizedMessage = getLocalizedMessage(e);
 					showMessage(mainWindow,
 							e instanceof UserErrorException ? SWT.ICON_WARNING : SWT.ICON_ERROR,
-							Labels.getLabel(e instanceof UserErrorException ? "text.userError" : "text.error"), localizedMessage);
+							getLabel(e instanceof UserErrorException ? "text.userError" : "text.error"), localizedMessage);
 				}
 			}
 
@@ -155,7 +157,7 @@ public class Main {
 			System.err.println(usageText);
 		}
 		else {
-			InfoDialog dialog = new InfoDialog(Version.NAME, Labels.getLabel("title.commandline"));
+			InfoDialog dialog = new InfoDialog(Version.NAME, getLabel("title.commandline"));
 			dialog.setMessage(usageText);
 			dialog.open();
 		}
@@ -175,7 +177,7 @@ public class Main {
 			else {
 				String exceptionClassName = e.getClass().getSimpleName();
 				String originalMessage = e.getMessage();
-				localizedMessage = Labels.getLabel("exception." + exceptionClassName + (originalMessage != null ? "." + originalMessage : ""));
+				localizedMessage = getLabel("exception." + exceptionClassName + (originalMessage != null ? "." + originalMessage : ""));
 			}
 			// add cause summary, if it exists
 			if (e.getCause() != null) {

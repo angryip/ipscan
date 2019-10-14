@@ -1,6 +1,5 @@
 package net.azib.ipscan.gui;
 
-import net.azib.ipscan.config.Labels;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.*;
@@ -8,10 +7,15 @@ import org.eclipse.swt.widgets.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.azib.ipscan.config.Config.getConfig;
+import static net.azib.ipscan.config.Labels.getLabel;
+import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
+
 public class GettingStartedDialog extends AbstractModalDialog {
 	private int activePage;
 	private List<String> texts = new ArrayList<>();
 	private Text gettingStartedText;
+	private Button allowReports;
 	private Button closeButton;
 	private Button nextButton;
 
@@ -19,7 +23,7 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		int num = 1;
 		try {
 			while (true) {
-				texts.add(Labels.getLabel("text.gettingStarted" + num++));
+				texts.add(getLabel("text.gettingStarted" + num++));
 			}
 		}
 		catch (Exception noMoreTexts) {}
@@ -36,7 +40,7 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
-		shell.setText(Labels.getLabel("title.gettingStarted"));
+		shell.setText(getLabel("title.gettingStarted"));
 		shell.setSize(new Point(500, 300));
 
 		Label iconLabel = new Label(shell, SWT.ICON);
@@ -48,15 +52,22 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		}		
 		iconLabel.pack();
 		int leftBound = iconLabel.getBounds().width + 20;
-				
+
+		allowReports = new Button(shell, SWT.CHECK);
+		allowReports.setText(getLabel("preferences.allowReports"));
+		allowReports.pack();
+		allowReports.setSelection(getConfig().allowReports);
+		allowReports.addSelectionListener(widgetSelectedAdapter(e -> getConfig().allowReports = allowReports.getSelection()));
+
 		closeButton = new Button(shell, SWT.NONE);
-		closeButton.setText(Labels.getLabel("button.close"));
+		closeButton.setText(getLabel("button.close"));
 
 		nextButton = new Button(shell, SWT.NONE);
-		nextButton.setText(Labels.getLabel("button.next"));
+		nextButton.setText(getLabel("button.next"));
 		nextButton.setFocus();
 		
 		positionButtons(nextButton, closeButton);
+		allowReports.setBounds(leftBound, nextButton.getBounds().y, allowReports.getSize().x, nextButton.getBounds().height);
 		
 		gettingStartedText = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
 		gettingStartedText.setBounds(leftBound, 10, shell.getClientArea().width - leftBound - 10, closeButton.getLocation().y - 20);
