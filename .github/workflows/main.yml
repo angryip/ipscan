@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build:
+  build-all:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,9 +25,7 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: '8'
-        architecture: x64
-    - name: Build
-      run: ./gradlew mac
+    - run: ./gradlew mac
 
   build-win:
     runs-on: windows-latest
@@ -37,6 +35,5 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: '8'
-        architecture: x64
-    - name: Build
-      run: ./gradlew win-installer
+        architecture: x32
+    - run: ./gradlew win-installer
