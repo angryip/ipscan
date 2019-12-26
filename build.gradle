@@ -97,6 +97,7 @@ def packageTask(def platform, def moreJars, def moreLibs, Closure doMore) {
         with jar
 
         def rtJar = new File(System.getProperty('java.home') + "/jre/lib/rt.jar")
+        println "Checking if exists: $rtJar"
         if (!rtJar.exists()) rtJar = new File('/usr/lib/jvm/java-11-openjdk-amd64/jmods/java.base.jmod') // try Debian/Ubuntu version of Java 11
         if (!rtJar.exists()) rtJar = new File('/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar') // try Debian/Ubuntu version of Java 8 if current Java doesn't have rt.jar
         if (!rtJar.exists()) rtJar = new File('/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar') // try Debian/Ubuntu version of OpenJDK 8
