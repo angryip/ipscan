@@ -21,11 +21,13 @@ Run jar files with `java -jar <jar-file>`.
 Deb and rpm packages can only be built on Linux (tested on Ubuntu). 
 Building of Windows installer can be done on Linux as well.
 
+`./gradlew all` will build packages for all OS (tested on Ubuntu only, see dependencies below).
+
 ### Dependencies
 
 On Ubuntu install the following packages:
 ```
-sudo apt-get install openjdk-11-jdk rpm fakeroot wine-stable
+sudo apt install openjdk-11-jdk rpm fakeroot wine-stable
 ```
 Note: *wine* is needed for building of Windows installer.
 
