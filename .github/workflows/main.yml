@@ -12,5 +12,7 @@ jobs:
       with:
         java-version: '8'
         architecture: x64
+    - name: Find rt.jar in Zulu
+      run: find $JAVA_HOME
     - name: Build
       run: ./gradlew linux64
