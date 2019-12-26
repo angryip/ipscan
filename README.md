@@ -7,7 +7,7 @@ IntelliJ IDEA is recommended for coding (Community Edition is fine).
 
 Projects supports building for Linux, Windows and Mac OS X.
 
-## Building [![Build Status](https://travis-ci.org/angryip/ipscan.svg?branch=master)](https://travis-ci.org/angryip/ipscan)
+## Building [![Actions Status](https://github.com/angryip/ipscan/workflows/CI/badge.svg)](https://github.com/angryip/ipscan/actions)
 
 Use Gradle for building a package for your desired platform:
 
