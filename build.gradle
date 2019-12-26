@@ -103,7 +103,7 @@ def packageTask(def platform, def moreJars, def moreLibs, Closure doMore) {
         // if (!rtJar.exists()) rtJar = new File('/usr/lib/jvm/java-11-openjdk-amd64/jmods/java.base.jmod') // Java 9+ needs more jmods (awt)
 
         if (rtJar.exists()) {
-            print "Using $rtJar for proguard minimization"
+            println "Using $rtJar for proguard minimization"
             finalizedBy minimizeTask(rtJar, platform, doMore)
         }
         else {
