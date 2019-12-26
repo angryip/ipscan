@@ -16,3 +16,19 @@ jobs:
       run: sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install wine32
     - name: Build
       run: xvfb-run -a ./gradlew test all
+
+  build-mac:
+    runs-on: mac-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build
+      run: ./gradlew mac
+
+  build-win:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build
+      run: ./gradlew win-installer
