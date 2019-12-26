@@ -36,4 +36,4 @@ jobs:
       with:
         java-version: '8'
         architecture: x86
-    - run: ./gradlew win-installer
+    - run: ./gradlew test win-installer
