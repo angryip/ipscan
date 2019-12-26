@@ -12,5 +12,7 @@ jobs:
       with:
         java-version: '8'
         architecture: x64
+    - name: Deps
+      run: sudo apt-get install rpm wine fakeroot
     - name: Build
-      run: ./gradlew test linux64
+      run: xvfb-run -a ./gradlew test all
