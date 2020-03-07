@@ -81,7 +81,6 @@ public class Main {
 					if (e instanceof SWTException && e.getCause() instanceof Exception)
 						e = (Exception) e.getCause();
 
-					// display a nice error message
 					String localizedMessage = getLocalizedMessage(e);
 					showMessage(mainWindow,
 							e instanceof UserErrorException ? SWT.ICON_WARNING : SWT.ICON_ERROR,
@@ -89,10 +88,7 @@ public class Main {
 				}
 			}
 
-			// save config on exit
 			Config.getConfig().store();
-
-			// dispose the native objects
 			display.dispose();
 		}
 		catch (UnsatisfiedLinkError e) {
