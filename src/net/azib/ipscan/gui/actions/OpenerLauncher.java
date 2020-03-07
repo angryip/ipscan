@@ -59,6 +59,9 @@ public class OpenerLauncher {
 					}
 				}
 			}
+			catch (UserErrorException e) {
+				throw e;
+			}
 			catch (Exception e) {
 				throw new UserErrorException("opener.failed", openerString);
 			}
