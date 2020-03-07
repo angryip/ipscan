@@ -273,7 +273,7 @@ task info {
     doLast {
         println "This script will build ${project.name} ${version}"
         println "Targets (some may work only on Linux):"
-        println "  all           - runs tests and builds binaries for all OSs"
+        println "  all           - builds binaries for all OSs"
         println "  current       - build for current platform ($platform)"
         println "  linux         - builds only Linux 32-bit binary"
         println "  linux64       - builds only Linux 64-bit binary"
