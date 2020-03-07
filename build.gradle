@@ -266,8 +266,8 @@ task 'win-installer'(dependsOn: ['win32', 'win64']) {
     }
 }
 
-task all(dependsOn: ['clean', 'linux', 'linux64', 'mac', 'win-installer'])
-task current(dependsOn: ['clean', platform])
+task all(dependsOn: ['any', 'linux', 'linux64', 'mac', 'win-installer'])
+task current(dependsOn: [platform])
 
 task info {
     doLast {
