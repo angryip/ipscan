@@ -38,14 +38,14 @@ repositories {
 dependencies {
     compile 'com.google.dagger:dagger:2.19'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.19'
-    compileOnly files("lib/swt-${platform}.jar")
-    compileOnly files('lib/jna.jar')
+    compile files("lib/swt-${platform}.jar")
+    if (platform.startsWith('win')) compile files('lib/jna.jar') else compileOnly files('lib/jna.jar')
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.23.0'
 }
 
 configurations {
-    testImplementation.extendsFrom compileOnly
+    testImplementation.extendsFrom compile
 }
 
 compileJava.options.annotationProcessorGeneratedSourcesDirectory = new File('build/generated')

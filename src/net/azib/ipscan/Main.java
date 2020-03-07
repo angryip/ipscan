@@ -38,7 +38,7 @@ public class Main {
 	static final Logger LOG = LoggerFactory.getLogger();
 
 	/**
-	 * The launching point
+	 * The launcher
 	 * <p/>
 	 * In development, pass the following on the JVM command line:
 	 * <tt>-Djava.util.logging.config.file=config/logging.properties</tt>

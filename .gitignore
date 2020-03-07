@@ -1,8 +1,7 @@
 /out
 /generated
 /test-coverage
-ipscan.iml
-.idea
+/.idea
 /.gradle
 /build
 .DS_Store
