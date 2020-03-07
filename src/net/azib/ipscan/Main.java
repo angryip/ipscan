@@ -11,6 +11,7 @@ import net.azib.ipscan.gui.InfoDialog;
 import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.util.GoogleAnalytics;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTError;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
@@ -99,11 +100,23 @@ public class Main {
 			new GoogleAnalytics().report(e);
 			swingErrorDialog("Failed to load native code: " + e.getMessage() + "\nProbably you are using a binary built for wrong OS or CPU. If 64-bit binary doesn't work for you, try 32-bit version, or vice versa.");
 		}
-		catch (Throwable e) {
-			e.printStackTrace();
-			new GoogleAnalytics().report(e);
-			showMessage(mainWindow, 0, "Fatal Error", e + "\nPlease submit a bug report mentioning your OS and what were you doing.");
+		catch (SWTError e) {
+			if (e.getMessage().contains("gtk_init_check")) {
+				System.err.println(e.toString() + " - probably you are running as `root` and/or don't have access to the X Server. Please run as normal user or with sudo.");
+				new GoogleAnalytics().report(e);
+			}
+			else
+				handleFatalError(mainWindow, e);
 		}
+		catch (Throwable e) {
+			handleFatalError(mainWindow, e);
+		}
+	}
+
+	private static void handleFatalError(MainWindow mainWindow, Throwable e) {
+		e.printStackTrace();
+		new GoogleAnalytics().report(e);
+		showMessage(mainWindow, 0, "Fatal Error", e + "\nPlease submit a bug report mentioning your OS and what were you doing.");
 	}
 
 	private static void swingErrorDialog(String message) {
