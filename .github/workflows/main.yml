@@ -17,6 +17,11 @@ jobs:
     - name: Build
       run: xvfb-run -a ./gradlew test all
 
+    - uses: actions/upload-artifact@v1
+      with:
+        name: Binaries
+        path: build/libs
+
   build-mac:
     runs-on: macos-latest
 
