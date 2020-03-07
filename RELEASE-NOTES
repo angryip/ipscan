@@ -2,6 +2,7 @@ Changes:
 - Windows: use latest NSIS for installer generation, fixing DLL hijacking
 - Linux: add helpful error message when X Session is not available / running under full root in terminal
 - Linux/Ubuntu: fix launching of terminal in openers for newer versions of Gnome
+- Raspbian/ARM: New experimental builds without bundled SWT, using the one provided by system
 - Update Chinese translations
 
 Changes in 3.6.2:
