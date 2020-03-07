@@ -3,7 +3,7 @@
 This is the source code of Angry IP Scanner, licensed with GPL v2. [Official site](https://angryip.org/)
 
 The code is written mostly in Java (currently, source level 1.8).
-IntelliJ IDEA is recommended for coding (Community Edition is fine).
+IntelliJ IDEA is recommended for coding (Community Edition is fine): Import as Gradle project.
 
 Projects supports building for Linux, Windows and Mac OS X.
 

@@ -45,7 +45,7 @@ dependencies {
 }
 
 configurations {
-    testImplementation.extendsFrom compile
+    testImplementation.extendsFrom compileOnly
 }
 
 compileJava.options.annotationProcessorGeneratedSourcesDirectory = new File('build/generated')
