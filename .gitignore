@@ -1,7 +1,6 @@
 /out
 /generated
 /test-coverage
-/.idea
 /.gradle
 /build
 .DS_Store

@@ -1,18 +1,13 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Main" type="Application" factoryName="Application" singleton="true">
-    <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
+  <configuration default="false" name="Main" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="net.azib.ipscan.Main" />
-    <module name="ipscan" />
-    <option name="VM_PARAMETERS" value="-Djava.util.logging.config.file=config/logging.properties" />
-    <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-    <RunnerSettings RunnerId="Debug">
-      <option name="DEBUG_PORT" value="" />
-      <option name="TRANSPORT" value="0" />
-      <option name="LOCAL" value="true" />
-    </RunnerSettings>
-    <RunnerSettings RunnerId="Run" />
-    <ConfigurationWrapper RunnerId="Debug" />
-    <ConfigurationWrapper RunnerId="Run" />
+    <module name="ipscan.main" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="net.azib.ipscan.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
