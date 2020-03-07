@@ -14,21 +14,14 @@ import javax.inject.Inject;
 
 import static net.azib.ipscan.config.Version.*;
 
-/**
- * About Dialog
- *
- * @author Anton Keks
- */
 public class AboutDialog extends AbstractModalDialog {
-
 	@Inject
-	public AboutDialog() {
-	}
+	public AboutDialog() {}
 
 	@Override
 	protected void populateShell() {
 		shell.setText(Labels.getLabel("title.about"));
-		shell.setSize(new Point(400, 393));
+		shell.setSize(new Point(500, 393));
 
 		Label iconLabel = new Label(shell, SWT.ICON);
 		iconLabel.setLocation(10, 10);
@@ -38,11 +31,12 @@ public class AboutDialog extends AbstractModalDialog {
 		iconLabel.pack();
 		int leftBound = iconLabel.getBounds().width + 20;
 
-		String aboutText = Labels.getLabel("text.about");
-		aboutText = aboutText.replace("%NAME", NAME);
-		aboutText = aboutText.replace("%VERSION", getVersion());
-		aboutText = aboutText.replace("%DATE", getBuildDate());
-		aboutText = aboutText.replace("%COPYLEFT", COPYLEFT);
+		String aboutText = Labels.getLabel("text.about")
+			.replace("%NAME", NAME)
+			.replace("%VERSION", getVersion())
+			.replace("%DATE", getBuildDate())
+			.replace("%COPYLEFT", COPYLEFT);
+		
 		Label aboutLabel = new Label(shell, SWT.NONE);
 		aboutLabel.setText(aboutText);
 		aboutLabel.setLocation(leftBound, 10);
@@ -51,9 +45,11 @@ public class AboutDialog extends AbstractModalDialog {
 		Label websiteLabel = createLinkLabel(WEBSITE, WEBSITE);
 		websiteLabel.setLocation(leftBound, 10 + aboutLabel.getBounds().height);
 
-		String systemText = Labels.getLabel("text.about.system");
-		systemText = systemText.replace("%JAVA", System.getProperty("java.vm.vendor") + " " + System.getProperty("java.runtime.version"));
-		systemText = systemText.replace("%OS", System.getProperty("os.name") + " " + System.getProperty("os.version") + " (" + System.getProperty("os.arch") + ")");
+		String systemText = Labels.getLabel("text.about.system")
+			.replace("%JAVA", System.getProperty("java.vm.vendor") + " " + System.getProperty("java.runtime.version"))
+			.replace("%OS", System.getProperty("os.name") + " " + System.getProperty("os.version") + " (" + System.getProperty("os.arch") + ")")
+			.replace("%SWT", SWT.getPlatform() + " " + SWT.getVersion());
+
 		Label systemLabel = new Label(shell, SWT.NONE);
 		systemLabel.setText(systemText);
 		systemLabel.setLocation(leftBound, 20 + aboutLabel.getBounds().height + websiteLabel.getBounds().height);
@@ -100,5 +96,4 @@ public class AboutDialog extends AbstractModalDialog {
 		link.pack();
 		return link;
 	}
-
 }
