@@ -6,20 +6,12 @@
 package net.azib.ipscan;
 
 import net.azib.ipscan.config.*;
-import net.azib.ipscan.core.UserErrorException;
+import net.azib.ipscan.gui.GUI;
 import net.azib.ipscan.gui.InfoDialog;
-import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.util.GoogleAnalytics;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTError;
-import org.eclipse.swt.SWTException;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
 
 import java.security.Security;
 import java.util.Locale;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static net.azib.ipscan.config.Labels.getLabel;
@@ -47,19 +39,14 @@ public class Main {
 	 * <tt>-XstartOnFirstThread</tt>
 	 */
 	public static void main(String... args) {
-		MainWindow mainWindow = null;
+		GUI gui = null;
 		try {
 			long startTime = System.currentTimeMillis();
-			initSystemProperties();
-
-			// this defines the Window class and app name on the Mac
-			Display.setAppName(Version.NAME);
-			Display display = Display.getDefault();
-			LOG.finer("SWT initialized after " + (System.currentTimeMillis() - startTime));
+			gui = new GUI();
+			disableDNSCache();
 
 			Locale locale = Config.getConfig().getLocale();
 			Labels.initialize(locale);
-
 			LOG.finer("Labels and Config initialized after " + (System.currentTimeMillis() - startTime));
 
 			MainComponent mainComponent = DaggerMainComponent.create();
@@ -68,51 +55,33 @@ public class Main {
 
 			processCommandLine(args, mainComponent);
 
-			// create the main window using dependency injection
-			mainWindow = mainComponent.createMainWindow();
-			LOG.fine("Startup time: " + (System.currentTimeMillis() - startTime));
-
-			while (!mainWindow.isDisposed()) {
-				try {
-					if (!display.readAndDispatch())
-						display.sleep();
-				}
-				catch (Exception e) {
-					if (e instanceof SWTException && e.getCause() instanceof Exception)
-						e = (Exception) e.getCause();
-
-					String localizedMessage = getLocalizedMessage(e);
-					showMessage(mainWindow,
-							e instanceof UserErrorException ? SWT.ICON_WARNING : SWT.ICON_ERROR,
-							getLabel(e instanceof UserErrorException ? "text.userError" : "text.error"), localizedMessage);
-				}
-			}
+			gui.showMainWindow(mainComponent);
 
 			Config.getConfig().store();
-			display.dispose();
+			gui.close();
 		}
 		catch (UnsatisfiedLinkError e) {
 			e.printStackTrace();
 			new GoogleAnalytics().report(e);
-			swingErrorDialog("Failed to load native code: " + e.getMessage() + "\nProbably you are using a binary built for wrong OS or CPU. If 64-bit binary doesn't work for you, try 32-bit version, or vice versa.");
+			swingErrorDialog("Failed to load native code: " + e.getMessage() + "\n\nProbably you are using a binary built for wrong OS or CPU. If 64-bit binary doesn't work for you, try 32-bit version, or vice versa.");
 		}
-		catch (SWTError e) {
-			if (e.getMessage().contains("gtk_init_check")) {
-				System.err.println(e.toString() + " - probably you are running as `root` and/or don't have access to the X Server. Please run as normal user or with sudo.");
-				new GoogleAnalytics().report(e);
-			}
-			else
-				handleFatalError(mainWindow, e);
+		catch (NoClassDefFoundError e) {
+			e.printStackTrace();
+			new GoogleAnalytics().report(e);
+			swingErrorDialog("SWT GUI toolkit not available: " + e.toString() + "\n\nIf you are using platform-neutral build, make sure you provide SWT built for your platform manually (e.g. install libswt packages), or please use a platform specific binary.");
 		}
 		catch (Throwable e) {
-			handleFatalError(mainWindow, e);
+			handleFatalError(gui, e);
 		}
 	}
 
-	private static void handleFatalError(MainWindow mainWindow, Throwable e) {
+	private static void handleFatalError(GUI gui, Throwable e) {
 		e.printStackTrace();
 		new GoogleAnalytics().report(e);
-		showMessage(mainWindow, 0, "Fatal Error", e + "\nPlease submit a bug report mentioning your OS and what were you doing.");
+		if (gui != null)
+			gui.showMessage(0, "Fatal Error", e + "\nPlease submit a bug report mentioning your OS and what exactly were you doing.");
+		else
+			swingErrorDialog(e.getMessage());
 	}
 
 	private static void swingErrorDialog(String message) {
@@ -126,23 +95,7 @@ public class Main {
 		}
 	}
 
-	private static void showMessage(MainWindow mainWindow, int flags, String title, String localizedMessage) {
-		try {
-			Shell parent = Display.getDefault().getActiveShell();
-			if (parent == null) parent = mainWindow.getShell();
-			MessageBox messageBox = new MessageBox(parent, SWT.OK | SWT.SHEET | flags);
-			messageBox.setText(title);
-			messageBox.setMessage(localizedMessage);
-			messageBox.open();
-		}
-		catch (Throwable e) {
-			new GoogleAnalytics().report(localizedMessage, e);
-			swingErrorDialog(localizedMessage);
-		}
-	}
-
-	private static void initSystemProperties() {
-		// disable DNS caches
+	private static void disableDNSCache() {
 		Security.setProperty("networkaddress.cache.ttl", "0");
 		Security.setProperty("networkaddress.cache.negative.ttl", "0");
 	}
@@ -171,35 +124,4 @@ public class Main {
 			dialog.open();
 		}
 	}
-
-	/**
-	 * Returns a nice localized message for the passed exception
-	 * in case it is possible, or toString() otherwise.
-	 */
-	static String getLocalizedMessage(Throwable e) {
-		String localizedMessage;
-		try {
-			// try to load localized message
-			if (e instanceof UserErrorException) {
-				localizedMessage = e.getMessage();
-			}
-			else {
-				String exceptionClassName = e.getClass().getSimpleName();
-				String originalMessage = e.getMessage();
-				localizedMessage = getLabel("exception." + exceptionClassName + (originalMessage != null ? "." + originalMessage : ""));
-			}
-			// add cause summary, if it exists
-			if (e.getCause() != null) {
-				localizedMessage += "\n\n" + e.getCause().toString();
-			}
-			LOG.log(Level.FINE, "error", e);
-		}
-		catch (Exception e2) {
-			// fallback to default text
-			localizedMessage = e.toString();
-			// output stack trace to the console
-			LOG.log(Level.SEVERE, "unexpected error", e);
-		}
-		return localizedMessage;
-	}	
 }

@@ -1,4 +1,4 @@
-package net.azib.ipscan;
+package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.feeders.FeederException;
@@ -10,15 +10,14 @@ import java.util.logging.LogRecord;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class MainTest {
-
+public class GUITest {
 	@Test
 	public void getLocalizedMessage() {
 		// unknown exception
-		final boolean wasStackTraceLogged[] = {false};
+		final boolean[] wasStackTraceLogged = {false};
 		Throwable e = new Exception("hello, test!");
-		Main.LOG.setUseParentHandlers(false);
-		Main.LOG.addHandler(new Handler() {
+		GUI.LOG.setUseParentHandlers(false);
+		GUI.LOG.addHandler(new Handler() {
 			public void close() throws SecurityException {
 			}
 			public void flush() {
@@ -27,15 +26,15 @@ public class MainTest {
 				wasStackTraceLogged[0] = true;
 			}
 		});
-		assertEquals(e.toString(), Main.getLocalizedMessage(e));
+		assertEquals(e.toString(), GUI.getLocalizedMessage(e));
 		assertTrue(wasStackTraceLogged[0]);
 		
 		// localized exception
 		assertEquals(Labels.getLabel("exception.FeederException.malformedIP"),
-				Main.getLocalizedMessage(new FeederException("malformedIP")));
+				GUI.getLocalizedMessage(new FeederException("malformedIP")));
 		
 		// message-less localized exception
-		assertEquals(Labels.getLabel("exception.OutOfMemoryError"), 
-				Main.getLocalizedMessage(new OutOfMemoryError()));
+		assertEquals(Labels.getLabel("exception.OutOfMemoryError"),
+				GUI.getLocalizedMessage(new OutOfMemoryError()));
 	}
 }

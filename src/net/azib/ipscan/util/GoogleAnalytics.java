@@ -35,7 +35,7 @@ public class GoogleAnalytics {
 			String payload = "v=1&t=" + type + "&tid=" + Version.GA_ID + "&cid=" + config.getUUID() + "&an=ipscan&av=" + Version.getVersion() +
 					         "&" + contentParam + "=" + URLEncoder.encode(content, "UTF-8") +
 					         "&ul=" + config.getLocale() +
-							 "&vp=" + config.forGUI().mainWindowSize.x + "x" + config.forGUI().mainWindowSize.y +
+							 "&vp=" + config.forGUI().mainWindowSize[0] + "x" + config.forGUI().mainWindowSize[1] +
 							 "&cd1=" + URLEncoder.encode(System.getProperty("os.name") + " " + System.getProperty("os.version") + " " + System.getProperty("os.arch"), "UTF-8") +
 							 "&cd2=" + URLEncoder.encode("Java " + System.getProperty("java.version"), "UTF-8");
 			os.write(payload.getBytes());
@@ -57,6 +57,7 @@ public class GoogleAnalytics {
 	}
 
 	static String extractFirstStackFrame(Throwable e) {
+		if (e == null) return "";
 		StackTraceElement[] stackTrace = e.getStackTrace();
 		StackTraceElement element = null;
 		for (StackTraceElement stackTraceElement : stackTrace) {
