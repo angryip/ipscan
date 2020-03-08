@@ -29,10 +29,10 @@ public class GUIConfig {
 	public boolean showScanStats;
 	public boolean askScanConfirmation;
 	
-	public Point mainWindowSize;
+	public int[] mainWindowSize;
 	public boolean isMainWindowMaximized;
 	
-	public Point detailsWindowSize;
+	public int[] detailsWindowSize;
 	
 	public enum DisplayMethod {ALL, ALIVE, PORTS}
 
@@ -52,13 +52,8 @@ public class GUIConfig {
 		askScanConfirmation = preferences.getBoolean("askScanConfirmation", true);
 
 		isMainWindowMaximized = preferences.getBoolean("windowMaximized", false);
-		mainWindowSize = new Point(
-			preferences.getInt("windowWidth", 800),
-			preferences.getInt("windowHeight", 450));
-		
-		detailsWindowSize = new Point(
-			preferences.getInt("detailsWidth", 400),
-			preferences.getInt("detailsHeight", 300));
+		mainWindowSize = new int[] {preferences.getInt("windowWidth", 800), preferences.getInt("windowHeight", 450)};
+		detailsWindowSize = new int[] {preferences.getInt("detailsWidth", 400), preferences.getInt("detailsHeight", 300)};
 	}
 
 	public void store() {
@@ -72,27 +67,34 @@ public class GUIConfig {
 
 		preferences.putBoolean("windowMaximized", isMainWindowMaximized);
 		if (!isMainWindowMaximized) {
-			preferences.putInt("windowWidth", mainWindowSize.x);
-			preferences.putInt("windowHeight", mainWindowSize.y);
+			preferences.putInt("windowWidth", mainWindowSize[0]);
+			preferences.putInt("windowHeight", mainWindowSize[1]);
 		}
 		
-		preferences.putInt("detailsWidth", detailsWindowSize.x);
-		preferences.putInt("detailsHeight", detailsWindowSize.y);
+		preferences.putInt("detailsWidth", detailsWindowSize[0]);
+		preferences.putInt("detailsHeight", detailsWindowSize[1]);
+	}
+
+	public Point getDetailsWindowSize() {
+		return new Point(detailsWindowSize[0], detailsWindowSize[1]);
+	}
+
+	public void setDetailsWindowSize(Point size) {
+		detailsWindowSize = new int[] {size.x, size.y};
 	}
 
 	public Point getMainWindowSize() {
-		return mainWindowSize;
+		return new Point(mainWindowSize[0], mainWindowSize[1]);
 	}
 
 	public void setMainWindowSize(Point size, boolean isMaximized) {
 		if (!isMaximized) {
-			mainWindowSize = size;
+			mainWindowSize = new int[] {size.x, size.y};
 		}
 		isMainWindowMaximized = isMaximized;
 	}
 
 	/**
-	 * @param fetcher
 	 * @return column width corresponding to a fetcher
 	 */
 	public int getColumnWidth(Fetcher fetcher) {
@@ -112,8 +114,6 @@ public class GUIConfig {
 	
 	/**
 	 * Persist the width of a column corresponding to a fetcher
-	 * @param fetcher
-	 * @param width
 	 */
 	public void setColumnWidth(Fetcher fetcher, int width) {
 		preferences.putInt("columnWidth." + fetcher.getId(), width);

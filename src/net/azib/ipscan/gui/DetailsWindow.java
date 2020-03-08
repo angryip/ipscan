@@ -49,7 +49,7 @@ public class DetailsWindow extends AbstractModalDialog {
 	protected void populateShell() {
 		shell.setText(Labels.getLabel("title.details"));
 		shell.setLayout(LayoutHelper.formLayout(3, 3, 3));
-		shell.setSize(guiConfig.detailsWindowSize);
+		shell.setSize(guiConfig.getDetailsWindowSize());
 
 		resultIndex = resultTable.getSelectionIndex();
 		ScanningResult result = resultTable.getSelectedResult();
@@ -78,7 +78,7 @@ public class DetailsWindow extends AbstractModalDialog {
 		shell.layout();
 		detailsText.forceFocus();
 
-		shell.addListener(SWT.Close, event -> guiConfig.detailsWindowSize = shell.getSize());
+		shell.addListener(SWT.Close, event -> guiConfig.setDetailsWindowSize(shell.getSize()));
 	}
 	
 	class CommentsTextListener implements FocusListener, ModifyListener {
