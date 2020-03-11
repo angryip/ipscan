@@ -193,11 +193,6 @@ def rpm(def platform, def arch) {
     ant.delete(dir: dist)
 }
 
-packageTask('linux', [], 'ext/rocksaw/lib/linux/librocksaw.so') {
-    deb('linux', 'i386')
-    rpm('linux', 'i386')
-}
-
 packageTask('linux64', [], 'ext/rocksaw/lib/linux64/librocksaw.so') {
     deb('linux64', 'amd64')
     rpm('linux64', 'x86_64')
@@ -267,7 +262,7 @@ task 'win-installer'(dependsOn: ['win32', 'win64']) {
     }
 }
 
-task all(dependsOn: ['any', 'linux', 'linux64', 'mac', 'win-installer'])
+task all(dependsOn: ['any', 'linux64', 'mac', 'win-installer'])
 task current(dependsOn: [platform])
 
 task info {
@@ -276,7 +271,6 @@ task info {
         println "Targets (some may work only on Linux):"
         println "  all           - builds binaries for all OSs"
         println "  current       - build for current platform ($platform)"
-        println "  linux         - builds only Linux 32-bit binary"
         println "  linux64       - builds only Linux 64-bit binary"
         println "  any           - doesn't bundle SWT, making it possible to run on ARM/Raspbian with libswt provided by OS (Experimental)"
         println "  mac           - builds only Mac binary"
