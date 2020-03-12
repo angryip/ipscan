@@ -31,6 +31,9 @@ jobs:
       with:
         java-version: '8'
     - run: ./gradlew mac
+      env:
+        APPLE_USER: ${{ secrets.APPLE_USER }}
+        APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
 
   build-win:
     runs-on: windows-latest
