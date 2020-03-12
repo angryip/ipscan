@@ -27,7 +27,7 @@ public class OpenersConfig extends NamedListConfig {
 			if (Platform.WINDOWS) add(labels.get("opener.netbios"), new Opener("\\\\${fetcher.ip}", false, null));
 			add(labels.get("opener.web"), new Opener("http://${fetcher.hostname}/", false, null));			
 			add(labels.get("opener.ftp"), new Opener("ftp://${fetcher.hostname}/", false, null));
-			add(labels.get("opener.telnet"), new Opener("telnet ${fetcher.ip}", true, null));
+			if (!Platform.WINDOWS) add(labels.get("opener.telnet"), new Opener("telnet ${fetcher.ip}", true, null));
 			add(labels.get("opener.ping"), new Opener("ping ${fetcher.ip}", true, null));
 			add(labels.get("opener.traceroute"), new Opener((Platform.WINDOWS ? "tracert" : Platform.LINUX ? "tracepath" : "traceroute") + " ${fetcher.ip}", true, null));
 			if (!Platform.WINDOWS) add(labels.get("opener.ssh"), new Opener("ssh ${fetcher.ip}", true, null));
