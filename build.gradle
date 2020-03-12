@@ -224,10 +224,28 @@ packageTask('mac', [], []) {
         ant.replacefilter(token: "VERSION", value: version)
     }
 
+    def zipName = "${dist}/${project.name}-mac-${version}.zip"
     ant.zip(destfile: "${dist}/${project.name}-mac-${version}.zip") {
         ant.zipfileset(dir: "${dist}/${name}.app", excludes: "Contents/MacOS/ipscan", prefix: "${name}.app")
         // this one should be executable
         ant.zipfileset(dir: "${dist}/${name}.app", includes: "Contents/MacOS/ipscan", prefix: "${name}.app", filemode: "755")
+    }
+
+    if (System.getenv("APPLE_USER")) {
+        // TODO: https://developer.apple.com/documentation/xcode/notarizing_macos_software_before_distribution/customizing_the_notarization_workflow
+        println("Sending zip file to Apple for notarization")
+        ant.exec(executable: "xcrun") {
+            ant.arg(value: "altool")
+            ant.arg(value: "--notarize-app")
+            ant.arg(value: "--primary-bundle-id")
+                ant.arg(value: "net.azib.ipscan.zip")
+            ant.arg(value: "--username")
+                ant.arg(value: System.getenv("APPLE_USER"))
+            ant.arg(value: "--password")
+                ant.arg(value: System.getenv("APPLE_PASSWORD"))
+            ant.arg(value: "--file")
+                ant.arg(value: zipName)
+        }
     }
 
     ant.delete(dir: "${dist}/${name}.app")
