@@ -30,7 +30,7 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: '8'
-    - run: ./gradlew mac
+    - run: ./gradlew mac --info
       env:
         APPLE_USER: ${{ secrets.APPLE_USER }}
         APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
