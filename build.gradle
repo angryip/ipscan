@@ -237,6 +237,14 @@ packageTask('mac', [], []) {
         println("Sending zip file to Apple for notarization")
         ant.exec(executable: "xcrun") {
             ant.arg(value: "altool")
+            ant.arg(value: "--list-providers")
+            ant.arg(value: "--username")
+            ant.arg(value: System.getenv("APPLE_USER"))
+            ant.arg(value: "--password")
+            ant.arg(value: System.getenv("APPLE_PASSWORD"))
+        }
+        ant.exec(executable: "xcrun") {
+            ant.arg(value: "altool")
             ant.arg(value: "--notarize-app")
             ant.arg(value: "--primary-bundle-id")
                 ant.arg(value: "net.azib.ipscan.zip")
