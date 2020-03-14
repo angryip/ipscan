@@ -4,6 +4,7 @@ Changes in 3.7.0:
 - Linux: add helpful error message when X Session is not available / running under full root in terminal
 - Linux/Ubuntu: fix launching of terminal in openers for newer versions of Gnome
 - Raspbian/ARM: New experimental builds without bundled SWT, using the one provided by system
+- Updated SWT for all 64-bit platforms
 - Updated Chinese translations
 - Mac vendors updated
 
