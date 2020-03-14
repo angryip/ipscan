@@ -4,7 +4,6 @@ import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.gui.actions.BrowserLauncher;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Label;
@@ -86,12 +85,12 @@ public class AboutDialog extends AbstractModalDialog {
 
 	private Label createLinkLabel(final String text, final String url) {
 		final Label link = new Label(shell, SWT.NONE);
-		link.setForeground(new Color(null, 0, 0, 0xCC));
+		link.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_BLUE));
 		link.setCursor(shell.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
 		link.setText(text);
 		link.addListener(SWT.MouseUp, event -> {
 			BrowserLauncher.openURL(url);
-			link.setForeground(new Color(null, 0x88, 0, 0xAA));
+			link.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_MAGENTA));
 		});
 		link.pack();
 		return link;

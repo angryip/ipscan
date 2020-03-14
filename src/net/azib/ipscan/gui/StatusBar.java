@@ -116,7 +116,7 @@ public class StatusBar {
 		if (!threadsText.isDisposed()) { 
 			boolean maxThreadsReached = runningThreads == scannerConfig.maxThreads;
 			if (maxThreadsReachedBefore || maxThreadsReached) {
-				Color newColor = threadsText.getDisplay().getSystemColor(maxThreadsReached ? SWT.COLOR_DARK_RED : SWT.COLOR_WIDGET_FOREGROUND);
+				Color newColor = threadsText.getDisplay().getSystemColor(maxThreadsReached ? SWT.COLOR_RED : SWT.COLOR_WIDGET_FOREGROUND);
 				threadsText.setForeground(newColor);
 			}
 			maxThreadsReachedBefore = maxThreadsReached;
