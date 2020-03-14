@@ -2421,7 +2421,7 @@
 00098Eipcas
 00098FCetacean
 000990ACKSYS&
-000991GE Fanuc Automation Manufacturing
+000991Intelligent Platforms
 000992InterEpoch
 000993Visteon
 000994Cronyx Engineering
@@ -2544,7 +2544,7 @@
 000A0ASUNIX
 000A0BSealevel
 000A0CScientific Research
-000A0DFCI Deutschland
+000A0DAmphenol
 000A0EInvivo Research
 000A0FIlryung Telesys
 000A10FAST media integrations
@@ -3093,7 +3093,7 @@
 000C2FSeorimTechnology
 000C30Cisco
 000C31Cisco
-000C32Avionic Design Development
+000C32Avionic Design
 000C33Compucase Enterprise
 000C34Vixen
 000C35KaVo Dental GmbH &
@@ -3266,14 +3266,14 @@
 000CDCBECS
 000CDDAOS
 000CDEABB STOTZ-KONTAKT
-000CDFPULNiX America
+000CDFJAI Manufacturing
 000CE0Trek Diagnostics
 000CE1The Open Group
 000CE2Rolls-Royce
 000CE3OptionN.V.
 000CE4NeuroCom
 000CE5ARRIS Group
-000CE6Meru
+000CE6Fortinet
 000CE7MediaTek
 000CE8GuangZhou AnJuBao
 000CE9BLOOMBERG L.P.
@@ -3479,7 +3479,7 @@
 000DB1JapanService
 000DB2Ammasso
 000DB3SDOCorperation
-000DB4NETASQ
+000DB4Stormshield
 000DB5GLOBALSAT
 000DB6Broadcom
 000DB7SANKO ELECTRIC CO,.LTD
@@ -3798,7 +3798,7 @@
 000EF0Festo AG &
 000EF1EZQUEST
 000EF2Infinico
-000EF3Smarthome
+000EF3Smartlabs, Inc. 
 000EF4Kasda
 000EF5iPAC
 000EF6E-TEN Information
@@ -4667,7 +4667,7 @@
 001255NetEffect
 001256LG INFORMATION & COMM.
 001257LeapCommTechnologies
-001258Activis Polska
+001258TechVoIP Sp z o.o.
 001259THERMO ELECTRON KARLSRUHE
 00125AMicrosoft
 00125BKAIMEI ELECTRONI
@@ -4806,7 +4806,7 @@
 0012E0Codan
 0012E1Alliant
 0012E2ALAXALA
-0012E3Agat-RT
+0012E3Agat Soft
 0012E4ZIEHL industrie-electronik GmbH +
 0012E5Time America
 0012E6SPECTEC COMPUTER
@@ -6490,7 +6490,7 @@
 00197416063
 001975Beijing Huisentechnology
 001976Xipher
-001977Aerohive
+001977Extreme
 001978Datum
 001979Nokia Danmark
 00197AMAZeT
@@ -7016,7 +7016,7 @@
 001B82Taiwan Semiconductor
 001B83Finsoft
 001B84Scan Engineering Telecom
-001B85MAN Diesel SE
+001B85MAN Energy
 001B86Bosch Access
 001B87Deepsound Tech.
 001B88Divinet Access
@@ -9807,7 +9807,7 @@
 002671AUTOVISION
 002672AAMP of America
 002673RICOH
-002674Electronic
+002674Hunter Douglas
 002675AztechPte
 002676COMMidt
 002677DEIF
@@ -10819,6 +10819,7 @@
 005CB1Gospell DIGITAL
 005D03Xilinx
 005D73Cisco
+005E0CHMD Global
 005F86Cisco
 006000XYCOM
 006001InnoSys
@@ -11080,9 +11081,11 @@
 0062ECCisco
 006440Cisco
 0064A6Maquet CardioVascular
+006619Huawei Device
 00664BHUAWEI
 006762FiberhomeTechnologies
 0068EBHP
+00692DSunnovo
 006967IEEE
 006B8EShanghai Feixun
 006B9EVizio
@@ -11108,6 +11111,7 @@
 00749CRuijie
 007532INID
 0075E1Ampt
+00763DVeea
 007686Cisco
 0076B1Somfy-Protect By Myfox
 00778DCisco
@@ -11386,6 +11390,7 @@
 008731Cisco
 008764Cisco
 008865Apple
+0088BANC&C
 008A96Cisco
 008B43RFTECH
 008BFCmixi
@@ -11657,6 +11662,7 @@
 0092FASHENZHEN WISKY
 009363Uni-Link
 0094A1F5
+0094ECHuawei Device
 009569LSD Science and
 0097FFHeimann Sensor
 009ACDHUAWEI
@@ -11666,6 +11672,7 @@
 009D8ECARDIAC RECORDERS
 009E1ECisco
 009EC8Xiaomi
+009EEEPositivo Tecnologia S.A.
 00A000CENTILLION
 00A001DRS Signal
 00A002LEEDS & NORTHRUP AUSTRALIA PTY
@@ -11945,6 +11952,7 @@
 00ACE0ARRIS Group
 00AD24D-Link
 00AD63Dedicated Micros Malta
+00ADD5Huawei Device
 00AECDPensando
 00AEFAMurata Manufacturing
 00AF1FCisco
@@ -11998,6 +12006,7 @@
 00B69FLatch
 00B771Cisco
 00B78DNanjing Shining Electric Automation
+00B7A8Heinzinger
 00B810Yichip Microelectronics 
 00B8B3Cisco
 00B8C2Heights Telecom T
@@ -12582,6 +12591,7 @@
 00DD0DUNGERMANN-BASS
 00DD0EUNGERMANN-BASS
 00DD0FUNGERMANN-BASS
+00DD25Shenzhen hechengdong
 00DEFBCisco
 00E000FUJITSU
 00E001STRAND LIGHTING
@@ -12917,10 +12927,12 @@
 041B94Host Mobility
 041BBASamsung
 041D10Dream Ware
+041DC7zte
 041E64Apple
 041E7ADSPWorks
 041EFABISSELL Homecare
 04209APanasonicAVC
+042144Sunitec Enterprise
 04214CInsight Energy Ventures
 042234Wireless Standard Extensions
 0425C5HUAWEI
@@ -12943,6 +12955,7 @@
 0440A9New H3C
 044169GoPro
 0444A1TELECON GALICIA,S.A.
+0445A1NIRIT- Xinwei  Telecom
 044665Murata Manufacturing
 04489AApple
 044A50Ramaxel limited
@@ -12974,6 +12987,7 @@
 045D56camtron industrial
 045EA4SHENZHEN NETIS
 045FA7Shenzhen YichenDevelopment
+045FB9Cisco
 046169MEDIA GLOBAL LINKS
 046273Cisco
 0462D7ALSTOM HYDRO FRANCE
@@ -12989,6 +13003,7 @@
 046E49TaiYearTechnology 
 0470BCGlobalstar
 04714BIEEE
+047295Apple
 0474A1Aligera Equipamentos Digitais Ltda
 047503HUAWEI
 0475F5CSST
@@ -13010,6 +13025,7 @@
 048AE1FLEXTRONICS MANUFACTURINGCO.
 048B42Skspruce
 048C03ThinPADCO.
+048C16HUAWEI
 048C9AHuawei Device
 048D38Netcore
 049162Microchip
@@ -13051,6 +13067,7 @@
 04BC87Shenzhen JustLink
 04BD70HUAWEI
 04BD88Aruba, a Hewlett Packard Enterprise
+04BDBFSamsung
 04BF6DZyxel
 04BFA8ISB
 04C05BTigo Energy
@@ -13113,8 +13130,10 @@
 04F021CompexPte
 04F128HMD Global
 04F13EApple
+04F169Huawei Device
 04F17DTarana Wireless
 04F4BCXena
+04F5F4Proxim Wireless
 04F7E4Apple
 04F8C2Flaircomm Microelectronics
 04F938HUAWEI
@@ -13271,12 +13290,14 @@
 080090SONOMA
 08010FSICHUAN TIANYI COMHEART TELECOMCO.
 08028ENETGEAR
+080342Palo Alto
 080371KRG CORPORATE
 080581Roku
 0805CDDongGuang EnMaiProduct Co.Ltd.
 0808C2Samsung
 0808EAAMSC
 0809B6Masimo
+0809C7Zhuhai Unitech Power
 080A4EPlanet Bingo® — 3rd Rock Gaming®
 080C0BSysMik GmbH Dresden
 080CC9MissionGroup, dba Magma
@@ -13362,6 +13383,7 @@
 0868D0Japan System Design
 0868EAEITO
 086A0AASKEY COMPUTER
+086BD1Shenzhen SuperElectron
 086BD7Silicon Laboratories
 086D41Apple
 086DF2Shenzhen MIMOWAVE
@@ -13388,6 +13410,7 @@
 08849DAmazon
 088620TECNO MOBILE
 08863BBelkin
+0887C6INGRAM MICRO SERVICES
 088C2CSamsung
 088DC8Ryowa
 088E4FSF Software
@@ -13410,9 +13433,12 @@
 08A6BCAmazon
 08A8A1Cyclotronics Power Concepts
 08A95AAzureWave
+08AA55Motorola Mobility LLC, a Lenovo
 08ACA5Benu Video
+08ACC4FMTech
 08AED6Samsung
 08AF78Totus
+08B055ASKEY COMPUTER
 08B258Juniper
 08B2A3Cynny Italia S.r.L.
 08B3AFvivo Mobile
@@ -13427,7 +13453,9 @@
 08BE09Astrol
 08BE77Green
 08BEACEdimax
+08BFA0Samsung
 08C021HUAWEI
+08C0EBMellanox
 08C5E1Samsung
 08C6B3QTECH
 08CA45Toyou Feiji
@@ -13437,6 +13465,7 @@
 08CD9Bsamtec automotive& software
 08D09FCisco
 08D0B7Qingdao Hisense
+08D23EIntel Corporate
 08D29AProformatique
 08D34BTechman
 08D40CIntel Corporate
@@ -13452,7 +13481,7 @@
 08E689Apple
 08E84FHUAWEI
 08EA40SHENZHEN BILIANCO.，LTD
-08EA44Aerohive
+08EA44Extreme
 08EB29Jiangsu Huitong Group
 08EB74HUMAX
 08EBEDWorld Elite
@@ -13467,11 +13496,13 @@
 08F1B7Towerstream Corpration
 08F1EAHewlett Packard Enterprise
 08F2F4Net One Partners
+08F458Huawei Device
 08F4ABApple
 08F69CApple
 08F6F8GET Engineering
 08F728GLOBO Multimedia Sp. z o.o. Sp.k.
 08F7E9HRCP Research and Development Partne
+08F8BCApple
 08FAE0Fohhn Audio
 08FC52OpenXS
 08FC88Samsung
@@ -13486,6 +13517,7 @@
 0C1262zte
 0C130BUniqoteq
 0C1420Samsung
+0C14D2China Mobile Group Device
 0C1539Apple
 0C15C5SDTEC
 0C17F1TELECSYS
@@ -13503,6 +13535,7 @@
 0C2576LONGCHEER
 0C2724Cisco
 0C2755Valuable Techologies
+0C29EFDell
 0C2A69electric imp
 0C2A86FiberhomeTechnologies
 0C2AE7Beijing General Research Institute o
@@ -13510,7 +13543,9 @@
 0C2D89QiiQ
 0C2FB0Samsung
 0C3021Apple
+0C35FEFiberhomeTechnologies
 0C3747zte
+0C3796BIZLINK
 0C37DCHUAWEI
 0C383EFanvil
 0C3956Observator instruments
@@ -13526,6 +13561,7 @@
 0C473DHitron.
 0C47C9Amazon
 0C4885LG
+0C48C6CELESTICA
 0C4933Sichuan JiuzhouTechnology
 0C4B54TP-LINK
 0C4C39MitraStar
@@ -13575,9 +13611,11 @@
 0C8063TP-LINK
 0C8112Private
 0C8126Juniper
+0C817DEEP Elektro-Elektronik Pranjic
 0C8230SHENZHEN MAGNUS
 0C8268TP-LINK
 0C826AWuhan Huagong Genuine Optics
+0C839AHuawei Device
 0C8411A.O. Smith Water Products
 0C8447FiberhomeTechnologies
 0C8484Zenovia
@@ -13680,6 +13718,7 @@
 0CE936ELIMOS
 0CE99AATLS ALTEC
 0CEAC9ARRIS Group
+0CEC80Texas Instruments
 0CEC84Shenzhen TINNO Mobile
 0CEE99Amazon
 0CEEE6Hon Hai Precision Ind.
@@ -13710,6 +13749,8 @@
 100501PEGATRON
 1005B1ARRIS Group
 1005CACisco
+1005E1Nokia
+100645Sagemcom Broadband
 100723IEEE
 1007B6Samsung
 10082CTexas Instruments
@@ -13741,6 +13782,8 @@
 102279ZeroDesktop
 1027BETVIP
 102831Morion
+102959Apple
+1029ABSamsung
 102AB3Xiaomi
 102C6BAMPAK
 102C83XIMEA
@@ -13756,6 +13799,8 @@
 1033BFTechnicolor CH USA
 10364ABoston Dynamics
 103711Simlink
+103917Samsung
+1039E9Juniper
 103B59Samsung
 103D0AHui Zhou Gaoshengda
 103D3EChina Mobile Group Device
@@ -13778,7 +13823,9 @@
 104E89Garmin
 104F58Aruba, a Hewlett Packard Enterprise
 104FA8Sony
+105072Sercomm
 105172HUAWEI
+10521CEspressif
 105611ARRIS Group
 1056CAPeplink
 105887FiberhomeTechnologies
@@ -13799,12 +13846,13 @@
 1063C8Liteon
 1064E2ADFweb.com s.r.l.
 106530Dell
-1065A3Core Brands
+1065A3Panamax
 1065CFIQSIM
 106682NEC Platforms
 10683FLG
 106F3FBUFFALO.
 106FEFAd-Sol Nissin
+1070FDMellanox
 1071F9Cloud Telecomputers
 107223TELLESCOM INDUSTRIA E COMERCIO EM TE
 10768AEoCell
@@ -13875,6 +13923,7 @@
 10C25ATechnicolor CH USA
 10C2BAUTT
 10C37BASUSTek COMPUTER
+10C3ABHUAWEI
 10C586BIO SOUND LAB
 10C595Lenovo
 10C60CDomino UK
@@ -13890,6 +13939,7 @@
 10CD6EFISYS
 10CDAEAvaya
 10CDB6Essential Products
+10CE45Miromico
 10CEA9Texas Instruments
 10D07AAMPAK
 10D0ABzte
@@ -13932,11 +13982,13 @@
 10FEEDTP-LINK
 1100AAPrivate
 111111Private
+140152Samsung
 1402ECHewlett Packard Enterprise
 140467SNK
 140708Private
 1407E0Abrantix
 1409DCHUAWEI
+140AC5Amazon
 140C5BPLNetworks
 140C76FREEBOX
 140D4FFlextronics
@@ -13948,8 +14000,10 @@
 141346Skyworth Digital
 141357ATP
 14144BRuijie
+141459Vodafone Italia S.p.A.
 1414E6Ningbo Sanhe Digital
 14157CTOKYO COSMOS ELECTRIC
+14169DCisco
 14169E Wingtech Group (HongKong）Limited
 141877Dell
 141A51Treetech Sistemas Digitais
@@ -13965,6 +14019,7 @@
 1424754DReplay
 142882MIDICOMCO.LTD
 142971NEMOA
+142A14ShenZhen Selenview Digital
 142BD2Armtel
 142BD6Guangdong Appscomm
 142D27Hon Hai Precision Ind.
@@ -13995,6 +14050,7 @@
 144319Creative&Link
 14444AApollo Seiko
 1446E4AVISTEL
+14472DGUANGDONG OPPO MOBILES
 144802THE YEOLRIM
 14488BShenzhen Doov
 144978Digital Control
@@ -14018,7 +14074,7 @@
 145A83Logi-D
 145BD1ARRIS Group
 145BE1nyantec
-145E45Kaleao
+145E45BambooGroup
 145F94HUAWEI
 146080zte
 1460CBApple
@@ -14033,6 +14089,7 @@
 147373TUBITAK UEKAE
 147411RIM
 147590TP-LINK
+147740Huawei Device
 14780BVarex Imaging Deutschland
 1479F3China Mobile Group Device
 147BACNokia
@@ -14076,9 +14133,11 @@
 14A78BZhejiang Dahua
 14A86BShenZhen Telacom Science&Technology
 14A9E3MST
+14AB56WUXI FUNIDE DIGITAL
 14ABC5Intel Corporate
 14ABF0ARRIS Group
 14ADCAChina Mobile Iot Limited
+14AE85IEEE
 14AEDBVTechs
 14B126Industrial Software
 14B1C8InfiniWing
@@ -14116,6 +14175,7 @@
 14DB85S NET MEDIA
 14DDA9ASUSTek COMPUTER
 14DDE5MPMKVVCL
+14DE39Huawei Device
 14E4ECmLogic
 14E6E4TP-LINK
 14E7C8Integrated Device Sdn. Bhd.
@@ -14130,6 +14190,7 @@
 14F28EShenYang ZhongKe-AllwinCo.LTD
 14F42ASamsung
 14F65AXiaomi
+14F6D8Intel Corporate
 14F893Wuhan FiberHome Digital
 14FEAFSAGITTAR
 14FEB5Dell
@@ -14184,6 +14245,7 @@
 182CB4Nectarsoft
 182D98Jinwoo Industrial system
 183009Woojin Industrial
+18300CHisense Electric
 1831BFASUSTek COMPUTER
 1832A2LAON
 18339DCisco
@@ -14209,12 +14271,14 @@
 1844E6zte
 184617Samsung
 184644Home Control Singapore Pte
+1848CAMurata Manufacturing
 1848D8Fastback
 184A6FAlcatel-Lucent Shanghai Bell
 184B0DRuckus Wireless
 184BDFCaavo
 184C08Rockwell Automation
 184E94MESSOA
+184ECBSamsung
 184F32Hon Hai Precision Ind.
 18502ASOARNEX
 185207SICHUAN TIANYI COMHEART TELECOMCO.
@@ -14226,6 +14290,7 @@
 1855E3Apple
 185644HUAWEI
 185680Intel Corporate
+185869Sailer
 185933Cisco SPVTG
 185936Xiaomi
 185A58Dell
@@ -14248,8 +14313,10 @@
 18686Azte
 186882Beward R&D
 1868CBHangzhou Hikvision Digital
+1869D8HANGZHOU AIXIANGJI
 1869DAChina Mobile Group Device
 186D99Adanis
+186F2DShenzhen Sundray
 18703BHuawei Device
 187117eta plus
 1871D5Hazens AutomotiveCo.
@@ -14260,12 +14327,14 @@
 187A93AMICCOM
 187C0BRuckus Wireless
 187C81Valeo Vision
+187EB9Apple
 187ED5shenzhen kaism
 188090Cisco
 1880CEBarberry
 1880F5Alcatel-Lucent Shanghai Bell
 18810EApple
 188219Alibaba Cloud Computing
+18828CArcadyan
 188331Samsung
 1883BFArcadyan
 188410CoreTrust
@@ -14276,6 +14345,7 @@
 18895BSamsung
 1889A0Wuhan Funshion Online
 1889DFCerebrEX
+188A6AAVPro Global Hldgs
 188B15ShenZhen ZhongRuiJing
 188B45Cisco
 188B9DCisco
@@ -14294,6 +14364,7 @@
 189BA5IEEE
 189C27ARRIS Group
 189C5DCisco
+189E2CHuawei Device
 189EFCApple
 18A28AEssel-T
 18A3E8FiberhomeTechnologies
@@ -14326,6 +14397,7 @@
 18BDADL-TECH
 18BE92Delta
 18BF1CJiangsu Huitong Group
+18C04DGIGA-BYTE
 18C086Broadcom
 18C19DIntegrated Device Sdn. Bhd.
 18C2BFBUFFALO.
@@ -14347,11 +14419,13 @@
 18D6CFKurth
 18D717GUANGDONG OPPO MOBILES
 18D949Qvis Labs
+18D98FHuawei Device
 18D9EFShuttle
 18DBF2Dell
 18DC56Yulong ComputerScientific 
 18DED7HUAWEI
 18DFB4BOSUNG POWERTEC
+18DFC1Aetheros
 18E1CAwanze
 18E288STT Condigi
 18E29Fvivo Mobile
@@ -14383,6 +14457,8 @@
 18FF0FIntel Corporate
 18FF2EShenzhen Rui Ying Da
 1C0042NARI
+1C0219GUANGDONG OPPO MOBILES
+1C05B7Chongqing Trantor
 1C0656IDY
 1C08C1Lg Innotek
 1C0B52EPICOM S.A
@@ -14392,6 +14468,7 @@
 1C11E1Wartsila Finland
 1C129DIEEE PES PSRC/SUB     
 1C12B0Amazon
+1C1338KimballGroup
 1C1386Huawei Device
 1C1448ARRIS Group
 1C14B3Airwire
@@ -14410,6 +14487,7 @@
 1C1E38PCCW Global
 1C1EE3Hui Zhou Gaoshengda
 1C1FD4LifeBEAM
+1C1FF1Huawei Device
 1C20DBHUAWEI
 1C21D1IEEE
 1C232CSamsung
@@ -14442,6 +14520,7 @@
 1C4158Gemalto M2M
 1C4176China Mobile Group Device
 1C427DGUANGDONG OPPO MOBILES
+1C4363HUAWEI
 1C43ECJAPAN CIRCUIT
 1C4419TP-LINK
 1C4455Sieb & Meyer
@@ -14475,6 +14554,7 @@
 1C60DEMERCURYTECHNOLOGIES
 1C62B8Samsung
 1C63B7OpenProducts 237
+1C63BFSHENZHEN BROADTEL  TELECOM
 1C6499Comtrend
 1C659DLiteon
 1C666DHon Hai Precision Ind.
@@ -14489,6 +14569,7 @@
 1C6E76Quarion
 1C6F65GIGA-BYTE
 1C7022Murata Manufacturing
+1C721DDell
 1C7328Connected Home
 1C7370Neotech
 1C740DZyxel
@@ -14517,11 +14598,13 @@
 1C8F8APhase Motion Control SpA
 1C9148Apple
 1C9179Integrated System
+1C919DDongguan Liesheng
 1C9492RUAG Schweiz
 1C955DI-LAX
 1C959FVeethreeAnd Marine
 1C965AWEIFANG GOERTEK
 1C973DPRICOM Design
+1C97C5Ynomia Pty
 1C98ECHewlett Packard Enterprise
 1C994CMurata Manufacturing
 1C9C26Zoovel
@@ -14615,6 +14698,7 @@
 200E95IEC – TC9 WG43
 200F70FOXTECH
 20107AGemtek
+20114EMeteRSit S.R.L.
 201257Most Lucky Trading
 2012D5Scientech Materials
 2013E0Samsung
@@ -14670,6 +14754,7 @@
 204E6BAxxana
 204E71Juniper
 204E7FNETGEAR
+2050E7AMPAK
 2053CARisk
 205476Sony Mobile
 2054FAHUAWEI
@@ -14696,7 +14781,8 @@
 206A8AWistron Infocomm 
 206AFFAtlas Elektronik UK
 206BE7TP-LINK
-206C8AAerohive
+206C8AExtreme
+206D31FIREWALLA
 206E9CSamsung
 206FECBraemac CA
 20719ESF
@@ -14714,7 +14800,9 @@
 207C8FQuanta Microsystems
 207D74Apple
 208058Ciena
+20826AGUANGDONG OPPO MOBILES
 2082C0Xiaomi
+2083F8Advanced Digital Broadcast SA
 20858CAssa
 208593IEEE
 208756SIEMENS
@@ -14732,6 +14820,7 @@
 209AE9Volacomm
 209BA5JIAXING GLEAD
 209BCDApple
+209EF7Extreme
 20A2E4Apple
 20A2E7Lee-Dickens
 20A60CXiaomi
@@ -14790,6 +14879,7 @@
 20E52ANETGEAR
 20E564ARRIS Group
 20E791Siemens Healthcare Diagnostics
+20E874Apple
 20E882zte
 20EAC7SHENZHEN RIOPINE
 20ED74Ability enterprise
@@ -14834,6 +14924,7 @@
 2411D0Chongqing Ehs Science andDevelopment
 241510IEEE
 24166DHUAWEI
+24169DCisco
 24181DSamsung
 241A8CSquarehead
 241B13Shanghai Nutshell
@@ -14864,6 +14955,7 @@
 2440AENIIC
 24418CIntel Corporate
 2442BCAlinco
+2443E2DASANSolutions
 244427HUAWEI
 244597GEMUE Gebr. Mueller Apparatebau
 2446C8Motorola Mobility LLC, a Lenovo
@@ -14891,9 +14983,11 @@
 24615AChina Mobile Group Device
 246278sysmocom -for mobile
 2462ABEspressif
+2462CEAruba, a Hewlett Packard Enterprise
 2464EFCYG SUNRI
 246511AVM
 246880Braveridge.co.
+2468B0Samsung
 24693Einnodisk
 24694AJasmine
 246968TP-LINK
@@ -14971,11 +15065,13 @@
 24C696Samsung
 24C848mywerk Portal
 24C86EChaney Instrument
+24C8D3McWane India Pvt
 24C9A1Ruckus Wireless
 24C9DEGenoray
 24CACBFiberhomeTechnologies
 24CBE7MYK
 24CF21Shenzhen State Micro
+24D0DFApple
 24D13FMEXUS
 24D2CCSmartDrive
 24D3F2zte
@@ -14992,7 +15088,7 @@
 24DEC6Aruba, a Hewlett Packard Enterprise
 24DF6AHUAWEI
 24DFA7Hangzhou BroadLink
-24E124Xiamen UrsaconnCo. 
+24E124 Xiamen Ursalink
 24E271Qingdao Hisense
 24E314Apple
 24E43FWenzhou KunmeiTechnology
@@ -15035,6 +15131,7 @@
 28101BMagnaCom
 28107BD-Link
 2811A5Bose
+2811ECHUAWEI
 281471Lantis
 28162E2Wire
 28167FXiaomi
@@ -15060,6 +15157,7 @@
 2830ACFrontiir
 283152HUAWEI
 283166vivo Mobile
+28317EHongkong Nano IC
 2832C5HUMAX
 283334Huawei Device
 283410Enigma Diagnostics
@@ -15093,8 +15191,9 @@
 285261Cisco
 2852E0LayonElectronic & Telecom
 2852F9Zhongxin Intelligent Times 
+285471Huawei Device
 28565AHon Hai Precision Ind.
-2856C1Harman
+2856C1Harman/Becker Automotive
 285767Dish
 2857BEHangzhou Hikvision Digital
 285AEBApple
@@ -15103,6 +15202,8 @@
 286046LantechGlobal
 286094CAPELEC
 286336Siemens
+2863BDAPTIV SERVICES US
+2864B0Huawei Device
 28656BKeystone Microtech
 2866E3AzureWave
 286AB8Apple
@@ -15143,6 +15244,7 @@
 28993AArista
 2899C7LINDSAY BROADBAND
 289A4BSteelSeries ApS
+289AF7ADVA Opticaling
 289AFATCT mobile
 289E97HUAWEI
 289EDFDanfoss Turbocor Compressors
@@ -15164,6 +15266,7 @@
 28AF0ASirius XM Radio
 28B0CCXenya d.o.o.
 28B2BDIntel Corporate
+28B371Ruckus Wireless
 28B3ABGenmark Automation
 28B448HUAWEI
 28B4FBSprocomm
@@ -15195,6 +15298,7 @@
 28CD1CEspotel
 28CD4CIndividual Computers
 28CD9CShenzhen Dynamax Software Developmen
+28CDC4CHONGQING FUGUI
 28CF08ESSYS
 28CFDAApple
 28CFE9Apple
@@ -15208,12 +15312,14 @@
 28D98AHangzhou Konke
 28D997Yuduan Mobile
 28DB81Shanghai GuaoTechnology
+28DEE5HUAWEI
 28DEF6bioMerieux
 28E02CApple
 28E14CApple
 28E297Shanghai InfoTM Microelectronics
 28E31FXiaomi
 28E347Liteon
+28E34EHUAWEI
 28E476Pi-Coral
 28E608Tokheim
 28E6E9SIS Sat Internet Services
@@ -15228,6 +15334,7 @@
 28EE52TP-LINK
 28EED3Shenzhen Super D
 28EF01Private
+28F033Apple
 28F076Apple
 28F10EDell
 28F3582C - Trifonov &
@@ -15235,6 +15342,7 @@
 28F532ADD-Engineering
 28F537IEEE
 28F606Syes
+28FA7AZhejiang Tmall
 28FAA0vivo Mobile
 28FBD3RagentekGroup
 28FC51The Electric Controller and Manufact
@@ -15266,6 +15374,7 @@
 2C1875Skyworth Digital
 2C18AETrend
 2C1984IDN Telecom
+2C1A01HUAWEI
 2C1A31Electronics
 2C1BC8Hunan TopviewSystem
 2C1CF6Alien Green
@@ -15339,6 +15448,7 @@
 2C55D3HUAWEI
 2C56DCASUSTek COMPUTER
 2C5731 Wingtech Group (HongKong）Limited
+2C5741Cisco
 2C584FARRIS Group
 2C58E8HUAWEI
 2C598ALG
@@ -15386,6 +15496,7 @@
 2C8A72HTC
 2C8BF2Hitachi Metals America
 2C9127Eintechno
+2C91ABAVM Audiovisuelles Marketing und Com
 2C922CKishu Giken Kogyou Company Ltd,.
 2C9464Cincoze
 2C9569ARRIS Group
@@ -15393,12 +15504,14 @@
 2C9662Invenit
 2C9717I.C.Y. B.V.
 2C97B1HUAWEI
+2C97EDSony Imaging Products &
 2C9924ARRIS Group
 2C9AA4Eolo SpA
 2C9D1EHUAWEI
 2C9E5FARRIS Group
 2C9EECJabil Circuit Penang
 2C9EFCCANON
+2C9FFBWistron Neweb
 2CA02FVeroguardPty
 2CA157acromate
 2CA17DARRIS Group
@@ -15431,6 +15544,7 @@
 2CBE97Ingenieurbuero Bickele und Buehler
 2CC260Oracle
 2CC407machineQ
+2CC546Huawei Device
 2CC548IAdea
 2CC5D3Ruckus Wireless
 2CCA0CWITHUS PLANET
@@ -15450,6 +15564,7 @@
 2CD444FUJITSU
 2CD974Hui Zhou Gaoshengda
 2CDCADWistron Neweb
+2CDCD7AzureWave
 2CDD0CDiscovergy
 2CDD95Taicang T&W
 2CDDA3Point Grey Research
@@ -15458,8 +15573,10 @@
 2CE412Sagemcom Broadband
 2CE6CCRuckus Wireless
 2CE871Alert Metalguard ApS
+2CEA7FDell
 2CEDEBAlpheus Digital
 2CEE26Petroleum Geo-Services
+2CF05DMicro-Star INTL
 2CF0A2Apple
 2CF0EEApple
 2CF203EMKO ELEKTRONIK SAN VE TIC
@@ -15538,6 +15655,7 @@
 304C7EPanasonic Electric Works Automation 
 304EC3Tianjin Techua
 304F75DASANSolutions
+305075GN Audio
 3050FDSkyworth Digital
 3051F8BYK-Gardner
 30525ANST
@@ -15576,6 +15694,7 @@
 307C5EJuniper
 307CB2ANOV FRANCE
 307ECBSFR
+30809BNew H3C
 308454GUANGDONG OPPO MOBILES
 3085A9ASUSTek COMPUTER
 30862DArista
@@ -15589,6 +15708,7 @@
 308BB2Cisco
 308CFBDropcam
 308D99Hewlett Packard
+309048Apple
 3090ABApple
 309176Skyworth Digital
 30918FTechnicolor
@@ -15609,11 +15729,14 @@
 30A8DBSony Mobile
 30A9DELG Innotek
 30AABDShanghai Reallytek Information
+30AAE4Huawei Device
+30AB6ASamsung
 30AE7BDeqing Dusun Electron
 30AEA4Espressif
 30AEF6Radio Mobile Access
 30B164PowerInternational
-30B216ABB AG - Power Grids - Grid Automati
+30B216ABB Power Grids Germany AG – Grid 
+30B237GD Midea Air-Conditioning Equipment
 30B3A2Shenzhen Heguang Measurement & Contr
 30B49ETP-LINK
 30B4B8LG
@@ -15622,6 +15745,7 @@
 30B62D Mojo
 30B64FJuniper
 30B7D4Hitron.
+30B9B0Intracom Asia
 30C01BShenzhen Jingxun SoftwareTechnology
 30C3D9ALPS ELECTRIC
 30C507ECI Telecom
@@ -15669,6 +15793,7 @@
 30FB94Shanghai Fangzhiwei Information
 30FBB8HUAWEI
 30FC68TP-LINK
+30FCEBLG
 30FD11MACROTECH 
 30FD38Google
 30FD65HUAWEI
@@ -15696,6 +15821,7 @@
 3413A8Mediplan
 3413E8Intel Corporate
 34145FSamsung
+3414B5Texas Instruments
 341513Texas Instruments
 34159EApple
 3417EBDell
@@ -15720,11 +15846,13 @@
 342D0DSamsung
 342EB6HUAWEI
 342F6EAnywire
+342FBDNintendo
 343111Samsung
 3431C4AVM
 3432E6Panasonic Industrial Devices Europe
 34363BApple
 343759zte
+343794Hamee
 3438AFInlab Software
 3438B7HUMAX
 343D98JinQianMao
@@ -15735,6 +15863,7 @@
 344262Apple
 34466FHiTEM Engineering
 3446ECHuawei Device
+3448EDDell
 34495BSagemcom Broadband
 344B3DFiberhomeTechnologies
 344B50zte
@@ -15745,6 +15874,7 @@
 344F3FIO-Power
 344F5CR&amp;M
 344F69EKINOPS
+345180TCL King Electrical Appliances 
 3451AAJID GLOBAL
 3451C9Apple
 34543CTAKAOKA TOKO
@@ -15774,14 +15904,17 @@
 346F90Cisco
 346F92White Rodgers Division
 346FEDEnovation Controls
+347146Huawei Device
 347563SHENZHEN RF-LINK
 3475C7Avaya
 3476C5I-O DATA DEVICE
+347839zte
 347877O-Net
 3478D7GioneeEquipment
 347916HUAWEI
 347A60ARRIS Group
 347C25Apple
+347DF6Intel Corporate
 347E00Huawei Device
 347E39Nokia Danmark
 347E5CSonos
@@ -15794,7 +15927,7 @@
 3482DEKiio
 348302iFORCOM
 348446Ericsson
-348584Aerohive
+348584Extreme
 34862AHeinz Lackmann GmbH &
 34873DQuectel Wireless Solution
 34885DLogitech Far East
@@ -15867,6 +16000,7 @@
 34CDBEHUAWEI
 34CE00XIAOMI
 34CE94Parsec 
+34CFF6Intel Corporate
 34D09BMobilMAX
 34D0B8IEEE
 34D262SZ DJI
@@ -15890,6 +16024,7 @@
 34E1D1IEEE
 34E2FDApple
 34E380Genexis B.V.
+34E3DAHoval Aktiengesellschaft
 34E42AAutomatic Bar Controls
 34E5ECPalo Alto
 34E6ADIntel Corporate
@@ -15919,6 +16054,7 @@
 34FCEFLG
 380025Intel Corporate
 380118ULVAC
+380146SHENZHEN BILIANCO.，LTD
 380195Samsung
 380197TSST Global
 38019FSHENZHEN FAST
@@ -15941,6 +16077,7 @@
 3810D5AVM Audiovisuelles Marketing und Com
 38144EFiberhomeTechnologies
 3816D1Samsung
+381730Ulrich Lippert GmbH &
 381766PROMZAKAZ
 3817C3Hewlett Packard Enterprise
 3817E1Technicolor CH USA
@@ -15958,6 +16095,7 @@
 3821C7Aruba, a Hewlett Packard Enterprise
 38229DADB Broadband Italia
 3822D6Hangzhou H3C
+3822E2HP
 38256BMicrosoft Mobile
 38262BUTran
 3826CDANDTEK
@@ -16013,6 +16151,7 @@
 386793Asia Optical
 3868A4Samsung
 3868DDINVENTEC
+386A77Samsung
 386B1CSHENZHEN MERCURYTECHNOLOGIES
 386BBBARRIS Group
 386C9BIvy Biomedical
@@ -16031,6 +16170,7 @@
 3881D7Texas Instruments
 388345TP-LINK
 38839ASHENZHEN RF-LINK
+388479Cisco Meraki
 388602Flexoptix
 38892CApple
 3889DCOpticon Sensors Europe B.V.
@@ -16119,6 +16259,8 @@
 38E8EENanjing Youkuo Electric
 38E98CReco S.p.A.
 38EAA7Hewlett Packard
+38EB47HUAWEI
+38EC0DApple
 38EC11Novatek Microelectronics
 38ECE4Samsung
 38ED18Cisco
@@ -16133,6 +16275,7 @@
 38F554HISENSE ELECTRIC
 38F557JOLATA
 38F597home2net
+38F601Solid State Storage
 38F708National Resource Management
 38F73DAmazon
 38F7B2SEOJUN ELECTRIC
@@ -16187,6 +16330,7 @@
 3C26D5Sotera Wireless
 3C2763SLE quality engineering GmbH &
 3C286DGoogle
+3C28A6Alcatel-Lucent Enterprise 
 3C2AF4Brother
 3C2C30Dell
 3C2C94杭州德澜科技有限公司（Han
@@ -16221,15 +16365,18 @@
 3C4E47Etronic
 3C510ECisco
 3C5282Hewlett Packard
+3C5731Cisco
 3C574FChina Mobile Group Device
 3C576CSamsung
 3C57BDKessler Crane
 3C57D5FiveCo
+3C58C2Intel Corporate
 3C591ETCL King Electrical Appliances 
 3C5A37Samsung
 3C5AB4Google
 3C5CC3Shenzhen First Blue Chip
 3C5CC4Amazon
+3C5CF1eero
 3C5EC3Cisco
 3C5F01Synerchip
 3C6104Juniper
@@ -16255,8 +16402,10 @@
 3C7843HUAWEI
 3C7873Airsonics
 3C7A8AARRIS Group
+3C7D0AApple
 3C7DB1Texas Instruments
 3C7F6FTelechips
+3C806BHunan Voc Acoustics
 3C80AARansnet Singapore Pte
 3C81D8Sagemcom Broadband
 3C831ECKD
@@ -16310,6 +16459,7 @@
 3CAE69ESA Elektroschaltanlagen Grimma
 3CB15BAvaya
 3CB17FWattwatchers Pty Ld
+3CB53DHUNAN GOKE MICROELECTRONICS
 3CB6B7vivo Mobile
 3CB72BPLUMgrid
 3CB74BTechnicolor CH USA
@@ -16321,6 +16471,7 @@
 3CBD3EBeijing Xiaomi
 3CBDD8LG
 3CBEE1NIKON
+3CBF60Apple
 3CC079Shenzhen One-Nine IntelligentScience
 3CC0C6d&b audiotechnik
 3CC12CAES
@@ -16344,6 +16495,7 @@
 3CD92BHewlett Packard
 3CD9CEEclipse WiFi
 3CDA2Azte
+3CDA6DTiandy
 3CDCBCSamsung
 3CDD89SOMO& TECH.
 3CDF1ECisco
@@ -16366,12 +16518,14 @@
 3CF52CDSPECIALISTS
 3CF591GUANGDONG OPPO MOBILES
 3CF5CCNew H3C
+3CF652zte
 3CF72ANokia
 3CF748Shenzhen LinsnDevelopment
 3CF7A4Samsung
 3CF808HUAWEI
 3CF862Intel Corporate
 3CFA43HUAWEI
+3CFAD3IEEE
 3CFB5CFiberhomeTechnologies
 3CFB96Emcraft
 3CFDFEIntel Corporate
@@ -16380,6 +16534,7 @@
 40017ACisco
 4001C63COM EUROPE
 40040CA&T
+400589T-Mobile, USA
 4006A0Texas Instruments
 4007C0Railtec
 400D10ARRIS Group
@@ -16395,7 +16550,7 @@
 40169FTP-LINK
 4016FAEKM Metering
 4017E2INTAI
-4018B1Aerohive
+4018B1Extreme
 4018D7Smartronix
 401920Movon
 401B5FWEIFANG GOERTEK
@@ -16407,9 +16562,13 @@
 40270BMobileeco
 402814RFI Engineering
 402B50ARRIS Group
+402B69Kumho Electric
 402BA1Sony Mobile
+402C76IEEE
 402CF4Universal Global Scientific Industri
 402E28MiXTelematics
+402E71Texas Instruments
+402F86LG Innotek
 403004Apple
 403067Conlog 
 40313CXIAOMI
@@ -16420,11 +16579,12 @@
 403DECHUMAX
 403F8CTP-LINK
 404022ZIV
+404028ZIV
 40406BIcomera
 4040A7Sony Mobile
 404229Layer3TV
 4045DASpreadtrum
-40476AAG Acquisition Corp. d.b.a. ASTRO Ga
+40476AAstro Gaming
 4048FDIEEE
 40490FHon Hai Precision Ind.
 40498ASynapticon
@@ -16457,6 +16617,7 @@
 406186MICRO-STAR INT'L
 40618EStella-Green
 406231GIFA
+406234Telink Semiconductor 
 4062B6Tele system
 4062EAChina Mobile Group Device
 4064A4THE FURUKAWA ELECTRIC
@@ -16508,6 +16669,7 @@
 409F87Jide
 409FC7BAEKCHUN I&C
 40A108Motorola
+40A2DBAmazon
 40A3CCIntel Corporate
 40A5EFShenzhen Four Seas Global LinkTechno
 40A677Juniper
@@ -16523,6 +16685,7 @@
 40B0FALG
 40B2C8Nortel
 40B30EIntegrated Device Sdn. Bhd.
+40B31EUniversal
 40B395Apple
 40B3CDChiyoda
 40B3FCLogital Co. Limited 
@@ -16530,12 +16693,14 @@
 40B4F0Juniper
 40B688LEGIC Identsystems
 40B6B1SUNGSAM CO,.Ltd
+40B6E7Huawei Device
 40B7F3ARRIS Group
 40B837Sony Mobile
 40B89AHon Hai Precision Ind.
 40B93CHewlett Packard Enterprise
 40BA61ARIMA
 40BC60Apple
+40BC68Wuhan Funshion Online
 40BC73Cronoplast  S.L.
 40BC8Bitelio
 40BD32Texas Instruments
@@ -16563,12 +16728,14 @@
 40D63CEquitech IndustrialCo.
 40D855IEEE
 40DC9DHAJEN
+40DEADJuniper
 40DF02LINE BIZ Plus
 40E230AzureWave
 40E3D6Aruba, a Hewlett Packard Enterprise
 40E730DEY Storage
 40E793Shenzhen Siviton
 40EACEFOUNDER BROADBANDSERVICE
+40EC99Intel Corporate
 40ECF8Siemens
 40ED98IEEE
 40EEDDHUAWEI
@@ -16585,6 +16752,7 @@
 40F413Rubezh
 40F420SICHUAN TIANYI COMHEART TELECOMCO.
 40F4ECCisco
+40F520Espressif
 40F52ELeica Microsystems 
 40F9D5Tecore
 40FA7FPreh Car Connect
@@ -16600,6 +16768,7 @@
 44070BGoogle
 4409B8Salcomp 
 440CFDNetMan
+4410FEHuizhou Foryou General
 441102EDMI  Europe
 4411C2Telegartner Karl Gartner
 441319WKK
@@ -16652,6 +16821,7 @@
 4448C1Hewlett Packard Enterprise
 444A65Silverflare
 444AB0Zhejiang Moorgen Intelligence
+444ADBApple
 444B5DGE Healthcare
 444B7EFiberhomeTechnologies
 444C0CApple
@@ -16668,6 +16838,7 @@
 445829Cisco SPVTG
 44599FCriticare
 4459E3HUAWEI
+445CE9Samsung
 445D5ESHENZHEN Coolkit
 445ECDRazer
 445EF3TonaliteB.V.
@@ -16694,6 +16865,7 @@
 447098MING HONG
 4473D6Logitech
 44746CSony Mobile
+447654HUAWEI
 44783ESamsung
 447BBBShenzhen YOUHUA
 447BC4DualShineCo.
@@ -16712,6 +16884,7 @@
 4488CBCamcoNV
 448A5BMicro-Star INT'L
 448C52KTIS
+448DBFRhino Mobility
 448E12DT Research
 448E81VIG
 448F17SamsungCo., Ltd. ARTIK
@@ -16728,6 +16901,7 @@
 44A191HUAWEI
 44A42DTCT mobile
 44A466GROUPE LDLC
+44A56ENETGEAR
 44A61EINGRAM MICRO SERVICES
 44A689PROMAXA SA
 44A6E5THINKING
@@ -16757,7 +16931,9 @@
 44C39BOOO RUBEZH NPO
 44C4A9Opticom
 44C56FNGN Easy Satfinder 
+44C65DApple
 44C69BWuhan Feng Tian Information
+44C7FCHuawei Device
 44C874China Mobile Group Device
 44C9A2Greenwald
 44CB8BLG Innotek
@@ -16848,6 +17024,7 @@
 483B38Apple
 483C0CHUAWEI
 483D32Syscor Controls &amp; Automation
+483FDAEspressif
 483FE9HUAWEI
 48435AHUAWEI
 48437CApple
@@ -16863,6 +17040,7 @@
 484BAAApple
 484C86Huawei Device
 484D7EDell
+484EFCARRIS Group
 485073Microsoft
 485169Samsung
 4851B7Intel Corporate
@@ -16890,6 +17068,7 @@
 486B2CBBK EDUCATIONAL
 486B91Fleetwood Group
 486DBBVestel Elektronik San ve Tic. A.Ş.
+486E70Zhejiang Tmall
 486E73Pica8
 486EFBDavit System
 486FD2StorSimple
@@ -16901,6 +17080,9 @@
 48794DSamsung
 487A55ALE
 487ADAHangzhou H3C
+487AF6NCS ELECTRICAL SDN BHD
+487AFFESSYS
+487B5ESMT TELECOMM HK
 487B6BHUAWEI
 487D2ETP-LINK
 488244Life Fitness / Div. of Brunswick
@@ -16918,6 +17100,7 @@
 488D36Arcadyan
 488E42DIGALOG
 488EEFHUAWEI
+488F5ARouterboard.com
 489153Weinmann Geräte für Medizin GmbH +
 4891F6Shenzhen Reach software
 489507GUANGDONG OPPO MOBILES
@@ -16932,6 +17115,7 @@
 48A195Apple
 48A22DShenzhen Huaxuchang Telecom
 48A2B7Kodofon JSC
+48A2E6Resideo
 48A380GioneeEquipment
 48A472Intel Corporate
 48A493TAIYO YUDEN
@@ -16944,9 +17128,11 @@
 48A9D2Wistron Neweb
 48AA5DStoreSystems
 48AD08HUAWEI
+48B02DNVIDIA
 48B253Marketaxess
 48B5A7Glory Horse
 48B620ROLI
+48B8A3Apple
 48B8DEHOMEWINS
 48B977PulseOn
 48B9C2Teletics
@@ -16970,6 +17156,7 @@
 48D0CFUniversal
 48D18EMetis
 48D224Liteon
+48D24FSagemcom Broadband
 48D343ARRIS Group
 48D35DPrivate
 48D539HUAWEI
@@ -16983,7 +17170,9 @@
 48D8FEClarIDy
 48DA96Eddy Smart Home
 48DB50HUAWEI
+48DC2DHUAWEI
 48DCFBNokia
+48DD0Ceero
 48DD9DITEL MOBILE
 48DF1CWuhan NEC Fibre Opticindustry
 48DF37Hewlett Packard Enterprise
@@ -16996,6 +17185,7 @@
 48E9F1Apple
 48EA63Zhejiang Uniview
 48EB30ETERNA
+48EB62Murata Manufacturing
 48EC5BNokia
 48ED80daesung eltec
 48EE07Silver Palm
@@ -17027,6 +17217,7 @@
 4C07C9COMPUTER OFFICE
 4C09B4zte
 4C09D4Arcadyan
+4C0A3DADNACOM
 4C0B3ATCT mobile
 4C0BBEMicrosoft
 4C0DEEJABIL CIRCUIT 
@@ -17064,6 +17255,7 @@
 4C322DTELEDATA
 4C3275Apple
 4C32D9M RuttyPty.
+4C3329Sweroam
 4C334EHIGHTECH
 4C3488Intel Corporate
 4C364EPanasonic Connected
@@ -17074,13 +17266,17 @@
 4C3B74VOGTEC
 4C3C16Samsung
 4C3FD3Texas Instruments
+4C4088SANSHIN
+4C4576China Mobile Information
 4C48DABeijing Autelan
+4C494Fzte
 4C49E3Xiaomi
 4C4B68Mobile Device, Inc. 
 4C4BF9IEEE
 4C4D66Nanjing Jiahao
 4C4E03TCT mobile
 4C4E35Cisco
+4C4FEEOnePlus
 4C5077Huawei Device
 4C5262FujitsuSolutions
 4C5427Linepro Sp. z o.o.
@@ -17097,12 +17293,14 @@
 4C60D5airPointe of New Hampshire
 4C60DENETGEAR
 4C6255SANMINA-SCI SYSTEM DE MEXICO S.A. DE
+4C6371Xiaomi
 4C63EBApplication
 4C64D9Guangdong Leawin Group
 4C65A8IEEE
 4C6641Samsung
 4C6AF6HMD Global
 4C6BE8Apple
+4C6C13IoT Company Solucoes Tecnologicas Lt
 4C6E6EComnect
 4C6F9CGUANGDONG OPPO MOBILES
 4C710CCisco
@@ -17145,10 +17343,11 @@
 4C9E80KYOKKO ELECTRIC
 4C9EE4Hanyang Navicom
 4C9EFFZyxel
-4CA003T-21
+4CA003VITEC
 4CA161Rain Bird
 4CA515BaikalJSC
 4CA56DSamsung
+4CA64DCisco
 4CA74BAlcatel Lucent
 4CA928Insensi
 4CAA16AzureWave
@@ -17171,6 +17370,7 @@
 4CB81CSAM
 4CB82CCambridge Mobile Telematics
 4CB8B5Shenzhen YOUHUA
+4CB911Raisecom
 4CB9C8CONET
 4CBAA3Bison
 4CBB58Chicony
@@ -17184,6 +17384,7 @@
 4CC00Avivo Mobile
 4CC206Somfy
 4CC452Shang Hai Tyd. Electon
+4CC53EZyxel
 4CC602Radios
 4CC681Shenzhen Aisat
 4CC7D6FLEXTRONICS MANUFACTURINGCO.
@@ -17193,6 +17394,7 @@
 4CCBF5zte
 4CCC34Motorola
 4CCC6AMicro-Star INTL
+4CCE2DDanlaw
 4CD08AHUMAX
 4CD0CBHUAWEI
 4CD1A1HUAWEI
@@ -17205,6 +17407,8 @@
 4CDD7DLHP Telematics
 4CDF3DTEAM ENGINEERS ADVANCEINDIA PVT
 4CE173IEEE
+4CE175Cisco
+4CE176Cisco
 4CE19ETECNO MOBILE
 4CE1BBZhuhai HiFocus
 4CE2F1sclak
@@ -17230,6 +17434,7 @@
 4CFACACambridge
 4CFB45HUAWEI
 4CFBFESercomm Japan
+4CFCAATesla
 4CFF12Fuze Entertainment
 500084Siemens Canada
 50008CHong Kongs 
@@ -17249,6 +17454,7 @@
 500FF5TendaCo.,Ltd.Dongguan branch
 5011EBSilverNet
 501395Sichuan AI-Link Technology Co., 
+501408AiNET
 501479iRobot
 5014B5Richfit Information
 5017FFCisco
@@ -17261,6 +17467,7 @@
 501D93HUAWEI
 501E2DStreamUnlimited Engineering
 50206BEmerson ClimateTransportation
+5021ECHuawei Device
 502267PixeLINK
 50252BNethra Imaging
 502690FUJITSU
@@ -17284,6 +17491,7 @@
 503275Samsung
 50338BTexas Instruments
 5033F0YICHEN CO.LTD
+50382FASE Group Chung-Li
 503955Cisco SPVTG
 503A7DAlphaTech PLC Int’l
 503AA0SHENZHEN MERCURYTECHNOLOGIES
@@ -17297,7 +17505,9 @@
 503F98CMITECH
 504061Nokia
 5041B9I-O DATA DEVICE
+5043B9OktoInform RUS
 5045F7Liuhe Intelligence
+50464AHUAWEI
 50465DASUSTek COMPUTER
 5048EBBEIJING HAIHEJINSHENGTECHNOLOGY
 504A5EMasimo
@@ -17308,6 +17518,7 @@
 504F94Loxone
 50502AEgardia
 505065TAKT
+5050A4Samsung
 5050CEHangzhou DianyixiaTechnology
 5051A9Texas Instruments
 5052D2Hangzhou Telin
@@ -17328,6 +17539,7 @@
 506184Avaya
 5061BFCisco
 5061D6Indu-Sol
+5061F6Universal
 506255IEEE
 506313Hon Hai Precision Ind.
 50642BXIAOMI
@@ -17474,7 +17686,7 @@
 50FF20Keenetic
 50FF99IEEE
 540237Teltronic
-540384Hangkong Nano IC
+540384Hongkong Nano IC
 5403F5EBN
 540496Gigawave
 5404A6ASUSTek COMPUTER
@@ -17484,6 +17696,8 @@
 54068BNingbo Deli KebeiCo.LTD
 540955zte
 54098Ddeister
+540DF9Huawei Device
+540E2Dvivo Mobile
 541031SMARTO
 5410ECMicrochip
 54112FSulzer PumpFinland
@@ -17500,6 +17714,7 @@
 541FD5Advantage
 542018Tely Labs
 542160Alula
+54219DSamsung
 5422F8zte
 5425EAHUAWEI
 542696Apple
@@ -17535,6 +17750,7 @@
 5447D3TSAT
 544810Dell
 54489CCDOUBLES
+5448E6Beijing Xiaomi Mobile Software
 544A00Cisco
 544A05wenglor sensoric
 544A16Texas Instruments
@@ -17554,12 +17770,14 @@
 5461EAZaplox
 5462E2Apple
 5464D9Sagemcom Broadband
+546503Quectel Wireless
 5465DEARRIS Group
 54666CShenzhen YOUHUA
 546751Compal Broadband
 546AD8Elster Water Metering
 546C0ETexas Instruments
 546D52TOPVIEW OPTRONICS
+5471DDHuawei Device
 54724FApple
 547398Toyo
 5474E6Webtech Wireless
@@ -17572,6 +17790,7 @@
 547DCDTexas Instruments
 547F54INGENICO
 547FA8TELCO, s.r.o.
+547FBCiodyne
 547FEECisco
 548028Hewlett Packard Enterprise
 54812DPAX Computer
@@ -17582,6 +17801,7 @@
 54880ESamsung
 548922Zelfy
 548998HUAWEI
+548ABACisco
 548CA0Liteon
 548D5AIntel Corporate
 549209HUAWEI
@@ -17613,6 +17833,7 @@
 54A9D4Minibar
 54AB3AQUANTA COMPUTER
 54AE27Apple
+54AED0DASAN, Inc. 
 54B121HUAWEI
 54B203PEGATRON
 54B56CXi'an NovaStar Tech
@@ -17634,6 +17855,7 @@
 54CD10Panasonic Mobile
 54CDA7Fujian Shenzhou
 54CDEEShenZhen Apexis
+54CE69Hikari Trading
 54D0B4Xiamen Four-FaithTechnology
 54D0EDAXIM
 54D163MAX-TECH
@@ -17710,6 +17932,8 @@
 582136KMB, s.r.o.
 5821E9TWPI
 58238CTechnicolor CH USA
+582575HUAWEI
+58278CBUFFALO.
 582AF7HUAWEI
 582BDBPax
 582D34Qingping
@@ -17741,12 +17965,13 @@
 585076Linear Equipamentos Eletronicos SA
 5850ABTLS
 5850E6Best Buy
+5850EDHangzhou Hikvision Digital
 58528AMitsubishi Electric
 5853C0Beijing Guang RuntongDevelopment Com
 5855CAApple
 5856E8ARRIS Group
 58570DDanfoss Solar Inverters
-5859C2Aerohive
+5859C2Extreme
 585FF6zte
 58605FHUAWEI
 586163Quantum Pte.
@@ -17788,13 +18013,16 @@
 588BF3Zyxel
 588D09Cisco
 588D64Xi'an Clevbee
+588E81Silicon Laboratories
 589043Sagemcom Broadband
 5891CFIntel Corporate
 58920DKinetic Avionics
 589396Ruckus Wireless
 5893D8Texas Instruments
 58946BIntel Corporate
+5894B2BrainCo
 5894CFVertex Standard LMR
+58961DIntel Corporate
 589630Technicolor CH USA
 58971ECisco
 5897BDCisco
@@ -17809,6 +18037,7 @@
 58A48EPixArt Imaging
 58A76FiD
 58A839Intel Corporate
+58A87BFitbit
 58AC78Cisco
 58B035Apple
 58B0D4ZuniData
@@ -17887,12 +18116,14 @@
 5C0C0EGuizhou Huaxintong Semiconductor
 5C0CBBCELIZION
 5C0E8BExtreme
+5C0FFBAmino
 5C1193Seal One
 5C1437Thyssenkrupp Aufzugswerke
 5C1515ADVAN
 5C15E1AIDC PTE
 5C16C7Big Switch
 5C1737I-View Now
+5C17CFOnePlus
 5C17D3LGE 
 5C18B5Talon
 5C1A6FCambridge
@@ -17900,11 +18131,13 @@
 5C1DD9Apple
 5C20D0Asoni
 5C22C4DAE EUN ELETRONICS
+5C2316Squirrels Research Labs
 5C2443O-Sung Telecom
 5C2479Baltech
 5C254CAvire Global Pte
 5C260ADell
 5C2623WaveLynx
+5C27D4Shenzhen Qihu Intelligent
 5C2AEF  r2p Asia-Pacific Pty
 5C2BF5Vivint Wireless Inc. 
 5C2E59Samsung
@@ -17938,6 +18171,7 @@
 5C5188Motorola Mobility LLC, a Lenovo
 5C521ENintendo
 5C546DHUAWEI
+5C5578iryx
 5C56ED3pleplayPrivate
 5C571AARRIS Group
 5C57C8Nokia
@@ -17959,6 +18193,7 @@
 5C6A80Zyxel
 5C6B32Texas Instruments
 5C6B4FHello
+5C6BD7Foshan VIOMI Electric Appliance
 5C6D20Hon Hai Precision Ind.
 5C6F4FS.A. SISTEL
 5C70A3LG
@@ -17967,6 +18202,7 @@
 5C7695Technicolor CH USA
 5C7757HaivisionVideo
 5C7776TCT mobile
+5C78F8Huawei Device
 5C7D5EHUAWEI
 5C80B6Intel Corporate
 5C81A7Network Devices Pty
@@ -18000,6 +18236,7 @@
 5CA39DSamsung
 5CA3EBLokel s.r.o.
 5CA48ACisco
+5CA62DCisco
 5CA86AHUAWEI
 5CA933Luma Home
 5CAAFDSonos
@@ -18010,6 +18247,7 @@
 5CB066ARRIS Group
 5CB13ESagemcom Broadband
 5CB15FOceanblue Cloud
+5CB29EASCO Power
 5CB395HUAWEI
 5CB3F6Human
 5CB43EHUAWEI
@@ -18019,8 +18257,11 @@
 5CB6CCNovaComm
 5CB8CBAllis
 5CB901Hewlett Packard
+5CBA2CHewlett Packard Enterprise
 5CBA37Microsoft
+5CBAEFCHONGQING FUGUI
 5CBD9EHONGKONG MIRACLE EAGLE
+5CC1D7Samsung
 5CC213Fr. Sauter
 5CC307HUAWEI
 5CC5D4Intel Corporate
@@ -18032,6 +18273,7 @@
 5CCA1AMicrosoft Mobile
 5CCA32Theben
 5CCAD3CHIPSEA
+5CCB99Samsung
 5CCBCAFUJIAN STAR-NET
 5CCCA0Gridwiz
 5CCCFFTechroutesPvt
@@ -18052,6 +18294,7 @@
 5CE0C5Intel Corporate
 5CE0CAFeiTian United  System
 5CE0F6NIC.br- Nucleo de Informacao e Coord
+5CE176Cisco
 5CE223Delphin
 5CE286Nortel
 5CE28CZyxel
@@ -18119,6 +18362,7 @@
 601971ARRIS Group
 601D0FMidnite Solar
 601D91Motorola Mobility LLC, a Lenovo
+601D9DSichuan AI-Link
 601E02EltexAlatau
 602101GUANGDONG OPPO MOBILES
 602103I4VINE
@@ -18177,6 +18421,7 @@
 606453AOD
 6064A1RADiflow
 606720Intel Corporate
+60684ESamsung
 606944Apple
 60699Bisepos
 606BBDSamsung
@@ -18193,6 +18438,7 @@
 607688Velodyne
 607771Texas Instruments
 6077E2Samsung
+607ECDHUAWEI
 607EDDMicrosoft Mobile
 60812BCustom Control Concepts
 6081F9Helium
@@ -18267,6 +18513,7 @@
 60CBFBAirScape
 60CDA9Abloomy
 60CDC5Taiwan Carol.
+60CE86Sercomm
 60CE92The Refined
 60D02CRuckus Wireless
 60D0A9Samsung
@@ -18280,11 +18527,13 @@
 60D755HUAWEI
 60D7E3IEEE
 60D819Hon Hai Precision Ind.
+60D89CHMD Global
 60D9A0Lenovo MobileTechnology
 60D9C7Apple
 60DA23Estech
 60DA83Hangzhou H3C
 60DB2AHNS
+60DE35GITSN
 60DE44HUAWEI
 60DEF3HUAWEI
 60E00ESHINSEI
@@ -18304,6 +18553,7 @@
 60F281TRANWO
 60F2EFVisionVera
 60F3DALogic Way
+60F43AEdifier
 60F445Apple
 60F494Hon Hai Precision Ind.
 60F59CCRU-Dataport
@@ -18327,6 +18577,7 @@
 6405E9Shenzhen WayOSCrop.
 64094CBeijing Superbee Wireless
 640980Xiaomi
+6409ACTCT mobile
 640B4ADigital Telecom
 640DCESHENZHEN MERCURYTECHNOLOGIES
 640DE6Petra
@@ -18335,6 +18586,7 @@
 640F282Wire
 641084HEXIUM Technical Development
 641225Cisco
+641236Technicolor CH USA
 641269ARRIS Group
 641331Bosch Car Multimedia 
 64136Czte
@@ -18390,14 +18642,17 @@
 6459F8Vodafone Omnitel B.V.
 645A04Chicony
 645AEDApple
+645CF3ParanTek
 645D86Intel Corporate
 645D92SICHUAN TIANYI COMHEART TELECOMCO.
 645DD7Shenzhen Lifesense MedicalCo., Ltd. 
+645E2CIRay
 645EBEYahoo! JAPAN
 645FFFNicolet Neuro
 646038Hirschmann Automation and Control
 646184VELUX
 646223Cellient
+646266IEEE
 64628Aevon
 64649BJuniper
 6465C0Nuvon
@@ -18413,6 +18668,7 @@
 646D6CHUAWEI
 646E69Liteon
 646E6CRadio Datacom
+646E97TP-LINK
 646EEAIskratel d.o.o.
 647002TP-LINK
 647033Apple
@@ -18439,6 +18695,7 @@
 64899ALG
 6489F1Samsung
 648D9EIVT
+6490C1Beijing Xiaomi Mobile Software
 64956CLG
 649829Integrated Device Sdn. Bhd.
 64995DLGE 
@@ -18464,6 +18721,7 @@
 64A769HTC
 64A7DDAvaya
 64A837Juni Korea
+64A965Linkflow
 64AE0CCisco
 64AE88Polytec
 64AEF1Qingdao Hisense
@@ -18479,6 +18737,7 @@
 64BABDSDJ
 64BC0CLG
 64BC11CombiQ
+64BC58Intel Corporate
 64C2DELG
 64C354Avaya
 64C3D6Juniper
@@ -18512,14 +18771,17 @@
 64DB8BHangzhou Hikvision Digital
 64DBA0Select Comfort
 64DC01StaticGroup
+64DDE9Xiaomi
 64DE1CKingnetic Pte
 64DF10JingLue Semiconductor
 64DFE9ATEME
 64E161DEP
+64E172Shenzhen Qihoo Intelligent
 64E599EFM
 64E625Woxu Wireless
 64E682Apple
 64E84FSerialwayTechnology
+64E881Aruba, a Hewlett Packard Enterprise
 64E892Morio Denki
 64E8E6global moisture management system
 64E950Cisco
@@ -18529,8 +18791,11 @@
 64ED62WOORI
 64EEB7Netcore
 64F242Gerdes Aktiengesellschaft
+64F2FBHangzhou Ezviz Software
 64F50EKinion
 64F69DCisco
+64F6BBFibocom Wireless
+64F6F7Anhui Dynamic Power
 64F81CHuawei
 64F88AChina Mobile IOT
 64F970KenadeTechnology
@@ -18566,6 +18831,7 @@
 681E8BInfoSight
 681F40Blu Wireless
 681FD8Siemens
+68215FEdgecore
 68234BNihon Dengyo Kousaku
 68262ASICHUAN TIANYI COMHEART TELECOMCO.
 682719Microchip
@@ -18576,6 +18842,7 @@
 682C7BCisco
 682DDCWuhan Changjiang Electro-Communicati
 6831FETeladin
+68332CKENSTEL
 683489LEA Professional
 683563SHENZHEN LIOWN
 6836B5DriveScale
@@ -18594,6 +18861,8 @@
 6845F1TOSHIBA CLIENT
 684749Texas Instruments
 684898Samsung
+6849B2CARLO GAVAZZI
+684A76eero
 684AAEHUAWEI
 684B88Galtronics Telemetry
 684CA8Shenzhen Herotel Tech.
@@ -18618,6 +18887,7 @@
 68644BApple
 68692EZycoo
 686975Angler Labs
+6869CAHitachi
 6869F2ComAp s.r.o.
 686DBCHangzhou Hikvision Digital
 686E23Wi3
@@ -18650,6 +18920,7 @@
 688DB6AETEK
 688F2EHitron.
 688F84HUAWEI
+688FC9Zhuolian 
 6891D0IEEE
 689234Ruckus Wireless
 689361Integrated Device Sdn. Bhd.
@@ -18683,6 +18954,7 @@
 68AB8ARF IDeas
 68AE20Apple
 68AF13Futura Mobility
+68AFFFShanghai Cambricon Information
 68B094INESA ELECTRON
 68B35EShenzhen NeostraCo.Ltd
 68B43AWaterFurnace
@@ -18690,6 +18962,7 @@
 68B6FCHitron.
 68B8D9Act KDE
 68B983b-plus
+68B9D3Shenzhen Trolink
 68BC0CCisco
 68BDABCisco
 68BFC4Samsung
@@ -18706,6 +18979,7 @@
 68D1FDShenzhen Trimax
 68D247Portalis LC
 68D482SHENZHEN GONGJINCO.,LT
+68D79AUbiquiti
 68D925ProSys Development Services
 68D93CApple
 68DB54Phicomm 
@@ -18717,6 +18991,7 @@
 68DD26Shanghai Focus Vision Security
 68DFDDXiaomi
 68E166Private
+68E209HUAWEI
 68E41FUnglaube Identech
 68E7C2Samsung
 68E8EBLinktel
@@ -18749,12 +19024,14 @@
 6C090AGEMATICA
 6C09D6Digiquest
 6C0B84Universal Global Scientific Industri
+6C0D34Nokia
 6C0E0DSony Mobile
 6C0EE6Chengdu XiyidaTechnology Co,.Ltd
 6C0F6AJDC Tech
 6C14F7Erhardt+Leimer
 6C15F9Nautronix
 6C160EShotTracker
+6C1632HUAWEI
 6C1811Decatur
 6C198FD-Link
 6C19C0Apple
@@ -18781,6 +19058,7 @@
 6C2E72B&B EXPORTING
 6C2E85Sagemcom Broadband
 6C2F2CSamsung
+6C2F8ASamsung
 6C310ECisco
 6C32DEIndieonPvt.
 6C33A9Magicjack LP
@@ -18798,10 +19076,12 @@
 6C40C6Nimbus Data
 6C410ECisco
 6C416ACisco
+6C42ABSubscriber
 6C4418Zappware
 6C4598Antex
 6C49C1o2ones
 6C4A39BITA
+6C4A85Apple
 6C4B7FVossloh-Schwabe Deutschland
 6C4B90LiteON
 6C4D51Shenzhen Ceres
@@ -18809,6 +19089,7 @@
 6C4E86Third Millennium
 6C504DCisco
 6C54CDLAMPEX
+6C55E8Technicolor CH USA
 6C5697Amazon
 6C5779Aclima
 6C5940MERCURYTECHNOLOGIES
@@ -18818,16 +19099,20 @@
 6C5C14GUANGDONG OPPO MOBILES
 6C5C3DIEEE
 6C5CDESunReports
+6C5D3AMicrosoft
 6C5D63ShenZhen Rapoo
 6C5E3BCisco
 6C5E7AUbiquitous Internet Telecom
 6C5F1CLenovo MobileTechnology
 6C60EBZHI YUAN
 6C6126Rinicom
+6C61F4SFR
 6C626DMicro-Star INT'L
 6C639CARRIS Group
 6C641APenguin Computing
+6C6A77Intel Corporate
 6C6CD3Cisco
+6C6D09Kyowa
 6C6EFECore Logic
 6C6F18Stereotaxis
 6C7039Novar
@@ -18886,6 +19171,7 @@
 6CADEFKZ Broadband, Ltd. 
 6CADF8AzureWave
 6CAE8BIBM
+6CAEF6eero
 6CAF15Webasto SE
 6CB0CENETGEAR
 6CB227Sony Video & Sound Products
@@ -18906,6 +19192,7 @@
 6CC26BApple
 6CC374Texas Instruments
 6CC4D5HMD Global
+6CC63BTaicang T&W
 6CC7ECSamsung
 6CCA08ARRIS Group
 6CD032LG
@@ -18914,8 +19201,10 @@
 6CD2BAzte
 6CD68ALG
 6CD71FGUANGDONG OPPO MOBILES
+6CD94Cvivo Mobile
 6CDC6APromethean
 6CDD30Cisco
+6CDDBCSamsung
 6CDFFBIEEE
 6CE01EModcam
 6CE0B0SOUND4
@@ -18939,6 +19228,7 @@
 6CF373Samsung
 6CF37FAruba, a Hewlett Packard Enterprise
 6CF5E8Mooredoll
+6CF712Nokia
 6CF97CNanoptix
 6CF9D2CHENGDU POVODOTECHNOLOGY
 6CFA58Avaya
@@ -18950,6 +19240,7 @@
 7001B5Cisco
 70025801DB-METRAVIB
 70037ETechnicolor CH USA
+70039FEspressif
 700433California Things
 700514LG
 7006ACEastcompeace
@@ -18977,6 +19268,7 @@
 701D7FComtech
 701DC4NorthStar Battery
 701E68Hanna Instruments
+701F3CSamsung
 701F53Cisco
 702084Hon Hai Precision Ind.
 702393fos4X
@@ -18994,6 +19286,7 @@
 702E22zte
 702E80DIEHL Connectivity
 702ED9Guangzhou Shiyuan
+702F35HUAWEI
 702F4BPolyVision
 702F97Aava Mobile
 703018Avaya
@@ -19002,7 +19295,7 @@
 703187ACX
 7032D5Athena Wireless
 703509Cisco
-703811Invensys Rail
+703811Siemens Mobility
 7038B4Low Tech
 7038EEAvaya
 703A0EAruba, a Hewlett Packard Enterprise
@@ -19021,6 +19314,7 @@
 7047E9vivo Mobile
 70480FApple
 7048F7Nintendo
+704A0EAMPAK
 704AAEXstream Flow 
 704AE4Rinstrum Pty
 704CA5Fortinet
@@ -19056,11 +19350,13 @@
 705EAAAction Target
 7060DELaVision
 706173Calantec
+70617BCisco
 7062B8D-Link
 706417ORBIS TECNOLOGIA ELECTRICA S.A.
 706582Suzhou Hanming
 7065A3Kandao lightforge
 70661BSonova
+706655AzureWave
 706879Saijo Denki
 70695ACisco
 706BB9Cisco
@@ -19078,7 +19374,7 @@
 7072CFEdgeCore
 7073CBApple
 707630ARRIS Group
-7076DDOxyguard
+7076DDOxyGuard Internation
 7076F0LevelOne Private
 7076FFKERLINK
 707781Hon Hai Precision Ind.
@@ -19107,7 +19403,10 @@
 708A09HUAWEI
 708B78citygrow
 708BCDASUSTek COMPUTER
+708CB6HUAWEI
+708CBBMIMODISPLAYKOREA
 708D09Nokia
+708F47vivo Mobile
 70918FWeber-Stephen Products
 7091F3Universal
 709383Intelligent OpticalHigh Tech
@@ -19156,6 +19455,7 @@
 70C94ELiteon
 70C9C6Cisco
 70CA4DShenzhen lnovance
+70CA97Ruckus Wireless
 70CA9BCisco
 70CD60Apple
 70CD91TERACOM TELEMATICA S.A
@@ -19187,11 +19487,13 @@
 70E72CApple
 70E843Beijing C&W OpticalTechnology
 70EA1ACisco
+70EA5AApple
 70ECE4Apple
 70EE50Netatmo
 70EEA3EoptolinkInc. Ltd,
 70EF00Apple
 70F087Apple
+70F096Cisco
 70F11CShenzhen Ogemray
 70F176Data Modul
 70F196Actiontec
@@ -19228,6 +19530,7 @@
 741E93FiberhomeTechnologies
 741F4AHangzhou H3C
 741F79YOUNGKOOK
+7422BBHuawei Device
 742344Xiaomi
 74258AHangzhou H3C
 7426ACCisco
@@ -19251,6 +19554,7 @@
 743889ANNAX Anzeigesysteme
 7438B7CANON
 743A65NEC
+743AEFKaonmedia
 743C18Taicang T&W
 743E2BRuckus Wireless
 743ECBGentrice tech
@@ -19258,6 +19562,7 @@
 7440BELG Innotek
 74428BApple
 744401NETGEAR
+74452DHuawei Device
 74458ASamsung
 7445CECRESYN
 7446A0Hewlett Packard
@@ -19271,6 +19576,7 @@
 74547DCisco SPVTG
 745612ARRIS Group
 745798TRUMPF Laser GmbH +
+7458F3Amazon
 745909HUAWEI
 745933Danal Entertainment
 745AAAHUAWEI
@@ -19340,6 +19646,7 @@
 749637Todaair
 749781zte
 749975IBM
+749BE8Hitron.
 749C52Huizhou Desay SV Automotive
 749CE3KodaCloud Canada
 749D79Sercomm
@@ -19358,12 +19665,14 @@
 74A722LG
 74A78Ezte
 74AC5FQiku InternetScientific 
+74ACB9Ubiquiti
 74ADB7China Mobile Group Device
 74AE76iNovo Broadband
 74B00CNetwork Video
 74B472CIESSE
 74B57Ezte
 74B587Apple
+74B6B6eero
 74B91ENanjing Bestway Automation System
 74B9EBJinQianMao
 74BADBLongconn ElectornicsCo.
@@ -19378,9 +19687,11 @@
 74C330SHENZHEN FAST
 74C621Zhejiang Hite Renewable Energy
 74C63BAzureWave
+74C929Zhejiang Dahua
 74C99AEricsson
 74C9A3FiberhomeTechnologies
 74CA25Calxeda
+74CBF3Lava
 74CC39FiberhomeTechnologies
 74CD0CSmith Myers
 74CE56Packet ForceLimited
@@ -19393,6 +19704,7 @@
 74D675WYMA Tecnologia
 74D6EATexas Instruments
 74D7CAPanasonicAutomotive
+74D83EIntel Corporate
 74D850Evrisko
 74DA38Edimax
 74DA88TP-LINK
@@ -19479,6 +19791,7 @@
 7828CASonos
 7829EDASKEY COMPUTER
 782A79Integrated Device Sdn. Bhd.
+782B46Intel Corporate
 782BCBDell
 782C29New H3C
 782D7ETRENDnet
@@ -19516,15 +19829,18 @@
 784B87Murata Manufacturing
 784F43Apple
 784F9BJuniper
+78507CJuniper
 78510CLiveU
 78521ASamsung
 78524AEnsenso
 785262Shenzhen Hojy Software
+78530DShenzhen Skyworth  Digital 
 785364SHIFT
 7853F2ROXTON
 78542ED-Link
 785517SankyuElectronics
 785712Mobile Integration Workgroup
+785773HUAWEI
 785860HUAWEI
 7858F3Vachen
 78593ERAFI GmbH & Co.KG
@@ -19545,24 +19861,28 @@
 786A89HUAWEI
 786C1CApple
 786D94Palo Alto
+786DEBGE Lighting
 787052Welotec
 78719CARRIS Group
 78725DCisco
 787B8AApple
 787D48ITEL MOBILE
-787D53Aerohive
+787D53Extreme
 787E61Apple
 787F62GiK mbH
 788038FUNAI ELECTRIC
 788102Sercomm
 78818FServer Racks Australia Pty
+7881CEChina Mobile Iot Limited
 78843CSony
 7884EEINDRA ESPACIO S.A.
+7885F4Huawei Device
 78870DUnifiedgateways India Private
 78886DApple
 78888ACDR Sp. z o.o. Sp. k.
 788973CMC
 788A20Ubiquiti
+788B2AZhen Shi Information
 788B77Standar Telecom
 788C4DIndyme
 788C54Ping
@@ -19572,6 +19892,7 @@
 78923ENokia
 78929CIntel Corporate
 7894B4Sercomm
+7894E8Radio Bridge
 789682zte
 789684ARRIS Group
 7897C3DINGXIN INFORMATION
@@ -19599,8 +19920,10 @@
 78A714Amphenol
 78A7EB1MORE
 78A873Samsung
+78AA82New H3C
 78AB60ABB Australia
 78ABBBSamsung
+78AC44Dell
 78ACBFIgneous
 78ACC0Hewlett Packard
 78AE0CFar South
@@ -19616,6 +19939,7 @@
 78B6ECScuf Gaming
 78B81AINTER SALES
 78B84BSICHUAN TIANYI COMHEART TELECOMCO.
+78B8D6Zebra
 78BAD0Shinybow
 78BAF9Cisco
 78BC1ACisco
@@ -19629,6 +19953,7 @@
 78C40EH&D Wireless
 78C4ABShenzhen Runsil
 78C5E5Texas Instruments
+78C5F8Huawei Device
 78C6BBInnovasic
 78C881Sony Interactive Entertainment
 78CA04Nokia
@@ -19641,6 +19966,7 @@
 78CD8ESMC
 78D004Neousys
 78D129Vicos
+78D162Apple
 78D294NETGEAR
 78D347Ericsson
 78D34FPace-O-Matic
@@ -19834,13 +20160,14 @@
 7C9122Samsung
 7C942AHUAWEI
 7C94B2Philips Healthcare PCCI
-7C95B1Aerohive
+7C95B1Extreme
 7C95F3Cisco
 7C96D2Fihonest
 7C9763Openmatics s.r.o.
 7C9A1DApple
 7C9A54Technicolor CH USA
 7C9A9BVSE valencia smart energy
+7C9EBDEspressif
 7CA15DGN ReSound
 7CA177HUAWEI
 7CA1AEApple
@@ -19851,6 +20178,7 @@
 7CA7B0SHENZHEN BILIANCO.，LTD
 7CA97DObjenious
 7CAB25MESMO
+7CAB60Apple
 7CACB2Bosch Software Innovations
 7CAD74Cisco
 7CB03EOSRAM
@@ -19899,6 +20227,7 @@
 7CD762FreestylePty
 7CD844Enmotus
 7CD95CGoogle
+7CD9A0HUAWEI
 7CD9FENew Cosmos Electric
 7CDA84Dongnian
 7CDB98ASKEY COMPUTER
@@ -19906,6 +20235,7 @@
 7CDD20IOXOSS.A.
 7CDD76Suzhou Hanming
 7CDD90Shenzhen Ogemray
+7CDFA1Espressif
 7CE044NEON
 7CE1FFComputer Performance, Inc. DBA Digit
 7CE2CAJuniper
@@ -19921,10 +20251,12 @@
 7CEC9BFuzhou Teraway Information
 7CED8DMicrosoft
 7CEF18Creative Product Design Pty.
+7CEF61STR Elektronik Josef Schlechtinger
 7CEF8AInhon
 7CF05FApple
 7CF098Bee Beans
 7CF0BALinkwell Telesystems Pvt
+7CF2DDVence
 7CF31BLG
 7CF429NUUO Inc. 
 7CF854Samsung
@@ -19970,7 +20302,10 @@
 801F12Microchip
 8020AFTrade FIDES, a.s.
 8020DASagemcom Broadband
+8020E1BVBA DPTechnics
+8020FDSamsung
 802275Beijing Beny Wave
+8022A7NEC Platforms
 802689D-Link
 802994Technicolor CH USA
 802AA8Ubiquiti
@@ -19979,6 +20314,7 @@
 802DE1Solarbridge
 802E14azeti
 802FDEZurich Instruments
+803049Liteon
 8030DCTexas Instruments
 8030E0Hewlett Packard Enterprise
 8031F0Samsung
@@ -20051,6 +20387,7 @@
 807A7FABB Genway Xiamen Electrical Equipme
 807ABFHTC
 807B1ECorsair Memory
+807B3ESamsung
 807B85IEEE
 807D14HUAWEI
 807D1BNeosystem
@@ -20062,6 +20399,7 @@
 808287ATCOMCo.Ltd.
 8084A9oshkosh
 808698Netronics
+8086D9Samsung
 8086F2Intel Corporate
 808917TP-LINK
 808A8Bvivo Mobile
@@ -20080,6 +20418,7 @@
 8096CAHon Hai Precision Ind.
 80971BAltenergy Power System
 809B20Intel Corporate
+809F9BSichuan AI-Link Technology Co., 
 809FABFiberhomeTechnologies
 80A036Shanghai MXCHIP Information
 80A1ABIntellisis
@@ -20123,6 +20462,7 @@
 80CEB1Theissen Training
 80CEB9Samsung
 80CF41Lenovo MobileTechnology
+80CFA2Huawei Device
 80D019Embed
 80D04ATechnicolor CH USA
 80D065CKS
@@ -20141,6 +20481,7 @@
 80E01DCisco
 80E455New H3C
 80E4DAIEEE
+80E540ARRIS Group
 80E650Apple
 80E82CHewlett Packard
 80E86FCisco
@@ -20201,6 +20542,7 @@
 842B50Huria
 842BBCModelleisenbahn
 842C80Sichuan Changhong Electric
+842E14Silicon Laboratories
 842E27Samsung
 842F75Innokas Group
 8430E5SkyHawke
@@ -20213,6 +20555,7 @@
 843A4BIntel Corporate
 843DC6Cisco
 843E79Shenzhen Belon
+843E92HUAWEI
 843F4ETri-Tech Manufacturing
 844076Drivenets
 844167Apple
@@ -20240,6 +20583,7 @@
 8463D6Microsoft
 84683EIntel Corporate
 846878Apple
+8468C8TOTOLINKINT‘L
 846991Nokia
 846A66Sumitomo Kizai 
 846AEDWireless Tsukamoto.,co.LTD
@@ -20299,6 +20643,7 @@
 84A134Apple
 84A1D1Sagemcom Broadband
 84A24DBirds EyePrivate
+84A3B5Propulsion
 84A423Sagemcom Broadband
 84A466Samsung
 84A6C8Intel Corporate
@@ -20310,6 +20655,7 @@
 84A9C4HUAWEI
 84A9EACareerUSA
 84AA9CMitraStar
+84AB1AApple
 84ACA4Beijing Novel Super Digital TV
 84ACFBCrouzet Automatismes
 84AD58HUAWEI
@@ -20341,6 +20687,7 @@
 84C8B1Incognito Software
 84C9B2D-Link
 84C9C6SHENZHEN GONGJINCO.,LT
+84CCA8Espressif
 84CD62ShenZhen IDWELL
 84CFBFFairphone
 84D15ATCT mobile
@@ -20348,6 +20695,7 @@
 84D412Palo Alto
 84D47EAruba, a Hewlett Packard Enterprise
 84D4C8Widex
+84D6C5SolarEdge
 84D6D0Amazon
 84D931Hangzhou H3C
 84D9C8Unipattern Co.,
@@ -20380,6 +20728,7 @@
 84F493OMS spol. s.r.o.
 84F64CCross Point
 84F6FAMiovision
+84F883Luminar
 84FCACApple
 84FCFEApple
 84FDD1Intel Corporate
@@ -20416,6 +20765,7 @@
 8828B3HUAWEI
 882950Netmoon
 88299CSamsung
+882B94MADOKA SYSTEM
 882BD7ADDÉNERGIE 
 882D53Baidu OnlineTechnology 
 882E5AstorONE
@@ -20429,6 +20779,7 @@
 883612SRC Computers
 88365FLG
 88366CEFM
+8836CFHuawei Device
 883A30Aruba, a Hewlett Packard Enterprise
 883B8BCheering Connection
 883C1CMERCURY
@@ -20436,6 +20787,7 @@
 883F4ATexas Instruments
 883F99Siemens
 883FD3HUAWEI
+884033HUAWEI
 88403BHUAWEI
 884157Shenzhen Atsmart
 8841C1ORBISAT DA AMAZONIA IND E AEROL SA
@@ -20456,12 +20808,13 @@
 88532EIntel Corporate
 885395Apple
 8853D4HUAWEI
+88541FGoogle
 88571DSeongji
 88576DXTA
 8857EEBUFFALO.
 885A06GUANGDONG OPPO MOBILES
 885A92Cisco
-885BDDAerohive
+885BDDExtreme
 885C47Alcatel Lucent
 885D90IEEE
 885DFBzte
@@ -20515,6 +20868,7 @@
 8894F9Gemicom
 8895B9Unified PacketCrop
 88964EARRIS Group
+889655Zitte
 889676TTC MARCONI s.r.o.
 8896B6Global Fire Equipment S.A.
 8896F2Valeo Schalter und Sensoren
@@ -20526,6 +20880,7 @@
 889CA6BTB Korea
 889D98Allied-telesisK.K.
 889E33TCT mobile
+889E68Technicolor CH USA
 889F6FSamsung
 889FAAHella GutmannGmbH 
 889FFAHon Hai Precision Ind.
@@ -20534,10 +20889,12 @@
 88A2D7HUAWEI
 88A303Samsung
 88A3CCAmatis Controls
+88A479Apple
 88A5BDQPCOM
 88A6C6Sagemcom Broadband
 88A73CRagentekGroup
 88A9A7IEEE
+88A9B7Apple
 88ACC0Zyxel
 88ACC1Generiton Co., Ltd. 
 88AD43PEGATRON
@@ -20564,6 +20921,7 @@
 88C242Poynt
 88C255Texas Instruments
 88C36EBeijing Ereneben lnformation
+88C397Beijing Xiaomi Mobile Software
 88C3B3SOVICO
 88C626Logitech
 88C663Apple
@@ -20607,6 +20965,7 @@
 88E8F8YONG TAI
 88E90Finnomdlelab
 88E917Tamaggo
+88E9A4Hewlett Packard Enterprise
 88E9FEApple
 88ED1CCudo
 88EF16ARRIS Group
@@ -20628,6 +20987,7 @@
 8C078CFLOW DATA
 8C088BRemote Solution
 8C09F4ARRIS Group
+8C0C87Nokia
 8C0C90Ruckus Wireless
 8C0CA3Amper
 8C0D76HUAWEI
@@ -20663,6 +21023,7 @@
 8C395CBit4id
 8C3A7EUniversal
 8C3AE3LG
+8C3B32Microfan B.V.
 8C3BADNETGEAR
 8C3C07Skiva
 8C3C4ANAKAYO
@@ -20693,19 +21054,25 @@
 8C5973Zyxel
 8C598BC
 8C59C3ADB Italia 
+8C59DCASR Microelectronics 
+8C5A25ARRIS Group
+8C5AC1Huawei Device
 8C5AF0Exeltech Solar Products
 8C5AF8Beijing Xiaomi
 8C5BF0ARRIS Group
 8C5CA1d-broad
 8C5D60UCI
 8C5F48Continental Intelligent Transportati
+8C5FADFiberhomeTechnologies
 8C5FDFBeijing Railway Signal Factory
 8C604FCisco
+8C6078Swissbit
 8C60E7MPGIO
 8C6102Beijing Baofengmojing
 8C61A3ARRIS Group
 8C640BBeyond Devices d.o.o.
 8C6422Sony Mobile
+8C683AHUAWEI
 8C6878Nortek-AS
 8C68C8zte
 8C6AE4Viogem
@@ -20731,6 +21098,7 @@
 8C8126ARCOM
 8C82A8Insigma
 8C839DSHENZHEN XINYUPENGTECHNOLOGY
+8C83DFNokia
 8C83E1Samsung
 8C8401Private
 8C8580Smart Innovation
@@ -20755,6 +21123,7 @@
 8C9351Jigowatts
 8C94CFEncell
 8C965FShandong Zhongan
+8C97EAFREEBOX
 8C99E6TCT mobile
 8C9F3BQingdao Hisense
 8CA048Beijing NeTopChip
@@ -20763,6 +21132,7 @@
 8CA6DFTP-LINK
 8CA96FD&M
 8CA982Intel Corporate
+8CAAB5Espressif
 8CAB8EShanghai Feixun
 8CAE4CPlugable
 8CAE89Y-cam
@@ -20782,6 +21152,7 @@
 8CC121PanasonicAVC
 8CC5E1ShenZhen KonkaTechnology
 8CC661Current, powered by GE
+8CC681Intel Corporate
 8CC7AARadinet
 8CC7D0zhejiang ebang
 8CC84BCHONGQING FUGUI
@@ -20847,8 +21218,10 @@
 900A1ATaicang T&W
 900A39Wiio
 900A3APSG Plastic Service
+900A84Mellanox
 900BC1Sprocomm
 900CB4AlinketTechnology
+900CC8Google
 900D66Digimore
 900DCBARRIS Group
 900E83Monico Monitoring
@@ -20856,6 +21229,7 @@
 901234Shenzhen YOUHUA
 9013DAAthom B.V.
 901711Hagenuk Marinekommunikation
+90173FHUAWEI
 90179BNanomegas
 9017ACHUAWEI
 9017C8HUAWEI
@@ -20899,6 +21273,7 @@
 903D6BZicon
 903DBDSECURE METERS
 903EABARRIS Group
+9043E2Cornami
 904506Tokyo Boeki Medisys
 9046A2Tedipay UK
 9046B7Vadaro Pte
@@ -20918,12 +21293,15 @@
 90513FElettronica Santerno SpA
 905446TESSOLUTIONS
 9055AEEricsson, EAB/RWI/K
+9055DEFiberhomeTechnologies
 905682Lenbrook
 905692Autotalks
+9056FCTECNO MOBILE
 905851Technicolor CH USA
 9059AFTexas Instruments
 905C34SiriusSystems
 905C44Compal Broadband
+905D7CNew H3C
 905F2ETCT mobile
 905F8Dmodas
 9060F1Apple
@@ -20946,6 +21324,7 @@
 907240Apple
 907282Sagemcom Broadband
 90735AMotorola Mobility LLC, a Lenovo
+90749DIRay
 907841Intel Corporate
 9078B2Xiaomi
 907910Integrated Device Sdn. Bhd.
@@ -20969,6 +21348,7 @@
 9088A2IONICSME LTDA
 90895FWEIFANG GOERTEK
 908C09Total Phase
+908C43Apple
 908C44H.K ZONGMU
 908C63GZ WeedongTechnology Co. 
 908D1DGH
@@ -20983,15 +21363,18 @@
 9094E4D-Link
 9097D5Espressif
 9097F3Samsung
+909838Huawei Device
 909864Impex-Sat GmbH&amp;Co
 909916ELVEES NeoTek OJSC
 909A77Texas Instruments
+909C4AApple
 909D7DARRIS Group
 909DE0Newland Design + Assoc.
 909F33EFM
 909F43Accutron Instruments
 90A137Beijing SplendidtelTechnology Co,.
 90A210United Telecoms
+90A25BApple
 90A2DAGHEO SA
 90A365HMD Global
 90A46ASISNET
@@ -21001,15 +21384,17 @@
 90A7C1Pakedge Device and Software
 90AC3FBrightSign
 90ADF7vivo Mobile
+90ADFCTelechips
 90AE1BTP-LINK
 90AFD1netKTI
 90B0EDApple
 90B11CDell
 90B134ARRIS Group
+90B144Samsung
 90B1E0Beijing Nebula Link
 90B21FApple
 90B686Murata Manufacturing
-90B832Aerohive
+90B832Extreme
 90B8D0Joyent
 90B8E0SHENZHEN YANRAY
 90B931Apple
@@ -21045,11 +21430,14 @@
 90E17BApple
 90E202Texas Instruments
 90E2BAIntel Corporate
+90E2FCIEEE
 90E6BAASUSTek COMPUTER
 90E710New H3C
 90E7C4HTC
 90EA60SPI Lasers Ltd 
 90EC50C.O.B.O. SPA
+90EC77silicom
+90EEC7Samsung
 90EED9UNIVERSAL DE DESARROLLOS ELECTRÓNIC
 90EF68Zyxel
 90F052MEIZU
@@ -21074,11 +21462,13 @@
 9401C2Samsung
 94049CHUAWEI
 9405B6Liling FullRiver&
+9405BBIEEE
 940937HUMAX
 940B19HUAWEI
 940B2DNetView
 940BD5Himax
 940C6DTP-LINK
+940C98Apple
 940E6BHUAWEI
 94103EBelkin
 9411DAITF Fröschl
@@ -21087,14 +21477,17 @@
 941673Point Core SARL
 941882Hewlett Packard Enterprise
 94193AElvaco
+941C56Actiontec
 941D1CTLab West
 942053Nokia
 942197Stalmart
 94236EShenzhen Junlan
+9424B8GREE ELECTRIC APPLIANCES, INC. OF ZH
 9424E1Alcatel-Lucent Enterprise
 942790TCT mobile
 94282ENew H3C
 94290CShenyang wisdom FoundationDevelopmen
+94292FNew H3C
 94298DShanghai AdaptComm
 942A3FDiversey
 942CB3HUMAX
@@ -21107,12 +21500,14 @@
 9436E0Sichuan Bihong Broadcast &amp; Telev
 9439E5Hon Hai Precision Ind.
 943AF0Nokia
+943BB0New H3C
 943BB1Kaonmedia
 943DC9Asahi Net
 943FC2Hewlett Packard Enterprise
 9440A2AnywaveTechnologies
 9440C9Hewlett Packard Enterprise
 9441C1Mini-Cam
+94434DCiena
 944444LG Innotek
 944452Belkin
 944696BaudTec
@@ -21163,6 +21558,7 @@
 948815Infinique Worldwide
 948854Texas Instruments
 94885ESurfilterTechnology Co., Ltd. 
+948AC6Realme Chongqing Mobiles
 948B03EAGET Innovation and
 948BC1Samsung
 948D50Beamex Oy
@@ -21173,6 +21569,7 @@
 949034SHENZHEN CHUANGWEI-RGB
 94917FASKEY COMPUTER
 9492BCSYNTECH
+9492D2KCF
 949426Apple
 9495A0Google
 9498A2Shanghai LISTEN TECH.LTD
@@ -21208,9 +21605,11 @@
 94BA31Visiontec da Amazônia Ltda.
 94BA56Shenzhen Coship
 94BBAEHusqvarna
+94BE46Motorola
 94BF1Eeflow Inc. / Smart Device Planning a
 94BF2DApple
 94BF80zte
+94BF94Juniper
 94BF95Shenzhen Coship
 94BFC4Ruckus Wireless
 94C014Sorter Sp. j. Konrad Grzeszczyk Mich
@@ -21225,6 +21624,7 @@
 94C960Zhongshan B&T.co.
 94C962Teseq
 94CA0FHoneywell Analytics
+94CC04IEEE
 94CCB9ARRIS Group
 94CDACCreowave
 94CE2CSony Mobile
@@ -21245,6 +21645,7 @@
 94D93CENELPS
 94D9B3TP-LINK
 94DB49SITCORP
+94DB56Sony Home Entertainment&Sound Produc
 94DBC9AzureWave
 94DBDAHUAWEI
 94DC4EAEV, spol. s r. o.
@@ -21259,13 +21660,16 @@
 94E226D. ORtiz Consulting
 94E2FDBoge Kompressoren OTTO Boge GmbH &
 94E36DTexas Instruments
+94E4BAHuawei Device
 94E6F7Intel Corporate
 94E711Xirka Dama Persada PT
+94E7EAHUAWEI
 94E848FYLDE MICRO
 94E8C5ARRIS Group
 94E96AApple
 94E979Liteon
 94E98CNokia
+94E9EEHuawei Device
 94EAEATELLESCOM INDUSTRIA E COMERCIO EM TE
 94EB2CGoogle
 94EBCDBlackBerry RTS
@@ -21282,12 +21686,14 @@
 94F7ADJuniper
 94FAE8Shenzhen EycomCo., Ltd 
 94FB29Zebra
+94FBA7IEEE
 94FBB2SHENZHEN GONGJINCO.,LT
 94FD1DWhereWhen
 94FD2EShanghai Uniscope
 94FE22HUAWEI
 94FE9DSHENZHEN GONGJINCO.,LT
 94FEF4Sagemcom Broadband
+98006Azte
 980074Raisecom
 9800C1GuangZhou CREATORCo.,Ltd.
 9800C6Apple
@@ -21303,6 +21709,7 @@
 980C82Samsung
 980CA5Motorola
 980D2EHTC
+980D51Huawei Device
 980D67Zyxel
 980EE4Private
 981094Shenzhen Vsuntechnology
@@ -21366,6 +21773,7 @@
 9857D3HON HAI-CCPBG  PRECISION IND.CO.
 98588ASYSGRATION
 985945Texas Instruments
+985949LUXOTTICA GROUP S.P.A.
 985AEBApple
 985BB0KMDATA
 985C93SBG
@@ -21392,6 +21800,8 @@
 987A14Microsoft
 987BF3Texas Instruments
 987E46Emizon
+987ECAInventus Power Eletronica do Brasil 
+9880EESamsung
 988217Disruptive
 988389Samsung
 9884E3Texas Instruments
@@ -21404,6 +21814,7 @@
 988BADCorintech
 988E34ZHEJIANG BOXSAM
 988E4ANOXUS
+988E79Qudelix
 988ED4ITEL MOBILE
 988EDDTE Connectivity Limerick
 989080LinkpowerSystem Inc
@@ -21413,6 +21824,7 @@
 9897D1MitraStar
 989BCBAVM Audiovisuelles Marketing und Com
 989C57HUAWEI
+989D5DTechnicolor CH USA
 989E63Apple
 98A404Ericsson
 98A40ESnap
@@ -21435,6 +21847,7 @@
 98C0EBGlobal Regency
 98C5DBEricsson
 98C845PacketAccess
+98C8B8vivo Mobile
 98CA33Apple
 98CB27GalorePvt.
 98CC4DShenzhen mantunsci
@@ -21452,6 +21865,7 @@
 98DA92Vuzix
 98DAC4TP-LINK
 98DCD9UNITEC
+98DD5BTAKUMI JAPAN
 98DDEAInfinix mobility
 98DED0TP-LINK
 98DF82Hangzhou Hikvision Digital
@@ -21465,7 +21879,7 @@
 98E848Axiim
 98E8FANintendo
 98EC65Cosesy ApS
-98ED5CTesla Motors
+98ED5CTesla
 98EECBWistron Infocomm 
 98EF9BOHSUNG
 98F058Lynxspring, Incl.
@@ -21483,6 +21897,7 @@
 98F8DBMarini Impianti Industriali s.r.l.
 98F9C7IEEE
 98FA9BLCFCTechnology
+98FAA7INNONET
 98FAE3Xiaomi
 98FB12Grand
 98FC11Cisco-Linksys
@@ -21506,6 +21921,7 @@
 9C1463Zhejiang Dahua
 9C1465Edata Elektronik San. ve Tic. A.Ş.
 9C1874Nokia Danmark
+9C19C2Dongguan Liesheng
 9C1C12Aruba, a Hewlett Packard Enterprise
 9C1D36HUAWEI
 9C1D58Texas Instruments
@@ -21518,11 +21934,13 @@
 9C2840Discovery,LTD..
 9C28BFContinental Automotive Czech Republi
 9C28EFHUAWEI
+9C28F7Xiaomi
 9C293FApple
 9C2A70Hon Hai Precision Ind.
 9C2A83Samsung
 9C2DCFShishi TongyunCo.
 9C2EA1Xiaomi
+9C2F4Ezte
 9C2F73Universal Tiancheng
 9C305BHon Hai Precision Ind.
 9C3066RWE Effizienz
@@ -21558,6 +21976,7 @@
 9C53CDENGICAM s.r.l.
 9C541CShenzhen My-power
 9C54CAZhengzhou VCOM Science and
+9C54DASkyBell
 9C55B4I.S.E. S.r.l.
 9C5711Feitian Xunda Aeronautical Informati
 9C57ADCisco
@@ -21566,11 +21985,11 @@
 9C5C8DFIREMAX INDÚSTRIA E COMÉRCIO DE PR
 9C5C8EASUSTek COMPUTER
 9C5CF9Sony Mobile
-9C5D12Aerohive
+9C5D12Extreme
 9C5D95VTC
 9C5E73Calibre UK
 9C5F5AGUANGDONG OPPO MOBILES
-9C611DOmni-ID USA
+9C611DPanasonicof North America
 9C6121SICHUAN TIANYI COMHEART TELECOMCO.
 9C62ABSumavision
 9C63EDzte
@@ -21606,6 +22025,7 @@
 9C86DAPhoenix Geophysics
 9C8888Simac Techniek NV
 9C88ADFiberhomeTechnologies
+9C8ACBJuniper
 9C8BA0Apple
 9C8BF1The Warehouse
 9C8C6ESamsung
@@ -21621,6 +22041,7 @@
 9C93E4Private
 9C95F8SmartDoor
 9C9726Technicolor
+9C97891MORE
 9C9811Guangzhou SunriseDevelopment
 9C99A0Xiaomi
 9C99CDVoippartners
@@ -21631,6 +22052,7 @@
 9CA134Nike
 9CA3A9Guangzhou Juan Optical andal Tech Jo
 9CA3BASAKURA Internet
+9CA513Samsung
 9CA525Shandong USR IOT
 9CA577Osorno Enterprises
 9CA5C0vivo Mobile
@@ -21652,6 +22074,7 @@
 9CB70DLiteon
 9CB793Creatcomm
 9CBB98Shen Zhen RND
+9CBD6EDERA
 9CBD9DSkyDisk
 9CBEE0Biosoundlab
 9CC077PrintCounts
@@ -21662,6 +22085,7 @@
 9CC8AEBecton, Dickinson  and
 9CC8FCARRIS Group
 9CC950Baumer
+9CC9EBNETGEAR
 9CCAD9Nokia
 9CCC83Juniper
 9CCD82CHENG UEI PRECISION
@@ -21682,6 +22106,7 @@
 9CDFB1Shenzhen Crave
 9CE063Samsung
 9CE10ENCTech
+9CE176Cisco
 9CE1D6Junger Audio-Studiotechnik
 9CE230JULONG CO,.LTD.
 9CE33FApple
@@ -21692,9 +22117,12 @@
 9CE7BDWinduskorea
 9CE82Bvivo Mobile
 9CE895New H3C
+9CE91Czte
 9CE951Shenzhen Sang Fei ConsumerLtd.
 9CEBE8BizLink 
+9CEDFAEVUlution
 9CEFD5Panda Wireless
+9CF029Integrated Device Sdn. Bhd.
 9CF387Apple
 9CF48EApple
 9CF531GUANGDONG OPPO MOBILES
@@ -21707,6 +22135,7 @@
 9CFBF1MESOMATIC GmbH & Co.KG
 9CFC01Apple
 9CFCD1Aetheris
+9CFCE8Intel Corporate
 9CFEA1FiberhomeTechnologies
 9CFFBEOTSL
 9CFFC2AVI
@@ -21745,10 +22174,12 @@ A021B7NETGEAR
 A0224EIEEE
 A0231BTeleComp R&D
 A0239FCisco
+A027B6Samsung
 A02833IEEE
 A028EDHMD Global
 A02BB8Hewlett Packard
 A02C36FN-LINK
+A02D13AirTies Wireless
 A02EF3United Integrated Services Co., Led.
 A03299Lenovo 
 A0341BAdero
@@ -21772,6 +22203,7 @@ A0415EOpsens Solution
 A041A7NL Ministry of Defense
 A0423FTyan Computer
 A04246IT Telecom
+A043B0Hangzhou BroadLink
 A043DBSitael S.p.A.
 A047D7Best IT World  Pvt
 A0481CHewlett Packard
@@ -21780,6 +22212,7 @@ A04CC1Helixtech
 A04E01CENTRAL ENGINEERING
 A04E04Nokia
 A04EA7Apple
+A04F85LG
 A04FD4ADB Broadband Italia
 A0510BIntel Corporate
 A051C6Avaya
@@ -21800,6 +22233,7 @@ A0648FASKEY COMPUTER
 A06518VNPT
 A06610FUJITSU
 A067BESicon
+A0687EARRIS Group
 A06986Wellav
 A06A00Verilink
 A06A44Vizio
@@ -21908,6 +22342,7 @@ A0DC04Becker-Antriebe
 A0DD97PolarLink
 A0DDE5SHARP
 A0DE05JSC Irbis-T
+A0DE0FHuawei Device
 A0DF15HUAWEI
 A0E0AFCisco
 A0E201AVTrace Ltd.
@@ -21940,12 +22375,14 @@ A0F9E0VIVATEL
 A0FC6ETelegrafia a.s.
 A0FE61Vivint Wireless Inc. 
 A0FE91AVAT Automation
+A0FF70Technicolor CH USA
 A400E2HUAWEI
 A40130ABIsystems
 A402B9Intel Corporate
 A40450nFore
 A4059ESTA Infinity LLP
 A407B6Samsung
+A40801Amazon
 A408EAMurata Manufacturing
 A408F5Sagemcom Broadband
 A409CBAlfred Kaercher GmbH &amp;
@@ -21964,6 +22401,7 @@ A4134ELuxul
 A41437Hangzhou Hikvision Digital
 A41566WEIFANG GOERTEK
 A41588ARRIS Group
+A416E7HUAWEI
 A41731Hon Hai Precision Ind.
 A41791Shenzhen Decnta
 A41875Cisco
@@ -21977,8 +22415,10 @@ A424DDCambrionix
 A4251BAvaya
 A42618Integrated Device Sdn. Bhd.
 A42655LTI Motion 
+A428B7Yangtze Memory
 A42940Shenzhen YOUHUA
 A42983Boeing Defence Australia
+A42985Sichuan AI-Link
 A429B7bluesky
 A42B8CNETGEAR
 A42BB0TP-LINK
@@ -22014,6 +22454,7 @@ A44CC8Dell
 A44E2DAdaptive Wireless
 A44E31Intel Corporate
 A44F29IEEE
+A45006SHENZHEN HUACHUANG SHIDAICO.
 A45046Xiaomi
 A45055BUSWARE.DE
 A4516FMicrosoft Mobile
@@ -22101,6 +22542,7 @@ A4AE11Hon Hai Precision Ind.
 A4AE9AMaestro Wireless
 A4B121Arantia 2010 S.L.
 A4B197Apple
+A4B1C1Intel Corporate
 A4B1E9Technicolor
 A4B1EEH. ZANDER GmbH &
 A4B239Cisco
@@ -22108,6 +22550,7 @@ A4B2A7Adaxys
 A4B36AJSC SDO Chromatec
 A4B439Cisco
 A4B52EIntegrated Device Sdn. Bhd.
+A4B61EHuawei Device
 A4B805Apple
 A4B818PENTA Gesellschaft für elektronisch
 A4B980Parking BOXX
@@ -22125,6 +22568,7 @@ A4C2ABHangzhou LEAD-IT Information &
 A4C361Apple
 A4C3F0Intel Corporate
 A4C494Intel Corporate
+A4C54EHuawei Device
 A4C64FHUAWEI
 A4C7DECambridge
 A4C939GUANGDONG OPPO MOBILES
@@ -22132,6 +22576,7 @@ A4CAA0HUAWEI
 A4CC32Inficomm
 A4CD23Shenzhenshi Xinzhongxin 
 A4CF12Espressif
+A4CFD2Ubee Interactive
 A4D094Erwin Peters Systemtechnik
 A4D18CApple
 A4D18FShenzhen Skyee Optical FiberTechnolo
@@ -22180,11 +22625,13 @@ A4F465ITEL MOBILE
 A4F4C2VNPT
 A4F522CHOFU SEISAKUSHO
 A4F7D0LAN Accessories
+A4FA76New H3C
 A4FB8DHangzhou DunchongCo.Ltd
 A4FC77Mega Well
 A4FCCESecurity Expert
 A8016DAiwa
 A80180IMAGO
+A80577Netlist
 A80600Samsung
 A80C0DCisco
 A80C63HUAWEI
@@ -22207,12 +22654,14 @@ A81E84QUANTA COMPUTER INC.
 A81FAFKRYPTON POLSKA
 A82066Apple
 A823FELG
+A824B8Nokia
 A824EBZAO NPO Introtest
 A825EBCambridge
 A826D9HTC
 A8294CPrecision Optical Transceivers
 A82BB5Edgecore
 A82BB9Samsung
+A82BCDHUAWEI
 A82BD6Shina System
 A830ADWEIFANG GOERTEK
 A8329ADigicom Futuristic
@@ -22222,19 +22671,23 @@ A83944Actiontec
 A83CCBROSSMA
 A83E0EHMD Global
 A83FA1IEEE
+A84025Oxide Computer
 A84041Dragino
+A84122China Mobile  Information
 A84481Nokia
 A845CDSiselectron
 A845E9Firich Enterprises
 A8474AHon Hai Precision Ind.
 A8494DHUAWEI
 A849A5Lisantech
+A84D4AAudiowise
 A84E3FHitron.
 A8515BSamsung
 A854B2Wistron Neweb
 A8556APocketnet
 A8574ETP-LINK
 A85840Cambridge
+A85AE0Huawei Device
 A85AF3Shanghai SiflowerTechnology
 A85B6CRobert Bosch Gmbh, CM-CI2
 A85B78Apple
@@ -22253,11 +22706,13 @@ A86405nimbus 9
 A865B2DONGGUAN YISHANGTECHNOLOGY
 A8667FApple
 A86A6FRIM
+A86ABBSagemcom Broadband
 A86AC1HanbitEDS
 A86B7CSHENZHEN FENGLIAN
 A86BADHon Hai Precision Ind.
 A86D5FRaisecom
 A86DAAIntel Corporate
+A8705DARRIS Group
 A870A5UniComm
 A87285IDT
 A8741DPHOENIX CONTACT
@@ -22268,11 +22723,13 @@ A87B39Nokia
 A87C01Samsung
 A87D12HUAWEI
 A87E33Nokia Danmark
+A87EEAIntel Corporate
 A88038ShenZhen MovingComm
 A88195Samsung
 A881F1BMEYE B.V.
 A88200Hisense Electric
 A8827FCIBN Oriental
+A885D7Sangfor
 A886DDApple
 A88792Broadband Antenna Tracking
 A887B3Samsung
@@ -22303,6 +22760,7 @@ A89DD2Shanghai DareGlobal
 A89FBASamsung
 A89FECARRIS Group
 A8A089Tactical
+A8A097ScioTeq bvba
 A8A159ASRock Incorporation
 A8A198TCT mobile
 A8A5E2MSF-Vathauer Antriebstechnik GmbH & 
@@ -22387,9 +22845,11 @@ AC0A61Labor S.r.L.
 AC0D1BLG
 AC0DFEEkon GmbH - myGEKKO
 AC11D3Suzhou HOTEK  Video
+AC1203Intel Corporate
 AC1461ATAW 
 AC14D2wi-daq
 AC1585silergy
+AC15F4Apple
 AC162DHewlett Packard
 AC1702Fibar Group sp. z o.o.
 AC17C8Cisco Meraki
@@ -22397,6 +22857,7 @@ AC1826Seiko Epson
 AC199FSUNGROW POWER SUPPLY
 AC1DDFIEEE
 AC1E92Samsung
+AC1ED0Temic Automotive Philippines
 AC1F6BSuper Micro Computer
 AC1F74Apple
 AC1FD7Real Vision
@@ -22416,12 +22877,15 @@ AC319DShenzhen TG-NET Botone
 AC34CBShanhai GBCOMTechnology
 AC35EEFN-LINK
 AC3613Samsung
+AC3651Jiangsu Hengtong Terahertz
 AC3743HTC
 AC37C9RAID
 AC3870Lenovo MobileTechnology
+AC3A67Cisco
 AC3A7ARoku
 AC3B77Sagemcom Broadband
 AC3C0BApple
+AC3C8EFlextronics ComputingCo.
 AC3CB4Nilan
 AC3D05Instorescreen Aisa
 AC3D75HANGZHOU ZHIWAY
@@ -22433,7 +22897,10 @@ AC4330Versa
 AC44F2YAMAHA
 AC4723Genelec
 AC482DRalinwi NanjingTechnology
+AC4A56Cisco
+AC4A67Cisco
 AC4AFEHisense Broadband Multimedia
+AC4B1EIntegri-Sys.Com
 AC4BC8Juniper
 AC4E2EShenzhen JingHanDaCo.Ltd
 AC4E91HUAWEI
@@ -22455,6 +22922,7 @@ AC5D10Pace Americas
 AC5D5CFN-LINK
 AC5E8CUtillink
 AC5F3ESamsung
+AC6089HUAWEI
 AC60B6Ericsson
 AC6123Drivven
 AC6175HUAWEI
@@ -22464,9 +22932,11 @@ AC620DJabil Circuit
 AC63BEAmazon
 AC6417Siemens
 AC6462zte
+AC64CFFN-LINK
 AC64DDIEEE
 AC6706Ruckus Wireless
 AC676FElectrocompaniet A.S.
+AC67B2Espressif
 AC6B0FCADENCE DESIGN
 AC6BACJenny Science
 AC6E1ASHENZHEN GONGJINCO.,LT
@@ -22481,6 +22951,7 @@ AC751DHUAWEI
 AC7713Honeywell Safety Products 
 AC7A42iConnectivity
 AC7A4DALPS ELECTRIC
+AC7A56Cisco
 AC7BA1Intel Corporate
 AC7E8ACisco
 AC7F3EApple
@@ -22504,6 +22975,7 @@ AC8B9CPrimera
 AC8D14Smartrove
 AC8D34HUAWEI
 AC8FF8Nokia
+AC9085Apple
 AC9232HUAWEI
 AC932FNokia
 AC9403Envision Peripherals
@@ -22541,6 +23013,7 @@ ACBD70Huawei Device
 ACBE75Ufine
 ACBEB6Visualedge
 ACC1EEXiaomi
+ACC25DFiberhomeTechnologies
 ACC2ECCLT INT'L IND.
 ACC33ASamsung
 ACC358Continental Automotive Czech Republi
@@ -22555,6 +23028,7 @@ ACCA8EODA
 ACCAABVirtual Electric
 ACCABAMidokura Co., Ltd. 
 ACCB09Hefcom Metering 
+ACCB51Hangzhou Hikvision Digital
 ACCC8EAxis
 ACCE8FHWA YAO
 ACCF23Hi-flyingtechnology
@@ -22600,6 +23074,7 @@ ACF5E6Cisco
 ACF6F7LG
 ACF7F3Xiaomi
 ACF85CPrivate
+ACF8CCARRIS Group
 ACF970HUAWEI
 ACF97EELESYS
 ACFD93WEIFANG GOERTEK
@@ -22615,6 +23090,7 @@ B00875HUAWEI
 B008BFVital Connect
 B009D3Avizia
 B009DARing
+B00AD5zte
 B00CD1Hewlett Packard
 B01041Hon Hai Precision Ind.
 B01203Dynamics Hong Kong
@@ -22651,6 +23127,7 @@ B04089Senient
 B0411DITTIM
 B0416FShenzhen Maxtang Computer
 B0435DNuLEDs
+B04502Huawei Device
 B04515mira fitness
 B04519TCT mobile
 B04545YACOUB Automation
@@ -22722,6 +23199,7 @@ B09122Texas Instruments
 B09134Taleo
 B09137ISis ImageStream Internet
 B0935BARRIS Group
+B09575TP-LINK
 B0958ETP-LINK
 B0966CLanbowan
 B0973AE-Fuel
@@ -22746,11 +23224,14 @@ B0ACD2zte
 B0ACFAFUJITSU
 B0ADAAAvaya
 B0AE25Varikorea
+B0B194zte
 B0B28FSagemcom Broadband
 B0B2DCZyxel
 B0B32BSlican Sp. z o.o.
+B0B353IEEE
 B0B3ADHUMAX
 B0B448Texas Instruments
+B0B5C3GUANGDONG OPPO MOBILES
 B0B5E8Ruroc
 B0B867Hewlett Packard Enterprise
 B0B8D5Nanjing Nengrui Auto Equipment
@@ -22777,6 +23258,7 @@ B0C83FJiangsu Cynray IOT
 B0C8ADPeople Power
 B0C95BBeijing Symtech
 B0CA68Apple
+B0CCFEHuawei Device
 B0CE18Zhejiang shenghui lighting
 B0CF4DMI-ZoneIreland
 B0D09CSamsung
@@ -22795,6 +23277,7 @@ B0E17EHUAWEI
 B0E235Xiaomi
 B0E2E5FiberhomeTechnologies
 B0E39DCAT SYSTEM
+B0E4D5Google
 B0E50ENRG
 B0E5EDHUAWEI
 B0E71DShanghai Maigantech
@@ -22829,6 +23312,7 @@ B4055DInspurInformation
 B40566SP Best
 B407F9Samsung
 B40832TC
+B40931HUAWEI
 B40AC6DEXON
 B40B44Smartisan
 B40B78Brusa Elektronik
@@ -22840,13 +23324,16 @@ B40F3BTendaCo.,Ltd.Dongguan branch
 B40FB3vivo Mobile
 B41489Cisco
 B41513HUAWEI
+B4157ECelona
 B41780DTI Group
 B418D1Apple
+B41A1DSamsung
 B41C30zte
 B41D2BShenzhen YOUHUA
 B41DEFInternet Laboratories
 B4211DBeijing GuangXin
 B4218ADog Hunter
+B42200Brother
 B424E7Codetek
 B4265DTaicang T&W
 B428F1E-Prime
@@ -22874,6 +23361,7 @@ B439D6ProCurveing by HP
 B43A28Samsung
 B43DB2Degreane Horizon
 B43E3BViableware
+B440A4Apple
 B4417ASHENZHEN GONGJINCO.,LT
 B4430DBroadlink Pty
 B44326HUAWEI
@@ -22881,6 +23369,7 @@ B4475EAvaya
 B447F5Earda
 B44BD2Apple
 B44BD6IEEE
+B44C3BZhejiang Dahua
 B44CC2NR ELECTRIC
 B44F96Zhejiang Xinzailing
 B45062EmBestor
@@ -22907,6 +23396,7 @@ B46BFCIntel Corporate
 B46C47Panasonic Appliances
 B46D35Dalian Seasky Automation Co;Ltd
 B46D83Intel Corporate
+B46E08HUAWEI
 B47356Hangzhou Treebearing
 B47443Samsung
 B47447CoreOS
@@ -22920,6 +23410,7 @@ B47C29Shenzhen Guzidi
 B47C59Jiangsu Hengxin
 B47C9CAmazon
 B47F5EForesight Manufacture  Pte
+B48107SHENZHEN CHUANGWEI-RGB
 B481BFMeta-Networks
 B48255Research Products
 B4827BAKG Acoustics
@@ -22962,6 +23453,7 @@ B4AB2CMtM
 B4AE2BMicrosoft
 B4AE6FCircle Reliance, Inc DBA Cranberry
 B4B017Avaya
+B4B055HUAWEI
 B4B15ASiemens AG Energy Management Divisio
 B4B265DAEHO I&T
 B4B362zte
@@ -22984,10 +23476,12 @@ B4C62EMolex CMS
 B4C6F8Axilspot
 B4C799Extreme
 B4C810UMPI Elettronica
+B4C9B9Sichuan AI-Link
 B4CB57GUANGDONG OPPO MOBILES
 B4CC04Piranti
 B4CCE9PROSYST
 B4CD27HUAWEI
+B4CE40Samsung
 B4CEF6HTC
 B4CEFEJames Czekaj
 B4CFDBShenzhen Jiuzhou Electric
@@ -23025,9 +23519,11 @@ B4EE25Shenzhen Belon
 B4EEB4ASKEY COMPUTER
 B4EED4Texas Instruments
 B4EF04DAIHAN Scientific
+B4EF1C360 AICo.Ltd
 B4EF39Samsung
 B4EFFALemobile Information
 B4F0ABApple
+B4F18CHuawei Device
 B4F1DALG
 B4F2E8ARRIS Group
 B4F323PETATEL
@@ -23041,6 +23537,7 @@ B4FBF9HUAWEI
 B4FC75SEMA
 B4FE8CCentro Sicurezza Italia SpA
 B80018Htel
+B802A4Aeonsemi
 B80305Intel Corporate
 B80415Bayan Audio
 B805ABzte
@@ -23069,12 +23566,14 @@ B824F0SOYODevelopment
 B8259AThalmic Labs 
 B8266CANOV France
 B826D4Furukawa Industrial S.A. Produtos El
+B827C5Huawei Device
 B827EBRaspberry Pi Foundation
 B8288BParker Hannifin Manufacturing 
 B829F7Blaster Tech
 B82A72Dell
 B82ADCEFR Europäische Funk-Rundsteuerung
 B82CA0Resideo
+B82FCBCMS Electracom
 B830A8Road-Track Telematics Development
 B831B5Microsoft
 B83241Wuhan Tianyu Information
@@ -23093,6 +23592,7 @@ B841A4Apple
 B843E4Vlatacom
 B844D9Apple
 B847C6SanJet
+B848AAEM Microelectronic
 B84DEEHisense broadband multimedia
 B84FD5Microsoft
 B85001Extreme
@@ -23108,9 +23608,11 @@ B85AFEHandaerTechnology
 B85D0AApple
 B85E7BSamsung
 B86091Onnetand Innovations
+B86142Beijing Tricolor
 B8616FAccton
 B8621FCisco
 B8634DApple
+B86392GUANGDONG GENIUS
 B863BCROBOTIS
 B86491CK Telecom
 B8653BBolymin
@@ -23133,7 +23635,8 @@ B8797ESecure Meters
 B87AC9Siemens
 B87BC5Apple
 B87C6FNXP  Management
-B87CF2Aerohive
+B87CF2Extreme
+B8804FTexas Instruments
 B88198Intel Corporate
 B88303Hewlett Packard Enterprise
 B88584Dell
@@ -23148,10 +23651,12 @@ B88A60Intel Corporate
 B88AECNintendo
 B88D12Apple
 B88E3AInfiniteJLT
+B88E82Huawei Device
 B88EC6Stateless
 B88EDFZencheerTechnology
 B88F14Analytica
 B88FB4JABIL CIRCUIT ITALIA S.R.L
+B89047Apple
 B891C9Handreamnet
 B8921DBG T&A
 B89436HUAWEI
@@ -23163,6 +23668,7 @@ B898F7GioneeEquipment Co,Ltd.ShenZhen
 B899197signal
 B899AEShenzhen MiaoMing  Intelligent
 B899B0Cohere
+B89A2AIntel Corporate
 B89A9AXin Shi Jia
 B89ACDELITE OPTOELECTRONICCO.
 B89AEDOceanServer
@@ -23208,6 +23714,7 @@ B8C385HUAWEI
 B8C3BFHenan ChengshiTechnology Co.，Ltd
 B8C46FPRIMMCON
 B8C68ESamsung
+B8C6AAEarda
 B8C716FiberhomeTechnologies
 B8C74AGUANGDONG OPPO MOBILES
 B8C75DApple
@@ -23218,8 +23725,10 @@ B8CA04Holtek Semiconductor
 B8CA3ADell
 B8CD93Penetek
 B8CDA7Maxeler
+B8CEF6Mellanox
 B8D06FGUANGZHOU HKUST FOK YING TUNG RESEAR
 B8D49DM Seven System
+B8D4E7Aruba, a Hewlett Packard Enterprise
 B8D50BSunitec Enterprise
 B8D526Zyxel
 B8D7AFMurata Manufacturing
@@ -23232,6 +23741,8 @@ B8DB1CIntegrated Device Sdn. Bhd.
 B8DC87IAI
 B8DE5ELONGCHEER
 B8DF6BSpotCam
+B8E3B1HUAWEI
+B8E3EEUniversal
 B8E589Payter
 B8E6252Wire
 B8E7799Solutions
@@ -23243,6 +23754,7 @@ B8EE0ESagemcom Broadband
 B8EE65Liteon
 B8EE79YWire
 B8EF8BSHENZHEN CANNICE
+B8F009Espressif
 B8F080SPS
 B8F12AApple
 B8F317iSun SmasherPrivate
@@ -23266,9 +23778,11 @@ B8FFFETexas Instruments
 BC0200Stewart Audio
 BC024AHMD Global
 BC0543AVM
+BC0963Apple
 BC0DA5Texas Instruments
 BC0F2BFORTUNE TECHGROUP
 BC0F64Intel Corporate
+BC0F9AD-Link
 BC0FA7Ouster
 BC125EBeijing  WisVideo 
 BC1401Hitron.
@@ -23277,6 +23791,7 @@ BC14EFITON
 BC15A6Taiwan Jantek
 BC15ACVodafone Italia S.p.A.
 BC1665Cisco
+BC1695zte
 BC16F5Cisco
 BC1A67YF
 BC1AE4Huawei Device
@@ -23289,6 +23804,7 @@ BC25E0HUAWEI
 BC25F03D Display
 BC261DHONG KONG TECON
 BC2643Elprotronic
+BC26A1FACTORY FIVE
 BC26C7Cisco
 BC282Ce-SmartPvt.
 BC2846NextBIT Computing Pvt.
@@ -23297,6 +23813,7 @@ BC2B6BBeijing Haier IC Design
 BC2BD7Revogi Innovation
 BC2C55Bear Flag Design
 BC2D98ThinGlobal
+BC2DEFRealme Chongqing Mobiles
 BC2E48ARRIS Group
 BC2EF6Huawei Device
 BC2F3Dvivo Mobile
@@ -23305,6 +23822,7 @@ BC307DWistron Neweb
 BC307EWistron Neweb
 BC30D9Arcadyan
 BC325FZhejiang Dahua
+BC33ACSilicon Laboratories
 BC3400IEEE
 BC35E5Hydro
 BC3865JWCNETWORKS
@@ -23320,6 +23838,7 @@ BC3F4ETeleepoch
 BC3F8FHUAWEI
 BC4100CODACOs.r.o.
 BC4101Shenzhen TINNO Mobile
+BC428CALPS ELECTRIC
 BC4377Hang Zhou Huite
 BC4434Shenzhen TINNO Mobile
 BC4486Samsung
@@ -23327,6 +23846,7 @@ BC44B0Elastifile
 BC452EKnowledge Development for POF S.L.
 BC4699TP-LINK
 BC4760Samsung
+BC4A56Cisco
 BC4B79SensingTek
 BC4CC4Apple
 BC4DFBHitron.
@@ -23335,10 +23855,12 @@ BC4E5DZhongMiao
 BC51FESwannPty
 BC52B4Nokia
 BC52B7Apple
+BC542FIntel Corporate
 BC5436Apple
 BC5451Samsung
 BC54F9Drogoo
 BC54FCSHENZHEN MERCURYTECHNOLOGIES
+BC5A56Cisco
 BC5C4CELECOM
 BC5EA1PsiKick
 BC5FF4ASRock Incorporation
@@ -23374,6 +23896,7 @@ BC7670HUAWEI
 BC7737Intel Corporate
 BC779FSBM
 BC79ADSamsung
+BC7ABFSamsung
 BC7DD1Radio Data Comms
 BC7FA4Xiaomi
 BC811FIngate
@@ -23450,6 +23973,7 @@ BCD177TP-LINK
 BCD1D3Shenzhen TINNO Mobile
 BCD5B6d2d
 BCD713Owl Labs
+BCD767Private
 BCD940ASR Co,.Ltd.
 BCDDC2Espressif
 BCE09DEoslink
@@ -23469,7 +23993,7 @@ BCEE7BASUSTek COMPUTER
 BCF1F2Cisco
 BCF292PLANTRONICS
 BCF2AFdevolo
-BCF310Aerohive
+BCF310Extreme
 BCF5ACLG
 BCF61CGeomodeling Wuxi
 BCF685D-Link
@@ -23477,6 +24001,7 @@ BCF811Xiamen DNAKE
 BCF9F2TEKO
 BCFE8CAltronic
 BCFED9Apple
+BCFF21Smart CodeTechnology
 BCFFACTOPCON
 BCFFEBMotorola Mobility LLC, a Lenovo
 C0028DWINSTAR Display
@@ -23490,6 +24015,8 @@ C011A6Fort-Telecom
 C01242Alpha Security Products
 C0132BSichuan Changhong Electric
 C0143DHon Hai Precision Ind.
+C014B8Nokia
+C01692China Mobile Group Device
 C0174DSamsung
 C01885Hon Hai Precision Ind.
 C01ADAApple
@@ -23520,6 +24047,7 @@ C035C5Prosoft
 C03656FiberhomeTechnologies
 C03896Hon Hai Precision Ind.
 C038F9Nokia Danmark
+C03937GREE ELECTRIC APPLIANCES, INC. OF ZH
 C03B8FMinicom Digital Signage
 C03D46Shanghai SangoTechnology
 C03DD9MitraStar
@@ -23582,12 +24110,14 @@ C08C60Cisco
 C08C71Motorola Mobility LLC, a Lenovo
 C09132Patriot Memory
 C09134ProCurveing by HP
+C095DANXP India Private
 C09727Samsung
 C09879Acer
 C098DAChina Mobile IOT
 C098E5University of Michigan
 C09A71XIAMEN MEITU MOBILECO.LTD
 C09AD0Apple
+C09BF4IEEE
 C09C04Shaanxi GuoLian Digital TV
 C09C92COBY
 C09D26Topicon HK Lmd.
@@ -23606,9 +24136,11 @@ C0A39EEarthCam
 C0A53EApple
 C0A5DDSHENZHEN MERCURYTECHNOLOGIES
 C0A600Apple
+C0A66DInspur Group
 C0A8F0AdamsonEngineering
 C0AA68OSASI Technos
 C0AC54Sagemcom Broadband
+C0B101zte
 C0B339Comigo
 C0B357YoshikiIndustry
 C0B47DHuawei Device
@@ -23645,6 +24177,7 @@ C0D2DDSamsung
 C0D2F3Hui Zhou Gaoshengda
 C0D391IEEE
 C0D3C0Samsung
+C0D682Arista
 C0D834xvtec
 C0D962ASKEY COMPUTER
 C0D9F7ShanDong Domor Intelligent S&T
@@ -23678,6 +24211,7 @@ C40142MaxMedia
 C4017CRuckus Wireless
 C401B1SeekTech
 C401CEPRESITION 
+C402E1KhwahishPrivate
 C40415NETGEAR
 C4047BShenzhen YOUHUA
 C40528HUAWEI
@@ -23693,7 +24227,7 @@ C40F09Hermes
 C4108ARuckus Wireless
 C411E0Bull Group
 C412F5D-Link
-C413E2Aerohive
+C413E2Extreme
 C4143CCisco
 C416FAPrysm
 C417FEHon Hai Precision Ind.
@@ -23717,6 +24251,7 @@ C42C03Apple
 C42C4FQingdao Hisense MobileTechnology
 C42F90Hangzhou Hikvision Digital
 C43018MCS Logic
+C432D1Farlink
 C43306China Mobile Group Device
 C4346BHewlett Packard
 C43655Shenzhen Fenglian
@@ -23732,6 +24267,7 @@ C43DC7NETGEAR
 C44044RackTop
 C4411EBelkin
 C44202Samsung
+C44268CRESTRON
 C4438FLG
 C4447DHUAWEI
 C444A0Cisco
@@ -23772,6 +24308,7 @@ C464E3Texas Instruments
 C46516Hewlett Packard
 C46699vivo Mobile
 C467B5Libratone
+C467D1HUAWEI
 C468D0VTechs
 C4693ETurbulence Design
 C46AB7Xiaomi
@@ -23785,6 +24322,7 @@ C47154TP-LINK
 C471FECisco
 C47295Cisco
 C4731ESamsung
+C4741Ezte
 C474F8Hot Pepper
 C477ABBeijing ASU Tech
 C477AFAdvanced Digital Broadcast SA
@@ -23803,6 +24341,7 @@ C48466Apple
 C48508Intel Corporate
 C486E9HUAWEI
 C488E5Samsung
+C489EDSolid Optics EU N.V.
 C48A5AJFCONTROL
 C48E8FHon Hai Precision Ind.
 C48F07Shenzhen Yihao Hulian Science and
@@ -23820,12 +24359,14 @@ C49805Minieum
 C4985CHui Zhou Gaoshengda
 C49878SHANGHAI MOAAN INTELLIGENT
 C49880Apple
+C49886Qorvo Utrecht B.V.
 C49A02LG
 C49DEDMicrosoft
 C49E41G24 Power
 C49F4CHUAWEI
 C49FF3Mciao
 C4A366zte
+C4A402HUAWEI
 C4A81DD-Link
 C4AAA1SUMMIT DEVELOPMENT, spol.s r.o.
 C4ABB2vivo Mobile
@@ -23894,6 +24435,7 @@ C4F7D5Cisco
 C4F839Actia Automotive
 C4FCE4DishTV NZ
 C4FDE6DRTECH
+C4FE5BGUANGDONG OPPO MOBILES
 C4FEE2AMICCOM
 C4FF1FHUAWEI
 C4FFBCIEEE
@@ -23904,6 +24446,7 @@ C8028FNova
 C802A6Beijing Newmine
 C803F5Ruckus Wireless
 C80718TDSi
+C80739NAKAYO
 C80873Ruckus Wireless
 C808E9LG
 C809A8Intel Corporate
@@ -23970,9 +24513,11 @@ C850CEHUAWEI
 C850E9Raisecom
 C85195HUAWEI
 C85261ARRIS Group
+C853E1Beijing BytedanceTechnology
 C8544BZyxel
 C85645Intermas France
 C85663Sunflex Europe
+C858C0Intel Corporate
 C85A9Fzte
 C85B76LCFCTechnology
 C85D38HUMAX
@@ -23982,13 +24527,14 @@ C863F1Sony Interactive Entertainment
 C863FCARRIS Group
 C864C7zte
 C8662CBeijing Haitai Fangyuan HighCo,.Ltd.
-C8665DAerohive
-C8675EAerohive
+C8665DExtreme
+C8675EExtreme
 C869CDApple
 C86C1EDisplay
 C86C87Zyxel
 C86CB6Optcom
 C86F1DApple
+C87125Johnson Outdoors Marined/b/a Minnkot
 C87248Aplicom
 C87324 Sow Cheng
 C8755BQuantifyPty.
@@ -23998,6 +24544,7 @@ C87B5Bzte
 C87CBCValink Co., Ltd. 
 C87D77Shenzhen KingtechEquipment
 C87E75Samsung
+C88314Tempo
 C88439Sunrise
 C88447Beautiful Enterprise
 C88550Apple
@@ -24006,6 +24553,7 @@ C88722Lumenpulse
 C8873BNet Optics
 C88A83Dongguan HuaHong
 C88B47Nolangroup S.P.A con Socio Unico
+C88BE8Masimo
 C88D83HUAWEI
 C88ED1IEEE
 C88F26Skyworth Digital
@@ -24048,14 +24596,17 @@ C8BA94Samsung
 C8BAE9QDIS
 C8BBD3Embrane
 C8BCC8Apple
+C8BCE5Sense Things Japan
 C8BE19D-Link
 C8C126ZPM Industria e Comercio Ltda
 C8C13CRuggedTek Hangzhou
 C8C2C6Shanghai Airm2mTechnology
 C8C2F5FLEXTRONICS MANUFACTURINGCO.
 C8C2FAHUAWEI
+C8C465HUAWEI
 C8C50EShenzhen PrimestoneTechnologies.Co.
 C8C64AFlextronics Tech. Pvt
+C8C750Motorola Mobility LLC, a Lenovo
 C8C791Zero1.tv
 C8CBB8Hewlett Packard
 C8CD72Sagemcom Broadband
@@ -24073,6 +24624,7 @@ C8D590FLIGHT DATA
 C8D5FEShenzhen Zowee
 C8D69DArabOptronics
 C8D719Cisco-Linksys
+C8D778BSH Hausgeraete
 C8D779QING DAO HAIER TELECOM
 C8D7B0Samsung
 C8D9D2Hewlett Packard
@@ -24111,6 +24663,7 @@ C8F946LOCOSYS
 C8F981Seneca s.r.l.
 C8F9C8NewSharpCo
 C8F9F9Cisco
+C8FA84Trusonus
 C8FAE1ARQ Digital
 C8FB26Cisco SPVTG
 C8FD19Texas Instruments
@@ -24133,6 +24686,7 @@ CC08FBTP-LINK
 CC09C8IMAQLIQ
 CC0CDAMiljovakt
 CC0DECCisco SPVTG
+CC0DF2Motorola Mobility LLC, a Lenovo
 CC10A3Beijing Nan Bao
 CC14A6Yichun MyEnergy Domain
 CC167ECisco
@@ -24151,6 +24705,7 @@ CC262DVerifi
 CC29F5Apple
 CC2A80Micro-Biz intelligence
 CC2C83DarkMatter L.L.C
+CC2D1BSFR
 CC2D21TendaCo.,Ltd.Dongguan branch
 CC2D83GUANGDONG OPPO MOBILES
 CC2D8CLG
@@ -24176,6 +24731,7 @@ CC3E5FHewlett Packard
 CC3F1DIntesis Software SL
 CC3FEABAE
 CC40D0NETGEAR
+CC418EMSA Innovation
 CC43E3Trump s.a.
 CC4463Apple
 CC4639WAAV
@@ -24201,6 +24757,7 @@ CC55ADRIM
 CC593ESensium Healthcare
 CC5A53Cisco
 CC5C75Weightech Com. Imp. Exp. Equip. Pesa
+CC5CDEChina Mobile Group Device
 CC5D4EZyxel
 CC5D57Information  System Research Institu
 CC5D78JTD Consulting
@@ -24234,6 +24791,8 @@ CC7B35zte
 CC7B61NIKKISO
 CC7D37ARRIS Group
 CC7EE7PanasonicAVC
+CC7F75Cisco
+CC7F76Cisco
 CC81DAPhicomm 
 CC82EBKYOCERA
 CC856CSHENZHEN MDK DIGITAL
@@ -24268,6 +24827,8 @@ CCA374Guangdong GuanglianTechnology Co.Ltd
 CCA462ARRIS Group
 CCA4AFShenzhen Sowell
 CCA614AIFA
+CCA7C1Google
+CCAB2CHUMAX
 CCAF78Hon Hai Precision Ind.
 CCB0DALiteon
 CCB11ASamsung
@@ -24307,11 +24868,13 @@ CCD31EIEEE
 CCD39DIEEE
 CCD3C1Vestel Elektronik San ve Tic. A.Ş.
 CCD3E2Jiangsu Yinhe 
+CCD42EArcadyan
 CCD4A1MitraStar
 CCD539Cisco
 CCD811Aiconn
 CCD81FMaipuTechnology
 CCD8C1Cisco
+CCD9ACIntel Corporate
 CCD9E9SCR Engineers
 CCDC55Dragonchip
 CCE0C3EXTEN
@@ -24337,6 +24900,7 @@ CCF841Lumewave
 CCF8F0Xi'an HISU Multimedia
 CCF954Avaya
 CCF957u-blox
+CCF9E4Intel Corporate
 CCF9E8Samsung
 CCFA00LG
 CCFB65Nintendo
@@ -24346,9 +24910,11 @@ CCFD17TCT mobile
 CCFE3CSamsung
 D0034BApple
 D003DFSamsung
+D003EBTexas Instruments
 D00401Motorola Mobility LLC, a Lenovo
 D00492FiberhomeTechnologies
 D0052AArcadyan
+D005E4Huawei Device
 D00790Texas Instruments
 D007CAJuniper
 D00AABYokogawa Digital Computer
@@ -24365,6 +24931,7 @@ D0176ASamsung
 D017C2ASUSTek COMPUTER
 D0196ACiena
 D01AA7UniPrint
+D01C3CTECNO MOBILE
 D01CBBBeijing Ctimes Digital
 D02212IEEE
 D022BESamsung
@@ -24373,6 +24940,7 @@ D02516MERCURYTECHNOLOGIES
 D02544Samsung
 D02598Apple
 D02788Hon Hai Precision Ind.
+D028BARealme Chongqing MobileTelecommunica
 D02B20Apple
 D02C45littleBits
 D02DB3HUAWEI
@@ -24388,6 +24956,7 @@ D039EANetApp
 D03D52Vaion
 D03DC3AQ
 D03E5CHUAWEI
+D03FAAApple
 D041C9FiberhomeTechnologies
 D0431EDell
 D046DCSouthwest Research Institute
@@ -24428,6 +24997,7 @@ D0608Czte
 D062A0China Essence
 D0634DMeiko Maschinenbau GmbH &amp;
 D063B4SolidRun
+D06544Apple
 D065CAHUAWEI
 D0666DShenzhen Bus-Lan
 D0667BSamsung
@@ -24491,6 +25061,7 @@ D0B128Samsung
 D0B214PoeWit
 D0B2C4Technicolor CH USA
 D0B33FShenzhen TINNO Mobile
+D0B45DHuawei Device
 D0B498Robert Bosch LLC Automotive
 D0B523Bestcare Cloucal
 D0B53DSEPRO ROBOTIQUE
@@ -24522,6 +25093,7 @@ D0D0FDCisco
 D0D212K2NET
 D0D286Beckman Coulter K.K.
 D0D2B0Apple
+D0D3E0Aruba, a Hewlett Packard Enterprise
 D0D3FCMios
 D0D412ADB Broadband Italia
 D0D471MVTECH
@@ -24572,15 +25144,17 @@ D41296Anobit
 D412BBQuadrant Components Inc.
 D4136FAsia Pacific Brands
 D41A3FGUANGDONG OPPO MOBILES
+D41AC8Nippon Printer Engineering
 D41C1CRCF S.P.A.
 D41D71Palo Alto
 D41E35TOHO
-D41F0CJAI
+D41F0CJAI Manufacturing
 D4206DHTC
 D420B0Mist
 D42122Sercomm
 D4223FLenovo MobileTechnology
 D4224EAlcatel Lucent
+D422CDXsensB.V.
 D42493GW
 D4258BIntel Corporate
 D425CCIEEE
@@ -24613,6 +25187,7 @@ D440F0HUAWEI
 D44165SICHUAN TIANYI COMHEART TELECOMCO.
 D443A8Changzhou Haojie Electric
 D445E8Jiangxi Hongpai
+D446E1Apple
 D44B5ETAIYO YUDEN
 D44BB6Zhejiang Tmall
 D44C24Vuppalamritha Magnetic Components
@@ -24626,6 +25201,7 @@ D4507ACEIVA Logic
 D4522ATangoWiFi.com
 D45251IBT Ingenieurbureau Broennimann Thun
 D45297nSTREAMS
+D452EEBSkyB
 D45383Murata Manufacturing
 D453AFVIGO System S.A.
 D45556Fiber Mountain
@@ -24634,8 +25210,11 @@ D45800FiberhomeTechnologies
 D45AB2Galleon
 D45C70Wi-Fi Alliance
 D45D42Nokia
+D45D64ASUSTek COMPUTER
 D45DDFPEGATRON
+D45EECBeijing Xiaomi
 D45F25Shenzhen YOUHUA
+D46075Baidu OnlineTechnology 
 D460E3Sercomm
 D4612EHUAWEI
 D46132Pro Concept Manufacturer
@@ -24647,7 +25226,7 @@ D463C6Motorola Mobility LLC, a Lenovo
 D463FEArcadyan
 D464F7CHENGDU USEE DIGITAL
 D466A8Riedo
-D46761United Gulf Gate
+D46761XonTel
 D467D3GUANGDONG OPPO MOBILES
 D467E7FiberhomeTechnologies
 D4684DRuckus Wireless
@@ -24688,6 +25267,7 @@ D48564Hewlett Packard
 D487D8Samsung
 D4883FHDPRO
 D48890Samsung
+D48A39Samsung
 D48CB5Cisco
 D48DD9Meld
 D48F33Microsoft
@@ -24705,6 +25285,7 @@ D49524Clover
 D496DFSUNGJIN C&T
 D4970BXiaomi
 D49A20Apple
+D49AA0VNPT
 D49B5CChongqing Miedu
 D49C28JayBird
 D49C8EUniversity of FUKUI
@@ -24737,6 +25318,7 @@ D4B761Sichuan AI-Link Technology Co., 
 D4B8FFHome Control Singapore Pte
 D4B92FTechnicolor CH USA
 D4BBC8vivo Mobile
+D4BBE6Huawei Device
 D4BD1E5VT,Taiwan
 D4BED9Dell
 D4BF2DSE Controls Asia Pacific
@@ -24755,16 +25337,19 @@ D4CA6Eu-blox
 D4CBAFNokia
 D4CEB8Enatel
 D4CF37Symbolic IO
-D4CFF9Shenzhen Sen5
+D4CFF9Shenzhen SEI Robotics
 D4D184ADB Broadband Italia
 D4D249Power Ethernet
 D4D252Intel Corporate
+D4D2D6FN-LINK
 D4D2E5BKAV
 D4D50DSouthwest Microwave
 D4D748Cisco
 D4D7A9Shanghai Kaixiang Info Tech
 D4D898Korea CNO Tech
 D4D919GoPro
+D4DACDBSkyB
+D4DC09Mist
 D4DCCDApple
 D4DF57Alpinion Medical
 D4E08EValueHD
@@ -24791,15 +25376,18 @@ D4F547Google
 D4F5EFHewlett Packard Enterprise
 D4F63FIEA S.R.L.
 D4F786FiberhomeTechnologies
+D4F829Sagemcom Broadband
 D4F9A1HUAWEI
 D4FC13FiberhomeTechnologies
 D8004DApple
 D8052ESkyviia
 D806D1Honeywell Fire System  Co,.
+D807B6TP-LINK
 D80831Samsung
 D808F5ArcadiaCo. Ltd. 
 D809C3Cercacor Labs
 D80B9ASamsung
+D80BCBTelink Semiconductor 
 D80CCFC.G.V. S.A.S.
 D80D17TP-LINK
 D80DE3FXI
@@ -24845,6 +25433,7 @@ D83214TendaCo.,Ltd.Dongguan branch
 D8325AShenzhen YOUHUA
 D832E3Xiaomi
 D8337FOffice FA.com
+D834EEStem Audio
 D837BESHENZHEN GONGJINCO.,LT
 D8380DSHENZHEN IP-COM
 D838FCRuckus Wireless
@@ -24858,15 +25447,18 @@ D8445CDEV Tecnologia Ind Com Man Eq LTDA
 D8452BIntegrated Device Sdn. Bhd.
 D84606Silicon Valley Global Marketing
 D84710Sichuan Changhong Electric
+D84732TP-LINK
 D848EEHangzhou Xueji
 D8490BHUAWEI
 D8492FCANON
 D84A87OI ELECTRIC
 D84B2ACognitas
+D84C90Apple
+D84DB9Wu Qi
 D84FB8LG
 D850E6ASUSTek COMPUTER
 D8543ATexas Instruments
-D854A2Aerohive
+D854A2Extreme
 D85575Samsung
 D855A3zte
 D857EFSamsung
@@ -24877,6 +25469,7 @@ D85D84CAx soft
 D85DE2Hon Hai Precision Ind.
 D85DEFBusch-Jaeger Elektro
 D85DFBPrivate
+D85F77Telink Semiconductor 
 D860B0bioMérieux Italia S.p.A.
 D860B3Guangdong GlobalTechnology CO.，LTD
 D86162Wistron Neweb
@@ -24893,14 +25486,17 @@ D86BF7Nintendo
 D86C02Huaqin Telecom
 D86C63Google
 D86CE9Sagemcom Broadband
+D8714DTexas Instruments
 D87157Lenovo MobileTechnology
 D87495zte
 D87533Nokia
 D8760AEscort
+D8787FUbee Interactive
 D878E5KUHN SA
 D87988Hon Hai Precision Ind.
 D87CDDSANIX
 D87D7FSagemcom Broadband
+D87E76ITEL MOBILE
 D87EB1x.o.ware
 D88039Microchip
 D8803CAnhui Huami Information
@@ -24917,6 +25513,7 @@ D88DC8Atil
 D88F76Apple
 D890E8Samsung
 D8912AZyxel
+D89136Dover Fueling
 D89341General Electric Global Research
 D89403Hewlett Packard Enterprise
 D8952FTexas Instruments
@@ -24943,6 +25540,7 @@ D8A315vivo Mobile
 D8A534Spectronix
 D8A6FDGhost Locomotion
 D8A756Sagemcom Broadband
+D8A8C8zte
 D8A98BTexas Instruments
 D8ADDDSonavation
 D8AE90Itibia
@@ -24971,6 +25569,7 @@ D8C3FBDETRACOM
 D8C46AMurata Manufacturing
 D8C497Quanta Computer
 D8C4E9Samsung
+D8C561CommFrontPte
 D8C691Hichan
 D8C771HUAWEI
 D8C7C8Aruba, a Hewlett Packard Enterprise
@@ -25049,11 +25648,13 @@ DC175AHitachi High-Technologies
 DC1792Captivate
 DC1A01Ecoliv
 DC1AC5vivo Mobile
+DC1BA1Intel Corporate
 DC1D9FU & B tech
 DC1DD4Microstep-MIS spol. s r.o.
 DC1EA3Accensus
 DC2008ASDLtd 
 DC21B9Sentec Co.Ltd
+DC21E2HUAWEI
 DC2834HAKKO
 DC2919AltoBeam Ltd
 DC293AShenzhen Nuoshi
@@ -25070,8 +25671,9 @@ DC2F03Step forward Group
 DC309CHeyrex
 DC31D1vivo Mobile
 DC330DQING DAO HAIER TELECOM
+DC333DHuawei Device
 DC3350TechSAT
-DC35F1Positivo Informática SA.
+DC35F1Positivo Tecnologia S.A.
 DC3714Apple
 DC3752GE
 DC3757Integrated Device Sdn. Bhd.
@@ -25119,6 +25721,7 @@ DC6723barox Kommunikation
 DC680CHewlett Packard Enterprise
 DC68EBNintendo
 DC6AEAInfinix mobility
+DC6B12worldcns
 DC6DCDGUANGDONG OPPO MOBILES
 DC6F00Livescribe
 DC6F08Bay Storage
@@ -25135,10 +25738,12 @@ DC825BJANUS, spol. s r.o.
 DC82F6iPort
 DC85DEAzureWave
 DC86D8Apple
+DC8983Samsung
 DC8B28Intel Corporate
 DC8C37Cisco
 DC9088HUAWEI
 DC962CNST Audio
+DC9840Microsoft
 DC9914HUAWEI
 DC9A8ENanjing Cocomm
 DC9B1EIntercom
@@ -25258,7 +25863,7 @@ E0191DHUAWEI
 E01954zte
 E019D8BH
 E01AEAAllied Telesis
-E01C41Aerohive
+E01C41Extreme
 E01CEEBravo Tech
 E01D38Beijing HuaqinWorld
 E01D3BCambridge
@@ -25266,6 +25871,7 @@ E01E07Anite Telecoms  US.
 E01F0AXslent Energy.
 E01F88Xiaomi
 E02202ARRIS Group
+E023FFFortinet
 E0247FHUAWEI
 E02481HUAWEI
 E02538Titan Pet Products
@@ -25275,6 +25881,7 @@ E0271ATTC Next-generation HomeSystem WG
 E02861HUAWEI
 E0286DAVM Audiovisuelles Marketing und Com
 E02A82Universal Global Scientific Industri
+E02AE6FiberhomeTechnologies
 E02CB2Lenovo Mobile
 E02CF3MRS
 E02F6DCisco
@@ -25323,6 +25930,7 @@ E05FB9Cisco
 E06066Sercomm
 E06089Cloudleaf
 E061B2HANGZHOU ZENOINTEL
+E06234Texas Instruments
 E06267Xiaomi
 E06290Jinan Jovision Science &
 E063DAUbiquiti
@@ -25397,6 +26005,7 @@ E0B9A5AzureWave
 E0B9BAApple
 E0B9E5Technicolor
 E0BAB4Arrcus
+E0BB9ESeiko Epson
 E0BC43C2 Microsystems
 E0C0D1CK Telecom 
 E0C286AisaiTechnology
@@ -25425,6 +26034,8 @@ E0D10AKatoudenkikougyousyo
 E0D173Cisco
 E0D1E6Aliph dba Jawbone
 E0D31AEQUES
+E0D462Huawei Device
+E0D4E8Intel Corporate
 E0D55EGIGA-BYTE
 E0D7BATexas Instruments
 E0D848Dell
@@ -25437,6 +26048,7 @@ E0DB88Open Standard Digital-IF Interface f
 E0DCA0Siemens Industrial Automation Produc
 E0DCFFXiaomi
 E0DDC0vivo Mobile
+E0E0FCHuawei Device
 E0E5CFTexas Instruments
 E0E62ETCT mobile
 E0E631SNB
@@ -25455,6 +26067,7 @@ E0F379Vaddio
 E0F442Huawei Device
 E0F5C6Apple
 E0F5CACHENG UEI PRECISION
+E0F6B5Nintendo
 E0F847Apple
 E0F9BECloudena
 E0FAECPlatan sp. z o.o. sp. k.
@@ -25481,6 +26094,7 @@ E422A5PLANTRONICS
 E42354SHENZHEN FUZHI SOFTWARE
 E425E7Apple
 E425E9Color-Chip
+E42686DWnet
 E42771Smartlabs
 E42AD3Magneti Marelli S.p.A. Powertrain
 E42B34Apple
@@ -25499,11 +26113,13 @@ E435FBSabre
 E437D7HENRI DEPAEPE S.A.S.
 E4388CDigital Products
 E438F2Advantage Controls
+E43A65MofiNetwork
 E43A6EShenzhen Zeroone
 E43C80University of Oklahoma
 E43ED7Arcadyan
 E43FA2Wuxi DSP
 E440E2Samsung
+E44122OnePlus
 E441E6Ottec
 E442A6Intel Corporate
 E4434BDell
@@ -25532,6 +26148,7 @@ E45D37Juniper
 E45D51SFR
 E45D52Avaya
 E45D75Samsung
+E45E37Intel Corporate
 E46059Pingtek
 E46251HAO CHENG GROUP
 E46449ARRIS Group
@@ -25545,10 +26162,12 @@ E470B8Intel Corporate
 E47185Securifi
 E472E2HUAWEI
 E4751EGetinge Sterilization
+E47684Apple
 E47723zte
 E4776BAARTESYS
 E477D4MinrrayCo.,Ltd 
 E47B3FBEIJING CO-CLOUD
+E47C65SunstarTechnology 
 E47CF9Samsung
 E47D5ABeijing Hanbang
 E47DBDSamsung
@@ -25559,6 +26178,7 @@ E47FB2FUJITSU
 E48184Nokia
 E481B3Shenzhen ACT Industrial
 E482CCJumptronic
+E48326HUAWEI
 E48399ARRIS Group
 E48501Geberit
 E48AD5RF WINDOW
@@ -25569,6 +26189,7 @@ E48F34Vodafone Italia S.p.A.
 E48F65Yelatma Instrument Making Enterprise
 E49069Rockwell Automation
 E4907EMotorola Mobility LLC, a Lenovo
+E490FDApple
 E4922ADBG
 E492E7Gridlink Tech.
 E492FBSamsung
@@ -25592,8 +26213,10 @@ E4A7A0Intel Corporate
 E4A7C5HUAWEI
 E4A7FDCellco Partnership
 E4A8B6HUAWEI
+E4A8DFCOMPAL INFORMATION  CO., LTD. 
 E4AA5DCisco
 E4AAEALiteon
+E4AAECTianjin Hualai
 E4AB46UAB Selteka
 E4AB89MitraStar
 E4AD7DSCL Elements
@@ -25633,6 +26256,7 @@ E4DB6DBeijing Xiaomi
 E4DD79En-Vision America
 E4E0A6Apple
 E4E0C5Samsung
+E4E112Texas Instruments
 E4E130TCT mobile
 E4E409LEIFHEIT
 E4E4ABApple
@@ -25645,6 +26269,7 @@ E4F042Google
 E4F14CPrivate
 E4F327ATOL
 E4F365Time-O-Matic
+E4F3C4Samsung
 E4F3E3Shanghai iComhome
 E4F3E8Shenzhen SuperElectron
 E4F3F5SHENZHEN MERCURYTECHNOLOGIES
@@ -25697,6 +26322,7 @@ E81CBAFortinet
 E81DA8Ruckus Wireless
 E820E2HUMAX
 E82689Aruba, a Hewlett Packard Enterprise
+E826B6Inside Biometrics
 E82877TMY
 E828C1Eltex Enterprise
 E828D5Cots
@@ -25724,6 +26350,7 @@ E840F2PEGATRON
 E843B6QNAP
 E8447EBitdefender
 E8481FAdvanced Automotive Antennas
+E84943YUGE Information
 E84C56INTERCEPT SERVICES
 E84DD0HUAWEI
 E84E06EDUP
@@ -25776,6 +26403,7 @@ E8892CARRIS Group
 E88D28Apple
 E88DF5ZNYX
 E88E60NSD
+E8910FFiberhomeTechnologies
 E89120Motorola Mobility LLC, a Lenovo
 E89218Arcontia
 E892A4LG
@@ -25785,6 +26413,7 @@ E8944CCogent Healthcare
 E894F6TP-LINK
 E89606testo Instruments 
 E8986DPalo Alto
+E898C2ZETLAB
 E8995APiiGAB, Processinformation i Gotebor
 E899C4HTC
 E89A8FQUANTA COMPUTER
@@ -25804,6 +26433,7 @@ E8ADA6Sagemcom Broadband
 E8B1FCIntel Corporate
 E8B2ACApple
 E8B2FEHUMAX
+E8B470IEEE
 E8B4AEShenzhen C&D
 E8B4C8Samsung
 E8B541zte
@@ -25835,6 +26465,7 @@ E8D11BASKEY COMPUTER
 E8D483ULTIMATE Europe Transportation Equip
 E8D4E0Beijing BenyWave
 E8D819AzureWave
+E8D8D1HP
 E8DA96Zhuhai Tianrui Electrical Power Tech
 E8DAAAVideoHome
 E8DE00ChongQing GuanFang
@@ -25854,6 +26485,7 @@ E8E770Warp9 Tech Design
 E8E776Shenzhen Kootion
 E8E875iS5
 E8E8B7Murata Manufacturing
+E8E98ESOLAR controls s.r.o.
 E8EA6AStarTech.com
 E8EADADenkovi Assembly
 E8EB11Texas Instruments
@@ -25868,6 +26500,7 @@ E8F2E3Starcor Beijing
 E8F724Hewlett Packard Enterprise
 E8F928RFTECH
 E8FAF7Guangdong UniteddataGroup
+E8FBE9Apple
 E8FC60ELCOM Innovations Private
 E8FCAFNETGEAR
 E8FD72SHANGHAI LINGUO
@@ -25909,6 +26542,7 @@ EC2C49University of Tokyo
 EC2CE2Apple
 EC2E4EHITACHI-LG DATA STORAGE
 EC3091Cisco
+EC316DHansgrohe
 EC3586Apple
 EC363FMarkov
 EC3873Juniper
@@ -25950,15 +26584,18 @@ EC5F23Qinghai KimascendTechnology
 EC60E0AVI-ON LABS
 EC6264Global411 Internet Services
 EC63E5ePBoard Design
+EC63EDHyundai Autoever
 EC64E7MOCACARE
 EC65CCPanasonic AutomotiveCompany of Ameri
 EC66D1B&W Group
 EC6881Palo Alto
 EC6C9FChengdu Volans
+EC6CB5zte
 EC6F0BFADU
 EC7097ARRIS Group
 EC71DBShenzhen Baichuan Digital
 EC74BAHirschmann Automation and Control
+EC7949FUJITSU
 EC79F2Startel
 EC7C74Justone
 EC7D11vivo Mobile
@@ -25988,6 +26625,7 @@ EC9327MEMMERT GmbH +
 EC9365Mapper.ai
 EC93EDDDoS-Guard
 EC96812276427 Ontario
+EC97B2SUMEC Machinery & Electric
 EC986CLufft Mess- und Regeltechnik
 EC98C1Beijing RisboTechnology
 EC9A74Hewlett Packard
@@ -26027,6 +26665,7 @@ ECC57FSuzhou PairlinkTechnology
 ECC882Cisco
 ECCB30HUAWEI
 ECCD6DAllied Telesis
+ECCED7Apple
 ECD00EMiraeRecognition
 ECD040GEA Farm
 ECD09FXiaomi
@@ -26072,12 +26711,14 @@ F0022BChrontel
 F00248SmarteBuilding
 F0038CAzureWave
 F00786Shandong Bittel
+F008D1Espressif
 F008F1Samsung
 F00D5CJinQianMao 
 F00DF5ACOMA MedicalCo,.
 F00E1DMegafone
 F00EBFZettaHash
 F00FECHUAWEI
+F01090New H3C
 F010ABChina Mobile  Information
 F013C3SHENZHEN FENDA
 F015A0KyungDong One
@@ -26110,6 +26751,7 @@ F02A61Waldo
 F02FA7HUAWEI
 F02FD8Bi2-Vision
 F0321AMita-Teknik
+F033E5HUAWEI
 F03404TCT mobile
 F037A1Huike
 F03A4BBloombase
@@ -26121,11 +26763,13 @@ F03EBFGOGORO TAIWAN
 F03F95HUAWEI
 F03FF8R L Drake
 F0407BFiberhomeTechnologies
+F041C6Heat Tech
 F041C8IEEE
 F0421CIntel Corporate
 F04335DVNLtd.
 F04347HUAWEI
 F045DATexas Instruments
+F0463BComcast Cable
 F04A2BPYRAMID Computer
 F04B3AJuniper
 F04B6AScientific Production Association Si
@@ -26141,6 +26785,7 @@ F05A09Samsung
 F05B7BSamsung
 F05C19Aruba, a Hewlett Packard Enterprise
 F05C77Google
+F05CD5Apple
 F05D89Dycon
 F05DC8Duracell Powermat
 F05F5AGetriebebau NORD GmbH and
@@ -26150,6 +26795,7 @@ F06281ProCurveing by HP
 F063F9HUAWEI
 F065C2Yanfeng VisteonTechnology 
 F065DDPrimax
+F06728GUANGDONG OPPO MOBILES
 F06853Integrated
 F06865Taicang T&W
 F06BCASamsung
@@ -26171,10 +26817,12 @@ F07959ASUSTek COMPUTER
 F07960Apple
 F079E8GUANGDONG OPPO MOBILES
 F07BCBHon Hai Precision Ind.
+F07CC7Juniper
 F07D68D-Link
 F07F06Cisco
 F07F0CLeopold Kostal GmbH &Co.
 F08173Amazon
+F08175Sagemcom Broadband
 F081AFIRZ AUTOMATION
 F08261Sagemcom Broadband
 F0842FADB Broadband Italia
@@ -26200,7 +26848,7 @@ F099BFApple
 F09A51Shanghai ViroyalTechnology
 F09CBBRaonThink
 F09CD7Guangzhou Blue Cheetah Intelligent
-F09CE9Aerohive
+F09CE9Extreme
 F09E63Cisco
 F09FC2Ubiquiti
 F09FFCSHARP
@@ -26217,6 +26865,7 @@ F0AE51Xi3
 F0AF50Phantom Intelligence
 F0AF85ARRIS Group
 F0B014AVM Audiovisuelles Marketing und Com
+F0B022TOHO
 F0B052Ruckus Wireless
 F0B0E7Apple
 F0B107Ericsson
@@ -26281,6 +26930,7 @@ F0EF86Google
 F0EFD2TF PAYMENT SERVICE
 F0F002Hon Hai Precision Ind.
 F0F08FNextekPte
+F0F0A4Amazon
 F0F249Hitron.
 F0F260Mobitec
 F0F336TP-LINK
@@ -26288,6 +26938,7 @@ F0F5AEAdaptrum
 F0F61CApple
 F0F644Whitesky Science &
 F0F669Motion Analysis
+F0F6C1Sonos
 F0F755Cisco
 F0F7B3Phorm
 F0F842KEEBOX
@@ -26299,6 +26950,7 @@ F0FE6BShanghai High-FlyingTechnology
 F40270Dell
 F40304Google
 F40321BeNeXt B.V.
+F4032AAmazon
 F4032FReduxio
 F40343Hewlett Packard Enterprise
 F4044CValenceTech
@@ -26320,7 +26972,9 @@ F41535SPONTechnology
 F41563F5
 F415FDShanghai PateoEquipment Manufacturin
 F417B8AirTies Wireless
+F419E2Volterra
 F41BA1Apple
+F41C95BEIJING YUNYI TIMESCO,.LTD
 F41D6BHUAWEI
 F41E26Simon-Kaloi Engineering
 F41E5ERtBrick
@@ -26335,6 +26989,7 @@ F42981vivo Mobile
 F42B48Ubiqam
 F42C56SENOR TECH
 F42E7FAruba, a Hewlett Packard Enterprise
+F4308BXiaomi
 F430B9Hewlett Packard
 F431C3Apple
 F4323DSichuan tianyi kanghe
@@ -26355,6 +27010,7 @@ F445EDPortable Innovation
 F44713Leading Public Performance
 F4472ANanjing Rousing Sci. and Tech. Indus
 F44848Amscreen Group
+F44955MIMO TECH
 F449EFEMSTONE
 F44B2ACisco SPVTG
 F44C70Skyworth Digital
@@ -26365,6 +27021,7 @@ F44E05Cisco
 F44EFDActions Semiconductor Co.,Ltd.
 F450EBTelechips
 F45214Mellanox
+F45420TELLESCOM INDUSTRIA E COMERCIO EM TE
 F45433Rockwell Automation
 F45595HENGBAO
 F4559CHUAWEI
@@ -26394,6 +27051,7 @@ F46E95Extreme
 F46F4EEchowell
 F470ABvivo Mobile
 F47190Samsung
+F47335Logitech Far East
 F473CAConversion Sound
 F47488New H3C
 F47626Viltechmeda UAB 
@@ -26409,6 +27067,7 @@ F483E1Shanghai Clouder Semiconductor
 F4844CTexas Instruments
 F485C6FDT
 F48771Infoblox
+F487C5Huawei Device
 F48B32Xiaomi
 F48C50Intel Corporate
 F48CEBD-Link
@@ -26416,8 +27075,10 @@ F48E09Nokia
 F48E38Dell
 F48E92HUAWEI
 F490CATensorcom
+F490CBIEEE
 F490EADeciso B.V.
 F4911EZHUHAI EWPE INFORMATION
+F492BFUbiquiti
 F4939FHon Hai Precision Ind.
 F49461NexGen Storage
 F49466CountMax, 
@@ -26431,6 +27092,7 @@ F49EEFTaicang T&W
 F49F54Samsung
 F49FF3HUAWEI
 F4A294EAGLE WORLD DEVELOPMENT
+F4A4D6HUAWEI
 F4A52AHawa
 F4A59DHuawei Device
 F4A739Juniper
@@ -26447,6 +27109,7 @@ F4B5BBCERAGON
 F4B688PLANTRONICS
 F4B6E5TerraSem
 F4B72ATIME INTERCONNECT
+F4B78DHUAWEI
 F4B7B3vivo Mobile
 F4B7E2Hon Hai Precision Ind.
 F4B85ETexas Instruments
@@ -26480,6 +27143,7 @@ F4D620GUANGDONG OPPO MOBILES
 F4D7B2LGS Innovations
 F4D9C6UNIONMAN
 F4D9FBSamsung
+F4DBE3Apple
 F4DBE6Cisco
 F4DC41YOUNGZONE CULTURE 
 F4DC4DBeijing CCD Digital
@@ -26499,8 +27163,9 @@ F4E6D7Solar Power
 F4E926Tianjin Zanpu
 F4E9D4QLogic
 F4EA67Cisco
-F4EAB5Aerohive
+F4EAB5Extreme
 F4EB38Sagemcom Broadband
+F4EB9FEllu Company 2019 SL
 F4EC38TP-LINK
 F4ED5FSHENZHEN KTCGROUP 
 F4EE14MERCURYTECHNOLOGIES
@@ -26535,10 +27200,12 @@ F80CF3LG
 F80D43Hon Hai Precision Ind.
 F80D60CANON
 F80DEAZyCast
+F80DF0zte
 F80DF1Sontex SA
 F80F41Wistron Infocomm 
 F80F6FCisco
 F80F84Natural Security
+F80FF9Google
 F81037Atopia, LP
 F81308Nokia
 F81547Avaya
@@ -26552,6 +27219,7 @@ F81D90Solidwintech
 F81D93Longdhua Controls
 F81E6FEBG compleo
 F81EDFApple
+F81F32Motorola Mobility LLC, a Lenovo
 F82055Green Information System
 F82285Cypress
 F82387Shenzhen Horn Audio
@@ -26564,6 +27232,7 @@ F82BC8Jiangsu Switter
 F82C182Wire
 F82D7CApple
 F82DC0ARRIS Group
+F82E8ENanjing Kechen Electric
 F82EDBRTW GmbH &
 F82F08Molex CMS
 F82F5BeGauge
@@ -26599,6 +27268,7 @@ F84D33FiberhomeTechnologies
 F84DFCHangzhou Hikvision Digital
 F84E73Apple
 F84F57Cisco
+F84FADHui Zhou Gaoshengda
 F8501CTianjin Geneuo
 F85063Verathon
 F8516DDenwa
@@ -26609,6 +27279,7 @@ F855CDVisteon
 F8572ECore Brands
 F85971Intel Corporate
 F85A00Sanford LP
+F85B3BASKEY COMPUTER
 F85B9CSB
 F85BC9M-Cube Spa
 F85C45IC Nexus
@@ -26688,9 +27359,11 @@ F8A9D0LG
 F8A9DEPUISSANCE PLUS
 F8AA8AAxview
 F8AB05Sagemcom Broadband
+F8AC65Intel Corporate
 F8AC6DDeltenna
 F8ADCBHMD Global
 F8AE27John DeereSolutions
+F8AF05Huawei Device
 F8AFDBFiberhomeTechnologies
 F8B156Dell
 F8B2F3GUANGZHOU BOSMA
@@ -26759,6 +27432,7 @@ F8F005Newport Media
 F8F014RackWare
 F8F082NAG
 F8F1B6Motorola Mobility LLC, a Lenovo
+F8F1E6Samsung
 F8F21EIntel Corporate
 F8F25AG-Lab
 F8F464Rawe Electonic
@@ -26797,6 +27471,7 @@ FC183CApple
 FC1910Samsung
 FC19D0Cloud VisionTechnology
 FC1A11vivo Mobile
+FC1BD1HUAWEI
 FC1BFFV-ZUG
 FC1CA1Nokia
 FC1D43Apple
@@ -26825,8 +27500,10 @@ FC335FPolyera
 FC3598Favite
 FC35E6Visteon
 FC372BSICHUAN TIANYI COMHEART TELECOMCO.
+FC3964ITEL MOBILE
 FC3CE9Tsingtong
 FC3D93LONGCHEER
+FC3DA5Arcadyan
 FC3F7CHUAWEI
 FC3FABHenan Lanxin
 FC3FDBHewlett Packard
@@ -26868,6 +27545,7 @@ FC6BF0TOPWELLHOLDINDS
 FC6C31LXinstruments
 FC6DC0BME
 FC6FB7ARRIS Group
+FC71FATrane
 FC7516D-Link
 FC75E6Handreamnet
 FC7774Intel Corporate
@@ -26883,6 +27561,7 @@ FC8596Axonne
 FC8743HUAWEI
 FC8B97SHENZHEN GONGJINCO.,LT
 FC8E5BChina Mobile Iot Limited
+FC8E6EStreamCCTV
 FC8E7EARRIS Group
 FC8F7DSHENZHEN GONGJINCO.,LT
 FC8F90Samsung
@@ -26894,6 +27573,7 @@ FC9435HUAWEI
 FC946CUBIVELOX
 FC94CEzte
 FC94E3Technicolor CH USA
+FC956AOCTAGON
 FC9947Cisco
 FC9AFAMotus Global
 FC9BC6Sumavision
@@ -26954,6 +27634,7 @@ FCDBB3Murata Manufacturing
 FCDC4AG-Wearables
 FCDD55Shenzhen WeWins wireless
 FCDE90Samsung
+FCE14FBRK Brands
 FCE186A3M
 FCE192Sichuan JinwangtongScience&Technolog
 FCE1D9Stable Imaging
@@ -26971,7 +27652,9 @@ FCEEE6FORMIKE
 FCF136Samsung
 FCF152Sony
 FCF1CDOPTEX-FA
+FCF29FChina Mobile Iot Limited
 FCF528Zyxel
+FCF5C4Espressif
 FCF647FiberhomeTechnologies
 FCF8AEIntel Corporate
 FCF8B7TRONTEQ

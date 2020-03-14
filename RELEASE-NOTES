@@ -1,9 +1,11 @@
-Changes:
+Changes in 3.7.0:
 - Windows: use latest NSIS for installer generation, fixing DLL hijacking
+- Mac: dark mode support
 - Linux: add helpful error message when X Session is not available / running under full root in terminal
 - Linux/Ubuntu: fix launching of terminal in openers for newer versions of Gnome
 - Raspbian/ARM: New experimental builds without bundled SWT, using the one provided by system
-- Update Chinese translations
+- Updated Chinese translations
+- Mac vendors updated
 
 Changes in 3.6.2:
 - New launcher for Windows that respects JAVA_HOME and PATH environment variables and thus works with AdoptOpenJDK
