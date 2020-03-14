@@ -126,6 +126,10 @@
 -keepclassmembers class org.eclipse.swt.widgets.FileDialog {
    <methods>;
  }
+-keepclassmembers class org.eclipse.swt.internal.cocoa.OS {
+   *** isSystemDarkAppearance();
+   *** setTheme(...);
+ }
 
 # image file format parsing is done via reflection.
 
