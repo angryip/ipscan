@@ -69,7 +69,7 @@ public class GUI implements AutoCloseable {
 			// changing the appearance works only after the shell has been created
 			Class os = Class.forName("org.eclipse.swt.internal.cocoa.OS");
 			Boolean isDarkMode = (Boolean) os.getMethod("isSystemDarkAppearance").invoke(null);
-			os.getMethod("setTheme").invoke(null, isDarkMode);
+			os.getMethod("setTheme", boolean.class).invoke(null, isDarkMode);
 			// workaround for a bug in SWT: colors need to be reinited after changing the appearance
 			Method initColor = display.getClass().getDeclaredMethod("initColors");
 			initColor.setAccessible(true);
