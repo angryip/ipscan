@@ -9,7 +9,6 @@ import net.azib.ipscan.util.GoogleAnalytics;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.SWTException;
-import org.eclipse.swt.internal.cocoa.OS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -68,7 +67,9 @@ public class GUI implements AutoCloseable {
 	private void setMacDarkAppearanceIfNeeded() {
 		try {
 			// changing the appearance works only after the shell has been created
-			OS.setTheme(OS.isSystemDarkAppearance());
+			Class os = Class.forName("org.eclipse.swt.internal.cocoa.OS");
+			Boolean isDarkMode = (Boolean) os.getMethod("isSystemDarkAppearance").invoke(null);
+			os.getMethod("setTheme").invoke(null, isDarkMode);
 			// workaround for a bug in SWT: colors need to be reinited after changing the appearance
 			Method initColor = display.getClass().getDeclaredMethod("initColors");
 			initColor.setAccessible(true);
