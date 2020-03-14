@@ -38,7 +38,7 @@ redirect_from: /w/Download/
       </ul>
 
       <p>
-        At least <a href="http://java.com/download">Java 8</a> is requied on your machine.
+        At least <a href="http://java.com/download">Java 8</a> is required on your machine.
         Or get newer Java from <a href="https://adoptopenjdk.net/">AdoptOpenJDK</a> enabling <i>"JavaSoft (Oracle) registry keys"</i> during its installation for compatibility.
       </p>
 
@@ -70,7 +70,7 @@ redirect_from: /w/Download/
   </section>
 
   <section id="mac">
-    <h2><a href="#mac">Mac OS X</a></h2>
+    <h2><a href="#mac">Mac OS</a></h2>
     <div class="content">
       <p>
         Download version <b>{{ site.version }}</b> below or
@@ -85,11 +85,11 @@ redirect_from: /w/Download/
 
       <h4>Running</h4>
       <p>
-        Make sure you have <a href="https://java.com">Java 7</a> or later installed. The last version that supported built-in Java 1.6 is <b>3.4.2</b>.
+        Make sure you have <a href="https://adoptopenjdk.net">Java 8</a> or later installed. The last version that supported built-in Java 1.6 was <b>3.4.2</b>.
       </p>
       <p>
         The zip file contains Mac application bundle: just save it and double-click to extract.
-        On first run right-click and select <i>Open</i> (maybe even twice) or go to Settings/Security and allow
+        On first run right-click and select <i>Open</i> or go to Settings/Security and allow
         installing apps from other sources besides Mac Store.
       </p>
 
@@ -111,11 +111,11 @@ redirect_from: /w/Download/
       <ul>
         <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_amd64.deb">DEB Package</a> for <i>Ubuntu/Debian/Mint, 64-bit</i></li>
         <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-1.x86_64.rpm">RPM Package</a> for Fedora/RedHat/Mageia/openSUSE, 64-bit</li>
-        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_i386.deb">DEB Package</a> for <i>Ubuntu/Debian/Mint, 32-bit</i></li>
-        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-1.i386.rpm">RPM Package</a> for Fedora/RedHat/Mageia/openSUSE, 32-bit</li>
+        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_all.deb">DEB Package</a> for <i>Ubuntu/Debian/Mint, any architecture (e.g. 32-bit or ARM)</i></li>
+        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-any-{{ site.version }}.jar">Executable Jar</a> - you need to provide your own swt.jar to classpath</li>
       </ul>
       <h4>Running</h4>
-      <p>Make sure you have <a href="http://java.com/download">Oracle Java</a> or <a href="http://en.wikipedia.org/wiki/OpenJDK">OpenJDK</a> installed - check your distribution. <a href="http://en.wikipedia.org/wiki/GNU_Compiler_for_Java">GCJ</a> is not recommended.</p>
+      <p>Make sure you have at least Java 8 or <a href="http://en.wikipedia.org/wiki/OpenJDK">OpenJDK</a> installed - check your distribution.</p>
       <p>DEB and RPM packages will install appropriate 'desktop' files, so <i>Angry IP Scanner</i> will appear in the applications menu, under either <b>Internet</b> or <b>Networking</b>. Alternatively, you can just type <code>ipscan</code> to launch the application.</p>
       <p><i>Jar</i> files are launched by either double-clicking or typing <code>java -jar <i>jar-file</i></code>.</p>
     </div>
