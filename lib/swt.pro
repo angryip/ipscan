@@ -65,7 +65,7 @@
  }
 -keepclassmembers class org.eclipse.swt.widgets.Control {
    *** regionToRects(...);
-   *** enterNotifyEventProc(...);
+   *** *Proc(...);
  }
 -keepclassmembers class org.eclipse.swt.widgets.Display {
    *** *Proc(...);
@@ -129,6 +129,9 @@
 -keepclassmembers class org.eclipse.swt.internal.cocoa.OS {
    *** isSystemDarkAppearance();
    *** setTheme(...);
+ }
+-keepclassmembers class org.eclipse.swt.internal.SessionManagerDBus {
+   *** g_signal_handler(...);
  }
 
 # image file format parsing is done via reflection.
