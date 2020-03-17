@@ -30,9 +30,6 @@ public class Platform {
 	
 	/** Crippled-down version of Windows (no RawSockets, TCP rate limiting, etc */
 	public static final boolean CRIPPLED_WINDOWS = WINDOWS && !OS_NAME.contains("Server") && between(parseDouble(System.getProperty("os.version").substring(0, 3)), 5.1, 6.1);
-	
-	/** GNU Java, based on GIJ/GCC and GNU Classpath projects */
-	public static final boolean GNU_JAVA = System.getProperty("java.vm.vendor").contains("Free Software Foundation");
 
 	private static boolean between(double x, double min, double max) {
 		return x >= min && x < max;

@@ -25,8 +25,6 @@ public class Startup {
 				GettingStartedDialog dialog = new GettingStartedDialog();
 				if (Platform.CRIPPLED_WINDOWS)
 					dialog.prependText(Labels.getLabel("text.crippledWindowsInfo"));
-				if (Platform.GNU_JAVA)
-					dialog.prependText(Labels.getLabel("text.gnuJavaInfo"));
 
 				shell.forceActive();
 				dialog.open();
