@@ -12,7 +12,6 @@ import net.azib.ipscan.gui.AboutDialog;
 import net.azib.ipscan.gui.GettingStartedDialog;
 import net.azib.ipscan.gui.InfoDialog;
 import net.azib.ipscan.gui.StatusBar;
-import net.azib.ipscan.util.GoogleAnalytics;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -108,10 +107,8 @@ public class HelpMenuActions {
 			check(true);
 		}
 		
-		public void check(final boolean userEvent) {
+		public void check(final boolean userRequest) {
 			statusBar.setStatusText(Labels.getLabel("state.retrievingVersion"));
-
-			new GoogleAnalytics().asyncReport("Version check " + Version.getVersion());
 
 			Runnable checkVersionCode = new Runnable() {
 				public void run() {
@@ -132,13 +129,13 @@ public class HelpMenuActions {
 							message = message.replaceFirst("%VERSION", Version.getVersion());
 							messageStyle = SWT.ICON_QUESTION | SWT.YES | SWT.NO;
 						}
-						else if (userEvent) {
+						else if (userRequest) {
 							message = Labels.getLabel("text.version.latest");
 							messageStyle = SWT.ICON_INFORMATION;
 						}
 					}
 					catch (Exception e) {
-						if (userEvent) message = Labels.getLabel("exception.UserErrorException.version.latestFailed");
+						if (userRequest) message = Labels.getLabel("exception.UserErrorException.version.latestFailed");
 						Logger.getLogger(getClass().getName()).log(WARNING, message, e);
 					}
 					finally {

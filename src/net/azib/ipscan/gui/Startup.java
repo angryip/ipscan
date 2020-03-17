@@ -31,6 +31,7 @@ public class Startup {
 				shell.forceActive();
 				dialog.open();
 				guiConfig.isFirstRun = false;
+				checkForLatestVersion();
 			});
 		}
 		else if (!Version.getVersion().equals(guiConfig.lastRunVersion)) {
@@ -38,8 +39,13 @@ public class Startup {
 			guiConfig.lastRunVersion = Version.getVersion();
 		}
 		else if (System.currentTimeMillis() - guiConfig.lastVersionCheck > 30L * 24 * 3600 * 1000) {
-			checkVersion.check(false);
-			guiConfig.lastVersionCheck = System.currentTimeMillis();
+			new GoogleAnalytics().asyncReport("Version check " + Version.getVersion());
+			checkForLatestVersion();
 		}
+	}
+
+	private void checkForLatestVersion() {
+		checkVersion.check(false);
+		guiConfig.lastVersionCheck = System.currentTimeMillis();
 	}
 }
