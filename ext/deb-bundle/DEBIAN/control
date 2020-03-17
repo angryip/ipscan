@@ -1,6 +1,6 @@
 Package: ipscan
 Section: net
-Version: VERSION-1
+Version: VERSION
 Priority: optional
 Architecture: ARCH
 Installed-Size: 1940

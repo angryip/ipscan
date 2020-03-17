@@ -1,6 +1,6 @@
 Summary:            Angry IP Scanner - fast and friendly network scanner
 Name:               ipscan
-Version:            VERSION
+Version:            RPM_VERSION
 Release:			1%{?dist}
 License:            GPLv2+
 Group:              Applications/Internet
@@ -24,7 +24,7 @@ see https://angryip.org/ for more information.
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_libdir}/ipscan $RPM_BUILD_ROOT/%{_datadir}/applications $RPM_BUILD_ROOT/%{_datadir}/pixmaps $RPM_BUILD_ROOT/%{_bindir}
-cp ../../%{name}-%{platform}-%{version}.jar $RPM_BUILD_ROOT/%{_libdir}/ipscan/
+cp ../../%{name}-%{platform}-VERSION.jar $RPM_BUILD_ROOT/%{_libdir}/ipscan/
 cp ../../../../ext/deb-bundle/usr/share/applications/ipscan.desktop $RPM_BUILD_ROOT/%{_datadir}/applications/
 cp ../../../../resources/images/icon128.png $RPM_BUILD_ROOT/%{_datadir}/pixmaps/ipscan.png
 cp ../../../../ext/deb-bundle/usr/bin/ipscan $RPM_BUILD_ROOT/%{_bindir}/
@@ -35,7 +35,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%{_libdir}/ipscan/%{name}-%{platform}-%{version}.jar
+%{_libdir}/ipscan/%{name}-%{platform}-VERSION.jar
 %{_datadir}/applications/ipscan.desktop
 %{_datadir}/pixmaps/ipscan.png
 %{_bindir}/ipscan

@@ -1,8 +1,16 @@
-apply plugin: 'java'
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "net.sf.proguard:proguard-gradle:6.2.2"
+    }
+}
 
-version = '3.7.0'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+plugins {
+    id "java"
+    id "com.palantir.git-version" version "0.12.2"
+}
 
 def osName = System.getProperty("os.name")
 def is64 = System.getProperty("os.arch").contains("64")
@@ -16,15 +24,9 @@ if (!ext.rtJar.exists()) ext.rtJar = new File('/usr/lib/jvm/java-8-oracle/jre/li
 if (!ext.rtJar.exists()) ext.rtJar = new File('/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar') // try Debian/Ubuntu version of OpenJDK 8
 // if (!ext.rtJar.exists()) ext.rtJar = new File('/usr/lib/jvm/java-11-openjdk-amd64/jmods/java.base.jmod') // Java 9+ needs more jmods (awt)
 
-buildscript {
-    ext.proguard_version = '6.2.2'
-    dependencies {
-        classpath "net.sf.proguard:proguard-gradle:$proguard_version"
-    }
-    repositories {
-        jcenter()
-    }
-}
+version = gitVersion()
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 sourceSets {
     main {
@@ -184,17 +186,19 @@ def deb(def platform, def arch, def moreDeps = '') {
 
 def rpm(def platform, def arch) {
     def dist = buildDir.path + '/libs/rpm'
+    def rpmVersion = version.replace('-', '.')
     ant.mkdir(dir: dist)
     ant.copy(todir: dist) {
         ant.fileset(dir: "ext/rpmbuild")
     }
     ant.replace(file: "${dist}/SPECS/ipscan.spec") {
+        ant.replacefilter(token: "RPM_VERSION", value: rpmVersion)
         ant.replacefilter(token: "VERSION", value: version)
     }
     ant.exec(executable: "rpmbuild", dir: dist, failonerror: true) {
         ant.arg(line: "--target ${arch} --define \"_topdir ${new File(dist).absolutePath}\" --define \"platform ${platform}\" -bb SPECS/ipscan.spec")
     }
-    ant.move(file: "${dist}/RPMS/${arch}/ipscan-${version}-1.${arch}.rpm", todir:'build/libs')
+    ant.move(file: "${dist}/RPMS/${arch}/ipscan-${rpmVersion}-1.${arch}.rpm", todir:'build/libs')
     ant.delete(dir: dist)
 }
 
@@ -226,6 +230,7 @@ packageTask('mac') {
 
     ant.replace(file: "${dist}/${name}.app/Contents/Info.plist") {
         ant.replacefilter(token: "APPNAME", value: name)
+        ant.replacefilter(token: "VERSION_NUM", value: version.replaceFirst('-.*', ''))
         ant.replacefilter(token: "VERSION", value: version)
     }
 
