@@ -10,6 +10,12 @@ def platform = osName.contains("Linux") ? 'linux' + (is64 ? '64' : '') :
                osName.contains("Windows") ? 'win' + (is64 ? '64' : '32') :
                osName.contains("OS X") ? 'mac' : 'unknown'
 
+ext.rtJar = new File(System.getProperty('java.home') + "/jre/lib/rt.jar")
+if (!ext.rtJar.exists()) ext.rtJar = new File(System.getProperty('java.home') + "/lib/rt.jar") // support for Zulu JVM in Github workflow
+if (!ext.rtJar.exists()) ext.rtJar = new File('/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar') // try Debian/Ubuntu version of Java 8 if current Java doesn't have rt.jar
+if (!ext.rtJar.exists()) ext.rtJar = new File('/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar') // try Debian/Ubuntu version of OpenJDK 8
+// if (!ext.rtJar.exists()) ext.rtJar = new File('/usr/lib/jvm/java-11-openjdk-amd64/jmods/java.base.jmod') // Java 9+ needs more jmods (awt)
+
 buildscript {
     ext.proguard_version = '6.2.2'
     dependencies {
@@ -52,7 +58,7 @@ configurations {
 
 compileJava.options.annotationProcessorGeneratedSourcesDirectory = new File('build/generated')
 
-def packageTask(def platform, def moreJars, def moreLibs, Closure doMore) {
+def packageTask(String platform, def moreJars = [], def moreLibs = [], File rtJar = ext.rtJar, Closure doMore) {
     return tasks.create(platform, Jar) {
         dependsOn = ['classes']
         manifest {
@@ -98,19 +104,14 @@ def packageTask(def platform, def moreJars, def moreLibs, Closure doMore) {
         )
         with jar
 
-        def rtJar = new File(System.getProperty('java.home') + "/jre/lib/rt.jar")
-        if (!rtJar.exists()) rtJar = new File(System.getProperty('java.home') + "/lib/rt.jar") // support for Zulu JVM in Github workflow
-        if (!rtJar.exists()) rtJar = new File('/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar') // try Debian/Ubuntu version of Java 8 if current Java doesn't have rt.jar
-        if (!rtJar.exists()) rtJar = new File('/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar') // try Debian/Ubuntu version of OpenJDK 8
-        // if (!rtJar.exists()) rtJar = new File('/usr/lib/jvm/java-11-openjdk-amd64/jmods/java.base.jmod') // Java 9+ needs more jmods (awt)
-
         if (rtJar.exists() && platform != "any") {
-            println "Using $rtJar for proguard minimization"
             finalizedBy minimizeTask(rtJar, platform, doMore)
         }
         else {
-            println "WARNING: not minimizing, Java8 rt.jar not found on the system"
-            doLast(doMore)
+            doLast {
+                if (!rtJar.exists()) println "WARNING: not minimizing, Java8 rt.jar not found on the system"
+                doMore()
+            }
         }
     }
 }
@@ -136,6 +137,10 @@ def minimizeTask(File rtJar, String platform, Closure doMore) {
             keep access: 'public', name: keepClass, {
                 method access: 'public'
             }
+        }
+
+        doFirst() {
+            println "Using $rtJar for proguard minimization"
         }
 
         doLast {
@@ -198,7 +203,7 @@ packageTask('linux64', [], 'ext/rocksaw/lib/linux64/librocksaw.so') {
     rpm('linux64', 'x86_64')
 }
 
-packageTask('any', [], []) {
+packageTask('any') {
     deb('any', 'all', 'libswt-gtk-4-java, libswt-cairo-gtk-4-jni,')
 }
 
@@ -206,11 +211,11 @@ packageTask('win32', 'lib/jna-win32.jar', 'ext/rocksaw/lib/rocksaw.dll') {
     winLauncher('win32')
 }
 
-packageTask('win64', 'lib/jna-win64.jar', []) {
+packageTask('win64', 'lib/jna-win64.jar') {
     winLauncher('win64')
 }
 
-packageTask('mac', [], []) {
+packageTask('mac') {
     def dist = buildDir.path + '/libs'
     def name = 'Angry IP Scanner'
     ant.copy(todir: dist) {
