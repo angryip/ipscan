@@ -67,7 +67,7 @@ def packageTask(String platform, def moreJars = [], def moreLibs = [], File rtJa
            attributes 'Implementation-Title': 'Angry IP Scanner',
                'Implementation-Version': version,
                'Main-Class': 'net.azib.ipscan.Main',
-               'Class-Path': platform == "any" ? "/usr/share/java/swt4.jar" : ".",
+               'Class-Path': platform == "any" ? "/usr/share/java/swt4.jar /usr/lib/eclipse/swt.jar ./" : "./",
                'Title': 'Angry IP Scanner',
                'Version': version,
                'Build-Date': java.time.LocalDate.now().toString(),
