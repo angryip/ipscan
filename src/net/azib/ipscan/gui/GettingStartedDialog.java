@@ -41,7 +41,7 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(getLabel("title.gettingStarted"));
-		shell.setSize(new Point(500, 300));
+		shell.setSize(new Point(600, 300));
 
 		Label iconLabel = new Label(shell, SWT.ICON);
 		iconLabel.setLocation(10, 10);
