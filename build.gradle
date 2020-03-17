@@ -88,21 +88,15 @@ def packageTask(String platform, def moreJars = [], def moreLibs = [], File rtJa
            // GTK stuff
            'libswt-awt-gtk-*.so',
            'libswt-glx-gtk-*.so',
-           'libswt-mozilla-*.so',
-           'libswt-gnome-*.so',
-           'libswt-xpcominit-gtk-*.so',
-           'libswt-xulrunner-*.so',
            'libswt-webkit-gtk-*.so',
            // Win32 stuff
            'swt-awt-*.dll',
            'swt-wgl-*.dll',
            'swt-gdip-*.dll',
-           'swt-xpcominit-*.dll',
            'swt-xulrunner-*.dll',
            'swt-webkit-*.dll',
            // Mac stuff
            'libswt-awt-*.jnilib',
-           'libswt-xulrunner-*.jnilib'
         )
         with jar
 
