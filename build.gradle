@@ -105,13 +105,13 @@ def minimizeTask(String platform, Closure doMore) {
     return tasks.create("${platform}.min", proguard.gradle.ProGuardTask) {
         injars "build/libs/ipscan-${platform}-${version}.jar"
         outjars "build/libs/ipscan-${platform}-${version}.min.jar"
-        libraryjars new File(System.getProperty('java.home') + "/jre/lib/rt.jar") // Java 8
-        libraryjars new File(System.getProperty('java.home') + "/lib/rt.jar") // Zulu Java 8
-        libraryjars new File(System.getProperty('java.home') + "/jmods/java.base.jmod")
-        libraryjars new File(System.getProperty('java.home') + "/jmods/java.desktop.jmod")
-        libraryjars new File(System.getProperty('java.home') + "/jmods/java.logging.jmod")
-        libraryjars new File(System.getProperty('java.home') + "/jmods/java.net.http.jmod")
-        libraryjars new File(System.getProperty('java.home') + "/jmods/java.prefs.jmod")
+        libraryjars System.getProperty('java.home') + "/jre/lib/rt.jar" // Java 8
+        libraryjars System.getProperty('java.home') + "/lib/rt.jar" // Zulu Java 8
+        libraryjars System.getProperty('java.home') + "/jmods/java.base.jmod"
+        libraryjars System.getProperty('java.home') + "/jmods/java.desktop.jmod"
+        libraryjars System.getProperty('java.home') + "/jmods/java.logging.jmod"
+        libraryjars System.getProperty('java.home') + "/jmods/java.net.http.jmod"
+        libraryjars System.getProperty('java.home') + "/jmods/java.prefs.jmod"
         libraryjars 'lib/jna.jar'
         dontobfuscate
         dontoptimize
