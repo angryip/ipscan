@@ -1,7 +1,6 @@
 package net.azib.ipscan.core;
 
 import net.azib.ipscan.fetchers.AbstractFetcher;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -30,11 +29,12 @@ public class PluginLoaderTest {
 		assertTrue(new File(file.getParent(), getClass().getSimpleName() + ".class").exists());
 	}
 
-	@Test @Ignore("in gradle resources and classes are stored separately")
+	@Test
 	public void loadFromJarFile() {
-		loader.loadPluginJars(container, loader.getResourceLocation(getClass().getResource("test-plugin.jar")));
+		File pluginLocation = loader.getResourceLocation(getClass().getResource("test-plugin.jar"));
+		loader.loadPluginJars(container, new File(pluginLocation.getParentFile(), "ipscan.jar"));
 
-		Class plugin = container.get(0);
+		Class<?> plugin = container.get(0);
 		assertEquals("test.TestPlugin", plugin.getName());
 		assertTrue(Plugin.class.isAssignableFrom(plugin));
 	}
