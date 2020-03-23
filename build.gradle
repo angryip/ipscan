@@ -18,12 +18,6 @@ def platform = osName.contains("Linux") ? 'linux' + (is64 ? '64' : '') :
                osName.contains("Windows") ? 'win' + (is64 ? '64' : '32') :
                osName.contains("OS X") ? 'mac' : 'unknown'
 
-ext.rtJar = new File(System.getProperty('java.home') + "/jre/lib/rt.jar")
-if (!ext.rtJar.exists()) ext.rtJar = new File(System.getProperty('java.home') + "/lib/rt.jar") // support for Zulu JVM in Github workflow
-if (!ext.rtJar.exists()) ext.rtJar = new File('/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar') // try Debian/Ubuntu version of Java 8 if current Java doesn't have rt.jar
-if (!ext.rtJar.exists()) ext.rtJar = new File('/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar') // try Debian/Ubuntu version of OpenJDK 8
-// if (!ext.rtJar.exists()) ext.rtJar = new File('/usr/lib/jvm/java-11-openjdk-amd64/jmods/java.base.jmod') // Java 9+ needs more jmods (awt)
-
 version = gitVersion()
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -60,7 +54,7 @@ configurations {
 
 compileJava.options.annotationProcessorGeneratedSourcesDirectory = new File('build/generated')
 
-def packageTask(String platform, def moreJars = [], def moreLibs = [], File rtJar = ext.rtJar, Closure doMore) {
+def packageTask(String platform, def moreJars = [], def moreLibs = [], Closure doMore) {
     return tasks.create(platform, Jar) {
         dependsOn = ['classes']
         manifest {
@@ -100,23 +94,24 @@ def packageTask(String platform, def moreJars = [], def moreLibs = [], File rtJa
         )
         with jar
 
-        if (rtJar.exists() && platform != "any") {
-            finalizedBy minimizeTask(rtJar, platform, doMore)
-        }
-        else {
-            doLast {
-                if (!rtJar.exists()) println "WARNING: not minimizing, Java8 rt.jar not found on the system"
-                doMore()
-            }
-        }
+        if (platform != "any")
+            finalizedBy minimizeTask(platform, doMore)
+        else
+            doLast(doMore)
     }
 }
 
-def minimizeTask(File rtJar, String platform, Closure doMore) {
+def minimizeTask(String platform, Closure doMore) {
     return tasks.create("${platform}.min", proguard.gradle.ProGuardTask) {
         injars "build/libs/ipscan-${platform}-${version}.jar"
         outjars "build/libs/ipscan-${platform}-${version}.min.jar"
-        libraryjars rtJar.absolutePath
+        libraryjars System.getProperty('java.home') + "/jre/lib/rt.jar" // Java 8
+        libraryjars System.getProperty('java.home') + "/lib/rt.jar" // Zulu Java 8
+        libraryjars System.getProperty('java.home') + "/jmods/java.base.jmod"
+        libraryjars System.getProperty('java.home') + "/jmods/java.desktop.jmod"
+        libraryjars System.getProperty('java.home') + "/jmods/java.logging.jmod"
+        libraryjars System.getProperty('java.home') + "/jmods/java.net.http.jmod"
+        libraryjars System.getProperty('java.home') + "/jmods/java.prefs.jmod"
         libraryjars 'lib/jna.jar'
         dontobfuscate
         dontoptimize
@@ -133,10 +128,6 @@ def minimizeTask(File rtJar, String platform, Closure doMore) {
             keep access: 'public', name: keepClass, {
                 method access: 'public'
             }
-        }
-
-        doFirst() {
-            println "Using $rtJar for proguard minimization"
         }
 
         doLast {
