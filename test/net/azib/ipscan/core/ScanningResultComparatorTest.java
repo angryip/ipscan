@@ -5,20 +5,16 @@
  */
 package net.azib.ipscan.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import net.azib.ipscan.core.values.*;
+import org.junit.Test;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 
-import net.azib.ipscan.core.values.InetAddressHolder;
-import net.azib.ipscan.core.values.IntegerWithUnit;
-import net.azib.ipscan.core.values.NotAvailable;
-import net.azib.ipscan.core.values.NotScanned;
-import net.azib.ipscan.core.values.NumericRangeList;
-
-import org.junit.Test;
+import static java.util.Arrays.asList;
+import static java.util.Arrays.sort;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * ScanningResultComparatorTest
@@ -26,7 +22,6 @@ import org.junit.Test;
  * @author Anton Keks
  */
 public class ScanningResultComparatorTest {
-	
 	ScanningResultComparator comparator = new ScanningResultComparator();
 	
 	@Test
@@ -46,9 +41,9 @@ public class ScanningResultComparatorTest {
 		assertTrue(comparator.compare(res(125), res(NotScanned.VALUE)) < 0);
 		assertTrue(comparator.compare(res(9090), res(NotAvailable.VALUE)) < 0);
 		
-		assertTrue(comparator.compare(res(9090), res(new NumericRangeList(Arrays.asList(9090), false))) == 0);
-		assertTrue(comparator.compare(res(new NumericRangeList(Arrays.asList(154), false)), res(155)) < 0);
-		assertTrue(comparator.compare(res(new NumericRangeList(Arrays.asList(1, 2, 3), false)), res(new NumericRangeList(Arrays.asList(5, 6), false))) > 0);
+		assertTrue(comparator.compare(res(9090), res(new NumericRangeList(asList(9090), false))) == 0);
+		assertTrue(comparator.compare(res(new NumericRangeList(asList(154), false)), res(155)) < 0);
+		assertTrue(comparator.compare(res(new NumericRangeList(asList(1, 2, 3), false)), res(new NumericRangeList(asList(5, 6), false))) > 0);
 		
 		assertTrue(comparator.compare(res("abc"), res("def")) < 0);
 		assertTrue(comparator.compare(res("123"), res(123)) == 0);
@@ -119,7 +114,7 @@ public class ScanningResultComparatorTest {
 		};
 		
 		comparator.byIndex(0, true);
-		Arrays.sort(results, comparator);
+		sort(results, comparator);
 		
 		assertEquals(1, results[0].getValues().get(0));
 		assertEquals(15, results[1].getValues().get(0));
@@ -130,7 +125,7 @@ public class ScanningResultComparatorTest {
 		assertEquals(NotScanned.VALUE, results[6].getValues().get(0));
 
 		comparator.byIndex(0, false);
-		Arrays.sort(results, comparator);
+		sort(results, comparator);
 		
 		assertEquals("a", results[0].getValues().get(0));
 		assertEquals(15, results[1].getValues().get(0));
@@ -140,7 +135,7 @@ public class ScanningResultComparatorTest {
 	}
 		
 	private ScanningResult res(Object ... values) throws UnknownHostException {
-		ScanningResult result = new ScanningResult(InetAddress.getLocalHost(), values.length);
+		ScanningResult result = new ScanningResult(InetAddress.getByName("127.0.0.1"), values.length);
 		for (int i = 0; i < values.length; i++) {
 			result.setValue(i, values[i]);
 		}
