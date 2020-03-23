@@ -54,6 +54,13 @@ configurations {
 
 compileJava.options.annotationProcessorGeneratedSourcesDirectory = new File('build/generated')
 
+test {
+    if (platform == "mac") {
+        jvmArgs "-XstartOnFirstThread"
+        println("WARNING: tests that touch GUI will fail on Mac due to Cocoa restrictions and Gradle unable to run tests on main thread")
+    }
+}
+
 def packageTask(String platform, def moreJars = [], def moreLibs = [], Closure doMore) {
     return tasks.create(platform, Jar) {
         dependsOn = ['classes']
