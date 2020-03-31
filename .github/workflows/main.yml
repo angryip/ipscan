@@ -19,7 +19,7 @@ jobs:
 
     - uses: actions/upload-artifact@v1
       with:
-        name: Binaries
+        name: All binaries
         path: build/libs
 
   build-mac:
@@ -34,6 +34,11 @@ jobs:
       env:
         APPLE_USER: ${{ secrets.APPLE_USER }}
         APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: macOS binary
+        path: build/libs
 
   build-win:
     runs-on: windows-latest
