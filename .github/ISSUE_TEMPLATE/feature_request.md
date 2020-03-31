@@ -2,7 +2,7 @@
 name: Feature request
 about: Suggest an idea for Angry IP Scanner
 title: ''
-labels: ''
+labels: 'feature-request'
 assignees: ''
 
 ---
