@@ -85,13 +85,10 @@ public class AboutDialog extends AbstractModalDialog {
 
 	private Label createLinkLabel(final String text, final String url) {
 		final Label link = new Label(shell, SWT.NONE);
-		link.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_BLUE));
+		link.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_LINK_FOREGROUND));
 		link.setCursor(shell.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
 		link.setText(text);
-		link.addListener(SWT.MouseUp, event -> {
-			BrowserLauncher.openURL(url);
-			link.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_MAGENTA));
-		});
+		link.addListener(SWT.MouseUp, event -> BrowserLauncher.openURL(url));
 		link.pack();
 		return link;
 	}
