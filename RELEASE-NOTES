@@ -1,5 +1,6 @@
 Changes in 3.7.1:
 - Enable ICMP Echo pinger for Linux x64 only, as it requires the corresponding native .so implementation that is not available for Mac and not needed for Windows
+- Fix handling of escape sequences in HTTP Sender
 
 Changes in 3.7.0:
 - Windows: use latest NSIS for installer generation, fixing DLL hijacking
