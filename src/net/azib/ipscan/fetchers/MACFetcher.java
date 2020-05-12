@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public abstract class MACFetcher extends AbstractFetcher {
 	public static final String ID = "fetcher.mac";
-	static final Pattern macAddressPattern = Pattern.compile("([a-fA-F0-9]{1,2}(-|:)){5}[a-fA-F0-9]{1,2}");
+	static final Pattern macAddressPattern = Pattern.compile("([a-fA-F0-9]{1,2}[-:]){5}[a-fA-F0-9]{1,2}");
 	static final Pattern leadingZeroesPattern = Pattern.compile("(?<=^|-|:)([A-F0-9])(?=-|:|$)");
 
 	@Override public String getId() {
