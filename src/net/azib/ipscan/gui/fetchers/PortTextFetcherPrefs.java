@@ -18,9 +18,11 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
 import java.util.prefs.Preferences;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.lang.Integer.parseInt;
+import static java.lang.Integer.toHexString;
 
 /**
  * PortTextFetcherPrefs
@@ -112,11 +114,30 @@ public class PortTextFetcherPrefs extends AbstractModalDialog implements Fetcher
 		prefs.putInt("extractGroup", fetcher.getExtractGroup());
 	}
 
-	private String toEditableText(String s) {
-		return s.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t");
+	static String toEditableText(String s) {
+		StringBuilder t = new StringBuilder();
+		for (char c : s.toCharArray()) {
+			if (c == '\n') t.append("\\n");
+			else if (c == '\r') t.append("\\r");
+			else if (c == '\t') t.append("\\t");
+			else if (c < 10) t.append("\\x0").append(toHexString(c).toUpperCase());
+			else if (c < ' ') t.append("\\x").append(toHexString(c).toUpperCase());
+			else t.append(c);
+		}
+		return t.toString();
 	}
 
-	private String toRealText(String s) {
-		return s.replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t");
+	static String toRealText(String s) {
+		s = s.replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t");
+		if (s.contains("\\x")) {
+			StringBuffer t = new StringBuffer();
+			Matcher m = Pattern.compile("\\\\x(\\d{2})").matcher(s);
+			while (m.find()) {
+				m.appendReplacement(t, new String(new char[] {(char) parseInt(m.group(1), 16)}));
+			}
+			m.appendTail(t);
+			s = t.toString();
+		}
+		return s;
 	}
 }
