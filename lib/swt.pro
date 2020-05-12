@@ -127,6 +127,7 @@
    <methods>;
  }
 -keepclassmembers class org.eclipse.swt.internal.cocoa.OS {
+   *** isAppDarkAppearance();
    *** isSystemDarkAppearance();
    *** setTheme(...);
  }
