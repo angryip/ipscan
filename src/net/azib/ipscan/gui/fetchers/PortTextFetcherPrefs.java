@@ -47,16 +47,16 @@ public class PortTextFetcherPrefs extends AbstractModalDialog implements Fetcher
 		shell.setText(fetcher.getName());
 		shell.setLayout(LayoutHelper.formLayout(10, 10, 5));
 		
-		Combo predefinedCombo = new Combo(shell, SWT.DROP_DOWN | SWT.READ_ONLY);
-		predefinedCombo.add(Labels.getLabel("fetcher.portText.custom"));
+		//Combo predefinedCombo = new Combo(shell, SWT.DROP_DOWN | SWT.READ_ONLY);
+		//predefinedCombo.add(Labels.getLabel("fetcher.portText.custom"));
 		//predefinedCombo.add("Web detect");
 		//predefinedCombo.add("SMTP detect");
-		predefinedCombo.select(0);
-		predefinedCombo.setLayoutData(LayoutHelper.formData(null, new FormAttachment(100), new FormAttachment(0), null));
+		//predefinedCombo.select(0);
+		//predefinedCombo.setLayoutData(LayoutHelper.formData(null, new FormAttachment(100), new FormAttachment(0), null));
 		
 		Label sendLabel = new Label(shell, SWT.NONE);
 		sendLabel.setText(Labels.getLabel("text.fetcher.portText.send"));
-		sendLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, null, new FormAttachment(predefinedCombo, 0, SWT.BOTTOM)));
+		//sendLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, null, new FormAttachment(predefinedCombo, 0, SWT.BOTTOM)));
 		textToSend = new Text(shell, SWT.BORDER);
 		textToSend.setText(toEditableText(fetcher.getTextToSend()));
 		textToSend.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), new FormAttachment(sendLabel), null));
