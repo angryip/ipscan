@@ -42,8 +42,8 @@ public class PingerRegistry {
 		pingers = new LinkedHashMap<>();
 		if (Platform.WINDOWS)
 			pingers.put("pinger.windows", WindowsPinger.class);
-		pingers.put("pinger.icmp", ICMPSharedPinger.class);
-		pingers.put("pinger.icmp2", ICMPPinger.class);
+		if (Platform.LINUX && Platform.ARCH_64)
+			pingers.put("pinger.icmp", ICMPSharedPinger.class);
 		pingers.put("pinger.udp", UDPPinger.class);
 		pingers.put("pinger.tcp", TCPPinger.class);
 		pingers.put("pinger.combined", CombinedUnprivilegedPinger.class);
