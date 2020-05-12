@@ -29,15 +29,17 @@ public class CombinedUnprivilegedPinger implements Pinger {
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
 		// try UDP first - it should be more reliable in general
-		PingResult udpResult = udpPinger.ping(subject, max(1, (int)Math.ceil(count / 1.5)));
-		if (udpResult.isAlive()) return udpResult;
+		int udpCountInitialCount = max(1, count / 2);
+		PingResult udpResult = udpPinger.ping(subject, udpCountInitialCount);
+		if (udpResult.isAlive())
+			return udpResult.merge(udpPinger.ping(subject, count - udpCountInitialCount));
 
 		// fallback to TCP - it may detect some hosts UDP cannot
 		PingResult tcpResult = tcpPinger.ping(subject, count);
 		return tcpResult.merge(udpResult);
 	}
 
-	public void close() throws IOException {
+	public void close() {
 		udpPinger.close();
 		tcpPinger.close();
 	}
