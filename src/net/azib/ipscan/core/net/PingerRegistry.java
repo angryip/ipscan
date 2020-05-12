@@ -47,6 +47,7 @@ public class PingerRegistry {
 		pingers.put("pinger.udp", UDPPinger.class);
 		pingers.put("pinger.tcp", TCPPinger.class);
 		pingers.put("pinger.combined", CombinedUnprivilegedPinger.class);
+		pingers.put("pinger.java", JavaPinger.class);
 	}
 
 	public String[] getRegisteredNames() {
