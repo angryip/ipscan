@@ -28,7 +28,6 @@ import static java.lang.Integer.parseInt;
  * @author Anton Keks
  */
 public class PortTextFetcherPrefs extends AbstractModalDialog implements FetcherPrefs {
-	
 	private PortTextFetcher fetcher;
 	private Text textToSend;
 	private Text matchingRegexp;
@@ -59,7 +58,7 @@ public class PortTextFetcherPrefs extends AbstractModalDialog implements Fetcher
 		sendLabel.setText(Labels.getLabel("text.fetcher.portText.send"));
 		sendLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, null, new FormAttachment(predefinedCombo, 0, SWT.BOTTOM)));
 		textToSend = new Text(shell, SWT.BORDER);
-		textToSend.setText(stringToText(fetcher.getTextToSend()));
+		textToSend.setText(toEditableText(fetcher.getTextToSend()));
 		textToSend.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), new FormAttachment(sendLabel), null));
 		
 		Label matchLabel = new Label(shell, SWT.NONE);
@@ -102,8 +101,9 @@ public class PortTextFetcherPrefs extends AbstractModalDialog implements Fetcher
 	void savePreferences() {
 		Preferences prefs = fetcher.getPreferences();
 
-		fetcher.setTextToSend(textToSend.getText());
-		prefs.put("textToSend", fetcher.getTextToSend());
+		String text = toRealText(textToSend.getText());
+		fetcher.setTextToSend(text);
+		prefs.put("textToSend", text);
 
 		fetcher.setMatchingRegexp(Pattern.compile(matchingRegexp.getText()));
 		prefs.put("matchingRegexp", fetcher.getMatchingRegexp().pattern());
@@ -112,18 +112,11 @@ public class PortTextFetcherPrefs extends AbstractModalDialog implements Fetcher
 		prefs.putInt("extractGroup", fetcher.getExtractGroup());
 	}
 
-	private String stringToText(String s) {
-		StringBuilder t = new StringBuilder();
-		for (char c : s.toCharArray()) {
-			if (c == '\n') 
-				t.append("\\n");
-			else if (c == '\r')
-				t.append("\\r");
-			else if (c == '\t')
-				t.append("\\t");
-			else
-				t.append(c);
-		}
-		return t.toString();
+	private String toEditableText(String s) {
+		return s.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t");
+	}
+
+	private String toRealText(String s) {
+		return s.replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t");
 	}
 }

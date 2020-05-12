@@ -16,7 +16,6 @@ import javax.inject.Inject;
  * @author Anton Keks
  */
 public class HTTPSenderFetcher extends PortTextFetcher {
-	
 	@Inject public HTTPSenderFetcher(ScannerConfig scannerConfig) {
 		super(scannerConfig, 80, "HEAD / HTTP/1.0\r\n\r\n", "Date: (.*)$");
 	}
@@ -24,5 +23,4 @@ public class HTTPSenderFetcher extends PortTextFetcher {
 	public String getId() {
 		return "fetcher.httpSender";
 	}
-
 }

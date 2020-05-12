@@ -43,10 +43,10 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 	protected Pattern matchingRegexp;
 	protected int extractGroup;
 	
-	public PortTextFetcher(ScannerConfig scannerConfig, int defaultPort, String textToSend, String matchingRegexp) {
+	public PortTextFetcher(ScannerConfig scannerConfig, int defaultPort, String defaultTextToSend, String matchingRegexp) {
 		this.scannerConfig = scannerConfig;
 		this.defaultPort = defaultPort;
-		this.textToSend = getPreferences().get("textToSend", textToSend);
+		this.textToSend = getPreferences().get("textToSend", defaultTextToSend);
 		this.matchingRegexp = Pattern.compile(getPreferences().get("matchingRegexp", matchingRegexp));
 		this.extractGroup = getPreferences().getInt("extractGroup", 1);
 	}
