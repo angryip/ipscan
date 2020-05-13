@@ -33,7 +33,7 @@ public class Injector {
 	}
 
 	public <T> List<T> requireAll(Class<T> type) {
-		return instances.entrySet().stream().filter(e -> e.getKey().type == type).map(e -> (T) e.getValue()).collect(toList());
+		return instances.entrySet().stream().filter(e -> type.isAssignableFrom(e.getKey().type)).map(e -> (T) e.getValue()).collect(toList());
 	}
 
 	private <T> T createInstance(Class<T> type) {
