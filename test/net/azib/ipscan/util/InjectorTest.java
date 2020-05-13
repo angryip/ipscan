@@ -5,6 +5,7 @@ import org.junit.Test;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -12,15 +13,23 @@ public class InjectorTest {
 	private Injector injector = new Injector();
 
 	@Test
-	public void inject() {
-		assertTrue(injector.inject(Dummy.class) instanceof Dummy);
-		assertTrue(injector.inject(WithDeps.class) instanceof WithDeps);
+	public void require() {
+		assertTrue(injector.require(Dummy.class) instanceof Dummy);
+		assertTrue(injector.require(WithDeps.class) instanceof WithDeps);
 	}
 
 	@Test
-	public void injectWithNamed() {
-		injector.registerNamed(String.class, "name", "mega-name");
-		assertEquals("mega-name", injector.inject(WithNamedDeps.class).name);
+	public void namedRequire() {
+		injector.register(String.class, "name", "mega-name");
+		assertEquals("mega-name", injector.require(WithNamedDeps.class).name);
+	}
+
+	@Test
+	public void requireAll() {
+		injector.register(String.class, "name1", "name1");
+		injector.register(String.class, "name2", "name2");
+		injector.register(String.class, "name3", "name3");
+		assertEquals(asList("name1", "name2", "name3"), injector.requireAll(String.class));
 	}
 
 	static class Dummy {

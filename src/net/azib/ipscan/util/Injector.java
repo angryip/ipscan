@@ -4,36 +4,42 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
 
 @SuppressWarnings("unchecked")
 public class Injector {
-	private final Map<Key<?>, Object> instances = new HashMap<>();
+	private final Map<Key<?>, Object> instances = new LinkedHashMap<>();
 
-	public <T> void registerNamed(Class<T> type, String name, T impl) {
+	public <T> void register(Class<T> type, String name, T impl) {
 		instances.put(new Key<>(type, name), impl);
 	}
 
-	public <T> T inject(Key<T> key) {
+	public <T> void register(Class<T> type, T impl) {
+		register(type, null, impl);
+	}
+
+	public <T> T require(Key<T> key) {
 		return (T) instances.computeIfAbsent(key, k -> createInstance(key.type));
 	}
 
-	public <T> T inject(Class<T> type) {
-		return inject(new Key<>(type, null));
+	public <T> T require(Class<T> type) {
+		return require(new Key<>(type, null));
+	}
+
+	public <T> List<T> requireAll(Class<T> type) {
+		return instances.entrySet().stream().filter(e -> e.getKey().type == type).map(e -> (T) e.getValue()).collect(toList());
 	}
 
 	private <T> T createInstance(Class<T> type) {
 		Constructor<T> constructor = (Constructor<T>) stream(type.getConstructors())
 			.filter(c -> c.isAnnotationPresent(Inject.class)).findAny()
 			.orElseThrow(() -> new InjectException(type.getName() + " has no constructors annotated with @Inject"));
-		Object[] deps = depsKeys(constructor).map(this::inject).toArray();
+		Object[] deps = depsKeys(constructor).map(this::require).toArray();
 		try {
 			return constructor.newInstance(deps);
 		}
