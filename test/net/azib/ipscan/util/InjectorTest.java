@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
@@ -30,6 +31,7 @@ public class InjectorTest {
 		injector.register(String.class, "name2", "name2");
 		injector.register(String.class, "name3", "name3");
 		assertEquals(asList("name1", "name2", "name3"), injector.requireAll(String.class));
+		assertEquals(asList("name1", "name2", "name3"), injector.require(WithListDeps.class).list);
 	}
 
 	static class Dummy {
@@ -44,6 +46,13 @@ public class InjectorTest {
 		String name;
 		@Inject public WithNamedDeps(Dummy dummy, @Named("name") String name) {
 			this.name = name;
+		}
+	}
+
+	static class WithListDeps {
+		List<String> list;
+		@Inject public WithListDeps(List<String> list, Dummy dummy) {
+			this.list = list;
 		}
 	}
 }

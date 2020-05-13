@@ -4,8 +4,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.*;
-import java.util.stream.Stream;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
@@ -23,7 +24,7 @@ public class Injector {
 		register(type, null, impl);
 	}
 
-	public <T> T require(Key<T> key) {
+	<T> T require(Key<T> key) {
 		return (T) instances.computeIfAbsent(key, k -> createInstance(key.type));
 	}
 
@@ -39,7 +40,7 @@ public class Injector {
 		Constructor<T> constructor = (Constructor<T>) stream(type.getConstructors())
 			.filter(c -> c.isAnnotationPresent(Inject.class)).findAny()
 			.orElseThrow(() -> new InjectException(type.getName() + " has no constructors annotated with @Inject"));
-		Object[] deps = depsKeys(constructor).map(this::require).toArray();
+		Object[] deps = deps(constructor);
 		try {
 			return constructor.newInstance(deps);
 		}
@@ -48,10 +49,13 @@ public class Injector {
 		}
 	}
 
-	private <T> Stream<Key<T>> depsKeys(Constructor<T> constructor) {
-		Class<?>[] types = constructor.getParameterTypes();
+	private Object[] deps(Constructor<?> constructor) {
+		Type[] types = constructor.getGenericParameterTypes();
 		Annotation[][] ans = constructor.getParameterAnnotations();
-		return range(0, types.length).mapToObj(i -> new Key<>((Class<T>) types[i], findName(ans[i])));
+		return range(0, types.length).mapToObj(i -> types[i] instanceof ParameterizedType ?
+			requireAll((Class<?>) ((ParameterizedType) types[i]).getActualTypeArguments()[0]) :
+			require(new Key<>((Class<?>) types[i], findName(ans[i])))
+		).toArray();
 	}
 
 	private String findName(Annotation[] ans) {
