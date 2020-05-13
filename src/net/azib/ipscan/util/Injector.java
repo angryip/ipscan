@@ -6,6 +6,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.WildcardType;
 import java.util.*;
 
 import static java.util.Arrays.stream;
@@ -32,6 +33,10 @@ public class Injector {
 		return require(new Key<>(type, null));
 	}
 
+	public void register(Class<?> ... types) {
+		stream(types).forEach(this::require);
+	}
+
 	public <T> List<T> requireAll(Class<T> type) {
 		return instances.entrySet().stream().filter(e -> type.isAssignableFrom(e.getKey().type)).map(e -> (T) e.getValue()).collect(toList());
 	}
@@ -53,9 +58,14 @@ public class Injector {
 		Type[] types = constructor.getGenericParameterTypes();
 		Annotation[][] ans = constructor.getParameterAnnotations();
 		return range(0, types.length).mapToObj(i -> types[i] instanceof ParameterizedType ?
-			requireAll((Class<?>) ((ParameterizedType) types[i]).getActualTypeArguments()[0]) :
+			requireAll(getParamClass((ParameterizedType) types[i])) :
 			require(new Key<>((Class<?>) types[i], findName(ans[i])))
 		).toArray();
+	}
+
+	private Class<?> getParamClass(ParameterizedType type) {
+		Type t = type.getActualTypeArguments()[0];
+		return (Class<?>) (t instanceof WildcardType ? ((WildcardType) t).getUpperBounds()[0] : t);
 	}
 
 	private String findName(Annotation[] ans) {

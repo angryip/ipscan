@@ -51,7 +51,7 @@ public class InjectorTest {
 
 	static class WithListDeps {
 		List<String> list;
-		@Inject public WithListDeps(List<String> list, Dummy dummy) {
+		@Inject public WithListDeps(List<String> list, List<? extends String> list2, Dummy dummy) {
 			this.list = list;
 		}
 	}
