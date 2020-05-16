@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
+import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -71,15 +72,17 @@ public class GUI implements AutoCloseable {
 			Boolean isAppDarkAppearance = (Boolean) os.getMethod("isAppDarkAppearance").invoke(null);
 			LOG.info("Dark appearance flags before: " + isDarkMode + ", " + isAppDarkAppearance);
 			if (isDarkMode && !isAppDarkAppearance) {
-//				os.getMethod("setTheme", boolean.class).invoke(null, isDarkMode);
-//				isDarkMode = (Boolean) os.getMethod("isSystemDarkAppearance").invoke(null);
-//				isAppDarkAppearance = (Boolean) os.getMethod("isAppDarkAppearance").invoke(null);
-//				LOG.info("Dark appearance flags after: " + isDarkMode + ", " + isAppDarkAppearance);
-				// workaround for a bug in SWT: colors need to be reinited after changing the appearance
-//				Method initColors = display.getClass().getDeclaredMethod("initColors");
-//				initColors.setAccessible(true);
-//				initColors.invoke(display);
-				LOG.info("initColors not called");
+				os.getMethod("setTheme", boolean.class).invoke(null, isDarkMode);
+				isDarkMode = (Boolean) os.getMethod("isSystemDarkAppearance").invoke(null);
+				isAppDarkAppearance = (Boolean) os.getMethod("isAppDarkAppearance").invoke(null);
+				LOG.info("Dark appearance flags after: " + isDarkMode + ", " + isAppDarkAppearance);
+				if (isAppDarkAppearance) {
+					// workaround for a bug in SWT: colors need to be reinited after changing the appearance
+					Method initColors = display.getClass().getDeclaredMethod("initColors");
+					initColors.setAccessible(true);
+					initColors.invoke(display);
+					LOG.info("initColors called");
+				}
 			}
 		}
 		catch (Exception e) {
