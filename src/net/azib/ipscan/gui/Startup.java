@@ -4,7 +4,7 @@ import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
-import net.azib.ipscan.gui.actions.HelpMenuActions;
+import net.azib.ipscan.gui.actions.HelpMenuActions.CheckVersion;
 import net.azib.ipscan.util.GoogleAnalytics;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -12,11 +12,15 @@ import org.eclipse.swt.widgets.Shell;
 import javax.inject.Inject;
 
 public class Startup {
-	@Inject Shell shell;
-	@Inject GUIConfig guiConfig;
-	@Inject HelpMenuActions.CheckVersion checkVersion;
+	private Shell shell;
+	private GUIConfig guiConfig;
+	private CheckVersion checkVersion;
 
-	@Inject public Startup() {}
+	@Inject public Startup(Shell shell, GUIConfig guiConfig, CheckVersion checkVersion) {
+		this.shell = shell;
+		this.guiConfig = guiConfig;
+		this.checkVersion = checkVersion;
+	}
 
 	public void onStart() {
 		if (guiConfig.isFirstRun) {
