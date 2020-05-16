@@ -8,7 +8,9 @@ package net.azib.ipscan;
 import net.azib.ipscan.config.*;
 import net.azib.ipscan.gui.GUI;
 import net.azib.ipscan.gui.InfoDialog;
+import net.azib.ipscan.gui.MacApplicationMenu;
 import net.azib.ipscan.util.GoogleAnalytics;
+import net.azib.ipscan.util.Injector;
 
 import java.security.Security;
 import java.util.Locale;
@@ -49,13 +51,13 @@ public class Main {
 			Labels.initialize(locale);
 			LOG.finer("Labels and Config initialized after " + (System.currentTimeMillis() - startTime));
 
-			MainComponent mainComponent = DaggerMainComponent.create();
-			if (Platform.MAC_OS) mainComponent.createMacApplicationMenu();
+			Injector injector = new ComponentRegistry().init();
+			if (Platform.MAC_OS) injector.require(MacApplicationMenu.class);
 			LOG.finer("Components initialized after " + (System.currentTimeMillis() - startTime));
 
-			processCommandLine(args, mainComponent);
+			processCommandLine(args, injector);
 
-			gui.showMainWindow(mainComponent);
+			gui.showMainWindow(injector);
 
 			Config.getConfig().store();
 			gui.close();
@@ -100,9 +102,9 @@ public class Main {
 		Security.setProperty("networkaddress.cache.negative.ttl", "0");
 	}
 
-	private static void processCommandLine(String[] args, MainComponent mainComponent) {
+	private static void processCommandLine(String[] args, Injector injector) {
 		if (args.length != 0) {
-			CommandLineProcessor cli = mainComponent.createCommandLineProcessor();
+			CommandLineProcessor cli = injector.require(CommandLineProcessor.class);
 			try {
 				cli.parse(args);
 			}

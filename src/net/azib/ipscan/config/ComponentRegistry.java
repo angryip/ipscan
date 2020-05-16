@@ -59,12 +59,16 @@ public class ComponentRegistry {
 		i.register(FeederRegistry.class, i.require(FeederGUIRegistry.class));
 	}
 
-	public static void main(String[] args) {
+	public Injector init() {
 		Injector i = new Injector();
 		new ConfigModule().register(i);
 		new ComponentRegistry().register(i);
 		new PluginLoader().getClasses().forEach(i::require);
-		System.out.println(i.require(MainWindow.class));
+		return i;
+	}
+
+	public static void main(String[] args) {
+		new ComponentRegistry().init().require(MainWindow.class).getShell().open();
 	}
 
 	@Provides @Singleton public Display getDisplay() {

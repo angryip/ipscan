@@ -1,11 +1,11 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.LoggerFactory;
-import net.azib.ipscan.config.MainComponent;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.util.GoogleAnalytics;
+import net.azib.ipscan.util.Injector;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.SWTException;
@@ -41,9 +41,8 @@ public class GUI implements AutoCloseable {
 		}
 	}
 
-	public void showMainWindow(MainComponent mainComponent) {
-		// create the main window using dependency injection
-		mainWindow = mainComponent.createMainWindow();
+	public void showMainWindow(Injector injector) {
+		mainWindow = injector.require(MainWindow.class);
 		if (Platform.MAC_OS) setMacDarkAppearanceIfNeeded();
 
 		LOG.fine("Main window created: " + (System.currentTimeMillis() - startTime));
