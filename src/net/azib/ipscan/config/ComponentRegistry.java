@@ -56,6 +56,7 @@ public class ComponentRegistry {
 			NetBIOSInfoFetcher.class, PacketLossFetcher.class, HTTPProxyFetcher.class);
 		i.register(MACFetcher.class, Platform.WINDOWS ? new WinMACFetcher() : new UnixMACFetcher());
 		i.register(MACVendorFetcher.class);
+		i.register(FeederRegistry.class, i.require(FeederGUIRegistry.class));
 	}
 
 	public static void main(String[] args) {

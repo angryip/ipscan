@@ -56,10 +56,21 @@ public class Injector {
 	private Object[] deps(Constructor<?> constructor) {
 		Type[] types = constructor.getGenericParameterTypes();
 		Annotation[][] ans = constructor.getParameterAnnotations();
-		return range(0, types.length).mapToObj(i -> types[i] instanceof ParameterizedType ?
+ 		return range(0, types.length).mapToObj(i -> isCollection(types[i]) ?
 			requireAll(getParamClass((ParameterizedType) types[i])) :
-			require(new Key<>((Class<?>) types[i], findName(ans[i])))
+			require(new Key<>(toClass(types[i]), findName(ans[i])))
 		).toArray();
+	}
+
+	private Class<?> toClass(Type type) {
+		if (type instanceof Class) return (Class<?>) type;
+		else if (type instanceof ParameterizedType) return (Class<?>) ((ParameterizedType) type).getRawType();
+		else throw new InjectException(type + " is not supported");
+	}
+
+	private boolean isCollection(Type type) {
+		return type instanceof ParameterizedType &&
+		Collection.class.isAssignableFrom(toClass(type));
 	}
 
 	private Class<?> getParamClass(ParameterizedType type) {
