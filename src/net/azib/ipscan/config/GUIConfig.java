@@ -36,7 +36,6 @@ public class GUIConfig {
 	
 	public enum DisplayMethod {ALL, ALIVE, PORTS}
 
-	// package local constructor
 	GUIConfig(Preferences preferences) {
 		this.preferences = preferences;
 		load();

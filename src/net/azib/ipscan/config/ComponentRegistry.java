@@ -8,13 +8,16 @@ package net.azib.ipscan.config;
 import dagger.Module;
 import dagger.Provides;
 import net.azib.ipscan.core.Plugin;
+import net.azib.ipscan.core.PluginLoader;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.exporters.*;
 import net.azib.ipscan.feeders.FeederCreator;
 import net.azib.ipscan.feeders.FeederRegistry;
 import net.azib.ipscan.fetchers.*;
+import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.SWTAwareStateMachine;
 import net.azib.ipscan.gui.feeders.*;
+import net.azib.ipscan.util.Injector;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 
@@ -32,6 +35,36 @@ import static java.util.Arrays.asList;
  */
 @Module
 public class ComponentRegistry {
+	public void register(Injector i) {
+		Display display = Display.getDefault();
+		i.register(Display.class, display);
+		Shell shell = new Shell();
+		i.register(Shell.class, shell);
+		i.register(Menu.class, "mainMenu", new Menu(shell, SWT.BAR));
+		i.register(Composite.class, "feederArea", new Composite(shell, SWT.NONE));
+		Composite controlsArea = new Composite(shell, SWT.NONE);
+		i.register(Composite.class, "controlsArea", controlsArea);
+		i.register(Button.class, "startStopButton", new Button(controlsArea, SWT.NONE));
+		i.register(Combo.class, "feederSelectionCombo", new Combo(controlsArea, SWT.READ_ONLY));
+		SWTAwareStateMachine stateMachine = new SWTAwareStateMachine(display);
+		i.register(SWTAwareStateMachine.class, stateMachine);
+		i.register(StateMachine.class, stateMachine);
+		i.register(RangeFeederGUI.class, RandomFeederGUI.class, FileFeederGUI.class);
+		i.register(TXTExporter.class, CSVExporter.class, XMLExporter.class, IPListExporter.class);
+		i.register(IPFetcher.class, PingFetcher.class, PingTTLFetcher.class, HostnameFetcher.class, PortsFetcher.class,
+			FilteredPortsFetcher.class, WebDetectFetcher.class, HTTPSenderFetcher.class, CommentFetcher.class,
+			NetBIOSInfoFetcher.class, PacketLossFetcher.class, HTTPProxyFetcher.class);
+		i.register(MACFetcher.class, Platform.WINDOWS ? new WinMACFetcher() : new UnixMACFetcher());
+		i.register(MACVendorFetcher.class);
+	}
+
+	public static void main(String[] args) {
+		Injector i = new Injector();
+		new ConfigModule().register(i);
+		new ComponentRegistry().register(i);
+		new PluginLoader().getClasses().forEach(i::require);
+		System.out.println(i.require(MainWindow.class));
+	}
 
 	@Provides @Singleton public Display getDisplay() {
 		return Display.getDefault();
@@ -91,7 +124,7 @@ public class ComponentRegistry {
 	@SuppressWarnings("unchecked")
 	private <T extends Plugin> List<T> addPlugins(List<T> original, Class<T> type, List<Class<? extends Plugin>> classes) {
 		List<T> result = new ArrayList<>(original);
-		for (Class clazz: classes) {
+		for (Class<?> clazz: classes) {
 			try {
 				if (type.isAssignableFrom(clazz))
 					result.add((T)clazz.newInstance());
