@@ -1,4 +1,4 @@
-package net.azib.ipscan.util;
+package net.azib.ipscan.di;
 
 import javax.inject.Inject;
 import javax.inject.Named;

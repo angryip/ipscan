@@ -10,6 +10,7 @@ import dagger.Provides;
 import net.azib.ipscan.core.Plugin;
 import net.azib.ipscan.core.PluginLoader;
 import net.azib.ipscan.core.state.StateMachine;
+import net.azib.ipscan.di.Injector;
 import net.azib.ipscan.exporters.*;
 import net.azib.ipscan.feeders.FeederCreator;
 import net.azib.ipscan.feeders.FeederRegistry;
@@ -17,7 +18,6 @@ import net.azib.ipscan.fetchers.*;
 import net.azib.ipscan.gui.MainWindow;
 import net.azib.ipscan.gui.SWTAwareStateMachine;
 import net.azib.ipscan.gui.feeders.*;
-import net.azib.ipscan.util.Injector;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 

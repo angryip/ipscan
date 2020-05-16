@@ -2,7 +2,7 @@ package net.azib.ipscan.config;
 
 import dagger.Module;
 import dagger.Provides;
-import net.azib.ipscan.util.Injector;
+import net.azib.ipscan.di.Injector;
 
 import java.util.prefs.Preferences;
 

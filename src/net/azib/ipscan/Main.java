@@ -6,11 +6,11 @@
 package net.azib.ipscan;
 
 import net.azib.ipscan.config.*;
+import net.azib.ipscan.di.Injector;
 import net.azib.ipscan.gui.GUI;
 import net.azib.ipscan.gui.InfoDialog;
 import net.azib.ipscan.gui.MacApplicationMenu;
 import net.azib.ipscan.util.GoogleAnalytics;
-import net.azib.ipscan.util.Injector;
 
 import java.security.Security;
 import java.util.Locale;

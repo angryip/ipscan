@@ -1,4 +1,4 @@
-package net.azib.ipscan.util;
+package net.azib.ipscan.di;
 
 import org.junit.Test;
 
