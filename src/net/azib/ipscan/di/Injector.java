@@ -24,7 +24,14 @@ public class Injector {
 	}
 
 	<T> T require(Key<T> key) {
-		return (T) instances.computeIfAbsent(key, k -> createInstance(key.type));
+		T value = (T) instances.get(key);
+		if (value == null) {
+			value = createInstance(key.type);
+			instances.put(key, value);
+		}
+		return value;
+		// unfortunately, HashMap.computeIfAbsent() doesn't put values properly in a recursive scenario
+		// return (T) instances.computeIfAbsent(key, k -> createInstance(k.type));
 	}
 
 	public <T> T require(Class<T> type) {
@@ -67,8 +74,7 @@ public class Injector {
 	}
 
 	private boolean isCollection(Type type) {
-		return type instanceof ParameterizedType &&
-		Collection.class.isAssignableFrom(toClass(type));
+		return type instanceof ParameterizedType && Collection.class.isAssignableFrom(toClass(type));
 	}
 
 	private Class<?> getParamClass(ParameterizedType type) {
