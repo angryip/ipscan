@@ -59,10 +59,10 @@ Source structure
 ### Directories
 
 * src - the main subdirectory of the project tree, which contains the Java package structure of the source (net.azib.ipscan and its sub packages). All the source code, needed for running the program is stored there.
-* src-platform - platform-specific source code. Use the appropriate subdirectory for your OS (linux, linux64, mac or win32) when compiling/running.
 * test - contains exactly the same Java package structure as src does, but is intended for unit tests and other classes, which are not needed for running Angry IP Scanner itself. Each test case Java class should have the same name as the original class under test, but with the Test suffix, for example, Feeder and FeederTest.
-* ext - for external libraries. The contents of each library's directory will depend on the original structure of that library, however, not all the original files may be included.
-* resources - textual and graphical resources to be packaged with the program.
+* lib - bundled versions of SWT library. Note that versions may be slightly different for each supported platform.
+* ext - for external tools. The contents of each library's directory will depend on the original structure of that library, however, not all the original files may be included.
+* resources - textual and graphical resources to be packaged with the program, including translations.
 
 ### Java packages
 
