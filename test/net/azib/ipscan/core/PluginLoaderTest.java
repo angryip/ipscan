@@ -19,6 +19,7 @@ public class PluginLoaderTest {
         System.setProperty("ipscan.plugins", DummyFetcher.class.getName());
 		loader.loadPluginsSpecifiedInSystemProperties(container);
         assertEquals(DummyFetcher.class, container.get(0));
+        System.getProperties().remove("ipscan.plugins");
     }
 
 	@Test
