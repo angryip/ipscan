@@ -24,14 +24,10 @@ public class Injector {
 	}
 
 	<T> T require(Key<T> key) {
-		T value = (T) instances.get(key);
-		if (value == null) {
-			value = createInstance(key.type);
-			instances.put(key, value);
-		}
-		return value;
 		// unfortunately, HashMap.computeIfAbsent() doesn't put values properly in a recursive scenario
-		// return (T) instances.computeIfAbsent(key, k -> createInstance(k.type));
+		T value = (T) instances.get(key);
+		if (value == null) instances.put(key, value = createInstance(key.type));
+		return value;
 	}
 
 	public <T> T require(Class<T> type) {
