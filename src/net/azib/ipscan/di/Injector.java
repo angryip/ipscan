@@ -79,35 +79,4 @@ public class Injector {
 	private String findName(Annotation[] ans) {
 		return stream(ans).filter(a -> a.annotationType() == Named.class).findAny().map(a -> ((Named) a).value()).orElse(null);
 	}
-
-	public static class Key<T> {
-		final Class<T> type;
-		final String name;
-
-		public Key(Class<T> type, String name) {
-			this.type = type;
-			this.name = name;
-		}
-
-		@Override public boolean equals(Object o) {
-			if (this == o) return true;
-			if (o == null || getClass() != o.getClass()) return false;
-			Key<?> key = (Key<?>) o;
-			return type.equals(key.type) && Objects.equals(name, key.name);
-		}
-
-		@Override public int hashCode() {
-			return Objects.hash(type, name);
-		}
-	}
-
-	public static class InjectException extends RuntimeException {
-		public InjectException(String message, Exception e) {
-			super(message, e);
-		}
-
-		public InjectException(String message) {
-			super(message);
-		}
-	}
 }
