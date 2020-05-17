@@ -33,7 +33,7 @@ public class InjectorTest {
 	}
 
 	static class Dummy {
-		@Inject public Dummy() {}
+		public Dummy() {}
 	}
 
 	static class WithDeps {

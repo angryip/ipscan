@@ -42,11 +42,12 @@ public class Injector {
 	}
 
 	private <T> T createInstance(Class<T> type) {
-		Constructor<T> constructor = (Constructor<T>) stream(type.getConstructors())
-			.filter(c -> c.isAnnotationPresent(Inject.class)).findAny()
-			.orElseThrow(() -> new InjectException(type.getName() + " has no constructors annotated with @Inject"));
+		Constructor<T>[] constructors = (Constructor<T>[]) type.getConstructors();
+		Constructor<T> constructor = stream(constructors).filter(c -> c.isAnnotationPresent(Inject.class)).findAny().orElse(null);
+		if (constructor == null && constructors.length == 1) constructor = constructors[0];
 		try {
-			return constructor.newInstance(resolveDeps(constructor));
+			if (constructor != null) return constructor.newInstance(resolveDeps(constructor));
+			else throw new InjectException(type.getName() + " has no default constructor or a constructor annotated with @Inject");
 		}
 		catch (Exception e) {
 			throw new InjectException("Cannot create " + type.getName() + ", deps: " + Arrays.toString(constructor.getGenericParameterTypes()), e);
