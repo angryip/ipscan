@@ -13,6 +13,7 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
@@ -23,8 +24,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.List;
 
 import static net.azib.ipscan.core.ScanningResult.ResultType.*;
@@ -35,9 +34,7 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
  * 
  * @author Anton Keks
  */
-@Singleton
 public class ResultTable extends Table implements FetcherRegistryUpdateListener, StateTransitionListener {
-	
 	private ScanningResultList scanningResults;
 	private GUIConfig guiConfig;
 	private FetcherRegistry fetcherRegistry;

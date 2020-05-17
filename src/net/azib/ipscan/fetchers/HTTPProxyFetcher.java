@@ -7,8 +7,8 @@
 package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.config.ScannerConfig;
+import net.azib.ipscan.di.Inject;
 
-import javax.inject.Inject;
 import java.util.regex.Matcher;
 
 /**

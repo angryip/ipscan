@@ -9,8 +9,8 @@ import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.core.values.NumericRangeList;
+import net.azib.ipscan.di.Inject;
 
-import javax.inject.Inject;
 import java.util.SortedSet;
 
 /**

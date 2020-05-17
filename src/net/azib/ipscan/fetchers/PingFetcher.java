@@ -12,9 +12,9 @@ import net.azib.ipscan.core.net.PingResult;
 import net.azib.ipscan.core.net.Pinger;
 import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.core.values.IntegerWithUnit;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.fetchers.PingFetcherPrefs;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;

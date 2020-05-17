@@ -10,6 +10,7 @@ import net.azib.ipscan.config.GUIConfig.DisplayMethod;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.state.StateMachine;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.actions.CommandsMenuActions.Delete;
 import net.azib.ipscan.gui.actions.ToolsActions.SelectDead;
 import net.azib.ipscan.gui.actions.ToolsActions.SelectWithoutPorts;
@@ -20,9 +21,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import static net.azib.ipscan.config.GUIConfig.DisplayMethod.PORTS;
 import static net.azib.ipscan.gui.util.LayoutHelper.formData;
 
@@ -31,7 +29,6 @@ import static net.azib.ipscan.gui.util.LayoutHelper.formData;
  *
  * @author Anton Keks
  */
-@Singleton
 public class StatusBar {
 	private Composite composite;
 	private Label statusText;

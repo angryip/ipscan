@@ -1,16 +1,12 @@
 package net.azib.ipscan.gui.menu;
 
 import net.azib.ipscan.config.Platform;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.actions.HelpMenuActions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-@Singleton
 public class HelpMenu extends AbstractMenu {
-
 	@Inject
 	public HelpMenu(Shell parent,
 					HelpMenuActions.GettingStarted gettingStarted,

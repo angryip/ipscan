@@ -1,8 +1,8 @@
 package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.di.Inject;
 
-import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

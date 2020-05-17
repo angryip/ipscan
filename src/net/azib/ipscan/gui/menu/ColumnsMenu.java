@@ -1,20 +1,16 @@
 package net.azib.ipscan.gui.menu;
 
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.ToolsActions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 /**
  * ColumnsMenu wrapper for type-safety.
  * This is the menu when clicking on a column header.
  */
-@Singleton
 public class ColumnsMenu extends ExtendableMenu {
-
 	@Inject
 	public ColumnsMenu(Shell parent,
 					   ColumnsActions.SortBy sortByListener,

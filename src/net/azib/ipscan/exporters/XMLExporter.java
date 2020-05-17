@@ -6,8 +6,8 @@
 package net.azib.ipscan.exporters;
 
 import net.azib.ipscan.config.Version;
+import net.azib.ipscan.di.Inject;
 
-import javax.inject.Inject;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -11,14 +11,13 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.exporters.ExportProcessor;
 import net.azib.ipscan.exporters.Exporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
 import net.azib.ipscan.feeders.FeederCreator;
 import net.azib.ipscan.feeders.FeederRegistry;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.io.File;
 
 /**
@@ -26,7 +25,6 @@ import java.io.File;
  *
  * @author Anton Keks
  */
-@Singleton
 public class CommandLineProcessor implements CommandProcessor, StateTransitionListener {
 	private final FeederRegistry<? extends FeederCreator> feederRegistry;
 	private final ExporterRegistry exporters;

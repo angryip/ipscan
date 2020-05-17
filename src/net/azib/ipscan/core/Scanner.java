@@ -7,10 +7,10 @@ package net.azib.ipscan.core;
 
 import net.azib.ipscan.core.values.NotAvailable;
 import net.azib.ipscan.core.values.NotScanned;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 
-import javax.inject.Inject;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;

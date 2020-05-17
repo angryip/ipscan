@@ -7,8 +7,7 @@
 package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.config.ScannerConfig;
-
-import javax.inject.Inject;
+import net.azib.ipscan.di.Inject;
 
 /**
  * HTTPSenderFetcher - allows sending of arbitrary info port and showing the result.

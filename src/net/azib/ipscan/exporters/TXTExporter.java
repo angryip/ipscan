@@ -3,12 +3,12 @@ package net.azib.ipscan.exporters;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.core.ScanningResult;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.IPFetcher;
 import net.azib.ipscan.fetchers.PingFetcher;
 import net.azib.ipscan.fetchers.PortsFetcher;
 import net.azib.ipscan.gui.feeders.AbstractFeederGUI;
 
-import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

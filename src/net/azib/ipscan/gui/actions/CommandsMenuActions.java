@@ -11,6 +11,7 @@ import net.azib.ipscan.config.OpenersConfig.Opener;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.DetailsWindow;
 import net.azib.ipscan.gui.EditOpenersDialog;
@@ -25,27 +26,32 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 /**
  * Commands and Context menu Actions.
  * All these operate on the items, selected in the results list.
  *
  * @author Anton Keks
  */
-@Singleton
 public class CommandsMenuActions {
-	@Inject public Details details;
-	@Inject public Delete delete;
-	@Inject public Rescan rescan;
-	@Inject public CopyIP copyIP;
-	@Inject public CopyIPDetails copyIPDetails;
-	@Inject public ShowOpenersMenu showOpenersMenu;
-	@Inject public EditOpeners editOpeners;
-	@Inject public SelectOpener selectOpener;
+	public Details details;
+	public Delete delete;
+	public Rescan rescan;
+	public CopyIP copyIP;
+	public CopyIPDetails copyIPDetails;
+	public ShowOpenersMenu showOpenersMenu;
+	public EditOpeners editOpeners;
+	public SelectOpener selectOpener;
 
-	@Inject public CommandsMenuActions() {}
+	@Inject public CommandsMenuActions(Details details, Delete delete, Rescan rescan, CopyIP copyIP, CopyIPDetails copyIPDetails, ShowOpenersMenu showOpenersMenu, EditOpeners editOpeners, SelectOpener selectOpener) {
+		this.details = details;
+		this.delete = delete;
+		this.rescan = rescan;
+		this.copyIP = copyIP;
+		this.copyIPDetails = copyIPDetails;
+		this.showOpenersMenu = showOpenersMenu;
+		this.editOpeners = editOpeners;
+		this.selectOpener = selectOpener;
+	}
 
 	/**
 	 * Checks that there is at least one item selected in the results list.

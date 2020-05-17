@@ -8,10 +8,9 @@ package net.azib.ipscan.config;
 
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.MACFetcher;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.net.InetAddress;
 import java.util.prefs.Preferences;
 
@@ -20,7 +19,6 @@ import java.util.prefs.Preferences;
  *
  * @author Anton Keks
  */
-@Singleton
 public class CommentsConfig {
 	private Preferences preferences;
 

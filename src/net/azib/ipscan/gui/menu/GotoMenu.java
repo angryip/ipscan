@@ -1,15 +1,11 @@
 package net.azib.ipscan.gui.menu;
 
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.actions.GotoMenuActions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-@Singleton
 public class GotoMenu extends AbstractMenu {
-
 	@Inject
 	public GotoMenu(Shell parent,
 					GotoMenuActions.NextAliveHost nextAliveHost,

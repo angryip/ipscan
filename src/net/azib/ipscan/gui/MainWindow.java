@@ -12,6 +12,8 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.di.Inject;
+import net.azib.ipscan.di.Named;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.actions.ToolsActions;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
@@ -24,9 +26,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
-
-import javax.inject.Inject;
-import javax.inject.Named;
 
 import static net.azib.ipscan.gui.util.LayoutHelper.formData;
 import static net.azib.ipscan.gui.util.LayoutHelper.icon;

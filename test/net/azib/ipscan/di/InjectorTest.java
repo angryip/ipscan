@@ -2,8 +2,6 @@ package net.azib.ipscan.di;
 
 import org.junit.Test;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.List;
 
 import static java.util.Arrays.asList;

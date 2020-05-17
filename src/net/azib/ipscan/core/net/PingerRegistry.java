@@ -9,10 +9,9 @@ import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.FetcherException;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
@@ -27,7 +26,6 @@ import static java.util.logging.Level.SEVERE;
  *
  * @author Anton Keks
  */
-@Singleton
 public class PingerRegistry {
 	private static final Logger LOG = LoggerFactory.getLogger();
 	

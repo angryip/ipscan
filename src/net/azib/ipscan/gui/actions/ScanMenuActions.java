@@ -13,6 +13,7 @@ import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.exporters.ExportProcessor;
 import net.azib.ipscan.exporters.ExportProcessor.ScanningResultFilter;
 import net.azib.ipscan.exporters.Exporter;
@@ -27,7 +28,6 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 
-import javax.inject.Inject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

@@ -2,8 +2,8 @@ package net.azib.ipscan.fetchers;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
+import net.azib.ipscan.di.Inject;
 
-import javax.inject.Inject;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 

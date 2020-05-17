@@ -11,6 +11,7 @@ import net.azib.ipscan.config.Version;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.EditFavoritesDialog;
 import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
@@ -21,8 +22,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-
-import javax.inject.Inject;
 
 /**
  * FavoritesActions

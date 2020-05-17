@@ -6,6 +6,8 @@
 package net.azib.ipscan.gui.feeders;
 
 import net.azib.ipscan.config.Platform;
+import net.azib.ipscan.di.Inject;
+import net.azib.ipscan.di.Named;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederException;
 import net.azib.ipscan.feeders.RangeFeeder;
@@ -16,9 +18,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.UnknownHostException;
@@ -31,7 +30,6 @@ import static net.azib.ipscan.util.InetAddressUtils.*;
  * 
  * @author Anton Keks
  */
-@Singleton
 public class RangeFeederGUI extends AbstractFeederGUI {
 	private Text startIPText;
 	private Text endIPText;

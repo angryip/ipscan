@@ -5,10 +5,9 @@
  */
 package net.azib.ipscan.fetchers;
 
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.PreferencesDialog;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.prefs.Preferences;
@@ -19,7 +18,6 @@ import java.util.prefs.Preferences;
  *
  * @author Anton Keks
  */
-@Singleton
 public class FetcherRegistry {
 	static final String PREFERENCE_SELECTED_FETCHERS = "selectedFetchers";
 

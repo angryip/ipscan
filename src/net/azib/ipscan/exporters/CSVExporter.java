@@ -1,6 +1,7 @@
 package net.azib.ipscan.exporters;
 
-import javax.inject.Inject;
+import net.azib.ipscan.di.Inject;
+
 import java.io.IOException;
 
 /**

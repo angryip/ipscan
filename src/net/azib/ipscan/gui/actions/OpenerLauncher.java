@@ -10,10 +10,10 @@ import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.values.Empty;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.HostnameFetcher;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;

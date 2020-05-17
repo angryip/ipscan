@@ -8,6 +8,7 @@ package net.azib.ipscan.gui.actions;
 import net.azib.ipscan.config.CommandLineProcessor;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.AboutDialog;
 import net.azib.ipscan.gui.GettingStartedDialog;
 import net.azib.ipscan.gui.InfoDialog;
@@ -18,7 +19,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 
-import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;

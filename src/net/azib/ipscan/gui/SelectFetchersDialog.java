@@ -6,6 +6,7 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.IPFetcher;
@@ -18,7 +19,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;

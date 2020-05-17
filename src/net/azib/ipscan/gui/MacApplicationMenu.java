@@ -1,6 +1,7 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.actions.HelpMenuActions.CheckVersion;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -8,8 +9,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-
-import javax.inject.Inject;
 
 /**
  * Mac-specific application menu handler

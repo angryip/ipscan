@@ -10,8 +10,8 @@ import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.ScanningResultList.ScanInfo;
 import net.azib.ipscan.core.UserErrorException;
+import net.azib.ipscan.di.Inject;
 
-import javax.inject.Inject;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 

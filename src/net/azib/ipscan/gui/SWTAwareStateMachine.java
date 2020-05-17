@@ -8,10 +8,8 @@ package net.azib.ipscan.gui;
 
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.di.Inject;
 import org.eclipse.swt.widgets.Display;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * Extends the generic {@link StateMachine} in order to run state transition notifications
@@ -20,7 +18,6 @@ import javax.inject.Singleton;
  *
  * @author Anton Keks
  */
-@Singleton
 public class SWTAwareStateMachine extends StateMachine {
 	private Display display;
 

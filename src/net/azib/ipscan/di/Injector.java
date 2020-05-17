@@ -1,7 +1,5 @@
 package net.azib.ipscan.di;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;

@@ -11,14 +11,13 @@ import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.menu.ColumnsMenu;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
-
-import javax.inject.Inject;
 
 /**
  * ColumnsActions

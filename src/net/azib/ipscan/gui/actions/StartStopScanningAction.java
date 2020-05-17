@@ -16,6 +16,8 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.di.Inject;
+import net.azib.ipscan.di.Named;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
@@ -25,9 +27,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
 import java.net.InetAddress;
 
 import static net.azib.ipscan.core.state.ScanningState.*;
@@ -39,9 +38,7 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
  * 
  * @author Anton Keks
  */
-@Singleton
 public class StartStopScanningAction implements SelectionListener, ScanningProgressCallback, StateTransitionListener {
-	
 	private ScannerDispatcherThreadFactory scannerThreadFactory;
 	private ScannerDispatcherThread scannerThread;
 	private GUIConfig guiConfig;
@@ -205,7 +202,6 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				statusBar.setStatusText(Labels.getLabel("state.killingThreads"));
 				break;
 		}
-		// change button image
 		button.setImage(buttonImages[state.ordinal()]);
 		button.setText(buttonTexts[state.ordinal()]);
 	}

@@ -38,8 +38,6 @@ repositories {
 }
 
 dependencies {
-    compile 'com.google.dagger:dagger:2.19'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.19'
     // compile with current platform's SWT, but bundle a different one for each binary
     compileOnly files("lib/swt-${platform}.jar")
     compileOnly files('lib/jna.jar')

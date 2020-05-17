@@ -4,12 +4,11 @@ import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.actions.HelpMenuActions.CheckVersion;
 import net.azib.ipscan.util.GoogleAnalytics;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
-import javax.inject.Inject;
 
 public class Startup {
 	private Shell shell;

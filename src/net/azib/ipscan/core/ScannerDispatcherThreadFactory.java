@@ -7,10 +7,8 @@ package net.azib.ipscan.core;
 
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.state.StateMachine;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.feeders.Feeder;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * ScannerThreadFactory.
@@ -19,7 +17,6 @@ import javax.inject.Singleton;
  *
  * @author Anton Keks
  */
-@Singleton
 public class ScannerDispatcherThreadFactory {
 	
 	private ScanningResultList scanningResults;

@@ -14,13 +14,12 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
-
-import javax.inject.Inject;
 
 import static net.azib.ipscan.core.ScanningResult.ResultType.*;
 

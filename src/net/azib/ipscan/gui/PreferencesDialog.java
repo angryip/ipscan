@@ -12,6 +12,7 @@ import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.PortIterator;
 import net.azib.ipscan.core.net.PingerRegistry;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.FetcherException;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
@@ -25,15 +26,11 @@ import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 /**
  * Preferences Dialog
  *
  * @author Anton Keks
  */
-@Singleton
 public class PreferencesDialog extends AbstractModalDialog {
 	private final PingerRegistry pingerRegistry;
 	private final Config globalConfig;

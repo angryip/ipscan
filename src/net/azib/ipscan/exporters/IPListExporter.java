@@ -3,10 +3,10 @@ package net.azib.ipscan.exporters;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.PortIterator;
 import net.azib.ipscan.core.values.NumericRangeList;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.IPFetcher;
 import net.azib.ipscan.fetchers.PortsFetcher;
 
-import javax.inject.Inject;
 import java.io.IOException;
 
 /**

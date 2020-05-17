@@ -1,18 +1,14 @@
 package net.azib.ipscan.gui.menu;
 
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.actions.FavoritesMenuActions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 /**
  * FavoritesMenu wrapper for type-safety
  */
-@Singleton
 public class FavoritesMenu extends AbstractMenu {
-
 	@Inject
 	public FavoritesMenu(Shell parent,
 						 FavoritesMenuActions.Add addListener,

@@ -1,11 +1,10 @@
 package net.azib.ipscan.gui.menu;
 
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.actions.CommandsMenuActions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
-
-import javax.inject.Inject;
 
 /**
  * OpenersMenu wrapper for type-safety

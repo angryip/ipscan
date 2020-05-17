@@ -5,8 +5,8 @@
  */
 package net.azib.ipscan.exporters;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import net.azib.ipscan.di.Inject;
+
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,9 +18,7 @@ import java.util.Map;
  *
  * @author Anton Keks
  */
-@Singleton
 public class ExporterRegistry implements Iterable<Exporter> {
-	
 	/** All available Exporter implementations, Map of Exporter instances (prototypes) */
 	private Map<String, Exporter> exporters;
 

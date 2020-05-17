@@ -6,8 +6,7 @@ package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.values.InetAddressHolder;
-
-import javax.inject.Inject;
+import net.azib.ipscan.di.Inject;
 
 /**
  * Dummy fetcher, which is able to return the textual representation 

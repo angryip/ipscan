@@ -8,9 +8,9 @@ package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.util.NetBIOSResolver;
 
-import javax.inject.Inject;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.logging.Logger;
