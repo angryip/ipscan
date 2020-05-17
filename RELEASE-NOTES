@@ -1,7 +1,10 @@
-Changes in 3.7.1 (draft):
+Changes in 3.7.1:
 - Enable ICMP Echo pinger for Linux x64 only, as it requires the corresponding native .so implementation that is not available for Mac and not needed for Windows
-- Fix handling of escape sequences in HTTP Sender
 - Add a new Java Built-in pinger by default (InetAddress.isReachable()), which uses ICMP if enough privileges or falls back to TCP port 7
+- Fix handling of escape sequences in HTTP Sender
+- Do not switch to macOS dark mode on some machines, where it would result in wrong colors (#231)
+- Some fixes in Russian translation
+- Mac vendors updated
 
 Changes in 3.7.0:
 - Windows: use latest NSIS for installer generation, fixing DLL hijacking
