@@ -6,15 +6,15 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 public class InjectorTest {
 	private Injector injector = new Injector();
 
 	@Test
 	public void require() {
-		assertTrue(injector.require(Dummy.class) instanceof Dummy);
-		assertTrue(injector.require(WithDeps.class) instanceof WithDeps);
+		assertNotNull(injector.require(Dummy.class));
+		assertNotNull(injector.require(WithDeps.class));
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class InjectorTest {
 
 	static class WithListDeps {
 		List<String> list;
-		@Inject public WithListDeps(List<String> list, List<? extends String> list2, Dummy dummy) {
+		@Inject public WithListDeps(List<String> list, Dummy dummy) {
 			this.list = list;
 		}
 	}
