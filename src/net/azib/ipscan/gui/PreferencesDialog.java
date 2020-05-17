@@ -25,15 +25,11 @@ import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 /**
  * Preferences Dialog
  *
  * @author Anton Keks
  */
-@Singleton
 public class PreferencesDialog extends AbstractModalDialog {
 	private final PingerRegistry pingerRegistry;
 	private final Config globalConfig;
@@ -68,7 +64,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 	private Button askConfirmationCheckbox;
 	private Combo languageCombo;
 
-	@Inject public PreferencesDialog(PingerRegistry pingerRegistry, Config globalConfig, ScannerConfig scannerConfig, GUIConfig guiConfig) {
+	public PreferencesDialog(PingerRegistry pingerRegistry, Config globalConfig, ScannerConfig scannerConfig, GUIConfig guiConfig) {
 		this.pingerRegistry = pingerRegistry;
 		this.globalConfig = globalConfig;
 		this.scannerConfig = scannerConfig;

@@ -1,6 +1,5 @@
 package net.azib.ipscan.exporters;
 
-import javax.inject.Inject;
 import java.io.IOException;
 
 /**
@@ -15,7 +14,7 @@ public class CSVExporter extends AbstractExporter {
 	/* Delimiter escaping character (if data contains DELIMETER) */
 	static final char DELIMETER_ESCAPED = '.';
 
-	@Inject public CSVExporter() {}
+	public CSVExporter() {}
 
 	public String getId() {
 		return "exporter.csv";

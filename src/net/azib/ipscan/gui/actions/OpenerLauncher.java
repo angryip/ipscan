@@ -13,7 +13,6 @@ import net.azib.ipscan.core.values.Empty;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.HostnameFetcher;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -31,7 +30,7 @@ public class OpenerLauncher {
 	private final FetcherRegistry fetcherRegistry;
 	private final ScanningResultList scanningResults;
 	
-	@Inject public OpenerLauncher(FetcherRegistry fetcherRegistry, ScanningResultList scanningResults) {
+	public OpenerLauncher(FetcherRegistry fetcherRegistry, ScanningResultList scanningResults) {
 		this.fetcherRegistry = fetcherRegistry;
 		this.scanningResults = scanningResults;
 	}

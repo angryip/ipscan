@@ -7,8 +7,6 @@ package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.gui.PreferencesDialog;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.prefs.Preferences;
@@ -19,7 +17,6 @@ import java.util.prefs.Preferences;
  *
  * @author Anton Keks
  */
-@Singleton
 public class FetcherRegistry {
 	static final String PREFERENCE_SELECTED_FETCHERS = "selectedFetchers";
 
@@ -35,7 +32,7 @@ public class FetcherRegistry {
 	/** A collection of update listeners - observers of FetcherRegistry */
 	private List<FetcherRegistryUpdateListener> updateListeners = new ArrayList<>();
 		
-	@Inject public FetcherRegistry(List<Fetcher> fetchers, Preferences preferences, PreferencesDialog preferencesDialog) {
+	public FetcherRegistry(List<Fetcher> fetchers, Preferences preferences, PreferencesDialog preferencesDialog) {
 		this.preferences = preferences;
 		this.preferencesDialog = preferencesDialog;
 

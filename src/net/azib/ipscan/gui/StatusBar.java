@@ -20,9 +20,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import static net.azib.ipscan.config.GUIConfig.DisplayMethod.PORTS;
 import static net.azib.ipscan.gui.util.LayoutHelper.formData;
 
@@ -31,7 +28,6 @@ import static net.azib.ipscan.gui.util.LayoutHelper.formData;
  *
  * @author Anton Keks
  */
-@Singleton
 public class StatusBar {
 	private Composite composite;
 	private Label statusText;
@@ -45,7 +41,7 @@ public class StatusBar {
 	private StateMachine stateMachine;
 	private ResultTable resultTable;
 
-	@Inject public StatusBar(Shell shell, GUIConfig guiConfig, ScannerConfig scannerConfig, ResultTable resultTable, StateMachine stateMachine) {
+	public StatusBar(Shell shell, GUIConfig guiConfig, ScannerConfig scannerConfig, ResultTable resultTable, StateMachine stateMachine) {
 		this.guiConfig = guiConfig;
 		this.scannerConfig = scannerConfig;
 		this.stateMachine = stateMachine;

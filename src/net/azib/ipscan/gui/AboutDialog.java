@@ -9,12 +9,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import javax.inject.Inject;
-
 import static net.azib.ipscan.config.Version.*;
 
 public class AboutDialog extends AbstractModalDialog {
-	@Inject
 	public AboutDialog() {}
 
 	@Override

@@ -25,27 +25,32 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 /**
  * Commands and Context menu Actions.
  * All these operate on the items, selected in the results list.
  *
  * @author Anton Keks
  */
-@Singleton
 public class CommandsMenuActions {
-	@Inject public Details details;
-	@Inject public Delete delete;
-	@Inject public Rescan rescan;
-	@Inject public CopyIP copyIP;
-	@Inject public CopyIPDetails copyIPDetails;
-	@Inject public ShowOpenersMenu showOpenersMenu;
-	@Inject public EditOpeners editOpeners;
-	@Inject public SelectOpener selectOpener;
+	public Details details;
+	public Delete delete;
+	public Rescan rescan;
+	public CopyIP copyIP;
+	public CopyIPDetails copyIPDetails;
+	public ShowOpenersMenu showOpenersMenu;
+	public EditOpeners editOpeners;
+	public SelectOpener selectOpener;
 
-	@Inject public CommandsMenuActions() {}
+	public CommandsMenuActions(Details details, Delete delete, Rescan rescan, CopyIP copyIP, CopyIPDetails copyIPDetails, ShowOpenersMenu showOpenersMenu, EditOpeners editOpeners, SelectOpener selectOpener) {
+		this.details = details;
+		this.delete = delete;
+		this.rescan = rescan;
+		this.copyIP = copyIP;
+		this.copyIPDetails = copyIPDetails;
+		this.showOpenersMenu = showOpenersMenu;
+		this.editOpeners = editOpeners;
+		this.selectOpener = selectOpener;
+	}
 
 	/**
 	 * Checks that there is at least one item selected in the results list.
@@ -64,7 +69,7 @@ public class CommandsMenuActions {
 		private final ResultTable resultTable;
 		private final DetailsWindow detailsWindow;
 		
-		@Inject public Details(ResultTable resultTable, DetailsWindow detailsWindow) {
+		public Details(ResultTable resultTable, DetailsWindow detailsWindow) {
 			this.resultTable = resultTable;
 			this.detailsWindow = detailsWindow;
 			resultTable.addListener(SWT.Traverse, this);
@@ -85,7 +90,7 @@ public class CommandsMenuActions {
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
 
-		@Inject public Delete(ResultTable resultTable, StateMachine stateMachine) {
+		public Delete(ResultTable resultTable, StateMachine stateMachine) {
 			this.resultTable = resultTable;
 			this.stateMachine = stateMachine;
 		}
@@ -111,7 +116,6 @@ public class CommandsMenuActions {
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
 
-		@Inject
 		public Rescan(ResultTable resultTable, StateMachine stateMachine) {
 			this.resultTable = resultTable;
 			this.stateMachine = stateMachine;
@@ -130,7 +134,6 @@ public class CommandsMenuActions {
 	public static final class CopyIP implements Listener {
 		private final ResultTable resultTable;
 
-		@Inject
 		public CopyIP(ResultTable resultTable) {
 			this.resultTable = resultTable;
 		}
@@ -154,7 +157,6 @@ public class CommandsMenuActions {
 	public static final class CopyIPDetails implements Listener {
 		private final ResultTable resultTable;
 
-		@Inject
 		public CopyIPDetails(ResultTable resultTable) {
 			this.resultTable = resultTable;
 		}
@@ -172,7 +174,6 @@ public class CommandsMenuActions {
 		private final Listener openersSelectListener;
 		private final OpenersConfig openersConfig;
 
-		@Inject
 		public ShowOpenersMenu(OpenersConfig openersConfig, SelectOpener selectOpener) {
 			this.openersConfig = openersConfig;
 			this.openersSelectListener = selectOpener;
@@ -209,7 +210,6 @@ public class CommandsMenuActions {
 		private final FetcherRegistry fetcherRegistry;
 		private final OpenersConfig openersConfig;
 
-		@Inject
 		public EditOpeners(FetcherRegistry fetcherRegistry, OpenersConfig openersConfig) {
 			this.fetcherRegistry = fetcherRegistry;
 			this.openersConfig = openersConfig;
@@ -227,7 +227,6 @@ public class CommandsMenuActions {
 		private final OpenerLauncher openerLauncher;
 		private final OpenersConfig openersConfig;
 
-		@Inject
 		public SelectOpener(OpenersConfig openersConfig, StatusBar statusBar, ResultTable resultTable, OpenerLauncher openerLauncher) {
 			this.openersConfig = openersConfig;
 			this.statusBar = statusBar;

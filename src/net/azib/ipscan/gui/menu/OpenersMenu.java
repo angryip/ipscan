@@ -5,14 +5,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
-import javax.inject.Inject;
-
 /**
  * OpenersMenu wrapper for type-safety
  */
 public class OpenersMenu extends AbstractMenu {
 
-	@Inject
 	public OpenersMenu(Shell parent,
 					   CommandsMenuActions.EditOpeners editOpenersListener,
 					   CommandsMenuActions.ShowOpenersMenu showOpenersMenuListener) {

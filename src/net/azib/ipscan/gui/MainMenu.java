@@ -16,29 +16,22 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 /**
  * MainMenu
  *
  * @author Anton Keks
  */
-@Singleton
 public class MainMenu {
-
-	@Inject
-	public MainMenu(Shell parent, @Named("mainMenu") Menu mainMenu,
-					ScanMenu scanMenu,
-					GotoMenu gotoMenu,
-					CommandsMenu commandsMenu,
-					FavoritesMenu favoritesMenu,
-					ToolsMenu toolsMenu,
-					HelpMenu helpMenu,
-					ResultsContextMenu resultsContextMenu,
-					StateMachine stateMachine) {
-
+	public MainMenu(Shell parent, Menu mainMenu,
+		ScanMenu scanMenu,
+		GotoMenu gotoMenu,
+		CommandsMenu commandsMenu,
+		FavoritesMenu favoritesMenu,
+		ToolsMenu toolsMenu,
+		HelpMenu helpMenu,
+		ResultsContextMenu resultsContextMenu,
+		StateMachine stateMachine
+	) {
 		parent.setMenuBar(mainMenu);
 
 		addMenuItem(mainMenu, scanMenu);

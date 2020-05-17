@@ -15,7 +15,7 @@ jobs:
     - name: Deps
       run: sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install wine32
     - name: Build
-      run: xvfb-run -a ./gradlew test all
+      run: xvfb-run -a ./gradlew --info test all
 
     - uses: actions/upload-artifact@v1
       with:

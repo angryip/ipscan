@@ -10,7 +10,6 @@ import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 
-import javax.inject.Inject;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -27,7 +26,7 @@ public class Scanner {
 	private FetcherRegistry fetcherRegistry;
 	private Map<Long, Fetcher> activeFetchers = new ConcurrentHashMap<>();
 
-	@Inject public Scanner(FetcherRegistry fetcherRegistry) {
+	public Scanner(FetcherRegistry fetcherRegistry) {
 		this.fetcherRegistry = fetcherRegistry;
 	}
 

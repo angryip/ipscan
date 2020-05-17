@@ -1,14 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
- */
 package net.azib.ipscan.gui.feeders;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.feeders.Feeder;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableItem;
 import org.junit.After;
@@ -20,23 +13,17 @@ import java.util.Collections;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-/**
- * FeederGUIRegistryTest
- *
- * @author Anton Keks
- */
 public class FeederGUIRegistryTest {
-	
-	private Composite parent;
+	private FeederArea parent;
 	private FeederGUIRegistry registry;
-	private Combo feederSelectionCombo;
+	private FeederSelectionCombo feederSelectionCombo;
 	private RangeFeederGUI feederGUI;
 	
 	@Before
 	public void createRegistry() {
-		parent = new Shell();
+		parent = new FeederArea(new Shell());
 		
-		feederSelectionCombo = mock(Combo.class);
+		feederSelectionCombo = mock(FeederSelectionCombo.class);
 		
 		feederGUI = new RangeFeederGUI(parent);
 		feederGUI.initialize();

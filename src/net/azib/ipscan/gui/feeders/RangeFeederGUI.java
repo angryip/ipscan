@@ -16,9 +16,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.UnknownHostException;
@@ -31,18 +28,16 @@ import static net.azib.ipscan.util.InetAddressUtils.*;
  * 
  * @author Anton Keks
  */
-@Singleton
 public class RangeFeederGUI extends AbstractFeederGUI {
 	private Text startIPText;
 	private Text endIPText;
 	private Text hostnameText;
-	private Button ipUpButton;
 	private Combo netmaskCombo;
 
 	private boolean isEndIPUnedited = true;
 	private boolean modifyListenersDisabled = false;
 
-	@Inject public RangeFeederGUI(@Named("feederArea") Composite parent) {
+	public RangeFeederGUI(FeederArea parent) {
 		super(parent);
 		feeder = new RangeFeeder();
 	}
@@ -56,7 +51,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         endIPText = new Text(this, SWT.BORDER);
 		Label hostnameLabel = new Label(this, SWT.NONE);
         hostnameText = new Text(this, SWT.BORDER);
-		ipUpButton = new Button(this, SWT.NONE);
+		Button ipUpButton = new Button(this, SWT.NONE);
         netmaskCombo = new Combo(this, SWT.NONE);
 
 		// the longest possible IP

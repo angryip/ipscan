@@ -13,10 +13,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 import static net.azib.ipscan.config.Labels.getLabel;
 
 /**
@@ -24,15 +20,12 @@ import static net.azib.ipscan.config.Labels.getLabel;
  *
  * @author Anton Keks
  */
-@Singleton
 public class RandomFeederGUI extends AbstractFeederGUI {
 	private Text ipPrototypeText;
 	private Combo ipMaskCombo;
-	private Text hostnameText;
-	private Button ipUpButton;
 	private Spinner countSpinner;
 
-	@Inject public RandomFeederGUI(@Named("feederArea") Composite parent) {
+	public RandomFeederGUI(FeederArea parent) {
 		super(parent);
 		feeder = new RandomFeeder();
 	}
@@ -45,8 +38,8 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		Label ipMaskLabel = new Label(this, SWT.NONE);
         ipMaskCombo = new Combo(this, SWT.NONE);
 		Label hostnameLabel = new Label(this, SWT.NONE);
-		hostnameText = new Text(this, SWT.BORDER);
-		ipUpButton = new Button(this, SWT.NONE);
+		Text hostnameText = new Text(this, SWT.BORDER);
+		Button ipUpButton = new Button(this, SWT.NONE);
 		Label countLabel = new Label(this, SWT.NONE);
         countSpinner = new Spinner(this, SWT.BORDER);
         

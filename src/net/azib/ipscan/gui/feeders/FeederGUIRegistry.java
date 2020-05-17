@@ -6,17 +6,11 @@
 package net.azib.ipscan.gui.feeders;
 
 import net.azib.ipscan.config.GUIConfig;
-import net.azib.ipscan.feeders.Feeder;
-import net.azib.ipscan.feeders.FeederException;
-import net.azib.ipscan.feeders.FeederRegistry;
-import net.azib.ipscan.feeders.RescanFeeder;
+import net.azib.ipscan.feeders.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.TableItem;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,9 +19,7 @@ import java.util.List;
  *
  * @author Anton Keks
  */
-@Singleton
-public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
-	
+public class FeederGUIRegistry implements FeederRegistry {
 	private final List<AbstractFeederGUI> feederGUIList;
 	private final Combo feederSelectionCombo;
 	private final GUIConfig guiConfig;
@@ -35,7 +27,7 @@ public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
 	Feeder lastFeeder;
 	private AbstractFeederGUI currentFeederGUI;
 	
-	@Inject public FeederGUIRegistry(List<AbstractFeederGUI> allTheFeeders, @Named("feederSelectionCombo") Combo feederSelectionCombo, GUIConfig guiConfig) {
+	public FeederGUIRegistry(List<AbstractFeederGUI> allTheFeeders, FeederSelectionCombo feederSelectionCombo, GUIConfig guiConfig) {
 		this.feederGUIList = allTheFeeders;
 		this.feederSelectionCombo = feederSelectionCombo;
 		for (AbstractFeederGUI feederGUI : feederGUIList) {
@@ -65,8 +57,9 @@ public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
 		currentFeederGUI.setVisible(true);
 	}
 	
-	public Iterator<AbstractFeederGUI> iterator() {
-		return feederGUIList.iterator();
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	public Iterator<FeederCreator> iterator() {
+		return (Iterator) feederGUIList.iterator();
 	}
 
 	/**

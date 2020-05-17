@@ -25,9 +25,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
 import java.net.InetAddress;
 
 import static net.azib.ipscan.core.state.ScanningState.*;
@@ -39,9 +36,7 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
  * 
  * @author Anton Keks
  */
-@Singleton
 public class StartStopScanningAction implements SelectionListener, ScanningProgressCallback, StateTransitionListener {
-	
 	private ScannerDispatcherThreadFactory scannerThreadFactory;
 	private ScannerDispatcherThread scannerThread;
 	private GUIConfig guiConfig;
@@ -83,10 +78,9 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		buttonTexts[KILLING.ordinal()] = Labels.getLabel("button.kill");
 	}
 
-	@Inject
 	public StartStopScanningAction(ScannerDispatcherThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable,
 								   StatusBar statusBar, FeederGUIRegistry feederRegistry, PingerRegistry pingerRegistry,
-								   @Named("startStopButton") Button startStopButton, GUIConfig guiConfig) {
+								   Button startStopButton, GUIConfig guiConfig) {
 		this(startStopButton.getDisplay());
 
 		this.scannerThreadFactory = scannerThreadFactory;
@@ -205,7 +199,6 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				statusBar.setStatusText(Labels.getLabel("state.killingThreads"));
 				break;
 		}
-		// change button image
 		button.setImage(buttonImages[state.ordinal()]);
 		button.setText(buttonTexts[state.ordinal()]);
 	}

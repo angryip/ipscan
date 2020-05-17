@@ -17,25 +17,23 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
-import javax.inject.Inject;
-
 /**
  * The "Show IP Details" Window
  *
  * @author Anton Keks
  */
 public class DetailsWindow extends AbstractModalDialog {
-	@Inject CommentsConfig commentsConfig;
-
 	private GUIConfig guiConfig;
+	private CommentsConfig commentsConfig;
 	private ResultTable resultTable;
 	private ScanningResultList scanningResults;
 
 	int resultIndex;
 	private Text commentsText;
 
-	@Inject public DetailsWindow(GUIConfig guiConfig, ResultTable resultTable, ScanningResultList scanningResults) {
+	public DetailsWindow(GUIConfig guiConfig, CommentsConfig commentsConfig, ResultTable resultTable, ScanningResultList scanningResults) {
 		this.guiConfig = guiConfig;
+		this.commentsConfig = commentsConfig;
 		this.resultTable = resultTable;
 		this.scanningResults = scanningResults;
 	}

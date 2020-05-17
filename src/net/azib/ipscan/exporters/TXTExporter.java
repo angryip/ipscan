@@ -8,7 +8,6 @@ import net.azib.ipscan.fetchers.PingFetcher;
 import net.azib.ipscan.fetchers.PortsFetcher;
 import net.azib.ipscan.gui.feeders.AbstractFeederGUI;
 
-import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -33,7 +32,7 @@ import static net.azib.ipscan.util.InetAddressUtils.increment;
 public class TXTExporter extends AbstractExporter {
 	int[] padLengths;
 
-	@Inject public TXTExporter() {}
+	public TXTExporter() {}
 
 	public String getId() {
 		return "exporter.txt";

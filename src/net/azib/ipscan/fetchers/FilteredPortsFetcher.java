@@ -10,7 +10,6 @@ import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.core.values.NumericRangeList;
 
-import javax.inject.Inject;
 import java.util.SortedSet;
 
 /**
@@ -20,7 +19,7 @@ import java.util.SortedSet;
  */
 public class FilteredPortsFetcher extends PortsFetcher {
 
-	@Inject public FilteredPortsFetcher(ScannerConfig scannerConfig) {
+	public FilteredPortsFetcher(ScannerConfig scannerConfig) {
 		super(scannerConfig);
 	}
 

@@ -18,8 +18,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-import javax.inject.Inject;
-
 /**
  * GotoActions
  *
@@ -88,42 +86,36 @@ public class GotoMenuActions {
 	}
 	
 	public static final class NextAliveHost extends NextHost {
-		@Inject
 		public NextAliveHost(ResultTable resultTable) {
 			super(resultTable, ResultType.ALIVE);
 		}
 	}
 	
 	public static final class NextDeadHost extends NextHost {
-		@Inject
 		public NextDeadHost(ResultTable resultTable) {
 			super(resultTable, ResultType.DEAD);
 		}
 	}
 	
 	public static final class NextHostWithInfo extends NextHost {
-		@Inject
 		public NextHostWithInfo(ResultTable resultTable) {
 			super(resultTable, ResultType.WITH_PORTS);
 		}
 	}
 	
 	public static final class PrevAliveHost extends PrevHost {
-		@Inject
 		public PrevAliveHost(ResultTable resultTable) {
 			super(resultTable, ResultType.ALIVE);
 		}
 	}
 	
 	public static final class PrevDeadHost extends PrevHost {
-		@Inject
 		public PrevDeadHost(ResultTable resultTable) {
 			super(resultTable, ResultType.DEAD);
 		}
 	}
 	
 	public static final class PrevHostWithInfo extends PrevHost {
-		@Inject
 		public PrevHostWithInfo(ResultTable resultTable) {
 			super(resultTable, ResultType.WITH_PORTS);
 		}
@@ -135,7 +127,6 @@ public class GotoMenuActions {
 		private final StatusBar statusBar;
 		private String lastText = "";
 
-		@Inject
 		public Find(StatusBar statusBar, ResultTable resultTable) {
 			this.statusBar = statusBar;
 			this.resultTable = resultTable;

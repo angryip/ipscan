@@ -18,7 +18,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -33,7 +32,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 	private List registeredFetchersList;
 	Map<String, String> registeredFetcherIdsByNames = new HashMap<>();
 
-	@Inject public SelectFetchersDialog(FetcherRegistry fetcherRegistry) {
+	public SelectFetchersDialog(FetcherRegistry fetcherRegistry) {
 		this.fetcherRegistry = fetcherRegistry;
 	}
 	

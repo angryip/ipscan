@@ -9,19 +9,21 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
-import javax.inject.Inject;
-
 /**
  * Mac-specific application menu handler
  * in order to conform better to Mac standards.
  */
 public class MacApplicationMenu {
-	@Inject AboutDialog aboutDialog;
-	@Inject PreferencesDialog preferencesDialog;
-	@Inject SelectFetchersDialog selectFetchersDialog;
-	@Inject CheckVersion checkVersionListener;
+	private AboutDialog aboutDialog;
+	private PreferencesDialog preferencesDialog;
+	private SelectFetchersDialog selectFetchersDialog;
+	private CheckVersion checkVersion;
 
-	@Inject public MacApplicationMenu(final Display display) {
+	public MacApplicationMenu(Display display, AboutDialog aboutDialog, PreferencesDialog preferencesDialog, SelectFetchersDialog selectFetchersDialog, CheckVersion checkVersion) {
+		this.aboutDialog = aboutDialog;
+		this.preferencesDialog = preferencesDialog;
+		this.selectFetchersDialog = selectFetchersDialog;
+		this.checkVersion = checkVersion;
 		display.syncExec(() -> initApplicationMenu(display));
 	}
 
@@ -58,7 +60,7 @@ public class MacApplicationMenu {
 		checkVersion.setText(Labels.getLabel("menu.help.checkVersion"));
 		checkVersion.addSelectionListener(new SelectionAdapter() {
 			@Override public void widgetSelected(SelectionEvent e) {
-				checkVersionListener.check(true);
+				MacApplicationMenu.this.checkVersion.check(true);
 			}
 		});
 	}

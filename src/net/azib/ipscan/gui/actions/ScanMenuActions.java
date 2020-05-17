@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 
-import javax.inject.Inject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +47,6 @@ public class ScanMenuActions {
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
 
-		@Inject
 		public LoadFromFile(TXTExporter txtExporter, ExporterRegistry exporterRegistry, FeederGUIRegistry feederRegistry, ScanningResultList scanningResults, ResultTable resultTable, StateMachine stateMachine) {
 			this.txtExporter = txtExporter;
 			this.exporterRegistry = exporterRegistry;
@@ -202,21 +200,18 @@ public class ScanMenuActions {
 	}
 
 	public static final class SaveAll extends SaveResults {
-		@Inject
 		public SaveAll(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, StateMachine stateMachine) {
 			super(exporterRegistry, resultTable, statusBar, stateMachine, false);
 		}
 	}
 
 	public static final class SaveSelection extends SaveResults {
-		@Inject
 		public SaveSelection(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, StateMachine stateMachine) {
 			super(exporterRegistry, resultTable, statusBar, stateMachine, true);
 		}
 	}
 
 	public static final class Quit implements Listener {
-		@Inject
 		public Quit() {
 		}
 

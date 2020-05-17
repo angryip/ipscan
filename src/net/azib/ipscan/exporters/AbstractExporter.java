@@ -42,7 +42,7 @@ public abstract class AbstractExporter implements Exporter {
 		nextAdressResults(results); // for backwards-compatibility
 	}
 
-	@Override public void nextAdressResults(Object[] results) throws IOException {
+	@Override public void nextAdressResults(Object[] results) {
 	}
 
 	public Exporter clone() {

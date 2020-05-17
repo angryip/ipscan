@@ -18,8 +18,6 @@ import net.azib.ipscan.gui.menu.ColumnsMenu;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
-
 /**
  * ColumnsActions
  *
@@ -30,7 +28,7 @@ public class ColumnsActions {
 	public static final class ColumnResize implements Listener {
 		private GUIConfig guiConfig;
 		
-		@Inject public ColumnResize(GUIConfig guiConfig) {
+		public ColumnResize(GUIConfig guiConfig) {
 			this.guiConfig = guiConfig;
 		}
 
@@ -51,7 +49,7 @@ public class ColumnsActions {
 		private final Menu columnsMenu;
 		private final StateMachine stateMachine;
 		
-		@Inject public ColumnClick(ColumnsMenu columnsMenu, StateMachine stateMachine) {
+		public ColumnClick(ColumnsMenu columnsMenu, StateMachine stateMachine) {
 			this.columnsMenu = columnsMenu;
 			this.stateMachine = stateMachine;
 		}
@@ -93,7 +91,6 @@ public class ColumnsActions {
 	public static final class SortBy implements Listener {
 		private final ScanningResultList scanningResultList;
 
-		@Inject
 		public SortBy(ScanningResultList scanningResultList) {
 			this.scanningResultList = scanningResultList;
 		}
@@ -120,7 +117,7 @@ public class ColumnsActions {
 	public static final class FetcherPreferences implements Listener {
 		private final FetcherRegistry fetcherRegistry;
 
-		@Inject public FetcherPreferences(FetcherRegistry fetcherRegistry) {
+		public FetcherPreferences(FetcherRegistry fetcherRegistry) {
 			this.fetcherRegistry = fetcherRegistry;
 		}
 
@@ -138,7 +135,7 @@ public class ColumnsActions {
 	}
 	
 	public static final class AboutFetcher implements Listener {
-		@Inject public AboutFetcher() {}
+		public AboutFetcher() {}
 
 		public void handleEvent(Event event) {
 			// retrieve the clicked column (see ColumnClick above)

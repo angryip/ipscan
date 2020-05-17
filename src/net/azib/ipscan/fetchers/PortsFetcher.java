@@ -15,7 +15,6 @@ import net.azib.ipscan.gui.fetchers.PortsFetcherPrefs;
 import net.azib.ipscan.util.SequenceIterator;
 import net.azib.ipscan.util.ThreadResourceBinder;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
@@ -45,7 +44,7 @@ public class PortsFetcher extends AbstractFetcher {
 	private PortIterator portIteratorPrototype;
 	protected boolean displayAsRanges = true;	// TODO: make configurable
 	
-	@Inject public PortsFetcher(ScannerConfig scannerConfig) {
+	public PortsFetcher(ScannerConfig scannerConfig) {
 		this.config = scannerConfig;
 	}
 
