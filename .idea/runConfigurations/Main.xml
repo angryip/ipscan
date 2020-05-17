@@ -3,6 +3,7 @@
     <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
     <option name="MAIN_CLASS_NAME" value="net.azib.ipscan.Main" />
     <module name="ipscan.main" />
+    <option name="VM_PARAMETERS" value="-Djava.util.logging.config.file=config/logging.properties" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="net.azib.ipscan.*" />
