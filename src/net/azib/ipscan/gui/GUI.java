@@ -71,7 +71,7 @@ public class GUI implements AutoCloseable {
 			Boolean isAppDarkAppearance = (Boolean) os.getMethod("isAppDarkAppearance").invoke(null);
 			LOG.info("Dark appearance flags before: " + isDarkMode + ", " + isAppDarkAppearance);
 			if (isDarkMode && !isAppDarkAppearance) {
-				os.getMethod("setTheme", boolean.class).invoke(null, isDarkMode);
+				os.getMethod("setTheme", boolean.class).invoke(null, true);
 				isDarkMode = (Boolean) os.getMethod("isSystemDarkAppearance").invoke(null);
 				isAppDarkAppearance = (Boolean) os.getMethod("isAppDarkAppearance").invoke(null);
 				LOG.info("Dark appearance flags after: " + isDarkMode + ", " + isAppDarkAppearance);
@@ -81,6 +81,10 @@ public class GUI implements AutoCloseable {
 					initColors.setAccessible(true);
 					initColors.invoke(display);
 					LOG.info("initColors called");
+				}
+				else {
+					os.getMethod("setTheme", boolean.class).invoke(null, false);
+					LOG.info("Dark appearance reset back because it didn't work");
 				}
 			}
 		}

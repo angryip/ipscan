@@ -40,7 +40,6 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
  * @author Anton Keks
  */
 public class MainWindow {
-		
 	private final Shell shell;
 	private final GUIConfig guiConfig;
 	
