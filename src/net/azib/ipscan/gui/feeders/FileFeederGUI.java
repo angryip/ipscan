@@ -5,7 +5,6 @@
  */
 package net.azib.ipscan.gui.feeders;
 
-import net.azib.ipscan.di.Named;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FileFeeder;
 import org.eclipse.swt.SWT;
@@ -13,7 +12,10 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
 import static net.azib.ipscan.config.Labels.getLabel;
 
@@ -25,7 +27,7 @@ import static net.azib.ipscan.config.Labels.getLabel;
 public class FileFeederGUI extends AbstractFeederGUI {
 	private Text fileNameText;
 
-	public FileFeederGUI(@Named("feederArea") Composite parent) {
+	public FileFeederGUI(FeederArea parent) {
 		super(parent);
 		feeder = new FileFeeder();
 	}

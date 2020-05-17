@@ -1,7 +1,7 @@
 package net.azib.ipscan.di;
 
 public class InjectException extends RuntimeException {
-	public InjectException(String message, Exception e) {
+	public InjectException(String message, Throwable e) {
 		super(message, e);
 	}
 

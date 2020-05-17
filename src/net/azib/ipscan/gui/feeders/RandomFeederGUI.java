@@ -5,7 +5,6 @@
  */
 package net.azib.ipscan.gui.feeders;
 
-import net.azib.ipscan.di.Named;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.RandomFeeder;
 import net.azib.ipscan.gui.actions.FeederActions;
@@ -24,11 +23,9 @@ import static net.azib.ipscan.config.Labels.getLabel;
 public class RandomFeederGUI extends AbstractFeederGUI {
 	private Text ipPrototypeText;
 	private Combo ipMaskCombo;
-	private Text hostnameText;
-	private Button ipUpButton;
 	private Spinner countSpinner;
 
-	public RandomFeederGUI(@Named("feederArea") Composite parent) {
+	public RandomFeederGUI(FeederArea parent) {
 		super(parent);
 		feeder = new RandomFeeder();
 	}
@@ -41,8 +38,8 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		Label ipMaskLabel = new Label(this, SWT.NONE);
         ipMaskCombo = new Combo(this, SWT.NONE);
 		Label hostnameLabel = new Label(this, SWT.NONE);
-		hostnameText = new Text(this, SWT.BORDER);
-		ipUpButton = new Button(this, SWT.NONE);
+		Text hostnameText = new Text(this, SWT.BORDER);
+		Button ipUpButton = new Button(this, SWT.NONE);
 		Label countLabel = new Label(this, SWT.NONE);
         countSpinner = new Spinner(this, SWT.BORDER);
         

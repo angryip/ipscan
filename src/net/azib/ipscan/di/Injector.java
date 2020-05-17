@@ -1,6 +1,5 @@
 package net.azib.ipscan.di;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -9,7 +8,6 @@ import java.util.*;
 import static java.util.Arrays.stream;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.IntStream.range;
 
 @SuppressWarnings("unchecked")
 public class Injector {
@@ -49,18 +47,14 @@ public class Injector {
 		try {
 			return constructor.newInstance(resolveDeps(constructor));
 		}
-		catch (Exception e) {
+		catch (Throwable e) {
 			throw new InjectException("Cannot create " + type.getName() + ", deps: " + Arrays.toString(constructor.getGenericParameterTypes()), e);
 		}
 	}
 
 	private Object[] resolveDeps(Constructor<?> constructor) {
-		Type[] types = constructor.getGenericParameterTypes();
-		Annotation[][] ans = constructor.getParameterAnnotations();
- 		return range(0, types.length).mapToObj(i -> isCollection(types[i]) ?
-			requireAll(getParamClass(types[i])) :
-			require(new Key<>(toClass(types[i]), findName(ans[i])))
-		).toArray();
+		return stream(constructor.getGenericParameterTypes()).map(t -> isCollection(t) ?
+			requireAll(getParamClass(t)) : require(new Key<>(toClass(t), null))).toArray();
 	}
 
 	private Class<?> toClass(Type type) {
@@ -75,9 +69,5 @@ public class Injector {
 
 	private Class<?> getParamClass(Type type) {
 		return (Class<?>) ((ParameterizedType) type).getActualTypeArguments()[0];
-	}
-
-	private String findName(Annotation[] ans) {
-		return stream(ans).filter(a -> a.annotationType() == Named.class).findAny().map(a -> ((Named) a).value()).orElse(null);
 	}
 }

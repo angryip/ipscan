@@ -6,7 +6,6 @@
 package net.azib.ipscan.gui.feeders;
 
 import net.azib.ipscan.config.Platform;
-import net.azib.ipscan.di.Named;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederException;
 import net.azib.ipscan.feeders.RangeFeeder;
@@ -33,13 +32,12 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	private Text startIPText;
 	private Text endIPText;
 	private Text hostnameText;
-	private Button ipUpButton;
 	private Combo netmaskCombo;
 
 	private boolean isEndIPUnedited = true;
 	private boolean modifyListenersDisabled = false;
 
-	public RangeFeederGUI(@Named("feederArea") Composite parent) {
+	public RangeFeederGUI(FeederArea parent) {
 		super(parent);
 		feeder = new RangeFeeder();
 	}
@@ -53,7 +51,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         endIPText = new Text(this, SWT.BORDER);
 		Label hostnameLabel = new Label(this, SWT.NONE);
         hostnameText = new Text(this, SWT.BORDER);
-		ipUpButton = new Button(this, SWT.NONE);
+		Button ipUpButton = new Button(this, SWT.NONE);
         netmaskCombo = new Combo(this, SWT.NONE);
 
 		// the longest possible IP

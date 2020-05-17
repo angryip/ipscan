@@ -16,7 +16,6 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
-import net.azib.ipscan.di.Named;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
@@ -81,7 +80,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 
 	public StartStopScanningAction(ScannerDispatcherThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable,
 								   StatusBar statusBar, FeederGUIRegistry feederRegistry, PingerRegistry pingerRegistry,
-								   @Named("startStopButton") Button startStopButton, GUIConfig guiConfig) {
+								   Button startStopButton, GUIConfig guiConfig) {
 		this(startStopButton.getDisplay());
 
 		this.scannerThreadFactory = scannerThreadFactory;

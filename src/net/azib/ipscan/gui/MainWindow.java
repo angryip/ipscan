@@ -12,10 +12,12 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
-import net.azib.ipscan.di.Named;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.actions.ToolsActions;
+import net.azib.ipscan.gui.feeders.ControlsArea;
+import net.azib.ipscan.gui.feeders.FeederArea;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
+import net.azib.ipscan.gui.feeders.FeederSelectionCombo;
 import net.azib.ipscan.gui.menu.ResultsContextMenu;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -55,9 +57,9 @@ public class MainWindow {
 	/**
 	 * Creates and initializes the main window.
 	 */
-	public MainWindow(Shell shell, GUIConfig guiConfig, @Named("feederArea") Composite feederArea,
-					  @Named("controlsArea") Composite controlsArea, @Named("feederSelectionCombo") Combo feederSelectionCombo,
-					  @Named("startStopButton") Button startStopButton, StartStopScanningAction startStopScanningAction,
+	public MainWindow(Shell shell, GUIConfig guiConfig, FeederArea feederArea,
+					  ControlsArea controlsArea, FeederSelectionCombo feederSelectionCombo,
+					  Button startStopButton, StartStopScanningAction startStopScanningAction,
 					  ResultTable resultTable, StatusBar statusBar, ResultsContextMenu resultsContextMenu,
 					  FeederGUIRegistry feederGUIRegistry, final StateMachine stateMachine,
 					  ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListener,

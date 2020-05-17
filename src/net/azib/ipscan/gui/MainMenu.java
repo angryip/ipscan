@@ -10,7 +10,6 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
-import net.azib.ipscan.di.Named;
 import net.azib.ipscan.gui.menu.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
@@ -23,16 +22,16 @@ import org.eclipse.swt.widgets.Shell;
  * @author Anton Keks
  */
 public class MainMenu {
-	public MainMenu(Shell parent, @Named("mainMenu") Menu mainMenu,
-					ScanMenu scanMenu,
-					GotoMenu gotoMenu,
-					CommandsMenu commandsMenu,
-					FavoritesMenu favoritesMenu,
-					ToolsMenu toolsMenu,
-					HelpMenu helpMenu,
-					ResultsContextMenu resultsContextMenu,
-					StateMachine stateMachine) {
-
+	public MainMenu(Shell parent, Menu mainMenu,
+		ScanMenu scanMenu,
+		GotoMenu gotoMenu,
+		CommandsMenu commandsMenu,
+		FavoritesMenu favoritesMenu,
+		ToolsMenu toolsMenu,
+		HelpMenu helpMenu,
+		ResultsContextMenu resultsContextMenu,
+		StateMachine stateMachine
+	) {
 		parent.setMenuBar(mainMenu);
 
 		addMenuItem(mainMenu, scanMenu);

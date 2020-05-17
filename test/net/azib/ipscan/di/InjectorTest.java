@@ -19,7 +19,7 @@ public class InjectorTest {
 
 	@Test
 	public void namedRequire() {
-		injector.register(String.class, "name", "mega-name");
+		injector.register(String.class, "mega-name");
 		assertEquals("mega-name", injector.require(WithNamedDeps.class).name);
 	}
 
@@ -44,7 +44,7 @@ public class InjectorTest {
 
 	static class WithNamedDeps {
 		String name;
-		public WithNamedDeps(Dummy dummy, @Named("name") String name) {
+		public WithNamedDeps(Dummy dummy, String name) {
 			this.name = name;
 		}
 	}

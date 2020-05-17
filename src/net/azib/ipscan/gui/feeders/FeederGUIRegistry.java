@@ -6,7 +6,6 @@
 package net.azib.ipscan.gui.feeders;
 
 import net.azib.ipscan.config.GUIConfig;
-import net.azib.ipscan.di.Named;
 import net.azib.ipscan.feeders.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
@@ -28,7 +27,7 @@ public class FeederGUIRegistry implements FeederRegistry {
 	Feeder lastFeeder;
 	private AbstractFeederGUI currentFeederGUI;
 	
-	public FeederGUIRegistry(List<AbstractFeederGUI> allTheFeeders, @Named("feederSelectionCombo") Combo feederSelectionCombo, GUIConfig guiConfig) {
+	public FeederGUIRegistry(List<AbstractFeederGUI> allTheFeeders, FeederSelectionCombo feederSelectionCombo, GUIConfig guiConfig) {
 		this.feederGUIList = allTheFeeders;
 		this.feederSelectionCombo = feederSelectionCombo;
 		for (AbstractFeederGUI feederGUI : feederGUIList) {

@@ -15,12 +15,12 @@ import net.azib.ipscan.exporters.XMLExporter;
 import net.azib.ipscan.feeders.FeederRegistry;
 import net.azib.ipscan.fetchers.*;
 import net.azib.ipscan.gui.SWTAwareStateMachine;
-import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
-import net.azib.ipscan.gui.feeders.FileFeederGUI;
-import net.azib.ipscan.gui.feeders.RandomFeederGUI;
-import net.azib.ipscan.gui.feeders.RangeFeederGUI;
+import net.azib.ipscan.gui.feeders.*;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * This class is the dependency injection configuration
@@ -33,12 +33,9 @@ public class ComponentRegistry {
 		i.register(Display.class, display);
 		Shell shell = new Shell();
 		i.register(Shell.class, shell);
-		i.register(Menu.class, "mainMenu", new Menu(shell, SWT.BAR));
-		i.register(Composite.class, "feederArea", new Composite(shell, SWT.NONE));
-		Composite controlsArea = new Composite(shell, SWT.NONE);
-		i.register(Composite.class, "controlsArea", controlsArea);
-		i.register(Combo.class, "feederSelectionCombo", new Combo(controlsArea, SWT.READ_ONLY));
-		i.register(Button.class, "startStopButton", new Button(controlsArea, SWT.NONE));
+		i.register(Menu.class, new Menu(shell, SWT.BAR));
+		i.register(FeederSelectionCombo.class, new FeederSelectionCombo(i.require(ControlsArea.class)));
+		i.register(Button.class, new Button(i.require(ControlsArea.class), SWT.NONE));
 		SWTAwareStateMachine stateMachine = new SWTAwareStateMachine(display);
 		i.register(SWTAwareStateMachine.class, stateMachine);
 		i.register(StateMachine.class, stateMachine);
