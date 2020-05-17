@@ -2,9 +2,12 @@ package net.azib.ipscan.di;
 
 import org.junit.Test;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.Temporal;
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -25,11 +28,13 @@ public class InjectorTest {
 
 	@Test
 	public void requireAll() {
-		injector.register(String.class, "name1", "name1");
-		injector.register(String.class, "name2", "name2");
-		injector.register(String.class, "name3", "name3");
-		assertEquals(asList("name1", "name2", "name3"), injector.requireAll(String.class));
-		assertEquals(asList("name1", "name2", "name3"), injector.require(WithListDeps.class).list);
+		injector.register(LocalDate.class, LocalDate.now());
+		injector.register(LocalTime.class, LocalTime.now());
+		injector.register(LocalDateTime.class, LocalDateTime.now());
+
+		List<Temporal> temporals = injector.requireAll(Temporal.class);
+		assertEquals(3, temporals.size());
+		assertEquals(temporals, injector.require(WithListDeps.class).list);
 	}
 
 	static class Dummy {
@@ -50,8 +55,8 @@ public class InjectorTest {
 	}
 
 	static class WithListDeps {
-		List<String> list;
-		public WithListDeps(List<String> list, Dummy dummy) {
+		List<Temporal> list;
+		public WithListDeps(List<Temporal> list, Dummy dummy) {
 			this.list = list;
 		}
 	}

@@ -11,25 +11,17 @@ import static java.util.stream.Collectors.toList;
 
 @SuppressWarnings("unchecked")
 public class Injector {
-	private final Map<Key<?>, Object> instances = new LinkedHashMap<>();
-
-	public <T> void register(Class<T> type, String name, T impl) {
-		instances.put(new Key<>(type, name), impl);
-	}
+	private final Map<Class<?>, Object> instances = new LinkedHashMap<>();
 
 	public <T> void register(Class<T> type, T impl) {
-		register(type, null, impl);
-	}
-
-	<T> T require(Key<T> key) {
-		// unfortunately, HashMap.computeIfAbsent() doesn't put values properly in a recursive scenario
-		T value = (T) instances.get(key);
-		if (value == null) instances.put(key, value = createInstance(key.type));
-		return value;
+		instances.put(type, impl);
 	}
 
 	public <T> T require(Class<T> type) {
-		return require(new Key<>(type, null));
+		// unfortunately, HashMap.computeIfAbsent() doesn't put values properly in a recursive scenario
+		T value = (T) instances.get(type);
+		if (value == null) instances.put(type, value = createInstance(type));
+		return value;
 	}
 
 	public void register(Class<?> ... types) {
@@ -37,13 +29,13 @@ public class Injector {
 	}
 
 	public <T> List<T> requireAll(Class<T> type) {
-		return instances.entrySet().stream().filter(e -> type.isAssignableFrom(e.getKey().type)).map(e -> (T) e.getValue()).collect(toList());
+		return instances.entrySet().stream().filter(e -> type.isAssignableFrom(e.getKey())).map(e -> (T) e.getValue()).collect(toList());
 	}
 
 	private <T> T createInstance(Class<T> type) {
 		Constructor<T> constructor = (Constructor<T>) stream(type.getConstructors())
-				.max(comparing(Constructor::getParameterCount))
-				.orElseThrow(() -> new InjectException("No public constructors"));
+			.max(comparing(Constructor::getParameterCount))
+			.orElseThrow(() -> new InjectException("No public constructors"));
 		try {
 			return constructor.newInstance(resolveDeps(constructor));
 		}
@@ -54,7 +46,7 @@ public class Injector {
 
 	private Object[] resolveDeps(Constructor<?> constructor) {
 		return stream(constructor.getGenericParameterTypes()).map(t -> isCollection(t) ?
-			requireAll(getParamClass(t)) : require(new Key<>(toClass(t), null))).toArray();
+			requireAll(collectionItemType(t)) : require(toClass(t))).toArray();
 	}
 
 	private Class<?> toClass(Type type) {
@@ -67,7 +59,7 @@ public class Injector {
 		return type instanceof ParameterizedType && Collection.class.isAssignableFrom(toClass(type));
 	}
 
-	private Class<?> getParamClass(Type type) {
+	private Class<?> collectionItemType(Type type) {
 		return (Class<?>) ((ParameterizedType) type).getActualTypeArguments()[0];
 	}
 }
