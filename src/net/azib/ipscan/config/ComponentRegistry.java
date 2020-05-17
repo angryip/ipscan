@@ -37,8 +37,8 @@ public class ComponentRegistry {
 		i.register(Composite.class, "feederArea", new Composite(shell, SWT.NONE));
 		Composite controlsArea = new Composite(shell, SWT.NONE);
 		i.register(Composite.class, "controlsArea", controlsArea);
-		i.register(Button.class, "startStopButton", new Button(controlsArea, SWT.NONE));
 		i.register(Combo.class, "feederSelectionCombo", new Combo(controlsArea, SWT.READ_ONLY));
+		i.register(Button.class, "startStopButton", new Button(controlsArea, SWT.NONE));
 		SWTAwareStateMachine stateMachine = new SWTAwareStateMachine(display);
 		i.register(SWTAwareStateMachine.class, stateMachine);
 		i.register(StateMachine.class, stateMachine);
