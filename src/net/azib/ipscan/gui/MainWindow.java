@@ -63,8 +63,8 @@ public class MainWindow {
 					  FeederGUIRegistry feederGUIRegistry, final StateMachine stateMachine,
 					  ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListener,
 					  MainMenu menuBar /* don't delete: initiates main menu creation */,
-					  Startup startup) {
-
+					  Startup startup
+	) {
 		this.shell = shell;
 		this.guiConfig = guiConfig;
 		this.statusBar = statusBar;

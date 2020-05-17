@@ -4,6 +4,7 @@ Changes in 3.7.1:
 - Fix handling of escape sequences in HTTP Sender
 - Fix macOS dark mode switching for some users
 - Some fixes in Russian translation
+- Internally, replaced Dagger with much simpler DI implementation
 - Mac vendors updated
 
 Changes in 3.7.0:
