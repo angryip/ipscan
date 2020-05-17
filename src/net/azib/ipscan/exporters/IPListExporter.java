@@ -3,7 +3,6 @@ package net.azib.ipscan.exporters;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.PortIterator;
 import net.azib.ipscan.core.values.NumericRangeList;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.IPFetcher;
 import net.azib.ipscan.fetchers.PortsFetcher;
 
@@ -22,7 +21,7 @@ public class IPListExporter extends AbstractExporter {
 	private int ipFetcherIndex;
 	private int portsFetcherIndex;
 
-	@Inject public IPListExporter() {}
+	public IPListExporter() {}
 
 	public String getId() {
 		return "exporter.ipList";

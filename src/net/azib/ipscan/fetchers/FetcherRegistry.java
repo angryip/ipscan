@@ -5,7 +5,6 @@
  */
 package net.azib.ipscan.fetchers;
 
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.PreferencesDialog;
 
 import java.lang.reflect.Constructor;
@@ -33,7 +32,7 @@ public class FetcherRegistry {
 	/** A collection of update listeners - observers of FetcherRegistry */
 	private List<FetcherRegistryUpdateListener> updateListeners = new ArrayList<>();
 		
-	@Inject public FetcherRegistry(List<Fetcher> fetchers, Preferences preferences, PreferencesDialog preferencesDialog) {
+	public FetcherRegistry(List<Fetcher> fetchers, Preferences preferences, PreferencesDialog preferencesDialog) {
 		this.preferences = preferences;
 		this.preferencesDialog = preferencesDialog;
 

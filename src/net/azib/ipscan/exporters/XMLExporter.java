@@ -6,7 +6,6 @@
 package net.azib.ipscan.exporters;
 
 import net.azib.ipscan.config.Version;
-import net.azib.ipscan.di.Inject;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -20,7 +19,7 @@ import java.util.Date;
 public class XMLExporter extends AbstractExporter {
 	static final String ENCODING = "UTF-8";
 
-	@Inject public XMLExporter() {}
+	public XMLExporter() {}
 
 	private int ipFetcherIndex;
 	private String[] fetcherNames;

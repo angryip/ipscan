@@ -1,7 +1,6 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.actions.HelpMenuActions.CheckVersion;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -20,7 +19,7 @@ public class MacApplicationMenu {
 	private SelectFetchersDialog selectFetchersDialog;
 	private CheckVersion checkVersion;
 
-	@Inject public MacApplicationMenu(Display display, AboutDialog aboutDialog, PreferencesDialog preferencesDialog, SelectFetchersDialog selectFetchersDialog, CheckVersion checkVersion) {
+	public MacApplicationMenu(Display display, AboutDialog aboutDialog, PreferencesDialog preferencesDialog, SelectFetchersDialog selectFetchersDialog, CheckVersion checkVersion) {
 		this.aboutDialog = aboutDialog;
 		this.preferencesDialog = preferencesDialog;
 		this.selectFetchersDialog = selectFetchersDialog;

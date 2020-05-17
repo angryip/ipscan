@@ -1,7 +1,6 @@
 package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.di.Inject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +13,7 @@ public class MACVendorFetcher extends AbstractFetcher {
 	private static Map<String, String> vendors = new HashMap<>();
 	private MACFetcher macFetcher;
 
-	@Inject public MACVendorFetcher(MACFetcher macFetcher) {
+	public MACVendorFetcher(MACFetcher macFetcher) {
 		this.macFetcher = macFetcher;
 	}
 

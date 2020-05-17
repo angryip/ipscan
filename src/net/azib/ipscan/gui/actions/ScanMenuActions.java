@@ -13,7 +13,6 @@ import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.exporters.ExportProcessor;
 import net.azib.ipscan.exporters.ExportProcessor.ScanningResultFilter;
 import net.azib.ipscan.exporters.Exporter;
@@ -48,7 +47,6 @@ public class ScanMenuActions {
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
 
-		@Inject
 		public LoadFromFile(TXTExporter txtExporter, ExporterRegistry exporterRegistry, FeederGUIRegistry feederRegistry, ScanningResultList scanningResults, ResultTable resultTable, StateMachine stateMachine) {
 			this.txtExporter = txtExporter;
 			this.exporterRegistry = exporterRegistry;
@@ -202,21 +200,18 @@ public class ScanMenuActions {
 	}
 
 	public static final class SaveAll extends SaveResults {
-		@Inject
 		public SaveAll(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, StateMachine stateMachine) {
 			super(exporterRegistry, resultTable, statusBar, stateMachine, false);
 		}
 	}
 
 	public static final class SaveSelection extends SaveResults {
-		@Inject
 		public SaveSelection(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, StateMachine stateMachine) {
 			super(exporterRegistry, resultTable, statusBar, stateMachine, true);
 		}
 	}
 
 	public static final class Quit implements Listener {
-		@Inject
 		public Quit() {
 		}
 

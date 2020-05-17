@@ -1,14 +1,12 @@
 package net.azib.ipscan.gui.menu;
 
 import net.azib.ipscan.config.Platform;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.actions.ScanMenuActions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
 public class ScanMenu extends AbstractMenu {
 
-	@Inject
 	public ScanMenu(Shell parent,
 					ScanMenuActions.LoadFromFile loadFromFile,
 					ScanMenuActions.SaveAll saveAll,

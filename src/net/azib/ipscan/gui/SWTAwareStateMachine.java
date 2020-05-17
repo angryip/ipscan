@@ -8,7 +8,6 @@ package net.azib.ipscan.gui;
 
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateTransitionListener;
-import net.azib.ipscan.di.Inject;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -21,7 +20,7 @@ import org.eclipse.swt.widgets.Display;
 public class SWTAwareStateMachine extends StateMachine {
 	private Display display;
 
-	@Inject public SWTAwareStateMachine(Display display) {
+	public SWTAwareStateMachine(Display display) {
 		this.display = display;
 	}
 

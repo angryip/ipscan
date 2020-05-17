@@ -7,6 +7,7 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 import static java.util.Arrays.stream;
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
 
@@ -42,12 +43,11 @@ public class Injector {
 	}
 
 	private <T> T createInstance(Class<T> type) {
-		Constructor<T>[] constructors = (Constructor<T>[]) type.getConstructors();
-		Constructor<T> constructor = stream(constructors).filter(c -> c.isAnnotationPresent(Inject.class)).findAny().orElse(null);
-		if (constructor == null && constructors.length == 1) constructor = constructors[0];
+		Constructor<T> constructor = (Constructor<T>) stream(type.getConstructors())
+				.max(comparing(Constructor::getParameterCount))
+				.orElseThrow(() -> new InjectException("No public constructors"));
 		try {
-			if (constructor != null) return constructor.newInstance(resolveDeps(constructor));
-			else throw new InjectException(type.getName() + " has no default constructor or a constructor annotated with @Inject");
+			return constructor.newInstance(resolveDeps(constructor));
 		}
 		catch (Exception e) {
 			throw new InjectException("Cannot create " + type.getName() + ", deps: " + Arrays.toString(constructor.getGenericParameterTypes()), e);

@@ -11,7 +11,6 @@ import net.azib.ipscan.config.OpenersConfig.Opener;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.DetailsWindow;
 import net.azib.ipscan.gui.EditOpenersDialog;
@@ -42,7 +41,7 @@ public class CommandsMenuActions {
 	public EditOpeners editOpeners;
 	public SelectOpener selectOpener;
 
-	@Inject public CommandsMenuActions(Details details, Delete delete, Rescan rescan, CopyIP copyIP, CopyIPDetails copyIPDetails, ShowOpenersMenu showOpenersMenu, EditOpeners editOpeners, SelectOpener selectOpener) {
+	public CommandsMenuActions(Details details, Delete delete, Rescan rescan, CopyIP copyIP, CopyIPDetails copyIPDetails, ShowOpenersMenu showOpenersMenu, EditOpeners editOpeners, SelectOpener selectOpener) {
 		this.details = details;
 		this.delete = delete;
 		this.rescan = rescan;
@@ -70,7 +69,7 @@ public class CommandsMenuActions {
 		private final ResultTable resultTable;
 		private final DetailsWindow detailsWindow;
 		
-		@Inject public Details(ResultTable resultTable, DetailsWindow detailsWindow) {
+		public Details(ResultTable resultTable, DetailsWindow detailsWindow) {
 			this.resultTable = resultTable;
 			this.detailsWindow = detailsWindow;
 			resultTable.addListener(SWT.Traverse, this);
@@ -91,7 +90,7 @@ public class CommandsMenuActions {
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
 
-		@Inject public Delete(ResultTable resultTable, StateMachine stateMachine) {
+		public Delete(ResultTable resultTable, StateMachine stateMachine) {
 			this.resultTable = resultTable;
 			this.stateMachine = stateMachine;
 		}
@@ -117,7 +116,6 @@ public class CommandsMenuActions {
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
 
-		@Inject
 		public Rescan(ResultTable resultTable, StateMachine stateMachine) {
 			this.resultTable = resultTable;
 			this.stateMachine = stateMachine;
@@ -136,7 +134,6 @@ public class CommandsMenuActions {
 	public static final class CopyIP implements Listener {
 		private final ResultTable resultTable;
 
-		@Inject
 		public CopyIP(ResultTable resultTable) {
 			this.resultTable = resultTable;
 		}
@@ -160,7 +157,6 @@ public class CommandsMenuActions {
 	public static final class CopyIPDetails implements Listener {
 		private final ResultTable resultTable;
 
-		@Inject
 		public CopyIPDetails(ResultTable resultTable) {
 			this.resultTable = resultTable;
 		}
@@ -178,7 +174,6 @@ public class CommandsMenuActions {
 		private final Listener openersSelectListener;
 		private final OpenersConfig openersConfig;
 
-		@Inject
 		public ShowOpenersMenu(OpenersConfig openersConfig, SelectOpener selectOpener) {
 			this.openersConfig = openersConfig;
 			this.openersSelectListener = selectOpener;
@@ -215,7 +210,6 @@ public class CommandsMenuActions {
 		private final FetcherRegistry fetcherRegistry;
 		private final OpenersConfig openersConfig;
 
-		@Inject
 		public EditOpeners(FetcherRegistry fetcherRegistry, OpenersConfig openersConfig) {
 			this.fetcherRegistry = fetcherRegistry;
 			this.openersConfig = openersConfig;
@@ -233,7 +227,6 @@ public class CommandsMenuActions {
 		private final OpenerLauncher openerLauncher;
 		private final OpenersConfig openersConfig;
 
-		@Inject
 		public SelectOpener(OpenersConfig openersConfig, StatusBar statusBar, ResultTable resultTable, OpenerLauncher openerLauncher) {
 			this.openersConfig = openersConfig;
 			this.statusBar = statusBar;

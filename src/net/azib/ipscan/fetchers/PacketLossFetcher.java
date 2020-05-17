@@ -4,7 +4,6 @@ import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.net.PingResult;
 import net.azib.ipscan.core.net.PingerRegistry;
-import net.azib.ipscan.di.Inject;
 
 import static net.azib.ipscan.core.ScanningResult.ResultType.ALIVE;
 import static net.azib.ipscan.core.ScanningResult.ResultType.DEAD;
@@ -17,7 +16,7 @@ import static net.azib.ipscan.core.ScanningResult.ResultType.DEAD;
  */
 public class PacketLossFetcher extends PingFetcher {
 
-	@Inject public PacketLossFetcher(PingerRegistry pingerRegistry, ScannerConfig scannerConfig) {
+	public PacketLossFetcher(PingerRegistry pingerRegistry, ScannerConfig scannerConfig) {
 		super(pingerRegistry, scannerConfig);
 	}
 

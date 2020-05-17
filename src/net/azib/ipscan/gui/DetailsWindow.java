@@ -5,7 +5,6 @@ import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
@@ -32,7 +31,7 @@ public class DetailsWindow extends AbstractModalDialog {
 	int resultIndex;
 	private Text commentsText;
 
-	@Inject public DetailsWindow(GUIConfig guiConfig, CommentsConfig commentsConfig, ResultTable resultTable, ScanningResultList scanningResults) {
+	public DetailsWindow(GUIConfig guiConfig, CommentsConfig commentsConfig, ResultTable resultTable, ScanningResultList scanningResults) {
 		this.guiConfig = guiConfig;
 		this.commentsConfig = commentsConfig;
 		this.resultTable = resultTable;

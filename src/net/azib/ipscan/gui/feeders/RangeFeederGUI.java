@@ -6,7 +6,6 @@
 package net.azib.ipscan.gui.feeders;
 
 import net.azib.ipscan.config.Platform;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.di.Named;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FeederException;
@@ -40,7 +39,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	private boolean isEndIPUnedited = true;
 	private boolean modifyListenersDisabled = false;
 
-	@Inject public RangeFeederGUI(@Named("feederArea") Composite parent) {
+	public RangeFeederGUI(@Named("feederArea") Composite parent) {
 		super(parent);
 		feeder = new RangeFeeder();
 	}

@@ -1,7 +1,6 @@
 package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.config.Platform;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.util.IOUtils;
 
 import java.io.BufferedReader;
@@ -13,7 +12,7 @@ import java.util.Enumeration;
 public class UnixMACFetcher extends MACFetcher {
 	private String arp;
 
-	@Inject public UnixMACFetcher() {
+	public UnixMACFetcher() {
 		if (Platform.LINUX)
 			arp = "arp -an "; // use BSD-style output
 		else

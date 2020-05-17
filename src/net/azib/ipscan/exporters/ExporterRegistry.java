@@ -5,8 +5,6 @@
  */
 package net.azib.ipscan.exporters;
 
-import net.azib.ipscan.di.Inject;
-
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,7 +20,7 @@ public class ExporterRegistry implements Iterable<Exporter> {
 	/** All available Exporter implementations, Map of Exporter instances (prototypes) */
 	private Map<String, Exporter> exporters;
 
-	@Inject public ExporterRegistry(List<Exporter> registeredExporters) {
+	public ExporterRegistry(List<Exporter> registeredExporters) {
 		exporters = new LinkedHashMap<>();
 
 		for (Exporter exporter : registeredExporters) {

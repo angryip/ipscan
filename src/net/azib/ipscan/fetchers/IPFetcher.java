@@ -6,7 +6,6 @@ package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.values.InetAddressHolder;
-import net.azib.ipscan.di.Inject;
 
 /**
  * Dummy fetcher, which is able to return the textual representation 
@@ -15,7 +14,7 @@ import net.azib.ipscan.di.Inject;
  * @author Anton Keks
  */
 public class IPFetcher extends AbstractFetcher {
-	@Inject public IPFetcher() {}
+	public IPFetcher() {}
 
 	public static final String ID = "fetcher.ip";
 

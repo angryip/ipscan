@@ -7,7 +7,6 @@
 package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.config.ScannerConfig;
-import net.azib.ipscan.di.Inject;
 
 import java.util.regex.Matcher;
 
@@ -17,7 +16,7 @@ import java.util.regex.Matcher;
  * @author Anton Keks
  */
 public class HTTPProxyFetcher extends PortTextFetcher {
-	@Inject public HTTPProxyFetcher(ScannerConfig scannerConfig) {
+	public HTTPProxyFetcher(ScannerConfig scannerConfig) {
 		super(scannerConfig, 3128, "HEAD http://www.google.com HTTP/1.0\r\n\r\n", "^(HTTP/[\\d\\.]+ [23].*)$");
 		this.scanOpenPorts = true;
 	}

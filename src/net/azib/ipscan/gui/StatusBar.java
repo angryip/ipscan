@@ -10,7 +10,6 @@ import net.azib.ipscan.config.GUIConfig.DisplayMethod;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.state.StateMachine;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.actions.CommandsMenuActions.Delete;
 import net.azib.ipscan.gui.actions.ToolsActions.SelectDead;
 import net.azib.ipscan.gui.actions.ToolsActions.SelectWithoutPorts;
@@ -42,7 +41,7 @@ public class StatusBar {
 	private StateMachine stateMachine;
 	private ResultTable resultTable;
 
-	@Inject public StatusBar(Shell shell, GUIConfig guiConfig, ScannerConfig scannerConfig, ResultTable resultTable, StateMachine stateMachine) {
+	public StatusBar(Shell shell, GUIConfig guiConfig, ScannerConfig scannerConfig, ResultTable resultTable, StateMachine stateMachine) {
 		this.guiConfig = guiConfig;
 		this.scannerConfig = scannerConfig;
 		this.stateMachine = stateMachine;

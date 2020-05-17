@@ -6,7 +6,6 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.IPFetcher;
@@ -33,7 +32,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 	private List registeredFetchersList;
 	Map<String, String> registeredFetcherIdsByNames = new HashMap<>();
 
-	@Inject public SelectFetchersDialog(FetcherRegistry fetcherRegistry) {
+	public SelectFetchersDialog(FetcherRegistry fetcherRegistry) {
 		this.fetcherRegistry = fetcherRegistry;
 	}
 	

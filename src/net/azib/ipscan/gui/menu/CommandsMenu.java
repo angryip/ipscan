@@ -2,7 +2,6 @@ package net.azib.ipscan.gui.menu;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.actions.CommandsMenuActions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MenuItem;
@@ -10,7 +9,7 @@ import org.eclipse.swt.widgets.Shell;
 
 public class CommandsMenu extends AbstractMenu {
 
-	@Inject public CommandsMenu(Shell parent, CommandsMenuActions actions, OpenersMenu openersMenu) {
+	public CommandsMenu(Shell parent, CommandsMenuActions actions, OpenersMenu openersMenu) {
 		this(parent, SWT.DROP_DOWN, actions, openersMenu);
 	}
 

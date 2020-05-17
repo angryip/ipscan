@@ -5,7 +5,6 @@
  */
 package net.azib.ipscan.gui.feeders;
 
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.di.Named;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.RandomFeeder;
@@ -29,7 +28,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 	private Button ipUpButton;
 	private Spinner countSpinner;
 
-	@Inject public RandomFeederGUI(@Named("feederArea") Composite parent) {
+	public RandomFeederGUI(@Named("feederArea") Composite parent) {
 		super(parent);
 		feeder = new RandomFeeder();
 	}

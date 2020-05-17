@@ -10,7 +10,6 @@ import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.values.Empty;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.HostnameFetcher;
 
@@ -31,7 +30,7 @@ public class OpenerLauncher {
 	private final FetcherRegistry fetcherRegistry;
 	private final ScanningResultList scanningResults;
 	
-	@Inject public OpenerLauncher(FetcherRegistry fetcherRegistry, ScanningResultList scanningResults) {
+	public OpenerLauncher(FetcherRegistry fetcherRegistry, ScanningResultList scanningResults) {
 		this.fetcherRegistry = fetcherRegistry;
 		this.scanningResults = scanningResults;
 	}

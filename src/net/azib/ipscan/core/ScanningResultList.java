@@ -10,7 +10,6 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
@@ -48,7 +47,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		this.fetcherRegistry = fetcherRegistry;
 	}
 
-	@Inject public ScanningResultList(FetcherRegistry fetcherRegistry, StateMachine stateMachine) {
+	public ScanningResultList(FetcherRegistry fetcherRegistry, StateMachine stateMachine) {
 		this(fetcherRegistry);
 		stateMachine.addTransitionListener(new StopScanningListener());
 	}

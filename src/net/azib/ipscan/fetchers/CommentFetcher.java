@@ -6,7 +6,6 @@ package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.config.CommentsConfig;
 import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.di.Inject;
 
 /**
  * A fetcher for displaying of user-defined comments about every IP address.
@@ -18,7 +17,7 @@ public class CommentFetcher extends AbstractFetcher {
 	
 	private CommentsConfig commentsConfig;
 	
-	@Inject public CommentFetcher(CommentsConfig commentsConfig) {
+	public CommentFetcher(CommentsConfig commentsConfig) {
 		this.commentsConfig = commentsConfig;
 	}
 

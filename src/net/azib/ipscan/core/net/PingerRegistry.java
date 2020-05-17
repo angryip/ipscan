@@ -9,7 +9,6 @@ import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.FetcherException;
 
 import java.lang.reflect.Constructor;
@@ -34,7 +33,7 @@ public class PingerRegistry {
 	/** All available Pinger implementations */
 	Map<String, Class<? extends Pinger>> pingers;
 
-	@Inject public PingerRegistry(ScannerConfig scannerConfig) {
+	public PingerRegistry(ScannerConfig scannerConfig) {
 		this.scannerConfig = scannerConfig;
 		
 		pingers = new LinkedHashMap<>();

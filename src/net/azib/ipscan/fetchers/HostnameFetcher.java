@@ -6,7 +6,6 @@ package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.util.MDNSResolver;
 import net.azib.ipscan.util.NetBIOSResolver;
 
@@ -47,7 +46,7 @@ public class HostnameFetcher extends AbstractFetcher {
 
 	public static final String ID = "fetcher.hostname";
 
-	@Inject public HostnameFetcher() {}
+	public HostnameFetcher() {}
 
 	public String getId() {
 		return ID;

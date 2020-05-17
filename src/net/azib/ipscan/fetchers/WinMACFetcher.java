@@ -2,7 +2,6 @@ package net.azib.ipscan.fetchers;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
-import net.azib.ipscan.di.Inject;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -11,7 +10,7 @@ import static net.azib.ipscan.core.net.WinIpHlp.toIpAddr;
 import static net.azib.ipscan.core.net.WinIpHlpDll.dll;
 
 public class WinMACFetcher extends MACFetcher {
-	@Inject public WinMACFetcher() {}
+	public WinMACFetcher() {}
 
 	@Override public String resolveMAC(InetAddress address) {
 		if (!(address instanceof Inet4Address)) return null; // TODO IPv6 support

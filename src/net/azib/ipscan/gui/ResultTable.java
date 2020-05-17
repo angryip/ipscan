@@ -13,7 +13,6 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
@@ -45,7 +44,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 
 	private Listener columnResizeListener;
 
-	@Inject public ResultTable(Shell parent, GUIConfig guiConfig, FetcherRegistry fetcherRegistry,
+	public ResultTable(Shell parent, GUIConfig guiConfig, FetcherRegistry fetcherRegistry,
 							   ScanningResultList scanningResultList, StateMachine stateMachine,
 							   ColumnsActions.ColumnClick columnClickListener, ColumnsActions.ColumnResize columnResizeListener) {
 		super(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL);

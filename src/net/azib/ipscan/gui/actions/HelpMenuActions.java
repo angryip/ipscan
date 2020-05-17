@@ -8,7 +8,6 @@ package net.azib.ipscan.gui.actions;
 import net.azib.ipscan.config.CommandLineProcessor;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.AboutDialog;
 import net.azib.ipscan.gui.GettingStartedDialog;
 import net.azib.ipscan.gui.InfoDialog;
@@ -31,7 +30,7 @@ import static net.azib.ipscan.util.IOUtils.closeQuietly;
 public class HelpMenuActions {
 
 	public static final class GettingStarted implements Listener {
-		@Inject public GettingStarted() {}
+		public GettingStarted() {}
 
 		public void handleEvent(Event event) {
 			new GettingStartedDialog().open();
@@ -41,7 +40,7 @@ public class HelpMenuActions {
 	public static final class CommandLineUsage implements Listener {
 		private CommandLineProcessor cli;
 
-		@Inject public CommandLineUsage(CommandLineProcessor cli) {
+		public CommandLineUsage(CommandLineProcessor cli) {
 			this.cli = cli;
 		}
 
@@ -55,7 +54,7 @@ public class HelpMenuActions {
 	public static final class About implements Listener {
 		private AboutDialog aboutDialog;
 
-		@Inject public About(AboutDialog aboutDialog) {
+		public About(AboutDialog aboutDialog) {
 			this.aboutDialog = aboutDialog;
 		}
 
@@ -65,7 +64,7 @@ public class HelpMenuActions {
 	}
 
 	public static final class Website implements Listener {
-		@Inject public Website() {}
+		public Website() {}
 
 		public void handleEvent(Event event) {
 			BrowserLauncher.openURL(Version.WEBSITE);
@@ -73,7 +72,7 @@ public class HelpMenuActions {
 	}
 
 	public static final class FAQ implements Listener {
-		@Inject public FAQ() {}
+		public FAQ() {}
 
 		public void handleEvent(Event event) {
 			BrowserLauncher.openURL(Version.FAQ_URL);
@@ -81,7 +80,7 @@ public class HelpMenuActions {
 	}
 
 	public static final class Issues implements Listener {
-		@Inject public Issues() {}
+		public Issues() {}
 
 		public void handleEvent(Event event) {
 			BrowserLauncher.openURL(Version.ISSUES_URL);
@@ -89,7 +88,7 @@ public class HelpMenuActions {
 	}
 
 	public static final class Plugins implements Listener {
-		@Inject public Plugins() {}
+		public Plugins() {}
 
 		public void handleEvent(Event event) {
 			BrowserLauncher.openURL(Version.PLUGINS_URL);
@@ -99,7 +98,7 @@ public class HelpMenuActions {
 	public static final class CheckVersion implements Listener {
 		private final StatusBar statusBar;
 		
-		@Inject public CheckVersion(StatusBar statusBar) {
+		public CheckVersion(StatusBar statusBar) {
 			this.statusBar = statusBar;
 		}
 

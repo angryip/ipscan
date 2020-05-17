@@ -12,7 +12,6 @@ import net.azib.ipscan.core.net.PingResult;
 import net.azib.ipscan.core.net.Pinger;
 import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.core.values.IntegerWithUnit;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.fetchers.PingFetcherPrefs;
 
 import java.io.IOException;
@@ -42,7 +41,7 @@ public class PingFetcher extends AbstractFetcher {
 	/** The registry used for creation of Pinger instances */
 	private PingerRegistry pingerRegistry;
 	
-	@Inject public PingFetcher(PingerRegistry pingerRegistry, ScannerConfig scannerConfig) {
+	public PingFetcher(PingerRegistry pingerRegistry, ScannerConfig scannerConfig) {
 		this.pingerRegistry = pingerRegistry;
 		this.config = scannerConfig;
 	}

@@ -4,7 +4,6 @@ import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.actions.HelpMenuActions.CheckVersion;
 import net.azib.ipscan.util.GoogleAnalytics;
 import org.eclipse.swt.widgets.Display;
@@ -15,7 +14,7 @@ public class Startup {
 	private GUIConfig guiConfig;
 	private CheckVersion checkVersion;
 
-	@Inject public Startup(Shell shell, GUIConfig guiConfig, CheckVersion checkVersion) {
+	public Startup(Shell shell, GUIConfig guiConfig, CheckVersion checkVersion) {
 		this.shell = shell;
 		this.guiConfig = guiConfig;
 		this.checkVersion = checkVersion;

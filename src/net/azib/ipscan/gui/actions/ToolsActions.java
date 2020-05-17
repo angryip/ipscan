@@ -14,7 +14,6 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
@@ -36,7 +35,7 @@ public class ToolsActions {
 		private final ResultTable resultTable;
 		private final StatusBar statusBar;
 		
-		@Inject public Preferences(PreferencesDialog preferencesDialog, ResultTable resultTable, StatusBar statusBar) {
+		public Preferences(PreferencesDialog preferencesDialog, ResultTable resultTable, StatusBar statusBar) {
 			this.preferencesDialog = preferencesDialog;
 			this.resultTable = resultTable;
 			this.statusBar = statusBar;
@@ -56,7 +55,7 @@ public class ToolsActions {
 	public static final class ChooseFetchers implements Listener {
 		private final SelectFetchersDialog selectFetchersDialog;
 		
-		@Inject public ChooseFetchers(SelectFetchersDialog selectFetchersDialog) {
+		public ChooseFetchers(SelectFetchersDialog selectFetchersDialog) {
 			this.selectFetchersDialog = selectFetchersDialog;
 		}
 
@@ -71,7 +70,6 @@ public class ToolsActions {
 		private final StatisticsDialog statisticsDialog;
 		private final GUIConfig guiConfig;
 
-		@Inject
 		public ScanStatistics(GUIConfig guiConfig, StatisticsDialog statisticsDialog, StateMachine stateMachine, CommandLineProcessor commandProcessor) {
 			this.guiConfig = guiConfig;
 			this.statisticsDialog = statisticsDialog;
@@ -142,7 +140,6 @@ public class ToolsActions {
 	}
 	
 	public static final class SelectAlive extends SelectDesired {
-		@Inject
 		public SelectAlive(ResultTable resultTable) {
 			super(resultTable);
 		}
@@ -153,7 +150,6 @@ public class ToolsActions {
 	}
 
 	public static final class SelectDead extends SelectDesired {
-		@Inject
 		public SelectDead(ResultTable resultTable) {
 			super(resultTable);
 		}
@@ -164,7 +160,6 @@ public class ToolsActions {
 	}
 	
 	public static final class SelectWithPorts extends SelectDesired {
-		@Inject
 		public SelectWithPorts(ResultTable resultTable) {
 			super(resultTable);
 		}
@@ -175,7 +170,6 @@ public class ToolsActions {
 	}
 	
 	public static final class SelectWithoutPorts extends SelectDesired {
-		@Inject
 		public SelectWithoutPorts(ResultTable resultTable) {
 			super(resultTable);
 		}
@@ -211,7 +205,6 @@ public class ToolsActions {
 	public static final class SelectInvert implements Listener {
 		private final ResultTable resultTable;
 
-		@Inject
 		public SelectInvert(ResultTable resultTable) {
 			this.resultTable = resultTable;
 		}

@@ -11,7 +11,6 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.exporters.ExportProcessor;
 import net.azib.ipscan.exporters.Exporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
@@ -45,7 +44,7 @@ public class CommandLineProcessor implements CommandProcessor, StateTransitionLi
 		this.exporters = exporters;		
 	}
 
-	@Inject public CommandLineProcessor(FeederRegistry feederCreators, ExporterRegistry exporters, StateMachine stateMachine, ScanningResultList scanningResults) {
+	public CommandLineProcessor(FeederRegistry feederCreators, ExporterRegistry exporters, StateMachine stateMachine, ScanningResultList scanningResults) {
 		this(feederCreators, exporters);
 		this.stateMachine = stateMachine;
 		this.scanningResults = scanningResults;

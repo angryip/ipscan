@@ -11,7 +11,6 @@ import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.core.values.NumericRangeList;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.fetchers.PortsFetcherPrefs;
 import net.azib.ipscan.util.SequenceIterator;
 import net.azib.ipscan.util.ThreadResourceBinder;
@@ -45,7 +44,7 @@ public class PortsFetcher extends AbstractFetcher {
 	private PortIterator portIteratorPrototype;
 	protected boolean displayAsRanges = true;	// TODO: make configurable
 	
-	@Inject public PortsFetcher(ScannerConfig scannerConfig) {
+	public PortsFetcher(ScannerConfig scannerConfig) {
 		this.config = scannerConfig;
 	}
 

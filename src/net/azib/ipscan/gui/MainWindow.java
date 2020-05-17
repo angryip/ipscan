@@ -12,7 +12,6 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.di.Named;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.actions.ToolsActions;
@@ -56,7 +55,6 @@ public class MainWindow {
 	/**
 	 * Creates and initializes the main window.
 	 */
-	@Inject
 	public MainWindow(Shell shell, GUIConfig guiConfig, @Named("feederArea") Composite feederArea,
 					  @Named("controlsArea") Composite controlsArea, @Named("feederSelectionCombo") Combo feederSelectionCombo,
 					  @Named("startStopButton") Button startStopButton, StartStopScanningAction startStopScanningAction,

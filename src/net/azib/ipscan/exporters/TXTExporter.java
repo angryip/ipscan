@@ -3,7 +3,6 @@ package net.azib.ipscan.exporters;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.core.ScanningResult;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.fetchers.IPFetcher;
 import net.azib.ipscan.fetchers.PingFetcher;
 import net.azib.ipscan.fetchers.PortsFetcher;
@@ -33,7 +32,7 @@ import static net.azib.ipscan.util.InetAddressUtils.increment;
 public class TXTExporter extends AbstractExporter {
 	int[] padLengths;
 
-	@Inject public TXTExporter() {}
+	public TXTExporter() {}
 
 	public String getId() {
 		return "exporter.txt";

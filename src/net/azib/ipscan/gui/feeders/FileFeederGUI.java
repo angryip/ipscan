@@ -5,7 +5,6 @@
  */
 package net.azib.ipscan.gui.feeders;
 
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.di.Named;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FileFeeder;
@@ -26,7 +25,7 @@ import static net.azib.ipscan.config.Labels.getLabel;
 public class FileFeederGUI extends AbstractFeederGUI {
 	private Text fileNameText;
 
-	@Inject public FileFeederGUI(@Named("feederArea") Composite parent) {
+	public FileFeederGUI(@Named("feederArea") Composite parent) {
 		super(parent);
 		feeder = new FileFeeder();
 	}

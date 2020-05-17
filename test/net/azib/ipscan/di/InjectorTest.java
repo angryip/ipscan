@@ -14,7 +14,7 @@ public class InjectorTest {
 	@Test
 	public void require() {
 		assertNotNull(injector.require(Dummy.class));
-		assertNotNull(injector.require(WithDeps.class));
+		assertNotNull(injector.require(WithDeps.class).dummy);
 	}
 
 	@Test
@@ -37,19 +37,21 @@ public class InjectorTest {
 	}
 
 	static class WithDeps {
-		@Inject public WithDeps(Dummy dummy) {}
+		Dummy dummy;
+		public WithDeps() {}
+		public WithDeps(Dummy dummy) { this.dummy = dummy; }
 	}
 
 	static class WithNamedDeps {
 		String name;
-		@Inject public WithNamedDeps(Dummy dummy, @Named("name") String name) {
+		public WithNamedDeps(Dummy dummy, @Named("name") String name) {
 			this.name = name;
 		}
 	}
 
 	static class WithListDeps {
 		List<String> list;
-		@Inject public WithListDeps(List<String> list, Dummy dummy) {
+		public WithListDeps(List<String> list, Dummy dummy) {
 			this.list = list;
 		}
 	}

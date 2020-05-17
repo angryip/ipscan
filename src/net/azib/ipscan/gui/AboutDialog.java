@@ -2,7 +2,6 @@ package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
-import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.gui.actions.BrowserLauncher;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -13,7 +12,6 @@ import org.eclipse.swt.widgets.Text;
 import static net.azib.ipscan.config.Version.*;
 
 public class AboutDialog extends AbstractModalDialog {
-	@Inject
 	public AboutDialog() {}
 
 	@Override
