@@ -26,7 +26,7 @@ import java.io.File;
  * @author Anton Keks
  */
 public class CommandLineProcessor implements CommandProcessor, StateTransitionListener {
-	private final FeederRegistry<? extends FeederCreator> feederRegistry;
+	private final FeederRegistry feederRegistry;
 	private final ExporterRegistry exporters;
 	private StateMachine stateMachine;
 	private ScanningResultList scanningResults;
@@ -40,12 +40,12 @@ public class CommandLineProcessor implements CommandProcessor, StateTransitionLi
 	boolean autoQuit;
 	boolean appendToFile;
 	
-	CommandLineProcessor(FeederRegistry<? extends FeederCreator> feederCreators, ExporterRegistry exporters) {
+	CommandLineProcessor(FeederRegistry feederCreators, ExporterRegistry exporters) {
 		this.feederRegistry = feederCreators;
 		this.exporters = exporters;		
 	}
 
-	@Inject public CommandLineProcessor(FeederRegistry<? extends FeederCreator> feederCreators, ExporterRegistry exporters, StateMachine stateMachine, ScanningResultList scanningResults) {
+	@Inject public CommandLineProcessor(FeederRegistry feederCreators, ExporterRegistry exporters, StateMachine stateMachine, ScanningResultList scanningResults) {
 		this(feederCreators, exporters);
 		this.stateMachine = stateMachine;
 		this.scanningResults = scanningResults;

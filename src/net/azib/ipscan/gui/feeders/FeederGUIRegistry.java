@@ -8,10 +8,7 @@ package net.azib.ipscan.gui.feeders;
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.di.Inject;
 import net.azib.ipscan.di.Named;
-import net.azib.ipscan.feeders.Feeder;
-import net.azib.ipscan.feeders.FeederException;
-import net.azib.ipscan.feeders.FeederRegistry;
-import net.azib.ipscan.feeders.RescanFeeder;
+import net.azib.ipscan.feeders.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.TableItem;
@@ -24,7 +21,7 @@ import java.util.List;
  *
  * @author Anton Keks
  */
-public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
+public class FeederGUIRegistry implements FeederRegistry {
 	private final List<AbstractFeederGUI> feederGUIList;
 	private final Combo feederSelectionCombo;
 	private final GUIConfig guiConfig;
@@ -62,8 +59,9 @@ public class FeederGUIRegistry implements FeederRegistry<AbstractFeederGUI> {
 		currentFeederGUI.setVisible(true);
 	}
 	
-	public Iterator<AbstractFeederGUI> iterator() {
-		return feederGUIList.iterator();
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	public Iterator<FeederCreator> iterator() {
+		return (Iterator) feederGUIList.iterator();
 	}
 
 	/**
