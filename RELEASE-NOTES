@@ -1,3 +1,7 @@
+Changes in 3.7.2:
+- Fix choosing openers from main menu on macOS #243
+- Install 64-bit binary by Windows installer if Java is not detected at all #245
+
 Changes in 3.7.1:
 - Enable ICMP Echo pinger for Linux x64 only, as it requires the corresponding native .so implementation that is not available for Mac and not needed for Windows
 - Add a new Java Built-in pinger by default (InetAddress.isReachable()), which uses ICMP if enough privileges or falls back to TCP port 7
