@@ -8,7 +8,6 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
 public class CommandsMenu extends AbstractMenu {
-
 	public CommandsMenu(Shell parent, CommandsMenuActions actions, OpenersMenu openersMenu) {
 		this(parent, SWT.DROP_DOWN, actions, openersMenu);
 	}

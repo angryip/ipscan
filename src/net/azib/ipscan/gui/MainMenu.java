@@ -63,8 +63,7 @@ public class MainMenu {
 		}
 
 		public void transitionTo(final ScanningState state, Transition transition) {
-			if (transition != Transition.START && transition != Transition.COMPLETE)
-				return;
+			if (transition != Transition.START && transition != Transition.COMPLETE) return;
 			processMenu(menu, state == ScanningState.IDLE);
 		}
 
@@ -74,8 +73,7 @@ public class MainMenu {
 				if (item.getData("disableDuringScanning") == Boolean.TRUE) {
 					item.setEnabled(isEnabled);
 				}
-				else 
-				if (item.getMenu() != null) {
+				else if (item.getMenu() != null) {
 					processMenu(item.getMenu(), isEnabled);
 				}
 			}
