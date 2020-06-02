@@ -265,7 +265,7 @@ task 'win-installer'(dependsOn: ['win32', 'win64']) {
     doLast {
         def nsis = 'nsis-3.05'
         def installerDir = 'ext/win-installer'
-        ant.get(src: "https://netcologne.dl.sourceforge.net/project/nsis/NSIS%203/3.05/${nsis}.zip", dest: installerDir, skipexisting: 'true')
+        ant.get(src: "https://netcologne.dl.sourceforge.net/project/nsis/NSIS%203/${nsis.split('-')[1]}/${nsis}.zip", dest: installerDir, skipexisting: 'true')
         ant.unzip(src: "${installerDir}/${nsis}.zip", dest: installerDir)
         ant.replace(file: "${installerDir}/InstallerConfig.nsh") {
             ant.replacefilter(token: "VERSION_MINOR", value: "5")
