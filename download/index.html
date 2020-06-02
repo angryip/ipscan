@@ -28,18 +28,17 @@ redirect_from: /w/Download/
           - autodetects 32/64-bit Java, for Windows <i>7/8/10</i>
         </li>
         <li>
-          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-win32-{{ site.version }}.exe">Executable for 32-bit Java</a>
-          - if you prefer no installation <i>(Java 8 on Windows is often 32-bit)</i>
-        </li>
-        <li>
           <a href="{{ page.binary_url }}{{ site.version }}/ipscan-win64-{{ site.version }}.exe">Executable for 64-bit Java</a>
           - for 64-bit Java (eg AdoptOpenJDK) on Windows <i>7/8/10</i>
+        </li>
+        <li>
+          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-win32-{{ site.version }}.exe">Executable for 32-bit Java</a>
+          - for older installations of Oracle Java for Windows
         </li>
       </ul>
 
       <p>
-        At least <a href="http://java.com/download">Java 8</a> is required on your machine.
-        Or get newer Java from <a href="https://adoptopenjdk.net/">AdoptOpenJDK</a> enabling <i>"JavaSoft (Oracle) registry keys"</i> during its installation for compatibility.
+        At least <a href="https://adoptopenjdk.net/">Java/OpenJDK</a> <i>8</i> is required on your machine, but <i>11</i> is recommended.
       </p>
 
       <h4>Legacy</h4>
@@ -85,7 +84,7 @@ redirect_from: /w/Download/
 
       <h4>Running</h4>
       <p>
-        Make sure you have <a href="https://adoptopenjdk.net">Java 8</a> or later installed. The last version that supported built-in Java 1.6 was <b>3.4.2</b>.
+        Make sure you have <a href="https://adoptopenjdk.net">Java 8</a> or later installed. Newest OpenJDK (e.g. 14) is recommended for Dark Mode support.
       </p>
       <p>
         The zip file contains Mac application bundle: just save it and double-click to extract.
