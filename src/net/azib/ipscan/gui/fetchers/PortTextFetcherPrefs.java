@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui.fetchers;
 
@@ -18,9 +18,11 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
 import java.util.prefs.Preferences;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.lang.Integer.parseInt;
+import static java.lang.Integer.toHexString;
 
 /**
  * PortTextFetcherPrefs
@@ -28,7 +30,6 @@ import static java.lang.Integer.parseInt;
  * @author Anton Keks
  */
 public class PortTextFetcherPrefs extends AbstractModalDialog implements FetcherPrefs {
-	
 	private PortTextFetcher fetcher;
 	private Text textToSend;
 	private Text matchingRegexp;
@@ -48,18 +49,18 @@ public class PortTextFetcherPrefs extends AbstractModalDialog implements Fetcher
 		shell.setText(fetcher.getName());
 		shell.setLayout(LayoutHelper.formLayout(10, 10, 5));
 		
-		Combo predefinedCombo = new Combo(shell, SWT.DROP_DOWN | SWT.READ_ONLY);
-		predefinedCombo.add(Labels.getLabel("fetcher.portText.custom"));
+		//Combo predefinedCombo = new Combo(shell, SWT.DROP_DOWN | SWT.READ_ONLY);
+		//predefinedCombo.add(Labels.getLabel("fetcher.portText.custom"));
 		//predefinedCombo.add("Web detect");
 		//predefinedCombo.add("SMTP detect");
-		predefinedCombo.select(0);
-		predefinedCombo.setLayoutData(LayoutHelper.formData(null, new FormAttachment(100), new FormAttachment(0), null));
+		//predefinedCombo.select(0);
+		//predefinedCombo.setLayoutData(LayoutHelper.formData(null, new FormAttachment(100), new FormAttachment(0), null));
 		
 		Label sendLabel = new Label(shell, SWT.NONE);
 		sendLabel.setText(Labels.getLabel("text.fetcher.portText.send"));
-		sendLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, null, new FormAttachment(predefinedCombo, 0, SWT.BOTTOM)));
+		//sendLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, null, new FormAttachment(predefinedCombo, 0, SWT.BOTTOM)));
 		textToSend = new Text(shell, SWT.BORDER);
-		textToSend.setText(stringToText(fetcher.getTextToSend()));
+		textToSend.setText(toEditableText(fetcher.getTextToSend()));
 		textToSend.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), new FormAttachment(sendLabel), null));
 		
 		Label matchLabel = new Label(shell, SWT.NONE);
@@ -102,8 +103,9 @@ public class PortTextFetcherPrefs extends AbstractModalDialog implements Fetcher
 	void savePreferences() {
 		Preferences prefs = fetcher.getPreferences();
 
-		fetcher.setTextToSend(textToSend.getText());
-		prefs.put("textToSend", fetcher.getTextToSend());
+		String text = toRealText(textToSend.getText());
+		fetcher.setTextToSend(text);
+		prefs.put("textToSend", text);
 
 		fetcher.setMatchingRegexp(Pattern.compile(matchingRegexp.getText()));
 		prefs.put("matchingRegexp", fetcher.getMatchingRegexp().pattern());
@@ -112,18 +114,30 @@ public class PortTextFetcherPrefs extends AbstractModalDialog implements Fetcher
 		prefs.putInt("extractGroup", fetcher.getExtractGroup());
 	}
 
-	private String stringToText(String s) {
+	static String toEditableText(String s) {
 		StringBuilder t = new StringBuilder();
 		for (char c : s.toCharArray()) {
-			if (c == '\n') 
-				t.append("\\n");
-			else if (c == '\r')
-				t.append("\\r");
-			else if (c == '\t')
-				t.append("\\t");
-			else
-				t.append(c);
+			if (c == '\n') t.append("\\n");
+			else if (c == '\r') t.append("\\r");
+			else if (c == '\t') t.append("\\t");
+			else if (c < 10) t.append("\\x0").append(toHexString(c).toUpperCase());
+			else if (c < ' ') t.append("\\x").append(toHexString(c).toUpperCase());
+			else t.append(c);
 		}
 		return t.toString();
+	}
+
+	static String toRealText(String s) {
+		s = s.replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t");
+		if (s.contains("\\x")) {
+			StringBuffer t = new StringBuffer();
+			Matcher m = Pattern.compile("\\\\x(\\d{2})").matcher(s);
+			while (m.find()) {
+				m.appendReplacement(t, new String(new char[] {(char) parseInt(m.group(1), 16)}));
+			}
+			m.appendTail(t);
+			s = t.toString();
+		}
+		return s;
 	}
 }

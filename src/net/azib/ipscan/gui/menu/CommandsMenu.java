@@ -7,13 +7,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-@Singleton
 public class CommandsMenu extends AbstractMenu {
-
-	@Inject public CommandsMenu(Shell parent, CommandsMenuActions actions, OpenersMenu openersMenu) {
+	public CommandsMenu(Shell parent, CommandsMenuActions actions, OpenersMenu openersMenu) {
 		this(parent, SWT.DROP_DOWN, actions, openersMenu);
 	}
 

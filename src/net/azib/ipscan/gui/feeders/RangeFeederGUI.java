@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui.feeders;
 
@@ -16,9 +16,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.UnknownHostException;
@@ -31,18 +28,16 @@ import static net.azib.ipscan.util.InetAddressUtils.*;
  * 
  * @author Anton Keks
  */
-@Singleton
 public class RangeFeederGUI extends AbstractFeederGUI {
 	private Text startIPText;
 	private Text endIPText;
 	private Text hostnameText;
-	private Button ipUpButton;
 	private Combo netmaskCombo;
 
 	private boolean isEndIPUnedited = true;
 	private boolean modifyListenersDisabled = false;
 
-	@Inject public RangeFeederGUI(@Named("feederArea") Composite parent) {
+	public RangeFeederGUI(FeederArea parent) {
 		super(parent);
 		feeder = new RangeFeeder();
 	}
@@ -56,7 +51,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         endIPText = new Text(this, SWT.BORDER);
 		Label hostnameLabel = new Label(this, SWT.NONE);
         hostnameText = new Text(this, SWT.BORDER);
-		ipUpButton = new Button(this, SWT.NONE);
+		Button ipUpButton = new Button(this, SWT.NONE);
         netmaskCombo = new Combo(this, SWT.NONE);
 
 		// the longest possible IP
@@ -84,11 +79,8 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 
 		FeederActions.HostnameButton hostnameListener = new FeederActions.HostnameButton(hostnameText, startIPText, netmaskCombo) {
 			public void widgetSelected(SelectionEvent event) {
-				// raise the flag
 				isEndIPUnedited = true;
-				// reset the netmask combo
 				netmaskCombo.setText(getLabel("feeder.range.netmask"));
-				// now do the stuff
 				super.widgetSelected(event);
 			}
         };
@@ -138,7 +130,6 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		// TODO: netmask support from the command-line
 		startIPText.setText(parts[0]);
 		endIPText.setText(parts[1]);
-		// reset the netmask combo
 		netmaskCombo.setText(getLabel("feeder.range.netmask"));
 	}
 
@@ -224,7 +215,9 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	@Override
 	protected void afterLocalHostInfoFilled(InterfaceAddress localInterface) {
 		InetAddress address = localInterface.getAddress();
-		if (!address.isLoopbackAddress())
+		if (!address.isLoopbackAddress()) {
 			updateStartEndWithNetmask(address, "/" + localInterface.getNetworkPrefixLength());
+			isEndIPUnedited = true;
+		}
 	}
 }

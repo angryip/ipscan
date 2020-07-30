@@ -1,14 +1,14 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.core;
 
-import java.util.Comparator;
-
 import net.azib.ipscan.core.values.Empty;
 import net.azib.ipscan.core.values.NotAvailable;
+
+import java.util.Comparator;
 
 public class ScanningResultComparator implements Comparator<ScanningResult> {
 	

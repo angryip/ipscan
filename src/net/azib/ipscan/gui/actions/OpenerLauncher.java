@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui.actions;
 
@@ -13,7 +13,6 @@ import net.azib.ipscan.core.values.Empty;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.HostnameFetcher;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -31,7 +30,7 @@ public class OpenerLauncher {
 	private final FetcherRegistry fetcherRegistry;
 	private final ScanningResultList scanningResults;
 	
-	@Inject public OpenerLauncher(FetcherRegistry fetcherRegistry, ScanningResultList scanningResults) {
+	public OpenerLauncher(FetcherRegistry fetcherRegistry, ScanningResultList scanningResults) {
 		this.fetcherRegistry = fetcherRegistry;
 		this.scanningResults = scanningResults;
 	}
@@ -59,6 +58,9 @@ public class OpenerLauncher {
 					}
 				}
 			}
+			catch (UserErrorException e) {
+				throw e;
+			}
 			catch (Exception e) {
 				throw new UserErrorException("opener.failed", openerString);
 			}
@@ -72,7 +74,7 @@ public class OpenerLauncher {
 	 */
 	static String[] splitCommand(String command) {
 		StringTokenizer tokenizer = new StringTokenizer(command);
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 		while (tokenizer.hasMoreTokens()) {
 			String token = tokenizer.nextToken(" \t");
 			

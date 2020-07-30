@@ -1,6 +1,6 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
  */
 package net.azib.ipscan.fetchers;
 
@@ -10,8 +10,6 @@ import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.net.PingResult;
 import net.azib.ipscan.core.net.PingerRegistry;
 
-import javax.inject.Inject;
-
 /**
  * PingTTLFetcher shares pinging results with PingFetcher
  * and returns the TTL field of the last received packet.
@@ -20,7 +18,7 @@ import javax.inject.Inject;
  */
 public class PingTTLFetcher extends PingFetcher {
 	
-	@Inject public PingTTLFetcher(PingerRegistry pingerRegistry, ScannerConfig scannerConfig) {
+	public PingTTLFetcher(PingerRegistry pingerRegistry, ScannerConfig scannerConfig) {
 		super(pingerRegistry, scannerConfig);
 	}
 

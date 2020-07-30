@@ -33,10 +33,10 @@ public class FileFeederTest {
 
 	@Test
 	public void simpleHostnames() throws FeederException {
-		StringReader reader = new StringReader("angryip.org, www.google.ee");
+		StringReader reader = new StringReader("angryip.org, hello.xyz.com www.google.ee");
 		FileFeeder fileFeeder = new FileFeeder(reader);
 		assertTrue(fileFeeder.hasNext());
-		assertEquals("angryip.org", fileFeeder.next().getAddress().getHostName());
+		assertEquals("hello.xyz.com", fileFeeder.next().getAddress().getHostName());
 		assertTrue(fileFeeder.hasNext());
 		assertEquals("www.google.ee", fileFeeder.next().getAddress().getHostName());
 		assertFalse(fileFeeder.hasNext());

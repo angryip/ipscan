@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.core.state;
 
@@ -25,7 +25,7 @@ public abstract class StateMachine {
 	private volatile ScanningState state = ScanningState.IDLE;
 	
 	private ReentrantReadWriteLock listenersLock = new ReentrantReadWriteLock();
-	private List<StateTransitionListener> transitionListeners = new ArrayList<StateTransitionListener>();
+	private List<StateTransitionListener> transitionListeners = new ArrayList<>();
 	
 	/**
 	 * @return true if current state is as specified

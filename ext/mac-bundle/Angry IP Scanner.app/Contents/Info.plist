@@ -10,8 +10,6 @@
         <string>ipscan.icns</string>
         <key>CFBundleIdentifier</key>
         <string>net.azib.ipscan</string>
-        <key>CFBundleInfoDictionaryVersion</key>
-        <string>6.0</string>
         <key>CFBundleName</key>
         <string>APPNAME</string>
         <key>CFBundlePackageType</key>
@@ -21,10 +19,12 @@
         <key>CFBundleSignature</key>
         <string>?????</string>
         <key>CFBundleVersion</key>
-        <string>1.0</string>
+        <string>VERSION_NUM</string>
         <key>NSPrincipalClass</key>
         <string>NSApplication</string>
         <key>NSHighResolutionCapable</key>
         <true/>
+        <key>NSRequiresAquaSystemAppearance</key>
+		<false/>
     </dict>
 </plist>

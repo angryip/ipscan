@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.exporters;
 
@@ -56,7 +56,7 @@ public interface Exporter extends Cloneable, Plugin {
 	/**
 	 * Called after the start to provide the whole list of fetchers
 	 * @param fetcherNames
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	void setFetchers(String[] fetcherNames) throws IOException;
 	

@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.fetchers;
 
@@ -15,7 +15,6 @@ import net.azib.ipscan.gui.fetchers.PortsFetcherPrefs;
 import net.azib.ipscan.util.SequenceIterator;
 import net.azib.ipscan.util.ThreadResourceBinder;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
@@ -35,17 +34,17 @@ public class PortsFetcher extends AbstractFetcher {
 	
 	public static final String ID = "fetcher.ports";
 	
-	private static final String PARAMETER_OPEN_PORTS = "openPorts";
-	private static final String PARAMETER_FILTERED_PORTS = "filteredPorts";
+	static final String PARAMETER_OPEN_PORTS = "openPorts";
+	static final String PARAMETER_FILTERED_PORTS = "filteredPorts";
 	
 	private ScannerConfig config;
-	private ThreadResourceBinder<Socket> sockets = new ThreadResourceBinder<Socket>();
+	private ThreadResourceBinder<Socket> sockets = new ThreadResourceBinder<>();
 	
 	// initialize preferences for this scan
 	private PortIterator portIteratorPrototype;
 	protected boolean displayAsRanges = true;	// TODO: make configurable
 	
-	@Inject public PortsFetcher(ScannerConfig scannerConfig) {
+	public PortsFetcher(ScannerConfig scannerConfig) {
 		this.config = scannerConfig;
 	}
 
@@ -76,8 +75,8 @@ public class PortsFetcher extends AbstractFetcher {
 					
 		if (openPorts == null) {
 			// no results are available yet, let's proceed with the scanning
-			openPorts = new TreeSet<Integer>();
-			SortedSet<Integer> filteredPorts = new TreeSet<Integer>();
+			openPorts = new TreeSet<>();
+			SortedSet<Integer> filteredPorts = new TreeSet<>();
 			subject.setParameter(PARAMETER_OPEN_PORTS, openPorts);
 			subject.setParameter(PARAMETER_FILTERED_PORTS, filteredPorts);
 
@@ -87,7 +86,7 @@ public class PortsFetcher extends AbstractFetcher {
 			Iterator<Integer> portsIterator = portIteratorPrototype.copy();
 			if (config.useRequestedPorts && subject.isAnyPortRequested()) {
 				// add requested ports to the iteration
-				portsIterator = new SequenceIterator<Integer>(portsIterator, subject.requestedPortsIterator());
+				portsIterator = new SequenceIterator<>(portsIterator, subject.requestedPortsIterator());
 			}
 			if (!portsIterator.hasNext()) {
 				// no ports are configured for scanning

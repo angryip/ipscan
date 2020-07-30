@@ -1,6 +1,6 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
  */
 package net.azib.ipscan.fetchers;
 
@@ -9,7 +9,6 @@ import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.util.MDNSResolver;
 import net.azib.ipscan.util.NetBIOSResolver;
 
-import javax.inject.Inject;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -47,7 +46,7 @@ public class HostnameFetcher extends AbstractFetcher {
 
 	public static final String ID = "fetcher.hostname";
 
-	@Inject public HostnameFetcher() {}
+	public HostnameFetcher() {}
 
 	public String getId() {
 		return ID;

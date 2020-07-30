@@ -4,35 +4,34 @@ import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
-import net.azib.ipscan.gui.actions.HelpMenuActions;
+import net.azib.ipscan.gui.actions.HelpMenuActions.CheckVersion;
 import net.azib.ipscan.util.GoogleAnalytics;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import javax.inject.Inject;
-
 public class Startup {
-	@Inject Shell shell;
-	@Inject GUIConfig guiConfig;
-	@Inject HelpMenuActions.CheckVersion checkVersion;
+	private Shell shell;
+	private GUIConfig guiConfig;
+	private CheckVersion checkVersion;
 
-	@Inject public Startup() {}
+	public Startup(Shell shell, GUIConfig guiConfig, CheckVersion checkVersion) {
+		this.shell = shell;
+		this.guiConfig = guiConfig;
+		this.checkVersion = checkVersion;
+	}
 
 	public void onStart() {
 		if (guiConfig.isFirstRun) {
 			new GoogleAnalytics().asyncReport("First run");
-			Display.getCurrent().asyncExec(new Runnable() {
-				public void run() {
-					GettingStartedDialog dialog = new GettingStartedDialog();
-					if (Platform.CRIPPLED_WINDOWS)
-						dialog.prependText(Labels.getLabel("text.crippledWindowsInfo"));
-					if (Platform.GNU_JAVA)
-						dialog.prependText(Labels.getLabel("text.gnuJavaInfo"));
+			Display.getCurrent().asyncExec(() -> {
+				GettingStartedDialog dialog = new GettingStartedDialog();
+				if (Platform.CRIPPLED_WINDOWS)
+					dialog.prependText(Labels.getLabel("text.crippledWindowsInfo"));
 
-					shell.forceActive();
-					dialog.open();
-					guiConfig.isFirstRun = false;
-				}
+				shell.forceActive();
+				dialog.open();
+				guiConfig.isFirstRun = false;
+				checkForLatestVersion();
 			});
 		}
 		else if (!Version.getVersion().equals(guiConfig.lastRunVersion)) {
@@ -40,8 +39,13 @@ public class Startup {
 			guiConfig.lastRunVersion = Version.getVersion();
 		}
 		else if (System.currentTimeMillis() - guiConfig.lastVersionCheck > 30L * 24 * 3600 * 1000) {
-			checkVersion.check(false);
-			guiConfig.lastVersionCheck = System.currentTimeMillis();
+			new GoogleAnalytics().asyncReport("Version check " + Version.getVersion());
+			checkForLatestVersion();
 		}
+	}
+
+	private void checkForLatestVersion() {
+		checkVersion.check(false);
+		guiConfig.lastVersionCheck = System.currentTimeMillis();
 	}
 }

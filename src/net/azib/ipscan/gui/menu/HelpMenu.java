@@ -5,13 +5,7 @@ import net.azib.ipscan.gui.actions.HelpMenuActions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-@Singleton
 public class HelpMenu extends AbstractMenu {
-
-	@Inject
 	public HelpMenu(Shell parent,
 					HelpMenuActions.GettingStarted gettingStarted,
 					HelpMenuActions.Website website,

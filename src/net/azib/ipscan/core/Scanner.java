@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.core;
 
@@ -10,9 +10,10 @@ import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 
-import javax.inject.Inject;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Scanner functionality is encapsulated in this class.
@@ -21,10 +22,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Anton Keks
  */
 public class Scanner {
+	private static final Logger LOG = Logger.getLogger(Scanner.class.getName());
 	private FetcherRegistry fetcherRegistry;
 	private Map<Long, Fetcher> activeFetchers = new ConcurrentHashMap<>();
 
-	@Inject public Scanner(FetcherRegistry fetcherRegistry) {
+	public Scanner(FetcherRegistry fetcherRegistry) {
 		this.fetcherRegistry = fetcherRegistry;
 	}
 
@@ -38,20 +40,26 @@ public class Scanner {
 		int fetcherIndex = 0;
 		boolean isScanningInterrupted = false;
 		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
-			activeFetchers.put(Thread.currentThread().getId(), fetcher);
 			Object value = NotScanned.VALUE;
-			if (!subject.isAddressAborted() && !isScanningInterrupted) {
-				// run the fetcher
-				value = fetcher.scan(subject);
-				// check if scanning was interrupted
-				isScanningInterrupted = Thread.currentThread().isInterrupted();
-				if (value == null)
-					value = isScanningInterrupted ? NotScanned.VALUE : NotAvailable.VALUE;
+			try {
+				activeFetchers.put(Thread.currentThread().getId(), fetcher);
+				if (!subject.isAddressAborted() && !isScanningInterrupted) {
+					// run the fetcher
+					value = fetcher.scan(subject);
+					// check if scanning was interrupted
+					isScanningInterrupted = Thread.currentThread().isInterrupted();
+					if (value == null)
+						value = isScanningInterrupted ? NotScanned.VALUE : NotAvailable.VALUE;
+				}
+			}
+			catch (Throwable e) {
+				LOG.log(Level.SEVERE, "", e);
 			}
 			// store the value
 			result.setValue(fetcherIndex, value);
 			fetcherIndex++;
 		}
+		activeFetchers.remove(Thread.currentThread().getId());
 		
 		result.setType(subject.getResultType());
 	}

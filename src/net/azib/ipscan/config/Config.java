@@ -11,13 +11,12 @@ import java.util.prefs.Preferences;
  * @author Anton Keks
  */
 public final class Config {
-	
-	/** Singleton instance */
 	private static Config globalConfig;
 	
 	private Preferences preferences;
 	public String language;
 	public String uuid;
+	public boolean allowReports;
 
 	/** easily accessible scanner configuration */
 	private ScannerConfig scannerConfig;
@@ -40,6 +39,7 @@ public final class Config {
 			uuid = UUID.randomUUID().toString();
 			preferences.put("uuid", uuid);
 		}
+		allowReports = preferences.getBoolean("allowReports", true);
 	}
 
 	/**
@@ -55,6 +55,7 @@ public final class Config {
 	public void store() {
 		preferences.put("language", language);
 		preferences.put("uuid", uuid);
+		preferences.putBoolean("allowReports", allowReports);
 		scannerConfig.store();
 		guiConfig.store();
 		favoritesConfig.store();
@@ -95,11 +96,15 @@ public final class Config {
 
 	public Locale getLocale() {
 		if (language == null || "system".equals(language)) {
-			return System.getProperty("locale") == null ? Locale.getDefault() : new Locale(System.getProperty("locale"));
+			return System.getProperty("locale") == null ? Locale.getDefault() : createLocale(System.getProperty("locale"));
 		}
 		else {
-			return new Locale(language);
+			return createLocale(language);
 		}
+	}
+
+	private Locale createLocale(String locale) {
+		return Locale.forLanguageTag(locale.replace('_', '-'));
 	}
 
 	public String getUUID() {

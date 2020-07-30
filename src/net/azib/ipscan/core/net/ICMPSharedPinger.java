@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.core.net;
 
@@ -37,7 +37,7 @@ public class ICMPSharedPinger implements Pinger {
 	/** a single raw socket for receiving of all ICMP packets */
 	private final RawSocket receivingSocket;
 	/** the map with PingResults, keys are InetAddress */
-	private Map<InetAddress, PingResult> results = new ConcurrentHashMap<InetAddress, PingResult>();
+	private Map<InetAddress, PingResult> results = new ConcurrentHashMap<>();
 	
 	private Thread receiverThread;
 	

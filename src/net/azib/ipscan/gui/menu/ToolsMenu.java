@@ -8,14 +8,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-@Singleton
 public class ToolsMenu extends AbstractMenu {
-
-	@Inject
-		public ToolsMenu(Shell parent,
+	public ToolsMenu(Shell parent,
 				ToolsActions.Preferences preferences,
 				ToolsActions.ChooseFetchers chooseFetchers,
 				ToolsActions.ScanStatistics scanStatistics,
@@ -24,7 +18,6 @@ public class ToolsMenu extends AbstractMenu {
 				ToolsActions.SelectWithPorts selectWithPorts,
 				ToolsActions.SelectWithoutPorts selectWithoutPorts,
 				ToolsActions.SelectInvert selectInvert) {
-
 		super(parent);
 
 		initMenuItem(this, "menu.tools.preferences", "Ctrl+Shift+P", SWT.MOD1 | (Platform.MAC_OS ? ',' : SWT.MOD2 | 'P'), preferences, true);

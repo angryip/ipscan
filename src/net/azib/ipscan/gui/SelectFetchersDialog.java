@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui;
 
@@ -18,20 +18,13 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import static net.azib.ipscan.gui.util.LayoutHelper.*;
 
-/**
- * SelectFetchersDialog
- *
- * @author Anton Keks
- */
 public class SelectFetchersDialog extends AbstractModalDialog {
-	
 	private FetcherRegistry fetcherRegistry;
 
 	private List lastFocusList;
@@ -39,7 +32,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 	private List registeredFetchersList;
 	Map<String, String> registeredFetcherIdsByNames = new HashMap<>();
 
-	@Inject public SelectFetchersDialog(FetcherRegistry fetcherRegistry) {
+	public SelectFetchersDialog(FetcherRegistry fetcherRegistry) {
 		this.fetcherRegistry = fetcherRegistry;
 	}
 	
@@ -59,7 +52,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		selectedLabel.setLayoutData(formData(null, null, new FormAttachment(messageLabel, 5), null));
 				
 		selectedFetchersList = lastFocusList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		selectedFetchersList.setLayoutData(formData(160, 200, new FormAttachment(0), null, new FormAttachment(selectedLabel), null));
+		selectedFetchersList.setLayoutData(formData(160, 250, new FormAttachment(0), null, new FormAttachment(selectedLabel), null));
 		Iterator<Fetcher> i = fetcherRegistry.getSelectedFetchers().iterator();
 		i.next();	// skip IP
 		while (i.hasNext()) {
@@ -105,7 +98,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		registeredLabel.setLayoutData(formData(new FormAttachment(upButton, 10), null, new FormAttachment(messageLabel, 5), null));
 		
 		registeredFetchersList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		registeredFetchersList.setLayoutData(formData(160, 200, new FormAttachment(upButton, 10), null, new FormAttachment(registeredLabel), null));
+		registeredFetchersList.setLayoutData(formData(160, 250, new FormAttachment(upButton, 10), null, new FormAttachment(registeredLabel), null));
 		i = fetcherRegistry.getRegisteredFetchers().iterator();
 		i.next(); // skip IP
 		while (i.hasNext()) {
@@ -144,18 +137,14 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		
 		shell.pack();
 		
-		cancelButton.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				shell.close();
-				shell.dispose();
-			}
+		cancelButton.addListener(SWT.Selection, e -> {
+			shell.close();
+			shell.dispose();
 		});
-		okButton.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
-				saveFetchersToRegistry(selectedFetchersList.getItems());
-				shell.close();
-				shell.dispose();
-			}
+		okButton.addListener(SWT.Selection, event -> {
+			saveFetchersToRegistry(selectedFetchersList.getItems());
+			shell.close();
+			shell.dispose();
 		});
 	}
 

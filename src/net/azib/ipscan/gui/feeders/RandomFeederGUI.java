@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui.feeders;
 
@@ -9,15 +9,9 @@ import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.RandomFeeder;
 import net.azib.ipscan.gui.actions.FeederActions;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
 
 import static net.azib.ipscan.config.Labels.getLabel;
 
@@ -26,15 +20,12 @@ import static net.azib.ipscan.config.Labels.getLabel;
  *
  * @author Anton Keks
  */
-@Singleton
 public class RandomFeederGUI extends AbstractFeederGUI {
 	private Text ipPrototypeText;
 	private Combo ipMaskCombo;
-	private Text hostnameText;
-	private Button ipUpButton;
 	private Spinner countSpinner;
 
-	@Inject public RandomFeederGUI(@Named("feederArea") Composite parent) {
+	public RandomFeederGUI(FeederArea parent) {
 		super(parent);
 		feeder = new RandomFeeder();
 	}
@@ -47,8 +38,8 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		Label ipMaskLabel = new Label(this, SWT.NONE);
         ipMaskCombo = new Combo(this, SWT.NONE);
 		Label hostnameLabel = new Label(this, SWT.NONE);
-		hostnameText = new Text(this, SWT.BORDER);
-		ipUpButton = new Button(this, SWT.NONE);
+		Text hostnameText = new Text(this, SWT.BORDER);
+		Button ipUpButton = new Button(this, SWT.NONE);
 		Label countLabel = new Label(this, SWT.NONE);
         countSpinner = new Spinner(this, SWT.BORDER);
         
@@ -91,14 +82,12 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 		countSpinner.setMaximum(100000000);
 		countSpinner.setMinimum(1);
 		countSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		countSpinner.addTraverseListener(new TraverseListener() {
-			public void keyTraversed(TraverseEvent e) {
-				// this due to a bug either in SWT or GTK:
-				// spinner getText() returns the new value only if
-				// it has lost the focus first
-				ipPrototypeText.forceFocus();
-				countSpinner.forceFocus();
-			}
+		countSpinner.addTraverseListener(e -> {
+			// this due to a bug either in SWT or GTK:
+			// spinner getText() returns the new value only if
+			// it has lost the focus first
+			ipPrototypeText.forceFocus();
+			countSpinner.forceFocus();
 		});
 		
 		pack();

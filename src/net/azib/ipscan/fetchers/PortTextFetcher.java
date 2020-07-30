@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.fetchers;
 
@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
 import java.util.Iterator;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -23,6 +25,7 @@ import java.util.regex.Pattern;
 
 import static java.lang.Thread.currentThread;
 import static java.util.Collections.singleton;
+import static net.azib.ipscan.fetchers.PortsFetcher.PARAMETER_OPEN_PORTS;
 
 /**
  * PortTextFetcher - generic configurable fetcher to read some particular information from a port.
@@ -35,31 +38,31 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 	private ScannerConfig scannerConfig;
 
 	private int defaultPort;
+	protected boolean scanOpenPorts;
 	protected String textToSend;
 	protected Pattern matchingRegexp;
 	protected int extractGroup;
 	
-	public PortTextFetcher(ScannerConfig scannerConfig, int defaultPort, String textToSend, String matchingRegexp) {
+	public PortTextFetcher(ScannerConfig scannerConfig, int defaultPort, String defaultTextToSend, String matchingRegexp) {
 		this.scannerConfig = scannerConfig;
 		this.defaultPort = defaultPort;
-		this.textToSend = getPreferences().get("textToSend", textToSend);
+		this.textToSend = getPreferences().get("textToSend", defaultTextToSend);
 		this.matchingRegexp = Pattern.compile(getPreferences().get("matchingRegexp", matchingRegexp));
 		this.extractGroup = getPreferences().getInt("extractGroup", 1);
 	}
 
 	public Object scan(ScanningSubject subject) {
-		Iterator<Integer> portIterator = subject.isAnyPortRequested() ? subject.requestedPortsIterator() : singleton(defaultPort).iterator();
+		Iterator<Integer> portIterator = getPortIterator(subject);
 
 		while (portIterator.hasNext() && !currentThread().isInterrupted()) {
-			Socket socket = new Socket();
-			try {
+			try (Socket socket = new Socket()) {
 				socket.connect(new InetSocketAddress(subject.getAddress(), portIterator.next()), subject.getAdaptedPortTimeout());
 				socket.setTcpNoDelay(true);
-				socket.setSoTimeout(scannerConfig.portTimeout*2);
+				socket.setSoTimeout(scannerConfig.portTimeout * 2);
 				socket.setSoLinger(true, 0);
-				
+
 				socket.getOutputStream().write(textToSend.getBytes());
-				
+
 				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				String line;
 				while ((line = in.readLine()) != null) {
@@ -68,7 +71,7 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 						// mark that additional info is available
 						subject.setResultType(ResultType.WITH_PORTS);
 						// return the required contents
-						return matcher.group(extractGroup);
+						return getResult(matcher, socket.getPort());
 					}
 				}
 			}
@@ -84,16 +87,28 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 			catch (IOException e) {
 				LOG.log(Level.FINE, subject.getAddress().toString(), e);
 			}
-			finally {
-				try {
-					socket.close();
-				}
-				catch (IOException ignore) {}
-			}
 		}
 		return null;
 	}
-	
+
+	protected String getResult(Matcher matcher, int port) {
+		String result = matcher.group(extractGroup);
+		return result.isEmpty() ? String.valueOf(port) : result;
+	}
+
+	private Iterator<Integer> getPortIterator(ScanningSubject subject) {
+		if (scanOpenPorts) {
+			@SuppressWarnings("unchecked")
+			SortedSet<Integer> openPorts = (SortedSet<Integer>) subject.getParameter(PARAMETER_OPEN_PORTS);
+			if (openPorts != null) {
+				SortedSet<Integer> ports = new TreeSet<>(openPorts);
+				ports.add(defaultPort);
+				return ports.iterator();
+			}
+		}
+		return subject.isAnyPortRequested() ? subject.requestedPortsIterator() : singleton(defaultPort).iterator();
+	}
+
 	@Override
 	public Class<? extends FetcherPrefs> getPreferencesClass() {
 		return PortTextFetcherPrefs.class;

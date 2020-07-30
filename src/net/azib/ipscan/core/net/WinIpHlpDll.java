@@ -30,7 +30,7 @@ public interface WinIpHlpDll extends Library {
 	class AutoOrderedStructure extends Structure {
 		// this is a requirement of newer JNA, possibly it won't work on some JVM, but probability is quite small
 		@Override protected List<String> getFieldOrder() {
-			ArrayList<String> fields = new ArrayList<String>();
+			ArrayList<String> fields = new ArrayList<>();
 			for (Field field : getClass().getFields()) {
 				if (!isStatic(field.getModifiers()))
 					fields.add(field.getName());
@@ -45,6 +45,11 @@ public interface WinIpHlpDll extends Library {
 	Pointer IcmpCreateFile();
 
 	/**
+	 * Wrapper for Microsoft's <a href="https://docs.microsoft.com/en-us/windows/desktop/api/icmpapi/nf-icmpapi-icmp6createfile">Icmp6CreateFile</a>
+	 */
+	Pointer Icmp6CreateFile();
+
+	/**
 	 * Wrapper for Microsoft's <a href="http://msdn.microsoft.com/en-us/library/aa366043.aspx">IcmpCloseHandle</a>
 	 */
 	boolean IcmpCloseHandle(Pointer hIcmp);
@@ -55,6 +60,24 @@ public interface WinIpHlpDll extends Library {
 	int IcmpSendEcho(
 			Pointer hIcmp,
 			IpAddrByVal destinationAddress,
+			Pointer requestData,
+			short requestSize,
+			IpOptionInformationByRef requestOptions,
+			Pointer replyBuffer,
+			int replySize,
+			int timeout
+	);
+
+	/**
+	 * Wrapper for Microsoft's <a href="https://docs.microsoft.com/en-us/windows/desktop/api/icmpapi/nf-icmpapi-icmp6sendecho2">Icmp6SendEcho2</a>
+	 */
+	int Icmp6SendEcho2(
+			Pointer hIcmp,
+			Pointer event,
+			Pointer apcRoutine,
+			Pointer apcContext,
+			Ip6SockAddrByRef sourceAddress,
+			Ip6SockAddrByRef destinationAddress,
 			Pointer requestData,
 			short requestSize,
 			IpOptionInformationByRef requestOptions,
@@ -78,6 +101,17 @@ public interface WinIpHlpDll extends Library {
 	}
 
 	class IpAddrByVal extends IpAddr implements Structure.ByValue {
+	}
+
+	class Ip6SockAddr extends AutoOrderedStructure {
+		public short family = 10;
+		public short port;
+		public int flowInfo;
+		public byte[] bytes = new byte[16];
+		public int scopeId;
+	}
+
+	class Ip6SockAddrByRef extends Ip6SockAddr implements Structure.ByReference {
 	}
 
 	class IpOptionInformation extends AutoOrderedStructure {
@@ -109,6 +143,23 @@ public interface WinIpHlpDll extends Library {
 		}
 
 		public IcmpEchoReply(Pointer p) {
+			useMemory(p);
+			read();
+		}
+	}
+
+	class Icmp6EchoReply extends AutoOrderedStructure {
+		public short port;
+		public byte[] flowInfo = new byte[4];
+		public byte[] addressBytes = new byte[16];
+		public int scopeId;
+		public int status;
+		public int roundTripTime;
+
+		public Icmp6EchoReply() {
+		}
+
+		public Icmp6EchoReply(Pointer p) {
 			useMemory(p);
 			read();
 		}

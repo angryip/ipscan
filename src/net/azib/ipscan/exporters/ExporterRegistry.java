@@ -1,12 +1,10 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.exporters;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,14 +16,12 @@ import java.util.Map;
  *
  * @author Anton Keks
  */
-@Singleton
 public class ExporterRegistry implements Iterable<Exporter> {
-	
 	/** All available Exporter implementations, Map of Exporter instances (prototypes) */
 	private Map<String, Exporter> exporters;
 
-	@Inject public ExporterRegistry(List<Exporter> registeredExporters) {
-		exporters = new LinkedHashMap<String, Exporter>();
+	public ExporterRegistry(List<Exporter> registeredExporters) {
+		exporters = new LinkedHashMap<>();
 
 		for (Exporter exporter : registeredExporters) {
 			exporters.put(exporter.getFilenameExtension(), exporter);
@@ -45,7 +41,6 @@ public class ExporterRegistry implements Iterable<Exporter> {
 	 * @throws ExporterException in case such exporter is not registered
 	 */
 	public Exporter createExporter(String fileName) throws ExporterException {
-		
 		int extensionPos = fileName.lastIndexOf('.') + 1;
 		String extension = fileName.substring(extensionPos);
 		

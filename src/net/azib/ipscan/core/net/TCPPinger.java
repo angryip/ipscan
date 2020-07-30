@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.core.net;
 
@@ -28,7 +28,7 @@ public class TCPPinger implements Pinger {
 	private static final Logger LOG = LoggerFactory.getLogger();
 
 	// try different ports in sequence, starting with 80 (which is most probably not filtered)
-	private static final int[] PROBE_TCP_PORTS = {80, 80, 443, 8080, 22, 7};
+	private static final int[] PROBE_TCP_PORTS = {80, 7, 443, 139, 22};
 
 	private int timeout;
 
@@ -36,7 +36,7 @@ public class TCPPinger implements Pinger {
 		this.timeout = timeout;
 	}
 
-	public PingResult ping(ScanningSubject subject, int count) throws IOException {
+	public PingResult ping(ScanningSubject subject, int count) {
 		PingResult result = new PingResult(subject.getAddress(), count);
 		int workingPort = -1;
 

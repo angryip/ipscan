@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.core.net;
 
@@ -11,8 +11,6 @@ import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.fetchers.FetcherException;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
@@ -27,7 +25,6 @@ import static java.util.logging.Level.SEVERE;
  *
  * @author Anton Keks
  */
-@Singleton
 public class PingerRegistry {
 	private static final Logger LOG = LoggerFactory.getLogger();
 	
@@ -36,17 +33,18 @@ public class PingerRegistry {
 	/** All available Pinger implementations */
 	Map<String, Class<? extends Pinger>> pingers;
 
-	@Inject public PingerRegistry(ScannerConfig scannerConfig) {
+	public PingerRegistry(ScannerConfig scannerConfig) {
 		this.scannerConfig = scannerConfig;
 		
 		pingers = new LinkedHashMap<>();
 		if (Platform.WINDOWS)
 			pingers.put("pinger.windows", WindowsPinger.class);
-		pingers.put("pinger.icmp", ICMPSharedPinger.class);
-		pingers.put("pinger.icmp2", ICMPPinger.class);
+		if (Platform.LINUX && Platform.ARCH_64)
+			pingers.put("pinger.icmp", ICMPSharedPinger.class);
 		pingers.put("pinger.udp", UDPPinger.class);
 		pingers.put("pinger.tcp", TCPPinger.class);
 		pingers.put("pinger.combined", CombinedUnprivilegedPinger.class);
+		pingers.put("pinger.java", JavaPinger.class);
 	}
 
 	public String[] getRegisteredNames() {

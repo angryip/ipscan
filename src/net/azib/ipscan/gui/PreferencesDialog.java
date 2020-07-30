@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui;
 
@@ -25,15 +25,11 @@ import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 /**
  * Preferences Dialog
  *
  * @author Anton Keks
  */
-@Singleton
 public class PreferencesDialog extends AbstractModalDialog {
 	private final PingerRegistry pingerRegistry;
 	private final Config globalConfig;
@@ -68,7 +64,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 	private Button askConfirmationCheckbox;
 	private Combo languageCombo;
 
-	@Inject public PreferencesDialog(PingerRegistry pingerRegistry, Config globalConfig, ScannerConfig scannerConfig, GUIConfig guiConfig) {
+	public PreferencesDialog(PingerRegistry pingerRegistry, Config globalConfig, ScannerConfig scannerConfig, GUIConfig guiConfig) {
 		this.pingerRegistry = pingerRegistry;
 		this.globalConfig = globalConfig;
 		this.scannerConfig = scannerConfig;
@@ -325,11 +321,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		adaptTimeoutCheckbox = new Button(timingGroup, SWT.CHECK);
 		adaptTimeoutCheckbox.setText(Labels.getLabel("preferences.ports.timing.adaptTimeout"));
 		adaptTimeoutCheckbox.setLayoutData(gridData1);
-		adaptTimeoutCheckbox.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
-				minPortTimeoutText.setEnabled(adaptTimeoutCheckbox.getSelection());
-			}
-		});
+		adaptTimeoutCheckbox.addListener(SWT.Selection, event -> minPortTimeoutText.setEnabled(adaptTimeoutCheckbox.getSelection()));
 
 		label = new Label(timingGroup, SWT.NONE);
 		label.setText(Labels.getLabel("preferences.ports.timing.minTimeout"));

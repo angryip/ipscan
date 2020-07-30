@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui.actions;
 
@@ -12,14 +12,12 @@ import net.azib.ipscan.gui.AboutDialog;
 import net.azib.ipscan.gui.GettingStartedDialog;
 import net.azib.ipscan.gui.InfoDialog;
 import net.azib.ipscan.gui.StatusBar;
-import net.azib.ipscan.util.GoogleAnalytics;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 
-import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -32,7 +30,7 @@ import static net.azib.ipscan.util.IOUtils.closeQuietly;
 public class HelpMenuActions {
 
 	public static final class GettingStarted implements Listener {
-		@Inject public GettingStarted() {}
+		public GettingStarted() {}
 
 		public void handleEvent(Event event) {
 			new GettingStartedDialog().open();
@@ -42,7 +40,7 @@ public class HelpMenuActions {
 	public static final class CommandLineUsage implements Listener {
 		private CommandLineProcessor cli;
 
-		@Inject public CommandLineUsage(CommandLineProcessor cli) {
+		public CommandLineUsage(CommandLineProcessor cli) {
 			this.cli = cli;
 		}
 
@@ -56,7 +54,7 @@ public class HelpMenuActions {
 	public static final class About implements Listener {
 		private AboutDialog aboutDialog;
 
-		@Inject public About(AboutDialog aboutDialog) {
+		public About(AboutDialog aboutDialog) {
 			this.aboutDialog = aboutDialog;
 		}
 
@@ -66,7 +64,7 @@ public class HelpMenuActions {
 	}
 
 	public static final class Website implements Listener {
-		@Inject public Website() {}
+		public Website() {}
 
 		public void handleEvent(Event event) {
 			BrowserLauncher.openURL(Version.WEBSITE);
@@ -74,7 +72,7 @@ public class HelpMenuActions {
 	}
 
 	public static final class FAQ implements Listener {
-		@Inject public FAQ() {}
+		public FAQ() {}
 
 		public void handleEvent(Event event) {
 			BrowserLauncher.openURL(Version.FAQ_URL);
@@ -82,7 +80,7 @@ public class HelpMenuActions {
 	}
 
 	public static final class Issues implements Listener {
-		@Inject public Issues() {}
+		public Issues() {}
 
 		public void handleEvent(Event event) {
 			BrowserLauncher.openURL(Version.ISSUES_URL);
@@ -90,7 +88,7 @@ public class HelpMenuActions {
 	}
 
 	public static final class Plugins implements Listener {
-		@Inject public Plugins() {}
+		public Plugins() {}
 
 		public void handleEvent(Event event) {
 			BrowserLauncher.openURL(Version.PLUGINS_URL);
@@ -100,7 +98,7 @@ public class HelpMenuActions {
 	public static final class CheckVersion implements Listener {
 		private final StatusBar statusBar;
 		
-		@Inject public CheckVersion(StatusBar statusBar) {
+		public CheckVersion(StatusBar statusBar) {
 			this.statusBar = statusBar;
 		}
 
@@ -108,10 +106,8 @@ public class HelpMenuActions {
 			check(true);
 		}
 		
-		public void check(final boolean userEvent) {
+		public void check(final boolean userRequest) {
 			statusBar.setStatusText(Labels.getLabel("state.retrievingVersion"));
-
-			new GoogleAnalytics().asyncReport("Version check " + Version.getVersion());
 
 			Runnable checkVersionCode = new Runnable() {
 				public void run() {
@@ -132,13 +128,13 @@ public class HelpMenuActions {
 							message = message.replaceFirst("%VERSION", Version.getVersion());
 							messageStyle = SWT.ICON_QUESTION | SWT.YES | SWT.NO;
 						}
-						else if (userEvent) {
+						else if (userRequest) {
 							message = Labels.getLabel("text.version.latest");
 							messageStyle = SWT.ICON_INFORMATION;
 						}
 					}
 					catch (Exception e) {
-						if (userEvent) message = Labels.getLabel("exception.UserErrorException.version.latestFailed");
+						if (userRequest) message = Labels.getLabel("exception.UserErrorException.version.latestFailed");
 						Logger.getLogger(getClass().getName()).log(WARNING, message, e);
 					}
 					finally {
@@ -147,16 +143,14 @@ public class HelpMenuActions {
 						// show the box in the SWT thread
 						final String messageToShow = message;
 						final int messageStyleToShow = messageStyle;
-						Display.getDefault().asyncExec(new Runnable() {
-							public void run() {
-								statusBar.setStatusText(null);
-								if (messageToShow == null) return;
-								MessageBox messageBox = new MessageBox(statusBar.getShell(), messageStyleToShow | SWT.SHEET);
-								messageBox.setText(Version.getFullName());
-								messageBox.setMessage(messageToShow);
-								if (messageBox.open() == SWT.YES) {
-									BrowserLauncher.openURL(Version.DOWNLOAD_URL);
-								}
+						Display.getDefault().asyncExec(() -> {
+							statusBar.setStatusText(null);
+							if (messageToShow == null) return;
+							MessageBox messageBox = new MessageBox(statusBar.getShell(), messageStyleToShow | SWT.SHEET);
+							messageBox.setText(Version.getFullName());
+							messageBox.setMessage(messageToShow);
+							if (messageBox.open() == SWT.YES) {
+								BrowserLauncher.openURL(Version.DOWNLOAD_URL);
 							}
 						});
 					}

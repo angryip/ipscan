@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui.actions;
 
@@ -25,9 +25,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
 import java.net.InetAddress;
 
 import static net.azib.ipscan.core.state.ScanningState.*;
@@ -39,9 +36,7 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
  * 
  * @author Anton Keks
  */
-@Singleton
 public class StartStopScanningAction implements SelectionListener, ScanningProgressCallback, StateTransitionListener {
-	
 	private ScannerDispatcherThreadFactory scannerThreadFactory;
 	private ScannerDispatcherThread scannerThread;
 	private GUIConfig guiConfig;
@@ -83,10 +78,9 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		buttonTexts[KILLING.ordinal()] = Labels.getLabel("button.kill");
 	}
 
-	@Inject
 	public StartStopScanningAction(ScannerDispatcherThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable,
 								   StatusBar statusBar, FeederGUIRegistry feederRegistry, PingerRegistry pingerRegistry,
-								   @Named("startStopButton") Button startStopButton, GUIConfig guiConfig) {
+								   Button startStopButton, GUIConfig guiConfig) {
 		this(startStopButton.getDisplay());
 
 		this.scannerThreadFactory = scannerThreadFactory;
@@ -205,7 +199,6 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				statusBar.setStatusText(Labels.getLabel("state.killingThreads"));
 				break;
 		}
-		// change button image
 		button.setImage(buttonImages[state.ordinal()]);
 		button.setText(buttonTexts[state.ordinal()]);
 	}
@@ -250,27 +243,25 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 
 	public void updateProgress(final InetAddress currentAddress, final int runningThreads, final int percentageComplete) {
 		if (display.isDisposed()) return;
-		display.asyncExec(new Runnable() {
-			public void run() {
-				if (statusBar.isDisposed()) return;
-				
-				// update status bar
-				if (currentAddress != null) {
-					statusBar.setStatusText(Labels.getLabel("state.scanning") + currentAddress.getHostAddress());
-				}					
-				statusBar.setRunningThreads(runningThreads);
-				statusBar.setProgress(percentageComplete);
-				if (taskBarItem != null) taskBarItem.setProgress(percentageComplete);
-				
-				// show percentage in main window title
-				if (!stateMachine.inState(IDLE))
-					statusBar.getShell().setText(percentageComplete + "% - " + mainWindowTitle);
-				else
-					statusBar.getShell().setText(mainWindowTitle);
+		display.asyncExec(() -> {
+			if (statusBar.isDisposed()) return;
 
-				// change button image according to the current state
-				button.setImage(buttonImages[stateMachine.getState().ordinal()]);
+			// update status bar
+			if (currentAddress != null) {
+				statusBar.setStatusText(Labels.getLabel("state.scanning") + currentAddress.getHostAddress());
 			}
+			statusBar.setRunningThreads(runningThreads);
+			statusBar.setProgress(percentageComplete);
+			if (taskBarItem != null) taskBarItem.setProgress(percentageComplete);
+
+			// show percentage in main window title
+			if (!stateMachine.inState(IDLE))
+				statusBar.getShell().setText(percentageComplete + "% - " + mainWindowTitle);
+			else
+				statusBar.getShell().setText(mainWindowTitle);
+
+			// change button image according to the current state
+			button.setImage(buttonImages[stateMachine.getState().ordinal()]);
 		});
 	}
 

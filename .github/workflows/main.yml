@@ -1,0 +1,52 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build-all:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '8'
+        architecture: x64
+    - name: Deps
+      run: sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install wine32
+    - name: Build
+      run: xvfb-run -a ./gradlew --info test all
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: All binaries
+        path: build/libs
+
+  build-mac:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '8'
+    - run: ./gradlew mac --info
+      env:
+        APPLE_USER: ${{ secrets.APPLE_USER }}
+        APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: macOS binary
+        path: build/libs
+
+  build-win:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '8'
+        architecture: x86
+    - run: ./gradlew test win-installer

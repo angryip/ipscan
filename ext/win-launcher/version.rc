@@ -1,0 +1,23 @@
+1 ICON "../../resources/images/icon.ico"
+1 VERSIONINFO
+FILEVERSION     3,9,9,9
+PRODUCTVERSION  3,9,9,9
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904E4"
+    BEGIN
+      VALUE "CompanyName", "angryip.org"
+      VALUE "FileDescription", "Angry IP Scanner - fast and friendly network scanner"
+      VALUE "InternalName", "ipscan"
+      VALUE "LegalCopyright", "Anton Keks"
+      VALUE "OriginalFilename", "ipscan.exe"
+      VALUE "ProductName", "Angry IP Scanner"
+      VALUE "ProductVersion", "3+"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x409, 1252
+  END
+END

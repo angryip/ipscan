@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 
 package net.azib.ipscan.config;
@@ -17,8 +17,6 @@ import net.azib.ipscan.exporters.ExporterRegistry;
 import net.azib.ipscan.feeders.FeederCreator;
 import net.azib.ipscan.feeders.FeederRegistry;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.io.File;
 
 /**
@@ -26,9 +24,8 @@ import java.io.File;
  *
  * @author Anton Keks
  */
-@Singleton
 public class CommandLineProcessor implements CommandProcessor, StateTransitionListener {
-	private final FeederRegistry<? extends FeederCreator> feederRegistry;
+	private final FeederRegistry feederRegistry;
 	private final ExporterRegistry exporters;
 	private StateMachine stateMachine;
 	private ScanningResultList scanningResults;
@@ -42,12 +39,12 @@ public class CommandLineProcessor implements CommandProcessor, StateTransitionLi
 	boolean autoQuit;
 	boolean appendToFile;
 	
-	CommandLineProcessor(FeederRegistry<? extends FeederCreator> feederCreators, ExporterRegistry exporters) {
+	CommandLineProcessor(FeederRegistry feederCreators, ExporterRegistry exporters) {
 		this.feederRegistry = feederCreators;
 		this.exporters = exporters;		
 	}
 
-	@Inject public CommandLineProcessor(FeederRegistry<? extends FeederCreator> feederCreators, ExporterRegistry exporters, StateMachine stateMachine, ScanningResultList scanningResults) {
+	public CommandLineProcessor(FeederRegistry feederCreators, ExporterRegistry exporters, StateMachine stateMachine, ScanningResultList scanningResults) {
 		this(feederCreators, exporters);
 		this.stateMachine = stateMachine;
 		this.scanningResults = scanningResults;

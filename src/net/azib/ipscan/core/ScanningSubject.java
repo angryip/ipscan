@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.core;
 
@@ -10,6 +10,7 @@ import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.net.PingResult;
 
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.util.*;
 
@@ -51,6 +52,10 @@ public class ScanningSubject {
 	
 	public InetAddress getAddress() {
 		return address;
+	}
+
+	public boolean isIPv6() {
+		return address instanceof Inet6Address;
 	}
 	
 	/**

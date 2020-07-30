@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.feeders;
 
@@ -55,7 +55,7 @@ public class RescanFeeder extends AbstractFeeder {
 			throw new IllegalArgumentException("no IP addresses specified");
 		
 		try {
-			addresses = new ArrayList<InetAddress>(ips.length);
+			addresses = new ArrayList<>(ips.length);
 			for (String s : ips) {
 				addresses.add(InetAddress.getByName(s));
 			}

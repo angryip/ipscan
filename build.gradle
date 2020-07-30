@@ -1,0 +1,311 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "net.sf.proguard:proguard-gradle:6.2.2"
+    }
+}
+
+plugins {
+    id "java"
+    id "com.palantir.git-version" version "0.12.2"
+}
+
+def osName = System.getProperty("os.name")
+def is64 = System.getProperty("os.arch").contains("64")
+def platform = osName.contains("Linux") ? 'linux' + (is64 ? '64' : '') :
+               osName.contains("Windows") ? 'win' + (is64 ? '64' : '32') :
+               osName.contains("OS X") ? 'mac' : 'unknown'
+
+version = gitVersion()
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+sourceSets {
+    main {
+        java { srcDirs "src", "ext/rocksaw/src", "ext/vserv-tcpip/src/java" }
+        resources { srcDirs "config", "src", "resources" }
+    }
+    test {
+        java { srcDir "test" }
+        resources { srcDir "test" }
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    // compile with current platform's SWT, but bundle a different one for each binary
+    compileOnly files("lib/swt-${platform}.jar")
+    compileOnly files('lib/jna.jar')
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.23.0'
+}
+
+configurations {
+    testImplementation.extendsFrom(compileOnly)
+    runtimeClasspath.extendsFrom(compileOnly)
+}
+
+compileJava.options.annotationProcessorGeneratedSourcesDirectory = new File('build/generated')
+
+test {
+    if (platform == "mac") {
+        jvmArgs "-XstartOnFirstThread"
+        println("WARNING: tests that touch GUI will fail on Mac due to Cocoa restrictions and Gradle unable to run tests on main thread")
+    }
+}
+
+def packageTask(String platform, def moreJars = [], def moreLibs = [], Closure doMore) {
+    return tasks.create(platform, Jar) {
+        dependsOn = ['classes']
+        manifest {
+           attributes 'Implementation-Title': 'Angry IP Scanner',
+               'Implementation-Version': version,
+               'Main-Class': 'net.azib.ipscan.Main',
+               'Class-Path': platform == "any" ? "/usr/share/java/swt4.jar /usr/lib/eclipse/swt.jar ./" : "./",
+               'Title': 'Angry IP Scanner',
+               'Version': version,
+               'Build-Date': java.time.LocalDate.now().toString(),
+               'URL': 'https://angryip.org/'
+        }
+        baseName = project.name + '-' + platform
+        from {
+           (configurations.compile + files(platform == "any" ? [] : "lib/swt-${platform}.jar") + files(moreJars))
+                   .collect { it.isDirectory() ? it : zipTree(it) } +
+           moreLibs
+        }
+        exclude(
+           'version.txt',
+           'images/**/*.svg',
+           'chrome.manifest',
+           'swt.js',
+           'swt.xpt',
+           // GTK stuff
+           'libswt-awt-gtk-*.so',
+           'libswt-glx-gtk-*.so',
+           'libswt-webkit-gtk-*.so',
+           // Win32 stuff
+           'swt-awt-*.dll',
+           'swt-wgl-*.dll',
+           'swt-gdip-*.dll',
+           'swt-xulrunner-*.dll',
+           'swt-webkit-*.dll',
+           // Mac stuff
+           'libswt-awt-*.jnilib',
+        )
+        with jar
+
+        if (platform != "any")
+            finalizedBy minimizeTask(platform, doMore)
+        else
+            doLast(doMore)
+    }
+}
+
+def minimizeTask(String platform, Closure doMore) {
+    return tasks.create("${platform}.min", proguard.gradle.ProGuardTask) {
+        injars "build/libs/ipscan-${platform}-${version}.jar"
+        outjars "build/libs/ipscan-${platform}-${version}.min.jar"
+        libraryjars System.getProperty('java.home') + "/jre/lib/rt.jar" // Java 8
+        libraryjars System.getProperty('java.home') + "/lib/rt.jar" // Zulu Java 8
+        libraryjars System.getProperty('java.home') + "/jmods/java.base.jmod"
+        libraryjars System.getProperty('java.home') + "/jmods/java.desktop.jmod"
+        libraryjars System.getProperty('java.home') + "/jmods/java.logging.jmod"
+        libraryjars System.getProperty('java.home') + "/jmods/java.net.http.jmod"
+        libraryjars System.getProperty('java.home') + "/jmods/java.prefs.jmod"
+        libraryjars 'lib/jna.jar'
+        dontobfuscate
+        dontoptimize
+        dontnote '**'
+        configuration 'lib/swt.pro'
+        configuration 'lib/jna.pro'
+
+        def keepClasses = [
+            'net.azib.ipscan.**',
+            'org.savarese.rocksaw.**',
+        ]
+
+        for (keepClass in keepClasses) {
+            keep access: 'public', name: keepClass, {
+                method access: 'public'
+            }
+        }
+
+        doLast {
+            ant.move(file: "build/libs/ipscan-${platform}-${version}.min.jar", tofile: "build/libs/ipscan-${platform}-${version}.jar")
+            doMore()
+        }
+    }
+}
+
+def winLauncher(def platform) {
+    ant.concat(destfile: "build/libs/${project.name}-${platform}-${version}.exe", binary: true) {
+        ant.fileset(file: "ext/win-launcher/launcher.exe")
+        ant.fileset(file: "build/libs/${project.name}-${platform}-${version}.jar")
+    }
+    ant.delete(file: "build/libs/${project.name}-${platform}-${version}.jar")
+}
+
+def deb(def platform, def arch, def moreDeps = '') {
+    def dist = buildDir.path + '/libs/deb'
+    ant.mkdir(dir: dist)
+    ant.copy(todir: dist) {
+        ant.fileset(dir: "ext/deb-bundle")
+    }
+    ant.copy(file: "build/libs/${project.name}-${platform}-${version}.jar", todir:"${dist}/usr/lib/ipscan")
+    ant.copy(file: "resources/images/icon128.png", tofile:"${dist}/usr/share/pixmaps/ipscan.png")
+
+    ant.replace(file: "${dist}/DEBIAN/control") {
+        ant.replacefilter(token: "VERSION", value: version)
+        ant.replacefilter(token: "ARCH", value: arch)
+        ant.replacefilter(token: "DEPENDS", value: moreDeps)
+    }
+
+    ant.exec(executable: "chmod", dir: dist, failonerror: true) {
+        ant.arg(line: "a+x usr/bin/ipscan usr/lib/ipscan/${project.name}-${platform}-${version}.jar")
+    }
+    ant.exec(executable: 'fakeroot', dir: dist + '/..', failonerror: true) {
+        ant.arg(line: "dpkg-deb -b deb ${project.name}_${version}_${arch}.deb")
+    }
+    ant.delete(dir: dist)
+}
+
+def rpm(def platform, def arch) {
+    def dist = buildDir.path + '/libs/rpm'
+    def rpmVersion = version.replace('-', '.')
+    ant.mkdir(dir: dist)
+    ant.copy(todir: dist) {
+        ant.fileset(dir: "ext/rpmbuild")
+    }
+    ant.replace(file: "${dist}/SPECS/ipscan.spec") {
+        ant.replacefilter(token: "RPM_VERSION", value: rpmVersion)
+        ant.replacefilter(token: "VERSION", value: version)
+    }
+    ant.exec(executable: "rpmbuild", dir: dist, failonerror: true) {
+        ant.arg(line: "--target ${arch} --define \"_topdir ${new File(dist).absolutePath}\" --define \"platform ${platform}\" -bb SPECS/ipscan.spec")
+    }
+    ant.move(file: "${dist}/RPMS/${arch}/ipscan-${rpmVersion}-1.${arch}.rpm", todir:'build/libs')
+    ant.delete(dir: dist)
+}
+
+packageTask('linux64', [], 'ext/rocksaw/lib/linux64/librocksaw.so') {
+    deb('linux64', 'amd64')
+    rpm('linux64', 'x86_64')
+}
+
+packageTask('any') {
+    deb('any', 'all', 'libswt-gtk-4-java, libswt-cairo-gtk-4-jni,')
+}
+
+packageTask('win32', 'lib/jna-win32.jar', 'ext/rocksaw/lib/rocksaw.dll') {
+    winLauncher('win32')
+}
+
+packageTask('win64', 'lib/jna-win64.jar') {
+    winLauncher('win64')
+}
+
+packageTask('mac') {
+    def dist = buildDir.path + '/libs'
+    def name = 'Angry IP Scanner'
+    ant.copy(todir: dist) {
+        ant.fileset(dir: "ext/mac-bundle")
+    }
+
+    ant.copy(file: "${dist}/${project.name}-mac-${version}.jar", todir: "${dist}/${name}.app/Contents/MacOS")
+
+    ant.replace(file: "${dist}/${name}.app/Contents/Info.plist") {
+        ant.replacefilter(token: "APPNAME", value: name)
+        ant.replacefilter(token: "VERSION_NUM", value: version.replaceFirst('-.*', ''))
+        ant.replacefilter(token: "VERSION", value: version)
+    }
+
+    def zipName = "${dist}/${project.name}-mac-${version}.zip"
+    ant.zip(destfile: "${dist}/${project.name}-mac-${version}.zip") {
+        ant.zipfileset(dir: "${dist}/${name}.app", excludes: "Contents/MacOS/ipscan", prefix: "${name}.app")
+        // this one should be executable
+        ant.zipfileset(dir: "${dist}/${name}.app", includes: "Contents/MacOS/ipscan", prefix: "${name}.app", filemode: "755")
+    }
+
+    if (System.getenv("APPLE_USER")) {
+        // TODO: codesign --sign Example --options runtime --entitlements test/test.entitlements --force build/Release/test.app
+        // TODO: https://developer.apple.com/documentation/xcode/notarizing_macos_software_before_distribution/customizing_the_notarization_workflow
+        println("Sending zip file to Apple for notarization")
+        ant.exec(executable: "xcrun") {
+            ant.arg(value: "altool")
+            ant.arg(value: "--list-providers")
+            ant.arg(value: "--username")
+            ant.arg(value: System.getenv("APPLE_USER"))
+            ant.arg(value: "--password")
+            ant.arg(value: System.getenv("APPLE_PASSWORD"))
+        }
+        ant.exec(executable: "xcrun") {
+            ant.arg(value: "altool")
+            ant.arg(value: "--notarize-app")
+            ant.arg(value: "--primary-bundle-id")
+                ant.arg(value: "net.azib.ipscan.zip")
+            ant.arg(value: "--username")
+                ant.arg(value: System.getenv("APPLE_USER"))
+            ant.arg(value: "--password")
+                ant.arg(value: System.getenv("APPLE_PASSWORD"))
+            ant.arg(value: "--file")
+                ant.arg(value: zipName)
+        }
+    }
+
+    ant.delete(dir: "${dist}/${name}.app")
+    ant.delete(file: "${dist}/${project.name}-mac-${version}.jar")
+}
+
+task 'win-installer'(dependsOn: ['win32', 'win64']) {
+    doLast {
+        def nsisVersion = "3.05"
+        def nsis = "nsis-$nsisVersion"
+        def installerDir = 'ext/win-installer'
+        ant.get(src: "https://sourceforge.net/projects/nsis/files/NSIS%203/${nsisVersion}/${nsis}.zip/download", dest: "$installerDir/${nsis}.zip", skipexisting: 'true')
+        ant.unzip(src: "${installerDir}/${nsis}.zip", dest: installerDir)
+        ant.replace(file: "${installerDir}/InstallerConfig.nsh") {
+            ant.replacefilter(token: "VERSION_MINOR", value: "5")
+            ant.replacefilter(token: "VERSION", value: version)
+        }
+        ant.copy(file: "build/libs/${project.name}-win32-${version}.exe", tofile:"${installerDir}/AppFiles32/ipscan.exe")
+        ant.copy(file: "build/libs/${project.name}-win64-${version}.exe", tofile:"${installerDir}/AppFiles64/ipscan.exe")
+        if (platform.startsWith('linux')) {
+            ant.exec(dir: installerDir, executable: "wine", failOnError: true) {
+                ant.arg(value: "${nsis}/makensis.exe")
+                ant.arg(value: "Installer/Installer.nsi")
+            }
+        }
+        else {
+            ant.exec(dir: installerDir, executable: "${nsis}/makensis.exe", vmlauncher: false, failOnError: true) {
+                ant.arg(value: "Installer/Installer.nsi")
+            }
+        }
+        ant.move(file: "${installerDir}/ipscan-${version}-setup.exe", todir:"build/libs")
+        ant.exec(command: "git checkout ${installerDir}/InstallerConfig.nsh")
+    }
+}
+
+task all(dependsOn: ['any', 'linux64', 'mac', 'win-installer'])
+task current(dependsOn: [platform])
+
+task info {
+    doLast {
+        println "This script will build ${project.name} ${version}"
+        println "Targets (some may work only on Linux):"
+        println "  all           - builds binaries for all OSs"
+        println "  current       - build for current platform ($platform)"
+        println "  linux64       - builds only Linux 64-bit binary"
+        println "  any           - doesn't bundle SWT, making it possible to run on ARM/Raspbian with libswt provided by OS (Experimental)"
+        println "  mac           - builds only Mac binary"
+        println "  win32         - builds only Windows binary"
+        println "  win64         - builds only Windows 64-bit binary"
+        println "  win-installer - packages a Windows installer (including both 32 and 64-bit binaries)"
+    }
+}
+
+defaultTasks 'info'

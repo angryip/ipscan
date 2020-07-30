@@ -1,3 +1,59 @@
+Changes in 3.7.2:
+- Fix choosing openers from main menu on macOS #243
+- Install 64-bit binary by Windows installer if Java is not detected at all #245
+
+Changes in 3.7.1:
+- Enable ICMP Echo pinger for Linux x64 only, as it requires the corresponding native .so implementation that is not available for Mac and not needed for Windows
+- Add a new Java Built-in pinger by default (InetAddress.isReachable()), which uses ICMP if enough privileges or falls back to TCP port 7
+- Fix handling of escape sequences in HTTP Sender
+- Fix macOS dark mode switching for some users
+- Some fixes in Russian translation
+- Internally, replaced Dagger with much simpler DI implementation. Plugins can now declare non-default constructors to benefit from Dependency Injection as well.
+- Mac vendors updated
+
+Changes in 3.7.0:
+- Windows: use latest NSIS for installer generation, fixing DLL hijacking
+- Mac: dark mode support
+- Linux: add helpful error message when X Session is not available / running under full root in terminal
+- Linux/Ubuntu: fix launching of terminal in openers for newer versions of Gnome
+- Raspbian/ARM: New experimental builds without bundled SWT, using the one provided by system
+- Updated SWT for all 64-bit platforms
+- Updated Chinese translations
+- Mac vendors updated
+
+Changes in 3.6.2:
+- New launcher for Windows that respects JAVA_HOME and PATH environment variables and thus works with AdoptOpenJDK
+- Improve detection of 32/64-bit JVM in Windows installer. Assume 64-bit if detection fails (was 32-bit before)
+- Checkbox allowing opt-out of crash reports to Google Analytics to Getting Started dialog
+- Mac vendors updated
+
+Changes in 3.6.1:
+- Fix exporting for Mac
+- Improve display of unexpected errors on Mac
+- Mac vendors updated
+
+Changes in 3.6.0:
+- HTTP Proxy is now available
+- Java 8 is now the minimum required
+- Experimental (and incomplete yet) IPv6 support
+- Try to select the real network interface by default on launch
+- KDE launching support & other small fixes
+- Windows Java detection has an improved error message
+- Translation updates, added Chinese traditional and simplified
+- Mac vendors updated
+
+Changes in 3.5.5:
+- Translation updates, added Brazilian Portuguese
+- Small bugfixes
+- Mac vendor updates
+- JDK 11 support in Windows exe
+- Linux version will now use GTK 3 by default, enabling touch screen support
+- New build system using gradle and proguard
+- This is the last release to support running under Java 7
+
+Changes in 3.5.4:
+- Was a broken release, replaced by 3.5.5
+
 Changes in 3.5.3:
 - Translation updates
 - Ping Packet Loss fetcher

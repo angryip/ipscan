@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.config;
 
@@ -21,7 +21,7 @@ public class NamedListConfig implements Iterable<String> {
 	
 	protected String preferenceName;
 	protected Preferences preferences; 
-	protected Map<String, Object> namedList = new LinkedHashMap<String, Object>();
+	protected Map<String, Object> namedList = new LinkedHashMap<>();
 
 	// package local constructor
 	NamedListConfig(Preferences preferences, String preferenceName) {
@@ -108,7 +108,7 @@ public class NamedListConfig implements Iterable<String> {
 	 */
 	public void update(String[] keys) {
 		// rebuild the map (to recreate the new order of elements)
-		Map<String, Object> newList = new LinkedHashMap<String, Object>();
+		Map<String, Object> newList = new LinkedHashMap<>();
 		for (String key : keys) {
 			newList.put(key, namedList.get(key));
 		}

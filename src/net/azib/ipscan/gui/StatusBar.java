@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui;
 
@@ -20,9 +20,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import static net.azib.ipscan.config.GUIConfig.DisplayMethod.PORTS;
 import static net.azib.ipscan.gui.util.LayoutHelper.formData;
 
@@ -31,7 +28,6 @@ import static net.azib.ipscan.gui.util.LayoutHelper.formData;
  *
  * @author Anton Keks
  */
-@Singleton
 public class StatusBar {
 	private Composite composite;
 	private Label statusText;
@@ -45,7 +41,7 @@ public class StatusBar {
 	private StateMachine stateMachine;
 	private ResultTable resultTable;
 
-	@Inject public StatusBar(Shell shell, GUIConfig guiConfig, ScannerConfig scannerConfig, ResultTable resultTable, StateMachine stateMachine) {
+	public StatusBar(Shell shell, GUIConfig guiConfig, ScannerConfig scannerConfig, ResultTable resultTable, StateMachine stateMachine) {
 		this.guiConfig = guiConfig;
 		this.scannerConfig = scannerConfig;
 		this.stateMachine = stateMachine;
@@ -116,7 +112,7 @@ public class StatusBar {
 		if (!threadsText.isDisposed()) { 
 			boolean maxThreadsReached = runningThreads == scannerConfig.maxThreads;
 			if (maxThreadsReachedBefore || maxThreadsReached) {
-				Color newColor = threadsText.getDisplay().getSystemColor(maxThreadsReached ? SWT.COLOR_DARK_RED : SWT.COLOR_WIDGET_FOREGROUND);
+				Color newColor = threadsText.getDisplay().getSystemColor(maxThreadsReached ? SWT.COLOR_RED : SWT.COLOR_WIDGET_FOREGROUND);
 				threadsText.setForeground(newColor);
 			}
 			maxThreadsReachedBefore = maxThreadsReached;

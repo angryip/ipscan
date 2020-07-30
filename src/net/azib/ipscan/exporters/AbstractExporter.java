@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 
 package net.azib.ipscan.exporters;
@@ -42,7 +42,7 @@ public abstract class AbstractExporter implements Exporter {
 		nextAdressResults(results); // for backwards-compatibility
 	}
 
-	@Override public void nextAdressResults(Object[] results) throws IOException {
+	@Override public void nextAdressResults(Object[] results) {
 	}
 
 	public Exporter clone() {

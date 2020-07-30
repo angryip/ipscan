@@ -2,42 +2,40 @@ package net.azib.ipscan.core;
 
 import net.azib.ipscan.fetchers.AbstractFetcher;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 public class PluginLoaderTest {
 	PluginLoader loader = new PluginLoader();
-	List<Class<? extends Plugin>> container = mock(List.class);
+	List<Class<? extends Plugin>> container = new ArrayList<>();
 
 	@Test
     public void loadFromSystemProperty() {
         System.setProperty("ipscan.plugins", DummyFetcher.class.getName());
 		loader.loadPluginsSpecifiedInSystemProperties(container);
-        verify(container).add(DummyFetcher.class);
+        assertEquals(DummyFetcher.class, container.get(0));
+        System.getProperties().remove("ipscan.plugins");
     }
 
 	@Test
-	public void canFindClassLocation() throws Exception {
+	public void canFindClassLocation() {
 		File file = loader.getClassLocation(getClass());
 		assertEquals("core", file.getParentFile().getName());
 		assertTrue(file.exists());
-		assertTrue(new File(file.getParent(), "test-plugin.jar").exists());
+		assertTrue(new File(file.getParent(), getClass().getSimpleName() + ".class").exists());
 	}
 
 	@Test
-	public void loadFromJarFile() throws Exception {
-		loader.loadPluginJars(container, loader.getClassLocation(getClass()));
+	public void loadFromJarFile() {
+		File pluginLocation = loader.getResourceLocation(getClass().getResource("test-plugin.jar"));
+		loader.loadPluginJars(container, new File(pluginLocation.getParentFile(), "ipscan.jar"));
 
-		ArgumentCaptor<Class> classCaptor = ArgumentCaptor.forClass(Class.class);
-		verify(container).add(classCaptor.capture());
-		Class plugin = classCaptor.getValue();
+		Class<?> plugin = container.get(0);
 		assertEquals("test.TestPlugin", plugin.getName());
 		assertTrue(Plugin.class.isAssignableFrom(plugin));
 	}

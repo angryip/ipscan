@@ -1,12 +1,8 @@
 package net.azib.ipscan.core;
 
-import dagger.Module;
-import dagger.Provides;
 import net.azib.ipscan.config.LoggerFactory;
 
-import javax.inject.Singleton;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -32,13 +28,11 @@ import java.util.logging.Logger;
  * </ul>
  * In either way, all plugins must implement {@link net.azib.ipscan.core.Plugin} and one or more of the concrete interfaces.
  */
-@Module
 public class PluginLoader {
     private static final Logger LOG = LoggerFactory.getLogger();
 
-	@Provides @Singleton
 	public List<Class<? extends Plugin>> getClasses() {
-		List<Class<? extends Plugin>> container = new ArrayList<Class<? extends Plugin>>();
+		List<Class<? extends Plugin>> container = new ArrayList<>();
 
 		loadPluginsSpecifiedInSystemProperties(container);
 		loadPluginJars(container, getOwnFile());
@@ -74,12 +68,7 @@ public class PluginLoader {
 		File parentDir = ownFile.getParentFile();
 		if (parentDir == null || !parentDir.exists()) return;
 
-		File[] jars = parentDir.listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.endsWith(".jar") && !name.equals(ownFile.getName());
-			}
-		});
+		File[] jars = parentDir.listFiles((dir, name) -> name.endsWith(".jar") && !name.equals(ownFile.getName()));
 		if (jars == null) return;
 
 		PluginClassLoader loader = new PluginClassLoader();
@@ -113,7 +102,11 @@ public class PluginLoader {
 	}
 
 	File getClassLocation(Class clazz) {
-		String ownPath = clazz.getResource(clazz.getSimpleName() + ".class").getFile();
+		return getResourceLocation(clazz.getResource(clazz.getSimpleName() + ".class"));
+	}
+
+	File getResourceLocation(URL resource) {
+		String ownPath = resource.getFile();
 		if (ownPath.startsWith("file:")) ownPath = ownPath.substring("file:".length());
 		if (ownPath.indexOf('!') >= 0) ownPath = ownPath.substring(0, ownPath.indexOf('!'));
 		return new File(ownPath);

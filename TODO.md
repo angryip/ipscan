@@ -1,7 +1,8 @@
+* Use ServiceLoader for plugins
+* Use ipify for /iplocate
 * Add URLFetcher with configurable URL and JSON/XPath expression
 * WHOIS fetcher
 
-* Switch to GTK3 on Linux (currently, startup is slow, progress bar is not nice, exception when starting a second FileFeeder scan)
 * Windows: net stop SharedAccess
 * gtk sort direction arrows
 * advanced exporting options dialog (with append checkbox)

@@ -1,12 +1,7 @@
-/bin
 /out
-/ant-bin.linux
-/ant-bin.linux64
-/ant-bin.mac
-/ant-bin.win32
-/ant-bin.win64
-/dist
 /generated
 /test-coverage
-ipscan.iml
-.idea
+/.gradle
+/build
+/lib/*src.zip
+.DS_Store

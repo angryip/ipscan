@@ -76,15 +76,13 @@ public class FeederActions {
 		private void askLocalIPAddress() {
 			try {
 				Menu popupMenu = new Menu(Display.getCurrent().getActiveShell(), SWT.POP_UP);
-				Listener menuItemListener = new Listener() {
-					public void handleEvent(Event event) {
-						MenuItem menuItem = (MenuItem) event.widget;
-						String address = (String) menuItem.getData();
-						ipText.setText(address.substring(0, address.lastIndexOf('/')));
-                        netmaskCombo.setText(address.substring(address.lastIndexOf('/')));
+				Listener menuItemListener = event -> {
+					MenuItem menuItem = (MenuItem) event.widget;
+					String address = (String) menuItem.getData();
+					ipText.setText(address.substring(0, address.lastIndexOf('/')));
+netmaskCombo.setText(address.substring(address.lastIndexOf('/')));
 //                        netmaskCombo.traverse(SWT.TRAVERSE_RETURN);
-						menuItem.getParent().dispose();
-					}
+					menuItem.getParent().dispose();
 				};
 
 				for (Enumeration<NetworkInterface> i = getNetworkInterfaces(); i.hasMoreElements(); ) {

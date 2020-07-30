@@ -1,26 +1,22 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan;
 
 import net.azib.ipscan.config.*;
-import net.azib.ipscan.core.UserErrorException;
+import net.azib.ipscan.di.Injector;
+import net.azib.ipscan.gui.GUI;
 import net.azib.ipscan.gui.InfoDialog;
-import net.azib.ipscan.gui.MainWindow;
+import net.azib.ipscan.gui.MacApplicationMenu;
 import net.azib.ipscan.util.GoogleAnalytics;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTException;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
 
-import javax.swing.*;
 import java.security.Security;
 import java.util.Locale;
-import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static net.azib.ipscan.config.Labels.getLabel;
 
 /**
  * The main executable class.
@@ -36,7 +32,7 @@ public class Main {
 	static final Logger LOG = LoggerFactory.getLogger();
 
 	/**
-	 * The launching point
+	 * The launcher
 	 * <p/>
 	 * In development, pass the following on the JVM command line:
 	 * <tt>-Djava.util.logging.config.file=config/logging.properties</tt>
@@ -45,90 +41,70 @@ public class Main {
 	 * <tt>-XstartOnFirstThread</tt>
 	 */
 	public static void main(String... args) {
+		GUI gui = null;
 		try {
 			long startTime = System.currentTimeMillis();
-			initSystemProperties();
-
-			// this defines the Window class and app name on the Mac
-			Display.setAppName(Version.NAME);
-			Display display = Display.getDefault();
-			LOG.finer("SWT initialized after " + (System.currentTimeMillis() - startTime));
+			gui = new GUI();
+			disableDNSCache();
 
 			Locale locale = Config.getConfig().getLocale();
 			Labels.initialize(locale);
-
 			LOG.finer("Labels and Config initialized after " + (System.currentTimeMillis() - startTime));
 
-			MainComponent mainComponent = DaggerMainComponent.create();
-			if (Platform.MAC_OS) mainComponent.createMacApplicationMenu();
+			Injector injector = new ComponentRegistry().init();
+			if (Platform.MAC_OS) injector.require(MacApplicationMenu.class);
 			LOG.finer("Components initialized after " + (System.currentTimeMillis() - startTime));
 
-			processCommandLine(args, mainComponent);
+			processCommandLine(args, injector);
 
-			// create the main window using dependency injection
-			MainWindow mainWindow = mainComponent.createMainWindow();
-			LOG.fine("Startup time: " + (System.currentTimeMillis() - startTime));
+			gui.showMainWindow(injector);
 
-			while (!mainWindow.isDisposed()) {
-				try {
-					if (!display.readAndDispatch())
-						display.sleep();
-				}
-				catch (Exception e) {
-					if (e instanceof SWTException && e.getCause() instanceof Exception)
-						e = (Exception) e.getCause();
-
-					// display a nice error message
-					String localizedMessage = getLocalizedMessage(e);
-					Shell parent = display.getActiveShell();
-					showMessage(parent != null ? parent : mainWindow.getShell(),
-							e instanceof UserErrorException ? SWT.ICON_WARNING : SWT.ICON_ERROR,
-							Labels.getLabel(e instanceof UserErrorException ? "text.userError" : "text.error"), localizedMessage);
-				}
-			}
-
-			// save config on exit
 			Config.getConfig().store();
-
-			// dispose the native objects
-			display.dispose();
+			gui.close();
 		}
 		catch (UnsatisfiedLinkError e) {
-			JOptionPane.showMessageDialog(null, "Failed to load native code: " + e.getMessage() + "\nProbably you are using a binary built for wrong OS or CPU. If 64-bit binary doesn't work for you, try 32-bit version, or vice versa.");
 			e.printStackTrace();
 			new GoogleAnalytics().report(e);
-		}
-		catch (Throwable e) {
-			JOptionPane.showMessageDialog(null, e + "\nPlease submit a bug report mentioning your OS and what were you doing.");
-			e.printStackTrace();
-			new GoogleAnalytics().report(e);
-		}
-	}
-
-	private static void showMessage(Shell parent, int flags, String title, String localizedMessage) {
-		try {
-			MessageBox messageBox = new MessageBox(parent, SWT.OK | SWT.SHEET | flags);
-			messageBox.setText(title);
-			messageBox.setMessage(localizedMessage);
-			messageBox.open();
+			swingErrorDialog("Failed to load native code: " + e.getMessage() + "\n\nProbably you are using a binary built for wrong OS or CPU. If 64-bit binary doesn't work for you, try 32-bit version, or vice versa.");
 		}
 		catch (NoClassDefFoundError e) {
-			new GoogleAnalytics().report(localizedMessage, e);
-			JOptionPane.showMessageDialog(null, localizedMessage);
+			e.printStackTrace();
+			new GoogleAnalytics().report(e);
+			swingErrorDialog("SWT GUI toolkit not available: " + e.toString() + "\n\nIf you are using platform-neutral build, make sure you provide SWT built for your platform manually (e.g. install libswt packages), or please use a platform specific binary.");
+		}
+		catch (Throwable e) {
+			handleFatalError(gui, e);
 		}
 	}
 
-	private static void initSystemProperties() {
-		// currently we support IPv4 only
-		System.setProperty("java.net.preferIPv4Stack", "true");
-		// disable DNS caches
+	private static void handleFatalError(GUI gui, Throwable e) {
+		e.printStackTrace();
+		new GoogleAnalytics().report(e);
+		if (gui != null)
+			gui.showMessage(0, "Fatal Error", e + "\nPlease submit a bug report mentioning your OS and what exactly were you doing.");
+		else
+			swingErrorDialog(e.getMessage());
+	}
+
+	private static void swingErrorDialog(String message) {
+		try {
+			Class.forName("javax.swing.JOptionPane").getMethod("showMessageDialog", Class.forName("java.awt.Component"), Object.class)
+				.invoke(null, null, message);
+		}
+		catch (Exception e) {
+			System.err.println(e.toString());
+			System.err.println(message);
+		}
+	}
+
+	private static void disableDNSCache() {
 		Security.setProperty("networkaddress.cache.ttl", "0");
 		Security.setProperty("networkaddress.cache.negative.ttl", "0");
 	}
 
-	private static void processCommandLine(String[] args, MainComponent mainComponent) {
+	private static void processCommandLine(String[] args, Injector injector) {
 		if (args.length != 0) {
-			CommandLineProcessor cli = mainComponent.createCommandLineProcessor();
+			CommandLineProcessor cli = injector.require(CommandLineProcessor.class);
 			try {
 				cli.parse(args);
 			}
@@ -145,40 +121,9 @@ public class Main {
 			System.err.println(usageText);
 		}
 		else {
-			InfoDialog dialog = new InfoDialog(Version.NAME, Labels.getLabel("title.commandline"));
+			InfoDialog dialog = new InfoDialog(Version.NAME, getLabel("title.commandline"));
 			dialog.setMessage(usageText);
 			dialog.open();
 		}
 	}
-
-	/**
-	 * Returns a nice localized message for the passed exception
-	 * in case it is possible, or toString() otherwise.
-	 */
-	static String getLocalizedMessage(Throwable e) {
-		String localizedMessage;
-		try {
-			// try to load localized message
-			if (e instanceof UserErrorException) {
-				localizedMessage = e.getMessage();
-			}
-			else {
-				String exceptionClassName = e.getClass().getSimpleName();
-				String originalMessage = e.getMessage();
-				localizedMessage = Labels.getLabel("exception." + exceptionClassName + (originalMessage != null ? "." + originalMessage : ""));
-			}
-			// add cause summary, if it exists
-			if (e.getCause() != null) {
-				localizedMessage += "\n\n" + e.getCause().toString();
-			}
-			LOG.log(Level.FINE, "error", e);
-		}
-		catch (Exception e2) {
-			// fallback to default text
-			localizedMessage = e.toString();
-			// output stack trace to the console
-			LOG.log(Level.SEVERE, "unexpected error", e);
-		}
-		return localizedMessage;
-	}	
 }

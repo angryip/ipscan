@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui;
 
@@ -23,8 +23,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.*;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.List;
 
 import static net.azib.ipscan.core.ScanningResult.ResultType.*;
@@ -35,9 +33,7 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
  * 
  * @author Anton Keks
  */
-@Singleton
 public class ResultTable extends Table implements FetcherRegistryUpdateListener, StateTransitionListener {
-	
 	private ScanningResultList scanningResults;
 	private GUIConfig guiConfig;
 	private FetcherRegistry fetcherRegistry;
@@ -48,7 +44,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 
 	private Listener columnResizeListener;
 
-	@Inject public ResultTable(Shell parent, GUIConfig guiConfig, FetcherRegistry fetcherRegistry,
+	public ResultTable(Shell parent, GUIConfig guiConfig, FetcherRegistry fetcherRegistry,
 							   ScanningResultList scanningResultList, StateMachine stateMachine,
 							   ColumnsActions.ColumnClick columnClickListener, ColumnsActions.ColumnResize columnResizeListener) {
 		super(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL);
@@ -130,23 +126,21 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 	public void addOrUpdateResultRow(final ScanningResult result) {
 		if (isDisposed())
 			return;
-		getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				if (isDisposed())
-					return;
-				
-				if (scanningResults.isRegistered(result)) {
-					// just redraw the item
-					int index = scanningResults.update(result);
-					clear(index);
-				}
-				else {
-					// first register, then add - otherwise first redraw may fail (the table is virtual)
-					int index = getItemCount();
-					scanningResults.registerAtIndex(index, result);
-					// setItemCount(index+1) - this seems to rebuild TableItems inside, so is slower
-					new TableItem(ResultTable.this, SWT.NONE);
-				}
+		getDisplay().asyncExec(() -> {
+			if (isDisposed())
+				return;
+
+			if (scanningResults.isRegistered(result)) {
+				// just redraw the item
+				int index = scanningResults.update(result);
+				clear(index);
+			}
+			else {
+				// first register, then add - otherwise first redraw may fail (the table is virtual)
+				int index = getItemCount();
+				scanningResults.registerAtIndex(index, result);
+				// setItemCount(index+1) - this seems to rebuild TableItems inside, so is slower
+				new TableItem(ResultTable.this, SWT.NONE);
 			}
 		});
 	}
@@ -225,6 +219,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 		public void handleEvent(Event event) {
 			TableItem item = (TableItem)event.item;
 			int tableIndex = indexOf(item);
+			if (tableIndex < 0) return;
 			
 			ScanningResult scanningResult = scanningResults.getResult(tableIndex);
 			List<?> values = scanningResult.getValues();

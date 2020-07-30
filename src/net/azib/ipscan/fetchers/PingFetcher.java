@@ -1,6 +1,6 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
  */
 package net.azib.ipscan.fetchers;
 
@@ -14,7 +14,6 @@ import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.core.values.IntegerWithUnit;
 import net.azib.ipscan.gui.fetchers.PingFetcherPrefs;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
@@ -42,7 +41,7 @@ public class PingFetcher extends AbstractFetcher {
 	/** The registry used for creation of Pinger instances */
 	private PingerRegistry pingerRegistry;
 	
-	@Inject public PingFetcher(PingerRegistry pingerRegistry, ScannerConfig scannerConfig) {
+	public PingFetcher(PingerRegistry pingerRegistry, ScannerConfig scannerConfig) {
 		this.pingerRegistry = pingerRegistry;
 		this.config = scannerConfig;
 	}

@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui;
 
@@ -14,7 +14,10 @@ import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.actions.StartStopScanningAction;
 import net.azib.ipscan.gui.actions.ToolsActions;
+import net.azib.ipscan.gui.feeders.ControlsArea;
+import net.azib.ipscan.gui.feeders.FeederArea;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
+import net.azib.ipscan.gui.feeders.FeederSelectionCombo;
 import net.azib.ipscan.gui.menu.ResultsContextMenu;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -24,9 +27,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
-
-import javax.inject.Inject;
-import javax.inject.Named;
 
 import static net.azib.ipscan.gui.util.LayoutHelper.formData;
 import static net.azib.ipscan.gui.util.LayoutHelper.icon;
@@ -40,7 +40,6 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
  * @author Anton Keks
  */
 public class MainWindow {
-		
 	private final Shell shell;
 	private final GUIConfig guiConfig;
 	
@@ -57,16 +56,15 @@ public class MainWindow {
 	/**
 	 * Creates and initializes the main window.
 	 */
-	@Inject
-	public MainWindow(Shell shell, GUIConfig guiConfig, @Named("feederArea") Composite feederArea,
-					  @Named("controlsArea") Composite controlsArea, @Named("feederSelectionCombo") Combo feederSelectionCombo,
-					  @Named("startStopButton") Button startStopButton, StartStopScanningAction startStopScanningAction,
+	public MainWindow(Shell shell, GUIConfig guiConfig, FeederArea feederArea,
+					  ControlsArea controlsArea, FeederSelectionCombo feederSelectionCombo,
+					  Button startStopButton, StartStopScanningAction startStopScanningAction,
 					  ResultTable resultTable, StatusBar statusBar, ResultsContextMenu resultsContextMenu,
 					  FeederGUIRegistry feederGUIRegistry, final StateMachine stateMachine,
 					  ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListener,
 					  MainMenu menuBar /* don't delete: initiates main menu creation */,
-					  Startup startup) {
-
+					  Startup startup
+	) {
 		this.shell = shell;
 		this.guiConfig = guiConfig;
 		this.statusBar = statusBar;
@@ -86,11 +84,9 @@ public class MainWindow {
 		startup.onStart();
 
 		stateMachine.addTransitionListener(new EnablerDisabler());
-		Display.getCurrent().asyncExec(new Runnable() {
-			public void run() {
-				// asynchronously run init handlers outside of the constructor
-				stateMachine.init();
-			}
+		Display.getCurrent().asyncExec(() -> {
+			// asynchronously run init handlers outside of the constructor
+			stateMachine.init();
 		});
 	}
 
@@ -104,11 +100,9 @@ public class MainWindow {
 		Image image = new Image(shell.getDisplay(), getClass().getResourceAsStream("/images/icon.png"));
 		shell.setImage(image);
 				
-		shell.addListener(SWT.Close, new Listener() {
-			public void handleEvent(Event event) {
-				// save dimensions!
-				guiConfig.setMainWindowSize(shell.getSize(), shell.getMaximized());
-			}
+		shell.addListener(SWT.Close, event -> {
+			// save dimensions!
+			guiConfig.setMainWindowSize(shell.getSize(), shell.getMaximized());
 		});
 	}
 

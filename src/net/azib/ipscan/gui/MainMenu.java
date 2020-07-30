@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui;
 
@@ -16,29 +16,22 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 /**
  * MainMenu
  *
  * @author Anton Keks
  */
-@Singleton
 public class MainMenu {
-
-	@Inject
-	public MainMenu(Shell parent, @Named("mainMenu") Menu mainMenu,
-					ScanMenu scanMenu,
-					GotoMenu gotoMenu,
-					CommandsMenu commandsMenu,
-					FavoritesMenu favoritesMenu,
-					ToolsMenu toolsMenu,
-					HelpMenu helpMenu,
-					ResultsContextMenu resultsContextMenu,
-					StateMachine stateMachine) {
-
+	public MainMenu(Shell parent, Menu mainMenu,
+		ScanMenu scanMenu,
+		GotoMenu gotoMenu,
+		CommandsMenu commandsMenu,
+		FavoritesMenu favoritesMenu,
+		ToolsMenu toolsMenu,
+		HelpMenu helpMenu,
+		ResultsContextMenu resultsContextMenu,
+		StateMachine stateMachine
+	) {
 		parent.setMenuBar(mainMenu);
 
 		addMenuItem(mainMenu, scanMenu);
@@ -70,8 +63,7 @@ public class MainMenu {
 		}
 
 		public void transitionTo(final ScanningState state, Transition transition) {
-			if (transition != Transition.START && transition != Transition.COMPLETE)
-				return;
+			if (transition != Transition.START && transition != Transition.COMPLETE) return;
 			processMenu(menu, state == ScanningState.IDLE);
 		}
 
@@ -81,8 +73,7 @@ public class MainMenu {
 				if (item.getData("disableDuringScanning") == Boolean.TRUE) {
 					item.setEnabled(isEnabled);
 				}
-				else 
-				if (item.getMenu() != null) {
+				else if (item.getMenu() != null) {
 					processMenu(item.getMenu(), isEnabled);
 				}
 			}

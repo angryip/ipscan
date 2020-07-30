@@ -1,5 +1,5 @@
-/**
- * This is a part of Angry IP Scanner source.
+/*
+  This is a part of Angry IP Scanner source.
  */
 package net.azib.ipscan.config;
 
@@ -15,10 +15,12 @@ import java.util.logging.Level;
 public class Version {
 	public static final String NAME = "Angry IP Scanner";
 	
-	public static final String COPYLEFT = "© 2018 Anton Keks and contributors";
+	public static final String COPYLEFT = "© 2020 Anton Keks and contributors";
 	
-	public static final String WEBSITE = "https://angryip.org";
-	
+	public static final String OWN_HOST = "angryip.org";
+
+	public static final String WEBSITE = "https://" + OWN_HOST;
+
 	public static final String FAQ_URL = WEBSITE + "/faq/";
 
 	public static final String PRIVACY_URL = WEBSITE + "/about/privacy.html";

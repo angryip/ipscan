@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.config;
 
@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * @author Anton Keks
  */
 public final class Labels {
-	public static final String[] LANGUAGES = { "system", "en", "ru", "de", "hu", "lt", "es", "it", "ku", "tr", "gr"};
+	public static final String[] LANGUAGES = { "system", "en", "ru", "de", "hu", "lt", "es", "fr", "it", "ku", "tr", "gr", "pt_BR", "zh_CN", "zh_TW"};
 	private static final Logger LOG = Logger.getLogger(Labels.class.getName());
 	private static Labels instance;
 
@@ -92,7 +92,7 @@ public final class Labels {
 		}
 		catch (MissingResourceException e) {
 			String text = labelsFallback.getString(key);
-			LOG.warning("Used fallback label for " + key);
+			if (!key.startsWith("language.")) LOG.warning("Used fallback label for " + key);
 			return text;
 		}
 	}

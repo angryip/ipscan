@@ -1,22 +1,16 @@
 package net.azib.ipscan.gui.menu;
 
-import net.azib.ipscan.gui.actions.CommandsMenuActions;
+import net.azib.ipscan.gui.actions.CommandsMenuActions.EditOpeners;
+import net.azib.ipscan.gui.actions.CommandsMenuActions.ShowOpenersMenu;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
-
-import javax.inject.Inject;
 
 /**
  * OpenersMenu wrapper for type-safety
  */
 public class OpenersMenu extends AbstractMenu {
-
-	@Inject
-	public OpenersMenu(Shell parent,
-					   CommandsMenuActions.EditOpeners editOpenersListener,
-					   CommandsMenuActions.ShowOpenersMenu showOpenersMenuListener) {
-
+	public OpenersMenu(Shell parent, EditOpeners editOpenersListener, ShowOpenersMenu showOpenersMenuListener) {
 		super(parent);
 
 		initMenuItem(this, "menu.commands.open.edit", null, null, editOpenersListener);

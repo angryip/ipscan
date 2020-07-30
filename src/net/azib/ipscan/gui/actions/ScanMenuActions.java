@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui.actions;
 
@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 
-import javax.inject.Inject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +47,6 @@ public class ScanMenuActions {
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
 
-		@Inject
 		public LoadFromFile(TXTExporter txtExporter, ExporterRegistry exporterRegistry, FeederGUIRegistry feederRegistry, ScanningResultList scanningResults, ResultTable resultTable, StateMachine stateMachine) {
 			this.txtExporter = txtExporter;
 			this.exporterRegistry = exporterRegistry;
@@ -62,12 +60,12 @@ public class ScanMenuActions {
 			FileDialog fileDialog = new FileDialog(resultTable.getShell(), SWT.OPEN);
 
 			// gather lists of extensions and exporter names
-			List<String> extensions2 = new ArrayList<String>();
-			List<String> descriptions = new ArrayList<String>();
+			List<String> extensions2 = new ArrayList<>();
+			List<String> descriptions = new ArrayList<>();
 			StringBuffer labelBuffer = new StringBuffer(Labels.getLabel("title.load"));
 			addFileExtensions(extensions2, descriptions, labelBuffer);
 
-			List<String> extensions = new ArrayList<String>();
+			List<String> extensions = new ArrayList<>();
 			extensions.add(extensions2.get(0));
 
 			fileDialog.setText(labelBuffer.toString());
@@ -159,8 +157,8 @@ public class ScanMenuActions {
 			FileDialog fileDialog = new FileDialog(resultTable.getShell(), SWT.SAVE);
 
 			// gather lists of extensions and exporter names
-			List<String> extensions = new ArrayList<String>();
-			List<String> descriptions = new ArrayList<String>();
+			List<String> extensions = new ArrayList<>();
+			List<String> descriptions = new ArrayList<>();
 			StringBuffer labelBuffer = new StringBuffer(Labels.getLabel(isSelection ? "title.exportSelection" : "title.exportAll"));
 			addFileExtensions(extensions, descriptions, labelBuffer);
 
@@ -181,11 +179,7 @@ public class ScanMenuActions {
 			// in case of isSelection we need to create our filter
 			ScanningResultFilter filter = null;
 			if (isSelection) {
-				filter = new ScanningResultFilter() {
-					public boolean apply(int index, ScanningResult result) {
-						return resultTable.isSelected(index);
-					}
-				};
+				filter = (index, result) -> resultTable.isSelected(index);
 			}
 
 			exportProcessor.process(resultTable.getScanningResults(), filter);
@@ -206,21 +200,18 @@ public class ScanMenuActions {
 	}
 
 	public static final class SaveAll extends SaveResults {
-		@Inject
 		public SaveAll(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, StateMachine stateMachine) {
 			super(exporterRegistry, resultTable, statusBar, stateMachine, false);
 		}
 	}
 
 	public static final class SaveSelection extends SaveResults {
-		@Inject
 		public SaveSelection(ExporterRegistry exporterRegistry, ResultTable resultTable, StatusBar statusBar, StateMachine stateMachine) {
 			super(exporterRegistry, resultTable, statusBar, stateMachine, true);
 		}
 	}
 
 	public static final class Quit implements Listener {
-		@Inject
 		public Quit() {
 		}
 

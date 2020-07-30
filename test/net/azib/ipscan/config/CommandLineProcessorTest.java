@@ -1,32 +1,20 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
- */
-
 package net.azib.ipscan.config;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import net.azib.ipscan.exporters.Exporter;
+import net.azib.ipscan.exporters.ExporterRegistry;
+import net.azib.ipscan.feeders.FeederCreator;
+import net.azib.ipscan.feeders.FeederRegistry;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import net.azib.ipscan.exporters.Exporter;
-import net.azib.ipscan.exporters.ExporterRegistry;
-import net.azib.ipscan.feeders.FeederCreator;
-import net.azib.ipscan.feeders.FeederRegistry;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
-import org.junit.Before;
-import org.junit.Test;
-
-/**
- * CommandLineProcessorTest
- *
- * @author Anton Keks
- */
 public class CommandLineProcessorTest {
 	private CommandLineProcessor processor;
 	private FeederCreator feederCreator;
@@ -40,7 +28,7 @@ public class CommandLineProcessorTest {
 	}
 	
 	@Test
-	public void toStringGeneratesUsageHelp() throws Exception {
+	public void toStringGeneratesUsageHelp() {
 		when(feederCreator.getFeederId()).thenReturn("feeder.range");
 		when(feederCreator.serializePartsLabels()).thenReturn(new String[] {"feeder.range.to"});
 		Exporter exporter = mock(Exporter.class);
@@ -58,7 +46,7 @@ public class CommandLineProcessorTest {
 	}
 
 	@Test
-	public void minimal() throws Exception {
+	public void minimal() {
 		when(feederCreator.getFeederId()).thenReturn("feeder.feeder");
 		when(feederCreator.serializePartsLabels()).thenReturn(new String[] {"1st", "2nd"});
 		Exporter txtExporter = mock(Exporter.class);
@@ -74,11 +62,11 @@ public class CommandLineProcessorTest {
 		assertFalse(processor.appendToFile);
 		assertTrue("specifying exporter should enable autoStart", processor.autoStart);
 		
-        verify(feederCreator).unserialize(new String[] {"arg1", "arg2"});
+        verify(feederCreator).unserialize("arg1", "arg2");
 	}
 
 	@Test
-	public void options() throws Exception {
+	public void options() {
 		when(feederCreator.getFeederId()).thenReturn("feeder.mega");
 		when(feederCreator.serializePartsLabels()).thenReturn(new String[0]);
 
@@ -89,48 +77,45 @@ public class CommandLineProcessorTest {
 		assertTrue(processor.autoStart);
 		assertTrue(processor.appendToFile);
 		
-		verify(feederCreator).unserialize(new String[0]);
+		verify(feederCreator).unserialize();
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void missingRequiredFeeder() throws Exception {
+	public void missingRequiredFeeder() {
 		processor.parse("-o", "exporter");
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void inexistentExporter() throws Exception {
+	public void inexistentExporter() {
 		processor.parse("-o", "blah");
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void inexistentFeeder() throws Exception {
+	public void inexistentFeeder() {
 		processor.parse("-f:blah");
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void extraExporter() throws Exception {
+	public void extraExporter() {
 		processor.parse("-f:feeder", "-o", "exporter.txt", "-o", "exporter.xml");
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void extraFeeder() throws Exception {
+	public void extraFeeder() {
 		processor.parse("-f:feeder", "-o", "exporter.xml", "-f:feeder");
 	}
 	
-	public static class MockFeederRegistry implements FeederRegistry<FeederCreator> {
-		
+	public static class MockFeederRegistry implements FeederRegistry {
 		private List<FeederCreator> list;
 		
 		public MockFeederRegistry(FeederCreator ... creators) {
 			list = Arrays.asList(creators);
 		}
 
-		public void select(String feederId) {
-		}
+		public void select(String feederId) { }
 
 		public Iterator<FeederCreator> iterator() {
 			return list.iterator();
 		}
-
 	}
 }

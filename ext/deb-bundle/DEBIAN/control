@@ -1,10 +1,10 @@
 Package: ipscan
 Section: net
-Version: VERSION-1
+Version: VERSION
 Priority: optional
 Architecture: ARCH
-Installed-Size: 1710
-Depends: openjdk-11-jre | openjdk-10-jre | oracle-java10-installer | openjdk-9-jre | oracle-java9-installer | openjdk-8-jre | oracle-java8-installer | openjdk-7-jre | oracle-java7-installer
+Installed-Size: 1940
+Depends: DEPENDS openjdk-14-jre | openjdk-13-jre | openjdk-12-jre | openjdk-11-jre | openjdk-10-jre | oracle-java10-installer | openjdk-9-jre | oracle-java9-installer | openjdk-8-jre | oracle-java8-installer
 Maintainer: Anton Keks <anton@azib.net>
 Description: Angry IP Scanner - fast and friendly IP Scanner
  Angry IP Scanner is a cross-platform network scanner written in Java.

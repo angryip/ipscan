@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 
 package net.azib.ipscan.fetchers;
@@ -10,7 +10,6 @@ import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.util.NetBIOSResolver;
 
-import javax.inject.Inject;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.logging.Logger;
@@ -24,7 +23,7 @@ import static java.util.logging.Level.WARNING;
  * @author Anton Keks
  */
 public class NetBIOSInfoFetcher extends AbstractFetcher {
-	@Inject public NetBIOSInfoFetcher() {}
+	public NetBIOSInfoFetcher() {}
 
 	private static final Logger LOG = LoggerFactory.getLogger();
 
@@ -33,9 +32,7 @@ public class NetBIOSInfoFetcher extends AbstractFetcher {
 	}
 
 	public Object scan(ScanningSubject subject) {
-		NetBIOSResolver netbios = null;
-		try {
-			netbios = new NetBIOSResolver(subject.getAdaptedPortTimeout());
+		try (NetBIOSResolver netbios = new NetBIOSResolver(subject.getAdaptedPortTimeout())) {
 			String[] names = netbios.resolve(subject.getAddress());
 			if (names == null) return null;
 
@@ -60,9 +57,6 @@ public class NetBIOSInfoFetcher extends AbstractFetcher {
 			// bugs?
 			LOG.log(WARNING, null, e);
 			return null;
-		}
-		finally {
-			if (netbios != null) netbios.close();
 		}
 	}
 }

@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui.actions;
 
@@ -14,7 +14,6 @@ import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.gui.EditFavoritesDialog;
 import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -22,8 +21,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-
-import javax.inject.Inject;
 
 /**
  * FavoritesActions
@@ -36,7 +33,6 @@ public class FavoritesMenuActions {
 		private final FeederGUIRegistry feederRegistry;
 		private final FavoritesConfig favoritesConfig;
 
-		@Inject
 		public Add(FavoritesConfig favoritesConfig, FeederGUIRegistry feederRegistry) {
 			this.favoritesConfig = favoritesConfig;
 			this.feederRegistry = feederRegistry;
@@ -64,7 +60,6 @@ public class FavoritesMenuActions {
 		private final FavoritesConfig favoritesConfig;
 		private final StartStopScanningAction startStopAction;
 
-		@Inject
 		public Select(FavoritesConfig favoritesConfig, FeederGUIRegistry feederRegistry, StartStopScanningAction startStopAction) {
 			this.favoritesConfig = favoritesConfig;
 			this.feederRegistry = feederRegistry;
@@ -91,7 +86,6 @@ public class FavoritesMenuActions {
 	public static final class Edit implements Listener {
 		private final FavoritesConfig favoritesConfig;
 
-		@Inject
 		public Edit(FavoritesConfig favoritesConfig) {
 			this.favoritesConfig = favoritesConfig;
 		}
@@ -106,7 +100,6 @@ public class FavoritesMenuActions {
 		private final FavoritesConfig favoritesConfig;
 		private final StateMachine stateMachine;
 
-		@Inject
 		public ShowMenu(FavoritesConfig favoritesConfig, Select favoritesSelectListener, StateMachine stateMachine) {
 			this.favoritesConfig = favoritesConfig;
 			// the listener for favorites selections from the menu

@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 package net.azib.ipscan.gui;
 
@@ -150,11 +150,9 @@ public abstract class AbstractModalDialog {
 		button.setText(Labels.getLabel("button.close"));
 		positionButtons(button, null);
 		
-		button.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
-				shell.close();
-				shell.dispose();
-			}
+		button.addListener(SWT.Selection, event -> {
+			shell.close();
+			shell.dispose();
 		});
 		
 		button.setFocus();

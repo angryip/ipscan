@@ -1,7 +1,7 @@
-/**
- * This file is a part of Angry IP Scanner source code,
- * see http://www.angryip.org/ for more information.
- * Licensed under GPLv2.
+/*
+  This file is a part of Angry IP Scanner source code,
+  see http://www.angryip.org/ for more information.
+  Licensed under GPLv2.
  */
 
 package net.azib.ipscan.gui;
@@ -11,7 +11,6 @@ import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.ScanningResultList.ScanInfo;
 import net.azib.ipscan.core.UserErrorException;
 
-import javax.inject.Inject;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
@@ -24,7 +23,7 @@ public class StatisticsDialog extends InfoDialog {
 	
 	private final ScanningResultList scanningResults;
 
-	@Inject public StatisticsDialog(ScanningResultList scanningResults) {
+	public StatisticsDialog(ScanningResultList scanningResults) {
 		super(Labels.getLabel("title.statistics"), null);
 		this.scanningResults = scanningResults;
 	}
