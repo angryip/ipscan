@@ -8,9 +8,9 @@ layout: default
 Apple now requires all Mac apps to be signed and sent to them to make it runnable normally.
 This requires paying $100 to Apple and making many additional build/release steps that only work on macOS itself.
 
-### Until this is done/automated, the following can be used:
+**Until this is done/automated, the following can be used:**
 
-A user that has admin/sudo rights on the system can bypass the restrictions.
+A user who has admin/sudo rights on the system can bypass the restrictions.
 
 After unzipping on Catalina (and versions before), hold Control while right-clicking or using two-finger click and select Open. 
 You will get a different message from just right click and open, where you are prompted that the item is not registered with Apple, 
