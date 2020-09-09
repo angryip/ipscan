@@ -13,4 +13,4 @@ As all of this requires owning a Mac computer (which I don't want for myself), I
 to focus on Mac-specific issues, including [notarization](https://github.com/angryip/ipscan/issues/218), Dark theme support, 
 dmg releases, etc.
 
-Please let me know by [commenting here]((https://github.com/angryip/ipscan/issues/218)) if you are interested in helping Angry IP Scanner to be better supported on Mac. Thanks. 
+Please let me know by [commenting here](https://github.com/angryip/ipscan/issues/218) if you are interested in helping Angry IP Scanner to be better supported on Mac. Thanks. 
