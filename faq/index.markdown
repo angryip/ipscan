@@ -14,7 +14,8 @@ General
 
 * [Is the program infected with a virus?](virus.html)
 * [Where can I submit bugs or feature requests?](feedback.html)
-* [Why is the scanning so slow on Windows?](windows.html)
+* [Why is the scanning slower on Windows?](windows.html)
+* [How to run the app on macOS?](macos.html)
 * [Where do I get plugins?](/contribute/plugins.html)
 
 Scanning
