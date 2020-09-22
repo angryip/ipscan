@@ -1,4 +1,4 @@
-// A simple Windows launcher that will run java.exe passing own file as -jar parameter.
+// A simple Windows launcher that will run javaw.exe passing own file as -jar parameter.
 // This compiled exe file must be prepended to the built jar file.
 #include "windows.h"
 #include "stdio.h"
