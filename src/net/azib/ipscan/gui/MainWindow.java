@@ -7,6 +7,7 @@ package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
@@ -191,7 +192,7 @@ public class MainWindow {
 
 		if (sizeDiff >= 0) {
 			GridLayout layout = new GridLayout(2, false);
-			layout.verticalSpacing = sizeDiff/3;
+			layout.verticalSpacing = Platform.MAC_OS && sizeDiff == 11 ? 1 : sizeDiff / 3;
 			startStopButton.getParent().setLayout(layout);
 
 			prefsButton.moveAbove(startStopButton);
