@@ -69,6 +69,7 @@
  }
 -keepclassmembers class org.eclipse.swt.widgets.Display {
    *** *Proc(...);
+   *** changeValue(...);
  }
 -keepclassmembers class org.eclipse.swt.accessibility.AccessibleFactory {
    <methods>;
