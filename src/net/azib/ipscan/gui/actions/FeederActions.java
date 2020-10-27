@@ -10,11 +10,10 @@ import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.widgets.*;
 
 import java.net.*;
-import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static java.net.NetworkInterface.getNetworkInterfaces;
+import static net.azib.ipscan.util.InetAddressUtils.getNetworkInterfaces;
 
 /**
  * FeederActions
@@ -84,15 +83,15 @@ public class FeederActions {
 					menuItem.getParent().dispose();
 				};
 
-				for (Enumeration<NetworkInterface> i = getNetworkInterfaces(); i.hasMoreElements(); ) {
-					NetworkInterface networkInterface = i.nextElement();
+				for (NetworkInterface networkInterface : getNetworkInterfaces()) {
 					for (InterfaceAddress ifaddr : networkInterface.getInterfaceAddresses()) {
 						if (ifaddr == null) continue;
                         InetAddress address = ifaddr.getAddress();
-                        if (address instanceof Inet4Address && !address.isLoopbackAddress()) {
+                        if (!address.isLoopbackAddress()) {
 							MenuItem menuItem = new MenuItem(popupMenu, 0);
-							menuItem.setText(networkInterface.getDisplayName() + ": " + address.getHostAddress());
-							menuItem.setData(address.getHostAddress() + "/" + ifaddr.getNetworkPrefixLength());
+							String ip = address.getHostAddress().replaceFirst("%.*$", "");
+							menuItem.setText(networkInterface.getDisplayName() + ": " + ip);
+							menuItem.setData(ip + "/" + ifaddr.getNetworkPrefixLength());
 							menuItem.addListener(SWT.Selection, menuItemListener);
 						}
 					}					
