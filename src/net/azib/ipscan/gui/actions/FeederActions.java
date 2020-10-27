@@ -10,9 +10,11 @@ import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.widgets.*;
 
 import java.net.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static java.util.Comparator.comparing;
 import static net.azib.ipscan.util.InetAddressUtils.getNetworkInterfaces;
 
 /**
@@ -84,7 +86,9 @@ public class FeederActions {
 				};
 
 				for (NetworkInterface networkInterface : getNetworkInterfaces()) {
-					for (InterfaceAddress ifaddr : networkInterface.getInterfaceAddresses()) {
+					List<InterfaceAddress> addresses = networkInterface.getInterfaceAddresses();
+					addresses.sort(comparing(i -> i.getAddress().getAddress().length));
+					for (InterfaceAddress ifaddr : addresses) {
 						if (ifaddr == null) continue;
                         InetAddress address = ifaddr.getAddress();
                         if (!address.isLoopbackAddress()) {
