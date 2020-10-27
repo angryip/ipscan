@@ -9,7 +9,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.logging.Logger;
 
-import static java.util.logging.Level.WARNING;
+import static java.util.logging.Level.FINE;
 import static net.azib.ipscan.config.Config.getConfig;
 
 /**
@@ -44,7 +44,7 @@ public class GoogleAnalytics {
 			conn.disconnect();
 		}
 		catch (Exception e) {
-			Logger.getLogger(getClass().getName()).log(WARNING, "Failed to report", e);
+			Logger.getLogger(getClass().getName()).log(FINE, "Failed to report", e);
 		}
 	}
 
