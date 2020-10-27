@@ -89,7 +89,7 @@ public class FeederActions {
                         InetAddress address = ifaddr.getAddress();
                         if (!address.isLoopbackAddress()) {
 							MenuItem menuItem = new MenuItem(popupMenu, 0);
-							String ip = address.getHostAddress().replaceFirst("%.*$", "");
+							String ip = address.getHostAddress();
 							menuItem.setText(networkInterface.getDisplayName() + ": " + ip);
 							menuItem.setData(ip + "/" + ifaddr.getNetworkPrefixLength());
 							menuItem.addListener(SWT.Selection, menuItemListener);
