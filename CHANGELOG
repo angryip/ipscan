@@ -1,3 +1,7 @@
+Unreleased:
+- Support for silent uninstall on Windows #263
+- Update Linux SWT for better support for KDE dark themes #247
+
 Changes in 3.7.2:
 - Fix choosing openers from main menu on macOS #243
 - Install 64-bit binary by Windows installer if Java is not detected at all #245
