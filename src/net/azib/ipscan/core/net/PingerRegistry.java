@@ -89,7 +89,8 @@ public class PingerRegistry {
 			catch (Throwable e) {
 				LOG.info("ICMP pinger failed: " + e);
 				// win32 will use native pinger, all others get combined UDP+TCP, which doesn't require special privileges
-				scannerConfig.selectedPinger = Platform.WINDOWS ? "pinger.windows" : "pinger.combined";
+				scannerConfig.selectedPinger = Platform.WINDOWS ? "pinger.windows" :
+											   Platform.MAC_OS ? "pinger.java" : "pinger.combined";
 				return false;
 			}
 		}
