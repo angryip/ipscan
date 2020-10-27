@@ -66,7 +66,7 @@ public class TCPPinger implements Pinger {
 				String msg = e.getMessage();
 
 				// RST should result in ConnectException, but not all Java implementations respect that
-				if (e instanceof ConnectException || msg.contains(/*Connection*/"refused")) {
+				if (e instanceof ConnectException && !msg.contains(/*I*/"nvalid") || msg.contains(/*Connection*/"refused")) {
 					// we've got an RST packet from the host - it is alive
 					success(result, startTime);
 				}
