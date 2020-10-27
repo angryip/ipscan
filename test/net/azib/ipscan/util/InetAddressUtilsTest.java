@@ -109,6 +109,9 @@ public class InetAddressUtilsTest {
 		assertEquals("255.255.255.128", InetAddressUtils.parseNetmask("/25").getHostAddress());
 		assertEquals("255.255.255.248", InetAddressUtils.parseNetmask("/29").getHostAddress());
 		assertEquals("255.255.255.255", InetAddressUtils.parseNetmask("/32").getHostAddress());
+
+		// IPv6
+		assertEquals("ffff:ffff:ffff:ffff:0:0:0:0", InetAddressUtils.parseNetmask("/64").getHostAddress());
 	}
 	
 	@Test

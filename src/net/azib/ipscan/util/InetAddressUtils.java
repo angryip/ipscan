@@ -124,7 +124,7 @@ public class InetAddressUtils {
 		if (netmaskString.startsWith("/")) {
 			// CIDR netmask, e.g. "/24" - number of bits set from the left
 			int totalBits = Integer.parseInt(netmaskString.substring(1)); 
-			byte[] mask = new byte[4]; // Warning: assume IPv4 here
+			byte[] mask = new byte[totalBits > 32 ? 16 : 4];
 			for (int i = 0; i < mask.length; i++) {
 				int curByteBits = totalBits >= 8 ? 8 : totalBits;
 				totalBits -= curByteBits;				
