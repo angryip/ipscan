@@ -12,7 +12,7 @@ curl 'http://standards-oui.ieee.org/oui.txt' |\
 fgrep '(base 16)' | $SED_APP -r '
 	s/\r//g; s/     \(base 16\)\t\t//
 	s/,? ?(Inc)\.?$//I
-	s/(,|, | )(Ltd|Limited|GmbH|LLC|A\/S|AB|AS|SAS|AG|KG|PLC|SRL|OY|Oy|BV|Nederland BV|SAN VE TIC)\.?$//Ig
+	s/(,|, | )(Ltd|CO,\.LTD|Limited|GmbH|LLC|A\/S|AB|AS|SAS|AG|KG|PLC|SRL|OY|Oy|BV|Nederland BV|SAN VE TIC)\.?$//Ig
 	s/(,|, | )(Co|Corp|Corporation|Company|Incorporated)\.?$//Ig
 	s/\(.+\)//
 	s/ (Electronics?|Technology|Technologies|Telecommunication|Communications?|Corporation|Systems|Solutions|International|Industry|Industries|Networks?|Holdings?) ?//Ig
