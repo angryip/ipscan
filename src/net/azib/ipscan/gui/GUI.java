@@ -39,10 +39,12 @@ public class GUI implements AutoCloseable {
 		}
 	}
 
-	public void showMainWindow(Injector injector) {
+	public void showMainWindow(Injector injector, boolean showStartupInfo) {
 		mainWindow = injector.require(MainWindow.class);
-
 		LOG.fine("Main window created: " + (System.currentTimeMillis() - startTime));
+
+		if (showStartupInfo)
+			injector.require(Startup.class).onStart();
 
 		while (!mainWindow.isDisposed()) {
 			try {

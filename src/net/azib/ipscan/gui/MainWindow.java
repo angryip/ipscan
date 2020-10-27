@@ -63,8 +63,7 @@ public class MainWindow {
 					  ResultTable resultTable, StatusBar statusBar, ResultsContextMenu resultsContextMenu,
 					  FeederGUIRegistry feederGUIRegistry, final StateMachine stateMachine,
 					  ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListener,
-					  MainMenu menuBar /* don't delete: initiates main menu creation */,
-					  Startup startup
+					  MainMenu menuBar /* don't delete: initiates main menu creation */
 	) {
 		this.shell = shell;
 		this.guiConfig = guiConfig;
@@ -81,8 +80,6 @@ public class MainWindow {
 		if (guiConfig.isMainWindowMaximized) {
 			shell.setMaximized(true);
 		}
-
-		startup.onStart();
 
 		stateMachine.addTransitionListener(new EnablerDisabler());
 		Display.getCurrent().asyncExec(() -> {

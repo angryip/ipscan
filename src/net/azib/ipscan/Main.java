@@ -57,7 +57,7 @@ public class Main {
 
 			processCommandLine(args, injector);
 
-			gui.showMainWindow(injector);
+			gui.showMainWindow(injector, args.length == 0);
 
 			Config.getConfig().store();
 			gui.close();
