@@ -6,6 +6,7 @@
 package net.azib.ipscan.util;
 
 import net.azib.ipscan.config.LoggerFactory;
+import net.azib.ipscan.config.Platform;
 
 import java.net.*;
 import java.util.List;
@@ -17,6 +18,7 @@ import static java.net.NetworkInterface.getNetworkInterfaces;
 import static java.util.Collections.list;
 import static java.util.Collections.reverse;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
+import static java.util.stream.Collectors.toList;
 
 /**
  * This class provides various utility static methods,
@@ -86,10 +88,6 @@ public class InetAddressUtils {
 
 	/**
 	 * Increments or decrements an IP address by 1.
-	 * 
-	 * @param address
-	 *            the IP address
-	 * @param isIncrement
 	 * @return incremented/decremented IP address
 	 */
 	private static InetAddress modifyInetAddress(InetAddress address, boolean isIncrement) {
@@ -122,9 +120,6 @@ public class InetAddressUtils {
 	 * Another supported format is CIDR ("/24").
 	 * <p/>
 	 * Only IPv4 is supported.
-	 * 
-	 * @param netmaskString
-	 * @throws UnknownHostException
 	 */
 	public static InetAddress parseNetmask(String netmaskString) throws UnknownHostException {
 		if (netmaskString.startsWith("/")) {
@@ -150,8 +145,6 @@ public class InetAddressUtils {
 	 * Where mask bits are set, we use prototype bits.
 	 * Where mask bits are cleared, we leave bits as is.
 	 * @param addressBytes this array is modified according to the maskBytes and prototypeBytes
-	 * @param maskBytes
-	 * @param prototypeBytes
 	 */
 	public static void maskPrototypeAddressBytes(byte[] addressBytes, byte[] maskBytes, byte[] prototypeBytes) {
 		for (int i = 0; i < addressBytes.length; i++) {
@@ -161,7 +154,6 @@ public class InetAddressUtils {
 
 	/**
 	 * Checks whether the passed address is likely either a broadcast or network address
-	 * @param address
 	 */
 	public static boolean isLikelyBroadcast(InetAddress address) {
 		byte[] bytes = address.getAddress(); 
@@ -171,8 +163,9 @@ public class InetAddressUtils {
 	public static InterfaceAddress getLocalInterface() {
 		InterfaceAddress anyAddress = null;
 		try {
-			List<NetworkInterface> interfaces = list(getNetworkInterfaces());
-			reverse(interfaces);
+			List<NetworkInterface> interfaces = list(getNetworkInterfaces()).stream()
+					.filter(i -> i.getParent() == null && !i.isVirtual()).collect(toList());
+			if (!Platform.WINDOWS) reverse(interfaces);
 			for (NetworkInterface networkInterface : interfaces) {
 				for (InterfaceAddress ifAddr : networkInterface.getInterfaceAddresses()) {
 					anyAddress = ifAddr;
