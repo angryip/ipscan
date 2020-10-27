@@ -80,8 +80,7 @@ public class FeederActions {
 					MenuItem menuItem = (MenuItem) event.widget;
 					String address = (String) menuItem.getData();
 					ipText.setText(address.substring(0, address.lastIndexOf('/')));
-netmaskCombo.setText(address.substring(address.lastIndexOf('/')));
-//                        netmaskCombo.traverse(SWT.TRAVERSE_RETURN);
+					netmaskCombo.setText(address.substring(address.lastIndexOf('/')));
 					menuItem.getParent().dispose();
 				};
 
