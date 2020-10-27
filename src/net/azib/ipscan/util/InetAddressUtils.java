@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-import static java.net.NetworkInterface.getNetworkInterfaces;
 import static java.util.Collections.list;
 import static java.util.Collections.reverse;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
@@ -163,9 +162,9 @@ public class InetAddressUtils {
 	public static InterfaceAddress getLocalInterface() {
 		InterfaceAddress anyAddress = null;
 		try {
-			List<NetworkInterface> interfaces = list(getNetworkInterfaces()).stream()
+			List<NetworkInterface> interfaces = getNetworkInterfaces().stream()
 					.filter(i -> i.getParent() == null && !i.isVirtual()).collect(toList());
-			if (!Platform.WINDOWS) reverse(interfaces);
+
 			for (NetworkInterface networkInterface : interfaces) {
 				for (InterfaceAddress ifAddr : networkInterface.getInterfaceAddresses()) {
 					anyAddress = ifAddr;
@@ -179,5 +178,11 @@ public class InetAddressUtils {
 			LOG.log(Level.FINE, "Cannot enumerate network interfaces", e);
 		}
 		return anyAddress;
+	}
+
+	public static List<NetworkInterface> getNetworkInterfaces() throws SocketException {
+		List<NetworkInterface> interfaces = list(NetworkInterface.getNetworkInterfaces());
+		if (!Platform.WINDOWS) reverse(interfaces);
+		return interfaces;
 	}
 }
