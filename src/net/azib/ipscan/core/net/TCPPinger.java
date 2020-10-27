@@ -9,10 +9,7 @@ import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.NoRouteToHostException;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
+import java.net.*;
 import java.util.logging.Logger;
 
 import static java.lang.Math.min;
@@ -65,21 +62,17 @@ public class TCPPinger implements Pinger {
 			}
 			catch (SocketTimeoutException ignore) {
 			}
-			catch (NoRouteToHostException e) {
-				// this means that the host is down
-				break;
-			}
 			catch (IOException e) {
 				String msg = e.getMessage();
 
 				// RST should result in ConnectException, but not all Java implementations respect that
-				if (msg.contains(/*Connection*/"refused")) {
+				if (e instanceof ConnectException || msg.contains(/*Connection*/"refused")) {
 					// we've got an RST packet from the host - it is alive
 					success(result, startTime);
 				}
 				else
 					// this should result in NoRouteToHostException or ConnectException, but not all Java implementation respect that
-					if (msg.contains(/*No*/"route to host") || msg.contains(/*Host is*/"down") || msg.contains(/*Network*/"unreachable") || msg.contains(/*Socket*/"closed")) {
+					if (e instanceof NoRouteToHostException || msg.contains(/*No*/"route to host") || msg.contains(/*Host is*/"down") || msg.contains(/*Network*/"unreachable") || msg.contains(/*Socket*/"closed")) {
 						// host is down
 						break;
 					}
