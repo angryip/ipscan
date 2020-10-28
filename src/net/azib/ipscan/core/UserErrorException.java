@@ -15,12 +15,11 @@ import net.azib.ipscan.config.Labels;
  */
 public class UserErrorException extends RuntimeException {
 	public UserErrorException(String label) {
-		super(Labels.getLabel("exception.UserErrorException." + label));
+		super(label);
 	}
 	
 	public UserErrorException(String label, Throwable cause) {
-		this(label);
-		initCause(cause);
+		super(label, cause);
 	}
 
 	public UserErrorException(Throwable cause) {

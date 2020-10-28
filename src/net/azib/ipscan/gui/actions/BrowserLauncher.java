@@ -11,7 +11,6 @@ import org.eclipse.swt.program.Program;
 public class BrowserLauncher {
 	/**
 	 * Opens an URL in the default browser.
-	 * @param url
 	 */
 	public static void openURL(String url) {
 		if (!Program.launch(url)) throw new UserErrorException("openURL.failed", url);
