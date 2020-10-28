@@ -15,4 +15,8 @@ public class FetcherException extends UserErrorException {
 	public FetcherException(String label) {
 		super(label);
 	}
+
+	public FetcherException(Throwable cause) {
+		super(cause);
+	}
 }

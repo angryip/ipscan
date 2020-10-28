@@ -14,9 +14,6 @@ import net.azib.ipscan.config.Labels;
  * @author Anton Keks
  */
 public class UserErrorException extends RuntimeException {
-	
-	private static final long serialVersionUID = 123283472834982L;
-	
 	public UserErrorException(String label) {
 		super(Labels.getLabel("exception.UserErrorException." + label));
 	}
@@ -25,9 +22,12 @@ public class UserErrorException extends RuntimeException {
 		this(label);
 		initCause(cause);
 	}
-	
+
+	public UserErrorException(Throwable cause) {
+		super(cause);
+	}
+
 	public UserErrorException(String label, String rawInfo) {
 		super(Labels.getLabel("exception.UserErrorException." + label) + rawInfo);
 	}
-
 }
