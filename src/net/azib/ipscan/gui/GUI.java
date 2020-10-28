@@ -58,6 +58,9 @@ public class GUI implements AutoCloseable {
 				String localizedMessage = getLocalizedMessage(e);
 				showMessage(e instanceof UserErrorException ? SWT.ICON_WARNING : SWT.ICON_ERROR,
 						getLabel(e instanceof UserErrorException ? "text.userError" : "text.error"), localizedMessage);
+
+				if (!(e instanceof UserErrorException) || e.getCause() != null)
+					new GoogleAnalytics().report(e);
 			}
 		}
 	}
@@ -70,7 +73,6 @@ public class GUI implements AutoCloseable {
 		messageBox.setText(title);
 		messageBox.setMessage(localizedMessage);
 		messageBox.open();
-		new GoogleAnalytics().report(localizedMessage, (Throwable) null);
 	}
 
 	@Override public void close() {

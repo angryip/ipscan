@@ -5,22 +5,15 @@
  */
 package net.azib.ipscan.feeders;
 
+import net.azib.ipscan.core.UserErrorException;
+
 /**
  * Exception for throwing in case of problems with Feeders.
  * 
  * @author Anton Keks
  */
-public class FeederException extends IllegalArgumentException {
-	
-	static final long serialVersionUID = 746237846273847L;
-
+public class FeederException extends UserErrorException {
 	public FeederException(String message) {
 		super(message);
 	}
-	
-	public FeederException(String message, Throwable cause) {
-		super(message);
-		initCause(cause);
-	}
-
 }

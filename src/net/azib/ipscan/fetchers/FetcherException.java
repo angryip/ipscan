@@ -5,19 +5,9 @@
  */
 package net.azib.ipscan.fetchers;
 
-/**
- * FetcherException
- *
- * @author Anton Keks
- */
-public class FetcherException extends RuntimeException {
+import net.azib.ipscan.core.UserErrorException;
 
-	private static final long serialVersionUID = 1L;
-
-	public FetcherException(Throwable cause) {
-		super(cause);
-	}
-
+public class FetcherException extends UserErrorException {
 	public FetcherException(String label, Throwable cause) {
 		super(label, cause);
 	}
@@ -25,5 +15,4 @@ public class FetcherException extends RuntimeException {
 	public FetcherException(String label) {
 		super(label);
 	}
-
 }

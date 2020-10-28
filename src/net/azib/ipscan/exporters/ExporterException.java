@@ -5,15 +5,14 @@
  */
 package net.azib.ipscan.exporters;
 
+import net.azib.ipscan.core.UserErrorException;
+
 /**
  * Exception for throwing in case of problems in Exporters.
  * 
  * @author Anton Keks
  */
-public class ExporterException extends IllegalArgumentException {
-	
-	static final long serialVersionUID = 746237846273847L;
-
+public class ExporterException extends UserErrorException {
 	public ExporterException(String message) {
 		super(message);
 	}
