@@ -2,6 +2,8 @@ package net.azib.ipscan.util;
 
 import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.Version;
+import org.eclipse.swt.SWTError;
+import org.eclipse.swt.SWTException;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -64,7 +66,8 @@ public class GoogleAnalytics {
 			element = stackTraceElement;
 			if (element.getClassName().startsWith("net.azib.ipscan")) break;
 		}
-		return e.toString() + (element == null ? "" : "\n" +
+		int code = e instanceof SWTError ? ((SWTError) e).code : e instanceof SWTException ? ((SWTException) e).code : -1;
+		return e.toString() + (code >= 0 ? " (" + code + ")" : "") + (element == null ? "" : "\n" +
 			   element.getClassName() + "." + element.getMethodName() + ":" + element.getLineNumber());
 	}
 
