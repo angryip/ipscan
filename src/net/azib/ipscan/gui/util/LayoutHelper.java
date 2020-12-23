@@ -15,13 +15,15 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * A helper class to create FormLayout and FormData object more conveniently.
  *
  * @author Anton Keks
  */
 public class LayoutHelper {
-
 	public static FormLayout formLayout(int marginWidth, int marginHeight, int spacing) {
 		FormLayout formLayout = new FormLayout();
 		formLayout.marginWidth = marginWidth;
@@ -51,16 +53,18 @@ public class LayoutHelper {
 		return font;
 	}
 
-	public static Image icon(final String baseName) {
-		final Display display = Display.getCurrent();
-		return new Image(display, new ImageDataProvider() {
-			@Override public ImageData getImageData(int zoom) {
+	static Map<String, Image> iconCache = new HashMap<>();
+
+	public static Image icon(String baseName) {
+		return iconCache.computeIfAbsent(baseName, k -> {
+			Display display = Display.getCurrent();
+			return new Image(display, (ImageDataProvider) zoom -> {
 				String suffix = zoom == 200 ? "@2x.png" : ".png";
-				ImageData imageData = new ImageData(getClass().getResourceAsStream("/images/" + baseName + suffix));
+				ImageData imageData = new ImageData(LayoutHelper.class.getResourceAsStream("/images/" + baseName + suffix));
 				if (zoom != 100 & zoom != 200)
 					imageData = DPIUtil.autoScaleUp(display, imageData);
 				return imageData;
-			}
+			});
 		});
 	}
 }
