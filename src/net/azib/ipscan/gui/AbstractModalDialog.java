@@ -21,8 +21,8 @@ import org.eclipse.swt.widgets.*;
  * @author Anton Keks
  */
 public abstract class AbstractModalDialog {
-
 	protected Shell shell;
+	private static Image icon;
 	
 	public void open() {
 		if (shell == null || shell.isDisposed()) {
@@ -66,13 +66,8 @@ public abstract class AbstractModalDialog {
 		}
 		
 		shell = new Shell(parent, getShellStyle());
-		Image icon = null;
-		if (parent != null) {
-			icon = parent.getImage();
-		}
-		if (icon == null) {
-			icon = new Image(shell.getDisplay(), getClass().getResourceAsStream("/images/icon.png"));
-		}
+		if (icon == null && parent != null) icon = parent.getImage();
+		if (icon == null) icon = new Image(shell.getDisplay(), getClass().getResourceAsStream("/images/icon.png"));
 		shell.setImage(icon);
 		
 		populateShell();
@@ -88,7 +83,6 @@ public abstract class AbstractModalDialog {
 	/**
 	 * Positions 2 buttons at the bottom-right part of the shell.
 	 * On MacOS also changes OK and cancel button order.
-	 * @param okButton
 	 * @param cancelButton can be null
 	 */
 	protected void positionButtons(Button okButton, Button cancelButton) {
@@ -121,8 +115,6 @@ public abstract class AbstractModalDialog {
 	/**
 	 * Positions 2 buttons at the bottom-right part of the shell in the FormLayout.
 	 * On MacOS also changes OK and cancel button order.
-	 * @param okButton
-	 * @param cancelButton 
 	 * @param control the bottom-right widget, used as a guide
 	 */
 	protected void positionButtonsInFormLayout(Button okButton, Button cancelButton, Control control) {
