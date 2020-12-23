@@ -41,6 +41,7 @@ public class InfoDialog extends AbstractModalDialog {
 		FontData sysFontData = shell.getFont().getFontData()[0];
 		titleLabel.setLayoutData(formData(new FormAttachment(iconLabel), null, new FormAttachment(0), null));
 		titleLabel.setFont(new Font(null, sysFontData.getName(), sysFontData.getHeight() + 3, sysFontData.getStyle() | SWT.BOLD));
+		titleLabel.addDisposeListener(e -> titleLabel.getFont().dispose());
 		titleLabel.setText(title2);
 
 		Text statsText = new Text(shell, SWT.MULTI | SWT.READ_ONLY);
@@ -62,16 +63,10 @@ public class InfoDialog extends AbstractModalDialog {
 		return super.getShellStyle() | SWT.SHEET;
 	}
 
-	/**
-	 * @return Returns the message.
-	 */
 	public String getMessage() {
 		return message;
 	}
 
-	/**
-	 * @param message The message to set.
-	 */
 	public InfoDialog setMessage(String message) {
 		this.message = message;
 		return this;

@@ -46,7 +46,9 @@ public class LayoutHelper {
 	public static Font iconFont(Shell shell) {
 		FontData fontData = shell.getFont().getFontData()[0];
 		fontData.setHeight(fontData.getHeight() * 4/3);
-		return new Font(shell.getDisplay(), fontData);
+		Font font = new Font(shell.getDisplay(), fontData);
+		shell.addDisposeListener(e -> font.dispose());
+		return font;
 	}
 
 	public static Image icon(final String baseName) {
