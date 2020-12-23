@@ -137,16 +137,22 @@ public class StatusBar {
 	}
 
 	class DisplayModeChangeListener implements Listener {
+		private Menu popupMenu;
+
+		private void createPopupMenu() {
+			popupMenu = new Menu(getShell(), SWT.POP_UP);
+			for (DisplayMethod displayMethod : DisplayMethod.values()) {
+				MenuItem item = new MenuItem(popupMenu, 0);
+				item.setText(Labels.getLabel("text.display." + displayMethod));
+				item.setData(displayMethod);
+				item.addListener(SWT.Selection, this);
+			}
+		}
+
 		public void handleEvent(Event event) {
 			// user clicked the config text, lets ask the display options
 			if (event.type == SWT.MouseDown) {
-				Menu popupMenu = new Menu(getShell(), SWT.POP_UP);
-				for (DisplayMethod displayMethod : DisplayMethod.values()) {
-					MenuItem item = new MenuItem(popupMenu, 0);
-					item.setText(Labels.getLabel("text.display." + displayMethod));
-					item.setData(displayMethod);
-					item.addListener(SWT.Selection, this);
-				}
+				if (popupMenu == null) createPopupMenu();
 				popupMenu.setVisible(true);
 			}
 			// handle menu item selection
