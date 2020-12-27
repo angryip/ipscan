@@ -161,7 +161,7 @@ public class FetcherRegistry {
 			prefs.openFor(fetcher);
 		}
 		catch (Exception e) {
-			throw new RuntimeException("Cannot instantiate fetcher preference editor: " + prefsEditorClass.getName());
+			throw new RuntimeException("Cannot instantiate fetcher preference editor: " + prefsEditorClass.getName(), e);
 		}
 	}
 

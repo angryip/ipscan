@@ -24,20 +24,12 @@ import java.util.regex.Pattern;
 import static java.lang.Integer.parseInt;
 import static java.lang.Integer.toHexString;
 
-/**
- * PortTextFetcherPrefs
- *
- * @author Anton Keks
- */
 public class PortTextFetcherPrefs extends AbstractModalDialog implements FetcherPrefs {
 	private PortTextFetcher fetcher;
 	private Text textToSend;
 	private Text matchingRegexp;
 	private Text extractGroup;
 
-	public PortTextFetcherPrefs() {
-	}
-	
 	public void openFor(Fetcher fetcher) {
 		this.fetcher = (PortTextFetcher) fetcher;
 		open();

@@ -1,5 +1,6 @@
 Unreleased:
 - Cleanup some GUI resource leaks
+- Allow changing of MAC address separator (many tools use "-" instead of ":")
 
 Changes in 3.7.3:
 - Local IP address popup will now list IPv6 addresses and support IPv6 netmasks

@@ -1,0 +1,1 @@
+~/apps/graalvm-ce-java11-20.3.0/bin/native-image -jar build/libs/ipscan-linux64-*.jar --no-fallback --allow-incomplete-classpath -H:IncludeResources='messages.*$' -H:IncludeResources=mac-vendors.txt -H:IncludeResources='images/.*$'

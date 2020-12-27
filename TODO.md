@@ -1,3 +1,9 @@
+* SWT Error: no more handles (empty modal window appears)
+* Retrieve value for any fetcher from context menu
+* Monitoring mode (which IPs appear/disappear)
+* UX: button for netmask application?
+* Graalvm native-image to build binary
+
 * Use ServiceLoader for plugins
 * Use ipify for /iplocate
 * Add URLFetcher with configurable URL and JSON/XPath expression

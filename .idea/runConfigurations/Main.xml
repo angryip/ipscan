@@ -1,15 +1,10 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Main" type="Application" factoryName="Application">
-    <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="11" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="net.azib.ipscan.Main" />
     <module name="ipscan.main" />
     <option name="VM_PARAMETERS" value="-Djava.util.logging.config.file=config/logging.properties" />
-    <extension name="coverage">
-      <pattern>
-        <option name="PATTERN" value="net.azib.ipscan.*" />
-        <option name="ENABLED" value="true" />
-      </pattern>
-    </extension>
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
