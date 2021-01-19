@@ -9,7 +9,10 @@ import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.core.ScanningSubject;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.InetSocketAddress;
+import java.net.NoRouteToHostException;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.logging.Logger;
 
 import static java.lang.Math.min;
@@ -64,8 +67,6 @@ public class TCPPinger implements Pinger {
 			}
 			catch (IOException e) {
 				String msg = e.getMessage();
-
-				if (e instanceof ConnectException) LOG.info(subject.getAddress() + ": " + e.toString());
 
 				// RST should result in ConnectException, but on macOS ConnectionException can also come from dead hosts
 				if (msg.contains(/*Connection*/"refused")) {
