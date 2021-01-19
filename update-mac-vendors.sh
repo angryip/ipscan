@@ -8,7 +8,7 @@ if [ "$(uname)" = "Darwin" ]; then
   SED_APP='gsed'
 fi
 
-curl 'http://standards-oui.ieee.org/oui.txt' |\
+curl 'http://standards-oui.ieee.org/oui/oui.txt' |\
 fgrep '(base 16)' | $SED_APP -r '
 	s/\r//g; s/     \(base 16\)\t\t//
 	s/,? ?(Inc)\.?$//I
