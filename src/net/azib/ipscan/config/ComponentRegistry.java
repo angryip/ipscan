@@ -41,11 +41,11 @@ public class ComponentRegistry {
 		i.register(StateMachine.class, stateMachine);
 		i.register(RangeFeederGUI.class, RandomFeederGUI.class, FileFeederGUI.class);
 		i.register(TXTExporter.class, CSVExporter.class, XMLExporter.class, IPListExporter.class);
-		i.register(IPFetcher.class, PingFetcher.class, PingTTLFetcher.class, HostnameFetcher.class, PortsFetcher.class,
-			FilteredPortsFetcher.class, WebDetectFetcher.class, HTTPSenderFetcher.class, CommentFetcher.class,
-			NetBIOSInfoFetcher.class, PacketLossFetcher.class, HTTPProxyFetcher.class);
+
+		i.register(IPFetcher.class, PingFetcher.class, PingTTLFetcher.class, HostnameFetcher.class, PortsFetcher.class);
 		i.register(MACFetcher.class, Platform.WINDOWS ? new WinMACFetcher() : new UnixMACFetcher());
-		i.register(MACVendorFetcher.class);
+		i.register(CommentFetcher.class, FilteredPortsFetcher.class, WebDetectFetcher.class, HTTPSenderFetcher.class,
+			NetBIOSInfoFetcher.class, PacketLossFetcher.class, HTTPProxyFetcher.class, MACVendorFetcher.class);
 		i.register(FeederRegistry.class, i.require(FeederGUIRegistry.class));
 	}
 

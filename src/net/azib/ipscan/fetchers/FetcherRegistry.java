@@ -88,7 +88,6 @@ public class FetcherRegistry {
 
   /**
    * Adds a listener to observe FetcherRegistry events, like modification of selected fetchers.
-   * @param listener
    */
 	public void addListener(FetcherRegistryUpdateListener listener) {
 		updateListeners.add(listener);
@@ -110,15 +109,12 @@ public class FetcherRegistry {
 
   /**
    * Searches for selected fetcher with the given label
-   * @param id
    * @return the index, if found, or -1
    */
 	public int getSelectedFetcherIndex(String id) {
 		int index = 0;
 		for (Fetcher fetcher : selectedFetchers.values()) {
-			if (id.equals(fetcher.getId())) {
-				return index;
-			}
+			if (id.equals(fetcher.getId())) return index;
 			index++;
 		}
 		return -1;
@@ -127,7 +123,6 @@ public class FetcherRegistry {
   /**
    * Updates the list, retaining only items that are passed in the array.
    * The order of elements will be the same as in the array.
-   * @param labels
    */
 	public void updateSelectedFetchers(String[] labels) {
 		// rebuild the map (to recreate the new order of elements)
@@ -148,7 +143,6 @@ public class FetcherRegistry {
 
   /**
    * Opens preferences editor for the specified fetcher, if possible.
-   * @param fetcher
    * @throws FetcherException if preferences editor doesn't exist
    */
 	public void openPreferencesEditor(Fetcher fetcher) throws FetcherException {

@@ -184,7 +184,6 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 	}
 
 	static class AddRemoveButtonListener implements Listener {
-		
 		private List fromList;
 		private List toList;
 		
