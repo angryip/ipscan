@@ -18,7 +18,7 @@ abstract class AbstractPingerTest {
 
 	@Test
 	public void pingAlive() throws IOException {
-		PingResult result = pinger.ping(new ScanningSubject(InetAddress.getLocalHost()), 3);
+		PingResult result = pinger.ping(new ScanningSubject(InetAddress.getLocalHost()), 2);
 		assertTrue(result.isAlive());
 		assertTrue(result.getAverageTime() <= 10);
 	}
