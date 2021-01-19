@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assume.assumeFalse;
+import static org.junit.Assume.assumeTrue;
 
 public class UDPPingerTest extends AbstractPingerTest {
 	public UDPPingerTest() {
@@ -14,7 +14,7 @@ public class UDPPingerTest extends AbstractPingerTest {
 
 	@Test @Override
 	public void pingAlive() throws IOException {
-		assumeFalse(Platform.MAC_OS);
+		assumeTrue(Platform.LINUX);
 		super.pingAlive();
 	}
 }
