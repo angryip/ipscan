@@ -62,7 +62,7 @@ public class RangeFeederTest {
 	}
 		
 	@Test
-	public void getPercentageComplete() throws Exception {
+	public void getPercentageComplete() {
 		RangeFeeder rangeFeeder = new RangeFeeder("100.11.12.13", "100.11.12.15");
 		assertEquals(0, rangeFeeder.percentageComplete());
 		rangeFeeder.next();
@@ -77,7 +77,19 @@ public class RangeFeederTest {
 		rangeFeeder.next();
 		assertEquals(100, rangeFeeder.percentageComplete());
 	}
-	
+
+	@Test
+	public void getPercentageCompleteIPv6() {
+		RangeFeeder rangeFeeder = new RangeFeeder("::1", "::3");
+		assertEquals(0, rangeFeeder.percentageComplete());
+		rangeFeeder.next();
+		assertEquals(33, rangeFeeder.percentageComplete());
+		rangeFeeder.next();
+		assertEquals(67, rangeFeeder.percentageComplete());
+		rangeFeeder.next();
+		assertEquals(100, rangeFeeder.percentageComplete());
+	}
+
 	@Test
 	public void getInfo() {
 		RangeFeeder rangeFeeder = new RangeFeeder("100.11.12.13", "100.11.12.13");
