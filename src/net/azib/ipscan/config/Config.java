@@ -11,8 +11,6 @@ import java.util.prefs.Preferences;
  * @author Anton Keks
  */
 public final class Config {
-	private static Config globalConfig;
-	
 	private Preferences preferences;
 	public String language;
 	public String uuid;
@@ -42,14 +40,12 @@ public final class Config {
 		allowReports = preferences.getBoolean("allowReports", true);
 	}
 
-	/**
-	 * Initializes the singleton instance
-	 */
+	private static class ConfigHolder {
+		static final Config INSTANCE = new Config();
+	}
+
 	public static Config getConfig() {
-		if (globalConfig == null) {
-			globalConfig = new Config();
-		}
-		return globalConfig;
+		return ConfigHolder.INSTANCE;
 	}
 
 	public void store() {
