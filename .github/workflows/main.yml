@@ -30,7 +30,7 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: '8'
-    - run: ./gradlew mac --info
+    - run: ./gradlew test mac --info --tests net.azib.ipscan.core.net.*
       env:
         APPLE_USER: ${{ secrets.APPLE_USER }}
         APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
