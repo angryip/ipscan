@@ -8,13 +8,7 @@ import java.net.InetAddress;
 
 import static org.junit.Assert.assertTrue;
 
-/**
- * SharedPingerTest
- *
- * @author Anton Keks
- */
 public class ICMPSharedPingerTest {
-	
 	@Test @Ignore("this test works only under root")
 	public void testPing() throws Exception {
 		Pinger pinger = new ICMPSharedPinger(1000);
@@ -23,5 +17,4 @@ public class ICMPSharedPingerTest {
 		assertTrue(result.getAverageTime() < 50);
 		assertTrue(result.getTTL() >= 0);
 	}
-
 }
