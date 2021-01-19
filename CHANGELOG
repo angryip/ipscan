@@ -2,6 +2,7 @@ Unreleased:
 - Cleanup some GUI resource leaks
 - Allow changing of MAC address separator (many tools use "-" instead of ":")
 - Comments for hosts on LAN (tied to MAC address) will now display even if MAC fetcher is not selected, or is after the Comments fetcher #124
+- Preference added to opt-out of checking for new versions #270
 
 Changes in 3.7.3:
 - Local IP address popup will now list IPv6 addresses and support IPv6 netmasks

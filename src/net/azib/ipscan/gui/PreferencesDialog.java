@@ -62,6 +62,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 	private Button[] displayMethod;
 	private Button showInfoCheckbox;
 	private Button askConfirmationCheckbox;
+	private Button versionCheckCheckbox;
 	private Combo languageCombo;
 
 	public PreferencesDialog(PingerRegistry pingerRegistry, Config globalConfig, ScannerConfig scannerConfig, GUIConfig guiConfig) {
@@ -77,7 +78,6 @@ public class PreferencesDialog extends AbstractModalDialog {
 	
 	/**
 	 * Opens the specified tab of preferences dialog
-	 * @param tabIndex
 	 */
 	public void openTab(int tabIndex) {
 		// widgets are created on demand
@@ -276,7 +276,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		askConfirmationCheckbox.setText(Labels.getLabel("preferences.display.confirmation.newScan"));
 		showInfoCheckbox = new Button(showStatsGroup, SWT.CHECK);
 		showInfoCheckbox.setText(Labels.getLabel("preferences.display.confirmation.showInfo"));
-		
+
 		groupLayout = new GridLayout();
 		groupLayout.numColumns = 2;
 		
@@ -292,6 +292,9 @@ public class PreferencesDialog extends AbstractModalDialog {
 
 		label = new Label(languageGroup, SWT.NONE);
 		label.setText(Labels.getLabel("preferences.language.someIncomplete"));
+
+		versionCheckCheckbox = new Button(displayTab, SWT.CHECK);
+		versionCheckCheckbox.setText(Labels.getLabel("preferences.versionCheck"));
 	}
 	
 	/**
@@ -386,6 +389,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		displayMethod[guiConfig.displayMethod.ordinal()].setSelection(true);
 		showInfoCheckbox.setSelection(guiConfig.showScanStats);
 		askConfirmationCheckbox.setSelection(guiConfig.askScanConfirmation);
+		versionCheckCheckbox.setSelection(guiConfig.versionCheckEnabled);
 		for (int i = 0; i < Labels.LANGUAGES.length; i++) {
 			if (globalConfig.language.equals(Labels.LANGUAGES[i])) {
 				languageCombo.select(i);
@@ -430,6 +434,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		}
 		guiConfig.showScanStats = showInfoCheckbox.getSelection();
 		guiConfig.askScanConfirmation = askConfirmationCheckbox.getSelection();
+		guiConfig.versionCheckEnabled = versionCheckCheckbox.getSelection();
 		String newLanguage = Labels.LANGUAGES[languageCombo.getSelectionIndex()];
 		if (!newLanguage.equals(globalConfig.language)) {
 			globalConfig.language = newLanguage;

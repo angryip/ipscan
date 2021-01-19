@@ -13,15 +13,11 @@ import org.eclipse.swt.graphics.Point;
 
 import java.util.prefs.Preferences;
 
-/**
- * DimensionsConfig
- *
- * @author Anton Keks
- */
 public class GUIConfig {
 	private Preferences preferences;
 	
 	public boolean isFirstRun;
+	public boolean versionCheckEnabled;
 	public String lastRunVersion;
 	public long lastVersionCheck;
 	public int activeFeeder;
@@ -43,6 +39,7 @@ public class GUIConfig {
 	
 	private void load() {
 		isFirstRun = preferences.getBoolean("firstRun", true);
+		versionCheckEnabled = preferences.getBoolean("versionCheckEnabled", true);
 		lastRunVersion = preferences.get("lastRunVersion", "Unknown");
 		lastVersionCheck = preferences.getLong("lastVersionCheck", System.currentTimeMillis());
 		activeFeeder = preferences.getInt("activeFeeder", 0);
@@ -57,6 +54,7 @@ public class GUIConfig {
 
 	public void store() {
 		preferences.putBoolean("firstRun", isFirstRun);
+		preferences.putBoolean("versionCheckEnabled", versionCheckEnabled);
 		preferences.put("lastRunVersion", lastRunVersion);
 		preferences.putLong("lastVersionCheck", lastVersionCheck);
 		preferences.putInt("activeFeeder", activeFeeder);
