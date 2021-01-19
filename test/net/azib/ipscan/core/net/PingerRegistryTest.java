@@ -1,6 +1,3 @@
-/**
- *
- */
 package net.azib.ipscan.core.net;
 
 import net.azib.ipscan.config.Config;
@@ -16,11 +13,6 @@ import java.io.IOException;
 
 import static org.junit.Assert.*;
 
-/**
- * PingerRegistryTest
- *
- * @author Anton Keks
- */
 public class PingerRegistryTest {
 	@Before
 	public void setUp() {
@@ -28,7 +20,7 @@ public class PingerRegistryTest {
 	}
 
 	@Test
-	public void getRegisteredNames() throws Exception {
+	public void getRegisteredNames() {
 		String[] names = new PingerRegistry(null).getRegisteredNames();
 		assertNotNull(names);
 		for (String name : names) {
@@ -62,7 +54,7 @@ public class PingerRegistryTest {
 	}
 
 	@Test
-	public void checkSelectedPinger() throws Exception {
+	public void checkSelectedPinger() {
 		ScannerConfig config = Config.getConfig().forScanner();
 		PingerRegistry registry = new PingerRegistry(config);
 
@@ -84,19 +76,16 @@ public class PingerRegistryTest {
 
 		assertFalse(registry.checkSelectedPinger());
 
-		String expectedPinger = Platform.WINDOWS ? "pinger.windows" : "pinger.combined";
+		String expectedPinger = Platform.WINDOWS ? "pinger.windows" : Platform.MAC_OS ? "pinger.java" : "pinger.combined";
 		assertEquals(expectedPinger, config.selectedPinger);
 	}
 
 	abstract static class AbstractWrongPinger implements Pinger {
-
-		@Override
-		public PingResult ping(ScanningSubject subject, int count) throws IOException {
+		@Override public PingResult ping(ScanningSubject subject, int count) throws IOException {
 			return null;
 		}
 
-		@Override
-		public void close() throws IOException {
+		@Override public void close() {
 		}
 	}
 
@@ -104,18 +93,15 @@ public class PingerRegistryTest {
 	}
 
 	public static class PingerWithIncorrectConstructor extends AbstractWrongPinger {
-
 		public PingerWithIncorrectConstructor() {
 		}
 	}
 
 	static class PingerWithWrongPing extends AbstractWrongPinger {
-
 		public PingerWithWrongPing(int value) {
 		}
 
-		@Override
-		public PingResult ping(ScanningSubject subject, int count) throws IOException {
+		@Override public PingResult ping(ScanningSubject subject, int count) throws IOException {
 			throw new IOException("This pinger will not work!");
 		}
 	}
