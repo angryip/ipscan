@@ -16,7 +16,7 @@ import java.net.SocketTimeoutException;
 import java.util.logging.Logger;
 
 import static java.lang.Math.min;
-import static java.util.logging.Level.FINER;
+import static java.util.logging.Level.INFO;
 import static net.azib.ipscan.util.IOUtils.closeQuietly;
 
 /**
@@ -68,7 +68,7 @@ public class TCPPinger implements Pinger {
 			catch (IOException e) {
 				String msg = e.getMessage();
 
-				// RST should result in ConnectException, but on macOS ConnectionException can also come from dead hosts
+				// RST should result in ConnectException, but on macOS ConnectionException can also come with e.g. "No route to host"
 				if (msg.contains(/*Connection*/"refused")) {
 					// we've got an RST packet from the host - it is alive
 					success(result, startTime);
@@ -81,7 +81,7 @@ public class TCPPinger implements Pinger {
 					}
 					else {
 						// something unknown
-						LOG.log(FINER, subject.toString(), e);
+						LOG.log(INFO, subject.toString(), e);
 					}
 			}
 			finally {
