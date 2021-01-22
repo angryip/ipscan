@@ -11,7 +11,7 @@ public abstract class MACFetcher extends AbstractFetcher {
 	public static final String ID = "fetcher.mac";
 	static final Pattern macAddressPattern = Pattern.compile("([a-fA-F0-9]{1,2}[-:]){5}[a-fA-F0-9]{1,2}");
 	static final Pattern leadingZeroesPattern = Pattern.compile("(?<=^|-|:)([A-F0-9])(?=-|:|$)");
-	String separator = ":";
+	String separator = getPreferences().get("separator", ":");
 
 	@Override public String getId() {
 		return ID;
