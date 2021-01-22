@@ -1,7 +1,7 @@
 Changes in 3.7.4:
+- Allow changing of MAC address separator (many tools use "-" instead of ":") #261
 - Cleanup some GUI resource leaks
 - Fix "ghost hosts" on macOS if using TCPPinger #269
-- Allow changing of MAC address separator (many tools use "-" instead of ":")
 - Comments for hosts on LAN (tied to MAC address) will now display even if MAC fetcher is not selected, or is after the Comments fetcher #124
 - Preference added to opt-out of checking for new versions #270
 - Calculate IPv6 range scanning percent correctly #267
