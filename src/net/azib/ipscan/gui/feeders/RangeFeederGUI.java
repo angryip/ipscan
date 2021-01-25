@@ -113,9 +113,11 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		netmaskCombo.setToolTipText(getLabel("feeder.range.netmask.tooltip"));
 
 		pack();
-		Rectangle comboBounds = netmaskCombo.getBounds();
-		Rectangle endIPBounds = endIPText.getBounds();
-		netmaskCombo.setBounds(comboBounds.x, comboBounds.y, endIPBounds.x + endIPBounds.width - comboBounds.x, comboBounds.height);
+		if (Platform.LINUX) {
+			Rectangle comboBounds = netmaskCombo.getBounds();
+			Rectangle endIPBounds = endIPText.getBounds();
+			netmaskCombo.setBounds(comboBounds.x, comboBounds.y, endIPBounds.x + endIPBounds.width - comboBounds.x, comboBounds.height);
+		}
 
 		// do this stuff asynchronously (to show GUI faster)
 		asyncFillLocalHostInfo(hostnameText, startIPText);
