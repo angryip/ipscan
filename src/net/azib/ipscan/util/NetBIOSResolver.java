@@ -11,6 +11,8 @@ public class NetBIOSResolver implements Closeable {
 	private static final int NETBIOS_UDP_PORT = 137;
 	private static final byte[] REQUEST_DATA = {(byte)0xA2, 0x48, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0x43, 0x4b, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x00, 0x00, 0x21, 0x00, 0x01};
 
+	private static final int RESPONSE_TYPE_POS = 47;
+	private static final byte RESPONSE_TYPE_NBSTAT = 33;
 	private static final int RESPONSE_BASE_LEN = 57;
 	private static final int RESPONSE_NAME_LEN = 15;
 	private static final int RESPONSE_NAME_BLOCK_LEN = 18;
@@ -32,12 +34,12 @@ public class NetBIOSResolver implements Closeable {
 		DatagramPacket responsePacket = new DatagramPacket(response, response.length);
 		socket.receive(responsePacket);
 
-		if (responsePacket.getLength() < RESPONSE_BASE_LEN) {
-			return null; // response was too short for some reason
+		if (responsePacket.getLength() < RESPONSE_BASE_LEN || response[RESPONSE_TYPE_POS] != RESPONSE_TYPE_NBSTAT) {
+			return null; // response was too short - no names returned
 		}
 
-		int nameCount = response[RESPONSE_BASE_LEN-1] & 0xFF;
-		if (responsePacket.getLength() < RESPONSE_BASE_LEN + RESPONSE_NAME_BLOCK_LEN * (nameCount-1)) {
+		int nameCount = response[RESPONSE_BASE_LEN - 1] & 0xFF;
+		if (responsePacket.getLength() < RESPONSE_BASE_LEN + RESPONSE_NAME_BLOCK_LEN * nameCount) {
 			return null; // data was truncated or something is wrong
 		}
 
