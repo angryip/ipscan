@@ -48,8 +48,8 @@ configurations {
     // compile and test with current platform's SWT and JNA
     compileOnly.extendsFrom(getAt(platform))
     compileOnly.extendsFrom(jna)
-    testImplementation.extendsFrom(getAt(platform))
-    runtimeClasspath.extendsFrom(getAt(platform))
+    testImplementation.extendsFrom(compileOnly)
+    runtimeClasspath.extendsFrom(compileOnly)
     all*.exclude module: 'org.eclipse.swt' // transitive dependency in Maven that fails
 }
 
