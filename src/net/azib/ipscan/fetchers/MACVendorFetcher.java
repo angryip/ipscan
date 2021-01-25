@@ -39,11 +39,14 @@ public class MACVendorFetcher extends AbstractFetcher {
 	@Override
 	public Object scan(ScanningSubject subject) {
 		String mac = (String)subject.getParameter(MACFetcher.ID);
-		if (mac == null) mac = macFetcher.scan(subject);
+		if (mac == null) {
+			macFetcher.scan(subject);
+			mac = (String) subject.getParameter(MACFetcher.ID);
+		}
 		return mac != null ? findMACVendor(mac) : null;
 	}
 
 	String findMACVendor(String mac) {
-		return vendors.get(mac.replace(macFetcher.separator, "").substring(0, 6));
+		return vendors.get(mac.replace(":", "").substring(0, 6));
 	}
 }

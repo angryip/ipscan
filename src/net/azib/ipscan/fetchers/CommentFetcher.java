@@ -29,8 +29,10 @@ public class CommentFetcher extends AbstractFetcher {
 
 	public Object scan(ScanningSubject subject) {
 		String mac = (String) subject.getParameter(MACFetcher.ID);
-		if (mac == null && (subject.getAddress().isSiteLocalAddress() || subject.getAddress().isLinkLocalAddress()))
-			mac = macFetcher.scan(subject);
+		if (mac == null && (subject.getAddress().isSiteLocalAddress() || subject.getAddress().isLinkLocalAddress())) {
+			macFetcher.scan(subject);
+			mac = (String) subject.getParameter(MACFetcher.ID);
+		}
 		return commentsConfig.getComment(subject.getAddress(), mac);
 	}
 }

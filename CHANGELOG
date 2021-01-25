@@ -1,6 +1,6 @@
 Unreleased:
 - Upgrade SWT for all platforms
-- Fix resolving of MAC vendors if MAC separator is changed
+- Fix resolving of MAC vendors and Comments if MAC separator is changed to non-standard
 
 Changes in 3.7.4:
 - Allow changing of MAC address separator (many tools use "-" instead of ":") #261

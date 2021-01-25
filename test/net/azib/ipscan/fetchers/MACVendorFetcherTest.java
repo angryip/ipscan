@@ -16,8 +16,5 @@ public class MACVendorFetcherTest {
 		fetcher.init();
 		assertEquals("XEROX", fetcher.findMACVendor("00:00:01:00:00:00"));
 		assertEquals("Nokia", fetcher.findMACVendor("FC:E5:57:11:22:33"));
-
-		macFetcher.separator = "-";
-		assertEquals("Nokia", fetcher.findMACVendor("FC-E5-57-11-22-33"));
 	}
 }
