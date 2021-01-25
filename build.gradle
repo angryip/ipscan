@@ -14,7 +14,7 @@ plugins {
 
 def osName = System.getProperty("os.name")
 def is64 = System.getProperty("os.arch").contains("64")
-def platform = osName.contains("Linux") ? 'linux' + (is64 ? '64' : '') :
+def platform = osName.contains("Linux") ? 'linux' + (is64 ? '64' : '32') :
                osName.contains("Windows") ? 'win' + (is64 ? '64' : '32') :
                osName.contains("OS X") ? 'mac' : 'unknown'
 
@@ -37,20 +37,30 @@ repositories {
     jcenter()
 }
 
+configurations {
+    linux64.extendsFrom(implementation)
+    win32.extendsFrom(implementation)
+    win64.extendsFrom(implementation)
+    mac.extendsFrom(implementation)
+    any.extendsFrom(implementation)
+
+    compileOnly.extendsFrom(getAt(platform)) // // compile with current platform's SWT
+    testImplementation.extendsFrom(getAt(platform))
+    runtimeClasspath.extendsFrom(getAt(platform))
+    all*.exclude module: 'org.eclipse.swt' // transitive dependency in Maven that fails
+}
+
 dependencies {
-    // compile with current platform's SWT, but bundle a different one for each binary
-    compileOnly files("lib/swt-${platform}.jar")
+    def swtVersion = '3.115.100'
+    linux64 "org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64:${swtVersion}"
+    win64 "org.eclipse.platform:org.eclipse.swt.win32.win32.x86_64:${swtVersion}"
+    win32 "org.eclipse.platform:org.eclipse.swt.win32.win32.x86:3.108.0"
+    mac "org.eclipse.platform:org.eclipse.swt.cocoa.macosx.x86_64:${swtVersion}"
+
     compileOnly files('lib/jna.jar')
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.23.0'
 }
-
-configurations {
-    testImplementation.extendsFrom(compileOnly)
-    runtimeClasspath.extendsFrom(compileOnly)
-}
-
-compileJava.options.annotationProcessorGeneratedSourcesDirectory = new File('build/generated')
 
 test {
     if (platform == "mac") {
@@ -77,13 +87,17 @@ def packageTask(String platform, def moreJars = [], def moreLibs = [], Closure d
         }
         baseName = project.name + '-' + platform
         from {
-           (configurations.compile + files(platform == "any" ? [] : "lib/swt-${platform}.jar") + files(moreJars))
-                   .collect { it.isDirectory() ? it : zipTree(it) } +
-           moreLibs
+           (configurations.compile + configurations[platform] + files(moreJars))
+           .collect { it.isDirectory() ? it : zipTree(it) } + moreLibs
         }
         exclude(
-           'version.txt',
            'images/**/*.svg',
+           'META-INF/ECLIPSE*',
+           'about_files/*',
+           'version.txt',
+           '.api_description',
+           'about.html',
+           'fragment.properties',
            'chrome.manifest',
            'swt.js',
            'swt.xpt',
@@ -91,6 +105,7 @@ def packageTask(String platform, def moreJars = [], def moreLibs = [], Closure d
            'libswt-awt-gtk-*.so',
            'libswt-glx-gtk-*.so',
            'libswt-webkit-gtk-*.so',
+           'webkitextensions*/*',
            // Win32 stuff
            'swt-awt-*.dll',
            'swt-wgl-*.dll',
