@@ -145,8 +145,8 @@ def minimizeTask(String platform, Closure doMore) {
         dontobfuscate
         dontoptimize
         dontnote '**'
-        configuration 'lib/swt.pro'
-        configuration 'lib/jna.pro'
+        configuration 'ext/swt.pro'
+        configuration 'ext/jna.pro'
 
         def keepClasses = [
             'net.azib.ipscan.**',
