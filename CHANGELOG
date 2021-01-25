@@ -1,3 +1,6 @@
+Unreleased:
+- Upgrade SWT for all platforms
+
 Changes in 3.7.4:
 - Allow changing of MAC address separator (many tools use "-" instead of ":") #261
 - Cleanup some GUI resource leaks
