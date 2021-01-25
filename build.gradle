@@ -99,8 +99,6 @@ def packageTask(String platform, def moreJars = [], def moreLibs = [], Closure d
            'about.html',
            'fragment.properties',
            'chrome.manifest',
-           'swt.js',
-           'swt.xpt',
            // GTK stuff
            'libswt-awt-gtk-*.so',
            'libswt-glx-gtk-*.so',
@@ -110,7 +108,6 @@ def packageTask(String platform, def moreJars = [], def moreLibs = [], Closure d
            'swt-awt-*.dll',
            'swt-wgl-*.dll',
            'swt-gdip-*.dll',
-           'swt-xulrunner-*.dll',
            'swt-webkit-*.dll',
            // Mac stuff
            'libswt-awt-*.jnilib',
