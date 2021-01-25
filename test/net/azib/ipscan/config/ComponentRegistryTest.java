@@ -9,7 +9,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class ComponentRegistryTest {
 	@Test
-	public void mainClassesCanBeCreated() {
+	public void mainClassesCanBeCreated() throws Exception {
 		Injector injector = new ComponentRegistry().init();
 		assertNotNull(injector.require(CommandLineProcessor.class));
 		assertNotNull(injector.require(MainWindow.class));
