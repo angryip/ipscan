@@ -33,12 +33,13 @@ public class PingerRegistry {
 	/** All available Pinger implementations */
 	Map<String, Class<? extends Pinger>> pingers;
 
-	public PingerRegistry(ScannerConfig scannerConfig) {
+	@SuppressWarnings("unchecked")
+	public PingerRegistry(ScannerConfig scannerConfig) throws ClassNotFoundException {
 		this.scannerConfig = scannerConfig;
 		
 		pingers = new LinkedHashMap<>();
 		if (Platform.WINDOWS)
-			pingers.put("pinger.windows", WindowsPinger.class);
+			pingers.put("pinger.windows", (Class<Pinger>) Class.forName(getClass().getPackage().getName() + ".WindowsPinger"));
 		if (Platform.LINUX && Platform.ARCH_64)
 			pingers.put("pinger.icmp", ICMPSharedPinger.class);
 		pingers.put("pinger.udp", UDPPinger.class);

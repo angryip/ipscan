@@ -117,7 +117,10 @@ def packageTask(String platform, def moreLibs = [], Closure doMore) {
             'com/sun/jna/*/*.a',
             'com/sun/jna/*/*.so',
             'com/sun/jna/*/*.jnilib',
-            "com/sun/jna/win32-${platform == 'win32' ? 'x86-64' : platform == 'win64' ? 'x86' : '*'}/*.dll"
+            "com/sun/jna/win32-${platform == 'win32' ? 'x86-64' : platform == 'win64' ? 'x86' : '*'}/*.dll",
+            // Win-specific stuff
+            !platform.startsWith('win') ? 'net/azib/ipscan/core/net/Win*' : '',
+            !platform.startsWith('win') ? 'net/azib/ipscan/fetchers/Win*' : ''
         )
         with jar
 
@@ -139,7 +142,6 @@ def minimizeTask(String platform, Closure doMore) {
         libraryjars System.getProperty('java.home') + "/jmods/java.logging.jmod"
         libraryjars System.getProperty('java.home') + "/jmods/java.net.http.jmod"
         libraryjars System.getProperty('java.home') + "/jmods/java.prefs.jmod"
-        libraryjars 'lib/jna.jar'
         dontobfuscate
         dontoptimize
         dontnote '**'

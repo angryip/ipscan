@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Anton Keks
  */
 public class ComponentRegistry {
-	public void register(Injector i) {
+	public void register(Injector i) throws Exception {
 		Display display = Display.getDefault();
 		i.register(Display.class, display);
 		Shell shell = new Shell();
@@ -43,13 +43,13 @@ public class ComponentRegistry {
 		i.register(TXTExporter.class, CSVExporter.class, XMLExporter.class, IPListExporter.class);
 
 		i.register(IPFetcher.class, PingFetcher.class, PingTTLFetcher.class, HostnameFetcher.class, PortsFetcher.class);
-		i.register(MACFetcher.class, Platform.WINDOWS ? new WinMACFetcher() : new UnixMACFetcher());
+		i.register(MACFetcher.class, (MACFetcher) Class.forName(MACFetcher.class.getPackage().getName() + (Platform.WINDOWS ? ".WinMACFetcher" : ".UnixMACFetcher")).newInstance());
 		i.register(CommentFetcher.class, FilteredPortsFetcher.class, WebDetectFetcher.class, HTTPSenderFetcher.class,
 			NetBIOSInfoFetcher.class, PacketLossFetcher.class, HTTPProxyFetcher.class, MACVendorFetcher.class);
 		i.register(FeederRegistry.class, i.require(FeederGUIRegistry.class));
 	}
 
-	public Injector init() {
+	public Injector init() throws Exception {
 		Injector i = new Injector();
 		new ConfigModule().register(i);
 		new ComponentRegistry().register(i);

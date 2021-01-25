@@ -20,7 +20,7 @@ public class PingerRegistryTest {
 	}
 
 	@Test
-	public void getRegisteredNames() {
+	public void getRegisteredNames() throws ClassNotFoundException {
 		String[] names = new PingerRegistry(null).getRegisteredNames();
 		assertNotNull(names);
 		for (String name : names) {
@@ -54,7 +54,7 @@ public class PingerRegistryTest {
 	}
 
 	@Test
-	public void checkSelectedPinger() {
+	public void checkSelectedPinger() throws ClassNotFoundException {
 		ScannerConfig config = Config.getConfig().forScanner();
 		PingerRegistry registry = new PingerRegistry(config);
 
