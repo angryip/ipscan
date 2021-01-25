@@ -167,7 +167,7 @@ public class GotoMenuActions {
 				// if started not from the beginning, offer to restart				
 				MessageBox messageBox = new MessageBox(activeShell, SWT.YES | SWT.NO | SWT.ICON_QUESTION);
 				messageBox.setText(Labels.getLabel("title.find"));
-				messageBox.setMessage(Labels.getLabel("text.find.notFound") + " " + Labels.getLabel("text.find.restart"));
+				messageBox.setMessage(Labels.getLabel("text.find.notFound") + "\n" + Labels.getLabel("text.find.restart"));
 				if (messageBox.open() == SWT.YES) {
 					resultTable.deselectAll();
 					findText(text, activeShell);
