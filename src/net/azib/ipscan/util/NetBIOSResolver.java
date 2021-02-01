@@ -47,7 +47,7 @@ public class NetBIOSResolver implements Closeable {
 	}
 
 	static String[] extractNames(byte[] response, int nameCount) {
-		String computerName = name(response, 0);
+		String computerName = nameCount > 0 ? name(response, 0) : null;
 
 		String groupName = null;
 		for (int i = 1; i < nameCount; i++) {

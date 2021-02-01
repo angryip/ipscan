@@ -1,6 +1,7 @@
 Unreleased:
 - Upgrade SWT for all platforms
 - Fix resolving of MAC vendors and Comments if MAC separator is changed to non-standard
+- Support for NetBIOS (NBSTAT) responses containing non names (often returned by Apple devices)
 
 Changes in 3.7.4:
 - Allow changing of MAC address separator (many tools use "-" instead of ":") #261

@@ -43,7 +43,7 @@ public class NetBIOSInfoFetcher extends AbstractFetcher {
 
 			return (groupName != null ? groupName + "\\" : "") +
 					(userName != null ? userName + "@" : "") +
-					computerName + " [" + macAddress + "]";
+					(computerName != null ? computerName + ' ' : "") + '[' + macAddress + ']';
 		}
 		catch (SocketTimeoutException e) {
 			// this is not a derivative of SocketException

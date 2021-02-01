@@ -151,7 +151,7 @@ public class ScanningSubject {
 	}
 
 	public boolean isLocal() {
-		return address.isSiteLocalAddress();
+		return address.isSiteLocalAddress() || address.isLinkLocalAddress();
 	}
 
 	@Override
