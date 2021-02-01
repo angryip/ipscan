@@ -115,8 +115,9 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		pack();
 		Rectangle comboBounds = netmaskCombo.getBounds();
 		Rectangle endIPBounds = endIPText.getBounds();
-		int width = endIPBounds.x + endIPBounds.width - comboBounds.x;
-		((GridData) netmaskCombo.getLayoutData()).widthHint = width - 5;
+		int width = endIPBounds.x + endIPBounds.width - comboBounds.x - 5;
+		if (Platform.WINDOWS) width -= 22; // TODO: probably this number will change with updated SWT version
+		((GridData) netmaskCombo.getLayoutData()).widthHint = width;
 		pack();
 
 		// do this stuff asynchronously (to show GUI faster)
