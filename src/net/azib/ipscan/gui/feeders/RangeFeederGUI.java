@@ -117,6 +117,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		Rectangle endIPBounds = endIPText.getBounds();
 		int width = endIPBounds.x + endIPBounds.width - comboBounds.x - 5;
 		if (Platform.WINDOWS) width -= 22; // TODO: remove width of down arrow, this number may change with updated SWT version
+		if (Platform.MAC_OS) width += 10;
 		((GridData) netmaskCombo.getLayoutData()).widthHint = width;
 		pack();
 
