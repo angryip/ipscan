@@ -1,8 +1,6 @@
 package net.azib.ipscan.gui;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.*;
 
@@ -58,11 +56,7 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		allowReports.setText(getLabel("preferences.allowReports"));
 		allowReports.pack();
 		allowReports.setSelection(getConfig().allowReports);
-		allowReports.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(SelectionEvent e) {
-				getConfig().allowReports = allowReports.getSelection();
-			}
-		});
+		allowReports.addListener(SWT.Selection, e -> getConfig().allowReports = allowReports.getSelection());
 
 		closeButton = new Button(shell, SWT.NONE);
 		closeButton.setText(getLabel("button.close"));
