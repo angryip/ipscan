@@ -76,7 +76,10 @@ public class GUI implements AutoCloseable {
 	}
 
 	@Override public void close() {
-		display.dispose();
+		try {
+			display.dispose();
+		}
+		catch (SWTException ignore) {}
 	}
 
 	/**
