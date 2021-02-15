@@ -68,7 +68,8 @@ public class GoogleAnalytics {
 		}
 		int code = e instanceof SWTError ? ((SWTError) e).code : e instanceof SWTException ? ((SWTException) e).code : -1;
 		return e.toString() + (code >= 0 ? " (" + code + ")" : "") + (element == null ? "" : "\n" +
-			   element.getClassName() + "." + element.getMethodName() + ":" + element.getLineNumber());
+			   element.getClassName() + "." + element.getMethodName() + ":" + element.getLineNumber()) +
+			   (e.getCause() != null ? ";\n" + extractFirstStackFrame(e.getCause()) : "");
 	}
 
 	public void asyncReport(final String screen) {
