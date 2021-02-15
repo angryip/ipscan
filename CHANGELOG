@@ -1,3 +1,8 @@
+Changes in 3.7.6:
+- Many rare bug/crash fixes reported to Google Analytics
+- Translations updated
+- Mac vendors updated
+
 Changes in 3.7.5:
 - Upgrade SWT for all platforms, some UI alignment improvements
 - Fix resolving of MAC vendors and Comments if MAC separator is changed to non-standard
