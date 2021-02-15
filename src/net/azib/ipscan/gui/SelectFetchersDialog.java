@@ -26,7 +26,6 @@ import static net.azib.ipscan.gui.util.LayoutHelper.*;
 
 public class SelectFetchersDialog extends AbstractModalDialog {
 	private FetcherRegistry fetcherRegistry;
-
 	private List lastFocusList;
 	private List selectedFetchersList;
 	private List registeredFetchersList;
@@ -172,8 +171,10 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 
 	class PrefsListener implements Listener {
 		public void handleEvent(Event event) {
-			String[] selection = lastFocusList.getSelection();
-			String fetcherName = selection.length > 0 ? selection[0] : lastFocusList.getItem(0);
+			if (lastFocusList.getItemCount() == 0) return;
+			int selectionIndex = lastFocusList.getSelectionIndex();
+			if (selectionIndex < 0) selectionIndex = 0;
+			String fetcherName = lastFocusList.getItem(selectionIndex);
 			for (Fetcher fetcher : fetcherRegistry.getRegisteredFetchers()) {
 				if (fetcherName.equals(fetcher.getName())) {
 					fetcherRegistry.openPreferencesEditor(fetcher);
