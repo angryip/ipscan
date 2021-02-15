@@ -32,7 +32,11 @@ public class GUI implements AutoCloseable {
 		}
 		catch (SWTError e) {
 			if (e.getMessage().contains("gtk_init_check")) {
-				System.err.println(e.toString() + " - probably you are running as `root` and/or don't have access to the X Server. Please run as normal user or with sudo.");
+				System.err.println(e.toString() + ": probably you are running as `root` and/or don't have access to the X Server. Please run as normal user or with sudo.");
+				new GoogleAnalytics().report(e);
+			}
+			else if (e.getMessage().contains("Invalid thread access")) {
+				System.err.println(e.toString() + ": you need to start Java with -XstartOnFirstThread on a Mac");
 				new GoogleAnalytics().report(e);
 			}
 			else throw e;
