@@ -57,7 +57,8 @@ public class InetAddressUtils {
 		}
 		catch (UnknownHostException e) {
 			// this should never happen as we are modifying the same bytes received from the InetAddress
-			throw new IllegalArgumentException(e);		}
+			throw new IllegalArgumentException(e);
+		}
 	}
 	
 	/**
