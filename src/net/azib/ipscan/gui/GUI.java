@@ -68,7 +68,7 @@ public class GUI implements AutoCloseable {
 	public void showMessage(int flags, String title, String localizedMessage) {
 		Shell parent = Display.getDefault().getActiveShell();
 		if (parent == null && mainWindow != null) parent = mainWindow.getShell();
-		if (parent == null) parent = new Shell();
+		if (parent == null || parent.isDisposed()) parent = new Shell();
 		MessageBox messageBox = new MessageBox(parent, SWT.OK | SWT.SHEET | flags);
 		messageBox.setText(title);
 		messageBox.setMessage(localizedMessage);
