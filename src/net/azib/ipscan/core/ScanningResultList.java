@@ -17,18 +17,19 @@ import net.azib.ipscan.fetchers.FetcherRegistry;
 import java.net.InetAddress;
 import java.util.*;
 
+import static java.util.Collections.emptyList;
+
 /**
  * The holder of scanning results.
  *
  * @author Anton Keks
  */
 public class ScanningResultList implements Iterable<ScanningResult> {
-	
 	private static final int RESULT_LIST_INITIAL_SIZE = 1024;
 	
 	private FetcherRegistry fetcherRegistry;
 	// selected fetchers are cached here, because they may be changed in the registry already
-	private List<Fetcher> selectedFetchers;
+	private List<Fetcher> selectedFetchers = emptyList();
 	
 	private List<ScanningResult> resultList = new ArrayList<>(RESULT_LIST_INITIAL_SIZE);
 	private Map<InetAddress, Integer> resultIndexes = new HashMap<>(RESULT_LIST_INITIAL_SIZE);
@@ -90,7 +91,6 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 
 	/**
 	 * Creates the new results holder for particular address or returns an existing one.
-	 * @param address
 	 * @return pre-initialized empty ScanningResult
 	 */
 	public synchronized ScanningResult createResult(InetAddress address) {
@@ -106,8 +106,6 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	 * Registers the provided results holder at the specified index in this list.
 	 * This index will later be used to retrieve the result when redrawing items.
 	 * TODO: index parameter is not really needed here - add method with index will not work with sparse lists anyway
-	 * @param index
-	 * @param result
 	 */
 	public synchronized void registerAtIndex(int index, ScanningResult result) {
 		if (resultIndexes.put(result.getAddress(), index) != null)
@@ -148,7 +146,6 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		// clear the results
 		resultList.clear();
 		resultIndexes.clear();
-		selectedFetchers = null;
 	}
 
 	/**
@@ -182,7 +179,6 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	}
 
 	/**
-	 * @param index
 	 * @return the results of the IP address, corresponding to an index
 	 */
 	public synchronized ScanningResult getResult(int index) {
@@ -210,13 +206,11 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	
 	/**
 	 * Sorts by the specified column index.
-	 * @param columnIndex
-	 * @param ascending
 	 */
 	public synchronized void sort(int columnIndex, boolean ascending) {
 		// setup comparator
 		resultsComparator.byIndex(columnIndex, ascending);
-		Collections.sort(resultList, resultsComparator);
+		resultList.sort(resultsComparator);
 		
 		// now rebuild indexes
 		resultIndexes = new HashMap<>(RESULT_LIST_INITIAL_SIZE);
@@ -272,7 +266,6 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	 * Additional information about the last scan
 	 */
 	public static class ScanInfo {
-		
 		protected boolean scanFinished;
 		protected boolean scanAborted;
 
