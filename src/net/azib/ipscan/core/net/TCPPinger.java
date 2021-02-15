@@ -73,16 +73,15 @@ public class TCPPinger implements Pinger {
 					// we've got an RST packet from the host - it is alive
 					success(result, startTime);
 				}
-				else
-					// this should result in NoRouteToHostException or ConnectException, but not all Java implementation respect that
-					if (e instanceof NoRouteToHostException || msg.contains(/*No*/"route to host") || msg.contains(/*Host is*/"down") || msg.contains(/*Network*/"unreachable") || msg.contains(/*Socket*/"closed")) {
-						// host is down
-						break;
-					}
-					else {
-						// something unknown
-						LOG.log(INFO, subject.toString(), e);
-					}
+				// this should result in NoRouteToHostException or ConnectException, but not all Java implementation respect that
+				else if (e instanceof NoRouteToHostException || msg.contains(/*No*/"route to host") || msg.contains(/*Host is*/"down") || msg.contains(/*Network*/"unreachable") || msg.contains(/*Socket*/"closed") || msg.contains("Invalid argument")) {
+					// host is down
+					break;
+				}
+				else {
+					// something unknown
+					LOG.log(INFO, subject.toString(), e);
+				}
 			}
 			finally {
 				closeQuietly(socket);
