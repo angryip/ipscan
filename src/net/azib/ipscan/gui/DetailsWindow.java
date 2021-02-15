@@ -109,10 +109,7 @@ public class DetailsWindow extends AbstractModalDialog {
 	
 	class TraverseListener implements Listener {
 		public void handleEvent(Event e) {
-			if (e.detail == SWT.TRAVERSE_RETURN) {
-				shell.close();
-				shell.dispose();
-			}
+			if (e.detail == SWT.TRAVERSE_RETURN) close();
 		}
 	}
 }

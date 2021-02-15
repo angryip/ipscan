@@ -7,7 +7,6 @@ import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.RowLayout;
@@ -141,17 +140,11 @@ public class EditOpenersDialog extends AbstractModalDialog {
 
 		shell.pack();
 
-		okButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				saveOpeners();
-				shell.close();
-			}
+		okButton.addListener(SWT.Selection, e -> {
+			saveOpeners();
+			close();
 		});
-		cancelButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				shell.close();
-			}
-		});
+		cancelButton.addListener(SWT.Selection, e -> close());
 
 		openersList.select(0);
 		loadFieldsForSelection();

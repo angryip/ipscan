@@ -32,13 +32,8 @@ public class StatisticsDialog extends InfoDialog {
 	public void open() {
 		if (scanningResults.isInfoAvailable()) {
 			setMessage(prepareText());
-			
-			if (shell != null) {
-				// close the same window if it is already open ('scanning incomplete')
-				shell.close();
-				shell.dispose();
-			}
-
+			// close the same window if it is already open ('scanning incomplete')
+			if (shell != null) close();
 			super.open();
 		}
 		else {

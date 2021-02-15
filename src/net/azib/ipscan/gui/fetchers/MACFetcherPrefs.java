@@ -12,8 +12,6 @@ import net.azib.ipscan.fetchers.MACFetcher;
 import net.azib.ipscan.gui.AbstractModalDialog;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
@@ -46,17 +44,11 @@ public class MACFetcherPrefs extends AbstractModalDialog implements FetcherPrefs
 
 		positionButtonsInFormLayout(okButton, cancelButton, separator);
 
-		okButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				savePreferences();
-				shell.close();
-			}
+		okButton.addListener(SWT.Selection, e -> {
+			savePreferences();
+			close();
 		});
-		cancelButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				shell.close();
-			}
-		});
+		cancelButton.addListener(SWT.Selection, e -> close());
 
 		shell.pack();
 	}

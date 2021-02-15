@@ -114,13 +114,15 @@ public class PreferencesDialog extends AbstractModalDialog {
 
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				savePreferences();
-				shell.close();
+				if (shell != null && !shell.isDisposed()) {
+					savePreferences();
+					close();
+				}
 			}
 		});
 		cancelButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				shell.close();
+				close();
 			}
 		});
 	}

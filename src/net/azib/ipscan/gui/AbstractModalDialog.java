@@ -50,6 +50,13 @@ public abstract class AbstractModalDialog {
 		// forget the reference to the shell (this class is reused in the container)
 		shell = null;
 	}
+
+	protected void close() {
+		if (shell != null && !shell.isDisposed()) {
+			shell.close();
+			shell.dispose();
+		}
+	}
 	
 	/**
 	 * Populates the newly created shell with controls
@@ -141,12 +148,7 @@ public abstract class AbstractModalDialog {
 		Button button = new Button(shell, SWT.NONE);
 		button.setText(Labels.getLabel("button.close"));
 		positionButtons(button, null);
-		
-		button.addListener(SWT.Selection, event -> {
-			shell.close();
-			shell.dispose();
-		});
-		
+		button.addListener(SWT.Selection, event -> close());
 		button.setFocus();
 		return button;
 	}
@@ -154,7 +156,6 @@ public abstract class AbstractModalDialog {
 	// common listeners follow
 	
 	protected static class UpButtonListener implements Listener {
-		
 		private List list;
 
 		public UpButtonListener(List list) {

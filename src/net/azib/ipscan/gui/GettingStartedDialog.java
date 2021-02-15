@@ -78,11 +78,8 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		gettingStartedText.setBounds(leftBound, 10, shell.getClientArea().width - leftBound - 10, closeButton.getLocation().y - 20);
 		gettingStartedText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		
-		closeButton.addListener(SWT.Selection, event -> {
-			shell.close();
-			shell.dispose();
-		});
-		nextButton.addListener(SWT.Selection, event -> displayActivePage());
+		closeButton.addListener(SWT.Selection, e -> close());
+		nextButton.addListener(SWT.Selection, e -> displayActivePage());
 
 		displayActivePage();
 	}
