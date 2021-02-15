@@ -49,10 +49,12 @@ public class RangeFeeder extends AbstractFeeder {
 		catch (UnknownHostException e) {
 			throw new FeederException("malformedIP");
 		}
+		if (this.startIP.getClass() != this.endIP.getClass()) {
+			throw new FeederException("differentProtocols");
+		}
 		if (InetAddressUtils.greaterThan(this.startIP, this.endIP)) {
 			this.isReverse = true;
-			this.endIP = InetAddressUtils.decrement(InetAddressUtils
-					.decrement(this.endIP));
+			this.endIP = InetAddressUtils.decrement(InetAddressUtils.decrement(this.endIP));
 		}
 		initPercentageIncrement();
 		this.endIP = InetAddressUtils.increment(this.endIP);
