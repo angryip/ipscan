@@ -32,10 +32,10 @@ public class InetAddressUtils {
 	public static final Pattern HOSTNAME_REGEX = Pattern.compile("\\b((([a-z]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\.)+([a-z]{2,})|\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})\\b", CASE_INSENSITIVE);
 
 	public static InetAddress startRangeByNetmask(InetAddress address, InetAddress netmask) {
-		byte[] netmaskBytes = netmask.getAddress();
 		byte[] addressBytes = address.getAddress();
+		byte[] netmaskBytes = netmask.getAddress();
 		for (int i = 0; i < addressBytes.length; i++) {
-			addressBytes[i] = (byte) (addressBytes[i] & netmaskBytes[i]);
+			addressBytes[i] = i < netmaskBytes.length ? (byte) (addressBytes[i] & netmaskBytes[i]) : 0;
 		}
 		try {
 			return InetAddress.getByAddress(addressBytes);
@@ -50,7 +50,7 @@ public class InetAddressUtils {
 		byte[] netmaskBytes = netmask.getAddress();
 		byte[] addressBytes = address.getAddress();
 		for (int i = 0; i < addressBytes.length; i++) {
-			addressBytes[i] = (byte) (addressBytes[i] | ~(netmaskBytes[i]));
+			addressBytes[i] = (byte) (i < netmaskBytes.length ? (addressBytes[i] | ~(netmaskBytes[i])) : 255);
 		}
 		try {
 			return InetAddress.getByAddress(addressBytes);
