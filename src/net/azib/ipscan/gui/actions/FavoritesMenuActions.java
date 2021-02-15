@@ -17,10 +17,7 @@ import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.*;
 
 /**
  * FavoritesActions
@@ -39,6 +36,7 @@ public class FavoritesMenuActions {
 		}
 		
 		public void handleEvent(Event event) {
+			Shell activeShell = event.display.getActiveShell();
 			String feederInfo = feederRegistry.current().getInfo();
 			InputDialog inputDialog = new InputDialog(
 					Labels.getLabel("title.favorite.add"), 
@@ -50,7 +48,7 @@ public class FavoritesMenuActions {
 					throw new UserErrorException("favorite.alreadyExists");
 				}
 				favoritesConfig.add(favoriteName, feederRegistry.current());
-				event.display.getActiveShell().setText(favoriteName + " - " + Version.NAME);
+				activeShell.setText(favoriteName + " - " + Version.NAME);
 			}
 		}
 	}
