@@ -39,7 +39,7 @@ public abstract class MACFetcher extends AbstractFetcher {
 	}
 
 	String replaceSeparator(String mac) {
-		return mac.replace(":", separator);
+		return mac != null ? mac.replace(":", separator) : null;
 	}
 
 	private static String addLeadingZeroes(String mac) {
