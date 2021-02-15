@@ -21,16 +21,13 @@ public class GettingStartedDialog extends AbstractModalDialog {
 	public GettingStartedDialog() {
 		int num = 1;
 		try {
-			while (true) {
-				texts.add(getLabel("text.gettingStarted" + num++));
-			}
+			while (true) texts.add(getLabel("text.gettingStarted" + num++));
 		}
 		catch (Exception noMoreTexts) {}
 	}
 
-	GettingStartedDialog prependText(String text) {
+	void prependText(String text) {
 		texts.add(0, text);
-		return this;
 	}
 
 	@Override
@@ -84,7 +81,8 @@ public class GettingStartedDialog extends AbstractModalDialog {
 	}
 
 	private void displayActivePage() {
-		gettingStartedText.setText(texts.get(activePage++));
+		if (activePage < texts.size())
+			gettingStartedText.setText(texts.get(activePage++));
 		
 		if (activePage >= texts.size()) {
 			nextButton.setEnabled(false);
