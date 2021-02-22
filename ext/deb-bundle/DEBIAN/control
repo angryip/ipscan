@@ -6,6 +6,7 @@ Architecture: ARCH
 Installed-Size: 1940
 Depends: DEPENDS java8-runtime
 Maintainer: Anton Keks <anton@azib.net>
+License: GPL-2
 Description: Angry IP Scanner - fast and friendly IP Scanner
  Angry IP Scanner is a cross-platform network scanner written in Java.
  It can scan IP-based networks in any range, scan ports, and resolve
