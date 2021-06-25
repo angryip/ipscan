@@ -10,7 +10,7 @@ public class GoogleAnalyticsTest {
 	@Test
 	public void extractFirstStackFrame() {
 		assertEquals("java.lang.RuntimeException: Kaboom\n" +
-				"net.azib.ipscan.util.GoogleAnalyticsTest.extractFirstStackFrame:10",
+				"net.azib.ipscan.util.GoogleAnalyticsTest.extractFirstStackFrame:12",
 				GoogleAnalytics.extractFirstStackFrame(new RuntimeException("Kaboom")));
 	}
 

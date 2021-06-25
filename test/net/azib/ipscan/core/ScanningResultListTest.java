@@ -15,10 +15,10 @@ import org.junit.Test;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -29,16 +29,14 @@ import static org.mockito.Mockito.when;
  * @author Anton Keks
  */
 public class ScanningResultListTest {
+	private List<Fetcher> fetchers = new ArrayList<>(asList(
+			mockFetcher("fetcher.ip"), mockFetcher("fetcher.ping"), mockFetcher("fetcher.hostname"), mockFetcher("fetcher.ping.ttl")));
 
-	private List<Fetcher> fetchers = new ArrayList<Fetcher>(
-			Arrays.asList(mockFetcher("fetcher.ip"), mockFetcher("fetcher.ping"), mockFetcher("fetcher.hostname"), mockFetcher("fetcher.ping.ttl")));
-
-	private FetcherRegistry fetcherRegistry;
+	private FetcherRegistry fetcherRegistry = mock(FetcherRegistry.class);
 	private ScanningResultList scanningResults;
 	
 	@Before
 	public void setUp() throws Exception {
-		fetcherRegistry = mock(FetcherRegistry.class);
 		when(fetcherRegistry.getSelectedFetchers()).thenReturn(fetchers);
 
 		scanningResults =  new ScanningResultList(fetcherRegistry);
@@ -176,7 +174,6 @@ public class ScanningResultListTest {
 		assertFalse("Results must be empty", scanningResults.iterator().hasNext());
 		assertFalse(scanningResults.areResultsAvailable());
 		assertFalse(scanningResults.getScanInfo().isCompletedNormally());
-		assertNull(scanningResults.getFetchers());
 	}
 	
 	@Test
@@ -193,8 +190,8 @@ public class ScanningResultListTest {
 	
 	@Test 
 	public void testInitNewScan() throws Exception {
-		fetcherRegistry.getSelectedFetchers().clear();
-		fetcherRegistry.getSelectedFetchers().add(mockFetcher("hello"));
+		fetchers.clear();
+		fetchers.add(mockFetcher("hello"));
 
 		scanningResults.registerAtIndex(0, scanningResults.createResult(InetAddress.getLocalHost()));
 		
@@ -215,7 +212,7 @@ public class ScanningResultListTest {
 	@Test
 	public void testCachedFetchers() throws Exception {
 		scanningResults.initNewScan(mockFeeder("aaa"));
-		fetcherRegistry.getSelectedFetchers().clear();
+		fetchers.clear();
 		assertEquals("Fetchers should be cached from the last scan", 4, scanningResults.getFetchers().size());
 	}
 	
