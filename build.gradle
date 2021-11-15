@@ -325,7 +325,9 @@ task 'win-installer'(dependsOn: ['win32', 'win64']) {
     }
 }
 
-task all(dependsOn: ['any', 'linux64', 'macX86', 'macArm64', 'win-installer'])
+task mac(dependsOn: ['macX86', 'macArm64'])
+
+task all(dependsOn: ['any', 'linux64', 'mac', 'win-installer'])
 task current(dependsOn: [platform])
 
 task info {
@@ -336,6 +338,7 @@ task info {
         println "  current       - build for current platform ($platform)"
         println "  linux64       - builds only Linux 64-bit binary"
         println "  any           - doesn't bundle SWT, making it possible to run on ARM/Raspbian with libswt provided by OS (Experimental)"
+        println "  mac           - builds only Mac binaries"
         println "  macX86        - builds only MacX86 binary"
         println "  macAmr64      - builds only MacArm64 binary"
         println "  win32         - builds only Windows binary"
