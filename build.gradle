@@ -58,7 +58,7 @@ dependencies {
     def swtVersion = '3.117.0'
     linux64 "org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64:${swtVersion}"
     win64 "org.eclipse.platform:org.eclipse.swt.win32.win32.x86_64:${swtVersion}"
-    win32 "org.eclipse.platform:org.eclipse.swt.win32.win32.x86:${swtVersion}"
+    win32 "org.eclipse.platform:org.eclipse.swt.win32.win32.x86:3.108.0"
     macX86 "org.eclipse.platform:org.eclipse.swt.cocoa.macosx.x86_64:${swtVersion}"
     macArm64 "org.eclipse.platform:org.eclipse.swt.cocoa.macosx.aarch64:${swtVersion}"
     jna "net.java.dev.jna:jna:5.6.0"
