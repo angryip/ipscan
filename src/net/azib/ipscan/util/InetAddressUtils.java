@@ -167,6 +167,10 @@ public class InetAddressUtils {
 					.filter(i -> i.getParent() == null && !i.isVirtual()).collect(toList());
 
 			for (NetworkInterface networkInterface : interfaces) {
+				try {
+					if (networkInterface.getHardwareAddress() == null) continue;
+				} catch (SocketException ignore) {}
+
 				for (InterfaceAddress ifAddr : networkInterface.getInterfaceAddresses()) {
 					anyAddress = ifAddr;
 					InetAddress addr = ifAddr.getAddress();
