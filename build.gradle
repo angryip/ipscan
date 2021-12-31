@@ -20,8 +20,8 @@ def platform = osName.contains("Linux") ? 'linux' + (is64 ? '64' : '32') :
                osName.contains("OS X") ? 'mac' + (isArm ? "Arm64" : "X86") : 'unknown'
 
 version = gitVersion()
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 sourceSets {
     main {
@@ -138,8 +138,6 @@ def minimizeTask(String platform, Closure doMore) {
     return tasks.create("${platform}.min", proguard.gradle.ProGuardTask) {
         injars "build/libs/ipscan-${platform}-${version}.jar"
         outjars "build/libs/ipscan-${platform}-${version}.min.jar"
-        libraryjars System.getProperty('java.home') + "/jre/lib/rt.jar" // Java 8
-        libraryjars System.getProperty('java.home') + "/lib/rt.jar" // Zulu Java 8
         libraryjars System.getProperty('java.home') + "/jmods/java.base.jmod"
         libraryjars System.getProperty('java.home') + "/jmods/java.desktop.jmod"
         libraryjars System.getProperty('java.home') + "/jmods/java.logging.jmod"
