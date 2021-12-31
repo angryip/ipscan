@@ -1,4 +1,4 @@
 #!/bin/sh
 java=$JAVA_HOME/bin/java
 [ ! -e $java ] && java=java
-$java -jar /usr/lib*/ipscan/ipscan*.jar "$@"
+$java --add-opens java.base/java.net=ALL-UNNAMED -jar /usr/lib*/ipscan/ipscan*.jar "$@"
