@@ -77,6 +77,7 @@ CRCCheck on
 
 ;Languages
 !insertmacro MUI_LANGUAGE "English"
+!insertmacro MUI_LANGUAGE "Italian"
 
 
 ;Macro for verifying admin on Windows 2000/XP
