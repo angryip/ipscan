@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// TODO: try using java.net.NetworkInterface.getMacAddr0 with reflection instead
 public abstract class MACFetcher extends AbstractFetcher {
 	public static final String ID = "fetcher.mac";
 	static final Pattern macAddressPattern = Pattern.compile("([a-fA-F0-9]{1,2}[-:]){5}[a-fA-F0-9]{1,2}");
