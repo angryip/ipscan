@@ -2,3 +2,4 @@
 BASEDIR=`dirname "$0"`
 # MacOS will prompt to download Oracle JDK if it's not installed
 exec java --add-opens java.base/java.net=ALL-UNNAMED -XstartOnFirstThread -jar "$BASEDIR"/ipscan*.jar
+[ $? != 0 ] && osascript -e 'display notification "You need Java/OpenJDK 11 installed" with title "Angry IP Scanner"'
