@@ -13,7 +13,7 @@ jobs:
         java-version: '11'
         architecture: x64
     - name: Deps
-      run: sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install wine32:i386
+      run: sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install wine64 wine32
     - name: Build
       run: xvfb-run -a ./gradlew --info test all
 
