@@ -19,10 +19,10 @@ public interface WinIpHlpDll extends Library {
 	class Loader {
 		public static WinIpHlpDll load() {
 			try {
-				return (WinIpHlpDll) Native.loadLibrary("iphlpapi", WinIpHlpDll.class);
+				return Native.loadLibrary("iphlpapi", WinIpHlpDll.class);
 			}
 			catch (UnsatisfiedLinkError e) {
-				return (WinIpHlpDll) Native.loadLibrary("icmp", WinIpHlpDll.class);
+				return Native.loadLibrary("icmp", WinIpHlpDll.class);
 			}
 		}
 	}

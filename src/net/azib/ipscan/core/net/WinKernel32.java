@@ -7,7 +7,7 @@ public interface WinKernel32 extends Library {
 	WinKernel32 dll = Loader.load();
 	class Loader {
 		public static WinKernel32 load() {
-			return (WinKernel32) Native.loadLibrary("kernel32", WinKernel32.class);
+			return Native.loadLibrary("kernel32", WinKernel32.class);
 		}
 	}
 
