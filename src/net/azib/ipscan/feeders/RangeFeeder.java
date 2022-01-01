@@ -10,6 +10,7 @@ import net.azib.ipscan.util.InetAddressUtils;
 import org.savarese.vserv.tcpip.OctetConverter;
 
 import java.net.InetAddress;
+import java.net.InterfaceAddress;
 import java.net.UnknownHostException;
 
 /**
@@ -20,7 +21,7 @@ import java.net.UnknownHostException;
  * @author Anton Keks
  */
 public class RangeFeeder extends AbstractFeeder {
-	
+	private InterfaceAddress ifAddr;
 	private InetAddress startIP;
 	private InetAddress endIP;
 	private InetAddress originalEndIP;
@@ -39,9 +40,14 @@ public class RangeFeeder extends AbstractFeeder {
 	
 	public RangeFeeder() {
 	}
-	
+
 	public RangeFeeder(String startIP, String endIP) {
+		this(startIP, endIP, null);
+	}
+
+	public RangeFeeder(String startIP, String endIP, InterfaceAddress ifAddr) {
 		try {
+			this.ifAddr = ifAddr;
 			this.startIP = this.currentIP = InetAddress.getByName(startIP);
 			this.endIP = this.originalEndIP = InetAddress.getByName(endIP);
 			this.isReverse = false;
@@ -75,12 +81,12 @@ public class RangeFeeder extends AbstractFeeder {
 		percentageComplete = 0;
 	}
 	
-	public boolean hasNext() {
+	@Override public boolean hasNext() {
 		// equals() is faster than greaterThan()
 		return !currentIP.equals(endIP); 
 	}
 
-	public ScanningSubject next() {
+	@Override public ScanningSubject next() {
 		percentageComplete += percentageIncrement;
 		InetAddress prevIP = this.currentIP;
 		if (this.isReverse) {
@@ -95,8 +101,12 @@ public class RangeFeeder extends AbstractFeeder {
 		return (int)Math.round(percentageComplete);
 	}
 	
-	public String getInfo() {
+	@Override public String getInfo() {
 		// let's return the range
 		return startIP.getHostAddress() + " - " + originalEndIP.getHostAddress();
+	}
+
+	@Override public InterfaceAddress getInterfaceAddress() {
+		return ifAddr;
 	}
 }

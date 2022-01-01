@@ -79,9 +79,10 @@ public class FeederActions {
 				Menu popupMenu = new Menu(Display.getCurrent().getActiveShell(), SWT.POP_UP);
 				Listener menuItemListener = event -> {
 					MenuItem menuItem = (MenuItem) event.widget;
-					String address = (String) menuItem.getData();
-					ipText.setText(address.substring(0, address.lastIndexOf('/')));
-					netmaskCombo.setText(address.substring(address.lastIndexOf('/')));
+					InterfaceAddress ifAddr = (InterfaceAddress) menuItem.getData();
+					ipText.setText(ifAddr.getAddress().getHostAddress());
+					netmaskCombo.setText("/" + ifAddr.getNetworkPrefixLength());
+					setInterfaceAddress(ifAddr);
 					menuItem.getParent().dispose();
 				};
 
@@ -94,8 +95,8 @@ public class FeederActions {
                         if (!address.isLoopbackAddress()) {
 							MenuItem menuItem = new MenuItem(popupMenu, 0);
 							String ip = address.getHostAddress();
-							menuItem.setText(networkInterface.getDisplayName() + ": " + ip);
-							menuItem.setData(ip + "/" + ifaddr.getNetworkPrefixLength());
+							menuItem.setText(networkInterface.getDisplayName() + ": " + ip + "/" + ifaddr.getNetworkPrefixLength());
+							menuItem.setData(ifaddr);
 							menuItem.addListener(SWT.Selection, menuItemListener);
 						}
 					}					
@@ -121,7 +122,8 @@ public class FeederActions {
 				LOG.log(Level.FINE, "Cannot enumerate network interfaces", e);
 			}
 		}
-	}
 
+		protected void setInterfaceAddress(InterfaceAddress ifAddr) {}
+	}
 }
 

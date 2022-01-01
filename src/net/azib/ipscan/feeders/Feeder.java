@@ -8,6 +8,8 @@ package net.azib.ipscan.feeders;
 import net.azib.ipscan.core.Plugin;
 import net.azib.ipscan.core.ScanningSubject;
 
+import java.net.InterfaceAddress;
+
 /**
  * Interface of a Feeder, which is used to feed scanner with IP addresses.
  * Basically, classes implementing Feeder must provide an algorithm of 
@@ -44,4 +46,11 @@ public interface Feeder extends Plugin {
 	 * Used for creation of Favorites, saving to file, etc.
 	 */
 	String getInfo();
+
+	/**
+	 * @return interface address where scan is performed, if available
+	 */
+	default InterfaceAddress getInterfaceAddress() {
+		return null;
+	}
 }

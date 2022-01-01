@@ -34,6 +34,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	private Text endIPText;
 	private Text hostnameText;
 	private Combo netmaskCombo;
+	private InterfaceAddress ifAddr;
 
 	private boolean isEndIPUnedited = true;
 	private boolean modifyListenersDisabled = false;
@@ -84,6 +85,10 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 				netmaskCombo.setText(getLabel("feeder.range.netmask"));
 				super.widgetSelected(event);
 			}
+
+			protected void setInterfaceAddress(InterfaceAddress ifAddr) {
+				RangeFeederGUI.this.ifAddr = ifAddr;
+			}
         };
         
         hostnameText.addTraverseListener(hostnameListener);
@@ -126,7 +131,8 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	}
 
 	public Feeder createFeeder() {
-		feeder = new RangeFeeder(startIPText.getText(), endIPText.getText());
+		// TODO: check if the range still matches the ifAddr
+		feeder = new RangeFeeder(startIPText.getText(), endIPText.getText(), ifAddr);
 		return feeder;
 	}
 	
@@ -221,10 +227,11 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	}
 
 	@Override
-	protected void afterLocalHostInfoFilled(InterfaceAddress localInterface) {
-		InetAddress address = localInterface.getAddress();
+	protected void afterLocalHostInfoFilled(InterfaceAddress ifAddr) {
+		this.ifAddr = ifAddr;
+		InetAddress address = ifAddr.getAddress();
 		if (!address.isLoopbackAddress()) {
-			updateStartEndWithNetmask(address, "/" + localInterface.getNetworkPrefixLength());
+			updateStartEndWithNetmask(address, "/" + ifAddr.getNetworkPrefixLength());
 			isEndIPUnedited = true;
 		}
 	}

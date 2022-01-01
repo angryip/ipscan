@@ -11,7 +11,6 @@ import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.feeders.Feeder;
-import net.azib.ipscan.util.InetAddressUtils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,6 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static net.azib.ipscan.core.state.ScanningState.KILLING;
 import static net.azib.ipscan.core.state.ScanningState.SCANNING;
+import static net.azib.ipscan.util.InetAddressUtils.isLikelyBroadcast;
 
 /**
  * Main scanning thread that spawns other threads.
@@ -86,15 +86,11 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 					Thread.sleep(config.threadDelay);
 					
 					if ((numActiveThreads.intValue() < config.maxThreads)) {					
-						// retrieve the next IP address to scan
 						subject = feeder.next();
-						
-						// check if this is a likely broadcast address and needs to be skipped
-						if (config.skipBroadcastAddresses && InetAddressUtils.isLikelyBroadcast(subject.getAddress())) {
+
+						if (config.skipBroadcastAddresses && isLikelyBroadcast(subject.getAddress(), feeder.getInterfaceAddress()))
 							continue;
-						}
-		
-						// prepare results receiver for upcoming results
+
 						ScanningResult result = scanningResultList.createResult(subject.getAddress());
 						resultsCallback.prepareForResults(result);
 																

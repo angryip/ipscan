@@ -3,10 +3,13 @@ package net.azib.ipscan.util;
 import org.junit.Test;
 
 import java.net.InetAddress;
+import java.net.InterfaceAddress;
 import java.net.UnknownHostException;
 import java.util.regex.Matcher;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("ConstantConditions")
 public class InetAddressUtilsTest {
@@ -131,8 +134,16 @@ public class InetAddressUtilsTest {
 	
 	@Test
 	public void testIsLikelyBroadcast() throws UnknownHostException {
-		assertTrue(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("127.0.2.0")));
-		assertTrue(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("127.6.32.255")));
-		assertFalse(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("127.4.5.6")));
+		assertTrue(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("127.0.2.0"), null));
+		assertTrue(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("127.6.32.255"), null));
+		assertFalse(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("127.4.5.6"), null));
+
+		InterfaceAddress ifAddr = mock(InterfaceAddress.class);
+		when(ifAddr.getAddress()).thenReturn(InetAddress.getByName("192.168.0.1"));
+		when(ifAddr.getBroadcast()).thenReturn(InetAddress.getByName("192.168.0.127"));
+		assertTrue(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("192.168.0.127"), ifAddr));
+		assertTrue(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("192.168.0.0"), ifAddr));
+		assertFalse(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("192.168.0.1"), ifAddr));
+		assertFalse(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("192.168.0.126"), ifAddr));
 	}
 }

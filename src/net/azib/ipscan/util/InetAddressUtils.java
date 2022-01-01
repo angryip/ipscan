@@ -9,6 +9,7 @@ import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.config.Platform;
 
 import java.net.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -155,9 +156,15 @@ public class InetAddressUtils {
 	/**
 	 * Checks whether the passed address is likely either a broadcast or network address
 	 */
-	public static boolean isLikelyBroadcast(InetAddress address) {
-		byte[] bytes = address.getAddress(); 
-		return bytes[bytes.length-1] == 0 || bytes[bytes.length-1] == (byte)0xFF;
+	public static boolean isLikelyBroadcast(InetAddress address, InterfaceAddress ifAddr) {
+		byte[] bytes = address.getAddress();
+		int last = bytes.length - 1;
+		if (ifAddr != null) {
+			return address.equals(ifAddr.getBroadcast()) ||
+				// TODO: 0 is actually not correct for smaller networks than /24
+				bytes[last] == 0 && Arrays.equals(bytes, 0, last, ifAddr.getAddress().getAddress(), 0, last);
+		}
+		return bytes[last] == 0 || bytes[last] == (byte)0xFF;
 	}
 
 	public static InterfaceAddress getLocalInterface() {
