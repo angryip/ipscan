@@ -67,7 +67,7 @@ dependencies {
 }
 
 test {
-    if (platform == "mac") {
+    if (platform.startsWith("mac")) {
         // jvmArgs "-XstartOnFirstThread"
         println("WARNING: tests that touch GUI will fail on Mac due to Cocoa restrictions and Gradle unable to run tests on main thread")
         filter {
