@@ -26,10 +26,7 @@
         <true/>
         <key>NSRequiresAquaSystemAppearance</key>
         <false/>
-        <key>LSArchitecturePriority</key>
-        <array>
-            <string>arm64</string>
-            <string>x86_64</string>
-        </array>
+        <key>LSRequiresNativeExecution</key>
+        <true/>
     </dict>
 </plist>
