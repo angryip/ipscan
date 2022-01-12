@@ -67,7 +67,7 @@ public class Main {
 		catch (UnsatisfiedLinkError e) {
 			e.printStackTrace();
 			new GoogleAnalytics().report(e);
-			showFallbackError("Failed to load native code: " + e.getMessage() + "\n\nProbably you are using a binary built for wrong OS or CPU. If 64-bit binary doesn't work for you, try 32-bit version, or vice versa.");
+			showFallbackError("Failed to load native code, probably you are using a binary built for wrong OS or CPU. If 64-bit binary doesn't work for you, try 32-bit version, or vice versa.\n\n" + e.getMessage());
 		}
 		catch (NoClassDefFoundError e) {
 			e.printStackTrace();
