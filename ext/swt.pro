@@ -124,8 +124,8 @@
 -keepclassmembers class org.eclipse.swt.ole.win32.OleFrame {
    *** getMsgProc(...);
  }
--keepclassmembers class org.eclipse.swt.widgets.FileDialog {
-   <methods>;
+-keepclassmembers class org.eclipse.swt.widgets.* {
+   *** _*(...);
  }
 -keepclassmembers class org.eclipse.swt.internal.cocoa.OS {
    *** isAppDarkAppearance();

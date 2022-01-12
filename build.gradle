@@ -15,9 +15,9 @@ plugins {
 def osName = System.getProperty("os.name")
 def is64 = System.getProperty("os.arch").contains("64")
 def isArm = System.getProperty("os.arch").equals("aarch64")
-def platform = osName.contains("Linux") ? 'linux' + (is64 ? '64' : '32') :
+def platform = "macArm64"/*osName.contains("Linux") ? 'linux' + (is64 ? '64' : '32') :
                osName.contains("Windows") ? 'win' + (is64 ? '64' : '32') :
-               osName.contains("OS X") ? 'mac' + (isArm ? "Arm64" : "X86") : 'unknown'
+               osName.contains("OS X") ? 'mac' + (isArm ? "Arm64" : "X86") : 'unknown'*/
 
 version = gitVersion()
 sourceCompatibility = 11
