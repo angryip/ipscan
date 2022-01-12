@@ -12,8 +12,8 @@ import net.azib.ipscan.gui.InfoDialog;
 import net.azib.ipscan.gui.MacApplicationMenu;
 import net.azib.ipscan.util.GoogleAnalytics;
 
-import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.Security;
 import java.util.Locale;
 import java.util.logging.Logger;
@@ -91,7 +91,7 @@ public class Main {
 	private static void showFallbackError(String message) {
 		try {
 			System.err.println(message);
-			try { Files.writeString(File.createTempFile("ipscan-crash-", ".txt").toPath(), message); } catch (Exception ignore) {}
+			try { Files.writeString(Path.of(System.getProperty("user.home"), ".swt", "ipscan-crash.txt"), message); } catch (Exception ignore) {}
 			if (Platform.MAC_OS)
 				Runtime.getRuntime().exec(new String[] {"osascript", "-e", "display notification \"" + message + "\" with title \"Angry IP Scanner\""});
 			else
