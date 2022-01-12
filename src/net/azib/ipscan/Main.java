@@ -67,8 +67,8 @@ public class Main {
 		catch (UnsatisfiedLinkError e) {
 			e.printStackTrace();
 			new GoogleAnalytics().report(e);
-			showFallbackError("Failed to load native code for " +
-					System.getProperty("java.runtime.version") + " " + System.getProperty("os.arch") +
+			showFallbackError("Failed to load native code for Java " +
+					System.getProperty("java.runtime.version") + " on " + System.getProperty("os.arch") +
 					", probably you are using a binary built for wrong OS or CPU.\n\n" + e.getMessage());
 		}
 		catch (NoClassDefFoundError e) {
