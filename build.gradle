@@ -90,7 +90,6 @@ def packageTask(String platform, def moreLibs = [], Closure doMore) {
                'URL': 'https://angryip.org/'
         }
         archiveBaseName.set(project.name + '-' + platform)
-        duplicatesStrategy(DuplicatesStrategy.INCLUDE)
         from {
            configurations[platform].collect {
                it.isDirectory() ? it : zipTree(it)
