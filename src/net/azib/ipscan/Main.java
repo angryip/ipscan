@@ -70,7 +70,7 @@ public class Main {
 		catch (NoClassDefFoundError e) {
 			e.printStackTrace();
 			new GoogleAnalytics().report(e);
-			showFallbackError("SWT GUI toolkit not available: " + e.toString() + "\n\nIf you are using platform-neutral build, make sure you provide SWT built for your platform manually (e.g. install libswt packages), or please use a platform specific binary.");
+			showFallbackError("SWT GUI toolkit not available: " + e + "\n\nIf you are using platform-neutral build, make sure you provide SWT built for your platform manually (e.g. install libswt packages), or please use a platform specific binary.");
 		}
 		catch (Throwable e) {
 			handleFatalError(gui, e);
@@ -95,7 +95,7 @@ public class Main {
 					.invoke(null, null, message);
 		}
 		catch (Exception e) {
-			System.err.println(e.toString());
+			System.err.println(e);
 			System.err.println(message);
 		}
 	}
