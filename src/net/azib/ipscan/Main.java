@@ -65,12 +65,12 @@ public class Main {
 		catch (UnsatisfiedLinkError e) {
 			e.printStackTrace();
 			new GoogleAnalytics().report(e);
-			swingErrorDialog("Failed to load native code: " + e.getMessage() + "\n\nProbably you are using a binary built for wrong OS or CPU. If 64-bit binary doesn't work for you, try 32-bit version, or vice versa.");
+			showFallbackError("Failed to load native code: " + e.getMessage() + "\n\nProbably you are using a binary built for wrong OS or CPU. If 64-bit binary doesn't work for you, try 32-bit version, or vice versa.");
 		}
 		catch (NoClassDefFoundError e) {
 			e.printStackTrace();
 			new GoogleAnalytics().report(e);
-			swingErrorDialog("SWT GUI toolkit not available: " + e.toString() + "\n\nIf you are using platform-neutral build, make sure you provide SWT built for your platform manually (e.g. install libswt packages), or please use a platform specific binary.");
+			showFallbackError("SWT GUI toolkit not available: " + e.toString() + "\n\nIf you are using platform-neutral build, make sure you provide SWT built for your platform manually (e.g. install libswt packages), or please use a platform specific binary.");
 		}
 		catch (Throwable e) {
 			handleFatalError(gui, e);
@@ -83,13 +83,16 @@ public class Main {
 		if (gui != null)
 			gui.showMessage(0, "Fatal Error", e + "\nPlease submit a bug report mentioning your OS and what exactly were you doing.");
 		else
-			swingErrorDialog(e.getMessage());
+			showFallbackError(e.getMessage());
 	}
 
-	private static void swingErrorDialog(String message) {
+	private static void showFallbackError(String message) {
 		try {
-			Class.forName("javax.swing.JOptionPane").getMethod("showMessageDialog", Class.forName("java.awt.Component"), Object.class)
-				.invoke(null, null, message);
+			if (Platform.MAC_OS)
+				Runtime.getRuntime().exec(new String[] {"osascript", "-e", "display notification \"" + message + "\" with title \"Angry IP Scanner\""});
+			else
+				Class.forName("javax.swing.JOptionPane").getMethod("showMessageDialog", Class.forName("java.awt.Component"), Object.class)
+					.invoke(null, null, message);
 		}
 		catch (Exception e) {
 			System.err.println(e.toString());
