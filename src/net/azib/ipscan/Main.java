@@ -12,6 +12,7 @@ import net.azib.ipscan.gui.InfoDialog;
 import net.azib.ipscan.gui.MacApplicationMenu;
 import net.azib.ipscan.util.GoogleAnalytics;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.Security;
@@ -69,7 +70,13 @@ public class Main {
 			new GoogleAnalytics().report(e);
 			showFallbackError("Failed to load native code for Java " +
 					System.getProperty("java.runtime.version") + " on " + System.getProperty("os.arch") +
-					", probably you are using a binary built for wrong OS or CPU.\n\n" + e.getMessage());
+					"\nProbably you are using a binary built for wrong OS or CPU.\n\n" + e.getMessage());
+
+			if (Platform.MAC_OS) {
+				try {
+					Files.walk(Path.of(System.getProperty("user.home"), ".swt", "lib")).map(Path::toFile).forEach(File::delete);
+				} catch (Exception ignore) {}
+			}
 		}
 		catch (NoClassDefFoundError e) {
 			e.printStackTrace();
