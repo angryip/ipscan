@@ -1,9 +1,10 @@
-Changes in 3.7.7:
-- Support for Mac ARM (provided that it runs an ARM build of Java) - thanks to @aplr #284
+Changes in 3.8.0:
+- Support for Mac M1 (provided that it runs an arm64 build of Java) - thanks to @aplr #284
 - SWT updated for all platforms
 - Java 11 is now the minimum required (due to SWT)
 - Source can be built with Java 17
 - If real network netmask is known (e.g. LAN), then skipping of broadcast addresses will respect that instead of always skipping .255
+- Pressing IP^ button to prefill local network interfaces will now set netmask in Range Feeder
 - Mac vendors updated
 
 Changes in 3.7.6:

@@ -17,14 +17,7 @@ import java.util.logging.Logger;
 import static java.util.Comparator.comparing;
 import static net.azib.ipscan.util.InetAddressUtils.getNetworkInterfaces;
 
-/**
- * FeederActions
- * TODO: tests
- *
- * @author Anton Keks
- */
 public class FeederActions {
-	
 	static final Logger LOG = LoggerFactory.getLogger();
 
 	public static class HostnameButton extends SelectionAdapter implements TraverseListener {

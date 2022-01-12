@@ -87,7 +87,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 			}
 
 			protected void setInterfaceAddress(InterfaceAddress ifAddr) {
-				RangeFeederGUI.this.ifAddr = ifAddr;
+				afterLocalHostInfoFilled(ifAddr);
 			}
         };
         
