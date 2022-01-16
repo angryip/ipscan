@@ -94,7 +94,7 @@ public class RangeFeeder extends AbstractFeeder {
 		} else {
 			this.currentIP = InetAddressUtils.increment(prevIP);
 		}
-		return new ScanningSubject(prevIP);
+		return new ScanningSubject(prevIP, ifAddr);
 	}
 
 	public int percentageComplete() {
@@ -104,9 +104,5 @@ public class RangeFeeder extends AbstractFeeder {
 	@Override public String getInfo() {
 		// let's return the range
 		return startIP.getHostAddress() + " - " + originalEndIP.getHostAddress();
-	}
-
-	@Override public InterfaceAddress getInterfaceAddress() {
-		return ifAddr;
 	}
 }

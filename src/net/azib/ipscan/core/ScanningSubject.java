@@ -12,6 +12,7 @@ import net.azib.ipscan.core.net.PingResult;
 
 import java.net.Inet6Address;
 import java.net.InetAddress;
+import java.net.InterfaceAddress;
 import java.util.*;
 
 /**
@@ -23,13 +24,14 @@ import java.util.*;
  * @author Anton Keks
  */
 public class ScanningSubject {
-	
 	public static final String PARAMETER_PING_RESULT = "pinger";
 	
 	ScannerConfig config;
 
 	/** The address being scanned */
 	private InetAddress address;
+	/** Network interface address in case of LAN scans, or null */
+	private InterfaceAddress ifAddr;
 	/** The requested ports that the user wishes to put more attention to, can be null. E.g. port 3128 for scanning of proxy servers. */
 	private List<Integer> requestedPorts;
 	/** Arbitrary parameters for sharing among different (but related) Fetchers */
@@ -39,19 +41,29 @@ public class ScanningSubject {
 	/** Whether we need to continue scanning or it can be aborted */
 	private boolean isAborted = false;
 	/** Adapted after pinging port timeout - any fetcher can make use of it */
-	int adaptedPortTimeout = -1; 
-	
-	/**
-	 * This constructor should only be used by the Scanner class or unit tests.
-	 */
+	int adaptedPortTimeout = -1;
+
 	public ScanningSubject(InetAddress address) {
+		this(address, null);
+	}
+
+	public ScanningSubject(InetAddress address, InterfaceAddress ifAddr) {
 		this.address = address;
+		this.ifAddr = ifAddr;
 		this.parameters = new HashMap<>(); // single-threaded access only
 		this.config = Config.getConfig().forScanner();
 	}
 	
 	public InetAddress getAddress() {
 		return address;
+	}
+
+	public InterfaceAddress getIfAddr() {
+		return ifAddr;
+	}
+
+	public boolean isLocalHost() {
+		return address.equals(ifAddr.getAddress());
 	}
 
 	public boolean isIPv6() {
