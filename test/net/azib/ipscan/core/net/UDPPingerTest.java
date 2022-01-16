@@ -8,8 +8,8 @@ import java.io.IOException;
 import static org.junit.Assume.assumeTrue;
 
 public class UDPPingerTest extends AbstractPingerTest {
-	public UDPPingerTest() {
-		super(new UDPPinger(10));
+	public UDPPingerTest() throws Exception {
+		super(UDPPinger.class);
 	}
 
 	@Test @Override

@@ -21,10 +21,10 @@ import static java.lang.Math.max;
 public class CombinedUnprivilegedPinger implements Pinger {
 	private TCPPinger tcpPinger;
 	private UDPPinger udpPinger;
-	
-	public CombinedUnprivilegedPinger(int timeout) {
-		udpPinger = new UDPPinger(timeout);
-		tcpPinger = new TCPPinger(timeout);
+
+	public CombinedUnprivilegedPinger(TCPPinger tcpPinger, UDPPinger udpPinger) {
+		this.tcpPinger = tcpPinger;
+		this.udpPinger = udpPinger;
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
@@ -37,10 +37,5 @@ public class CombinedUnprivilegedPinger implements Pinger {
 		// fallback to TCP - it may detect some hosts UDP cannot
 		PingResult tcpResult = tcpPinger.ping(subject, count);
 		return tcpResult.merge(udpResult);
-	}
-
-	public void close() {
-		udpPinger.close();
-		tcpPinger.close();
 	}
 }

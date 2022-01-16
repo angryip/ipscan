@@ -9,6 +9,8 @@ import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.di.InjectException;
+import net.azib.ipscan.di.Injector;
 import net.azib.ipscan.fetchers.FetcherException;
 
 import java.lang.reflect.Constructor;
@@ -29,13 +31,15 @@ public class PingerRegistry {
 	private static final Logger LOG = LoggerFactory.getLogger();
 	
 	private ScannerConfig scannerConfig;
+	private Injector injector;
 	
 	/** All available Pinger implementations */
 	Map<String, Class<? extends Pinger>> pingers;
 
 	@SuppressWarnings("unchecked")
-	public PingerRegistry(ScannerConfig scannerConfig) throws ClassNotFoundException {
+	public PingerRegistry(ScannerConfig scannerConfig, Injector injector) throws ClassNotFoundException {
 		this.scannerConfig = scannerConfig;
+		this.injector = injector;
 		
 		pingers = new LinkedHashMap<>();
 		if (Platform.WINDOWS)
@@ -46,6 +50,7 @@ public class PingerRegistry {
 		pingers.put("pinger.tcp", TCPPinger.class);
 		pingers.put("pinger.combined", CombinedUnprivilegedPinger.class);
 		pingers.put("pinger.java", JavaPinger.class);
+		pingers.put("pinger.arp", ARPPinger.class);
 	}
 
 	public String[] getRegisteredNames() {
@@ -64,18 +69,23 @@ public class PingerRegistry {
 	 */
 	Pinger createPinger(String pingerName, int timeout) throws FetcherException {
 		Class<? extends Pinger> pingerClass = pingers.get(pingerName);
-		Constructor<? extends Pinger> constructor;
 		try {
-			constructor = pingerClass.getConstructor(int.class);
-			return constructor.newInstance(timeout);
+			return injector.require(pingerClass);
 		}
-		catch (Exception e) {
-			Throwable t = e instanceof InvocationTargetException ? e.getCause() : e; 
-			String message = "Unable to create pinger: " + pingerName;
-			LOG.log(SEVERE, message, t);
-			if (t instanceof RuntimeException)
-				throw (RuntimeException) t;
-			throw new FetcherException("pingerCreateFailure");
+		catch (InjectException ie) {
+			try {
+				Constructor<? extends Pinger> constructor = pingerClass.getConstructor(int.class);
+				Pinger pinger = constructor.newInstance(timeout);
+				injector.register((Class<Pinger>)pingerClass, pinger);
+				return pinger;
+			}
+			catch (Exception e) {
+				Throwable t = e instanceof InvocationTargetException ? e.getCause() : e;
+				String message = "Unable to create pinger: " + pingerName;
+				LOG.log(SEVERE, message, t);
+				if (t instanceof RuntimeException) throw (RuntimeException) t;
+				throw new FetcherException("pingerCreateFailure");
+			}
 		}
 	}
 

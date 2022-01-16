@@ -1,6 +1,7 @@
 package net.azib.ipscan.core.net;
 
 import net.azib.ipscan.core.ScanningSubject;
+import net.azib.ipscan.di.Injector;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -11,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 public class ICMPSharedPingerTest {
 	@Test @Ignore("this test works only under root")
 	public void testPing() throws Exception {
-		Pinger pinger = new ICMPSharedPinger(1000);
+		Pinger pinger = new Injector().require(ICMPSharedPinger.class);
 		PingResult result = pinger.ping(new ScanningSubject(InetAddress.getLocalHost()), 3);
 		assertTrue(result.getAverageTime() >= 0);
 		assertTrue(result.getAverageTime() < 50);

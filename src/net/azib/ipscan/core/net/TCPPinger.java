@@ -6,6 +6,7 @@
 package net.azib.ipscan.core.net;
 
 import net.azib.ipscan.config.LoggerFactory;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
 
 import java.io.IOException;
@@ -32,8 +33,8 @@ public class TCPPinger implements Pinger {
 
 	private int timeout;
 
-	public TCPPinger(int timeout) {
-		this.timeout = timeout;
+	public TCPPinger(ScannerConfig config) {
+		this.timeout = config.pingTimeout;
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) {

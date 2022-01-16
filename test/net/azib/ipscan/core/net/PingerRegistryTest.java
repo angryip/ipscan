@@ -1,9 +1,6 @@
 package net.azib.ipscan.core.net;
 
-import net.azib.ipscan.config.Config;
-import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.config.Platform;
-import net.azib.ipscan.config.ScannerConfig;
+import net.azib.ipscan.config.*;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.fetchers.FetcherException;
 import org.junit.Before;
@@ -14,14 +11,18 @@ import java.io.IOException;
 import static org.junit.Assert.*;
 
 public class PingerRegistryTest {
+	ScannerConfig config = Config.getConfig().forScanner();
+	PingerRegistry registry;
+
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		System.setProperty("java.library.path", "../swt/lib");
+		registry = new PingerRegistry(config, new ComponentRegistry().init());
 	}
 
 	@Test
-	public void getRegisteredNames() throws ClassNotFoundException {
-		String[] names = new PingerRegistry(null).getRegisteredNames();
+	public void getRegisteredNames() {
+		String[] names = registry.getRegisteredNames();
 		assertNotNull(names);
 		for (String name : names) {
 			assertNotNull(Labels.getLabel(name));
@@ -30,7 +31,6 @@ public class PingerRegistryTest {
 
 	@Test
 	public void createPinger() throws Exception {
-		PingerRegistry registry = new PingerRegistry(null);
 		String[] names = registry.getRegisteredNames();
 		for (String name : names) {
 			try {
@@ -46,30 +46,24 @@ public class PingerRegistryTest {
 	}
 
 	@Test
-	public void createDefaultPinger() throws Exception {
-		ScannerConfig config = Config.getConfig().forScanner();
-		PingerRegistry registry = new PingerRegistry(config);
+	public void createDefaultPinger() {
 		config.selectedPinger = "pinger.udp";
 		assertTrue(registry.createPinger() instanceof UDPPinger);
 	}
 
 	@Test
-	public void checkSelectedPinger() throws ClassNotFoundException {
-		ScannerConfig config = Config.getConfig().forScanner();
-		PingerRegistry registry = new PingerRegistry(config);
-
+	public void checkSelectedPinger() {
 		config.selectedPinger = "pinger.udp";
 		assertTrue(registry.checkSelectedPinger());
 
 		config.selectedPinger = "pinger.tcp";
 		assertTrue(registry.checkSelectedPinger());
 
-		checkWrongPinger(config, registry, PingerWithoutConstructor.class);
-		checkWrongPinger(config, registry, PingerWithIncorrectConstructor.class);
-		checkWrongPinger(config, registry, PingerWithWrongPing.class);
+		checkWrongPinger(PingerWithoutConstructor.class);
+		checkWrongPinger(PingerWithWrongPing.class);
 	}
 
-	private void checkWrongPinger(ScannerConfig config, PingerRegistry registry, Class<? extends Pinger> wrongPingerClass) {
+	private void checkWrongPinger(Class<? extends Pinger> wrongPingerClass) {
 		final String name = "pinger.icmp." + wrongPingerClass.getName();
 		registry.pingers.put(name, wrongPingerClass);
 		config.selectedPinger = name;
@@ -87,11 +81,6 @@ public class PingerRegistryTest {
 	}
 
 	static class PingerWithoutConstructor extends AbstractWrongPinger {
-	}
-
-	public static class PingerWithIncorrectConstructor extends AbstractWrongPinger {
-		public PingerWithIncorrectConstructor() {
-		}
 	}
 
 	static class PingerWithWrongPing extends AbstractWrongPinger {

@@ -6,6 +6,7 @@ Changes in 3.8.0:
 - Pressing IP^ button to prefill local network interfaces will now set netmask in Range Feeder
 - LinuxMACFetcher will now read Kernel ARP table directly, not relying on the arp utility to be available #320
 - Keywords added to Linux desktop file/launcher to make searching easier #321
+- Introduce ARPPinger for pinging LAN hosts that don't respond to ICMP, etc #308
 - Mac vendors updated
 
 Changes in 3.7.6:

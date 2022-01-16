@@ -6,6 +6,7 @@
 package net.azib.ipscan.core.net;
 
 import net.azib.ipscan.config.LoggerFactory;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
 import org.savarese.rocksaw.net.RawSocket;
 import org.savarese.vserv.tcpip.ICMPEchoPacket;
@@ -44,7 +45,7 @@ public class ICMPSharedPinger implements Pinger {
 	private int timeout;
 	private int timeOffsetInPacket;
 
-	public ICMPSharedPinger(int timeout) throws IOException {
+	public ICMPSharedPinger(ScannerConfig config) throws IOException {
 		// we use two shared sockets, because it works more efficiently
 		// OSs tend to copy all received ICMP packets to all open raw sockets,
 		// so it is very bad to have a separate raw socket for each scanning thread
@@ -52,7 +53,7 @@ public class ICMPSharedPinger implements Pinger {
 		sendingSocket.open(RawSocket.PF_INET, IPPacket.PROTOCOL_ICMP);
 		receivingSocket = new RawSocket();
 		receivingSocket.open(RawSocket.PF_INET, IPPacket.PROTOCOL_ICMP);
-		this.timeout = timeout; 
+		this.timeout = config.pingTimeout;
 
 		try {
 			sendingSocket.setSendTimeout(timeout);

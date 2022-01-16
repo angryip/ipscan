@@ -12,6 +12,7 @@ import static java.util.stream.Collectors.toList;
 @SuppressWarnings("unchecked")
 public class Injector {
 	private final Map<Class<?>, Object> instances = new LinkedHashMap<>();
+	{ register(Injector.class, this); }
 
 	public <T> void register(Class<T> type, T impl) {
 		instances.put(type, impl);

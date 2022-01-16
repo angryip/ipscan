@@ -7,6 +7,7 @@ package net.azib.ipscan.core.net;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.net.WinIpHlpDll.Icmp6EchoReply;
 import net.azib.ipscan.core.net.WinIpHlpDll.IcmpEchoReply;
@@ -34,8 +35,8 @@ public class WindowsPinger implements Pinger {
 	private int timeout;
 	private Ip6SockAddrByRef anyIp6SourceAddr = new Ip6SockAddrByRef();
 
-	public WindowsPinger(int timeout) {
-		this.timeout = timeout;
+	public WindowsPinger(ScannerConfig config) {
+		this.timeout = config.pingTimeout;
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {

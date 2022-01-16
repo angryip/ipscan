@@ -6,6 +6,7 @@
 package net.azib.ipscan.core.net;
 
 import net.azib.ipscan.config.LoggerFactory;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
 
 import java.io.IOException;
@@ -28,8 +29,8 @@ public class UDPPinger implements Pinger {
 
 	private int timeout;
 
-	public UDPPinger(int timeout) {
-		this.timeout = timeout;
+	public UDPPinger(ScannerConfig config) {
+		this.timeout = config.pingTimeout;
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {

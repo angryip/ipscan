@@ -6,12 +6,12 @@ import org.junit.BeforeClass;
 import static org.junit.Assume.assumeTrue;
 
 public class WindowsPingerTest extends AbstractPingerTest {
-	public WindowsPingerTest() {
-		super(new WindowsPinger(10));
+	public WindowsPingerTest() throws Exception {
+		super(WindowsPinger.class);
 	}
 
 	@BeforeClass
-	public static void beforeClass() throws Exception {
+	public static void beforeClass() {
 		assumeTrue(Platform.WINDOWS);
 	}
 }
