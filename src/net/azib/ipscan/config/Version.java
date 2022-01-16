@@ -15,7 +15,7 @@ import java.util.logging.Level;
 public class Version {
 	public static final String NAME = "Angry IP Scanner";
 	
-	public static final String COPYLEFT = "© 2021 Anton Keks and contributors";
+	public static final String COPYLEFT = "© 2022 Anton Keks and contributors";
 	
 	public static final String OWN_HOST = "angryip.org";
 
