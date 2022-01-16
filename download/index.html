@@ -33,12 +33,13 @@ redirect_from: /w/Download/
         </li>
         <li>
           <a href="{{ page.binary_url }}{{ site.version }}/ipscan-win32-{{ site.version }}.exe">Executable for 32-bit Java</a>
-          - for older installations of Oracle Java for Windows
+          - for older installations of Oracle Java for Windows (deprecated)
         </li>
       </ul>
 
       <p>
-        At least <a href="https://adoptopenjdk.net/">Java/OpenJDK</a> <i>8</i> is required on your machine, but <i>11</i> is recommended.
+        At least <a href="https://adoptopenjdk.net/">Java/OpenJDK</a> <i>11</i> is required on your machine, or newer.
+        For Java 8 support, use version <i>3.7.6</i>.
       </p>
 
       <h4>Legacy</h4>
@@ -78,14 +79,15 @@ redirect_from: /w/Download/
       </p>
       <ul>
         <li>
-          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-mac-{{ site.version }}.zip">Zipped Application Bundle</a> - right-click and <i>Open</i> for the first time
+          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-macX86-{{ site.version }}.zip">Bundle for Mac Intel</a> - right-click and <i>Open</i> for the first time
+          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-macArm64-{{ site.version }}.zip">Bundle for Mac ARM (M1)</a> - right-click and <i>Open</i> for the first time
         </li>
       </ul>
 
       <h4>Running</h4>
       <p>Minimum supported OS X version is 10.10 <b>Yosemite</b>. Version 3.6.2 may work with older OS X.</p>
       <p>
-        Make sure you have <a href="https://adoptopenjdk.net">Java 8</a> or later installed. Newest OpenJDK (e.g. 15) is recommended for Dark Mode support.
+        Make sure you have <a href="https://adoptopenjdk.net">Java 11</a> or later installed. Newest OpenJDK (e.g. 17) is recommended for Dark Mode support.
       </p>
       <p>
         The zip file contains Mac application bundle: just save it and double-click to extract.
@@ -111,13 +113,14 @@ redirect_from: /w/Download/
       <ul>
         <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_amd64.deb">DEB Package</a> for <i>Ubuntu/Debian/Mint, 64-bit</i></li>
         <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-1.x86_64.rpm">RPM Package</a> for Fedora/RedHat/Mageia/openSUSE, 64-bit</li>
-        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_all.deb">DEB Package</a> for <i>Ubuntu/Debian/Mint, any architecture (e.g. 32-bit or ARM)</i></li>
+        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_all.deb">DEB Package</a> for <i>Ubuntu/Debian/Mint, any architecture (e.g. 32-bit or ARM), will need SWT packages provided by the distribution</i></li>
         <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-any-{{ site.version }}.jar">Executable Jar</a> - you need to provide your own swt.jar to classpath</li>
       </ul>
       <h4>Running</h4>
-      <p>Make sure you have at least Java 8 or <a href="http://en.wikipedia.org/wiki/OpenJDK">OpenJDK</a> installed - check your distribution.</p>
+      <p>Make sure you have at least Java 11 or <a href="http://en.wikipedia.org/wiki/OpenJDK">OpenJDK</a> installed - check your distribution.</p>
       <p>DEB and RPM packages will install appropriate 'desktop' files, so <i>Angry IP Scanner</i> will appear in the applications menu, under either <b>Internet</b> or <b>Networking</b>. Alternatively, you can just type <code>ipscan</code> to launch the application.</p>
       <p><i>Jar</i> files are launched by either double-clicking or typing <code>java -jar <i>jar-file</i></code>.</p>
+      <p>Latest version with Java 8 support is <i>3.7.6</i>.</p>
     </div>
   </section>
 
