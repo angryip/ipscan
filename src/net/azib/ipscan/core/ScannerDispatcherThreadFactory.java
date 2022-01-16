@@ -9,15 +9,7 @@ import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.feeders.Feeder;
 
-/**
- * ScannerThreadFactory.
- * 
- * Note: setter injection is used for this class to avoid cyclic dependency conflicts.
- *
- * @author Anton Keks
- */
 public class ScannerDispatcherThreadFactory {
-	
 	private ScanningResultList scanningResults;
 	private Scanner scanner;
 	private StateMachine stateMachine;
