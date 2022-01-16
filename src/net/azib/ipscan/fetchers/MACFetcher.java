@@ -27,7 +27,7 @@ public abstract class MACFetcher extends AbstractFetcher {
 
 	protected abstract String resolveMAC(InetAddress address);
 
-	String bytesToMAC(byte[] bytes) {
+	static String bytesToMAC(byte[] bytes) {
 		StringBuilder mac = new StringBuilder();
 		for (byte b : bytes) mac.append(String.format("%02X", b)).append(":");
 		if (mac.length() > 0) mac.deleteCharAt(mac.length()-1);

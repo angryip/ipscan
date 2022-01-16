@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.Enumeration;
 
 public class UnixMACFetcher extends MACFetcher {
@@ -31,21 +32,7 @@ public class UnixMACFetcher extends MACFetcher {
 				if (line.contains(ip))
 					return extractMAC(line);
 			}
-
-			// see if it is a local address
-			Enumeration<NetworkInterface> ifs = NetworkInterface.getNetworkInterfaces();
-			while (ifs.hasMoreElements()) {
-				NetworkInterface netif = ifs.nextElement();
-				if (netif.isUp() && !netif.isVirtual() && !netif.isLoopback()) {
-					Enumeration<InetAddress> addrs = netif.getInetAddresses();
-					while (addrs.hasMoreElements()) {
-						InetAddress addr = addrs.nextElement();
-						if (addr.equals(address))
-							return bytesToMAC(netif.getHardwareAddress());
-					}
-				}
-			}
-			return null;
+			return getLocalMAC(address);
 		}
 		catch (Exception e) {
 			return null;
@@ -53,5 +40,21 @@ public class UnixMACFetcher extends MACFetcher {
 		finally {
 			IOUtils.closeQuietly(reader);
 		}
+	}
+
+	static String getLocalMAC(InetAddress address) throws SocketException {
+		Enumeration<NetworkInterface> ifs = NetworkInterface.getNetworkInterfaces();
+		while (ifs.hasMoreElements()) {
+			NetworkInterface netif = ifs.nextElement();
+			if (netif.isUp() && !netif.isVirtual() && !netif.isLoopback()) {
+				Enumeration<InetAddress> addrs = netif.getInetAddresses();
+				while (addrs.hasMoreElements()) {
+					InetAddress addr = addrs.nextElement();
+					if (addr.equals(address))
+						return bytesToMAC(netif.getHardwareAddress());
+				}
+			}
+		}
+		return null;
 	}
 }
