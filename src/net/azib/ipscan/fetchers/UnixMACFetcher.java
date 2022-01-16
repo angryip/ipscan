@@ -1,14 +1,12 @@
 package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.config.Platform;
+import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.util.IOUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.Enumeration;
 
 public class UnixMACFetcher extends MACFetcher {
 	private String arp;
@@ -20,8 +18,8 @@ public class UnixMACFetcher extends MACFetcher {
 			arp = "arp -n ";  // Mac and other BSD
 	}
 
-	@Override public String resolveMAC(InetAddress address) {
-		String ip = address.getHostAddress();
+	@Override public String resolveMAC(ScanningSubject subject) {
+		String ip = subject.getAddress().getHostAddress();
 		BufferedReader reader = null;
 		try {
 			// highly inefficient implementation, there must be a better way (using JNA?)
@@ -32,7 +30,7 @@ public class UnixMACFetcher extends MACFetcher {
 				if (line.contains(ip))
 					return extractMAC(line);
 			}
-			return getLocalMAC(address);
+			return getLocalMAC(subject);
 		}
 		catch (Exception e) {
 			return null;
@@ -42,19 +40,7 @@ public class UnixMACFetcher extends MACFetcher {
 		}
 	}
 
-	static String getLocalMAC(InetAddress address) throws SocketException {
-		Enumeration<NetworkInterface> ifs = NetworkInterface.getNetworkInterfaces();
-		while (ifs.hasMoreElements()) {
-			NetworkInterface netif = ifs.nextElement();
-			if (netif.isUp() && !netif.isVirtual() && !netif.isLoopback()) {
-				Enumeration<InetAddress> addrs = netif.getInetAddresses();
-				while (addrs.hasMoreElements()) {
-					InetAddress addr = addrs.nextElement();
-					if (addr.equals(address))
-						return bytesToMAC(netif.getHardwareAddress());
-				}
-			}
-		}
-		return null;
+	static String getLocalMAC(ScanningSubject subject) throws SocketException {
+		return subject.isLocalHost() ? bytesToMAC(subject.getInterface().getHardwareAddress()) : null;
 	}
 }

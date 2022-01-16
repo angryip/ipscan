@@ -9,11 +9,15 @@ import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.net.PingResult;
+import net.azib.ipscan.util.InetAddressUtils;
 
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
 import java.util.*;
+
+import static net.azib.ipscan.util.InetAddressUtils.matchingAddress;
 
 /**
  * Scanning subject represents a single scanned
@@ -30,6 +34,8 @@ public class ScanningSubject {
 
 	/** The address being scanned */
 	private InetAddress address;
+	/** Network interface in case of LAN scans, or null */
+	private NetworkInterface netIf;
 	/** Network interface address in case of LAN scans, or null */
 	private InterfaceAddress ifAddr;
 	/** The requested ports that the user wishes to put more attention to, can be null. E.g. port 3128 for scanning of proxy servers. */
@@ -44,11 +50,16 @@ public class ScanningSubject {
 	int adaptedPortTimeout = -1;
 
 	public ScanningSubject(InetAddress address) {
-		this(address, null);
+		this(address, InetAddressUtils.getInterface(address));
 	}
 
-	public ScanningSubject(InetAddress address, InterfaceAddress ifAddr) {
+	public ScanningSubject(InetAddress address, NetworkInterface netIf) {
+		this(address, netIf, matchingAddress(netIf, address));
+	}
+
+	public ScanningSubject(InetAddress address, NetworkInterface netIf, InterfaceAddress ifAddr) {
 		this.address = address;
+		this.netIf = netIf;
 		this.ifAddr = ifAddr;
 		this.parameters = new HashMap<>(); // single-threaded access only
 		this.config = Config.getConfig().forScanner();
@@ -58,7 +69,11 @@ public class ScanningSubject {
 		return address;
 	}
 
-	public InterfaceAddress getIfAddr() {
+	public NetworkInterface getInterface() {
+		return netIf;
+	}
+
+	public InterfaceAddress getIfAddress() {
 		return ifAddr;
 	}
 

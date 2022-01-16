@@ -1,8 +1,7 @@
 package net.azib.ipscan.fetchers;
 
+import net.azib.ipscan.core.ScanningSubject;
 import org.junit.Test;
-
-import java.net.InetAddress;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,7 +9,7 @@ public class MACVendorFetcherTest {
 	@Test
 	public void findMACVendor() {
 		MACFetcher macFetcher = new MACFetcher() {
-			@Override protected String resolveMAC(InetAddress address) { return null; }
+			@Override protected String resolveMAC(ScanningSubject subject) { return null; }
 		};
 		MACVendorFetcher fetcher = new MACVendorFetcher(macFetcher);
 		fetcher.init();

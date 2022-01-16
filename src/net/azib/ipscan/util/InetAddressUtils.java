@@ -192,6 +192,20 @@ public class InetAddressUtils {
 		return anyAddress;
 	}
 
+	public static NetworkInterface getInterface(InetAddress address) {
+		try {
+			return NetworkInterface.getByInetAddress(address);
+		}
+		catch (SocketException e) {
+			return null;
+		}
+	}
+
+	public static InterfaceAddress matchingAddress(NetworkInterface netIf, InetAddress address) {
+		if (netIf == null) return null;
+		return netIf.getInterfaceAddresses().stream().filter(i -> i.getAddress().getClass() == address.getClass()).findFirst().orElse(null);
+	}
+
 	public static List<NetworkInterface> getNetworkInterfaces() throws SocketException {
 		List<NetworkInterface> interfaces = list(NetworkInterface.getNetworkInterfaces());
 		if (!Platform.WINDOWS) reverse(interfaces);

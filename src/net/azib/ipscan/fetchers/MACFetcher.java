@@ -3,11 +3,9 @@ package net.azib.ipscan.fetchers;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.gui.fetchers.MACFetcherPrefs;
 
-import java.net.InetAddress;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// TODO: try using java.net.NetworkInterface.getMacAddr0 with reflection instead
 public abstract class MACFetcher extends AbstractFetcher {
 	public static final String ID = "fetcher.mac";
 	static final Pattern macAddressPattern = Pattern.compile("([a-fA-F0-9]{1,2}[-:]){5}[a-fA-F0-9]{1,2}");
@@ -20,12 +18,12 @@ public abstract class MACFetcher extends AbstractFetcher {
 
 	@Override public final String scan(ScanningSubject subject) {
 		String mac = (String) subject.getParameter(ID);
-		if (mac == null) mac = resolveMAC(subject.getAddress());
+		if (mac == null) mac = resolveMAC(subject);
 		subject.setParameter(ID, mac);
 		return replaceSeparator(mac);
 	}
 
-	protected abstract String resolveMAC(InetAddress address);
+	protected abstract String resolveMAC(ScanningSubject subject);
 
 	static String bytesToMAC(byte[] bytes) {
 		StringBuilder mac = new StringBuilder();

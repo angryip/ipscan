@@ -1,6 +1,7 @@
 package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.config.Platform;
+import net.azib.ipscan.core.ScanningSubject;
 import org.junit.Test;
 
 import static net.azib.ipscan.util.InetAddressUtils.getLocalInterface;
@@ -11,6 +12,7 @@ public class LinuxMACFetcherTest {
 	@Test
 	public void resolve() {
 		assumeTrue(Platform.LINUX);
-		assertEquals(17, new LinuxMACFetcher().resolveMAC(getLocalInterface().getAddress()).length());
+		ScanningSubject subject = new ScanningSubject(getLocalInterface().getAddress());
+		assertEquals(17, new LinuxMACFetcher().resolveMAC(subject).length());
 	}
 }

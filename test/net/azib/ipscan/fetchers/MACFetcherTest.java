@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 
 public class MACFetcherTest {
 	private MACFetcher fetcher = new MACFetcher() {
-		@Override protected String resolveMAC(InetAddress address) {
+		@Override protected String resolveMAC(ScanningSubject subject) {
 			return "00:01:02:03:04:05";
 		}
 	};
@@ -28,8 +28,8 @@ public class MACFetcherTest {
 
 	@Test
 	public void bytesToMAC() {
-		assertEquals("", fetcher.bytesToMAC(new byte[0]));
-		assertEquals("00:01:02:0D", fetcher.bytesToMAC(new byte[] {0, 1, 2, 13}));
+		assertEquals("", MACFetcher.bytesToMAC(new byte[0]));
+		assertEquals("00:01:02:0D", MACFetcher.bytesToMAC(new byte[] {0, 1, 2, 13}));
 	}
 
 	@Test

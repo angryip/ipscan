@@ -11,7 +11,10 @@ import org.savarese.vserv.tcpip.OctetConverter;
 
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
 import java.net.UnknownHostException;
+
+import static net.azib.ipscan.util.InetAddressUtils.*;
 
 /**
  * IP Range Feeder.
@@ -21,6 +24,7 @@ import java.net.UnknownHostException;
  * @author Anton Keks
  */
 public class RangeFeeder extends AbstractFeeder {
+	private NetworkInterface netIf;
 	private InterfaceAddress ifAddr;
 	private InetAddress startIP;
 	private InetAddress endIP;
@@ -47,9 +51,10 @@ public class RangeFeeder extends AbstractFeeder {
 
 	public RangeFeeder(String startIP, String endIP, InterfaceAddress ifAddr) {
 		try {
-			this.ifAddr = ifAddr;
 			this.startIP = this.currentIP = InetAddress.getByName(startIP);
 			this.endIP = this.originalEndIP = InetAddress.getByName(endIP);
+			this.netIf = getInterface(ifAddr != null ? ifAddr.getAddress() : this.startIP);
+			this.ifAddr = ifAddr != null ? ifAddr : matchingAddress(netIf, this.startIP);
 			this.isReverse = false;
 		}
 		catch (UnknownHostException e) {
@@ -60,10 +65,10 @@ public class RangeFeeder extends AbstractFeeder {
 		}
 		if (InetAddressUtils.greaterThan(this.startIP, this.endIP)) {
 			this.isReverse = true;
-			this.endIP = InetAddressUtils.decrement(InetAddressUtils.decrement(this.endIP));
+			this.endIP = decrement(decrement(this.endIP));
 		}
 		initPercentageIncrement();
-		this.endIP = InetAddressUtils.increment(this.endIP);
+		this.endIP = increment(this.endIP);
 	}
 	
 	/**
@@ -90,11 +95,11 @@ public class RangeFeeder extends AbstractFeeder {
 		percentageComplete += percentageIncrement;
 		InetAddress prevIP = this.currentIP;
 		if (this.isReverse) {
-			this.currentIP = InetAddressUtils.decrement(prevIP);
+			this.currentIP = decrement(prevIP);
 		} else {
-			this.currentIP = InetAddressUtils.increment(prevIP);
+			this.currentIP = increment(prevIP);
 		}
-		return new ScanningSubject(prevIP, ifAddr);
+		return new ScanningSubject(prevIP, netIf, ifAddr);
 	}
 
 	public int percentageComplete() {

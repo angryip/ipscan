@@ -10,6 +10,9 @@ import net.azib.ipscan.core.net.PingResult;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
@@ -25,9 +28,9 @@ public class ScanningSubjectTest {
 	private PingResult pingResult;
 	
 	@Before
-	public void initTest() {
+	public void initTest() throws UnknownHostException {
 		config = mock(ScannerConfig.class);
-		subject = new ScanningSubject(null);
+		subject = new ScanningSubject(InetAddress.getLocalHost());
 		subject.config = config;
 		config.portTimeout = 1000;
 		config.adaptPortTimeout = true;

@@ -88,7 +88,7 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 					if ((numActiveThreads.intValue() < config.maxThreads)) {					
 						subject = feeder.next();
 
-						if (config.skipBroadcastAddresses && isLikelyBroadcast(subject.getAddress(), subject.getIfAddr()))
+						if (config.skipBroadcastAddresses && isLikelyBroadcast(subject.getAddress(), subject.getIfAddress()))
 							continue;
 
 						ScanningResult result = scanningResultList.createResult(subject.getAddress());

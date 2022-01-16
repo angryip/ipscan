@@ -1,6 +1,7 @@
 package net.azib.ipscan.fetchers;
 
-import java.net.InetAddress;
+import net.azib.ipscan.core.ScanningSubject;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
@@ -25,13 +26,13 @@ public class LinuxMACFetcher extends MACFetcher {
 		}
 	}
 
-	@Override public String resolveMAC(InetAddress address) {
+	@Override public String resolveMAC(ScanningSubject subject) {
 		try {
-			String ip = address.getHostAddress();
+			String ip = subject.getAddress().getHostAddress();
 			return arpLines().filter(line -> line.startsWith(ip + " ")).findFirst()
 				.map(line -> line.substring(macIndex, macIndex + macLength).toUpperCase())
 				.filter(mac -> !unavailableMac.equals(mac))
-				.orElse(getLocalMAC(address));
+				.orElse(getLocalMAC(subject));
 		}
 		catch (Exception e) {
 			return null;
