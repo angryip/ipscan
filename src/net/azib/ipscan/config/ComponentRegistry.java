@@ -6,21 +6,12 @@
 package net.azib.ipscan.config;
 
 import net.azib.ipscan.core.PluginLoader;
-import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.di.Injector;
 import net.azib.ipscan.exporters.CSVExporter;
 import net.azib.ipscan.exporters.IPListExporter;
 import net.azib.ipscan.exporters.TXTExporter;
 import net.azib.ipscan.exporters.XMLExporter;
-import net.azib.ipscan.feeders.FeederRegistry;
 import net.azib.ipscan.fetchers.*;
-import net.azib.ipscan.gui.SWTAwareStateMachine;
-import net.azib.ipscan.gui.feeders.*;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * This class is the dependency injection configuration
@@ -28,33 +19,27 @@ import org.eclipse.swt.widgets.Shell;
  * @author Anton Keks
  */
 public class ComponentRegistry {
-	public void register(Injector i) throws Exception {
-		Display display = Display.getDefault();
-		i.register(Display.class, display);
-		Shell shell = new Shell();
-		i.register(Shell.class, shell);
-		i.register(Menu.class, new Menu(shell, SWT.BAR));
-		i.register(FeederSelectionCombo.class, new FeederSelectionCombo(i.require(ControlsArea.class)));
-		i.register(Button.class, new Button(i.require(ControlsArea.class), SWT.NONE));
-		SWTAwareStateMachine stateMachine = new SWTAwareStateMachine(display);
-		i.register(SWTAwareStateMachine.class, stateMachine);
-		i.register(StateMachine.class, stateMachine);
-		i.register(RangeFeederGUI.class, RandomFeederGUI.class, FileFeederGUI.class);
-		i.register(TXTExporter.class, CSVExporter.class, XMLExporter.class, IPListExporter.class);
-
+	public void register(Injector i) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		i.register(IPFetcher.class, PingFetcher.class, PingTTLFetcher.class, HostnameFetcher.class, PortsFetcher.class);
 		i.register(MACFetcher.class, (MACFetcher) Class.forName(MACFetcher.class.getPackage().getName() +
 				(Platform.WINDOWS ? ".WinMACFetcher" : Platform.LINUX ? ".LinuxMACFetcher" : ".UnixMACFetcher")).newInstance());
 		i.register(CommentFetcher.class, FilteredPortsFetcher.class, WebDetectFetcher.class, HTTPSenderFetcher.class,
 			NetBIOSInfoFetcher.class, PacketLossFetcher.class, HTTPProxyFetcher.class, MACVendorFetcher.class);
-		i.register(FeederRegistry.class, i.require(FeederGUIRegistry.class));
+		i.register(TXTExporter.class, CSVExporter.class, XMLExporter.class, IPListExporter.class);
 	}
 
 	public Injector init() throws Exception {
+		return init(true);
+	}
+
+	public Injector init(boolean withGUI) throws Exception {
 		Injector i = new Injector();
 		new ConfigModule().register(i);
 		new ComponentRegistry().register(i);
-		new PluginLoader().getClasses().forEach(i::require);
+		if (withGUI) {
+			new GUIRegistry().register(i);
+			new PluginLoader().getClasses().forEach(i::require);
+		}
 		return i;
 	}
 }

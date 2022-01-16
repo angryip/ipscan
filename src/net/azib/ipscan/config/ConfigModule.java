@@ -13,6 +13,5 @@ public class ConfigModule {
 		i.register(ScannerConfig.class, config.forScanner());
 		i.register(OpenersConfig.class, config.forOpeners());
 		i.register(FavoritesConfig.class, config.forFavorites());
-		i.register(GUIConfig.class, config.forGUI());
 	}
 }

@@ -17,7 +17,7 @@ abstract class AbstractPingerTest {
 	Pinger pinger;
 
 	AbstractPingerTest(Class<? extends Pinger> pingerClass) throws Exception {
-		Injector injector = new ComponentRegistry().init();
+		Injector injector = new ComponentRegistry().init(false);
 		this.pinger = injector.require(pingerClass);
 	}
 
