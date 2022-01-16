@@ -17,7 +17,7 @@ public class PingerRegistryTest {
 	@Before
 	public void setUp() throws Exception {
 		System.setProperty("java.library.path", "../swt/lib");
-		registry = new PingerRegistry(config, new ComponentRegistry().init());
+		registry = new PingerRegistry(config, new ComponentRegistry().init(false));
 	}
 
 	@Test
