@@ -192,8 +192,9 @@ public class InetAddressUtils {
 		return anyAddress;
 	}
 
-	public static NetworkInterface getInterface(InetAddress address) {
+	public static NetworkInterface getInterfaceByLocalAddr(InetAddress address) {
 		try {
+			if (address == null) return null;
 			return NetworkInterface.getByInetAddress(address);
 		}
 		catch (SocketException e) {
@@ -201,9 +202,9 @@ public class InetAddressUtils {
 		}
 	}
 
-	public static InterfaceAddress matchingAddress(NetworkInterface netIf, InetAddress address) {
+	public static InterfaceAddress matchingAddress(NetworkInterface netIf, Class<? extends InetAddress> addressClass) {
 		if (netIf == null) return null;
-		return netIf.getInterfaceAddresses().stream().filter(i -> i.getAddress().getClass() == address.getClass()).findFirst().orElse(null);
+		return netIf.getInterfaceAddresses().stream().filter(i -> i.getAddress().getClass() == addressClass).findFirst().orElse(null);
 	}
 
 	public static List<NetworkInterface> getNetworkInterfaces() throws SocketException {
