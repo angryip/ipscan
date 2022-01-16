@@ -7,15 +7,14 @@ package net.azib.ipscan.core.net;
 
 import net.azib.ipscan.core.ScanningSubject;
 
-import java.io.Closeable;
 import java.io.IOException;
 
 /**
- * Pinger
+ * Pingers check if hosts are alive
  *
  * @author Anton Keks
  */
-public interface Pinger extends Closeable {
+public interface Pinger extends AutoCloseable {
 	/**
 	 * Issues the specified number of pings and
 	 * waits for replies.
@@ -24,4 +23,5 @@ public interface Pinger extends Closeable {
 	 */
 	PingResult ping(ScanningSubject subject, int count) throws IOException;
 
+	@Override default void close() throws IOException {}
 }

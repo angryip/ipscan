@@ -77,7 +77,4 @@ public class UDPPinger implements Pinger {
 			closeQuietly(socket);
 		}
 	}
-
-	public void close() {
-	}
 }

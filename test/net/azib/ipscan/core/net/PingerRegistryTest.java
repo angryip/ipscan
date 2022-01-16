@@ -84,9 +84,6 @@ public class PingerRegistryTest {
 		@Override public PingResult ping(ScanningSubject subject, int count) throws IOException {
 			return null;
 		}
-
-		@Override public void close() {
-		}
 	}
 
 	static class PingerWithoutConstructor extends AbstractWrongPinger {

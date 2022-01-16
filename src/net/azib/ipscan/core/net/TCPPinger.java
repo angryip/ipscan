@@ -96,7 +96,4 @@ public class TCPPinger implements Pinger {
 		// one positive result is enough for TCP 
 		result.enableTimeoutAdaptation();
 	}
-
-	public void close() {
-	}
 }

@@ -27,8 +27,4 @@ public class JavaPinger implements Pinger {
 		}
 		return result;
 	}
-
-	@Override
-	public void close() {
-	}
 }

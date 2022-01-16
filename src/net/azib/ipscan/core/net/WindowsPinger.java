@@ -14,7 +14,6 @@ import net.azib.ipscan.core.net.WinIpHlpDll.Ip6SockAddrByRef;
 import net.azib.ipscan.core.net.WinIpHlpDll.IpAddrByVal;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.Arrays;
 
 import static java.lang.Thread.currentThread;
@@ -101,15 +100,5 @@ public class WindowsPinger implements Pinger {
 		}
 
 		return result;
-	}
-
-	public void close() {
-		// not needed in this pinger
-	}
-
-	public static void main(String[] args) throws IOException {
-		PingResult ping = new WindowsPinger(5000).ping(new ScanningSubject(InetAddress.getByName("::1")), 1);
-		System.out.println(ping.getAverageTime() + "ms");
-		System.out.println("TTL " + ping.getTTL());
 	}
 }
