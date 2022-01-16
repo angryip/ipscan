@@ -3,6 +3,7 @@ Encoding=UTF-8
 Name=Angry IP Scanner
 Comment=Fast and friendly network scanner
 GenericName=Fast and friendly network scanner
+Keywords=angry;ipscan;ip;scan;scanner
 Exec=sh /usr/bin/ipscan
 Terminal=false
 Type=Application
