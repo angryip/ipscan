@@ -125,21 +125,28 @@ public class InetAddressUtils {
 	public static InetAddress parseNetmask(String netmaskString) throws UnknownHostException {
 		if (netmaskString.startsWith("/")) {
 			// CIDR netmask, e.g. "/24" - number of bits set from the left
-			int totalBits = Integer.parseInt(netmaskString.substring(1)); 
-			byte[] mask = new byte[totalBits > 32 ? 16 : 4];
-			for (int i = 0; i < mask.length; i++) {
-				int curByteBits = totalBits >= 8 ? 8 : totalBits;
-				totalBits -= curByteBits;				
-				mask[i] = (byte)((((1 << curByteBits)-1)<<(8-curByteBits)) & 0xFF); 
-				
-			}
-			return InetAddress.getByAddress(mask);
+			int totalBits = Integer.parseInt(netmaskString.substring(1));
+			return parseNetmask(totalBits);
 		} 
 
 		// IP-like netmask (IPv4)
 		netmaskString = netmaskString.replaceAll("\\.\\.", ".255.");
 		netmaskString = netmaskString.replaceAll("\\.\\.", ".255.");
 		return InetAddress.getByName(netmaskString);
+	}
+
+	public static InetAddress parseNetmask(int prefixBits) {
+		byte[] mask = new byte[prefixBits > 32 ? 16 : 4];
+		for (int i = 0; i < mask.length; i++) {
+			int curByteBits = Math.min(prefixBits, 8);
+			prefixBits -= curByteBits;
+			mask[i] = (byte)((((1 << curByteBits)-1)<<(8-curByteBits)) & 0xFF);
+		}
+		try {
+			return InetAddress.getByAddress(mask);
+		} catch (UnknownHostException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -192,10 +199,23 @@ public class InetAddressUtils {
 		return anyAddress;
 	}
 
-	public static NetworkInterface getInterfaceByLocalAddr(InetAddress address) {
+	public static NetworkInterface getInterface(InterfaceAddress address) {
 		try {
 			if (address == null) return null;
-			return NetworkInterface.getByInetAddress(address);
+			return NetworkInterface.getByInetAddress(address.getAddress());
+		}
+		catch (SocketException e) {
+			return null;
+		}
+	}
+
+	public static NetworkInterface getInterface(InetAddress address) {
+		try {
+			if (address == null) return null;
+			return NetworkInterface.networkInterfaces().filter(i -> i.getInterfaceAddresses().stream().anyMatch(ifAddr -> {
+				InetAddress netmask = parseNetmask(ifAddr.getNetworkPrefixLength());
+				return startRangeByNetmask(address, netmask).equals(startRangeByNetmask(ifAddr.getAddress(), netmask));
+			})).findFirst().orElse(null);
 		}
 		catch (SocketException e) {
 			return null;

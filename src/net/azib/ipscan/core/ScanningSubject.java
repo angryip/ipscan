@@ -50,7 +50,7 @@ public class ScanningSubject {
 	int adaptedPortTimeout = -1;
 
 	public ScanningSubject(InetAddress address) {
-		this(address, InetAddressUtils.getInterfaceByLocalAddr(address));
+		this(address, InetAddressUtils.getInterface(address));
 	}
 
 	public ScanningSubject(InetAddress address, NetworkInterface netIf) {

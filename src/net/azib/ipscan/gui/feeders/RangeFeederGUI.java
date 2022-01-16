@@ -34,7 +34,6 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	private Text endIPText;
 	private Text hostnameText;
 	private Combo netmaskCombo;
-	private InterfaceAddress ifAddr;
 
 	private boolean isEndIPUnedited = true;
 	private boolean modifyListenersDisabled = false;
@@ -131,9 +130,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	}
 
 	public Feeder createFeeder() {
-		// TODO: check if the range still matches the ifAddr
-		feeder = new RangeFeeder(startIPText.getText(), endIPText.getText(), ifAddr);
-		return feeder;
+		return feeder = new RangeFeeder(startIPText.getText(), endIPText.getText());
 	}
 	
 	public String[] serialize() {
@@ -226,9 +223,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		}
 	}
 
-	@Override
-	protected void afterLocalHostInfoFilled(InterfaceAddress ifAddr) {
-		this.ifAddr = ifAddr;
+	@Override protected void afterLocalHostInfoFilled(InterfaceAddress ifAddr) {
 		InetAddress address = ifAddr.getAddress();
 		if (!address.isLoopbackAddress()) {
 			updateStartEndWithNetmask(address, "/" + ifAddr.getNetworkPrefixLength());

@@ -46,15 +46,11 @@ public class RangeFeeder extends AbstractFeeder {
 	}
 
 	public RangeFeeder(String startIP, String endIP) {
-		this(startIP, endIP, null);
-	}
-
-	public RangeFeeder(String startIP, String endIP, InterfaceAddress ifAddr) {
 		try {
 			this.startIP = this.currentIP = InetAddress.getByName(startIP);
 			this.endIP = this.originalEndIP = InetAddress.getByName(endIP);
-			this.netIf = ifAddr != null ? getInterfaceByLocalAddr(ifAddr.getAddress()) : null;
-			this.ifAddr = ifAddr != null ? ifAddr : matchingAddress(netIf, this.startIP.getClass());
+			this.netIf = getInterface(this.startIP);
+			this.ifAddr = matchingAddress(netIf, this.startIP.getClass());
 			this.isReverse = false;
 		}
 		catch (UnknownHostException e) {
