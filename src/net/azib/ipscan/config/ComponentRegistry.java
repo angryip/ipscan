@@ -43,7 +43,8 @@ public class ComponentRegistry {
 		i.register(TXTExporter.class, CSVExporter.class, XMLExporter.class, IPListExporter.class);
 
 		i.register(IPFetcher.class, PingFetcher.class, PingTTLFetcher.class, HostnameFetcher.class, PortsFetcher.class);
-		i.register(MACFetcher.class, (MACFetcher) Class.forName(MACFetcher.class.getPackage().getName() + (Platform.WINDOWS ? ".WinMACFetcher" : ".UnixMACFetcher")).newInstance());
+		i.register(MACFetcher.class, (MACFetcher) Class.forName(MACFetcher.class.getPackage().getName() +
+				(Platform.WINDOWS ? ".WinMACFetcher" : Platform.LINUX ? ".LinuxMACFetcher" : ".UnixMACFetcher")).newInstance());
 		i.register(CommentFetcher.class, FilteredPortsFetcher.class, WebDetectFetcher.class, HTTPSenderFetcher.class,
 			NetBIOSInfoFetcher.class, PacketLossFetcher.class, HTTPProxyFetcher.class, MACVendorFetcher.class);
 		i.register(FeederRegistry.class, i.require(FeederGUIRegistry.class));

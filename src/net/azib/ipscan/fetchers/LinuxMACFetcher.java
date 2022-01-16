@@ -28,7 +28,7 @@ public class LinuxMACFetcher extends MACFetcher {
 	@Override public String resolveMAC(InetAddress address) {
 		try {
 			String ip = address.getHostAddress();
-			return arpLines().filter(line -> line.startsWith(ip)).findFirst()
+			return arpLines().filter(line -> line.startsWith(ip + " ")).findFirst()
 				.map(line -> line.substring(macIndex, macIndex + macLength).toUpperCase())
 				.filter(mac -> !unavailableMac.equals(mac))
 				.orElse(getLocalMAC(address));
