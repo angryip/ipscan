@@ -20,8 +20,8 @@ def platform = osName.contains("Linux") ? 'linux' + (is64 ? '64' : '32') :
                osName.contains("OS X") ? 'mac' + (isArm ? "Arm64" : "X86") : 'unknown'
 
 version = gitVersion()
-sourceCompatibility = 11
-targetCompatibility = 11
+sourceCompatibility = 8
+targetCompatibility = 8
 
 sourceSets {
     main {
