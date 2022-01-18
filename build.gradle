@@ -194,7 +194,7 @@ def deb(def platform, def arch, def moreDeps = '') {
         ant.arg(line: "a+x usr/bin/ipscan usr/lib/ipscan/${project.name}-${platform}-${version}.jar")
     }
     ant.exec(executable: 'fakeroot', dir: dist + '/..', failonerror: true) {
-        ant.arg(line: "dpkg-deb -b deb ${project.name}_${version}_${arch}.deb")
+        ant.arg(line: "dpkg-deb -Zxz -b deb ${project.name}_${version}_${arch}.deb")
     }
     ant.delete(dir: dist)
 }
