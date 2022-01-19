@@ -16445,6 +16445,7 @@
 3087D9Ruckus Wireless
 308841Sichuan AI-Link Technology Co., 
 308944DEVA Broadcast
+30894AIntel Corporate
 308976DALIAN LAMBA
 308999Guangdong East Power Co.,
 3089D3HONGKONG UCLOUDLINKTECHNOLOGY
@@ -17868,6 +17869,7 @@
 446C24Reallin
 446D57Liteon
 446D6CSamsung
+446D7FAmazon
 446EE5HUAWEI
 446FD8IEEE
 446FF8Dyson
@@ -22981,6 +22983,7 @@
 88F7BFvivo Mobile
 88F7C7Technicolor CH USA
 88F872HUAWEI
+88FC5DCisco
 88FCA6devolo
 88FD15LINEEYE
 88FED6ShangHai WangYong Software
@@ -23019,6 +23022,7 @@
 8C1ABFSamsung
 8C1CDAIEEE
 8C1D96Intel Corporate
+8C1E80Cisco
 8C1ED9Beijing Unigroup Tsingteng Microsyst
 8C1F64IEEE
 8C1F94RF Surgical System Inc. 
@@ -24314,6 +24318,7 @@
 9C934EXerox
 9C93B0Megatronix 
 9C93E4Private
+9C9561Hui Zhou Gaoshengda
 9C9567Huawei
 9C95F8SmartDoor
 9C9726Technicolor DeliveryBelgium NV
@@ -24513,6 +24518,7 @@ A04246IT Telecom
 A043B0Hangzhou BroadLink
 A043DBSitael S.p.A.
 A0445CHUAWEI
+A04466Intellics
 A047D7Best IT World  Pvt
 A0481CHewlett Packard
 A04A5EMicrosoft
@@ -24768,6 +24774,7 @@ A41908FiberhomeTechnologies
 A41A3ATP-LINK
 A41B34China Mobile Group
 A41BC0Fastec Imaging
+A41EE1Taicang T&W
 A41F72Dell
 A4218ANortel
 A42305Opening Laboratory
@@ -25350,6 +25357,7 @@ AC2334Infinix mobility
 AC233FShenzhen Minew
 AC293AApple
 AC2A0CCSR ZHUZHOU INSTITUTE
+AC2AA1Cisco
 AC2B6EIntel Corporate
 AC2DA3TXTR
 AC2DA9TECNO MOBILE
@@ -26846,6 +26854,7 @@ C06B55Motorola Mobility LLC, a Lenovo
 C06C0FDobbs Stanford
 C06C6DMagneMotion
 C06D1ATianjin Henxinhuifeng
+C06DEDHangzhou Hikvision Digital
 C07009HUAWEI
 C0742BSHENZHEN XUNLONG SOFTWARE
 C074ADGrandstream
@@ -27839,6 +27848,7 @@ CCD9E9SCR Engineers
 CCDB04DataRemote
 CCDB93Cisco
 CCDC55Dragonchip
+CCDD58Robert Bosch
 CCE0C3EXTEN
 CCE0DABaidu OnlineTechnology 
 CCE17FJuniper
@@ -27857,6 +27867,7 @@ CCEED9VAHLE Automation
 CCEF03Hunan KeyshareTechnology
 CCEF48Cisco
 CCF0FDChina Mobile  Information
+CCF305SHENZHEN TIAN XING CHUANG ZHAN
 CCF3A5Chi MeiSystems
 CCF407EUKREA ELECTROMATIQUE SARL
 CCF411Google
@@ -28423,6 +28434,7 @@ D4DACDBSkyB
 D4DC09Mist
 D4DCCDApple
 D4DF57Alpinion Medical
+D4E053Aruba, a Hewlett Packard Enterprise
 D4E08EValueHD
 D4E2CBTechnicolor CH USA
 D4E32CS. Siedle & Sohne
@@ -28958,6 +28970,7 @@ DCB7FCAlps Electric
 DCB808Extreme
 DCBB96Full Solution Telecom
 DCBD7AGuangzhou Shiyuan Electronic Tech
+DCBE49ITEL MOBILE
 DCBE7AZhejiang Nurotron Biotechnology
 DCBF90HUIZHOU QIAOXINGINDUSTRY
 DCBFE9Motorola Mobility LLC, a Lenovo
@@ -29874,6 +29887,7 @@ E8F928RFTECH
 E8F9D4HUAWEI
 E8FA23Huawei
 E8FAF7Guangdong UniteddataGroup
+E8FB1CAzureWave
 E8FBE9Apple
 E8FC60ELCOM Innovations Private
 E8FCAFNETGEAR
@@ -30651,6 +30665,7 @@ F4C714HUAWEI
 F4C795WEY
 F4C7AAMarvell Semiconductors
 F4C7C8Kelvin
+F4C88AIntel Corporate
 F4CA24FreeBit
 F4CAE5FREEBOX
 F4CB52HUAWEI
@@ -31026,6 +31041,7 @@ F8E811HUAWEI
 F8E877Harman/Becker Automotive
 F8E903D-Link
 F8E94EApple
+F8E94FCisco
 F8E968Egker Kft.
 F8EA0ADipl.-Math. Michael Rauch
 F8EDA5ARRIS Group
