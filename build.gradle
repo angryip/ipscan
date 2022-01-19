@@ -308,7 +308,7 @@ task 'win-installer'(dependsOn: ['win32', 'win64']) {
         def jrePath = "AppFiles/jre"
         if (!new File(installerDir, jrePath).exists()) {
             ant.exec(dir: installerDir, executable: "jlink", failOnError: true) {
-                ("--output $jrePath --vm=client --compress=2 --no-header-files --no-man-pages --strip-debug --strip-java-debug-attributes --strip-native-debug-symbols exclude-debuginfo-files --dedup-legal-notices error-if-not-same-content " +
+                ("--output $jrePath --vm=client --compress=2 --no-header-files --no-man-pages --strip-debug " +
                     "--add-modules java.base,java.desktop,java.prefs,java.logging")
                     .split(" ").each { ant.arg(value: it) }
             }
