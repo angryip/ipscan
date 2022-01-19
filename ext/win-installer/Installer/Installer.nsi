@@ -112,26 +112,13 @@ FunctionEnd
 Section Main
 	SetOutPath "$INSTDIR"
 
-	File "detectjvm.cmd"
-    ClearErrors
-    ExecWait '"$INSTDIR\detectjvm.cmd"' $0
-    IfErrors DetectExecError
-    IntCmp $0 0 DetectError DetectError DoneDetect
-    DetectExecError:
-        StrCpy $0 "exec error"
-    DetectError:
-        MessageBox MB_OK "Could not determine JVM architecture ($0), probably you don't have Java/OpenJDK. Will install 64-bit version, please install Java afterwards."
-        Goto X64
-    DoneDetect:
-    IntCmp $0 32 NotX64
-    IntCmp $0 64 X64 DetectError DetectError
-    X64:
-		File "..\AppFiles64\*.*"
-        Goto DoneX64
-    NotX64:
-		File "..\AppFiles32\*.*"
-    DoneX64:
-    Delete $INSTDIR\detectjvm.cmd
+	File "..\AppFiles\*.*"
+	File "..\AppFiles\jre\bin\java*.*"
+	File "..\AppFiles\jre\bin\java*.*"
+	File "..\AppFiles\jre\conf\*.*"
+	File "..\AppFiles\jre\lib\*.*"
+	File "..\AppFiles\jre\lib\security\*.*"
+	File "..\AppFiles\jre\lib\client\*.*"
 
 	;Remember the install location for uninstalls, upgrades and reinstalls
 	WriteRegStr HKLM "Software\${ApplicationName}" "" $INSTDIR
@@ -176,9 +163,6 @@ FunctionEnd
 Section "Uninstall"
 	Delete "$SMPROGRAMS\${ApplicationName}.lnk"
 
-	Delete "$INSTDIR\*.txt"
-	Delete "$INSTDIR\*.ico"
-	Delete "$INSTDIR\${ApplicationEXEName}"
 	Delete "$INSTDIR\*.*"
 	Delete "$INSTDIR\uninstall.exe"
 	RMDir "$INSTDIR"

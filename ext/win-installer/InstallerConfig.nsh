@@ -16,16 +16,16 @@
 !define InstallerFileName "ipscan"
 	
 ;AppVersionFull is a full 4 number dotted version number.  No letters, spaces, etc, dots only ex: 1.2.3.4
-!define AppVersionFull "3.VERSION_MINOR.0.0"
+!define AppVersionFull "3.8.0.0"
 
 ;AppVersionFriendly is the 'official' version number shown in the installer and installer file name.
 ;	Do not included spaces or invalid Windows file/directory characters
-!define AppVersionFriendly "VERSION"
+!define AppVersionFriendly "3.8.1-1-g10e6337.dirty"
 
 ;AppVersionMajor and AppVersionMinor would be the first two digits in the full 4 number dotted version
 ;   Only use a single number for each.  Windows uses this for add/remove programs
 !define AppVersionMajor "3"
-!define AppVersionMinor "VERSION_MINOR"
+!define AppVersionMinor "8"
 
 ;InstallSize is how big the program is when installed in KB.  Defining it allows us to show it in add/remove programs
 !define InstallSize 1736
