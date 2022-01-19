@@ -48,7 +48,7 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: '11'
-        architecture: x86
+        architecture: x64
     - run: ./gradlew test win-installer --info
 
     - uses: actions/upload-artifact@v1
