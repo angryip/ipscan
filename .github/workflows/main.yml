@@ -49,4 +49,10 @@ jobs:
       with:
         java-version: '11'
         architecture: x86
+    - run: jlink --output jre --compress=2 --no-header-files --no-man-pages --strip-debug --vm=client --add-modules java.base,java.desktop,java.prefs,java.logging
     - run: ./gradlew test win-installer --info
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: Windows binaries
+        path: build/libs
