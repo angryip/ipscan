@@ -63,6 +63,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 	private Button showInfoCheckbox;
 	private Button askConfirmationCheckbox;
 	private Button versionCheckCheckbox;
+	private Button allowReports;
 	private Combo languageCombo;
 
 	public PreferencesDialog(PingerRegistry pingerRegistry, Config globalConfig, ScannerConfig scannerConfig, GUIConfig guiConfig) {
@@ -297,6 +298,9 @@ public class PreferencesDialog extends AbstractModalDialog {
 
 		versionCheckCheckbox = new Button(displayTab, SWT.CHECK);
 		versionCheckCheckbox.setText(Labels.getLabel("preferences.versionCheck"));
+
+		allowReports = new Button(displayTab, SWT.CHECK);
+		allowReports.setText(Labels.getLabel("preferences.allowReports"));
 	}
 	
 	/**
@@ -392,6 +396,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		showInfoCheckbox.setSelection(guiConfig.showScanStats);
 		askConfirmationCheckbox.setSelection(guiConfig.askScanConfirmation);
 		versionCheckCheckbox.setSelection(guiConfig.versionCheckEnabled);
+		allowReports.setSelection(globalConfig.allowReports);
 		for (int i = 0; i < Labels.LANGUAGES.length; i++) {
 			if (globalConfig.language.equals(Labels.LANGUAGES[i])) {
 				languageCombo.select(i);
@@ -437,6 +442,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		guiConfig.showScanStats = showInfoCheckbox.getSelection();
 		guiConfig.askScanConfirmation = askConfirmationCheckbox.getSelection();
 		guiConfig.versionCheckEnabled = versionCheckCheckbox.getSelection();
+		globalConfig.allowReports = allowReports.getSelection();
 		String newLanguage = Labels.LANGUAGES[languageCombo.getSelectionIndex()];
 		if (!newLanguage.equals(globalConfig.language)) {
 			globalConfig.language = newLanguage;
