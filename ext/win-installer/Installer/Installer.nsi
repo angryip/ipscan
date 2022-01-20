@@ -114,7 +114,6 @@ Section Main
 
 	File "..\AppFiles\*.*"
 	File "..\AppFiles\jre\bin\java*.*"
-	File "..\AppFiles\jre\bin\java*.*"
 	File "..\AppFiles\jre\conf\*.*"
 	File "..\AppFiles\jre\lib\*.*"
 	File "..\AppFiles\jre\lib\security\*.*"
