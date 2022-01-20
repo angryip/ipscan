@@ -33,7 +33,8 @@ public class AboutDialog extends AbstractModalDialog {
 			.replace("%DATE", getBuildDate())
 			.replace("%COPYLEFT", COPYLEFT);
 		
-		Label aboutLabel = new Label(shell, SWT.NONE);
+		Text aboutLabel = new Text(shell, SWT.MULTI | SWT.READ_ONLY);
+		aboutLabel.setBackground(shell.getBackground());
 		aboutLabel.setText(aboutText);
 		aboutLabel.setLocation(leftBound, 10);
 		aboutLabel.pack();
@@ -46,7 +47,8 @@ public class AboutDialog extends AbstractModalDialog {
 			.replace("%OS", System.getProperty("os.name") + " " + System.getProperty("os.version") + " (" + System.getProperty("os.arch") + ")")
 			.replace("%SWT", SWT.getPlatform() + " " + SWT.getVersion());
 
-		Label systemLabel = new Label(shell, SWT.NONE);
+		Text systemLabel = new Text(shell, SWT.MULTI | SWT.READ_ONLY);
+		systemLabel.setBackground(shell.getBackground());
 		systemLabel.setText(systemText);
 		systemLabel.setLocation(leftBound, 20 + aboutLabel.getBounds().height + websiteLabel.getBounds().height);
 		systemLabel.pack();
