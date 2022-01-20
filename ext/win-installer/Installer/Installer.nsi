@@ -155,10 +155,7 @@ FunctionEnd
 ;Uninstaller section
 Section "Uninstall"
 	Delete "$SMPROGRAMS\${ApplicationName}.lnk"
-
-	Delete "$INSTDIR\*.*"
-	Delete "$INSTDIR\uninstall.exe"
-	RMDir "$INSTDIR"
+	RMDir /r "$INSTDIR"
 	
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}"
 	DeleteRegKey /ifempty HKLM "Software\${ApplicationName}"
