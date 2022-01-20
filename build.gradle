@@ -33,6 +33,7 @@ sourceCompatibility = 11
 targetCompatibility = 11
 
 def javaModules = ["java.base", "java.desktop", "java.prefs", "java.logging"]
+project.ext.set("javaModules", javaModules)
 
 sourceSets {
     main {
@@ -149,7 +150,7 @@ def minimizeTask(String platform, Closure doMore) {
     return tasks.create("${platform}.min", proguard.gradle.ProGuardTask) {
         injars "build/libs/ipscan-${platform}-${version}.jar"
         outjars "build/libs/ipscan-${platform}-${version}.min.jar"
-        javaModules.each {
+        project.ext.javaModules.each {
             libraryjars System.getProperty('java.home') + "/jmods/${it}.jmod"
         }
         dontobfuscate
