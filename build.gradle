@@ -181,17 +181,17 @@ def deb(def platform, def arch, def moreDeps = '') {
     ant.copy(todir: dist) {
         ant.fileset(dir: "ext/deb-bundle")
     }
-    ant.copy(file: "build/libs/${project.name}-${platform}-${version}.jar", todir:"${dist}/usr/lib/ipscan")
-    ant.copy(file: "resources/images/icon128.png", tofile:"${dist}/usr/share/pixmaps/ipscan.png")
+    ant.copy(file: "build/libs/${project.name}-${platform}-${version}.jar", todir: "${dist}/usr/lib/ipscan")
+    ant.copy(file: "resources/images/icon128.png", tofile: "${dist}/usr/share/pixmaps/ipscan.png")
 
     ant.replace(file: "${dist}/DEBIAN/control") {
         ant.replacefilter(token: "VERSION", value: version)
         ant.replacefilter(token: "ARCH", value: arch)
-        ant.replacefilter(token: "DEPENDS", value: moreDeps)
+        ant.replacefilter(token: "DEPENDS ", value: moreDeps)
     }
 
     ant.exec(executable: "chmod", dir: dist, failonerror: true) {
-        ant.arg(line: "a+x usr/bin/ipscan usr/lib/ipscan/${project.name}-${platform}-${version}.jar")
+        ant.arg(line: "+x usr/bin/ipscan usr/lib/ipscan/${project.name}-${platform}-${version}.jar")
     }
     ant.exec(executable: 'fakeroot', dir: dist + '/..', failonerror: true) {
         ant.arg(line: "dpkg-deb -Zxz -b deb ${project.name}_${version}_${arch}.deb")
@@ -305,8 +305,8 @@ task 'win-installer'(dependsOn: ['win32', 'win64']) {
             ant.replacefilter(token: "VERSION_MINOR", value: "5")
             ant.replacefilter(token: "VERSION", value: version)
         }
-        ant.copy(file: "build/libs/${project.name}-win32-${version}.exe", tofile:"${installerDir}/AppFiles32/ipscan.exe")
-        ant.copy(file: "build/libs/${project.name}-win64-${version}.exe", tofile:"${installerDir}/AppFiles64/ipscan.exe")
+        ant.copy(file: "build/libs/${project.name}-win32-${version}.exe", tofile: "${installerDir}/AppFiles32/ipscan.exe")
+        ant.copy(file: "build/libs/${project.name}-win64-${version}.exe", tofile: "${installerDir}/AppFiles64/ipscan.exe")
         if (platform.startsWith('linux')) {
             ant.exec(dir: installerDir, executable: "wine", failOnError: true) {
                 ant.arg(value: "${nsis}/makensis.exe")
@@ -318,7 +318,7 @@ task 'win-installer'(dependsOn: ['win32', 'win64']) {
                 ant.arg(value: "Installer/Installer.nsi")
             }
         }
-        ant.move(file: "${installerDir}/ipscan-${version}-setup.exe", todir:"build/libs")
+        ant.move(file: "${installerDir}/ipscan-${version}-setup.exe", todir: "build/libs")
         ant.exec(command: "git checkout ${installerDir}/InstallerConfig.nsh")
     }
 }
