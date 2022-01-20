@@ -292,8 +292,10 @@ task 'win-installer'(dependsOn: ['win32', 'win64']) {
             ant.replacefilter(token: "VERSION", value: version)
         }
         def jrePath = "AppFiles/jre"
-        if (!new File(installerDir, jrePath).exists()) {
+        def jreDir = new File(installerDir, jrePath)
+        if (!jreDir.exists()) {
             exec("jlink --output $jrePath --vm=client --compress=2 --no-header-files --no-man-pages --strip-debug --add-modules " + javaModules.join(","), installerDir)
+            ant.delete(dir: new File(jreDir, "legal"))
         }
         ant.copy(file: "build/libs/${project.name}-win64-${version}.exe", tofile:"${installerDir}/AppFiles/ipscan.exe")
         if (platform.startsWith('win')) {

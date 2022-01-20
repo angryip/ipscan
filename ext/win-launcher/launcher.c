@@ -37,27 +37,40 @@ void buildCmdLine(LPSTR buf, LPCSTR ownFilename, LPSTR args) {
 }
 
 char *caption = "Angry IP Scanner";
+char *localCmd = "\\jre\\bin\\javaw";
 char *javaHomeCmd = "\"%JAVA_HOME%\\bin\\javaw\"";
 char *cmd = "javaw";
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR args, int nCmdShow) {
 	DWORD exitCode;
-	char cmdLine[MAX_PATH], ownFilename[MAX_PATH];
+	char cmdLine[MAX_PATH], ownFilename[MAX_PATH], ownDir[MAX_PATH];
 	GetModuleFileName(NULL, ownFilename, MAX_PATH);
-	ExpandEnvironmentStrings(javaHomeCmd, cmdLine, MAX_PATH);
+
+    strcpy(ownDir, ownFilename);
+    char *lastSlash = strrchr(ownDir, '\\');
+    *lastSlash = '\0';
+    strcpy(cmdLine, ownDir);
+    strncat(cmdLine, localCmd, MAX_PATH - strlen(cmdLine));
+
 	buildCmdLine(cmdLine, ownFilename, args);
 	if (!execute(cmdLine, &exitCode)) {
-		strcpy(cmdLine, cmd);
-		buildCmdLine(cmdLine, ownFilename, args);
-		if (!execute(cmdLine, &exitCode)) {
-			char error[1000];
-			strcpy(error, "Failed to execute:\n");
-			strncat(error, cmdLine, 1000 - strlen(error));
-			strncat(error, "\n\nJava/OpenJDK is required to run this program, but was not found.\n\nDo you want to open AdoptOpenJDK page to download it?", 1000 - strlen(error));
-			if (MessageBox(0, error, caption, MB_YESNO | MB_ICONERROR) == IDYES) {
-				ShellExecute(NULL, "open", "https://adoptium.net/", NULL, NULL, SW_SHOWNORMAL);
-			}
-		}
-	}
+        ExpandEnvironmentStrings(javaHomeCmd, cmdLine, MAX_PATH);
+
+        buildCmdLine(cmdLine, ownFilename, args);
+        if (!execute(cmdLine, &exitCode)) {
+            strcpy(cmdLine, cmd);
+
+            buildCmdLine(cmdLine, ownFilename, args);
+            if (!execute(cmdLine, &exitCode)) {
+                char error[1000];
+                strcpy(error, "Failed to execute:\n");
+                strncat(error, cmdLine, 1000 - strlen(error));
+                strncat(error, "\n\nJava/OpenJDK is required to run this program, but was not found.\n\nDo you want to open a download page?", 1000 - strlen(error));
+                if (MessageBox(0, error, caption, MB_YESNO | MB_ICONERROR) == IDYES) {
+                    ShellExecute(NULL, "open", "https://adoptium.net/", NULL, NULL, SW_SHOWNORMAL);
+                }
+            }
+        }
+    }
 	return exitCode;
 }
