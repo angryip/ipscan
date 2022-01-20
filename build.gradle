@@ -246,8 +246,8 @@ def macLauncher(def platform) {
         // TODO: codesign --sign Example --options runtime --entitlements test/test.entitlements --force build/Release/test.app
         // TODO: https://developer.apple.com/documentation/xcode/notarizing_macos_software_before_distribution/customizing_the_notarization_workflow
         println("Sending zip file to Apple for notarization")
-        exec("xcrun altool --list-providers --username ${System.getenv("APPLE_USER")} --password ${System.getenv("APPLE_PASSWORD")}")
-        exec("xcrun altool --notarize-app --primary-bundle-id net.azib.ipscan.zip --username ${System.getenv("APPLE_USER")} --password ${System.getenv("APPLE_PASSWORD")} --file ${zipName}")
+        exec("xcrun altool --list-providers --username ${System.getenv("APPLE_USER")} --password ${System.getenv("APPLE_PASSWORD")}", ".", false)
+        exec("xcrun altool --notarize-app --primary-bundle-id net.azib.ipscan.zip --username ${System.getenv("APPLE_USER")} --password ${System.getenv("APPLE_PASSWORD")} --file ${zipName}", ".", false)
     }
 
     ant.delete(dir: "${dist}/${name}.app")
