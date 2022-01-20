@@ -28,7 +28,7 @@
 !define AppVersionMinor "VERSION_MINOR"
 
 ;InstallSize is how big the program is when installed in KB.  Defining it allows us to show it in add/remove programs
-!define InstallSize 1736
+!define InstallSize 39200
 
 	
 ;Copyright 2007-2013 John T. Haller of PortableApps.com
