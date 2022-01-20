@@ -54,7 +54,6 @@ configurations {
     jna
     any
     linux64
-    win32.extendsFrom(jna)
     win64.extendsFrom(jna)
     macX86
     macArm64
@@ -70,7 +69,6 @@ dependencies {
     def swtVersion = '3.118.0'
     linux64 "org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64:${swtVersion}"
     win64 "org.eclipse.platform:org.eclipse.swt.win32.win32.x86_64:${swtVersion}"
-    win32 "org.eclipse.platform:org.eclipse.swt.win32.win32.x86:3.108.0"
     macX86 "org.eclipse.platform:org.eclipse.swt.cocoa.macosx.x86_64:${swtVersion}"
     macArm64 "org.eclipse.platform:org.eclipse.swt.cocoa.macosx.aarch64:${swtVersion}"
     jna 'net.java.dev.jna:jna:5.9.0'
@@ -264,10 +262,6 @@ packageTask('any') {
     deb('any', 'all', 'libswt-gtk-4-java, libswt-cairo-gtk-4-jni,')
 }
 
-packageTask('win32', 'ext/rocksaw/lib/rocksaw.dll') {
-    winLauncher('win32')
-}
-
 packageTask('win64') {
     winLauncher('win64')
 }
@@ -280,7 +274,7 @@ packageTask('macArm64') {
     macLauncher("macArm64")
 }
 
-task 'win-installer'(dependsOn: ['win32', 'win64']) {
+task 'win-installer'(dependsOn: 'win64') {
     doLast {
         def nsisVersion = "3.05"
         def nsis = "nsis-$nsisVersion"
@@ -312,23 +306,22 @@ task 'win-installer'(dependsOn: ['win32', 'win64']) {
 
 task mac(dependsOn: ['macX86', 'macArm64'])
 
-task all(dependsOn: ['any', 'linux64', 'mac', 'win-installer'])
+task all(dependsOn: ['any', 'linux64', 'mac', 'win64'])
 task current(dependsOn: [platform])
 
 task info {
     doLast {
         println "This script will build ${project.name} ${version}"
         println "Targets (some may work only on Linux):"
-        println "  all           - builds binaries for all OSs"
+        println "  all           - builds binaries for all platforms"
         println "  current       - build for current platform ($platform)"
         println "  linux64       - builds only Linux 64-bit binary"
         println "  any           - doesn't bundle SWT, making it possible to run on ARM/Raspbian with libswt provided by OS (Experimental)"
         println "  mac           - builds only Mac binaries"
         println "  macX86        - builds only MacX86 binary"
         println "  macAmr64      - builds only MacArm64 binary"
-        println "  win32         - builds only Windows binary"
         println "  win64         - builds only Windows 64-bit binary"
-        println "  win-installer - packages a Windows installer (including both 32 and 64-bit binaries)"
+        println "  win-installer - packages a Windows installer (with included JRE)"
     }
 }
 
