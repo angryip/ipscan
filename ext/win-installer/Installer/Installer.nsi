@@ -111,13 +111,7 @@ FunctionEnd
 
 Section Main
 	SetOutPath "$INSTDIR"
-
-	File "..\AppFiles\*.*"
-	File "..\AppFiles\jre\bin\java*.*"
-	File "..\AppFiles\jre\conf\*.*"
-	File "..\AppFiles\jre\lib\*.*"
-	File "..\AppFiles\jre\lib\security\*.*"
-	File "..\AppFiles\jre\lib\client\*.*"
+	File /r "..\AppFiles\*"
 
 	;Remember the install location for uninstalls, upgrades and reinstalls
 	WriteRegStr HKLM "Software\${ApplicationName}" "" $INSTDIR
