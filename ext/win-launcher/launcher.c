@@ -55,7 +55,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR args, i
 			strncat(error, cmdLine, 1000 - strlen(error));
 			strncat(error, "\n\nJava/OpenJDK is required to run this program, but was not found.\n\nDo you want to open AdoptOpenJDK page to download it?", 1000 - strlen(error));
 			if (MessageBox(0, error, caption, MB_YESNO | MB_ICONERROR) == IDYES) {
-				ShellExecute(NULL, "open", "https://adoptopenjdk.net/", NULL, NULL, SW_SHOWNORMAL);
+				ShellExecute(NULL, "open", "https://adoptium.net/", NULL, NULL, SW_SHOWNORMAL);
 			}
 		}
 	}
