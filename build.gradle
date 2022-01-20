@@ -296,7 +296,7 @@ task 'win-installer'(dependsOn: ['win32', 'win64']) {
             exec("wine $nsis/makensis.exe Installer/Installer.nsi", installerDir)
         }
         else {
-            exec("$nsis\\makensis.exe Installer\\Installer.nsi", installerDir)
+            exec(new String[] {"$nsis\\makensis.exe", "Installer\\Installer.nsi"}, installerDir)
         }
         ant.move(file: "${installerDir}/ipscan-${version}-setup.exe", todir: "build/libs")
         exec("git checkout ${installerDir}/InstallerConfig.nsh")
