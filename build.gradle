@@ -296,8 +296,8 @@ task 'win-installer'(dependsOn: ['win32', 'win64']) {
             exec("wine $nsis/makensis.exe Installer/Installer.nsi", installerDir)
         }
         else {
-            println(exec("cmd /c dir"), installerDir, false)
-            println(exec("cmd /c dir $nsis"), installerDir, false)
+            println(exec("cmd /c dir", installerDir, false))
+            println(exec("cmd /c dir $nsis", installerDir, false))
             exec("$nsis\\makensis.exe Installer\\Installer.nsi", installerDir)
         }
         ant.move(file: "${installerDir}/ipscan-${version}-setup.exe", todir: "build/libs")
