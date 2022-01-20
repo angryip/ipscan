@@ -293,10 +293,10 @@ task 'win-installer'(dependsOn: ['win32', 'win64']) {
         ant.copy(file: "build/libs/${project.name}-win32-${version}.exe", tofile: "${installerDir}/AppFiles32/ipscan.exe")
         ant.copy(file: "build/libs/${project.name}-win64-${version}.exe", tofile: "${installerDir}/AppFiles64/ipscan.exe")
         if (platform.startsWith('linux')) {
-            exec("wine ${nsis}/makensis.exe Installer/Installer.nsi", installerDir)
+            exec("wine $nsis/makensis.exe Installer/Installer.nsi", installerDir)
         }
         else {
-            exec("${nsis}/makensis.exe Installer/Installer.nsi", installerDir)
+            exec("$nsis\\makensis.exe Installer\\Installer.nsi", installerDir)
         }
         ant.move(file: "${installerDir}/ipscan-${version}-setup.exe", todir: "build/libs")
         exec("git checkout ${installerDir}/InstallerConfig.nsh")
