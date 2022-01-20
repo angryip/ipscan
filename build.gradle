@@ -9,7 +9,6 @@ buildscript {
 
 plugins {
     id "java"
-    id "com.palantir.git-version" version "0.12.2"
 }
 
 def osName = System.getProperty("os.name")
@@ -19,7 +18,10 @@ def platform = osName.contains("Linux") ? 'linux' + (is64 ? '64' : '32') :
                osName.contains("Windows") ? 'win' + (is64 ? '64' : '32') :
                osName.contains("OS X") ? 'mac' + (isArm ? "Arm64" : "X86") : 'unknown'
 
-version = gitVersion()
+def versionGetter = Runtime.getRuntime().exec("git describe --tags")
+versionGetter.waitFor()
+version = versionGetter.waitFor() == 0 ? new String(versionGetter.inputStream.readAllBytes()) : "unknown"
+
 sourceCompatibility = 8
 targetCompatibility = 8
 

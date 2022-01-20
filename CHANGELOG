@@ -1,3 +1,6 @@
+Unreleased:
+- Allow building if .git is not present (e.g. from source zip) #319
+
 Changes in 3.8.1:
 - Make 32-bit Windows build still run under Oracle Java 8 - it seems to still be popular #324
 - Make deb files install on older Debian without zst compression support #327
