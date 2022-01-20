@@ -9,7 +9,6 @@ buildscript {
 
 plugins {
     id "java"
-    id "com.palantir.git-version" version "0.12.2"
 }
 
 def osName = System.getProperty("os.name")
@@ -19,7 +18,17 @@ def platform = osName.contains("Linux") ? 'linux' + (is64 ? '64' : '32') :
                osName.contains("Windows") ? 'win' + (is64 ? '64' : '32') :
                osName.contains("OS X") ? 'mac' + (isArm ? "Arm64" : "X86") : 'unknown'
 
-version = gitVersion()
+String exec(def line, String dir = ".", boolean failOnError = true) {
+    def proc = Runtime.getRuntime().exec(line, null, project.file(dir))
+    if (proc.waitFor() == 0) return new String(proc.inputStream.readAllBytes()).trim()
+    else {
+        if (failOnError) throw new Exception(line + "\n" + new String(proc.errorStream.readAllBytes()))
+        else return null
+    }
+}
+
+version = exec("git describe --tags", ".", false) ?: "unknown"
+
 sourceCompatibility = 11
 targetCompatibility = 11
 
@@ -176,26 +185,22 @@ def winLauncher(def platform) {
 }
 
 def deb(def platform, def arch, def moreDeps = '') {
-    def dist = buildDir.path + '/libs/deb'
+    def dist = buildDir.path + "/libs/deb"
     ant.mkdir(dir: dist)
     ant.copy(todir: dist) {
         ant.fileset(dir: "ext/deb-bundle")
     }
-    ant.copy(file: "build/libs/${project.name}-${platform}-${version}.jar", todir:"${dist}/usr/lib/ipscan")
-    ant.copy(file: "resources/images/icon128.png", tofile:"${dist}/usr/share/pixmaps/ipscan.png")
+    ant.copy(file: "build/libs/${project.name}-${platform}-${version}.jar", todir: "${dist}/usr/lib/ipscan")
+    ant.copy(file: "resources/images/icon128.png", tofile: "${dist}/usr/share/pixmaps/ipscan.png")
 
     ant.replace(file: "${dist}/DEBIAN/control") {
         ant.replacefilter(token: "VERSION", value: version)
         ant.replacefilter(token: "ARCH", value: arch)
-        ant.replacefilter(token: "DEPENDS", value: moreDeps)
+        ant.replacefilter(token: "DEPENDS ", value: moreDeps)
     }
 
-    ant.exec(executable: "chmod", dir: dist, failonerror: true) {
-        ant.arg(line: "a+x usr/bin/ipscan usr/lib/ipscan/${project.name}-${platform}-${version}.jar")
-    }
-    ant.exec(executable: 'fakeroot', dir: dist + '/..', failonerror: true) {
-        ant.arg(line: "dpkg-deb -Zxz -b deb ${project.name}_${version}_${arch}.deb")
-    }
+    exec("chmod +x usr/bin/ipscan usr/lib/ipscan/${project.name}-${platform}-${version}.jar", dist)
+    exec("fakeroot dpkg-deb -Zxz -b deb ${project.name}_${version}_${arch}.deb", "$dist/..")
     ant.delete(dir: dist)
 }
 
@@ -210,9 +215,7 @@ def rpm(def platform, def arch) {
         ant.replacefilter(token: "RPM_VERSION", value: rpmVersion)
         ant.replacefilter(token: "VERSION", value: version)
     }
-    ant.exec(executable: "rpmbuild", dir: dist, failonerror: true) {
-        ant.arg(line: "--target ${arch} --define \"_topdir ${new File(dist).absolutePath}\" --define \"platform ${platform}\" -bb SPECS/ipscan.spec")
-    }
+    exec(new String[] {"sh", "-c", "rpmbuild --target ${arch} --define \"_topdir ${new File(dist).absolutePath}\" --define \"platform ${platform}\" -bb SPECS/ipscan.spec"}, dist)
     ant.move(file: "${dist}/RPMS/${arch}/ipscan-${rpmVersion}-1.${arch}.rpm", todir:'build/libs')
     ant.delete(dir: dist)
 }
@@ -243,26 +246,8 @@ def macLauncher(def platform) {
         // TODO: codesign --sign Example --options runtime --entitlements test/test.entitlements --force build/Release/test.app
         // TODO: https://developer.apple.com/documentation/xcode/notarizing_macos_software_before_distribution/customizing_the_notarization_workflow
         println("Sending zip file to Apple for notarization")
-        ant.exec(executable: "xcrun") {
-            ant.arg(value: "altool")
-            ant.arg(value: "--list-providers")
-            ant.arg(value: "--username")
-            ant.arg(value: System.getenv("APPLE_USER"))
-            ant.arg(value: "--password")
-            ant.arg(value: System.getenv("APPLE_PASSWORD"))
-        }
-        ant.exec(executable: "xcrun") {
-            ant.arg(value: "altool")
-            ant.arg(value: "--notarize-app")
-            ant.arg(value: "--primary-bundle-id")
-            ant.arg(value: "net.azib.ipscan.zip")
-            ant.arg(value: "--username")
-            ant.arg(value: System.getenv("APPLE_USER"))
-            ant.arg(value: "--password")
-            ant.arg(value: System.getenv("APPLE_PASSWORD"))
-            ant.arg(value: "--file")
-            ant.arg(value: zipName)
-        }
+        exec("xcrun altool --list-providers --username ${System.getenv("APPLE_USER")} --password ${System.getenv("APPLE_PASSWORD")}", ".", false)
+        exec("xcrun altool --notarize-app --primary-bundle-id net.azib.ipscan.zip --username ${System.getenv("APPLE_USER")} --password ${System.getenv("APPLE_PASSWORD")} --file ${zipName}", ".", false)
     }
 
     ant.delete(dir: "${dist}/${name}.app")
@@ -307,27 +292,19 @@ task 'win-installer'(dependsOn: ['win32', 'win64']) {
         }
         def jrePath = "AppFiles/jre"
         if (!new File(installerDir, jrePath).exists()) {
-            ant.exec(dir: installerDir, executable: "jlink", failOnError: true) {
-                ("--output $jrePath --vm=client --compress=2 --no-header-files --no-man-pages --strip-debug " +
-                    "--add-modules java.base,java.desktop,java.prefs,java.logging")
-                    .split(" ").each { ant.arg(value: it) }
-            }
+            exec("jlink --output $jrePath --vm=client --compress=2 --no-header-files --no-man-pages --strip-debug " +
+                 "--add-modules java.base,java.desktop,java.prefs,java.logging")
         }
         ant.copy(file: "build/libs/${project.name}-win64-${version}.exe", tofile:"${installerDir}/AppFiles/ipscan.exe")
         if (platform.startsWith('win')) {
-            ant.exec(dir: installerDir, executable: "${nsis}/makensis.exe", vmlauncher: false, failOnError: true) {
-                ant.arg(value: "Installer/Installer.nsi")
-            }
+            exec("cmd /c $nsis\\makensis.exe Installer\\Installer.nsi", installerDir)
         }
         else {
             println("Building of Windows Installer is not supported on other platforms")
-            ant.exec(dir: installerDir, executable: "wine", failOnError: true) {
-                ant.arg(value: "${nsis}/makensis.exe")
-                ant.arg(value: "Installer/Installer.nsi")
-            }
+            exec("wine $nsis/makensis.exe Installer/Installer.nsi", installerDir)
         }
         ant.move(file: "${installerDir}/ipscan-*-setup.exe", todir: "build/libs")
-        ant.exec(command: "git checkout ${installerDir}/InstallerConfig.nsh")
+        exec("git checkout ${installerDir}/InstallerConfig.nsh")
     }
 }
 
