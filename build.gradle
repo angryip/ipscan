@@ -32,7 +32,8 @@ version = exec("git describe --tags", ".", false) ?: "unknown"
 sourceCompatibility = 11
 targetCompatibility = 11
 
-def javaModules = ["java.base", "java.desktop", "java.prefs", "java.logging", "jdk.crypto.ec"]
+// TODO: stop using java.logging dependency - that also brings the xml
+def javaModules = ["java.base", "java.prefs", "java.logging", "jdk.crypto.ec"]
 project.ext.set("javaModules", javaModules)
 
 sourceSets {
