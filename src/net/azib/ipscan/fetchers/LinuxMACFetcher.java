@@ -10,12 +10,14 @@ import static net.azib.ipscan.fetchers.UnixMACFetcher.getLocalMAC;
 
 public class LinuxMACFetcher extends MACFetcher {
 	private static final Path ARP_TABLE = Path.of("/proc/net/arp");
+	private int flagsIndex;
 	private int macIndex;
 	private int macLength = 17;
-	private String unavailableMac = "00:00:00:00:00:00";
 
 	public LinuxMACFetcher() {
-		macIndex = arpLines().findFirst().get().indexOf("HW addr");
+		String line = arpLines().findFirst().get();
+		flagsIndex = line.indexOf("Flags");
+		macIndex = line.indexOf("HW addr");
 	}
 
 	private static Stream<String> arpLines() {
@@ -29,9 +31,9 @@ public class LinuxMACFetcher extends MACFetcher {
 	@Override public String resolveMAC(ScanningSubject subject) {
 		try {
 			String ip = subject.getAddress().getHostAddress();
-			return arpLines().filter(line -> line.startsWith(ip + " ")).findFirst()
+			return arpLines()
+				.filter(line -> line.startsWith(ip + " ") && !line.substring(flagsIndex, flagsIndex + 3).equals("0x0")).findFirst()
 				.map(line -> line.substring(macIndex, macIndex + macLength).toUpperCase())
-				.filter(mac -> !unavailableMac.equals(mac))
 				.orElse(getLocalMAC(subject));
 		}
 		catch (Exception e) {
