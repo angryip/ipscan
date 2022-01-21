@@ -12,6 +12,7 @@ import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.di.InjectException;
 import net.azib.ipscan.di.Injector;
 import net.azib.ipscan.fetchers.FetcherException;
+import net.azib.ipscan.fetchers.MACFetcher;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -60,8 +61,10 @@ public class PingerRegistry {
 	/**
 	 * Creates the configured pinger with configured timeout
 	 */
-	public Pinger createPinger() throws FetcherException {
-		return createPinger(scannerConfig.selectedPinger, scannerConfig.pingTimeout);
+	public Pinger createPinger(boolean isLAN) throws FetcherException {
+		Pinger mainPinger = createPinger(scannerConfig.selectedPinger, scannerConfig.pingTimeout);
+		if (isLAN) return new ARPPinger(injector.require(MACFetcher.class), mainPinger);
+		return mainPinger;
 	}
 
 	/**

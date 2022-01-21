@@ -10,11 +10,10 @@ import net.azib.ipscan.util.InetAddressUtils;
 import org.savarese.vserv.tcpip.OctetConverter;
 
 import java.net.InetAddress;
-import java.net.InterfaceAddress;
-import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 
-import static net.azib.ipscan.util.InetAddressUtils.*;
+import static net.azib.ipscan.util.InetAddressUtils.decrement;
+import static net.azib.ipscan.util.InetAddressUtils.increment;
 
 /**
  * IP Range Feeder.
@@ -24,8 +23,6 @@ import static net.azib.ipscan.util.InetAddressUtils.*;
  * @author Anton Keks
  */
 public class RangeFeeder extends AbstractFeeder {
-	private NetworkInterface netIf;
-	private InterfaceAddress ifAddr;
 	private InetAddress startIP;
 	private InetAddress endIP;
 	private InetAddress originalEndIP;
@@ -35,9 +32,6 @@ public class RangeFeeder extends AbstractFeeder {
 	double percentageComplete;
 	double percentageIncrement;
 	
-	/**
-	 * @see Feeder#getId()
-	 */
 	public String getId() {
 		return "feeder.range";
 	}
@@ -49,8 +43,7 @@ public class RangeFeeder extends AbstractFeeder {
 		try {
 			this.startIP = this.currentIP = InetAddress.getByName(startIP);
 			this.endIP = this.originalEndIP = InetAddress.getByName(endIP);
-			this.netIf = getInterface(this.startIP);
-			this.ifAddr = matchingAddress(netIf, this.startIP.getClass());
+			initInterfaces(this.startIP);
 			this.isReverse = false;
 		}
 		catch (UnknownHostException e) {
@@ -66,7 +59,7 @@ public class RangeFeeder extends AbstractFeeder {
 		initPercentageIncrement();
 		this.endIP = increment(this.endIP);
 	}
-	
+
 	/**
 	 * Initalizes fields, used for computation of percentage of completion.
 	 */
@@ -95,7 +88,7 @@ public class RangeFeeder extends AbstractFeeder {
 		} else {
 			this.currentIP = increment(prevIP);
 		}
-		return new ScanningSubject(prevIP, netIf, ifAddr);
+		return subject(prevIP);
 	}
 
 	public int percentageComplete() {

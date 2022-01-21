@@ -18,7 +18,6 @@ import java.security.SecureRandom;
  * @author Anton Keks
  */
 public class RandomFeeder extends AbstractFeeder {
-	
 	SecureRandom random = new SecureRandom();
 	InetAddress currentAddress;
 	
@@ -29,10 +28,7 @@ public class RandomFeeder extends AbstractFeeder {
 	int addressCount;
 	int currentNumber;
 
-	/**
-	 * @see Feeder#getId()
-	 */
-	public String getId() {
+	@Override public String getId() {
 		return "feeder.random";
 	}
 	
@@ -41,7 +37,9 @@ public class RandomFeeder extends AbstractFeeder {
 
 	public RandomFeeder(String prototypeIP, String mask, int count) {
 		try {
-			this.prototypeBytes = InetAddress.getByName(prototypeIP).getAddress();
+			InetAddress ip = InetAddress.getByName(prototypeIP);
+			initInterfaces(ip);
+			this.prototypeBytes = ip.getAddress();
 		} 
 		catch (UnknownHostException e) {
 			throw new FeederException("malformedIP");

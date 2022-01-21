@@ -12,6 +12,7 @@ import net.azib.ipscan.core.net.PingResult;
 import net.azib.ipscan.core.net.Pinger;
 import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.core.values.IntegerWithUnit;
+import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.gui.fetchers.PingFetcherPrefs;
 
 import java.io.IOException;
@@ -86,9 +87,9 @@ public class PingFetcher extends AbstractFetcher {
 		return result.isAlive() ? new IntegerWithUnit(result.getAverageTime(), "ms") : null;
 	}
 
-	public void init() {
+	public void init(Feeder feeder) {
 		if (pinger == null) {
-			pinger = pingerRegistry.createPinger();
+			pinger = pingerRegistry.createPinger(feeder.isLocalNetwork());
 			pingerUsers.set(1);
 		}
 		else

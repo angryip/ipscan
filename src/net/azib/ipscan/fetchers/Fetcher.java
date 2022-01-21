@@ -8,6 +8,7 @@ import net.azib.ipscan.core.Plugin;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.values.NotAvailable;
 import net.azib.ipscan.core.values.NotScanned;
+import net.azib.ipscan.feeders.Feeder;
 
 /**
  * Interface of all IP Fetchers.
@@ -50,12 +51,16 @@ public interface Fetcher extends Cloneable, Plugin {
 	 * Special values may also be returned, such as {@link NotAvailable} or {@link NotScanned}
 	 */
 	Object scan(ScanningSubject subject);
-	
+
 	/**
-	 * Called before scanning has started to do any intialization stuff
+	 * Called before scanning has started to do any initialization stuff
 	 */
-	void init();
-	
+	default void init(Feeder feeder) {
+		init();
+	}
+
+	default void init() {}
+
 	/**
 	 * Called after the scanning has been completed to do any cleanup needed
 	 */

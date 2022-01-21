@@ -141,9 +141,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 			MessageBox box = new MessageBox(resultTable.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.SHEET);
 			box.setText(Labels.getLabel("text.scan.new"));
 			box.setMessage(Labels.getLabel("text.scan.confirmation"));
-			if (box.open() != SWT.YES) {
-				return false;
-			}
+			return box.open() == SWT.YES;
 		}
 		return true;
 	}

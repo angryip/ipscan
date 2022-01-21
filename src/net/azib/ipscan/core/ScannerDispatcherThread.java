@@ -63,9 +63,8 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 		this.scanningResultList = scanningResults;
 		try {
 			this.scanningResultList.initNewScan(feeder);
-		
 			// initialize in the main thread in order to catch exceptions gracefully
-			scanner.init();
+			scanner.init(feeder);
 		}
 		catch (RuntimeException e) {
 			stateMachine.reset();

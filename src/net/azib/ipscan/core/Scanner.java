@@ -7,6 +7,7 @@ package net.azib.ipscan.core;
 
 import net.azib.ipscan.core.values.NotAvailable;
 import net.azib.ipscan.core.values.NotScanned;
+import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 
@@ -72,9 +73,9 @@ public class Scanner {
 	/**
 	 * Init everything needed for scanning, including Fetchers
 	 */
-	public void init() {
+	public void init(Feeder feeder) {
 		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
-			fetcher.init();
+			fetcher.init(feeder);
 		}
 	}
 	

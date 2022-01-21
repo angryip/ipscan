@@ -3,6 +3,7 @@ package net.azib.ipscan.core;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.values.NotAvailable;
 import net.azib.ipscan.core.values.NotScanned;
+import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.AbstractFetcher;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
@@ -80,8 +81,8 @@ public class ScannerTest {
 	}
 
 	@Test
-	public void testInit() throws Exception {
-		scanner.init();
+	public void testInit() {
+		scanner.init(mock(Feeder.class));
 		
 		assertTrue(initCalled.contains(FakeFetcher.class));
 		assertTrue(initCalled.contains(AnotherFakeFetcher.class));
@@ -89,7 +90,7 @@ public class ScannerTest {
 	}
 	
 	@Test
-	public void testCleanup() throws Exception {
+	public void testCleanup() {
 		scanner.cleanup();
 		
 		assertTrue(cleanupCalled.contains(FakeFetcher.class));

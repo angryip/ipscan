@@ -9,19 +9,27 @@ import static java.lang.System.currentTimeMillis;
 
 public class ARPPinger implements Pinger {
 	private MACFetcher macFetcher;
-	private JavaPinger trigger;
+	private Pinger trigger;
 
 	public ARPPinger(MACFetcher macFetcher, JavaPinger trigger) {
-		this.macFetcher = macFetcher;
 		// WinMACFetcher sends an actual ARP request, so no previous UDP request is needed
-		this.trigger = macFetcher.getClass().getSimpleName().startsWith("Win") ? null : trigger;
+		this(macFetcher, macFetcher.getClass().getSimpleName().startsWith("Win") ? null : (Pinger) trigger);
+	}
+
+	public ARPPinger(MACFetcher macFetcher, Pinger trigger) {
+		this.macFetcher = macFetcher;
+		this.trigger = trigger;
 	}
 
 	@Override public PingResult ping(ScanningSubject subject, int count) throws IOException {
-		PingResult result = new PingResult(subject.getAddress(), 1);
+		PingResult result = new PingResult(subject.getAddress(), count);
+		if (trigger != null) count /= 2;
 		for (int i = 0; i < count; i++) {
 			long start = currentTimeMillis();
-			if (trigger != null) trigger.ping(subject, 1); // this should issue an ARP request for the IP
+			if (trigger != null) {
+				// this should issue an ARP request for the IP
+				result.merge(trigger.ping(subject, count / 2));
+			}
 			String mac = macFetcher.scan(subject);
 			if (mac != null) result.addReply(currentTimeMillis() - start);
 		}

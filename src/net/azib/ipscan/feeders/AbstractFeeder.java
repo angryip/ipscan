@@ -7,6 +7,14 @@
 package net.azib.ipscan.feeders;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.ScanningSubject;
+
+import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
+
+import static net.azib.ipscan.util.InetAddressUtils.getInterface;
+import static net.azib.ipscan.util.InetAddressUtils.matchingAddress;
 
 /**
  * Helper base class for built-in Feeders
@@ -14,13 +22,27 @@ import net.azib.ipscan.config.Labels;
  * @author Anton Keks
  */
 public abstract class AbstractFeeder implements Feeder {
-	
-	public String getName() {
+	private NetworkInterface netIf;
+	private InterfaceAddress ifAddr;
+
+	protected void initInterfaces(InetAddress ip) {
+		this.netIf = getInterface(ip);
+		this.ifAddr = matchingAddress(netIf, ip.getClass());
+	}
+
+	@Override public ScanningSubject subject(InetAddress ip) {
+		return new ScanningSubject(ip, netIf, ifAddr);
+	}
+
+	@Override public String getName() {
 		return Labels.getLabel(getId());
 	}
 
-	@Override
-	public String toString() {
+	@Override public boolean isLocalNetwork() {
+		return ifAddr != null;
+	}
+
+	@Override public String toString() {
 		return getName() + ": " + getInfo();
 	}
 }

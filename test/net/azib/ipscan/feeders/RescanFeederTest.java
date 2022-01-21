@@ -6,12 +6,12 @@
 
 package net.azib.ipscan.feeders;
 
+import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.ScanningSubject;
+import org.junit.Test;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-
-import net.azib.ipscan.config.Labels;
-
-import org.junit.Test;
 
 /**
  * RescanFeederTest
@@ -36,7 +36,7 @@ public class RescanFeederTest {
 	}
 	
 	@Test
-	public void testFunctionality() throws Exception {		
+	public void addresses() {
 		feeder = new RescanFeeder(mockFeeder(), "127.0.0.15", "127.0.1.35", "127.0.2.2");
 		
 		assertTrue(feeder.hasNext());
@@ -60,6 +60,7 @@ public class RescanFeederTest {
 		when(feeder.getInfo()).thenReturn("SomeInfo");
 		when(feeder.getId()).thenReturn("someLabel");
 		when(feeder.getName()).thenReturn("someName");
+		when(feeder.subject(any())).thenAnswer(i -> new ScanningSubject(i.getArgument(0)));
 		return feeder;
 	}
 

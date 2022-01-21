@@ -19,7 +19,6 @@ import java.util.List;
  * @author Anton Keks
  */
 public class RescanFeeder extends AbstractFeeder {
-
 	private Feeder originalFeeder;
 	private List<InetAddress> addresses;
 
@@ -27,22 +26,20 @@ public class RescanFeeder extends AbstractFeeder {
 	
 	/**
 	 * Initializes the RescanFeeder using the old feeder used for the real scan to delegate some calls to.
-	 * @param oldFeeder
 	 */
-	public RescanFeeder(Feeder oldFeeder, String ... ips) {
-		this.originalFeeder = oldFeeder;
+	public RescanFeeder(Feeder originalFeeder, String ... ips) {
+		this.originalFeeder = originalFeeder;
 		initAddresses(ips);
 	}
 
 	/**
 	 * @return the label of the "old" feeder
 	 */
-	public String getId() {
+	@Override public String getId() {
 		return originalFeeder.getId();
 	}
 	
-	@Override
-	public String getName() {
+	@Override public String getName() {
 		return Labels.getLabel("feeder.rescan.of") + originalFeeder.getName();
 	}
 
@@ -66,22 +63,23 @@ public class RescanFeeder extends AbstractFeeder {
 		return ips.length;
 	}
 		
-	public boolean hasNext() {
+	@Override public boolean hasNext() {
 		return current < addresses.size(); 
 	}
 
-	public ScanningSubject next() {
-		return new ScanningSubject(addresses.get(current++));
+	@Override public ScanningSubject next() {
+		return originalFeeder.subject(addresses.get(current++));
 	}
 
-	public int percentageComplete() {
+	@Override public int percentageComplete() {
 		return current * 100 / addresses.size();
 	}
 	
-	/**
-	 * @return the info of the "old" feeder
-	 */
-	public String getInfo() {
+	@Override public String getInfo() {
 		return originalFeeder.getInfo();
+	}
+
+	@Override public boolean isLocalNetwork() {
+		return originalFeeder.isLocalNetwork();
 	}
 }

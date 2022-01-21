@@ -48,7 +48,7 @@ public class PingerRegistryTest {
 	@Test
 	public void createDefaultPinger() {
 		config.selectedPinger = "pinger.udp";
-		assertTrue(registry.createPinger() instanceof UDPPinger);
+		assertTrue(registry.createPinger(false) instanceof UDPPinger);
 	}
 
 	@Test
