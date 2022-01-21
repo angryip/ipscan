@@ -144,11 +144,6 @@ SectionEnd
 ;Uninstaller initialization
 Function un.onInit
 	SetShellVarContext all
- 
-	IfSilent +3
-    MessageBox MB_OKCANCEL "Are you sure you wish to remove ${ApplicationName}?" IDOK Next
-		Abort
-	Next:
 	!insertmacro VerifyUserIsAdmin
 FunctionEnd
 
