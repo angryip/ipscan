@@ -149,9 +149,10 @@ FunctionEnd
 
 ;Uninstaller section
 Section "Uninstall"
-	Delete "$SMPROGRAMS\${ApplicationName}.lnk"
+	ExecWait TaskKill /F /FI "WindowTitle eq IP *"
 	RMDir /r "$INSTDIR"
-	
+	Delete "$SMPROGRAMS\${ApplicationName}.lnk"
+
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}"
 	DeleteRegKey /ifempty HKLM "Software\${ApplicationName}"
 	DeleteRegKey HKCU "Software\JavaSoft\Prefs\${InstallerFileName}"
