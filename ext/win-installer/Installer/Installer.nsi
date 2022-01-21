@@ -149,7 +149,7 @@ FunctionEnd
 
 ;Uninstaller section
 Section "Uninstall"
-	ExecWait 'TaskKill /F /FI "WindowTitle eq IP *"'
+	ExecWait 'TaskKill /IM ipscan.exe /T /F'
 	RMDir /r "$INSTDIR"
 	Delete "$SMPROGRAMS\${ApplicationName}.lnk"
 
