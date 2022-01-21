@@ -32,7 +32,6 @@ version = exec("git describe --tags", ".", false) ?: "unknown"
 sourceCompatibility = 11
 targetCompatibility = 11
 
-// TODO: stop using java.logging dependency - that also brings the xml
 def javaModules = ["java.base", "java.prefs", "java.logging", "jdk.crypto.ec"]
 project.ext.set("javaModules", javaModules)
 
@@ -149,7 +148,7 @@ def minimizeTask(String platform, Closure doMore) {
     return tasks.create("${platform}.min", proguard.gradle.ProGuardTask) {
         injars "build/libs/ipscan-${platform}-${version}.jar"
         outjars "build/libs/ipscan-${platform}-${version}.min.jar"
-        project.ext.javaModules.each {
+        (project.ext.javaModules + "java.desktop").each {
             libraryjars System.getProperty('java.home') + "/jmods/${it}.jmod"
         }
         dontobfuscate
