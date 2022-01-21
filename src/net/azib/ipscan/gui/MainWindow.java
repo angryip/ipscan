@@ -136,7 +136,7 @@ public class MainWindow {
 	/**
 	 * This method initializes main controls of the main window	
 	 */
-	private void initControlsArea(final Composite controlsArea, final Combo feederSelectionCombo, final Button startStopButton, final StartStopScanningAction startStopScanningAction, final ToolsActions.Preferences preferencesListener, final ToolsActions.ChooseFetchers chooseFetchersListsner) {
+	private void initControlsArea(Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListsner) {
 		controlsArea.setLayoutData(formData(new FormAttachment(feederArea), null, new FormAttachment(0), new FormAttachment(feederArea, 0, SWT.BOTTOM)));
 
 		// start/stop button
