@@ -371,7 +371,6 @@ public class PreferencesDialog extends AbstractModalDialog {
 	}
 
 	private void loadPreferences() {
-    pingerRegistry.checkSelectedPinger();
 		maxThreadsText.setText(Integer.toString(scannerConfig.maxThreads));
 		threadDelayText.setText(Integer.toString(scannerConfig.threadDelay));
 		String[] pingerNames = pingerRegistry.getRegisteredNames();
@@ -416,12 +415,6 @@ public class PreferencesDialog extends AbstractModalDialog {
 		}
 
 		scannerConfig.selectedPinger = (String) pingersCombo.getData(Integer.toString(pingersCombo.getSelectionIndex()));
-		if (!pingerRegistry.checkSelectedPinger()) {
-			tabFolder.setSelection(scanningTabItem);
-			pingersCombo.forceFocus();
-			throw new FetcherException("unsupportedPinger");
-		}
-
 		scannerConfig.maxThreads = parseIntValue(maxThreadsText);
 		scannerConfig.threadDelay = parseIntValue(threadDelayText);
 		scannerConfig.pingCount = parseIntValue(pingingCountText);

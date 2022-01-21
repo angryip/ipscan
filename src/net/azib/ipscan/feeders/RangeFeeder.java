@@ -7,13 +7,13 @@ package net.azib.ipscan.feeders;
 
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.util.InetAddressUtils;
-import org.savarese.vserv.tcpip.OctetConverter;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import static net.azib.ipscan.util.InetAddressUtils.decrement;
 import static net.azib.ipscan.util.InetAddressUtils.increment;
+import static net.azib.ipscan.util.OctetConverter.octetsToInt;
 
 /**
  * IP Range Feeder.
@@ -65,8 +65,8 @@ public class RangeFeeder extends AbstractFeeder {
 	 */
 	private void initPercentageIncrement() {
 		byte[] endAddress = this.endIP.getAddress();
-		long rawEndIP = OctetConverter.octetsToInt(endAddress, endAddress.length - 4);
-		long rawStartIP = OctetConverter.octetsToInt(this.startIP.getAddress(), endAddress.length - 4);
+		long rawEndIP = octetsToInt(endAddress, endAddress.length - 4);
+		long rawStartIP = octetsToInt(this.startIP.getAddress(), endAddress.length - 4);
 		// make 32-bit unsigned values
 		rawEndIP = rawEndIP >= 0 ? rawEndIP : rawEndIP + Integer.MAX_VALUE;
 		rawStartIP = rawStartIP >= 0 ? rawStartIP : rawStartIP + Integer.MAX_VALUE;

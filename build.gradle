@@ -37,7 +37,7 @@ project.ext.set("javaModules", javaModules)
 
 sourceSets {
     main {
-        java { srcDirs "src", "ext/rocksaw/src", "ext/vserv-tcpip/src/java" }
+        java { srcDirs "src" }
         resources { srcDirs "config", "src", "resources" }
     }
     test {
@@ -86,7 +86,7 @@ test {
     }
 }
 
-def packageTask(String platform, def moreLibs = [], Closure doMore) {
+def packageTask(String platform, Closure doMore) {
     return tasks.create(platform, Jar) {
         dependsOn = ['classes']
         manifest {
@@ -103,7 +103,7 @@ def packageTask(String platform, def moreLibs = [], Closure doMore) {
         from {
            configurations[platform].collect {
                it.isDirectory() ? it : zipTree(it)
-           } + moreLibs
+           }
         }
         exclude(
            'images/**/*.svg',
@@ -159,7 +159,6 @@ def minimizeTask(String platform, Closure doMore) {
 
         def keepClasses = [
             'net.azib.ipscan.**',
-            'org.savarese.rocksaw.**',
         ]
 
         for (keepClass in keepClasses) {
@@ -253,7 +252,7 @@ def macLauncher(def platform) {
     ant.delete(file: "${dist}/${project.name}-${platform}-${version}.jar")
 }
 
-packageTask('linux64', 'ext/rocksaw/lib/linux64/librocksaw.so') {
+packageTask('linux64') {
     deb('linux64', 'amd64')
     rpm('linux64', 'x86_64')
 }

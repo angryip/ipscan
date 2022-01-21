@@ -132,10 +132,6 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	}
 
 	private boolean preScanChecks() {
-		// autodetect usable pingers and silently ignore any changes - 
-		// user should see any errors only if they have explicitly selected a pinger
-		pingerRegistry.checkSelectedPinger();
-		
 		// ask user for confirmation if needed
 		if (guiConfig.askScanConfirmation && resultTable.getItemCount() > 0) {
 			MessageBox box = new MessageBox(resultTable.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.SHEET);

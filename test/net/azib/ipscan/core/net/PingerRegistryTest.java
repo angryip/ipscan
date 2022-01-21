@@ -1,12 +1,13 @@
 package net.azib.ipscan.core.net;
 
-import net.azib.ipscan.config.*;
+import net.azib.ipscan.config.ComponentRegistry;
+import net.azib.ipscan.config.Config;
+import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.fetchers.FetcherException;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.IOException;
 
 import static org.junit.Assert.*;
 
@@ -16,7 +17,6 @@ public class PingerRegistryTest {
 
 	@Before
 	public void setUp() throws Exception {
-		System.setProperty("java.library.path", "../swt/lib");
 		registry = new PingerRegistry(config, new ComponentRegistry().init(false));
 	}
 
@@ -46,49 +46,26 @@ public class PingerRegistryTest {
 	}
 
 	@Test
-	public void createDefaultPinger() {
-		config.selectedPinger = "pinger.udp";
-		assertTrue(registry.createPinger(false) instanceof UDPPinger);
+	public void createSelectedPinger() {
+		config.selectedPinger = "pinger.tcp";
+		assertTrue(registry.createPinger(false) instanceof TCPPinger);
 	}
 
 	@Test
-	public void checkSelectedPinger() {
-		config.selectedPinger = "pinger.udp";
-		assertTrue(registry.checkSelectedPinger());
-
-		config.selectedPinger = "pinger.tcp";
-		assertTrue(registry.checkSelectedPinger());
-
-		checkWrongPinger(PingerWithoutConstructor.class);
-		checkWrongPinger(PingerWithWrongPing.class);
+	public void checkBackwardCompatibleCreation() {
+		assertTrue(registry.createPinger(PingerDefaultConstructor.class, 0) instanceof PingerDefaultConstructor);
+		assertTrue(registry.createPinger(PingerWithTimeoutConstructor.class, 0) instanceof PingerWithTimeoutConstructor);
 	}
 
-	private void checkWrongPinger(Class<? extends Pinger> wrongPingerClass) {
-		final String name = "pinger.icmp." + wrongPingerClass.getName();
-		registry.pingers.put(name, wrongPingerClass);
-		config.selectedPinger = name;
-
-		assertFalse(registry.checkSelectedPinger());
-
-		String expectedPinger = Platform.WINDOWS ? "pinger.windows" : Platform.MAC_OS ? "pinger.java" : "pinger.combined";
-		assertEquals(expectedPinger, config.selectedPinger);
-	}
-
-	abstract static class AbstractWrongPinger implements Pinger {
-		@Override public PingResult ping(ScanningSubject subject, int count) throws IOException {
+	abstract static class AbstractTestPinger implements Pinger {
+		@Override public PingResult ping(ScanningSubject subject, int count) {
 			return null;
 		}
 	}
 
-	static class PingerWithoutConstructor extends AbstractWrongPinger {
-	}
+	public static class PingerDefaultConstructor extends AbstractTestPinger { }
 
-	static class PingerWithWrongPing extends AbstractWrongPinger {
-		public PingerWithWrongPing(int value) {
-		}
-
-		@Override public PingResult ping(ScanningSubject subject, int count) throws IOException {
-			throw new IOException("This pinger will not work!");
-		}
+	static class PingerWithTimeoutConstructor extends AbstractTestPinger {
+		public PingerWithTimeoutConstructor(int value) {}
 	}
 }
