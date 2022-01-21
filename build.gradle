@@ -289,7 +289,7 @@ task 'win-installer'(dependsOn: 'win64') {
         def jreDir = new File(installerDir, jrePath)
         if (!jreDir.exists()) {
             jreDir.getParentFile().mkdirs()
-            exec("jlink --output $jrePath --compress=2 --no-header-files --no-man-pages --strip-debug --add-modules " + javaModules.join(","), installerDir)
+            exec("jlink --output $jrePath --vm=client --compress=2 --no-header-files --no-man-pages --strip-debug --add-modules " + javaModules.join(","), installerDir)
             ant.delete(dir: new File(jreDir, "legal"))
         }
         ant.copy(file: "resources/images/icon.ico", todir: "${installerDir}/AppFiles")
