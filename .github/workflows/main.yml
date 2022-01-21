@@ -46,7 +46,7 @@ jobs:
     - uses: actions/setup-java@v2
       with:
         java-version: '11'
-        distribution: 'temurin'
+        distribution: 'liberica'
         architecture: x64
     - run: ./gradlew test win-installer --info
 
