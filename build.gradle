@@ -276,7 +276,7 @@ packageTask('macArm64') {
 
 task 'win-installer'(dependsOn: 'win64') {
     doLast {
-        def nsisVersion = "3.05"
+        def nsisVersion = "3.08"
         def nsis = "nsis-$nsisVersion"
         def installerDir = 'ext/win-installer'
         ant.get(src: "https://sourceforge.net/projects/nsis/files/NSIS%203/${nsisVersion}/${nsis}.zip/download", dest: "$installerDir/${nsis}.zip", skipexisting: 'true')
