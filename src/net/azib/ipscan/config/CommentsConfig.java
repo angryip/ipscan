@@ -7,8 +7,6 @@
 package net.azib.ipscan.config;
 
 import net.azib.ipscan.core.ScanningResult;
-import net.azib.ipscan.core.ScanningResultList;
-import net.azib.ipscan.fetchers.MACFetcher;
 
 import java.net.InetAddress;
 import java.util.prefs.Preferences;
@@ -33,32 +31,21 @@ public class CommentsConfig {
 		return comment;
 	}
 
-	public String getComment(ScanningResultList results, int resultIndex) {
-		ScanningResult result = results.getResult(resultIndex);
-		int macIndex = results.getFetcherIndex(MACFetcher.ID);
-		return getComment(result.getAddress(), getMac(macIndex, result));
+	public String getComment(ScanningResult result) {
+		return getComment(result.getAddress(), result.getMac());
 	}
 
-	private String getMac(int macIndex, ScanningResult result) {
-		if (macIndex < 0) return null;
-		Object macValue = result.getValues().get(macIndex);
-		return macValue instanceof String ? (String) macValue : null;
-	}
-
-	public void setComment(ScanningResultList results, int resultIndex, String comment) {
-		ScanningResult result = results.getResult(resultIndex);
-		int macIndex = results.getFetcherIndex(MACFetcher.ID);
-
+	public void setComment(ScanningResult result, String comment) {
 		String key = result.getAddress().getHostAddress();
 
-		if (macIndex >= 0) {
+		if (result.getMac() != null) {
 			// remove ip-based comment if we set a mac-based one
 			preferences.remove(key);
-			String mac = getMac(macIndex, result);
+			String mac = result.getMac();
 			if (mac != null) key = mac;
 		}
 
-		if (comment == null || comment.length() == 0)
+		if (comment == null || comment.isEmpty())
 			preferences.remove(key);
 		else
 			preferences.put(key, comment);

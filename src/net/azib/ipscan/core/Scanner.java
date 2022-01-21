@@ -10,6 +10,7 @@ import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.fetchers.MACFetcher;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,7 +38,6 @@ public class Scanner {
 	 * @param result where the results are injected
 	 */
 	public void scan(ScanningSubject subject, ScanningResult result) {
-		// populate results
 		int fetcherIndex = 0;
 		boolean isScanningInterrupted = false;
 		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
@@ -60,6 +60,7 @@ public class Scanner {
 			result.setValue(fetcherIndex, value);
 			fetcherIndex++;
 		}
+		result.setMac((String) subject.getParameter(MACFetcher.ID));
 		activeFetchers.remove(Thread.currentThread().getId());
 		
 		result.setType(subject.getResultType());

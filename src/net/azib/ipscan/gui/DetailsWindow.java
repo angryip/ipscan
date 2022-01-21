@@ -52,14 +52,14 @@ public class DetailsWindow extends AbstractModalDialog {
 		resultIndex = resultTable.getSelectionIndex();
 		ScanningResult result = resultTable.getSelectedResult();
 		
-		commentsText = new Text(shell, SWT.BORDER); // TODO: change to SWT.SEARCH in SWT 3.5
+		commentsText = new Text(shell, SWT.SEARCH);
 		commentsText.pack();
 		commentsText.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), null, new FormAttachment(100)));
 		CommentsTextListener commentsTextListener = new CommentsTextListener();
 		commentsText.addFocusListener(commentsTextListener);
 		commentsText.addModifyListener(commentsTextListener);
 
-		String comment = commentsConfig.getComment(scanningResults, resultIndex);
+		String comment = commentsConfig.getComment(result);
 		if (comment != null) commentsText.setText(comment);
 		else commentsTextListener.focusLost(null);
 
@@ -100,7 +100,7 @@ public class DetailsWindow extends AbstractModalDialog {
 			String newComment = commentsText.getText();
 			if (!defaultText.equals(newComment)) {
 				// store the new comment
-				commentsConfig.setComment(scanningResults, resultIndex, newComment);
+				commentsConfig.setComment(scanningResults.getResult(resultIndex), newComment);
 				// now update the result table for user to immediately see the change
 				resultTable.updateResult(resultIndex, CommentFetcher.ID, newComment);
 			}

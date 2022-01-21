@@ -18,7 +18,6 @@ import java.util.List;
  * @author Anton Keks
  */
 public class ScanningResult {
-	
 	public enum ResultType {
 		UNKNOWN, DEAD, ALIVE, WITH_PORTS;
 
@@ -29,8 +28,9 @@ public class ScanningResult {
 		}
 	}
 
-	/** The scanned IP address */
 	private InetAddress address;
+	private String mac;
+
 	/** Scanning results, result of each Fetcher is an element */
 	private Object[] values;
 	/** Scanning result type */ 
@@ -42,7 +42,6 @@ public class ScanningResult {
 	/**
 	 * Creates a new instance, initializing the first value to the 
 	 * provided address
-	 * @param address
 	 * @param numberOfFetchers the number of currently available fetchers
 	 */
 	public ScanningResult(InetAddress address, int numberOfFetchers) {
@@ -100,13 +99,19 @@ public class ScanningResult {
 
 	/**
 	 * Sets the value returned by the specified fetcher
-	 * @param fetcherIndex
-	 * @param value
 	 */
 	public void setValue(int fetcherIndex, Object value) {
 		values[fetcherIndex] = value;
 	}
-	
+
+	public void setMac(String mac) {
+		this.mac = mac;
+	}
+
+	public String getMac() {
+		return mac;
+	}
+
 	/**
 	 * Returns all results for this IP address as a String.
 	 * This is used in showing the IP Details dialog box.
