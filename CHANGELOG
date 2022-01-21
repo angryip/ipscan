@@ -3,6 +3,7 @@ Unreleased:
 - Windows installer now includes a stripped-down JRE to avoid downloading Java separately
 - Windows 32-bit build has been removed
 - Linux deb & rpm packages now correctly specify Java 11 dependency, not 8
+- Mac: display a notification if java not in PATH #279
 
 Changes in 3.8.1:
 - Make 32-bit Windows build still run under Oracle Java 8 - it seems to still be popular #324
