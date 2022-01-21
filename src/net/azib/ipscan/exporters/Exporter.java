@@ -26,7 +26,6 @@ import java.io.OutputStream;
  * @author Anton Keks
  */
 public interface Exporter extends Cloneable, Plugin {
-		
 	/**
 	 * @return the filename extension of the file type this Exporter produces (like txt, html, etc)
 	 */
@@ -42,21 +41,17 @@ public interface Exporter extends Cloneable, Plugin {
 	 * Called on start of the exporting.
 	 * @param outputStream this OutputStream should be used to output exported data.
 	 * @param feederInfo summary of feeder preferences, which were used for this scan
-	 * @throws IOException 
 	 */
 	void start(OutputStream outputStream, String feederInfo) throws IOException;
 	
 	/**
 	 * Called when no more data is available for exporting. This is the last
 	 * method, which is called on any exporter.
-	 * @throws IOException 
 	 */
 	void end() throws IOException;
 	
 	/**
 	 * Called after the start to provide the whole list of fetchers
-	 * @param fetcherNames
-	 * @throws IOException
 	 */
 	void setFetchers(String[] fetcherNames) throws IOException;
 	
@@ -66,7 +61,6 @@ public interface Exporter extends Cloneable, Plugin {
 	 * most of the time or objects, which provide toString() methods.
 	 * The IP address itself is the first element in the provided array.
 	 * Any element of results can be null.
-	 * @throws IOException 
 	 */
 	void nextAddressResults(Object[] results) throws IOException;
 
@@ -79,5 +73,4 @@ public interface Exporter extends Cloneable, Plugin {
 	 * Clones the Exporter instance
 	 */
 	Object clone() throws CloneNotSupportedException;
-	
 }
