@@ -65,11 +65,6 @@ public interface Exporter extends Cloneable, Plugin {
 	void nextAddressResults(Object[] results) throws IOException;
 
 	/**
-	 * @deprecated mispelled method for backwards-compatibility
-	 */
-	void nextAdressResults(Object[] results) throws IOException;
-	
-	/**
 	 * Clones the Exporter instance
 	 */
 	Object clone() throws CloneNotSupportedException;

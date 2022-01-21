@@ -16,7 +16,6 @@ import java.io.*;
  * @author Anton Keks
  */
 public abstract class AbstractExporter implements Exporter {
-	
 	protected PrintWriter output;
 	protected boolean append;
 
@@ -39,10 +38,6 @@ public abstract class AbstractExporter implements Exporter {
 	}
 
 	@Override public void nextAddressResults(Object[] results) throws IOException {
-		nextAdressResults(results); // for backwards-compatibility
-	}
-
-	@Override public void nextAdressResults(Object[] results) {
 	}
 
 	public Exporter clone() {
