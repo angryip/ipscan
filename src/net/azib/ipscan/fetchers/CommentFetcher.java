@@ -16,10 +16,8 @@ public class CommentFetcher extends AbstractFetcher {
 	public static final String ID = "fetcher.comment";
 	
 	private CommentsConfig commentsConfig;
-	private MACFetcher macFetcher;
-	
-	public CommentFetcher(MACFetcher macFetcher, CommentsConfig commentsConfig) {
-		this.macFetcher = macFetcher;
+
+	public CommentFetcher(CommentsConfig commentsConfig) {
 		this.commentsConfig = commentsConfig;
 	}
 
@@ -29,10 +27,6 @@ public class CommentFetcher extends AbstractFetcher {
 
 	public Object scan(ScanningSubject subject) {
 		String mac = (String) subject.getParameter(MACFetcher.ID);
-		if (mac == null && subject.isLocal()) {
-			macFetcher.scan(subject);
-			mac = (String) subject.getParameter(MACFetcher.ID);
-		}
 		return commentsConfig.getComment(subject.getAddress(), mac);
 	}
 }

@@ -178,11 +178,10 @@ public class ScanningSubject {
 	}
 
 	public boolean isLocal() {
-		return address.isSiteLocalAddress() || address.isLinkLocalAddress();
+		return ifAddr != null;
 	}
 
-	@Override
-	public String toString() {
+	@Override public String toString() {
 		StringBuilder sb = new StringBuilder(address.getHostAddress());
 		if (requestedPorts != null) {
 			sb.append(':');
