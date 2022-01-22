@@ -16,7 +16,7 @@ public class ARPPinger implements Pinger {
 		this(macFetcher, macFetcher.getClass().getSimpleName().startsWith("Win") ? null : (Pinger) trigger);
 	}
 
-	public ARPPinger(MACFetcher macFetcher, Pinger trigger) {
+	ARPPinger(MACFetcher macFetcher, Pinger trigger) {
 		this.macFetcher = macFetcher;
 		this.trigger = trigger;
 	}
