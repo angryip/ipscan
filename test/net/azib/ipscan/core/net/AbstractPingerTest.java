@@ -10,8 +10,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 abstract class AbstractPingerTest {
 	Pinger pinger;
@@ -26,6 +25,8 @@ abstract class AbstractPingerTest {
 		InterfaceAddress ifAddr = InetAddressUtils.getLocalInterface();
 		PingResult result = pinger.ping(new ScanningSubject(ifAddr.getAddress()), 2);
 		assertTrue(result.isAlive());
+		assertEquals(2, result.getPacketCount());
+		assertEquals(2, result.getReplyCount());
 		assertTrue(result.getAverageTime() <= 10);
 		assertTrue(result.getTTL() >= 0);
 	}

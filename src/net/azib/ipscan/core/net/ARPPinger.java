@@ -22,13 +22,13 @@ public class ARPPinger implements Pinger {
 	}
 
 	@Override public PingResult ping(ScanningSubject subject, int count) throws IOException {
+		if (trigger != null) count -= count / 2;
 		PingResult result = new PingResult(subject.getAddress(), count);
-		if (trigger != null) count /= 2;
 		for (int i = 0; i < count; i++) {
 			long start = currentTimeMillis();
 			if (trigger != null) {
 				// this should issue an ARP request for the IP
-				result.merge(trigger.ping(subject, count / 2));
+				result.merge(trigger.ping(subject, 1));
 			}
 			String mac = macFetcher.scan(subject);
 			if (mac != null) result.addReply(currentTimeMillis() - start);
