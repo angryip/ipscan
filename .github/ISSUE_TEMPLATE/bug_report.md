@@ -24,9 +24,12 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Versions (please complete the following information):**
- - OS type and version
+ - OS version, CPU architecture
  - Java version, 32 or 64 bit, how was installed (`java -version`)
  - Version of Angry IP Scanner
 
 **Logs:**
-- Please run Angry IP Scanner from command-line and see if any relevant logs were written. Paste them here.
+- Please run Angry IP Scanner from Terminal and see if any relevant logs were written. Paste them here:
+    - Windows: `jre\bin\java -jar ipscan.exe` (inside of installation directory, e.g. C:\Program Files\Angry IP Scanner)
+    - Mac: `Angry\ IP\ Scanner.app/Contents/MacOS/ipscan`
+    - Linux: `ipscan` or `java -jar ipscan.jar`
