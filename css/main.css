@@ -1,5 +1,3 @@
-@import url(https://fonts.googleapis.com/css?family=Ubuntu:400,400italic);
-
 /* MeyerWeb Reset */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -45,7 +43,7 @@ body {
   color:#373737;
   background: #212121;
   font-size: 17px;
-  font-family: Ubuntu, sans-serif;
+  font-family: Ubuntu, system, -apple-system, sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -100,14 +98,6 @@ footer p {
 a {
   text-decoration: none;
   color: #007edf;
-}
-
-b, strong {
-  font-weight: bold;
-}
-
-i, em {
-  font-style: italic;
 }
 
 a:hover, a:focus {text-decoration: underline;}
