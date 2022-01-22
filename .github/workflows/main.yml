@@ -27,7 +27,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         draft: true
-        body: build/libs/README
+        body_path: build/libs/README
         files: build/libs/*
 
   build-mac:
