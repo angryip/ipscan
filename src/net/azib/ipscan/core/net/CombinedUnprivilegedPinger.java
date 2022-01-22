@@ -35,7 +35,6 @@ public class CombinedUnprivilegedPinger implements Pinger {
 			return udpResult.merge(udpPinger.ping(subject, count - udpCountInitialCount));
 
 		// fallback to TCP - it may detect some hosts UDP cannot
-		PingResult tcpResult = tcpPinger.ping(subject, count);
-		return tcpResult.merge(udpResult);
+		return tcpPinger.ping(subject, count);
 	}
 }
