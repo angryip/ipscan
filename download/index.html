@@ -24,22 +24,15 @@ redirect_from: /w/Download/
 
       <ul>
         <li>
-          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-setup.exe">32/64-bit Installer</a>
-          - autodetects 32/64-bit Java, for Windows <i>7/8/10</i>
+          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-setup.exe">Windows installer</a>
+          - includes Java runtime (recommended)
         </li>
         <li>
-          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-win64-{{ site.version }}.exe">Executable for 64-bit Java</a>
-          - for 64-bit Java (eg OpenJDK) on Windows <i>7/8/10</i>
-        </li>
-        <li>
-          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-win32-{{ site.version }}.exe">Executable for 32-bit Java</a>
-          - for older installations of Oracle Java for Windows (deprecated)
+          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-win64-{{ site.version }}.exe">Stand-alone executable</a>
+          - requires a separate installation of 64-bit <a href="https://bell-sw.com/pages/downloads/#/java-17-lts">OpenJDK/Java 11+</a>
         </li>
       </ul>
 
-      <p>
-        At least <a href="https://bell-sw.com/pages/downloads/#/java-17-lts">Java 11</a> <i>or newer</i> is required on your machine. JRE is enough.
-      </p>
       <p>Last version to run under Java 8 is <i>3.7.6</i>.</p>
 
       <h4>Legacy</h4>
@@ -87,9 +80,9 @@ redirect_from: /w/Download/
       </ul>
 
       <h4>Running</h4>
-      <p>Minimum supported OS X version is 10.10 <b>Yosemite</b>. Version 3.6.2 may work with older OS X.</p>
       <p>
-        Make sure you have <a href="https://bell-sw.com/pages/downloads/#/java-17-lts">Java 11</a> or newer installed. Newest JDK/JRE (e.g. 17) is recommended for Dark Mode support.
+        Make sure you have <a href="https://bell-sw.com/pages/downloads/#/java-17-lts">Java 11</a> or newer installed, native build for your CPU.
+        Newest JDK/JRE (e.g. 17) is recommended for Dark Mode support.
       </p>
       <p>
         The zip file contains Mac application bundle: just save it and double-click to extract.
@@ -98,7 +91,7 @@ redirect_from: /w/Download/
       </p>
 
       <p>
-        You can then run it by double-clicking the <i>Angry IP Scanner</i> icon. Or drag it to the applications menu in
+        You can then run it by double-clicking the <i>Angry IP Scanner</i> icon. Or drag it to Applications menu in
         Finder if you want.
       </p>
     </div>
@@ -113,15 +106,15 @@ redirect_from: /w/Download/
         <a href="{{ page.sourceforge_url }}">even older releases</a>.
       </p>
       <ul>
-        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_amd64.deb">DEB Package</a> for <i>Ubuntu/Debian/Mint, 64-bit</i></li>
-        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-1.x86_64.rpm">RPM Package</a> for Fedora/RedHat/Mageia/openSUSE, 64-bit</li>
-        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_all.deb">DEB Package</a> for <i>Ubuntu/Debian/Mint, any architecture (e.g. 32-bit or ARM), will need SWT packages provided by the distribution</i></li>
+        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_amd64.deb">DEB Package</a> for <i>Ubuntu/Debian/Mint, x86 64-bit</i></li>
+        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-1.x86_64.rpm">RPM Package</a> for Fedora/RedHat/Mageia/openSUSE, x86 64-bit</li>
+        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_all.deb">DEB Package</a> for <i>Raspbian/Ubuntu/Debian/Mint, any architecture (e.g. 32-bit or ARM), will need <i>SWT packages</i> provided by your distribution</i></li>
         <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-any-{{ site.version }}.jar">Executable Jar</a> - you need to provide your own swt.jar to classpath</li>
       </ul>
       <h4>Running</h4>
       <p>Make sure you have at least Java 11 or <a href="http://en.wikipedia.org/wiki/OpenJDK">OpenJDK</a> installed - check your distribution.</p>
-      <p>Latest version with Java 8 support is <i>3.7.6</i>.</p>
-      <p>DEB and RPM packages will install appropriate 'desktop' files, so <i>Angry IP Scanner</i> will appear in the applications menu, under either <b>Internet</b> or <b>Networking</b>. Alternatively, you can just type <code>ipscan</code> to launch the application.</p>
+      <p>Last version with Java 8 support was <i>3.7.6</i>.</p>
+      <p>DEB and RPM packages will install appropriate 'desktop' files, so <i>Angry IP Scanner</i> will appear in Applications menu, under either <b>Internet</b> or <b>Networking</b>. Alternatively, you can just type <code>ipscan</code> to launch the application.</p>
       <p><i>Jar</i> files are launched by either double-clicking or typing <code>java -jar <i>jar-file</i></code>.</p>
     </div>
   </section>
