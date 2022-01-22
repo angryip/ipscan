@@ -20,11 +20,12 @@ jobs:
         name: All binaries
         path: build/libs
 
-    - name: Release
+    - name: Release (if tag)
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
         draft: true
+        body_path: CHANGELOG
         files: build/libs/*
 
   build-mac:
@@ -62,3 +63,10 @@ jobs:
       with:
         name: Windows binaries
         path: build/libs
+
+    - name: Add to release (if tag)
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        draft: true
+        files: build/libs/*setup.exe
