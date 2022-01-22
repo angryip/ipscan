@@ -102,6 +102,14 @@ a {
   color: #007edf;
 }
 
+b, strong {
+  font-weight: bold;
+}
+
+i, em {
+  font-style: italic;
+}
+
 a:hover, a:focus {text-decoration: underline;}
 
 footer a {
