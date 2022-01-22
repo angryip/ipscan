@@ -1,4 +1,4 @@
-Unreleased:
+Changes in 3.8.2:
 - Allow building if .git is not present (e.g. from source zip) #319
 - Windows installer now includes a stripped-down JRE to avoid downloading Java separately
 - Windows 32-bit build has been removed
