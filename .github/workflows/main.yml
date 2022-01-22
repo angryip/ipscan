@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build-all:
+  build-linux:
     runs-on: ubuntu-latest
 
     steps:
@@ -12,8 +12,10 @@ jobs:
       with:
         java-version: '11'
         distribution: 'liberica'
-    - name: Build
+    - name: Build & Test
       run: xvfb-run -a ./gradlew --info test all
+    - name: Extract CHANGELOG
+      run: sed '/^$/q' CHANGELOG > build/libs/README
 
     - uses: actions/upload-artifact@v1
       with:
@@ -25,7 +27,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         draft: true
-        body_path: CHANGELOG
+        body: build/libs/README
         files: build/libs/*
 
   build-mac:
@@ -61,7 +63,7 @@ jobs:
 
     - uses: actions/upload-artifact@v1
       with:
-        name: Windows binaries
+        name: Windows installer
         path: build/libs
 
     - name: Add to release (if tag)
