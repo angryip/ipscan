@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build-linux:
+  linux:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +30,7 @@ jobs:
         body_path: build/libs/README
         files: build/libs/*
 
-  build-mac:
+  mac:
     runs-on: macos-latest
 
     steps:
@@ -49,7 +49,7 @@ jobs:
         name: macOS binary
         path: build/libs
 
-  build-win:
+  windows:
     runs-on: windows-latest
 
     steps:
