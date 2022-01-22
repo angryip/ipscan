@@ -108,7 +108,7 @@ redirect_from: /w/Download/
       <ul>
         <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_amd64.deb">DEB Package</a> for <i>Ubuntu/Debian/Mint, x86 64-bit</i></li>
         <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-1.x86_64.rpm">RPM Package</a> for Fedora/RedHat/Mageia/openSUSE, x86 64-bit</li>
-        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_all.deb">DEB Package</a> for <i>Raspbian/Ubuntu/Debian/Mint, any architecture (e.g. 32-bit or ARM), will need <i>SWT packages</i> provided by your distribution</i></li>
+        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_all.deb">DEB Package</a> for <i>Raspbian/Debian, any architecture</i> (e.g. 32-bit or ARM), see below</li>
         <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-any-{{ site.version }}.jar">Executable Jar</a> - you need to provide your own swt.jar to classpath</li>
       </ul>
       <h4>Running</h4>
@@ -116,7 +116,7 @@ redirect_from: /w/Download/
       <p>Last version with Java 8 support was <i>3.7.6</i>.</p>
       <p>DEB and RPM packages will install appropriate 'desktop' files, so <i>Angry IP Scanner</i> will appear in Applications menu, under either <b>Internet</b> or <b>Networking</b>. Alternatively, you can just type <code>ipscan</code> to launch the application.</p>
       <p><i>Jar</i> files are launched by either double-clicking or typing <code>java -jar <i>jar-file</i></code>.</p>
-      <p>Note for Raspbian/32-bit ARM: to run the "any" architecture package above, you will need an [older 32-bit build of SWT](https://github.com/Botspot/pi-apps/issues/1045#issuecomment-1014172448), as current versions dropped 32-bit support.</p>
+      <p>Note for <b>Raspbian/32-bit ARM</b>: to run the "any" architecture package above, you will need an [older 32-bit build of SWT](https://github.com/Botspot/pi-apps/issues/1045#issuecomment-1014172448), as current versions provided by Bullseye dropped 32-bit support.</p>
     </div>
   </section>
 
