@@ -3,9 +3,17 @@
 This is the source code of Angry IP Scanner, licensed with GPL v2. [Official site](https://angryip.org/)
 
 The code is written mostly in Java (currently, source level 11).
-IntelliJ IDEA is recommended for coding (Community Edition is fine): Import as Gradle project.
+[SWT library from Eclipse project](https://eclipse.org/swt/) is used for GUI that provides native components for each supported platform.
 
-The project supports building for Linux, Windows and Mac OS.
+The project runs on Linux, Windows and macOS. 
+
+## Helping / Contributing
+
+As there are millions of different networks, configurations and devices, please help with submitting a **Pull Request** if something
+doesn't work as you expect (especially macOS users). Any problem is easy to fix if you have an environment to reproduce it 😀
+
+For that, download [Intellij IDEA community edition](https://www.jetbrains.com/idea/download/) and open the cloned project.
+Then, you can run Angry IP Scanner in Debug mode and put a breakpoint into the [desired Fetcher class](src/net/azib/ipscan/fetchers).
 
 ## Building [![Actions Status](https://github.com/angryip/ipscan/workflows/CI/badge.svg)](https://github.com/angryip/ipscan/actions)
 
@@ -27,18 +35,7 @@ Building of Windows installer can be done on Linux as well.
 
 On Ubuntu install the following packages:
 ```
-sudo apt install openjdk-11-jdk rpm fakeroot wine-stable
+sudo apt install openjdk-11-jdk rpm fakeroot
 ```
-Note: *wine* is needed for building of Windows installer.
 
 Install OpenJDK on other platforms as you usually do it.
-
-## Helping
-
-If you have an obscure issue in your network that most likely the author will not be able to reproduce, you
-can help with debugging of it.
-
-For that, download [Intellij IDEA community edition](https://www.jetbrains.com/idea/download/) and open the cloned project.
-Then, you can run Angry IP Scanner in Debug mode and put a breakpoint into the [desired Fetcher class](src/net/azib/ipscan/fetchers).
-
-Pull requests are welcome!
