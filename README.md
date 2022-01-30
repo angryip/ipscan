@@ -26,8 +26,8 @@ Use Gradle for building a package for your desired platform:
 The resulting binaries will be put into the `build/libs` directory.
 Run jar files with `java -jar <jar-file>`.
 
-Deb and rpm packages can only be built on Linux (tested on Ubuntu). 
-Building of Windows installer can be done on Linux as well.
+Deb and rpm packages can be built only on Linux (tested on Ubuntu). 
+Windows installer can be built on Windows only.
 
 `./gradlew all` will build packages for all OS (tested on Ubuntu only, see dependencies below).
 
