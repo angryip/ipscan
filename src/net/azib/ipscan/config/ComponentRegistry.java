@@ -7,10 +7,7 @@ package net.azib.ipscan.config;
 
 import net.azib.ipscan.core.PluginLoader;
 import net.azib.ipscan.di.Injector;
-import net.azib.ipscan.exporters.CSVExporter;
-import net.azib.ipscan.exporters.IPListExporter;
-import net.azib.ipscan.exporters.TXTExporter;
-import net.azib.ipscan.exporters.XMLExporter;
+import net.azib.ipscan.exporters.*;
 import net.azib.ipscan.fetchers.*;
 
 /**
@@ -25,7 +22,7 @@ public class ComponentRegistry {
 				(Platform.WINDOWS ? ".WinMACFetcher" : Platform.LINUX ? ".LinuxMACFetcher" : ".UnixMACFetcher")).newInstance());
 		i.register(CommentFetcher.class, FilteredPortsFetcher.class, WebDetectFetcher.class, HTTPSenderFetcher.class,
 			NetBIOSInfoFetcher.class, PacketLossFetcher.class, HTTPProxyFetcher.class, MACVendorFetcher.class);
-		i.register(TXTExporter.class, CSVExporter.class, XMLExporter.class, IPListExporter.class);
+		i.register(TXTExporter.class, CSVExporter.class, XMLExporter.class, IPListExporter.class, SQLExporter.class);
 	}
 
 	public Injector init() throws Exception {
