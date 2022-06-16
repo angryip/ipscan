@@ -145,8 +145,8 @@ def packageTask(String platform, Closure doMore) {
 
 def minimizeTask(String platform, Closure doMore) {
     return tasks.create("${platform}.min", proguard.gradle.ProGuardTask) {
-        injars "build/libs/ipscan-${platform}-${version}.jar"
-        outjars "build/libs/ipscan-${platform}-${version}.min.jar"
+        injars "build/libs/${project.name}-${platform}-${version}.jar"
+        outjars "build/libs/${project.name}-${platform}-${version}.min.jar"
         (project.ext.javaModules + "java.desktop").each {
             libraryjars System.getProperty('java.home') + "/jmods/${it}.jmod"
         }
@@ -167,7 +167,7 @@ def minimizeTask(String platform, Closure doMore) {
         }
 
         doLast {
-            ant.move(file: "build/libs/ipscan-${platform}-${version}.min.jar", tofile: "build/libs/ipscan-${platform}-${version}.jar")
+            ant.move(file: "build/libs/${project.name}-${platform}-${version}.min.jar", tofile: "build/libs/${project.name}-${platform}-${version}.jar")
             doMore()
         }
     }
