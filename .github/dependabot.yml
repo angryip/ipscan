@@ -71,12 +71,4 @@ updates:
       # Check for updates managed by Composer once a week
       interval: "weekly"
       
-      # Configure beta ecosystem
 
-version: 2
-enable-beta-ecosystems: true
-updates:
-  - package-ecosystem: "beta-ecosystem"
-    directory: "/"
-    schedule:
-      interval: "daily"
