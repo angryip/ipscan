@@ -26,6 +26,8 @@ public class GUIConfig {
 	public boolean askScanConfirmation;
 	
 	public int[] mainWindowSize;
+
+	public int[] mainWindowPosition;
 	public boolean isMainWindowMaximized;
 	
 	public int[] detailsWindowSize;
@@ -49,6 +51,7 @@ public class GUIConfig {
 
 		isMainWindowMaximized = preferences.getBoolean("windowMaximized", false);
 		mainWindowSize = new int[] {preferences.getInt("windowWidth", 800), preferences.getInt("windowHeight", 450)};
+		mainWindowPosition = new int[]{preferences.getInt("windowPosition-x",50), preferences.getInt("windowPosition-y",85)};
 		detailsWindowSize = new int[] {preferences.getInt("detailsWidth", 400), preferences.getInt("detailsHeight", 300)};
 	}
 
@@ -66,6 +69,9 @@ public class GUIConfig {
 		if (!isMainWindowMaximized) {
 			preferences.putInt("windowWidth", mainWindowSize[0]);
 			preferences.putInt("windowHeight", mainWindowSize[1]);
+
+			preferences.putInt("windowPosition-x",mainWindowPosition[0]);
+			preferences.putInt("windowPosition-y",mainWindowPosition[1]);
 		}
 		
 		preferences.putInt("detailsWidth", detailsWindowSize[0]);
@@ -87,6 +93,17 @@ public class GUIConfig {
 	public void setMainWindowSize(Point size, boolean isMaximized) {
 		if (!isMaximized) {
 			mainWindowSize = new int[] {size.x, size.y};
+		}
+		isMainWindowMaximized = isMaximized;
+	}
+
+	public Point getMainWindowPosition(){
+		return new Point(mainWindowPosition[0], mainWindowPosition[1]);
+	}
+
+	public void setMainWindowPosition(Point position, boolean isMaximized){
+		if (!isMaximized) {
+			mainWindowPosition = new int[] {position.x, position.y};
 		}
 		isMainWindowMaximized = isMaximized;
 	}
