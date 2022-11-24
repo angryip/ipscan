@@ -76,6 +76,10 @@ public class MainWindow {
 
 		// after all controls are initialized, resize and open
 		shell.setSize(guiConfig.getMainWindowSize());
+
+		// remember stored position in the screen by preferences
+		shell.setLocation(guiConfig.getMainWindowPosition());
+
 		shell.open();
 		if (guiConfig.isMainWindowMaximized) {
 			shell.setMaximized(true);
@@ -99,8 +103,9 @@ public class MainWindow {
 		shell.setImage(image);
 				
 		shell.addListener(SWT.Close, event -> {
-			// save dimensions!
+			// save dimensions! and position!
 			guiConfig.setMainWindowSize(shell.getSize(), shell.getMaximized());
+			guiConfig.setMainWindowPosition(shell.getLocation(), shell.getMaximized());
 		});
 	}
 
