@@ -44,17 +44,11 @@ jobs:
       with:
         java-version: '17'
         distribution: 'liberica'
-        architecture: x64
+        architecture: |
+          aarch64
+          x64
         cache: 'gradle'
     - run: ./gradlew test macX86 --info
-
-    - uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'liberica'
-        architecture: aarch64
-        cache: 'gradle'
-    - run: ./gradlew test macArm64 --info
 
       env:
         APPLE_USER: ${{ secrets.APPLE_USER }}
