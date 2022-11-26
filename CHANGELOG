@@ -1,6 +1,8 @@
 Changes in unreleased:
-- Update SWT
+- Update SWT for all platforms
+- Mac: bundle Java 17 runtime, so that Java doesn't need to be installed separately
 - Mac: change next alive host shortcut to Cmd+N (Cmd+H is conflicting with hide window)
+- Windows installer: update bundled Java runtime to 17
 
 Changes in 3.8.2:
 - Allow building if .git is not present (e.g. from source zip) #319
