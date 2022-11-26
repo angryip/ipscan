@@ -274,11 +274,11 @@ packageTask('macArm64') {
     macLauncher("macArm64")
 }
 
-def jlink(String target, String jrePath, String extraOpts = "--vm=client") {
+def jlink(String target, String jrePath, String extraOpts = System.getenv("JLINK_OPTS") ?: "") {
     def jreDir = new File(target, jrePath)
     if (!jreDir.exists()) {
         jreDir.getParentFile().mkdirs()
-        exec("jlink --output $jrePath $extraOpts --compress=2 --no-header-files --no-man-pages --strip-debug --add-modules " + javaModules.join(","), target)
+        exec("jlink --output $jrePath $extraOpts --vm=client --compress=2 --no-header-files --no-man-pages --strip-debug --add-modules " + javaModules.join(","), target)
         ant.delete(dir: new File(jreDir, "legal"))
     }
 }

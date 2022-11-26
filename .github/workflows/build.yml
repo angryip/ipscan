@@ -53,7 +53,7 @@ jobs:
         architecture: x64
 
     - run: ./gradlew test macX86 --info
-    - run: ./gradlew macArm64 --info
+    - run: JLINK_OPTS="--module-path ${JAVA_HOME/x64/aarch64}/jmods" ./gradlew macArm64 --info
 
       env:
         APPLE_USER: ${{ secrets.APPLE_USER }}
