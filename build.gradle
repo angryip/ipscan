@@ -312,20 +312,20 @@ task 'win-installer'(dependsOn: 'win64') {
 
 task mac(dependsOn: ['macX86', 'macArm64'])
 
-task all(dependsOn: ['any', 'linux64', 'mac', 'win64'])
+task linux(dependsOn: ['any', 'linux64'])
 task current(dependsOn: [platform])
 
 task info {
     doLast {
         println "This script will build ${project.name} ${version}"
-        println "Targets (some may work only on Linux):"
-        println "  all           - builds binaries for all platforms"
+        println "Targets:"
         println "  current       - build for current platform ($platform)"
+        println "  linux         - builds all Linux binaries"
         println "  linux64       - builds only Linux 64-bit binary"
         println "  any           - doesn't bundle SWT, making it possible to run on ARM/Raspbian with libswt provided by OS (Experimental)"
-        println "  mac           - builds only Mac binaries"
+        println "  mac           - builds all Mac binaries"
         println "  macX86        - builds only MacX86 binary"
-        println "  macAmr64      - builds only MacArm64 binary"
+        println "  macArm64      - builds only MacArm64 binary"
         println "  win64         - builds only Windows 64-bit binary"
         println "  win-installer - packages a Windows installer (with included JRE)"
     }
