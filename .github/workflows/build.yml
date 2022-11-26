@@ -42,7 +42,7 @@ jobs:
         fetch-depth: 0
     - uses: actions/setup-java@v3
       with:
-        java-version: '11'
+        java-version: '17'
         distribution: 'liberica'
         cache: 'gradle'
     - run: ./gradlew test mac --info
@@ -52,7 +52,7 @@ jobs:
 
     - uses: actions/upload-artifact@v1
       with:
-        name: macOS binary
+        name: macOS binaries
         path: build/libs
 
   windows:
@@ -64,7 +64,7 @@ jobs:
         fetch-depth: 0
     - uses: actions/setup-java@v3
       with:
-        java-version: '11'
+        java-version: '17'
         distribution: 'liberica'
         architecture: x64
         cache: 'gradle'
