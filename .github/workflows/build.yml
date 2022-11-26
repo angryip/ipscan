@@ -50,9 +50,10 @@ jobs:
       with:
         java-version: '17'
         distribution: 'liberica'
-        architecture: x86
+        architecture: x64
 
-    - run: ./gradlew test mac --info
+    - run: ./gradlew test macX86 --info
+    - run: ./gradlew macArm64 --info
 
       env:
         APPLE_USER: ${{ secrets.APPLE_USER }}
