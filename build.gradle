@@ -274,7 +274,7 @@ packageTask('macArm64') {
     macLauncher("macArm64")
 }
 
-def jlink(String target, String jrePath, String extraOpts = "") {
+def jlink(String target, String jrePath, String extraOpts = "--vm=client") {
     def jreDir = new File(target, jrePath)
     if (!jreDir.exists()) {
         jreDir.getParentFile().mkdirs()
@@ -294,7 +294,7 @@ task 'win-installer'(dependsOn: 'win64') {
             ant.replacefilter(token: "VERSION_MINOR", value: "8")
             ant.replacefilter(token: "VERSION", value: version)
         }
-        jlink(installerDir, "AppFiles/jre", "--vm=client")
+        jlink(installerDir, "AppFiles/jre")
         ant.copy(file: "resources/images/icon.ico", todir: "${installerDir}/AppFiles")
         ant.copy(file: "LICENSE", tofile: "${installerDir}/AppFiles/license.txt")
         ant.copy(file: "build/libs/${project.name}-win64-${version}.exe", tofile:"${installerDir}/AppFiles/ipscan.exe")
