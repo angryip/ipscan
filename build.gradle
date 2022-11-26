@@ -224,7 +224,9 @@ def macLauncher(def platform) {
         ant.fileset(dir: "ext/mac-bundle")
     }
 
-    ant.copy(file: "${dist}/${project.name}-${platform}-${version}.jar", todir: "${dist}/${name}.app/Contents/MacOS")
+    def target = "${dist}/${name}.app/Contents/MacOS"
+    ant.copy(file: "${dist}/${project.name}-${platform}-${version}.jar", todir: target)
+    jlink(target, "jre")
 
     ant.replace(file: "${dist}/${name}.app/Contents/Info.plist") {
         ant.replacefilter(token: "APPNAME", value: name)
@@ -272,11 +274,11 @@ packageTask('macArm64') {
     macLauncher("macArm64")
 }
 
-def jlink(String installerDir, String jrePath) {
-    def jreDir = new File(installerDir, jrePath)
+def jlink(String target, String jrePath, String extraOpts = "") {
+    def jreDir = new File(target, jrePath)
     if (!jreDir.exists()) {
         jreDir.getParentFile().mkdirs()
-        exec("jlink --output $jrePath --vm=client --compress=2 --no-header-files --no-man-pages --strip-debug --add-modules " + javaModules.join(","), installerDir)
+        exec("jlink --output $jrePath $extraOpts --compress=2 --no-header-files --no-man-pages --strip-debug --add-modules " + javaModules.join(","), target)
         ant.delete(dir: new File(jreDir, "legal"))
     }
 }
@@ -292,7 +294,7 @@ task 'win-installer'(dependsOn: 'win64') {
             ant.replacefilter(token: "VERSION_MINOR", value: "8")
             ant.replacefilter(token: "VERSION", value: version)
         }
-        jlink(installerDir, "AppFiles/jre")
+        jlink(installerDir, "AppFiles/jre", "--vm=client")
         ant.copy(file: "resources/images/icon.ico", todir: "${installerDir}/AppFiles")
         ant.copy(file: "LICENSE", tofile: "${installerDir}/AppFiles/license.txt")
         ant.copy(file: "build/libs/${project.name}-win64-${version}.exe", tofile:"${installerDir}/AppFiles/ipscan.exe")

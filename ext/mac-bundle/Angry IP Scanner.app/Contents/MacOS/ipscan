@@ -1,4 +1,3 @@
 #!/bin/sh
 BASEDIR=`dirname "$0"`
-which java || osascript -e 'display notification "You need Java/OpenJDK 11 installed" with title "Angry IP Scanner"'
-exec java --add-opens java.base/java.net=ALL-UNNAMED -XstartOnFirstThread -jar "$BASEDIR"/ipscan*.jar
+exec "$BASEDIR/jre/bin/java" --add-opens java.base/java.net=ALL-UNNAMED -XstartOnFirstThread -jar "$BASEDIR"/ipscan*.jar
