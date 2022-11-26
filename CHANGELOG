@@ -1,3 +1,7 @@
+Changes in unreleased:
+- Update SWT
+- Mac: change next alive host shortcut to Cmd+N (Cmd+H is conflicting with hide window)
+
 Changes in 3.8.2:
 - Allow building if .git is not present (e.g. from source zip) #319
 - Windows installer now includes a stripped-down JRE to avoid downloading Java separately
