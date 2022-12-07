@@ -2,4 +2,4 @@
 BASEDIR=$(dirname "$0")
 java="$BASEDIR/jre/bin/java"
 if [ ! -e "$java" ]; then java=java; fi
-exec $java --add-opens java.base/java.net=ALL-UNNAMED -XstartOnFirstThread -jar "$BASEDIR"/ipscan*.jar
+exec "$java" --add-opens java.base/java.net=ALL-UNNAMED -XstartOnFirstThread -jar "$BASEDIR"/ipscan*.jar
