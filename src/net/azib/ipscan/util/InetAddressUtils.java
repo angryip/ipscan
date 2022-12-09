@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import static java.util.Collections.list;
 import static java.util.Collections.reverse;
@@ -28,7 +29,7 @@ import static java.util.stream.Collectors.toList;
  */
 public class InetAddressUtils {
 	static final Logger LOG = LoggerFactory.getLogger();
-	
+
 	// Warning! IPv4 specific code
 	public static final Pattern HOSTNAME_REGEX = Pattern.compile("\\b((([a-z]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\.)+([a-z]{2,})|\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})\\b", CASE_INSENSITIVE);
 
@@ -40,7 +41,7 @@ public class InetAddressUtils {
 		}
 		try {
 			return InetAddress.getByAddress(addressBytes);
-		} 
+		}
 		catch (UnknownHostException e) {
 			// this should never happen as we are modifying the same bytes received from the InetAddress
 			throw new IllegalArgumentException(e);
@@ -61,7 +62,7 @@ public class InetAddressUtils {
 			throw new IllegalArgumentException(e);
 		}
 	}
-	
+
 	/**
 	 * Compares two IP addresses.
 	 * @return true in case inetAddress1 is greater than inetAddress2
@@ -72,13 +73,13 @@ public class InetAddressUtils {
 		for (int i = 0; i < address1.length; i++) {
 			if ((address1[i] & 0xFF) > (address2[i] & 0xFF))
 				return true;
-			else 
+			else
 			if ((address1[i] & 0xFF) < (address2[i] & 0xFF))
 				break;
 		}
 		return false;
 	}
-	
+
 	public static InetAddress increment(InetAddress address) {
 		return modifyInetAddress(address, true);
 	}
@@ -114,7 +115,7 @@ public class InetAddressUtils {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Parses the netmask string provided in special text format:
 	 * A.B.C.D, where each term is 0-255 or empty. If any term is empty, it is the same as 255.
@@ -127,7 +128,7 @@ public class InetAddressUtils {
 			// CIDR netmask, e.g. "/24" - number of bits set from the left
 			int totalBits = Integer.parseInt(netmaskString.substring(1));
 			return parseNetmask(totalBits);
-		} 
+		}
 
 		// IP-like netmask (IPv4)
 		netmaskString = netmaskString.replaceAll("\\.\\.", ".255.");
@@ -168,8 +169,8 @@ public class InetAddressUtils {
 		int last = bytes.length - 1;
 		if (ifAddr != null) {
 			return address.equals(ifAddr.getBroadcast()) ||
-				// TODO: 0 is actually not correct for smaller networks than /24
-				bytes[last] == 0 && Arrays.equals(bytes, 0, last, ifAddr.getAddress().getAddress(), 0, last);
+					// TODO: 0 is actually not correct for smaller networks than /24
+					bytes[last] == 0 && Arrays.equals(bytes, 0, last, ifAddr.getAddress().getAddress(), 0, last);
 		}
 		return bytes[last] == 0 || bytes[last] == (byte)0xFF;
 	}
@@ -209,6 +210,23 @@ public class InetAddressUtils {
 		}
 	}
 
+	
+	//Change the UTIL method to pass in the LAN port for specified host filtering(Stream<NetworkInterface> interfaceStream),
+	// instead of re-obtaining the LAN port every time, I have just
+	//"Stream<NetworkInterface> interfaceStream" is for the collection Stream of the obtained local LAN port
+	//"InetAddress address" is the list waiting to be scanned
+	public static NetworkInterface getInterface(InetAddress address, Stream<NetworkInterface> interfaceStream) {
+		try {
+			if (address == null) return null;
+			return interfaceStream.filter(i -> i.getInterfaceAddresses().stream().anyMatch(ifAddr -> {
+				InetAddress netmask = parseNetmask(ifAddr.getNetworkPrefixLength());
+				return startRangeByNetmask(address, netmask).equals(startRangeByNetmask(ifAddr.getAddress(), netmask));
+			})).findFirst().orElse(null);
+		}
+		catch (Exception e) {
+			return null;
+		}
+	}
 	public static NetworkInterface getInterface(InetAddress address) {
 		try {
 			if (address == null) return null;
