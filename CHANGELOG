@@ -3,6 +3,7 @@ Changes in 3.9.0:
 - Mac: change next alive host shortcut to Cmd+N (Cmd+H is conflicting with hide window)
 - Windows installer: update bundled Java runtime to 17
 - Linux XFCE: execute terminal properly #379
+- Remember last window position #278
 - Faster File Feeder when loading large files #347
 - Update SWT for all platforms
 - Update MAC vendors
