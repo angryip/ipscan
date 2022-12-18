@@ -41,6 +41,7 @@ public class FileFeeder extends AbstractFeeder {
 	/** Found IP address Strings are put here */
 	private Map<String, ScanningSubject> foundHosts;
 	private Iterator<ScanningSubject> foundIPAddressesIterator;
+	private Stream<NetworkInterface> networkInterfaces;
 	
 	private int currentIndex;
 
@@ -49,9 +50,16 @@ public class FileFeeder extends AbstractFeeder {
 	}
 	
 	public FileFeeder() {
+		try {
+			networkInterfaces = NetworkInterface.networkInterfaces();
+		}
+		catch (SocketException e) {
+			LOG.log(WARNING, "", e);
+		}
 	}
 	
 	public FileFeeder(String fileName) {
+		this();
 		try {
 			findHosts(new FileReader(fileName));
 		}
@@ -59,13 +67,15 @@ public class FileFeeder extends AbstractFeeder {
 			throw new FeederException("file.notExists");
 		}
 	}
-	// for reading 10 lines, everytime
+
 	public FileFeeder(Reader reader) {
+		this();
 		findHosts(reader);
 	}
+
 	private String readMultiLine(BufferedReader fileReader) throws IOException {
 		int index = 1;
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		String fileLine;
 		while ((fileLine = fileReader.readLine()) != null) {
 			sb.append(fileLine);
@@ -82,31 +92,22 @@ public class FileFeeder extends AbstractFeeder {
 	private void findHosts(Reader reader) {
 		currentIndex = 0;
 		foundHosts = new LinkedHashMap<>();
-		Long startTime = System.currentTimeMillis();
+		long startTime = System.currentTimeMillis();
 
-     // Import the collection flow of the local LAN port, first time , and just one time
-		Stream<NetworkInterface> interfaceStream = null;
-		try {
-			interfaceStream = NetworkInterface.networkInterfaces();
-		}
-		catch (SocketException e) {
-			e.printStackTrace();
-		}
 		System.out.println("Start to deal with the file, time used：" + startTime);
 		try (BufferedReader fileReader = new BufferedReader(reader)) {
 			String fileLine;
 			while (!(fileLine = readMultiLine(fileReader)).equals("")) {
-				Long lineTime = System.currentTimeMillis();
+				long lineTime = System.currentTimeMillis();
 				Matcher matcher = HOSTNAME_REGEX.matcher(fileLine);
 				while (matcher.find()) {
 					try {
 						String host = matcher.group();
 						if (host.equals(Version.OWN_HOST)) continue;
 						ScanningSubject subject = foundHosts.get(host);
-						if (subject == null){
+						if (subject == null) {
 							InetAddress address = InetAddress.getByName(host);
-							//Call the new constructor( ScanningSubject) and pass in the LAN port obtained in advance above
-							subject = new ScanningSubject(address, InetAddressUtils.getInterface(address, interfaceStream));
+							subject = new ScanningSubject(address, InetAddressUtils.getInterface(address, networkInterfaces));
 						}
 						
 						if (!matcher.hitEnd() && fileLine.charAt(matcher.end()) == ':') {
@@ -154,5 +155,4 @@ public class FileFeeder extends AbstractFeeder {
 		// let's return the number of found addresses
 		return Integer.toString(foundHosts.size());
 	}
-	
 }

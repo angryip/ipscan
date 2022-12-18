@@ -210,11 +210,6 @@ public class InetAddressUtils {
 		}
 	}
 
-	
-	//Change the UTIL method to pass in the LAN port for specified host filtering(Stream<NetworkInterface> interfaceStream),
-	// instead of re-obtaining the LAN port every time, I have just
-	//"Stream<NetworkInterface> interfaceStream" is for the collection Stream of the obtained local LAN port
-	//"InetAddress address" is the list waiting to be scanned
 	public static NetworkInterface getInterface(InetAddress address, Stream<NetworkInterface> interfaceStream) {
 		try {
 			if (address == null) return null;
@@ -227,15 +222,12 @@ public class InetAddressUtils {
 			return null;
 		}
 	}
+
 	public static NetworkInterface getInterface(InetAddress address) {
 		try {
-			if (address == null) return null;
-			return NetworkInterface.networkInterfaces().filter(i -> i.getInterfaceAddresses().stream().anyMatch(ifAddr -> {
-				InetAddress netmask = parseNetmask(ifAddr.getNetworkPrefixLength());
-				return startRangeByNetmask(address, netmask).equals(startRangeByNetmask(ifAddr.getAddress(), netmask));
-			})).findFirst().orElse(null);
+			return getInterface(address, NetworkInterface.networkInterfaces());
 		}
-		catch (SocketException e) {
+		catch (Exception e) {
 			return null;
 		}
 	}
