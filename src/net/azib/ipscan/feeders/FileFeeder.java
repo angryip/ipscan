@@ -73,19 +73,15 @@ public class FileFeeder extends AbstractFeeder {
 		findHosts(reader);
 	}
 
-	private String readMultiLine(BufferedReader fileReader) throws IOException {
+	private String readLines(BufferedReader fileReader, int num) throws IOException {
 		int index = 1;
 		StringBuilder sb = new StringBuilder();
 		String fileLine;
 		while ((fileLine = fileReader.readLine()) != null) {
 			sb.append(fileLine);
 			index++;
-
-			if (index > 10) {
-				break;
-			}
+			if (index > num) break;
 		}
-
 		return sb.toString();
 	}
 
@@ -94,10 +90,9 @@ public class FileFeeder extends AbstractFeeder {
 		foundHosts = new LinkedHashMap<>();
 		long startTime = System.currentTimeMillis();
 
-		System.out.println("Start to deal with the file, time used：" + startTime);
 		try (BufferedReader fileReader = new BufferedReader(reader)) {
 			String fileLine;
-			while (!(fileLine = readMultiLine(fileReader)).equals("")) {
+			while (!(fileLine = readLines(fileReader, 20)).equals("")) {
 				long lineTime = System.currentTimeMillis();
 				Matcher matcher = HOSTNAME_REGEX.matcher(fileLine);
 				while (matcher.find()) {
@@ -124,9 +119,8 @@ public class FileFeeder extends AbstractFeeder {
 						LOG.log(WARNING, e.toString());
 					}
 				}
-				System.out.println("The time used for one line" + (System.currentTimeMillis() - lineTime) + "ms");
 			}
-			System.out.println("fini, total time used" + (System.currentTimeMillis() - startTime)+ "ms");
+			LOG.fine("File processed in " + (System.currentTimeMillis() - startTime) + " ms");
 			if (foundHosts.isEmpty()) {
 				throw new FeederException("file.nothingFound");
 			}
