@@ -78,7 +78,7 @@ public class FileFeeder extends AbstractFeeder {
 		StringBuilder sb = new StringBuilder();
 		String fileLine;
 		while ((fileLine = fileReader.readLine()) != null) {
-			sb.append(fileLine);
+			sb.append(fileLine).append("\n");
 			index++;
 			if (index > num) break;
 		}
