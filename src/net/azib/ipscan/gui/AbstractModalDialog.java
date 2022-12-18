@@ -15,6 +15,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
+import java.util.logging.Logger;
+
 /**
  * This is the base of a modal dialog window
  *
@@ -69,7 +71,7 @@ public abstract class AbstractModalDialog {
 			parent = Display.getCurrent().getShells()[0];
 		}
 		catch (Exception e) {
-			// ignore if unsuccessful
+			Logger.getLogger(getClass().getName()).warning("Failed to get parent shell: " + e);
 		}
 		
 		shell = new Shell(parent, getShellStyle());
