@@ -1,10 +1,11 @@
-Changes in unreleased:
+Changes in 3.9.0:
 - Mac: bundle Java 17 runtime, so that Java doesn't need to be installed separately
 - Mac: change next alive host shortcut to Cmd+N (Cmd+H is conflicting with hide window)
 - Windows installer: update bundled Java runtime to 17
 - Linux XFCE: execute terminal properly #379
 - Faster File Feeder when loading large files #347
 - Update SWT for all platforms
+- Update MAC vendors
 
 Changes in 3.8.2:
 - Allow building if .git is not present (e.g. from source zip) #319
