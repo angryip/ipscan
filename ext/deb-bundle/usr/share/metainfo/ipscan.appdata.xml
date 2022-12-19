@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component type="desktop">
+<component type="desktop-application">
     <id>ipscan.desktop</id>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>GPL-2.0+</project_license>
     <name>Angry IP Scanner</name>
     <summary>Fast and friendly network scanner</summary>
     <icon type="remote" width="128" height="128">https://angryip.org/images/icon.png</icon>
+    <launchable type="desktop-id">ipscan.desktop</launchable>
     <description>
         <p>Angry IP Scanner (or simply ipscan) is an open-source and cross-platform network scanner designed to be fast and simple to use. It scans IP addresses and ports as well as has many other features.</p
         <p>It is widely used by network administrators and just curious users around the world, including large and small enterprises, banks, and government agencies.</p>
