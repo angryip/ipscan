@@ -234,13 +234,13 @@ def macLauncher(def platform) {
         ant.replacefilter(token: "VERSION", value: version)
     }
 
+    ant.delete(file: "${dist}/${name}.app/Contents/MacOS/jre/bin/keytool")
     def zipName = "${dist}/${project.name}-${platform}-${version}.zip"
     ant.zip(destfile: "${dist}/${project.name}-${platform}-${version}.zip") {
         ant.zipfileset(dir: "${dist}/${name}.app", excludes: "Contents/MacOS/ipscan,Contents/MacOS/jre/bin/java", prefix: "${name}.app")
         // this one should be executable
         ant.zipfileset(dir: "${dist}/${name}.app", includes: "Contents/MacOS/ipscan", prefix: "${name}.app", filemode: "755")
         ant.zipfileset(dir: "${dist}/${name}.app", includes: "Contents/MacOS/jre/bin/java", prefix: "${name}.app", filemode: "755")
-        ant.zipfileset(dir: "${dist}/${name}.app", excludes: "Contents/MacOS/jre/bin/keytool", prefix: "${name}.app")
         ant.zipfileset(dir: "${dist}/${name}.app", includes: "Contents/MacOS/jre/lib/jspawnhelper", prefix: "${name}.app", filemode: "755")
     }
 
