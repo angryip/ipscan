@@ -235,14 +235,9 @@ def macLauncher(def platform) {
     }
 
     ant.delete(file: "${dist}/${name}.app/Contents/MacOS/jre/bin/keytool")
+
     def zipName = "${dist}/${project.name}-${platform}-${version}.zip"
-    ant.zip(destfile: "${dist}/${project.name}-${platform}-${version}.zip") {
-        ant.zipfileset(dir: "${dist}/${name}.app", excludes: "Contents/MacOS/ipscan,Contents/MacOS/jre/bin/java", prefix: "${name}.app")
-        // this one should be executable
-        ant.zipfileset(dir: "${dist}/${name}.app", includes: "Contents/MacOS/ipscan", prefix: "${name}.app", filemode: "755")
-        ant.zipfileset(dir: "${dist}/${name}.app", includes: "Contents/MacOS/jre/bin/java", prefix: "${name}.app", filemode: "755")
-        ant.zipfileset(dir: "${dist}/${name}.app", includes: "Contents/MacOS/jre/lib/jspawnhelper", prefix: "${name}.app", filemode: "755")
-    }
+    exec("zip -qR $zipName *", dist)
 
     if (System.getenv("APPLE_USER")) {
         // TODO: codesign --sign Example --options runtime --entitlements test/test.entitlements --force build/Release/test.app
