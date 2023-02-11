@@ -1,3 +1,8 @@
+Changes in 3.9.1:
+- Mac: fix permissions in bundled JRE, so that MAC address scanning would work #384
+- Linux startup fix if JAVA_HOME has spaces #391
+- Update MAC vendors
+
 Changes in 3.9.0:
 - Mac: bundle Java 17 runtime, so that Java doesn't need to be installed separately
 - Mac: change next alive host shortcut to Cmd+N (Cmd+H is conflicting with hide window)
