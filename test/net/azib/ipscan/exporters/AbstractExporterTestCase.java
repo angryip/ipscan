@@ -21,7 +21,6 @@ import static org.junit.Assert.*;
  * @author Anton Keks
  */
 public abstract class AbstractExporterTestCase {
-	
 	protected Exporter exporter;
 	protected ByteArrayOutputStream outputStream;
 	protected String outputContent;
@@ -46,7 +45,7 @@ public abstract class AbstractExporterTestCase {
 	
 	@Test
 	public void testStreamFlushAndClose() throws IOException {
-		final boolean wasClosed[] = new boolean[] {false, false};
+		final boolean[] wasClosed = new boolean[] {false, false};
 		Exporter exporter2 = createExporter();
 		OutputStream mockOutputStream = new OutputStream() {
 			public void write(int b) throws IOException {
@@ -74,8 +73,8 @@ public abstract class AbstractExporterTestCase {
 	public void testBasic() throws Exception {
 		exporter.start(outputStream, "feederstuff");
 		exporter.setFetchers(new String[] {"IP", "hello", "fetcher2"});
-		exporter.nextAddressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "world", new Integer(53)});
-		exporter.nextAddressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "buga", new Integer(-1)});
+		exporter.nextAddressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "world", 53});
+		exporter.nextAddressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "buga", -1});
 		exporter.end();
 		assertContains(InetAddress.getLocalHost().getHostAddress());
 		assertContains("hello");
@@ -124,13 +123,11 @@ public abstract class AbstractExporterTestCase {
 	protected void assertContains(String string, boolean contains) throws IOException {
 		if (outputContent == null) {
 			outputStream.close();
-			// TODO: encoding???
-			outputContent = new String(outputStream.toByteArray());
+			outputContent = outputStream.toString();
 		}
 
-		if (!((outputContent.indexOf(string) >= 0) ^ (!contains))) {
+		if (outputContent.contains(string) == !contains)
 			throw new ComparisonFailure("Contains check failed", string, outputContent);
-		}
 	}
 
 	protected void assertContains(String string) throws IOException {
