@@ -112,7 +112,7 @@ public class ScannerTest {
 				subject.setResultType(ResultType.ALIVE);
 				
 				// try to set parameter here and read from another Fetcher
-				subject.setParameter("megaParam", new Long(211082));
+				subject.setParameter("megaParam", 211082L);
 			}
 			catch (UnknownHostException e) {
 				fail();
@@ -132,7 +132,7 @@ public class ScannerTest {
 	private class AnotherFakeFetcher extends FakeFetcher {
 		public Object scan(ScanningSubject subject) {
 			// the parameter was set by FakeFetcher
-			assertEquals(new Long(211082), subject.getParameter("megaParam"));
+			assertEquals(211082L, subject.getParameter("megaParam"));
 			// try null as a return value
 			return null;
 		}

@@ -24,7 +24,7 @@ public class CSVExporterTest extends AbstractExporterTestCase {
 		assertEquals("", ((CSVExporter)exporter).csvSafeString(""));
 		assertEquals("uuuuhha;", ((CSVExporter)exporter).csvSafeString("uuuuhha;"));
 		assertEquals("", ((CSVExporter)exporter).csvSafeString(null));
-		assertEquals("123", ((CSVExporter)exporter).csvSafeString(new Long(123)));
+		assertEquals("123", ((CSVExporter)exporter).csvSafeString(123L));
 	}
 	
 	@Test

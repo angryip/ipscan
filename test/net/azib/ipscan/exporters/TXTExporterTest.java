@@ -30,7 +30,7 @@ public class TXTExporterTest extends AbstractExporterTestCase {
 		assertEquals("                ", ((TXTExporter)exporter).pad("", 0));
 		assertEquals("abc                 ", ((TXTExporter)exporter).pad("abc", 20));
 		assertEquals("                ", ((TXTExporter)exporter).pad(null, 5));
-		assertEquals("5               ", ((TXTExporter)exporter).pad(new Integer(5), 5));
+		assertEquals("5               ", ((TXTExporter)exporter).pad(5, 5));
 	}
 	
 	@Test

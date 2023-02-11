@@ -278,10 +278,10 @@ public class ScanningResultListTest {
 		String s = scanningResults.getResult(0).toString();
 		String ln = System.getProperty("line.separator");
 		assertTrue(s.endsWith(ln));
-		assertTrue(s.indexOf(fetchers.get(0).getName() + ":\t172.28.43.55" + ln) >= 0);
-		assertTrue(s.indexOf(fetchers.get(1).getName() + ":\t123" + ln) >= 0);
-		assertTrue(s.indexOf(fetchers.get(2).getName() + ":\txxxxx" + ln) >= 0);
-		assertTrue(s.indexOf(fetchers.get(3).getName() + ":\t" + ln) >= 0);
+		assertTrue(s.contains(fetchers.get(0).getName() + ":\t172.28.43.55" + ln));
+		assertTrue(s.contains(fetchers.get(1).getName() + ":\t123" + ln));
+		assertTrue(s.contains(fetchers.get(2).getName() + ":\txxxxx" + ln));
+		assertTrue(s.contains(fetchers.get(3).getName() + ":\t" + ln));
 	}
 	
 	@Test
@@ -289,7 +289,7 @@ public class ScanningResultListTest {
 		scanningResults.registerAtIndex(0, scanningResults.createResult(InetAddress.getByName("127.9.9.1")));
 		scanningResults.getResult(0).setValue(1, NotScanned.VALUE);
 		scanningResults.registerAtIndex(1, scanningResults.createResult(InetAddress.getByName("127.9.9.2")));
-		scanningResults.getResult(1).setValue(1, new Long(123456789L));
+		scanningResults.getResult(1).setValue(1, 123456789L);
 		scanningResults.registerAtIndex(2, scanningResults.createResult(InetAddress.getByName("127.9.9.3")));
 		scanningResults.getResult(2).setValue(1, "zzzz");
 		scanningResults.registerAtIndex(3, scanningResults.createResult(InetAddress.getByName("127.9.9.4")));

@@ -82,8 +82,8 @@ public class XMLExporterTest extends AbstractExporterTestCase {
 	public void testValidXML() throws Exception {
 		exporter.start(outputStream, "<megaInfo'''");
 		exporter.setFetchers(new String[] {"IP", "hello", "fet::cher2"});
-		exporter.nextAddressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "w?:orld'", new Integer(53)});
-		exporter.nextAddressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "bug>>a", new Integer(-1)});
+		exporter.nextAddressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "w?:orld'", 53});
+		exporter.nextAddressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "bug>>a", -1});
 		exporter.end();
 		assertContains("<megaInfo'''");
 		
