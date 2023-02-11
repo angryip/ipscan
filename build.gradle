@@ -220,12 +220,13 @@ def rpm(def platform, def arch) {
 def macLauncher(def platform) {
     def dist = buildDir.path + '/libs'
     def name = 'Angry IP Scanner'
+    exec("cp -ra ext/mac-bundle/. $dist")
     ant.copy(todir: dist) {
         ant.fileset(dir: "ext/mac-bundle")
     }
 
     def target = "${dist}/${name}.app/Contents/MacOS"
-    ant.copy(file: "${dist}/${project.name}-${platform}-${version}.jar", todir: target)
+    ant.move(file: "${dist}/${project.name}-${platform}-${version}.jar", todir: target)
     jlink(target, "jre")
 
     ant.replace(file: "${dist}/${name}.app/Contents/Info.plist") {
@@ -237,7 +238,7 @@ def macLauncher(def platform) {
     ant.delete(file: "${dist}/${name}.app/Contents/MacOS/jre/bin/keytool")
 
     def zipName = "${dist}/${project.name}-${platform}-${version}.zip"
-    exec("zip -qR $zipName *", dist)
+    exec("zip -R $zipName *", dist)
 
     if (System.getenv("APPLE_USER")) {
         // TODO: codesign --sign Example --options runtime --entitlements test/test.entitlements --force build/Release/test.app
@@ -248,7 +249,6 @@ def macLauncher(def platform) {
     }
 
     ant.delete(dir: "${dist}/${name}.app")
-    ant.delete(file: "${dist}/${project.name}-${platform}-${version}.jar")
 }
 
 packageTask('linux64') {
