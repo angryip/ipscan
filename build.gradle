@@ -220,7 +220,7 @@ def rpm(def platform, def arch) {
 def macLauncher(def platform) {
     def dist = buildDir.path + '/libs'
     def name = 'Angry IP Scanner'
-    exec("cp -ra ext/mac-bundle/. $dist")
+    exec("cp -rp ext/mac-bundle/. $dist")
     ant.copy(todir: dist) {
         ant.fileset(dir: "ext/mac-bundle")
     }
