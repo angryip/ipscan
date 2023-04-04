@@ -30,14 +30,14 @@ public abstract class StateMachine {
 	/**
 	 * @return true if current state is as specified
 	 */
-	public boolean inState(ScanningState state) {
+	public boolean inCurrentState(ScanningState state) {
 		return this.state == state;
 	}
 	
 	/**
 	 * @return current state
 	 */
-	public ScanningState getState() {
+	public ScanningState getCurrentState() {
 		return state;
 	}
 

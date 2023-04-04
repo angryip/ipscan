@@ -97,7 +97,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		stateMachine.addTransitionListener(this);
 		
 		// set the default image
-		ScanningState state = stateMachine.getState();
+		ScanningState state = stateMachine.getCurrentState();
 		button.setImage(buttonImages[state.ordinal()]);
 		button.setText(buttonTexts[state.ordinal()]);
 	}
@@ -124,7 +124,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	 */
 	public void widgetSelected(SelectionEvent event) {
 		// ask for confirmation before erasing scanning results
-		if (stateMachine.inState(IDLE)) {
+		if (stateMachine.inCurrentState(IDLE)) {
 			if (!preScanChecks())
 				return;
 		}
@@ -249,13 +249,13 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 			if (taskBarItem != null) taskBarItem.setProgress(percentageComplete);
 
 			// show percentage in main window title
-			if (!stateMachine.inState(IDLE))
+			if (!stateMachine.inCurrentState(IDLE))
 				statusBar.getShell().setText(percentageComplete + "% - " + mainWindowTitle);
 			else
 				statusBar.getShell().setText(mainWindowTitle);
 
 			// change button image according to the current state
-			button.setImage(buttonImages[stateMachine.getState().ordinal()]);
+			button.setImage(buttonImages[stateMachine.getCurrentState().ordinal()]);
 		});
 	}
 
