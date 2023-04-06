@@ -158,13 +158,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 	 * @param newValue
 	 */
 	public void updateResult(int index, String fetcherId, Object newValue) {
-		int fetcherIndex = scanningResults.getFetcherIndex(fetcherId);
-		if (fetcherIndex >= 0) {
-			// update the value in the results
-			scanningResults.getResult(index).setValue(fetcherIndex, newValue);
-			// update visual representation
-			clear(index);
-		}
+		scanningResults.updateResult(index, fetcherId, newValue, scanningResults);
 	}
 
 	/**

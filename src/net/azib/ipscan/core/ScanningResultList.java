@@ -53,6 +53,14 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		stateMachine.addTransitionListener(new StopScanningListener());
 	}
 
+	public void updateResult(int index, String fetcherId, Object newValue, ScanningResultList scanningResults) {
+		int fetcherIndex = scanningResults.getFetcherIndex(fetcherId);
+		if (fetcherIndex >= 0) {
+			// update the value in the results
+			scanningResults.getResult(index).setValue(fetcherIndex, newValue);
+		}
+	}
+
 	/**
 	 * @return selected fetchers that were used for the last scan
 	 * Note: they may be different from {@link FetcherRegistry#getSelectedFetchers()}
