@@ -17,7 +17,7 @@ public class NetBIOSResolverTest {
 						   "ComputerName   XYY" + 
 						   "\u00DE\u00AD\u00BE\u00EF\u0000\u0000         XYY" 
 						  ).getBytes("ISO-8859-1");
-		assertArrayEquals(new String[]{"ComputerName", null, null, "DE-AD-BE-EF-00-00"}, NetBIOSResolver.extractNames(response, 1));
+		assertArrayEquals(new String[]{"ComputerName", null, null, "DE-AD-BE-EF-00-00"}, NetBIOSName.extractNames(response, 1));
 	}
 	
 	@Test
@@ -27,7 +27,7 @@ public class NetBIOSResolverTest {
 						   "GroupName      \u0000\u0080\u0000" +
 						   "\u0001\u0002\u0003\u0004\u0005\u0006         XYY" 
 						  ).getBytes("ISO-8859-1");
-		assertArrayEquals(new String[] {"ComputerName", null, "GroupName", "01-02-03-04-05-06"}, NetBIOSResolver.extractNames(response, 2));
+		assertArrayEquals(new String[] {"ComputerName", null, "GroupName", "01-02-03-04-05-06"}, NetBIOSName.extractNames(response, 2));
 	}
 		
 	@Test
@@ -42,6 +42,6 @@ public class NetBIOSResolverTest {
 						   "SomeName       XYY" +
 						   "\u00DE\u00AD\u00BE\u00EF\u0000\u0000         XYY" 
 						  ).getBytes("ISO-8859-1");
-		assertArrayEquals(new String[] {"ComputerName", "UserName", "GroupName", "DE-AD-BE-EF-00-00"}, NetBIOSResolver.extractNames(response, 7));
+		assertArrayEquals(new String[] {"ComputerName", "UserName", "GroupName", "DE-AD-BE-EF-00-00"}, NetBIOSName.extractNames(response, 7));
 	}
 }
