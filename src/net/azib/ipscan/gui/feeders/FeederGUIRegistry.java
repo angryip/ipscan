@@ -80,14 +80,6 @@ public class FeederGUIRegistry implements FeederRegistry {
 	}
 
 	/**
-	 * @return new Feeder initialized using the currently selected Feeder GUI
-	 */
-	public Feeder createFeeder() {
-		lastFeeder = current().createFeeder();
-		return lastFeeder;
-	}
-
-	/**
 	 * @param selection selected table items to derive IP addresses from
 	 * @return initialized instance of RescanFeeder
 	 */
