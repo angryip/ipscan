@@ -145,8 +145,16 @@ public class GotoMenuActions {
 			ArrayList<Integer> foundMatches = findMatches(text);
 			int selectionIndex = 0;
 
+			if(foundMatches.size() == 0){
+				MessageBox messageBox = new MessageBox(statusBar.getShell(), SWT.OK | SWT.ICON_INFORMATION);
+				messageBox.setText(Labels.getLabel("title.find"));
+				messageBox.setMessage(Labels.getLabel("text.find.notFound"));
+				messageBox.open();
+				return;
+			}
+
 			while(true){
-				FindDialog find = new FindDialog("Find", foundMatches.size() + " matches were found");
+				FindDialog find = new FindDialog(Labels.getLabel("title.find"), foundMatches.size() + " " + Labels.getLabel("text.found"));
 				resultTable.setSelection(selectionIndex);
 				resultTable.setFocus();
 				int flag = find.open(selectionIndex + 1, foundMatches.size());

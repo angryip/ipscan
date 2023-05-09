@@ -1,5 +1,6 @@
 package net.azib.ipscan.gui;
 
+import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -32,15 +33,15 @@ public class FindDialog extends AbstractModalDialog{
 		indexLabel.setLayoutData(LayoutHelper.formData(new FormAttachment(0), null, new FormAttachment(messageLabel), null));
 
 		previousButton = new Button(shell, SWT.NONE);
-		previousButton.setText("<");
+		previousButton.setText(Labels.getLabel("button.left"));
 		previousButton.setLayoutData(LayoutHelper.formData(new FormAttachment(messageLabel), null, new FormAttachment(messageLabel), null));
 
 		nextButton = new Button(shell, SWT.NONE);
-		nextButton.setText(">");
+		nextButton.setText(Labels.getLabel("button.right"));
 		nextButton.setLayoutData(LayoutHelper.formData(new FormAttachment(previousButton), null, new FormAttachment(messageLabel), null));
 
 		closeButton = new Button(shell, SWT.NONE);
-		closeButton.setText("close");
+		closeButton.setText(Labels.getLabel("button.close"));
 		closeButton.setLayoutData(LayoutHelper.formData(new FormAttachment(nextButton), null, new FormAttachment(messageLabel), null));
 
 		nextButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
