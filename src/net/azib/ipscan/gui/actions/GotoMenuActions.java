@@ -206,6 +206,11 @@ public class GotoMenuActions {
 
 		}
 
+		/**
+		 * Makes an arraylist with a list of all indexes which match the input
+		 *
+		 * @return arraylist of integers
+		 */
 		private ArrayList<Integer> findMatches(String text){
 			ScanningResultList results = resultTable.getScanningResults();
 
