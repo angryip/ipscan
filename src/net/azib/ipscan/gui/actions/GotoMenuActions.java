@@ -155,7 +155,7 @@ public class GotoMenuActions {
 
 			while(true){
 				FindDialog find = new FindDialog(Labels.getLabel("title.find"), foundMatches.size() + " " + Labels.getLabel("text.found"));
-				resultTable.setSelection(selectionIndex);
+				resultTable.setSelection(foundMatches.get(selectionIndex));
 				resultTable.setFocus();
 				int flag = find.open(selectionIndex + 1, foundMatches.size());
 
