@@ -7,7 +7,7 @@ redirect_from: /w/Development/
 Contribute
 ==========
 
-The easiest way to extend functionality of Angry IP Scanner is to [write a plugin](plugins.html).
+The easiest way to extend the functionality of Angry IP Scanner is to [write a plugin](plugins.html).
 
 Angry IP Scanner's source code is hosted on [Github](https://github.com/angryip/ipscan).
 Forking and pull-requests are very welcome! If you want to get an idea of what to do, check the [bug reports](https://sourceforge.net/p/ipscan/bugs/).
