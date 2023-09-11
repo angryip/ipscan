@@ -1,0 +1,5 @@
+#!/bin/bash
+java=$JAVA_HOME/bin/java
+[ ! -e "$java" ] && java=java
+
+"$java" -jar /app/lib/ipscan/ipscan-linux64.jar "$@"

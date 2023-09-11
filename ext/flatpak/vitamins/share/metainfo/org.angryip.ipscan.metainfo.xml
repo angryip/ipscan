@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+    <id>org.angryip.ipscan</id>
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>GPL-2.0+</project_license>
+    <name>Angry IP Scanner</name>
+    <developer_name>Anton Keks and contributors</developer_name>
+    <summary>Fast and friendly network scanner</summary>
+    <content_rating type="oars-1.0" />
+    <icon type="remote" width="128" height="128">https://angryip.org/images/icon.png</icon>
+
+    <description>
+        <p>Angry IP Scanner (or simply ipscan) is an open-source and cross-platform network scanner designed to be fast and simple to use. It scans IP addresses and ports, as well as having many other features.</p>
+        <p>It is widely used by network administrators and just curious users around the world, including large and small enterprises, banks, and government agencies.</p>
+    </description>
+
+    <screenshots>
+        <screenshot type="default">
+            <caption>A scan was performed</caption>
+            <image type="source">https://angryip.org/screenshots/ipscan-ubuntu.png</image>
+        </screenshot>
+    </screenshots>
+
+    <categories>
+        <category>Network</category>
+        <category>Utility</category>
+    </categories>
+
+    <keywords>
+      <keyword>angry</keyword>
+      <keyword>ipscan</keyword>
+      <keyword>ip</keyword>
+      <keyword>scan</keyword>
+      <keyword>scanner</keyword>
+    </keywords>
+
+    <url type="homepage">https://angryip.org/</url>
+    <url type="bugtracker">https://github.com/angryip/ipscan/issues/</url>
+    <url type="faq">https://angryip.org/faq/</url>
+    <url type="vcs-browser">https://github.com/angryip/ipscan/</url>
+    <url type="contribute">https://angryip.org/contribute/</url>
+
+    <launchable type="desktop-id">org.angryip.ipscan.desktop</launchable>
+    <requires>
+        <internet>always</internet>
+    </requires>
+
+    <releases>
+        <release version="3.9.1" date="2023-02-11">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.9.1</url>
+        </release>
+        <release version="3.9.0" date="2022-12-18">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.9.0</url>
+        </release>
+        <release version="3.8.2" date="2022-01-22">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.8.2</url>
+        </release>
+        <release version="3.8.1" date="2022-01-19">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.8.1</url>
+        </release>
+        <release version="3.8.0" date="2022-01-16">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.8.0</url>
+        </release>
+        <release version="3.7.6" date="2021-02-15">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.7.6</url>
+        </release>
+        <release version="3.7.5" date="2021-02-03">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.7.5</url>
+        </release>
+        <release version="3.7.4" date="2021-01-22">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.7.4</url>
+        </release>
+        <release version="3.7.3" date="2020-10-27">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.7.3</url>
+        </release>
+        <release version="3.7.2" date="2020-06-02">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.7.2</url>
+        </release>
+        <release version="3.7.1" date="2020-05-17">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.7.1</url>
+        </release>
+        <release version="3.7.0" date="2020-03-14">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.7.0</url>
+        </release>
+        <release version="3.6.2" date="2019-10-14">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.6.2</url>
+        </release>
+        <release version="3.6.1" date="2019-09-05">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.6.1</url>
+        </release>
+        <release version="3.6.0" date="2019-08-11">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.6.0</url>
+        </release>
+        <release version="3.5.5" date="2018-12-28">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.5.5</url>
+        </release>
+        <release version="3.5.4" date="2018-12-27">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.5.4</url>
+        </release>
+        <release version="3.5.3" date="2018-08-26">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.5.3</url>
+        </release>
+        <release version="3.5.2" date="2017-11-19">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.5.2</url>
+        </release>
+        <release version="3.5.1" date="2017-01-24">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.5.1</url>
+        </release>
+        <release version="3.5" date="2016-12-11">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.5</url>
+        </release>
+        <release version="3.4.2" date="2016-08-04">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.4.2</url>
+        </release>
+        <release version="3.4.1" date="2016-01-12">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.4.1</url>
+        </release>
+        <release version="3.4" date="2015-09-06">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.4</url>
+        </release>
+        <release version="3.3.3" date="2015-06-05">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.3.3</url>
+        </release>
+        <release version="3.3.2" date="2014-09-30">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.3.2</url>
+        </release>
+        <release version="3.3.1" date="2014-07-15">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.3.1</url>
+        </release>
+        <release version="3.3" date="2014-05-25">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.3</url>
+        </release>
+        <release version="3.2.3" date="2014-03-17">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.2.3</url>
+        </release>
+        <release version="3.2.2" date="2014-03-12">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.2.2</url>
+        </release>
+        <release version="3.2.1" date="2013-08-25">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.2.1</url>
+        </release>
+        <release version="3.2" date="2013-03-11">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.2</url>
+        </release>
+        <release version="3.1" date="2013-02-05">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.1</url>
+        </release>
+        <release version="2.21" date="2004-04-07">
+            <url>https://github.com/angryip/ipscan/releases/tag/2.21</url>
+        </release>
+        <release version="2.20" date="2003-10-13">
+            <url>https://github.com/angryip/ipscan/releases/tag/2.20</url>
+        </release>
+        <release version="2.19" date="2003-08-08">
+            <url>https://github.com/angryip/ipscan/releases/tag/2.19</url>
+        </release>
+        <release version="2.18" date="2003-08-01">
+            <url>https://github.com/angryip/ipscan/releases/tag/2.18</url>
+        </release>
+        <release version="2.17" date="2003-07-25">
+            <url>https://github.com/angryip/ipscan/releases/tag/2.17</url>
+        </release>
+        <release version="2.16" date="2003-02-18">
+            <url>https://github.com/angryip/ipscan/releases/tag/2.16</url>
+        </release>
+        <release version="2.15" date="2002-12-23">
+            <url>https://sourceforge.net/projects/ipscan/files/ipscan2-binary/2.15/</url>
+        </release>
+        <release version="2.14" date="2002-12-10">
+            <url>https://sourceforge.net/projects/ipscan/files/ipscan2-binary/2.14/</url>
+        </release>
+        <release version="2.13" date="2002-11-20">
+            <url>https://github.com/angryip/ipscan/releases/tag/2.13</url>
+        </release>
+        <release version="2.12" date="2002-09-28">
+            <url>https://github.com/angryip/ipscan/releases/tag/2.12</url>
+        </release>
+        <release version="2.11" date="2002-09-11">
+            <url>https://github.com/angryip/ipscan/releases/tag/2.11</url>
+        </release>
+        <release version="2.10" date="2002-08-17">
+            <url>https://sourceforge.net/projects/ipscan/files/ipscan2-binary/2.10/</url>
+        </release>
+        <release version="2.09" date="2002-07-23">
+            <url>https://github.com/angryip/ipscan/releases/tag/2.09</url>
+        </release>
+        <release version="2.08" date="2002-07-01">
+            <url>https://github.com/angryip/ipscan/releases/tag/2.08</url>
+        </release>
+        <release version="2.07" date="2002-06-28">
+            <url>https://github.com/angryip/ipscan/releases/tag/2.07</url>
+        </release>
+        <release version="2.06" date="2002-06-18">
+            <url>https://github.com/angryip/ipscan/releases/tag/2.06</url>
+        </release>
+        <release version="2.05" date="2002-06-09">
+            <url>https://sourceforge.net/projects/ipscan/files/ipscan2-binary/2.05/</url>
+        </release>
+        <release version="2.04" date="2002-06-06">
+            <url>https://github.com/angryip/ipscan/releases/tag/2.04</url>
+        </release>
+        <release version="2.03" date="2002-06-05">
+            <url>https://github.com/angryip/ipscan/releases/tag/2.03</url>
+        </release>
+        <release version="1.90" date="2002-04-25">
+            <url>https://sourceforge.net/projects/ipscan/files/ipscan2-binary/1.90/</url>
+        </release>
+        <release version="1.89" date="2002-03-07">
+            <url>https://github.com/angryip/ipscan/releases/tag/1.89</url>
+        </release>
+        <release version="1.88" date="2002-02-20">
+            <url>https://sourceforge.net/projects/ipscan/files/ipscan2-binary/1.88/</url>
+        </release>
+        <release version="1.87" date="2001-12-17">
+            <url>https://sourceforge.net/projects/ipscan/files/ipscan2-binary/1.87/</url>
+        </release>
+        <release version="1.86" date="2001-12-03">
+            <url>https://github.com/angryip/ipscan/releases/tag/1.86</url>
+        </release>
+        <release version="1.85" date="2001-10-18">
+            <url>https://github.com/angryip/ipscan/releases/tag/1.85</url>
+        </release>
+        <release version="1.84" date="2001-08-16">
+            <url>https://github.com/angryip/ipscan/releases/tag/1.84</url>
+        </release>
+        <release version="1.82" date="2001-05-28">
+            <url>https://github.com/angryip/ipscan/releases/tag/1.82</url>
+        </release>
+        <release version="1.81" date="2001-05-08">
+            <url>https://github.com/angryip/ipscan/releases/tag/1.81</url>
+        </release>
+    </releases>
+</component>
