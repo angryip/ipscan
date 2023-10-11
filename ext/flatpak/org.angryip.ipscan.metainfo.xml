@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-    <id>ipscan.desktop</id>
+    <id>org.angryip.ipscan</id>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>GPL-2.0+</project_license>
     <name>Angry IP Scanner</name>
@@ -40,7 +40,7 @@
     <url type="vcs-browser">https://github.com/angryip/ipscan/</url>
     <url type="contribute">https://angryip.org/contribute/</url>
 
-    <launchable type="desktop-id">ipscan.desktop</launchable>
+    <launchable type="desktop-id">org.angryip.ipscan.desktop</launchable>
     <requires>
         <internet>always</internet>
     </requires>
@@ -231,4 +231,3 @@
         </release>
     </releases>
 </component>
-

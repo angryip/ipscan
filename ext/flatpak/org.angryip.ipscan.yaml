@@ -1,0 +1,63 @@
+app-id: org.angryip.ipscan
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.openjdk11
+command: ipscan
+finish-args:
+  - --socket=x11
+  - --share=ipc
+  - --share=network
+  - --filesystem=xdg-config/gtk-3.0:ro;
+  - --persist=.swt
+  - --persist=.java
+  - --env=PATH=/usr/bin:/app/bin:/app/jre/bin
+  - --env=JAVA_HOME=/app/jre
+modules:
+  - name: openjdk
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/openjdk11/install.sh
+
+  - name: ipscan
+    buildsystem: simple
+    build-commands:
+      - install ipscan.jar /app/lib/ipscan/
+      - install ipscan /app/bin/
+      - desktop-file-edit --set-key=Exec --set-value=ipscan
+      - desktop-file-edit --set-key=Icon --set-value=org.angryip.ipscan
+      - install org.angryip.ipscan.desktop /app/share/applications/
+      - install org.angryip.ipscan.metainfo.xml /app/share/metainfo/
+      - install org.angryip.ipscan.svg /app/share/icons/hicolor/scalable/apps/
+
+    sources:
+      - type: file
+        url: https://github.com/angryip/ipscan/releases/download/3.9.1/ipscan-linux64-3.9.1.jar
+        sha256: b8b12628c324cddb1e1a464c1caf2597b66ce8f5f1057ffa86c1fe7b1c241b40
+        dest-filename: ipscan.jar
+        only-arches: [x86_64]
+        x-checker-data:
+          type: json
+          url: https://api.github.com/repos/angryip/ipscan/releases/latest
+          version-query: .tag_name
+          url-query: .assets[] | select(.name=="ipscan-linux64-" + $version + ".jar") | .browser_download_url
+
+      - type: file
+        url: https://raw.githubusercontent.com/angryip/ipscan/master/ext/deb-bundle/usr/bin/ipscan
+        sha256: 539a8fbf9e134374213385ea5478e099b026c2d573233275005c50b9046f3d9e
+        dest-filename: ipscan
+
+      - type: file
+        url: https://raw.githubusercontent.com/angryip/ipscan/master/ext/deb-bundle/usr/share/applications/ipscan.desktop
+        sha256: 1fd9c179da838397ff582aac0e9c0eb045c2ef8228f47f6ed5a707121b50e3c0
+        dest-filename: org.angryip.ipscan.desktop
+
+      - type: file
+        url: https://raw.githubusercontent.com/angryip/ipscan/master/ext/flatpak/org.angryip.ipscan.metainfo.xml
+        sha256: adf911dfc41ceb0b844c4d4d6c74afa1576670673cb42d3d30b8c3054cc9c15d
+
+      - type: file
+        url: https://raw.githubusercontent.com/angryip/ipscan/master/resources/images/icon.svg
+        sha256: 1b2d31740d3d3bbd51d3d9a71d65d3859e38d10e99dd978d32fe86ed1e5d7416
+        dest-filename: org.angryip.ipscan.svg
