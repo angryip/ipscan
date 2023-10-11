@@ -1,13 +1,13 @@
 [Desktop Entry]
-Encoding=UTF-8
+Version=1.5
+Type=Application
 Name=Angry IP Scanner
-Comment=Fast and friendly network scanner
 GenericName=Fast and friendly network scanner
+Comment=Fast and friendly network scanner
+Categories=Application;Network;Internet;Utility
 Keywords=angry;ipscan;ip;scan;scanner
 Exec=sh /usr/bin/ipscan
 Terminal=false
-Type=Application
 Icon=ipscan
-Categories=Application;Network;Internet;
-StartupWMClass=Angry IP Scanner
 StartupNotify=true
+StartupWMClass=Angry IP Scanner
