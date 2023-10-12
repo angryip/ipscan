@@ -5,6 +5,7 @@ priority: 1.0
 releases_url: https://github.com/angryip/ipscan/releases
 sourceforge_url: https://sourceforge.net/projects/ipscan/files/ipscan3-binary/
 binary_url: https://github.com/angryip/ipscan/releases/download/
+flathub_url: https://flathub.org/apps/org.angryip.ipscan
 redirect_from: /w/Download/
 ---
 
@@ -104,6 +105,7 @@ redirect_from: /w/Download/
         <a href="{{ page.sourceforge_url }}">even older releases</a>.
       </p>
       <ul>
+        <li><a href="{{ page.flathub_url }}">Flatpak package hosted on Flathub</a> for <i><a href="https://flatpak.org/setup">supported distros</a></i></li>
         <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_amd64.deb">x86 64-bit DEB Package</a> for <i>Ubuntu/Debian/Mint</i></li>
         <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-1.x86_64.rpm">x86 64-bit RPM Package</a> for Fedora/RedHat/Mageia/openSUSE</li>
         <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_all.deb">Any arch DEB Package</a> for <i>Raspbian/Debian</i> (e.g. 32-bit or ARM), see below</li>
@@ -112,7 +114,8 @@ redirect_from: /w/Download/
       <h4>Running</h4>
       <p>Make sure you have at least Java 11 or <a href="http://en.wikipedia.org/wiki/OpenJDK">OpenJDK</a> installed - check your distribution.</p>
       <p>Last version with Java 8 support was <i>3.7.6</i>.</p>
-      <p>DEB and RPM packages will install appropriate 'desktop' files, so <i>Angry IP Scanner</i> will appear in Applications menu, under either <b>Internet</b> or <b>Networking</b>. Alternatively, you can just type <code>ipscan</code> to launch the application.</p>
+      <p>DEB, RPM and Flatpak packages will install appropriate 'desktop' files, so <i>Angry IP Scanner</i> will appear in Applications menu, under either <b>Network</b>, <b>Internet</b> or <b>Utility</b>. Alternatively, you can just type <code>ipscan</code> to launch the application.</p>
+      <p>The Flatpak package already installs on-the-go the <a href="https://github.com/flathub/org.freedesktop.Sdk.Extension.openjdk11">OpenJDK 11 SDK extension from the Freedesktop runtime</a>. Note that this OpenJDK version is only available for Flatpak packages and not system-wide.</p>
       <p><i>Jar</i> files are launched by either double-clicking or typing <code>java -jar <i>jar-file</i></code>.</p>
       <p>Note for <b>Raspbian/32-bit ARM</b>: to run the "any" architecture package above, you will need an <a href="https://github.com/Botspot/pi-apps/issues/1045#issuecomment-1014172448">older 32-bit build of SWT</a>, as current versions provided by Bullseye dropped 32-bit support.</p>
     </div>
