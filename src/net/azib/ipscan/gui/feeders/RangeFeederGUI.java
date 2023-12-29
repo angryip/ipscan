@@ -130,6 +130,11 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	}
 
 	public Feeder createFeeder() {
+
+		// Removes whitespaces from the IP and sets the IP text to the new trimmed one
+		startIPText.setText(startIPText.getText().replaceAll("\\s+",""));
+		endIPText.setText(startIPText.getText().replaceAll("\\s+",""));
+
 		return feeder = new RangeFeeder(startIPText.getText(), endIPText.getText());
 	}
 	
