@@ -11,7 +11,9 @@ import net.azib.ipscan.feeders.FeederException;
 import net.azib.ipscan.feeders.RangeFeeder;
 import net.azib.ipscan.gui.actions.FeederActions;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -76,7 +78,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
         toLabel.setText(getLabel("feeder.range.to"));
 
 		startIPText.addModifyListener(new StartIPModifyListener());
-        endIPText.addKeyListener(new EndIPKeyListener());
+        endIPText.addModifyListener(new EndIPModifyListener());
 
 		FeederActions.HostnameButton hostnameListener = new FeederActions.HostnameButton(hostnameText, startIPText, netmaskCombo) {
 			public void widgetSelected(SelectionEvent event) {
@@ -130,13 +132,11 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	}
 
 	public Feeder createFeeder() {
-		startIPText.setText(startIPText.getText().trim());
-		endIPText.setText(endIPText.getText().trim());
-		return feeder = new RangeFeeder(startIPText.getText(), endIPText.getText());
+		return feeder = new RangeFeeder(startIPText.getText().trim(), endIPText.getText().trim());
 	}
 	
 	public String[] serialize() {
-		return new String[] {startIPText.getText(), endIPText.getText()};
+		return new String[] {startIPText.getText().trim(), endIPText.getText().trim()};
 	}
 
 	public void unserialize(String[] parts) {
@@ -150,12 +150,9 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		return new String[] {"feeder.range.startIP", "feeder.range.endIP"};
 	}
 
-	final class EndIPKeyListener implements KeyListener {
-		public void keyPressed(KeyEvent e) {
+	final class EndIPModifyListener implements ModifyListener {
+		@Override public void modifyText(ModifyEvent modifyEvent) {
 			isEndIPUnedited = false;
-		}
-
-		public void keyReleased(KeyEvent e) {
 		}
 	}
 	
@@ -169,9 +166,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 
 	final class StartIPModifyListener implements ModifyListener {
 		public void modifyText(ModifyEvent e) {
-			if (isEndIPUnedited) {
-				endIPText.setText(startIPText.getText());
-			}
+			if (isEndIPUnedited) endIPText.setText(startIPText.getText());
 		}
 	}
 

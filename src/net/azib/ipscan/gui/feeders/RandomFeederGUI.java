@@ -97,12 +97,12 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 	}
 
 	public Feeder createFeeder() {
-		feeder = new RandomFeeder(ipPrototypeText.getText(), ipMaskCombo.getText(), countSpinner.getSelection());
+		feeder = new RandomFeeder(ipPrototypeText.getText().trim(), ipMaskCombo.getText().trim(), countSpinner.getSelection());
 		return feeder;
 	}
 	
 	public String[] serialize() {
-		return new String[] {ipPrototypeText.getText(), ipMaskCombo.getText(), String.valueOf(countSpinner.getSelection())};
+		return new String[] {ipPrototypeText.getText().trim(), ipMaskCombo.getText().trim(), String.valueOf(countSpinner.getSelection())};
 	}
 
 	public void unserialize(String[] parts) {
