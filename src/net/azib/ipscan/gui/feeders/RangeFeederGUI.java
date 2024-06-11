@@ -130,6 +130,8 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	}
 
 	public Feeder createFeeder() {
+		startIPText.setText(startIPText.getText().trim());
+		endIPText.setText(endIPText.getText().trim());
 		return feeder = new RangeFeeder(startIPText.getText(), endIPText.getText());
 	}
 	
