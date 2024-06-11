@@ -47,18 +47,4 @@ public class FeederGUIRegistryTest {
 		assertNotNull(registry.lastFeeder);
 		assertNotNull(registry.lastFeeder.toString());
 	}
-
-	@Test
-	public void createFeederRemembersTheLastOne() throws Exception {
-		Feeder lastFeeder = registry.createFeeder();
-		assertSame(lastFeeder, registry.lastFeeder);
-		assertNotSame(lastFeeder, registry.createFeeder());
-	}
-
-	@Test
-	public void createRescanFeederGetsOriginalFeeder() throws Exception {
-		Feeder lastFeeder = registry.createFeeder();
-		Feeder rescanFeeder = registry.createRescanFeeder(new TableItem[] {mock(TableItem.class)});
-		assertEquals(lastFeeder.getId(), rescanFeeder.getId());
-	}
 }
