@@ -49,14 +49,17 @@ modules:
 
       - type: file
         url: https://raw.githubusercontent.com/angryip/ipscan/master/ext/flatpak/ipscan
+        sha256: afd4831d66797afff99429b4f76bf89a15c372a8e63b65ccbd494a0cb4c88c57
         dest-filename: ipscan
 
       - type: file
-        url: https://raw.githubusercontent.com/angryip/ipscan/master/ext/deb-bundle/usr/share/applications/ipscan.desktop
+        url: https://raw.githubusercontent.com/angryip/ipscan/master/ext/flatpak/org.angryip.ipscan.desktop
+        sha256: 24deb64a221ab5e3e270b1ab36d31a01289092223384065d69b6249144248a54
         dest-filename: org.angryip.ipscan.desktop
 
       - type: file
         url: https://raw.githubusercontent.com/angryip/ipscan/master/ext/flatpak/org.angryip.ipscan.metainfo.xml
+        sha256: fc977de31025e0f270a69ceb389c415444954a848c00a14f661260a6120a94f7
         dest-filename: org.angryip.ipscan.metainfo.xml
 
       - type: file
