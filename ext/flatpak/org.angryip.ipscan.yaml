@@ -57,6 +57,6 @@ modules:
         dest-filename: org.angryip.ipscan.metainfo.xml
 
       - type: file
-        url: https://raw.githubusercontent.com/angryip/ipscan/master/resources/images/icon.svg
+        url: https://raw.githubusercontent.com/angryip/ipscan/b6e0b2c82a52298117e514d2f2196e26fa3ac418/resources/images/icon.svg
         sha256: 1b2d31740d3d3bbd51d3d9a71d65d3859e38d10e99dd978d32fe86ed1e5d7416
         dest-filename: org.angryip.ipscan.svg
