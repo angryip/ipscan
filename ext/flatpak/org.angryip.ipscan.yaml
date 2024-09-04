@@ -10,7 +10,6 @@ finish-args:
   - --socket=fallback-x11
   - --share=ipc
   - --share=network
-  - --filesystem=xdg-config/gtk-3.0:ro;
   - --persist=.swt
   - --persist=.java
   - --env=PATH=/usr/bin:/app/bin:/app/jre/bin
@@ -29,10 +28,6 @@ modules:
       - install -Dm644 org.angryip.ipscan.desktop -t /app/share/applications
       - install -Dm644 org.angryip.ipscan.metainfo.xml -t /app/share/metainfo
       - install -Dm644 org.angryip.ipscan.svg -t /app/share/icons/hicolor/scalable/apps
-      - install -Dm644 org.angryip.ipscan32.png /app/share/icons/hicolor/32x32/apps/org.angryip.ipscan.png
-      - install -Dm644 org.angryip.ipscan48.png /app/share/icons/hicolor/48x48/apps/org.angryip.ipscan.png
-      - install -Dm644 org.angryip.ipscan128.png /app/share/icons/hicolor/128x128/apps/org.angryip.ipscan.png
-      - install -Dm644 org.angryip.ipscan256.png /app/share/icons/hicolor/256x256/apps/org.angryip.ipscan.png
 
     sources:
       - type: file
@@ -65,23 +60,3 @@ modules:
         url: https://raw.githubusercontent.com/angryip/ipscan/master/resources/images/icon.svg
         sha256: 1b2d31740d3d3bbd51d3d9a71d65d3859e38d10e99dd978d32fe86ed1e5d7416
         dest-filename: org.angryip.ipscan.svg
-
-      - type: file
-        url: https://raw.githubusercontent.com/angryip/ipscan/master/resources/images/icon32.png
-        sha256: e942b7f71f62d3c0f4dc69631bb0b9b0a6daa25227b7e1679ac6a79999a64a2b
-        dest-filename: org.angryip.ipscan32.png
-
-      - type: file
-        url: https://raw.githubusercontent.com/angryip/ipscan/master/resources/images/icon48.png
-        sha256: 7ddbd1ce286d2b42f967a27df82568aa03bac42ce3818f1e4f881a285114f3b0
-        dest-filename: org.angryip.ipscan48.png
-
-      - type: file
-        url: https://raw.githubusercontent.com/angryip/ipscan/master/resources/images/icon128.png
-        sha256: b163b0f6b2c5674dd1a47a995ffde7f46448679e2f91726e84438596cf029f4f
-        dest-filename: org.angryip.ipscan128.png
-
-      - type: file
-        url: https://raw.githubusercontent.com/angryip/ipscan/master/resources/images/icon256.png
-        sha256: 997f7b13d516f4524d4cd9bb0b816d1a48b5823fe8849a51d57fd1ea6fc1b19d
-        dest-filename: org.angryip.ipscan256.png

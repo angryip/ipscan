@@ -6,7 +6,7 @@
     <name>Angry IP Scanner</name>
     <developer>Anton Keks and contributors</developer>
     <summary>Fast and friendly network scanner</summary>
-    <content_rating type="oars-1.0" />
+    <content_rating type="oars-1.1" />
     <icon type="remote" width="128" height="128">https://angryip.org/images/icon.png</icon>
 
     <description>
@@ -17,7 +17,7 @@
     <screenshots>
         <screenshot type="default">
             <caption>A scan was performed</caption>
-            <image type="source" xml:lang="en">https://angryip.org/screenshots/ipscan-ubuntu.png</image>
+            <image type="source">https://angryip.org/screenshots/ipscan-ubuntu.png</image>
         </screenshot>
     </screenshots>
 
