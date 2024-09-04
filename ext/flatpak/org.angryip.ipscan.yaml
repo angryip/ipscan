@@ -1,0 +1,80 @@
+app-id: org.angryip.ipscan
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.openjdk11
+command: ipscan
+finish-args:
+  - --socket=x11
+  - --share=ipc
+  - --share=network
+  - --filesystem=xdg-config/gtk-3.0:ro;
+  - --persist=.swt
+  - --persist=.java
+  - --env=PATH=/usr/bin:/app/bin:/app/jre/bin
+  - --env=JAVA_HOME=/app/jre
+modules:
+  - name: openjdk
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/openjdk11/install.sh
+
+  - name: ipscan
+    buildsystem: simple
+    build-commands:
+      - install ipscan.jar /app/lib/ipscan/
+      - install ipscan /app/bin/
+      - desktop-file-edit --set-key=Exec --set-value=ipscan
+      - desktop-file-edit --set-key=Icon --set-value=org.angryip.ipscan
+      - install org.angryip.ipscan.desktop /app/share/applications/
+      - install org.angryip.ipscan.metainfo.xml /app/share/metainfo/
+      - install org.angryip.ipscan.svg /app/share/icons/hicolor/scalable/apps/
+      - install org.angryip.ipscan32.png /app/share/icons/hicolor/32x32/apps/org.angryip.ipscan.png/
+      - install org.angryip.ipscan48.png /app/share/icons/hicolor/48x48/apps/org.angryip.ipscan.png/
+      - install org.angryip.ipscan128.png /app/share/icons/hicolor/128x128/apps/org.angryip.ipscan.png/
+      - install org.angryip.ipscan256.png /app/share/icons/hicolor/256x256/apps/org.angryip.ipscan.png/
+
+    sources:
+      - type: file
+        url: https://github.com/angryip/ipscan/releases/download/3.9.1/ipscan-linux64-3.9.1.jar
+        dest-filename: ipscan.jar
+        only-arches: [x86_64]
+        x-checker-data:
+          type: json
+          url: https://api.github.com/repos/angryip/ipscan/releases/latest
+          version-query: .tag_name
+          url-query: .assets[] | select(.name=="ipscan-linux64-" + $version + ".jar") | .browser_download_url
+
+      - type: file
+        url: https://raw.githubusercontent.com/angryip/ipscan/master/ext/flatpak/ipscan
+        dest-filename: ipscan
+
+      - type: file
+        url: https://raw.githubusercontent.com/angryip/ipscan/master/ext/deb-bundle/usr/share/applications/ipscan.desktop
+        dest-filename: org.angryip.ipscan.desktop
+
+      - type: file
+        url: https://raw.githubusercontent.com/angryip/ipscan/master/ext/flatpak/org.angryip.ipscan.metainfo.xml
+        # sha256: adf911dfc41ceb0b844c4d4d6c74afa1576670673cb42d3d30b8c3054cc9c15d
+        dest-filename: org.angryip.ipscan.metainfo.xml
+
+      - type: file
+        url: https://raw.githubusercontent.com/angryip/ipscan/master/resources/images/icon.svg
+        dest-filename: org.angryip.ipscan.svg
+
+      - type: file
+        url: https://raw.githubusercontent.com/angryip/ipscan/master/resources/images/icon32.png
+        dest-filename: org.angryip.ipscan32.png
+
+      - type: file
+        url: https://raw.githubusercontent.com/angryip/ipscan/master/resources/images/icon48.png
+        dest-filename: org.angryip.ipscan48.png
+
+      - type: file
+        url: https://raw.githubusercontent.com/angryip/ipscan/master/resources/images/icon128.png
+        dest-filename: org.angryip.ipscan128.png
+
+      - type: file
+        url: https://raw.githubusercontent.com/angryip/ipscan/master/resources/images/icon256.png
+        dest-filename: org.angryip.ipscan256.png
