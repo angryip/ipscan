@@ -7,7 +7,6 @@
     <developer>Anton Keks and contributors</developer>
     <summary>Fast and friendly network scanner</summary>
     <content_rating type="oars-1.1" />
-    <icon type="remote" width="128" height="128">https://angryip.org/images/icon.png</icon>
 
     <description>
         <p>Angry IP Scanner (or simply ipscan) is an open-source and cross-platform network scanner designed to be fast and simple to use. It scans IP addresses and ports, as well as having many other features.</p>
