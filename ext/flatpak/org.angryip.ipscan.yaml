@@ -6,7 +6,8 @@ sdk-extensions:
   - org.freedesktop.Sdk.Extension.openjdk11
 command: ipscan
 finish-args:
-  - --socket=x11
+  - --socket=wayland
+  - --socket=fallback-x11
   - --share=ipc
   - --share=network
   - --filesystem=xdg-config/gtk-3.0:ro;
@@ -24,7 +25,7 @@ modules:
     buildsystem: simple
     build-commands:
       - install -Dm755 ipscan.jar -t /app/lib/ipscan
-      - install -Dm755 ipscan -t /app/bin/ipscan
+      - install -Dm755 ipscan -t /app/bin
       - install -Dm644 org.angryip.ipscan.desktop -t /app/share/applications
       - install -Dm644 org.angryip.ipscan.metainfo.xml -t /app/share/metainfo
       - install -Dm644 org.angryip.ipscan.svg -t /app/share/icons/hicolor/scalable/apps
@@ -52,7 +53,7 @@ modules:
 
       - type: file
         url: https://raw.githubusercontent.com/angryip/ipscan/master/ext/flatpak/org.angryip.ipscan.desktop
-        sha256: 24deb64a221ab5e3e270b1ab36d31a01289092223384065d69b6249144248a54
+        sha256: 7e8b9c719fcdaebf7f67938526590fad91018addf1bfc85c830aae888085fc19
         dest-filename: org.angryip.ipscan.desktop
 
       - type: file
