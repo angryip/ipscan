@@ -4,7 +4,7 @@
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>GPL-2.0+</project_license>
     <name>Angry IP Scanner</name>
-    <developer_name>Anton Keks and contributors</developer_name>
+    <developer>Anton Keks and contributors</developer>
     <summary>Fast and friendly network scanner</summary>
     <content_rating type="oars-1.0" />
     <icon type="remote" width="128" height="128">https://angryip.org/images/icon.png</icon>
@@ -17,9 +17,14 @@
     <screenshots>
         <screenshot type="default">
             <caption>A scan was performed</caption>
-            <image type="source">https://angryip.org/screenshots/ipscan-ubuntu.png</image>
+            <image type="source" xml:lang="en">https://angryip.org/screenshots/ipscan-ubuntu.png</image>
         </screenshot>
     </screenshots>
+
+    <branding>
+        <color type="primary" scheme_preference="light">#9cdba6</color>
+        <color type="primary" scheme_preference="dark">#0d7c66</color>
+    </branding>
 
     <categories>
         <category>Network</category>
