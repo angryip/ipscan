@@ -23,17 +23,15 @@ modules:
   - name: ipscan
     buildsystem: simple
     build-commands:
-      - install ipscan.jar /app/lib/ipscan/
-      - install ipscan /app/bin/
-      - desktop-file-edit --set-key=Exec --set-value=ipscan
-      - desktop-file-edit --set-key=Icon --set-value=org.angryip.ipscan
-      - install org.angryip.ipscan.desktop /app/share/applications/
-      - install org.angryip.ipscan.metainfo.xml /app/share/metainfo/
-      - install org.angryip.ipscan.svg /app/share/icons/hicolor/scalable/apps/
-      - install org.angryip.ipscan32.png /app/share/icons/hicolor/32x32/apps/org.angryip.ipscan.png/
-      - install org.angryip.ipscan48.png /app/share/icons/hicolor/48x48/apps/org.angryip.ipscan.png/
-      - install org.angryip.ipscan128.png /app/share/icons/hicolor/128x128/apps/org.angryip.ipscan.png/
-      - install org.angryip.ipscan256.png /app/share/icons/hicolor/256x256/apps/org.angryip.ipscan.png/
+      - install -Dm755 ipscan.jar -t /app/lib/ipscan
+      - install -Dm755 ipscan -t /app/bin/ipscan
+      - install -Dm644 org.angryip.ipscan.desktop -t /app/share/applications
+      - install -Dm644 org.angryip.ipscan.metainfo.xml -t /app/share/metainfo
+      - install -Dm644 org.angryip.ipscan.svg -t /app/share/icons/hicolor/scalable/apps
+      - install -Dm644 org.angryip.ipscan32.png /app/share/icons/hicolor/32x32/apps/org.angryip.ipscan.png
+      - install -Dm644 org.angryip.ipscan48.png /app/share/icons/hicolor/48x48/apps/org.angryip.ipscan.png
+      - install -Dm644 org.angryip.ipscan128.png /app/share/icons/hicolor/128x128/apps/org.angryip.ipscan.png
+      - install -Dm644 org.angryip.ipscan256.png /app/share/icons/hicolor/256x256/apps/org.angryip.ipscan.png
 
     sources:
       - type: file
