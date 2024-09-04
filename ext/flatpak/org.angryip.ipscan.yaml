@@ -56,7 +56,6 @@ modules:
 
       - type: file
         url: https://raw.githubusercontent.com/angryip/ipscan/master/ext/flatpak/org.angryip.ipscan.metainfo.xml
-        # sha256: adf911dfc41ceb0b844c4d4d6c74afa1576670673cb42d3d30b8c3054cc9c15d
         dest-filename: org.angryip.ipscan.metainfo.xml
 
       - type: file
