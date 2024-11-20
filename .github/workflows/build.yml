@@ -20,13 +20,13 @@ jobs:
     - name: Extract CHANGELOG
       run: sed '/^$/q' CHANGELOG > build/libs/README
 
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: Linux binaries
         path: build/libs
 
     - name: Release (if tag)
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
         draft: true
@@ -59,7 +59,7 @@ jobs:
         APPLE_USER: ${{ secrets.APPLE_USER }}
         APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
 
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: macOS binaries
         path: build/libs
@@ -86,7 +86,7 @@ jobs:
         cache: 'gradle'
     - run: ./gradlew test win-installer --info
 
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: Windows binaries
         path: build/libs
