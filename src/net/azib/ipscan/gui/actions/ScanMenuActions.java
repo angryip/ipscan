@@ -145,7 +145,7 @@ public class ScanMenuActions {
 				throw new UserErrorException("commands.noResults");
 			}
 
-			if (!stateMachine.inState(ScanningState.IDLE)) {
+			if (!stateMachine.inCurrentState(ScanningState.IDLE)) {
 				// ask the user whether to save incomplete results
 				MessageBox box = new MessageBox(resultTable.getShell(), SWT.YES | SWT.NO | SWT.ICON_WARNING | SWT.SHEET);
 				box.setText(Version.NAME);
