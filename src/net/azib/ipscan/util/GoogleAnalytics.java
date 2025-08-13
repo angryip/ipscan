@@ -1,6 +1,5 @@
 package net.azib.ipscan.util;
 
-import net.azib.ipscan.config.Config;
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.config.Version;
 import org.eclipse.swt.SWTError;
@@ -25,15 +24,15 @@ public class GoogleAnalytics {
 
 	public void report(String type, String content) {
 		try {
-			Config config = getConfig();
+			var config = getConfig();
 			if (!config.allowReports) return;
-			URL url = new URL("https://www.google-analytics.com/mp/collect?measurement_id=" + Version.GA_ID + "&api_secret=" + Version.GA_SECRET);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			var url = new URL("https://www.google-analytics.com/mp/collect?measurement_id=" + Version.GA_ID + "&api_secret=" + Version.GA_SECRET);
+			var conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 			conn.setDoOutput(true);
 
-			StringBuilder payload = new StringBuilder();
+			var payload = new StringBuilder();
 			payload.append("{");
 			payload.append("\"client_id\":\"").append(config.getUUID()).append("\",");
 			payload.append("\"non_personalized_ads\":true,");
@@ -85,13 +84,13 @@ public class GoogleAnalytics {
 
 	static String extractFirstStackFrame(Throwable e) {
 		if (e == null) return "";
-		StackTraceElement[] stackTrace = e.getStackTrace();
+		var stackTrace = e.getStackTrace();
 		StackTraceElement element = null;
-		for (StackTraceElement stackTraceElement : stackTrace) {
+		for (var stackTraceElement : stackTrace) {
 			element = stackTraceElement;
 			if (element.getClassName().startsWith("net.azib.ipscan")) break;
 		}
-		int code = e instanceof SWTError ? ((SWTError) e).code : e instanceof SWTException ? ((SWTException) e).code : -1;
+		var code = e instanceof SWTError ? ((SWTError) e).code : e instanceof SWTException ? ((SWTException) e).code : -1;
 		return e + (code >= 0 ? " (" + code + ")" : "") + (element == null ? "" : "\n" +
 			   element.getClassName() + "." + element.getMethodName() + ":" + element.getLineNumber()) +
 			   (e.getCause() != null ? ";\n" + extractFirstStackFrame(e.getCause()) : "");
