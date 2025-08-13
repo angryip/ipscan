@@ -4,7 +4,7 @@ Version: VERSION
 Priority: optional
 Architecture: ARCH
 Installed-Size: 1940
-Depends: DEPENDS java11-runtime
+Depends: java-runtime (>= 11)
 Maintainer: Anton Keks <anton@azib.net>
 License: GPL-2
 Description: Angry IP Scanner - fast and friendly IP Scanner
