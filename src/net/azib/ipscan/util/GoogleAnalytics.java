@@ -31,6 +31,7 @@ public class GoogleAnalytics {
 			var conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+			conn.setRequestProperty("User-Agent", "Mozilla/5.0 (ipscan/" + Version.getVersion() + " " + System.getProperty("os.name") + " " + System.getProperty("os.version") + "; Java " + System.getProperty("java.version") + ")");
 			conn.setDoOutput(true);
 
 			var payload = new StringBuilder();

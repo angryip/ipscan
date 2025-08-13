@@ -14,11 +14,8 @@ import static java.lang.Double.parseDouble;
  * @author Anton Keks
  */
 public class Platform {
-	
 	private static final String OS_NAME = System.getProperty("os.name");
 
-    public static final boolean ARCH_64 = System.getProperty("os.arch").contains("64");
-	
 	/** Mac OS detection :-) */
 	public static final boolean MAC_OS = OS_NAME.contains("OS X");
 	
