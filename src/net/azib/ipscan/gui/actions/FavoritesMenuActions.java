@@ -27,16 +27,17 @@ import org.eclipse.swt.widgets.*;
 public class FavoritesMenuActions {
 
 	public static final class Add implements Listener {
+		private final Shell shell;
 		private final FeederGUIRegistry feederRegistry;
 		private final FavoritesConfig favoritesConfig;
 
-		public Add(FavoritesConfig favoritesConfig, FeederGUIRegistry feederRegistry) {
+		public Add(Shell shell, FavoritesConfig favoritesConfig, FeederGUIRegistry feederRegistry) {
+			this.shell = shell;
 			this.favoritesConfig = favoritesConfig;
 			this.feederRegistry = feederRegistry;
 		}
 		
 		public void handleEvent(Event event) {
-			Shell activeShell = event.display.getActiveShell();
 			String feederInfo = feederRegistry.current().getInfo();
 			InputDialog inputDialog = new InputDialog(
 					Labels.getLabel("title.favorite.add"), 
@@ -48,17 +49,19 @@ public class FavoritesMenuActions {
 					throw new UserErrorException("favorite.alreadyExists");
 				}
 				favoritesConfig.add(favoriteName, feederRegistry.current());
-				activeShell.setText(favoriteName + " - " + Version.NAME);
+				shell.setText(favoriteName + " - " + Version.NAME);
 			}
 		}
 	}
 	
 	public static final class Select implements SelectionListener {
+		private final Shell shell;
 		private final FeederGUIRegistry feederRegistry;
 		private final FavoritesConfig favoritesConfig;
 		private final StartStopScanningAction startStopAction;
 
-		public Select(FavoritesConfig favoritesConfig, FeederGUIRegistry feederRegistry, StartStopScanningAction startStopAction) {
+		public Select(Shell shell, FavoritesConfig favoritesConfig, FeederGUIRegistry feederRegistry, StartStopScanningAction startStopAction) {
+			this.shell = shell;
 			this.favoritesConfig = favoritesConfig;
 			this.feederRegistry = feederRegistry;
 			this.startStopAction = startStopAction;
@@ -70,7 +73,7 @@ public class FavoritesMenuActions {
 			
 			feederRegistry.select(favoritesConfig.getFeederId(key));
 			feederRegistry.current().unserialize(favoritesConfig.getSerializedParts(key));
-			event.display.getActiveShell().setText(key + " - " + Version.NAME);
+			shell.setText(key + " - " + Version.NAME);
 			
 			// try to start scanning immediately
 			startStopAction.widgetSelected(event);

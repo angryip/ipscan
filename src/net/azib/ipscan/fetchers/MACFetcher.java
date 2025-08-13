@@ -28,7 +28,7 @@ public abstract class MACFetcher extends AbstractFetcher {
 	static String bytesToMAC(byte[] bytes) {
 		StringBuilder mac = new StringBuilder();
 		for (byte b : bytes) mac.append(String.format("%02X", b)).append(":");
-		if (mac.length() > 0) mac.deleteCharAt(mac.length()-1);
+		if (!mac.isEmpty()) mac.deleteCharAt(mac.length()-1);
 		return mac.toString();
 	}
 
