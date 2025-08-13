@@ -22,7 +22,7 @@ String exec(def line, String dir = ".", boolean failOnError = true) {
     def proc = Runtime.getRuntime().exec(line, null, project.file(dir))
     if (proc.waitFor() == 0) return new String(proc.inputStream.readAllBytes()).trim()
     else {
-        if (failOnError) throw new Exception(line + "\n" + new String(proc.errorStream.readAllBytes()))
+        if (failOnError) throw new Exception(line.toString() + "\n" + new String(proc.errorStream.readAllBytes()))
         else return null
     }
 }
