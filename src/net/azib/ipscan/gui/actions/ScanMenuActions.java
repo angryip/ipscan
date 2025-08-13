@@ -22,10 +22,7 @@ import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -212,11 +209,14 @@ public class ScanMenuActions {
 	}
 
 	public static final class Quit implements Listener {
-		public Quit() {
+		private final Shell shell;
+
+		public Quit(Shell shell) {
+			this.shell = shell;
 		}
 
 		public void handleEvent(Event event) {
-			event.display.getActiveShell().close();
+			shell.close();
 		}
 	}
 
