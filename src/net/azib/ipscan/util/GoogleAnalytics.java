@@ -1,6 +1,5 @@
 package net.azib.ipscan.util;
 
-import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.config.Version;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.SWTException;
@@ -50,8 +49,7 @@ public class GoogleAnalytics {
 
 			content = content.replace("\"", "\\\"");
 			if ("exception".equals(type)) {
-				payload.append(",\"description\":\"").append(content).append("\"");
-				payload.append(",\"fatal\":false");
+				payload.append(",\"exception_description\":\"").append(content).append("\"");
 			} else {
 				payload.append(",\"page_title\":\"").append(content).append("\"");
 				payload.append(",\"page_location\":\"").append("https://angryip.org/app/").append(URLEncoder.encode(content, UTF_8)).append("\"");
@@ -61,7 +59,6 @@ public class GoogleAnalytics {
 			payload.append("}");
 
 			try (var os = conn.getOutputStream()) {
-				LoggerFactory.getLogger().info(payload.toString());
 				os.write(payload.toString().getBytes(UTF_8));
 			}
 
