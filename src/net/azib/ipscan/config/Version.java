@@ -37,8 +37,9 @@ public class Version {
 
 	public static final String LATEST_VERSION_URL = WEBSITE + "/ipscan/IPSCAN.VERSION";
 
-	public static final String GA_ID = "UA-10776159-2";
-	
+	public static final String GA_ID = "G-2F94QVQFGE";
+	public static final String GA_SECRET = "KzBPI2oaSAWo1v5X5TIG8Q";
+
 	private static String version;
 	private static String buildDate;
 	
