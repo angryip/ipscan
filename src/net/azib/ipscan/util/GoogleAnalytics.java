@@ -7,6 +7,7 @@ import org.eclipse.swt.SWTException;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.logging.Logger;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -19,7 +20,7 @@ import static net.azib.ipscan.config.Config.getConfig;
  */
 public class GoogleAnalytics {
 	public void report(String screen) {
-		report("screen_view", screen);
+		report("page_view", screen);
 	}
 
 	public void report(String type, String content) {
@@ -34,7 +35,7 @@ public class GoogleAnalytics {
 
 			var payload = new StringBuilder();
 			payload.append("{");
-			payload.append("\"client_id\":\"").append(config.getUUID()).append("\",");
+			payload.append("\"client_id\":\"").append(config.getGaClientId()).append("\",");
 			payload.append("\"non_personalized_ads\":true,");
 			payload.append("\"events\":[{");
 			payload.append("\"name\":\"").append(type).append("\",");
@@ -51,8 +52,8 @@ public class GoogleAnalytics {
 				payload.append(",\"description\":\"").append(content).append("\"");
 				payload.append(",\"fatal\":false");
 			} else {
-				payload.append(",\"firebase_screen\":\"").append(content).append("\"");
-				payload.append(",\"firebase_screen_class\":\"").append("MainActivity").append("\"");
+				payload.append(",\"page_title\":\"").append(content).append("\"");
+				payload.append(",\"page_location\":\"").append("https://angryip.org/app/").append(URLEncoder.encode(content, UTF_8)).append("\"");
 			}
 
 			payload.append("}}]");
@@ -64,7 +65,7 @@ public class GoogleAnalytics {
 			}
 
 			try (var is = conn.getInputStream()) {
-				LoggerFactory.getLogger().info(new String(is.readAllBytes()));
+				is.readAllBytes();
 			}
 
 			conn.disconnect();

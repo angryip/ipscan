@@ -1,7 +1,7 @@
 package net.azib.ipscan.config;
 
 import java.util.Locale;
-import java.util.UUID;
+import java.util.Random;
 import java.util.prefs.Preferences;
 
 /**
@@ -13,7 +13,7 @@ import java.util.prefs.Preferences;
 public final class Config {
 	private Preferences preferences;
 	public String language;
-	public String uuid;
+	public String gaClientId;
 	public boolean allowReports;
 
 	/** easily accessible scanner configuration */
@@ -32,10 +32,13 @@ public final class Config {
 		favoritesConfig = new FavoritesConfig(preferences);
 		openersConfig = new OpenersConfig(preferences);
 		language = preferences.get("language", "system");
-		uuid = preferences.get("uuid", null);
-		if (uuid == null) {
-			uuid = UUID.randomUUID().toString();
-			preferences.put("uuid", uuid);
+		gaClientId = preferences.get("gaClientId", null);
+		if (gaClientId == null) {
+			Random random = new Random();
+			long firstPart = 1000000000L + (long)(random.nextDouble() * 9000000000L);
+			long secondPart = 1000000000L + (long)(random.nextDouble() * 9000000000L);
+			gaClientId = firstPart + "." + secondPart;
+			preferences.put("gaClientId", gaClientId);
 		}
 		allowReports = preferences.getBoolean("allowReports", true);
 	}
@@ -50,7 +53,6 @@ public final class Config {
 
 	public void store() {
 		preferences.put("language", language);
-		preferences.put("uuid", uuid);
 		preferences.putBoolean("allowReports", allowReports);
 		scannerConfig.store();
 		guiConfig.store();
@@ -103,7 +105,7 @@ public final class Config {
 		return Locale.forLanguageTag(locale.replace('_', '-'));
 	}
 
-	public String getUUID() {
-		return uuid;
+	public String getGaClientId() {
+		return gaClientId;
 	}
 }
