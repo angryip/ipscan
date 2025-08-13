@@ -1,5 +1,6 @@
 Changes in 3.9.2 (unreleased):
 - Linux: specify Java 17 as minimum required version in .deb and .rpm packages
+- Added Irish translation
 
 Changes in 3.9.1:
 - Mac: fix permissions in bundled JRE, so that MAC address scanning would work #384
