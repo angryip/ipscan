@@ -29,7 +29,7 @@ String exec(def line, String dir = ".", boolean failOnError = true) {
 
 version = exec("git describe --tags", ".", false) ?: "unknown"
 
-sourceCompatibility = targetCompatibility = 11
+sourceCompatibility = targetCompatibility = 17
 
 def javaModules = ["java.base", "java.prefs", "java.logging", "jdk.crypto.ec"]
 project.ext.set("javaModules", javaModules)
@@ -65,7 +65,7 @@ configurations {
 }
 
 dependencies {
-    def swtVersion = '3.123.0'
+    def swtVersion = '3.130.0'
     linux64 "org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64:${swtVersion}"
     win64 "org.eclipse.platform:org.eclipse.swt.win32.win32.x86_64:${swtVersion}"
     macX86 "org.eclipse.platform:org.eclipse.swt.cocoa.macosx.x86_64:${swtVersion}"
