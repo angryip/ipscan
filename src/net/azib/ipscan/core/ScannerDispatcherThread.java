@@ -80,7 +80,7 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 
 			try {
 				ScanningSubject subject = null;
-				while(feeder.hasNext() && stateMachine.inState(SCANNING)) {
+				while(feeder.hasNext() && stateMachine.inCurrentState(SCANNING)) {
 					// make a small delay between thread creation
 					Thread.sleep(config.threadDelay);
 					

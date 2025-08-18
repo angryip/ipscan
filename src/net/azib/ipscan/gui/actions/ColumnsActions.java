@@ -69,10 +69,10 @@ public class ColumnsActions {
 				sortMenuItem.setText(Labels.getLabel("menu.columns.sortBy") + " " + fetcher.getName());
 
 			// disable these menu items if scanning
-			sortMenuItem.setEnabled(stateMachine.inState(ScanningState.IDLE));
+			sortMenuItem.setEnabled(stateMachine.inCurrentState(ScanningState.IDLE));
 
 			preferencesMenuItem.setText(fetcher.getName() + " " + Labels.getLabel("menu.columns.preferences"));
-			preferencesMenuItem.setEnabled(fetcher.getPreferencesClass() != null && stateMachine.inState(ScanningState.IDLE));
+			preferencesMenuItem.setEnabled(fetcher.getPreferencesClass() != null && stateMachine.inCurrentState(ScanningState.IDLE));
 
 			aboutMenuItem.setText(Labels.getLabel("menu.columns.about") + " " + fetcher.getName());
 			
