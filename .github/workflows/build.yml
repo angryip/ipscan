@@ -12,7 +12,7 @@ jobs:
         fetch-depth: 0
     - uses: actions/setup-java@v3
       with:
-        java-version: '11'
+        java-version: '17'
         distribution: 'liberica'
         cache: 'gradle'
     - name: Build & Test
@@ -20,7 +20,7 @@ jobs:
     - name: Extract CHANGELOG
       run: sed '/^$/q' CHANGELOG > build/libs/README
 
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: Linux binaries
         path: build/libs
@@ -59,7 +59,7 @@ jobs:
         APPLE_USER: ${{ secrets.APPLE_USER }}
         APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
 
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: macOS binaries
         path: build/libs
@@ -86,7 +86,7 @@ jobs:
         cache: 'gradle'
     - run: ./gradlew test win-installer --info
 
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: Windows binaries
         path: build/libs
