@@ -65,7 +65,7 @@ configurations {
 }
 
 dependencies {
-    def swtVersion = '3.129.0'
+    def swtVersion = '3.130.0'
     linux64 "org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64:${swtVersion}"
     win64 "org.eclipse.platform:org.eclipse.swt.win32.win32.x86_64:${swtVersion}"
     macX86 "org.eclipse.platform:org.eclipse.swt.cocoa.macosx.x86_64:${swtVersion}"
@@ -212,9 +212,9 @@ def rpm(def platform, def arch) {
         ant.replacefilter(token: "RPM_VERSION", value: rpmVersion)
         ant.replacefilter(token: "VERSION", value: version)
     }
-//    exec(new String[] {"sh", "-c", "rpmbuild --target ${arch} --define \"_topdir ${new File(dist).absolutePath}\" --define \"platform ${platform}\" -bb SPECS/ipscan.spec"}, dist)
-//    ant.move(file: "${dist}/RPMS/${arch}/ipscan-${rpmVersion}-1.${arch}.rpm", todir:'build/libs')
-//    ant.delete(dir: dist)
+    exec(new String[] {"sh", "-c", "rpmbuild --target ${arch} --define \"_topdir ${new File(dist).absolutePath}\" --define \"platform ${platform}\" -bb SPECS/ipscan.spec"}, dist)
+    ant.move(file: "${dist}/RPMS/${arch}/ipscan-${rpmVersion}-1.${arch}.rpm", todir:'build/libs')
+    ant.delete(dir: dist)
 }
 
 def macLauncher(def platform) {
