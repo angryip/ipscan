@@ -87,9 +87,9 @@ public class TXTExporter extends AbstractExporter {
 	 * @param length the total returned length, minimum is 13
 	 */
 	String pad(Object o, int length) {
-		if (length < 16)
-			length = 16;
-		
+		int minLength = 16;
+		if (length < minLength)
+			length = minLength;
 		String s;
 		if (o == null) 
 			s = "";

@@ -123,7 +123,7 @@ public class FavoritesMenuActions {
 			for (String name : favoritesConfig) {
 				MenuItem menuItem = new MenuItem(favoritesMenu, SWT.CASCADE);
 				menuItem.setText(name);
-				menuItem.setEnabled(stateMachine.inState(ScanningState.IDLE));
+				menuItem.setEnabled(stateMachine.inCurrentState(ScanningState.IDLE));
 				menuItem.addSelectionListener(favoritesSelectListener);
 			}
 		}
