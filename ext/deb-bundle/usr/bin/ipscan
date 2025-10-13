@@ -2,4 +2,4 @@
 java=$JAVA_HOME/bin/java
 [ ! -e "$java" ] && java=java
 "$java" --add-opens java.base/java.net=ALL-UNNAMED -jar /usr/lib*/ipscan/ipscan*.jar "$@"
-[ $? != 0 ] && notify-send "You need Java/OpenJDK 11+ to run ipscan"
+[ $? != 0 ] && notify-send "You need Java/OpenJDK 17+ to run ipscan"
