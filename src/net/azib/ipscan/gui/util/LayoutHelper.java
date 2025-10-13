@@ -62,7 +62,7 @@ public class LayoutHelper {
 				String suffix = zoom == 200 ? "@2x.png" : ".png";
 				ImageData imageData = new ImageData(LayoutHelper.class.getResourceAsStream("/images/" + baseName + suffix));
 				if (zoom != 100 & zoom != 200)
-					imageData = DPIUtil.autoScaleUp(display, imageData);
+					imageData = DPIUtil.autoScaleImageData(display, imageData, 100);
 				return imageData;
 			});
 		});
