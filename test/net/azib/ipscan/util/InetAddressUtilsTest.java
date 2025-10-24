@@ -22,6 +22,7 @@ public class InetAddressUtilsTest {
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("a.bc").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("angryip.org").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("www.example.com").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("example.com.").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("A.B.CD").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("me.local").matches());
 
@@ -49,7 +50,7 @@ public class InetAddressUtilsTest {
 		assertTrue(matcher.find());
 		assertEquals("angryip.org", matcher.group());
 		assertTrue(matcher.find());
-		assertEquals("www.angryziber.com", matcher.group());
+		assertEquals("www.angryziber.com.", matcher.group());
 		assertFalse(matcher.find());
 	}
 
