@@ -19,6 +19,17 @@ public class InetAddressUtilsTest {
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("127.0.0.1").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("192.168.245.345").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("8.8.8.8").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("::").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("::1").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("fe80::1234").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("fe80:1234::").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("::fe80:1234").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("::fe80").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("fe80::").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("::fe80").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("2001:db8::").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("2001:db8::1").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("8.8.8.8").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("a.bc").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("angryip.org").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("www.example.com").matches());
@@ -35,6 +46,13 @@ public class InetAddressUtilsTest {
 		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher("abc").matches());
 		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher("123").matches());
 		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher("Hello world.").matches());
+		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher("fe80:").matches());
+		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher(":fe80").matches());
+		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher("2001:db8").matches());
+		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher("2001:db8:").matches());
+		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher(":2001:db8:").matches());
+		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher(":2001:db8").matches());
+		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher("fe80::g").matches());
 	}
 
 	@Test
