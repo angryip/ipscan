@@ -18,6 +18,8 @@ public class InetAddressUtilsTest {
 	public void hostnameMatching() throws Exception {
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("127.0.0.1").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("192.168.245.345").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("255.255.255.255").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("0.0.0.0").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("8.8.8.8").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("::").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("::1").matches());
@@ -42,6 +44,8 @@ public class InetAddressUtilsTest {
 
 		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher("3.5").matches());
 		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher("3.5.1").matches());
+		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher("127.0.0.256").matches());
+		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher("256.256.255.1").matches());
 		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher("a.b").matches());
 		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher("abc").matches());
 		assertFalse(InetAddressUtils.HOSTNAME_REGEX.matcher("123").matches());
