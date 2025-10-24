@@ -23,6 +23,9 @@ public class InetAddressUtilsTest {
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("angryip.org").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("www.example.com").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("example.com.").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("example.dn42.").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("example.dn42").matches());
+		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("beta.wiki.dn42").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("A.B.CD").matches());
 		assertTrue(InetAddressUtils.HOSTNAME_REGEX.matcher("me.local").matches());
 
