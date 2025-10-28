@@ -79,13 +79,8 @@ public class PluginLoader {
 				if (manifest == null) continue;
 				jarFile.close();
 
-				String className = manifest.getMainAttributes().getValue("IPScan-Plugin");
-				if (className != null) {
-					loader.addURL(jar.toURI().toURL());
-					loadPluginClasses(container, loader, className);
-				}
-
-				String classNames = manifest.getMainAttributes().getValue("IPScan-Plugins");
+				String classNames = manifest.getMainAttributes().getValue("IPScan-Plugin");
+				if (classNames == null) classNames = manifest.getMainAttributes().getValue("IPScan-Plugins");
 				if (classNames != null) {
 					loader.addURL(jar.toURI().toURL());
 					loadPluginClasses(container, loader, classNames);
