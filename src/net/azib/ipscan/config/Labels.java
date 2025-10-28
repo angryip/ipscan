@@ -13,12 +13,13 @@ import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.logging.Logger;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 /**
  * Labels class for localization, based on PropertyResourceBundle.
  * It adds some special methods for loading of images by IDs.
  * 
  * It is a singleton, so use getInstance() in order to use this class.
- * 
  * Use initialize() to create an instance of this class.
  * 
  * @author Anton Keks
@@ -37,8 +38,9 @@ public final class Labels {
 		initialize(Locale.getDefault());
 	}
 	
-	Labels() {
-		// private constructor
+	Labels(Locale locale) {
+		this.locale = locale;
+		load(getClass().getClassLoader());
 	}
 
 	public static Labels getInstance() {
@@ -48,43 +50,41 @@ public final class Labels {
 	/**
 	 * Initializes the internal locale-specific data.
 	 * The files messages_lang.properties and messages.properties are searched for from the classpath.
-	 * This method must be called prior to using this class.
 	 */
 	public static void initialize(Locale locale) {
 		if (instance != null && locale.equals(instance.locale)) {
 			// do not reload locale, because it was already initialized in the static block
 			return;
 		}
-		// create a new instance
-		instance = new Labels();
-		
-		instance.locale = locale;
-		try (InputStream labelsStream = Labels.class.getClassLoader().getResourceAsStream("messages.properties")) {
+		instance = new Labels(locale);
+	}
+
+	void load(ClassLoader loader) {
+		try (InputStream labelsStream = loader.getResourceAsStream("messages.properties")) {
 			if (labelsStream == null) {
 				throw new MissingResourceException("Labels not found!", Labels.class.getName(), "messages");
 			}
-			instance.labelsFallback = new PropertyResourceBundle(new InputStreamReader(labelsStream, "UTF-8"));
+			labelsFallback = new PropertyResourceBundle(new InputStreamReader(labelsStream, UTF_8));
 		}
 		catch (IOException e) {
 			throw new MissingResourceException(e.toString(), Labels.class.getName(), "messages");
 		}
-		
-		try (InputStream labelsStream = Labels.class.getClassLoader().getResourceAsStream("messages_" + locale.toString() + ".properties")) {
-			instance.labels = new PropertyResourceBundle(new InputStreamReader(labelsStream, "UTF-8"));
+
+		try (InputStream labelsStream = loader.getResourceAsStream("messages_" + locale.toString() + ".properties")) {
+			labels = new PropertyResourceBundle(new InputStreamReader(labelsStream, UTF_8));
 		}
 		catch (Exception e) {
-			try (InputStream labelsStream = Labels.class.getClassLoader().getResourceAsStream("messages_" + locale.getLanguage() + ".properties")) {
-				instance.labels = new PropertyResourceBundle(new InputStreamReader(labelsStream, "UTF-8"));
+			try (InputStream labelsStream = loader.getResourceAsStream("messages_" + locale.getLanguage() + ".properties")) {
+				labels = new PropertyResourceBundle(new InputStreamReader(labelsStream, UTF_8));
 			}
 			catch (Exception e2) {
-				instance.labels = instance.labelsFallback;
+				labels = labelsFallback;
 			}
 		}
 	}
 
 	/**
 	 * Retrieves a String specified by the label key
-	 * @param key
 	 */
 	public String get(String key) {
 		try {
