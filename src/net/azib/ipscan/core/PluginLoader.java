@@ -1,5 +1,6 @@
 package net.azib.ipscan.core;
 
+import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.LoggerFactory;
 
 import java.io.File;
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.logging.Logger;
+
+import static java.util.Optional.ofNullable;
 
 /**
  * Loads plugins using three ways:
@@ -71,7 +74,6 @@ public class PluginLoader {
 		File[] jars = parentDir.listFiles((dir, name) -> name.endsWith(".jar") && !name.equals(ownFile.getName()));
 		if (jars == null) return;
 
-		PluginClassLoader loader = new PluginClassLoader();
 		for (File jar : jars) {
 			try {
 				JarFile jarFile = new JarFile(jar);
@@ -82,7 +84,8 @@ public class PluginLoader {
 				String classNames = manifest.getMainAttributes().getValue("IPScan-Plugin");
 				if (classNames == null) classNames = manifest.getMainAttributes().getValue("IPScan-Plugins");
 				if (classNames != null) {
-					loader.addURL(jar.toURI().toURL());
+					PluginClassLoader loader = new PluginClassLoader(jar.toURL());
+					Labels.getInstance().load(loader);
 					loadPluginClasses(container, loader, classNames);
 				}
 			}
@@ -108,12 +111,12 @@ public class PluginLoader {
 	}
 
 	static class PluginClassLoader extends URLClassLoader {
-		PluginClassLoader() {
-			super(new URL[0], PluginLoader.class.getClassLoader());
+		PluginClassLoader(URL url) {
+			super(new URL[] {url}, PluginLoader.class.getClassLoader());
 		}
 
-		@Override protected void addURL(URL url) {
-			super.addURL(url); //make protected method accessible to PluginLoader
+		@Override public URL getResource(String name) {
+			return ofNullable(findResource(name)).orElseGet(() -> getParent().getResource(name));
 		}
 	}
 }

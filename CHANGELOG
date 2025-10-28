@@ -1,3 +1,7 @@
+Changes in 3.9.3:
+- Updated SWT for all platforms, improved loading of correct SWT library on Linux
+- Add support for plugin jars containing their own messages.properties
+
 Changes in 3.9.2:
 - Linux: specify Java 17 as minimum required version in .deb and .rpm packages
 - Added Irish translation

@@ -60,20 +60,20 @@ public final class Labels {
 		instance = new Labels(locale);
 	}
 
-	void load(ClassLoader loader) {
-		try (InputStream labelsStream = loader.getResourceAsStream("messages.properties")) {
-			fallback.load(new InputStreamReader(labelsStream, UTF_8));
+	public void load(ClassLoader loader) {
+		try (InputStream in = loader.getResourceAsStream("messages.properties")) {
+			if (in != null) fallback.load(new InputStreamReader(in, UTF_8));
 		}
 		catch (IOException e) {
 			throw new MissingResourceException(e.toString(), Labels.class.getName(), "messages");
 		}
 
-		try (InputStream labelsStream = loader.getResourceAsStream("messages_" + locale.toString() + ".properties")) {
-			labels.load(new InputStreamReader(labelsStream, UTF_8));
+		try (InputStream in = loader.getResourceAsStream("messages_" + locale.toString() + ".properties")) {
+			labels.load(new InputStreamReader(in, UTF_8));
 		}
 		catch (Exception e) {
-			try (InputStream labelsStream = loader.getResourceAsStream("messages_" + locale.getLanguage() + ".properties")) {
-				labels.load(new InputStreamReader(labelsStream, UTF_8));
+			try (InputStream in = loader.getResourceAsStream("messages_" + locale.getLanguage() + ".properties")) {
+				labels.load(new InputStreamReader(in, UTF_8));
 			}
 			catch (Exception e2) {
 				labels = fallback;
