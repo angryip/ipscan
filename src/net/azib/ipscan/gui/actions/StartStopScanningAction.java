@@ -18,6 +18,7 @@ import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
+import net.azib.ipscan.gui.feeders.AbstractFeederGUI;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -48,6 +49,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	private ResultTable resultTable;
 	private FeederGUIRegistry feederRegistry;
 	private Button button;
+	private AbstractFeederGUI abstractFeederGUI;
 	
 	Image[] buttonImages = new Image[ScanningState.values().length];
 	String[] buttonTexts = new String[ScanningState.values().length];
@@ -80,7 +82,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 
 	public StartStopScanningAction(ScannerDispatcherThreadFactory scannerThreadFactory, StateMachine stateMachine, ResultTable resultTable,
 								   StatusBar statusBar, FeederGUIRegistry feederRegistry, PingerRegistry pingerRegistry,
-								   Button startStopButton, GUIConfig guiConfig) {
+								   Button startStopButton, GUIConfig guiConfig, AbstractFeederGUI abstractFeederGUI) {
 		this(startStopButton.getDisplay());
 
 		this.scannerThreadFactory = scannerThreadFactory;
@@ -92,12 +94,13 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		this.stateMachine = stateMachine;
 		this.guiConfig = guiConfig;
 		this.taskBarItem = getTaskBarItem();
+		this.abstractFeederGUI = abstractFeederGUI;
 		
 		// add listeners to all state changes
 		stateMachine.addTransitionListener(this);
 		
 		// set the default image
-		ScanningState state = stateMachine.getState();
+		ScanningState state = stateMachine.getCurrentState();
 		button.setImage(buttonImages[state.ordinal()]);
 		button.setText(buttonTexts[state.ordinal()]);
 	}
@@ -124,7 +127,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	 */
 	public void widgetSelected(SelectionEvent event) {
 		// ask for confirmation before erasing scanning results
-		if (stateMachine.inState(IDLE)) {
+		if (stateMachine.inCurrentState(IDLE)) {
 			if (!preScanChecks())
 				return;
 		}
@@ -160,7 +163,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 					resultTable.removeAll();
 
 				try {
-					scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createFeeder(), StartStopScanningAction.this, createResultsCallback(state));
+					scannerThread = scannerThreadFactory.createScannerThread(abstractFeederGUI.createFeeder(), StartStopScanningAction.this, createResultsCallback(state));
 					stateMachine.startScanning();
 					mainWindowTitle = statusBar.getShell().getText();
 				}
@@ -249,13 +252,13 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 			if (taskBarItem != null) taskBarItem.setProgress(percentageComplete);
 
 			// show percentage in main window title
-			if (!stateMachine.inState(IDLE))
+			if (!stateMachine.inCurrentState(IDLE))
 				statusBar.getShell().setText(percentageComplete + "% - " + mainWindowTitle);
 			else
 				statusBar.getShell().setText(mainWindowTitle);
 
 			// change button image according to the current state
-			button.setImage(buttonImages[stateMachine.getState().ordinal()]);
+			button.setImage(buttonImages[stateMachine.getCurrentState().ordinal()]);
 		});
 	}
 

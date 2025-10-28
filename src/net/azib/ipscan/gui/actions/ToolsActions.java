@@ -103,7 +103,7 @@ public class ToolsActions {
 		}
 
 		public void handleEvent(Event event) {
-			if (stateMachine.inState(ScanningState.IDLE)) {
+			if (stateMachine.inCurrentState(ScanningState.IDLE)) {
 				Table resultTable = (Table) event.widget;
 				int selectionCount = resultTable.getSelectionCount();
 				if (selectionCount > 1) 

@@ -94,6 +94,10 @@ public abstract class AbstractFeederGUI extends Composite implements FeederCreat
 		}).start();
 	}
 
+	public Feeder createFeeder() {
+		return createFeeder();
+	}
+
 	protected void afterLocalHostInfoFilled(InterfaceAddress localInterface) {
 	}
 }

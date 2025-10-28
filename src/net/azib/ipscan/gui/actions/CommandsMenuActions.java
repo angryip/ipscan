@@ -100,7 +100,7 @@ public class CommandsMenuActions {
 			// the same listener is used for several events
 			if (event.type == SWT.KeyDown && event.keyCode != SWT.DEL) return;
 			// deletion not allowed when scanning
-			if (!stateMachine.inState(ScanningState.IDLE)) return;
+			if (!stateMachine.inCurrentState(ScanningState.IDLE)) return;
 			
 			int firstSelection = resultTable.getSelectionIndex();
 			if (firstSelection < 0) return;
