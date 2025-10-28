@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Locale;
 import java.util.MissingResourceException;
-import java.util.PropertyResourceBundle;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -25,13 +25,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @author Anton Keks
  */
 public final class Labels {
-	public static final String[] LANGUAGES = { "system", "en", "ru", "de", "hu", "lt", "es", "fi", "fr", "it", "ga_IE", "ku", "tr", "gr", "pt_BR", "zh_CN", "zh_TW"};
+	public static final String[] LANGUAGES = {"system", "en", "ru", "de", "hu", "lt", "es", "fi", "fr", "it", "ga_IE", "ku", "tr", "gr", "pt_BR", "zh_CN", "zh_TW"};
 	private static final Logger LOG = Logger.getLogger(Labels.class.getName());
 	private static Labels instance;
 
-	PropertyResourceBundle labels, labelsFallback;
 	Locale locale;
-	
+	Properties labels = new Properties();
+	Properties fallback = new Properties();
+
 	static {
 		// this is needed for Visual Editor to display 
 		// labels at design time
@@ -61,24 +62,21 @@ public final class Labels {
 
 	void load(ClassLoader loader) {
 		try (InputStream labelsStream = loader.getResourceAsStream("messages.properties")) {
-			if (labelsStream == null) {
-				throw new MissingResourceException("Labels not found!", Labels.class.getName(), "messages");
-			}
-			labelsFallback = new PropertyResourceBundle(new InputStreamReader(labelsStream, UTF_8));
+			fallback.load(new InputStreamReader(labelsStream, UTF_8));
 		}
 		catch (IOException e) {
 			throw new MissingResourceException(e.toString(), Labels.class.getName(), "messages");
 		}
 
 		try (InputStream labelsStream = loader.getResourceAsStream("messages_" + locale.toString() + ".properties")) {
-			labels = new PropertyResourceBundle(new InputStreamReader(labelsStream, UTF_8));
+			labels.load(new InputStreamReader(labelsStream, UTF_8));
 		}
 		catch (Exception e) {
 			try (InputStream labelsStream = loader.getResourceAsStream("messages_" + locale.getLanguage() + ".properties")) {
-				labels = new PropertyResourceBundle(new InputStreamReader(labelsStream, UTF_8));
+				labels.load(new InputStreamReader(labelsStream, UTF_8));
 			}
 			catch (Exception e2) {
-				labels = labelsFallback;
+				labels = fallback;
 			}
 		}
 	}
@@ -87,14 +85,16 @@ public final class Labels {
 	 * Retrieves a String specified by the label key
 	 */
 	public String get(String key) {
-		try {
-			return labels.getString(key);
+		var text = labels.getProperty(key);
+		if (text == null) {
+			text = fallback.getProperty(key);
+			if (text != null && !key.startsWith("language.")) LOG.warning("Used fallback label for " + key);
 		}
-		catch (MissingResourceException e) {
-			String text = labelsFallback.getString(key);
-			if (!key.startsWith("language.")) LOG.warning("Used fallback label for " + key);
-			return text;
+		if (text == null) {
+			text = key;
+			LOG.warning("Missing label for " + key);
 		}
+		return text;
 	}
 
 	/**
