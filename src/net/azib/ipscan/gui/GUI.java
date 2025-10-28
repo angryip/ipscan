@@ -1,5 +1,6 @@
 package net.azib.ipscan.gui;
 
+import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.LoggerFactory;
 import net.azib.ipscan.config.Version;
 import net.azib.ipscan.core.UserErrorException;
@@ -91,24 +92,20 @@ public class GUI implements AutoCloseable {
 	 * in case it is possible, or toString() otherwise.
 	 */
 	static String getLocalizedMessage(Throwable e) {
-		String localizedMessage;
-		try {
-			// try to load localized message
-			String exceptionClassName = e.getClass().getSimpleName();
-			String originalMessage = e.getMessage();
-			localizedMessage = getLabel("exception." + exceptionClassName + (originalMessage != null ? "." + originalMessage : ""));
-
+		var exceptionClassName = e.getClass().getSimpleName();
+		var originalMessage = e.getMessage();
+		var localizedMessage = Labels.getInstance().getOrNull("exception." + exceptionClassName + (originalMessage != null ? "." + originalMessage : ""));
+		if (localizedMessage == null) {
+			// fallback to default text
+			localizedMessage = e.toString();
+			// output stack trace to the console
+			LOG.log(Level.SEVERE, "unexpected error", e);
+		} else {
 			// add cause summary, if it exists
 			if (e.getCause() != null) {
 				localizedMessage += "\n\n" + e.getCause().toString();
 			}
 			LOG.log(Level.FINE, "error", e);
-		}
-		catch (Exception e2) {
-			// fallback to default text
-			localizedMessage = e.toString();
-			// output stack trace to the console
-			LOG.log(Level.SEVERE, "unexpected error", e);
 		}
 		return localizedMessage;
 	}

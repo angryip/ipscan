@@ -61,7 +61,7 @@ public class PluginLoader {
 				else
 					LOG.warning("Plugin class " + clazz.getName() + " is not assignable to " + Plugin.class.getName());
 			}
-			catch (ClassNotFoundException e) {
+			catch (Throwable e) {
 				LOG.warning("Unable to load plugin: " + className);
 			}
 		}

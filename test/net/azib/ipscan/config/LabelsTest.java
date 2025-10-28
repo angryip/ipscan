@@ -46,13 +46,7 @@ public class LabelsTest {
 	
 	@Test
 	public void testInexistentLabel() {
-		try {
-			Labels.getLabel("abra-cadabra");
-			fail();
-		}
-		catch (Exception e) {
-			// exception is good
-		}
+		assertEquals("abra-cadabra", Labels.getLabel("abra-cadabra"));
 	}
 
 	/**

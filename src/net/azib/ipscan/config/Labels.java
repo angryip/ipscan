@@ -81,15 +81,17 @@ public final class Labels {
 		}
 	}
 
-	/**
-	 * Retrieves a String specified by the label key
-	 */
-	public String get(String key) {
+	public String getOrNull(String key) {
 		var text = labels.getProperty(key);
 		if (text == null) {
 			text = fallback.getProperty(key);
 			if (text != null && !key.startsWith("language.")) LOG.warning("Used fallback label for " + key);
 		}
+		return text;
+	}
+
+	public String get(String key) {
+		var text = getOrNull(key);
 		if (text == null) {
 			text = key;
 			LOG.warning("Missing label for " + key);
@@ -97,9 +99,6 @@ public final class Labels {
 		return text;
 	}
 
-	/**
-	 * A shortened form of Labels.getInstance().get()
-	 */
 	public static String getLabel(String key) {
 		return getInstance().get(key);
 	}
