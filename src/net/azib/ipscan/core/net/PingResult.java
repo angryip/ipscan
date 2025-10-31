@@ -87,7 +87,7 @@ public class PingResult {
 		return timeoutAdaptationAllowed;
 	}
 
-	PingResult merge(PingResult result) {
+	public PingResult merge(PingResult result) {
 		this.packetCount += result.packetCount;
 		this.replyCount += result.replyCount;
 		return this;
