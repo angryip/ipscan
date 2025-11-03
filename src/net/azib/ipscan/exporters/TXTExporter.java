@@ -99,8 +99,7 @@ public class TXTExporter extends AbstractExporter {
 		if (s.length() >= length) {
 			return s;
 		}
-		return s + "                                                                       "
-				   .substring(0, length - s.length());
+		return s + " ".repeat(length - s.length());
 	}
 
 	public List<ScanningResult> importResults(String fileName, AbstractFeederGUI feeder) throws IOException {
