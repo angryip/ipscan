@@ -1,4 +1,5 @@
 Changes in 3.9.3:
+- Bundle Java 21 with Windows and Mac builds
 - Updated SWT for all platforms, improved loading of correct SWT library on Linux
 - Add support for plugin jars containing their own messages.properties
 

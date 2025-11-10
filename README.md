@@ -35,7 +35,7 @@ Windows installer can be built on Windows only.
 
 On Ubuntu install the following packages:
 ```
-sudo apt install openjdk-11-jdk rpm fakeroot
+sudo apt install openjdk-21-jdk rpm fakeroot
 ```
 
 Install OpenJDK on other platforms as you usually do it.
