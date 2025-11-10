@@ -50,7 +50,7 @@ public class IntegerWithUnit implements Comparable<IntegerWithUnit> {
 			return 0;
 		if (n == null)
 			return 1;
-		return value == n.value ? 0 : value > n.value ? 1 : -1;
+		return Integer.compare(value, n.value);
 	}
 
 }

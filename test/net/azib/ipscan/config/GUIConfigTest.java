@@ -36,12 +36,12 @@ public class GUIConfigTest {
 
 	@Test
 	public void setMainWindowDimensions() throws Exception {
-		Point size1 = new Point(2, 1);
+		var size1 = new Point(2, 1);
 		config.setMainWindowSize(size1, false);
 		assertFalse(config.isMainWindowMaximized);
 		assertEquals(size1, config.getMainWindowSize());
-		
-		Point size2 = new Point(3, 4);
+
+		var size2 = new Point(3, 4);
 		config.setMainWindowSize(size2, true);
 		assertTrue(config.isMainWindowMaximized);
 		assertEquals(size1, config.getMainWindowSize());
@@ -60,7 +60,7 @@ public class GUIConfigTest {
 
 	@Test
 	public void columnWidths() throws Exception {
-		Fetcher fetcher = mock(Fetcher.class);
+		var fetcher = mock(Fetcher.class);
 		when(fetcher.getId()).thenReturn("fetcher.abc");
 
 		config.setColumnWidth(fetcher, 35);

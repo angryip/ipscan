@@ -33,9 +33,9 @@ public class MDNSResolver implements Closeable {
 	}
 
 	String decodeName(byte[] data, int offset, int length) {
-		StringBuilder s = new StringBuilder(length);
-		for (int i = offset; i < offset + length; i++) {
-			byte len = data[i];
+		var s = new StringBuilder(length);
+		for (var i = offset; i < offset + length; i++) {
+			var len = data[i];
 			if (len == 0) break;
 			s.append(new String(data, i + 1, len)).append('.');
 			i += len;
@@ -45,8 +45,8 @@ public class MDNSResolver implements Closeable {
 	}
 
 	byte[] dnsRequest(int id, String name) throws IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		DataOutputStream out = new DataOutputStream(baos);
+		var baos = new ByteArrayOutputStream();
+		var out = new DataOutputStream(baos);
 		out.writeShort(id);
 		out.write(new byte[] {0, 0, 0, 1, 0, 0, 0, 0, 0, 0});
 		writeName(out, name);
@@ -60,17 +60,17 @@ public class MDNSResolver implements Closeable {
 	}
 
 	public String resolve(InetAddress ip) throws IOException {
-		byte[] addr = ip.getAddress();
-		int requestId = addr[2] * 0xFF + addr[3];
-		byte[] request = dnsRequest(requestId, reverseName(addr));
+		var addr = ip.getAddress();
+		var requestId = addr[2] * 0xFF + addr[3];
+		var request = dnsRequest(requestId, reverseName(addr));
 		socket.send(new DatagramPacket(request, request.length, mdnsIP, mdnsPort));
 
-		DatagramPacket respPacket = new DatagramPacket(new byte[512], 512);
+		var respPacket = new DatagramPacket(new byte[512], 512);
 		socket.receive(respPacket);
-		byte[] response = respPacket.getData();
+		var response = respPacket.getData();
 		if (response[0] != request[0] && response[1] != request[1]) return null;
 		int numQueries = response[5];
-		int offset = (numQueries == 0 ? 12 : request.length) + 2 + 2 + 2 + 4 + 2;
+		var offset = (numQueries == 0 ? 12 : request.length) + 2 + 2 + 2 + 4 + 2;
 		return decodeName(response, offset, respPacket.getLength() - offset);
 	}
 

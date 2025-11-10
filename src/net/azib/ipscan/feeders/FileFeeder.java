@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -74,8 +73,8 @@ public class FileFeeder extends AbstractFeeder {
 	}
 
 	private String readLines(BufferedReader fileReader, int num) throws IOException {
-		int index = 1;
-		StringBuilder sb = new StringBuilder();
+		var index = 1;
+		var sb = new StringBuilder();
 		String fileLine;
 		while ((fileLine = fileReader.readLine()) != null) {
 			sb.append(fileLine).append("\n");
@@ -88,26 +87,26 @@ public class FileFeeder extends AbstractFeeder {
 	private void findHosts(Reader reader) {
 		currentIndex = 0;
 		foundHosts = new LinkedHashMap<>();
-		long startTime = System.currentTimeMillis();
+		var startTime = System.currentTimeMillis();
 
-		try (BufferedReader fileReader = new BufferedReader(reader)) {
+		try (var fileReader = new BufferedReader(reader)) {
 			String fileLine;
-			while (!(fileLine = readLines(fileReader, 20)).equals("")) {
-				long lineTime = System.currentTimeMillis();
-				Matcher matcher = HOSTNAME_REGEX.matcher(fileLine);
+			while (!(fileLine = readLines(fileReader, 20)).isEmpty()) {
+				var lineTime = System.currentTimeMillis();
+				var matcher = HOSTNAME_REGEX.matcher(fileLine);
 				while (matcher.find()) {
 					try {
-						String host = matcher.group();
+						var host = matcher.group();
 						if (host.equals(Version.OWN_HOST)) continue;
-						ScanningSubject subject = foundHosts.get(host);
+						var subject = foundHosts.get(host);
 						if (subject == null) {
-							InetAddress address = InetAddress.getByName(host);
+							var address = InetAddress.getByName(host);
 							subject = new ScanningSubject(address, InetAddressUtils.getInterface(address, networkInterfaces));
 						}
 						
 						if (!matcher.hitEnd() && fileLine.charAt(matcher.end()) == ':') {
 							// see if any valid port is requested
-							Matcher portMatcher = PORT_REGEX.matcher(fileLine.substring(matcher.end()+1));
+							var portMatcher = PORT_REGEX.matcher(fileLine.substring(matcher.end()+1));
 							if (portMatcher.lookingAt()) {
 								subject.addRequestedPort(Integer.valueOf(portMatcher.group()));
 							}

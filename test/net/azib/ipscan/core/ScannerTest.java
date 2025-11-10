@@ -27,8 +27,8 @@ import static org.mockito.Mockito.when;
  */
 public class ScannerTest {
 	
-	private Set<Class<? extends Fetcher>> initCalled = new HashSet<Class<? extends Fetcher>>();
-	private Set<Class<? extends Fetcher>> cleanupCalled = new HashSet<Class<? extends Fetcher>>();
+	private Set<Class<? extends Fetcher>> initCalled = new HashSet<>();
+	private Set<Class<? extends Fetcher>> cleanupCalled = new HashSet<>();
 	private Scanner scanner;
 	private FetcherRegistry fetcherRegistry;
 	
@@ -45,7 +45,7 @@ public class ScannerTest {
 	@Test
 	public void testScan() throws Exception {
 		// scan the local host
-		ScanningResult scanningResult = new ScanningResult(InetAddress.getLocalHost(), 4);
+		var scanningResult = new ScanningResult(InetAddress.getLocalHost(), 4);
 		scanner.scan(new ScanningSubject(InetAddress.getLocalHost()), scanningResult);
 		
 		assertEquals(ResultType.ALIVE, scanningResult.getType());
@@ -66,7 +66,7 @@ public class ScannerTest {
 		scanner = new Scanner(fetcherRegistry);
 		
 		// scan the local host
-		ScanningResult scanningResult = new ScanningResult(InetAddress.getLocalHost(), 3);
+		var scanningResult = new ScanningResult(InetAddress.getLocalHost(), 3);
 		scanner.scan(new ScanningSubject(InetAddress.getLocalHost()), scanningResult);
 		
 		assertEquals(ResultType.UNKNOWN, scanningResult.getType());

@@ -24,7 +24,7 @@ public class PluginLoaderTest {
 
 	@Test
 	public void canFindClassLocation() {
-		File file = loader.getClassLocation(getClass());
+		var file = loader.getClassLocation(getClass());
 		assertEquals("core", file.getParentFile().getName());
 		assertTrue(file.exists());
 		assertTrue(new File(file.getParent(), getClass().getSimpleName() + ".class").exists());
@@ -32,7 +32,7 @@ public class PluginLoaderTest {
 
 	@Test
 	public void loadFromJarFile() {
-		File pluginLocation = loader.getResourceLocation(getClass().getResource("test-plugin.jar"));
+		var pluginLocation = loader.getResourceLocation(getClass().getResource("test-plugin.jar"));
 		loader.loadPluginJars(container, new File(pluginLocation.getParentFile(), "ipscan.jar"));
 
 		Class<?> plugin = container.get(0);

@@ -24,7 +24,7 @@ public class CommandsMenu extends AbstractMenu {
 		initMenuItem(this, "menu.commands.copyDetails", null, null, actions.copyIPDetails);
 		initMenuItem(this, null, null, null, null);
 
-		MenuItem openersMenuItem = new MenuItem(this, SWT.CASCADE);
+		var openersMenuItem = new MenuItem(this, SWT.CASCADE);
 		openersMenuItem.setText(Labels.getLabel(openersMenu.getId()));
 		openersMenuItem.setMenu(openersMenu);
 

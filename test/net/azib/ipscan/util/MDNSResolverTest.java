@@ -19,15 +19,15 @@ public class MDNSResolverTest {
 
 	@Test
 	public void encodeNameForDNS() throws Exception {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		DataOutputStream out = new DataOutputStream(baos);
+		var baos = new ByteArrayOutputStream();
+		var out = new DataOutputStream(baos);
 		resolver.writeName(out, "a.bb.ccc.dddd");
 		assertEquals("\u0001a\u0002bb\u0003ccc\u0004dddd\u0000", new String(baos.toByteArray()));
 	}
 
 	@Test
 	public void decodeNameFromDNS() throws Exception {
-		byte[] data = "\u0000\u0000\u0001a\u0002bb\u0003ccc\u0004dddd\u0000".getBytes();
+		var data = "\u0000\u0000\u0001a\u0002bb\u0003ccc\u0004dddd\u0000".getBytes();
 		assertEquals("a.bb.ccc.dddd", resolver.decodeName(data, 2, data.length - 2));
 	}
 

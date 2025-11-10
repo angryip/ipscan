@@ -38,11 +38,11 @@ public class FavoritesMenuActions {
 		}
 		
 		public void handleEvent(Event event) {
-			String feederInfo = feederRegistry.current().getInfo();
-			InputDialog inputDialog = new InputDialog(
+			var feederInfo = feederRegistry.current().getInfo();
+			var inputDialog = new InputDialog(
 					Labels.getLabel("title.favorite.add"), 
 					Labels.getLabel("text.favorite.add"));
-			String favoriteName = inputDialog.open(feederInfo);
+			var favoriteName = inputDialog.open(feederInfo);
 			
 			if (favoriteName != null) {
 				if (favoritesConfig.get(favoriteName) != null) {
@@ -68,8 +68,8 @@ public class FavoritesMenuActions {
 		}
 
 		public void widgetSelected(SelectionEvent event) {
-			MenuItem menuItem = (MenuItem) event.widget;
-			String key = menuItem.getText();
+			var menuItem = (MenuItem) event.widget;
+			var key = menuItem.getText();
 			
 			feederRegistry.select(favoritesConfig.getFeederId(key));
 			feederRegistry.current().unserialize(favoritesConfig.getSerializedParts(key));
@@ -109,19 +109,19 @@ public class FavoritesMenuActions {
 		}
 
 		public void handleEvent(Event event) {
-			Menu favoritesMenu = (Menu) event.widget;
+			var favoritesMenu = (Menu) event.widget;
 			// populate favorites in the menu			
 			// note: 3 is the number of items in the menu when no favorites exist
 			
 			// dispose old favorites
-			MenuItem[] menuItems = favoritesMenu.getItems();
-			for (int i = 3; i < menuItems.length; i++) {
+			var menuItems = favoritesMenu.getItems();
+			for (var i = 3; i < menuItems.length; i++) {
 				menuItems[i].dispose();
 			}
 			
 			// update favorites menu items
-			for (String name : favoritesConfig) {
-				MenuItem menuItem = new MenuItem(favoritesMenu, SWT.CASCADE);
+			for (var name : favoritesConfig) {
+				var menuItem = new MenuItem(favoritesMenu, SWT.CASCADE);
 				menuItem.setText(name);
 				menuItem.setEnabled(stateMachine.inState(ScanningState.IDLE));
 				menuItem.addSelectionListener(favoritesSelectListener);

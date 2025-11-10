@@ -21,23 +21,23 @@ public class FavoritesConfig extends NamedListConfig {
 	}
 
 	public void add(String key, FeederCreator feederCreator) {
-		StringBuilder serializedFeeder = new StringBuilder(feederCreator.getFeederId());
+		var serializedFeeder = new StringBuilder(feederCreator.getFeederId());
 		serializedFeeder.append('\t');
-		for (String part : feederCreator.serialize()) {
+		for (var part : feederCreator.serialize()) {
 			serializedFeeder.append(part).append(":::");
 		}
 		super.add(key, serializedFeeder.toString());
 	}
 	
 	public String getFeederId(String key) {
-		String value = get(key);
-		int indexOf = value.indexOf('\t');
+		var value = get(key);
+		var indexOf = value.indexOf('\t');
 		return value.substring(0, indexOf);
 	}
 	
 	public String[] getSerializedParts(String key) {
-		String value = get(key);
-		int indexOf = value.indexOf('\t');
+		var value = get(key);
+		var indexOf = value.indexOf('\t');
 		return value.substring(indexOf+1).split(":::");		
 	}
 }

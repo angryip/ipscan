@@ -56,7 +56,7 @@ public class RescanFeederTest {
 	}
 	
 	private Feeder mockFeeder() {
-		Feeder feeder = mock(Feeder.class);
+		var feeder = mock(Feeder.class);
 		when(feeder.getInfo()).thenReturn("SomeInfo");
 		when(feeder.getId()).thenReturn("someLabel");
 		when(feeder.getName()).thenReturn("someName");

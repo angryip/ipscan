@@ -103,14 +103,14 @@ public class ScanningResultComparatorTest {
 
 	@Test
 	public void sortingWorksInBothDirections() throws Exception {
-		ScanningResult[] results = {
-			res(NotScanned.VALUE),	
-			res(NotAvailable.VALUE),	
-			res(15),	
-			res(NotScanned.VALUE),	
-			res(1),
-			res(NotAvailable.VALUE),
-			res("a")
+		var results = new ScanningResult[]{
+				res(NotScanned.VALUE),
+				res(NotAvailable.VALUE),
+				res(15),
+				res(NotScanned.VALUE),
+				res(1),
+				res(NotAvailable.VALUE),
+				res("a")
 		};
 		
 		comparator.byIndex(0, true);
@@ -135,8 +135,8 @@ public class ScanningResultComparatorTest {
 	}
 		
 	private ScanningResult res(Object ... values) throws UnknownHostException {
-		ScanningResult result = new ScanningResult(InetAddress.getByName("127.0.0.1"), values.length);
-		for (int i = 0; i < values.length; i++) {
+		var result = new ScanningResult(InetAddress.getByName("127.0.0.1"), values.length);
+		for (var i = 0; i < values.length; i++) {
 			result.setValue(i, values[i]);
 		}
 		return result;

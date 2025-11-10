@@ -19,11 +19,11 @@ public class UnixMACFetcher extends MACFetcher {
 	}
 
 	@Override public String resolveMAC(ScanningSubject subject) {
-		String ip = subject.getAddress().getHostAddress();
+		var ip = subject.getAddress().getHostAddress();
 		BufferedReader reader = null;
 		try {
 			// highly inefficient implementation, there must be a better way (using JNA?)
-			Process process = Runtime.getRuntime().exec(arp + ip);
+			var process = Runtime.getRuntime().exec(arp + ip);
 			reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			String line;
 			while ((line = reader.readLine()) != null) {

@@ -17,7 +17,7 @@ public class ThreadResourceBinder<T> {
   }
 
   public void close() {
-    for (T resource : resources.values()) close(resource);
+    for (var resource : resources.values()) close(resource);
     resources.clear();
   }
 

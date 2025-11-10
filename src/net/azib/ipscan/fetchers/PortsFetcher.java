@@ -54,7 +54,7 @@ public class PortsFetcher extends AbstractFetcher {
 
 	@Override
 	public String getFullName() {
-		int numPorts = new PortIterator(config.portString).size();
+		var numPorts = new PortIterator(config.portString).size();
 		return getName() + " [" + numPorts + (config.useRequestedPorts ? "+" : "" ) + "]";
 	}
 	
@@ -71,7 +71,7 @@ public class PortsFetcher extends AbstractFetcher {
 	 */
 	@SuppressWarnings("unchecked")
 	protected boolean scanPorts(ScanningSubject subject) {
-		SortedSet<Integer> openPorts = getOpenPorts(subject);
+		var openPorts = getOpenPorts(subject);
 					
 		if (openPorts == null) {
 			// no results are available yet, let's proceed with the scanning
@@ -80,7 +80,7 @@ public class PortsFetcher extends AbstractFetcher {
 			subject.setParameter(PARAMETER_OPEN_PORTS, openPorts);
 			subject.setParameter(PARAMETER_FILTERED_PORTS, filteredPorts);
 
-			int portTimeout = subject.getAdaptedPortTimeout();
+			var portTimeout = subject.getAdaptedPortTimeout();
 			
 			// clone port iterator for performance instead of creating for every thread
 			Iterator<Integer> portsIterator = portIteratorPrototype.copy();
@@ -95,7 +95,7 @@ public class PortsFetcher extends AbstractFetcher {
 
 			while (portsIterator.hasNext() && !Thread.currentThread().isInterrupted()) {
 				// TODO: UDP ports?
-				Socket socket = sockets.bind(new Socket());
+				var socket = sockets.bind(new Socket());
 				int port = portsIterator.next();
 				try {			
 					// set some optimization options
@@ -139,11 +139,11 @@ public class PortsFetcher extends AbstractFetcher {
 	 * @see net.azib.ipscan.fetchers.Fetcher#scan(net.azib.ipscan.core.ScanningSubject)
 	 */
 	public Object scan(ScanningSubject subject) {
-		boolean portsScanned = scanPorts(subject);
+		var portsScanned = scanPorts(subject);
 		if (!portsScanned)
 			return NotScanned.VALUE;
-		
-		SortedSet<Integer> openPorts = getOpenPorts(subject);
+
+		var openPorts = getOpenPorts(subject);
 		if (!openPorts.isEmpty()) {
 			subject.setResultType(ResultType.WITH_PORTS);
 			return new NumericRangeList(openPorts, displayAsRanges);

@@ -28,14 +28,14 @@ public class ARPPinger implements Pinger {
 
 	@Override public PingResult ping(ScanningSubject subject, int count) throws IOException {
 		if (trigger != null) count -= count / 2;
-		PingResult result = new PingResult(subject.getAddress(), count);
-		for (int i = 0; i < count; i++) {
-			long start = currentTimeMillis();
+		var result = new PingResult(subject.getAddress(), count);
+		for (var i = 0; i < count; i++) {
+			var start = currentTimeMillis();
 			if (trigger != null) {
 				// this should issue an ARP request for the IP
 				result.merge(trigger.ping(subject, 1));
 			}
-			String mac = macFetcher.scan(subject);
+			var mac = macFetcher.scan(subject);
 			if (mac != null) result.addReply(currentTimeMillis() - start);
 		}
 		return result;

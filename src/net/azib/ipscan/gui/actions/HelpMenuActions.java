@@ -43,7 +43,7 @@ public class HelpMenuActions {
 		}
 
 		public void handleEvent(Event event) {
-			InfoDialog dialog = new InfoDialog(Version.NAME, Labels.getLabel("title.commandline"));
+			var dialog = new InfoDialog(Version.NAME, Labels.getLabel("title.commandline"));
 			dialog.setMessage(cli.toString());
 			dialog.open();
 		}
@@ -109,7 +109,7 @@ public class HelpMenuActions {
 
 			Runnable checkVersionCode = () -> {
 				String message = null;
-				int messageStyle = SWT.ICON_INFORMATION;
+				var messageStyle = SWT.ICON_INFORMATION;
 				try {
 					var url = new URL(Version.LATEST_VERSION_URL);
 					var conn = url.openConnection();
@@ -133,8 +133,8 @@ public class HelpMenuActions {
 					Logger.getLogger(getClass().getName()).log(WARNING, message, e);
 				} finally {
 					// show the box in the SWT thread
-					final String messageToShow = message;
-					final int messageStyleToShow = messageStyle;
+					final var messageToShow = message;
+					final var messageStyleToShow = messageStyle;
 					Display.getDefault().asyncExec(() -> {
 						statusBar.setStatusText(null);
 						if (messageToShow == null) return;

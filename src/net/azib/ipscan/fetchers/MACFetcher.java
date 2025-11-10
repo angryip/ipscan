@@ -3,7 +3,6 @@ package net.azib.ipscan.fetchers;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.gui.fetchers.MACFetcherPrefs;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class MACFetcher extends AbstractFetcher {
@@ -17,7 +16,7 @@ public abstract class MACFetcher extends AbstractFetcher {
 	}
 
 	@Override public final String scan(ScanningSubject subject) {
-		String mac = (String) subject.getParameter(ID);
+		var mac = (String) subject.getParameter(ID);
 		if (mac == null) mac = resolveMAC(subject);
 		subject.setParameter(ID, mac);
 		return replaceSeparator(mac);
@@ -26,14 +25,14 @@ public abstract class MACFetcher extends AbstractFetcher {
 	protected abstract String resolveMAC(ScanningSubject subject);
 
 	static String bytesToMAC(byte[] bytes) {
-		StringBuilder mac = new StringBuilder();
-		for (byte b : bytes) mac.append(String.format("%02X", b)).append(":");
+		var mac = new StringBuilder();
+		for (var b : bytes) mac.append(String.format("%02X", b)).append(":");
 		if (!mac.isEmpty()) mac.deleteCharAt(mac.length()-1);
 		return mac.toString();
 	}
 
 	String extractMAC(String line) {
-		Matcher m = macAddressPattern.matcher(line);
+		var m = macAddressPattern.matcher(line);
 		return m.find() ? addLeadingZeroes(m.group().toUpperCase()) : null;
 	}
 

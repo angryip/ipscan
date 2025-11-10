@@ -43,24 +43,24 @@ public class TCPPinger implements Pinger {
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) {
-		PingResult result = new PingResult(subject.getAddress(), count);
-		int workingPort = -1;
+		var result = new PingResult(subject.getAddress(), count);
+		var workingPort = -1;
 
 		Socket socket;
-		for (int i = 0; i < count && !Thread.currentThread().isInterrupted(); i++) {
+		for (var i = 0; i < count && !Thread.currentThread().isInterrupted(); i++) {
 			socket = new Socket();
 			// cycle through different ports until a working one is found
-			int probePort = workingPort >= 0 ? workingPort : PROBE_TCP_PORTS[i % PROBE_TCP_PORTS.length];
+			var probePort = workingPort >= 0 ? workingPort : PROBE_TCP_PORTS[i % PROBE_TCP_PORTS.length];
 			// change the first port to the requested one, if it is available
 			if (i == 0 && subject.isAnyPortRequested())
 				probePort = subject.requestedPortsIterator().next();
 
-			long startTime = System.currentTimeMillis();
+			var startTime = System.currentTimeMillis();
 			try {
 				// set some optimization options
 				socket.setReuseAddress(true);
 				socket.setReceiveBufferSize(32);
-				int timeout = result.isTimeoutAdaptationAllowed() ? min(result.getLongestTime() * 2, this.timeout) : this.timeout;
+				var timeout = result.isTimeoutAdaptationAllowed() ? min(result.getLongestTime() * 2, this.timeout) : this.timeout;
 				socket.connect(new InetSocketAddress(subject.getAddress(), probePort), timeout);
 				if (socket.isConnected()) {
 					// it worked - success
@@ -72,7 +72,7 @@ public class TCPPinger implements Pinger {
 			catch (SocketTimeoutException ignore) {
 			}
 			catch (IOException e) {
-				String msg = e.getMessage();
+				var msg = e.getMessage();
 
 				// RST should result in ConnectException, but on macOS ConnectionException can also come with e.g. "No route to host"
 				if (msg.contains(/*Connection*/"refused")) {

@@ -36,8 +36,8 @@ public class InputDialog extends AbstractModalDialog {
 
 	@Override
 	protected void populateShell() {
-		Display currentDisplay = Display.getCurrent();
-		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
+		var currentDisplay = Display.getCurrent();
+		var parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 		shell.setLayout(LayoutHelper.formLayout(10, 10, 4));

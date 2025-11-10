@@ -31,17 +31,17 @@ public final class PortIterator implements Iterator<Integer>, Cloneable {
 	 */
 	public PortIterator(String portString) {
 		if (portString != null && (portString = portString.trim()).length() > 0) {
-			String[] portRanges = portString.split("[\\s\t\n\r,;]+");
+			var portRanges = portString.split("[\\s\t\n\r,;]+");
 			
 			// initialize storage
 			portRangeStart = new int[portRanges.length+1];	// +1 for optimization of 'next' method, prevents ArrayIndexOutOfBoundsException
 			portRangeEnd = new int[portRanges.length];
 	
 			// parse ints
-			for (int i = 0; i < portRanges.length; i++) {
-				String range = portRanges[i];
-				int dashPos = range.indexOf('-') + 1;
-				int endPort = Integer.parseInt(range.substring(dashPos));
+			for (var i = 0; i < portRanges.length; i++) {
+				var range = portRanges[i];
+				var dashPos = range.indexOf('-') + 1;
+				var endPort = Integer.parseInt(range.substring(dashPos));
 				portRangeEnd[i] = endPort;
 				portRangeStart[i] = dashPos == 0 ? endPort : Integer.parseInt(range.substring(0, dashPos-1));
 				if (endPort <= 0 || endPort >= 65536) {
@@ -66,7 +66,7 @@ public final class PortIterator implements Iterator<Integer>, Cloneable {
 	 * @return next port number
 	 */
 	public Integer next() {
-		int returnPort = currentPort++;
+		var returnPort = currentPort++;
 		
 		if (currentPort > portRangeEnd[rangeIndex]) {
 			hasNext = rangeIndex < rangeCountMinus1;
@@ -78,9 +78,9 @@ public final class PortIterator implements Iterator<Integer>, Cloneable {
 	}
 	
 	public int size() {
-		int size = 0;
+		var size = 0;
 		if (portRangeStart != null) {
-			for (int i = 0; i <= rangeCountMinus1; i++) {
+			for (var i = 0; i <= rangeCountMinus1; i++) {
 				size += portRangeEnd[i] - portRangeStart[i] + 1;
 			}
 		}

@@ -9,7 +9,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -49,8 +48,8 @@ public class PortsFetcherTest extends AbstractFetcherTestCase {
 		// this port is unlikely to be open :-)
 		config.portString = "65535";
 		fetcher.init();
-		
-		Object value = fetcher.scan(new ScanningSubject(InetAddress.getLocalHost()));
+
+		var value = fetcher.scan(new ScanningSubject(InetAddress.getLocalHost()));
 		assertNull(value);
 
 		fetcher.cleanup();
@@ -61,15 +60,15 @@ public class PortsFetcherTest extends AbstractFetcherTestCase {
 		// these ports are unlikely to be open :-)
 		config.portString = "65530-65535";
 		fetcher.init();
-		
-		Object value = fetcher.scan(new ScanningSubject(InetAddress.getLocalHost()));
+
+		var value = fetcher.scan(new ScanningSubject(InetAddress.getLocalHost()));
 		assertNull(value);
 		
 		// reasonably long timeout (if tests fails, we will have to wait this long...)
 		config.portTimeout = 3000;
 		// but we don't want to wait :-)
 		Thread.currentThread().interrupt();
-		long testStartTime = System.currentTimeMillis();
+		var testStartTime = System.currentTimeMillis();
 		// this host is unlikely to respond
 		value = fetcher.scan(new ScanningSubject(InetAddress.getByName("10.255.255.254")));
 		assertNull(value);
@@ -84,14 +83,14 @@ public class PortsFetcherTest extends AbstractFetcherTestCase {
 	@Test
 	public void scanWithResults() throws Exception {
 		// start local single-accept server
-		Thread server = new Thread() {
+		var server = new Thread() {
 			public void run() {
 				try {
-					ServerSocket server = new ServerSocket(65431);
+					var server = new ServerSocket(65431);
 					synchronized (this) {
 						this.notify();
 					}
-					Socket socket = server.accept();
+					var socket = server.accept();
 					socket.close();
 					server.close();
 				}
@@ -108,7 +107,7 @@ public class PortsFetcherTest extends AbstractFetcherTestCase {
 			server.start();
 			server.wait();
 		}
-		NumericRangeList value = (NumericRangeList) fetcher.scan(new ScanningSubject(InetAddress.getLocalHost()));
+		var value = (NumericRangeList) fetcher.scan(new ScanningSubject(InetAddress.getLocalHost()));
 		assertEquals(config.portString, value.toString());
 		
 		fetcher.cleanup();

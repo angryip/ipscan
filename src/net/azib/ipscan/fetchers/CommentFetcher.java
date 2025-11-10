@@ -26,7 +26,7 @@ public class CommentFetcher extends AbstractFetcher {
 	}
 
 	public Object scan(ScanningSubject subject) {
-		String mac = (String) subject.getParameter(MACFetcher.ID);
+		var mac = (String) subject.getParameter(MACFetcher.ID);
 		return commentsConfig.getComment(subject.getAddress(), mac);
 	}
 }

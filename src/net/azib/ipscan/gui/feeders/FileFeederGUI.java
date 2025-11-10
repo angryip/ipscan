@@ -33,9 +33,9 @@ public class FileFeederGUI extends AbstractFeederGUI {
 
 	public void initialize() {
 		setLayout(new GridLayout(3, false));
-		Label fileNameLabel = new Label(this, SWT.NONE);
+		var fileNameLabel = new Label(this, SWT.NONE);
         fileNameText = new Text(this, SWT.BORDER);
-		Button browseButton = new Button(this, SWT.NONE);
+		var browseButton = new Button(this, SWT.NONE);
         
         fileNameLabel.setText(getLabel("feeder.file.name") + ":");
 
@@ -43,9 +43,9 @@ public class FileFeederGUI extends AbstractFeederGUI {
 
         browseButton.setText(getLabel("feeder.file.browse"));
         browseButton.addSelectionListener(widgetSelectedAdapter(e -> {
-			FileDialog dialog = new FileDialog(getShell());
+			var dialog = new FileDialog(getShell());
 			dialog.setText(getLabel("feeder.file.browse"));
-			String fileName = dialog.open();
+			var fileName = dialog.open();
 			if (fileName != null) {
 				fileNameText.setText(fileName);
 				fileNameText.setSelection(fileName.length());

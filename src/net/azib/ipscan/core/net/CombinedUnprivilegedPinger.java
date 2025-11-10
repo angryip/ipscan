@@ -34,8 +34,8 @@ public class CombinedUnprivilegedPinger implements Pinger {
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
 		// try UDP first - it should be more reliable in general
-		int udpCountInitialCount = max(1, count / 2);
-		PingResult udpResult = udpPinger.ping(subject, udpCountInitialCount);
+		var udpCountInitialCount = max(1, count / 2);
+		var udpResult = udpPinger.ping(subject, udpCountInitialCount);
 		if (udpResult.isAlive())
 			return udpResult.merge(udpPinger.ping(subject, count - udpCountInitialCount));
 

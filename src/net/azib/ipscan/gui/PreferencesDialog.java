@@ -129,7 +129,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		tabFolder = new TabFolder(shell, SWT.NONE);
 		
 		createScanningTab();
-		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
+		var tabItem = new TabItem(tabFolder, SWT.NONE);
 		tabItem.setText(Labels.getLabel("title.preferences.scanning"));
 		tabItem.setControl(scanningTab);
 		scanningTabItem = tabItem;
@@ -184,8 +184,8 @@ public class PreferencesDialog extends AbstractModalDialog {
 		label.setText(Labels.getLabel("preferences.pinging.type"));
 		pingersCombo = new Combo(pingingGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 		pingersCombo.setLayoutData(gridData);
-		String[] pingerNames = pingerRegistry.getRegisteredNames();
-		for (int i = 0; i < pingerNames.length; i++) {
+		var pingerNames = pingerRegistry.getRegisteredNames();
+		for (var i = 0; i < pingerNames.length; i++) {
 			pingersCombo.add(Labels.getLabel(pingerNames[i]));
 			// this is used by savePreferences()
 			pingersCombo.setData(Integer.toString(i), pingerNames[i]);
@@ -282,7 +282,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		languageGroup.setText(Labels.getLabel("preferences.language"));
 		
 		languageCombo = new Combo(languageGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
-		for (String language : Labels.LANGUAGES) {
+		for (var language : Labels.LANGUAGES) {
 			languageCombo.add(Labels.getLabel("language." + language));
 		}
 		languageCombo.select(0);
@@ -368,7 +368,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		maxThreadsText.setText(Integer.toString(scannerConfig.maxThreads));
 		threadDelayText.setText(Integer.toString(scannerConfig.threadDelay));
 		var pingerNames = pingerRegistry.getRegisteredNames();
-		for (int i = 0; i < pingerNames.length; i++) {
+		for (var i = 0; i < pingerNames.length; i++) {
 			if (scannerConfig.selectedPinger.equals(pingerNames[i])) {
 				pingersCombo.select(i);
 			}
@@ -390,7 +390,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		askConfirmationCheckbox.setSelection(guiConfig.askScanConfirmation);
 		versionCheckCheckbox.setSelection(guiConfig.versionCheckEnabled);
 		allowReports.setSelection(globalConfig.allowReports);
-		for (int i = 0; i < Labels.LANGUAGES.length; i++) {
+		for (var i = 0; i < Labels.LANGUAGES.length; i++) {
 			if (globalConfig.language.equals(Labels.LANGUAGES[i])) {
 				languageCombo.select(i);
 			}
@@ -422,7 +422,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		scannerConfig.useRequestedPorts = addRequestedPortsCheckbox.getSelection();
 		scannerConfig.notAvailableText = notAvailableText.getText();
 		scannerConfig.notScannedText = notScannedText.getText();
-		for (int i = 0; i < displayMethod.length; i++) {
+		for (var i = 0; i < displayMethod.length; i++) {
 			if (displayMethod[i].getSelection())
 				guiConfig.displayMethod = DisplayMethod.values()[i];
 		}
@@ -454,7 +454,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 	
 	static class PortsTextValidationListener implements KeyListener {
 		public void keyPressed(KeyEvent e) {
-			Text portsText = (Text) e.getSource();
+			var portsText = (Text) e.getSource();
 			
 			if (e.keyCode == SWT.TAB) {
 				portsText.getShell().traverse(SWT.TRAVERSE_TAB_NEXT);
@@ -485,14 +485,14 @@ public class PreferencesDialog extends AbstractModalDialog {
 		boolean validateChar(char c, String text, int caretPos) {
 			// previous
 			char pc = 0;
-			for (int i = caretPos-1; i >= 0; i--) {
+			for (var i = caretPos-1; i >= 0; i--) {
 				pc = text.charAt(i);
 				if (!Character.isWhitespace(pc))
 					break;
 			}
-			
-			boolean isCurDigit = c >= '0' && c <= '9';
-			boolean isPrevDigit = pc >= '0' && pc <= '9';
+
+			var isCurDigit = c >= '0' && c <= '9';
+			var isPrevDigit = pc >= '0' && pc <= '9';
 			return isPrevDigit && (isCurDigit || c == '-' || c == ',') ||
 				   isCurDigit && (pc == '-' || pc == ',' || pc == 0) ||
 				   Character.isWhitespace(c) && pc == ',';

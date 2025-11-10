@@ -39,7 +39,7 @@ public class UDPPinger implements Pinger {
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {
-		PingResult result = new PingResult(subject.getAddress(), count);
+		var result = new PingResult(subject.getAddress(), count);
 
 		DatagramSocket socket = null;
 		try {
@@ -47,11 +47,11 @@ public class UDPPinger implements Pinger {
 			socket.setSoTimeout(timeout);
 			socket.connect(subject.getAddress(), PROBE_UDP_PORT);
 
-			for (int i = 0; i < count && !Thread.currentThread().isInterrupted(); i++) {
-				byte[] payload = new byte[8];
-				long startTime = System.currentTimeMillis();
+			for (var i = 0; i < count && !Thread.currentThread().isInterrupted(); i++) {
+				var payload = new byte[8];
+				var startTime = System.currentTimeMillis();
 				ByteBuffer.wrap(payload).putLong(startTime);
-				DatagramPacket packet = new DatagramPacket(payload, payload.length);
+				var packet = new DatagramPacket(payload, payload.length);
 				try {
 					socket.send(packet);
 					socket.receive(packet);

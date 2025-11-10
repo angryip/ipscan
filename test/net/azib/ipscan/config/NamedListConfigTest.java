@@ -54,7 +54,7 @@ public class NamedListConfigTest {
 	@Test
 	public void testLoad() throws Exception {
 		preferences.put(PREFERENCE_NAME, "aa###aaa###bb###bbb###cc###ccc");
-		NamedListConfig config = new NamedListConfig(preferences, PREFERENCE_NAME);
+		var config = new NamedListConfig(preferences, PREFERENCE_NAME);
 
 		assertEquals("aaa", config.get("aa"));
 		assertEquals("bbb", config.get("bb"));
@@ -65,7 +65,7 @@ public class NamedListConfigTest {
 	@Test @SuppressWarnings("unchecked")
 	public void testOrder() throws Exception {
 		preferences.put(PREFERENCE_NAME, "aa###aaa###bb###bbb###cc###ccc");
-		NamedListConfig config = new NamedListConfig(preferences, PREFERENCE_NAME);
+		var config = new NamedListConfig(preferences, PREFERENCE_NAME);
 
 		Iterator namesIterator = config.iterator();
 		assertEquals("aa", namesIterator.next());

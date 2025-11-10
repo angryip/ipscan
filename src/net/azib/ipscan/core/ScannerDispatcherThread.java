@@ -90,16 +90,16 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 						if (config.skipBroadcastAddresses && isLikelyBroadcast(subject.getAddress(), subject.getIfAddress()))
 							continue;
 
-						ScanningResult result = scanningResultList.createResult(subject.getAddress());
+						var result = scanningResultList.createResult(subject.getAddress());
 						resultsCallback.prepareForResults(result);
 																
 						// scan each IP in parallel, in a separate thread
-						AddressScannerTask scanningTask = new AddressScannerTask(subject, result);
+						var scanningTask = new AddressScannerTask(subject, result);
 						threadPool.execute(scanningTask);
 					}
 					
 					// notify listeners of the progress we are doing (limiting the update rate)
-					long now = System.currentTimeMillis();
+					var now = System.currentTimeMillis();
 					if (now - lastNotifyTime >= UI_UPDATE_INTERVAL_MS && subject != null) {
 						lastNotifyTime = now;
 						progressCallback.updateProgress(subject.getAddress(), numActiveThreads.intValue(), feeder.percentageComplete());

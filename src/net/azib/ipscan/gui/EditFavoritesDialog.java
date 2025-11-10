@@ -20,37 +20,37 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 
 	@Override
 	protected void populateShell() {
-		Display currentDisplay = Display.getCurrent();
-		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
+		var currentDisplay = Display.getCurrent();
+		var parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(Labels.getLabel("title.favorite.edit"));
 		shell.setLayout(formLayout(10, 10, 4));
-		
-		Label messageLabel = new Label(shell, SWT.NONE);
+
+		var messageLabel = new Label(shell, SWT.NONE);
 		messageLabel.setText(Labels.getLabel("text.favorite.edit"));
 		
 		favoritesList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		favoritesList.setLayoutData(formData(330, 200, new FormAttachment(0), null, new FormAttachment(messageLabel), null));
-		for (String name : favoritesConfig) {
+		for (var name : favoritesConfig) {
 			favoritesList.add(name);
 		}
-		
-		Button upButton = new Button(shell, SWT.NONE);
+
+		var upButton = new Button(shell, SWT.NONE);
 		upButton.setText(Labels.getLabel("button.up"));		
 		upButton.addListener(SWT.Selection, new UpButtonListener(favoritesList));
-		
-		Button downButton = new Button(shell, SWT.NONE);
+
+		var downButton = new Button(shell, SWT.NONE);
 		downButton.setText(Labels.getLabel("button.down"));
 		downButton.addListener(SWT.Selection, new DownButtonListener(favoritesList));
-		
-		Button renameButton = new Button(shell, SWT.NONE);
+
+		var renameButton = new Button(shell, SWT.NONE);
 		renameButton.setText(Labels.getLabel("button.rename"));
 		Listener renameListener = new RenameListener();
 		renameButton.addListener(SWT.Selection, renameListener);
 		favoritesList.addListener(SWT.MouseDoubleClick, renameListener);
 
-		Button deleteButton = new Button(shell, SWT.NONE);
+		var deleteButton = new Button(shell, SWT.NONE);
 		deleteButton.setText(Labels.getLabel("button.delete"));
 		deleteButton.addListener(SWT.Selection, new DeleteListener());
 		
@@ -58,11 +58,11 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 		downButton.setLayoutData(formData(new FormAttachment(favoritesList), new FormAttachment(renameButton, 0, SWT.RIGHT), new FormAttachment(upButton), null));
 		renameButton.setLayoutData(formData(new FormAttachment(favoritesList), null, new FormAttachment(downButton, 10), null));
 		deleteButton.setLayoutData(formData(new FormAttachment(favoritesList), new FormAttachment(renameButton, 0, SWT.RIGHT), new FormAttachment(renameButton), null));
-		
-		Button okButton = new Button(shell, SWT.NONE);
-		okButton.setText(Labels.getLabel("button.OK"));		
-		
-		Button cancelButton = new Button(shell, SWT.NONE);
+
+		var okButton = new Button(shell, SWT.NONE);
+		okButton.setText(Labels.getLabel("button.OK"));
+
+		var cancelButton = new Button(shell, SWT.NONE);
 		cancelButton.setText(Labels.getLabel("button.cancel"));		
 
 		positionButtonsInFormLayout(okButton, cancelButton, favoritesList);
@@ -90,11 +90,11 @@ public class EditFavoritesDialog extends AbstractModalDialog {
 	class RenameListener implements Listener {
 		public void handleEvent(Event event) {
 			if (favoritesConfig.size() == 0) return;
-			int index = Math.max(favoritesList.getSelectionIndex(), 0);
+			var index = Math.max(favoritesList.getSelectionIndex(), 0);
 
-			InputDialog prompt = new InputDialog(Labels.getLabel("title.rename"), "");
-			String oldName = favoritesList.getItem(index);
-			String newName = prompt.open(oldName);
+			var prompt = new InputDialog(Labels.getLabel("title.rename"), "");
+			var oldName = favoritesList.getItem(index);
+			var newName = prompt.open(oldName);
 			if (newName != null) {
 				favoritesConfig.add(newName, favoritesConfig.remove(oldName));
 				favoritesList.setItem(index, newName);

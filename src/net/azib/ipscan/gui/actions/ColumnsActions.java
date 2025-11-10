@@ -33,7 +33,7 @@ public class ColumnsActions {
 		}
 
 		public void handleEvent(Event event) {
-			TableColumn column = (TableColumn) event.widget;
+			var column = (TableColumn) event.widget;
 			// do not save the width of the last column on Linux, because in GTK 
 			// it is stretched to the width of the whole table and therefore is incorrect
 			if (Platform.LINUX && column.getParent().getColumn(column.getParent().getColumnCount()-1) == column) 
@@ -56,12 +56,12 @@ public class ColumnsActions {
 
 		public void handleEvent(Event e) {
 			// modify menu text a bit
-			TableColumn tableColumn = (TableColumn) e.widget;
-			Fetcher fetcher = (Fetcher) tableColumn.getData();
-			
-			MenuItem sortMenuItem = columnsMenu.getItem(0);
-			MenuItem preferencesMenuItem = columnsMenu.getItem(1);
-			MenuItem aboutMenuItem = columnsMenu.getItem(2);
+			var tableColumn = (TableColumn) e.widget;
+			var fetcher = (Fetcher) tableColumn.getData();
+
+			var sortMenuItem = columnsMenu.getItem(0);
+			var preferencesMenuItem = columnsMenu.getItem(1);
+			var aboutMenuItem = columnsMenu.getItem(2);
 
 			if (tableColumn.getParent().getSortColumn() == tableColumn)
 				sortMenuItem.setText(Labels.getLabel("menu.columns.sortDirection"));
@@ -97,9 +97,9 @@ public class ColumnsActions {
 
 		public void handleEvent(Event event) {
 			// retrieve the clicked column (see ColumnClick above)
-			TableColumn tableColumn = (TableColumn) ((MenuItem)event.widget).getParent().getData();
-			
-			Table table = tableColumn.getParent();
+			var tableColumn = (TableColumn) ((MenuItem)event.widget).getParent().getData();
+
+			var table = tableColumn.getParent();
 			
 			if (table.getSortColumn() != tableColumn) {
 				table.setSortColumn(tableColumn);
@@ -123,9 +123,9 @@ public class ColumnsActions {
 
 		public void handleEvent(Event event) {
 			// retrieve the clicked column (see ColumnClick above)
-			TableColumn tableColumn = (TableColumn) ((MenuItem)event.widget).getParent().getData();
-			
-			Fetcher fetcher = (Fetcher) tableColumn.getData();
+			var tableColumn = (TableColumn) ((MenuItem)event.widget).getParent().getData();
+
+			var fetcher = (Fetcher) tableColumn.getData();
 			
 			fetcherRegistry.openPreferencesEditor(fetcher);
 			
@@ -139,13 +139,13 @@ public class ColumnsActions {
 
 		public void handleEvent(Event event) {
 			// retrieve the clicked column (see ColumnClick above)
-			TableColumn tableColumn = (TableColumn) ((MenuItem)event.widget).getParent().getData();
-			
-			Fetcher fetcher = (Fetcher) tableColumn.getData();
+			var tableColumn = (TableColumn) ((MenuItem)event.widget).getParent().getData();
 
-			MessageBox messageBox = new MessageBox(tableColumn.getParent().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+			var fetcher = (Fetcher) tableColumn.getData();
+
+			var messageBox = new MessageBox(tableColumn.getParent().getShell(), SWT.ICON_INFORMATION | SWT.OK);
 			messageBox.setText(Labels.getLabel("text.fetchers.info") + fetcher.getName());
-			String info = fetcher.getInfo();
+			var info = fetcher.getInfo();
 			if (info == null) {
 				info = Labels.getLabel("text.fetchers.info.notAvailable");
 			}

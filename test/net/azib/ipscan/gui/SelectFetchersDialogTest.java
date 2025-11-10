@@ -5,11 +5,11 @@
  */
 package net.azib.ipscan.gui;
 
-import static org.mockito.Mockito.*;
-
 import net.azib.ipscan.fetchers.FetcherRegistry;
-
 import org.junit.Test;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author Anton Keks
@@ -18,9 +18,9 @@ public class SelectFetchersDialogTest {
 
 	@Test
 	public void testSaveFetchersToRegistry() {
-		FetcherRegistry fetcherRegistry = mock(FetcherRegistry.class);
+		var fetcherRegistry = mock(FetcherRegistry.class);
 
-		SelectFetchersDialog selectFetchersDialog = new SelectFetchersDialog(fetcherRegistry);
+		var selectFetchersDialog = new SelectFetchersDialog(fetcherRegistry);
 		
 		selectFetchersDialog.registeredFetcherIdsByNames.put("IP", "fetcher.ip");
 		selectFetchersDialog.registeredFetcherIdsByNames.put("Hello", "fetcher.hello");

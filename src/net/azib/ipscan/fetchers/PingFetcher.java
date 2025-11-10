@@ -76,7 +76,7 @@ public class PingFetcher extends AbstractFetcher {
 	}
 
 	public Object scan(ScanningSubject subject) {
-		PingResult result = executePing(subject);
+		var result = executePing(subject);
 		subject.setResultType(result.isAlive() ? ResultType.ALIVE : ResultType.DEAD);
 		
 		if (!result.isAlive() && !config.scanDeadHosts) {

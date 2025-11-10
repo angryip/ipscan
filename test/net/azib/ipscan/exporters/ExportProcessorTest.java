@@ -1,8 +1,6 @@
 package net.azib.ipscan.exporters;
 
-import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
-import net.azib.ipscan.exporters.ExportProcessor.ScanningResultFilter;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.IPFetcher;
@@ -32,15 +30,15 @@ public class ExportProcessorTest {
 
 	@Test
 	public void testProcess() throws Exception {
-		File file = File.createTempFile("exportTest", "txt");
-		ExportProcessor exportProcessor = new ExportProcessor(new TXTExporter(), file, false);
-		
-		ScanningResultList scanningResultList = new ScanningResultList(fetcherRegistry);
+		var file = File.createTempFile("exportTest", "txt");
+		var exportProcessor = new ExportProcessor(new TXTExporter(), file, false);
+
+		var scanningResultList = new ScanningResultList(fetcherRegistry);
 		scanningResultList.initNewScan(mockFeeder("megaFeeder"));
 		scanningResultList.registerAtIndex(0, scanningResultList.createResult(InetAddress.getByName("192.168.0.13")));
 		exportProcessor.process(scanningResultList, null);
-		
-		String content = readFileContent(file);
+
+		var content = readFileContent(file);
 		
 		assertTrue(content.contains("megaFeeder"));
 		assertTrue(content.contains(new IPFetcher().getName()));
@@ -50,24 +48,22 @@ public class ExportProcessorTest {
 	
 	@Test
 	public void testProcessWithFilter() throws Exception {
-		File file = File.createTempFile("exportTest", "txt");
-		ExportProcessor exportProcessor = new ExportProcessor(new TXTExporter(), file, false);
-		
-		ScanningResultList scanningResultList = new ScanningResultList(fetcherRegistry);
+		var file = File.createTempFile("exportTest", "txt");
+		var exportProcessor = new ExportProcessor(new TXTExporter(), file, false);
+
+		var scanningResultList = new ScanningResultList(fetcherRegistry);
 		scanningResultList.initNewScan(mockFeeder("feeder2"));
 		
 		scanningResultList.registerAtIndex(0, scanningResultList.createResult(InetAddress.getByName("192.168.13.66")));
 		scanningResultList.registerAtIndex(1, scanningResultList.createResult(InetAddress.getByName("192.168.13.67")));
 		scanningResultList.registerAtIndex(2, scanningResultList.createResult(InetAddress.getByName("192.168.13.76")));
 		
-		exportProcessor.process(scanningResultList, new ScanningResultFilter() {
-			public boolean apply(int index, ScanningResult result) {
-				// select only IP addresses ending with 6
-				return ((String)result.getValues().get(0)).endsWith("6");
-			}
+		exportProcessor.process(scanningResultList, (index, result) -> {
+			// select only IP addresses ending with 6
+			return ((String)result.getValues().get(0)).endsWith("6");
 		});
-		
-		String content = readFileContent(file);
+
+		var content = readFileContent(file);
 		
 		assertTrue(content.contains("feeder2"));
 		assertTrue(content.contains("192.168.13.66"));
@@ -76,15 +72,15 @@ public class ExportProcessorTest {
 	}
 	
 	private Feeder mockFeeder(String feederInfo) {
-		Feeder feeder = mock(Feeder.class);
+		var feeder = mock(Feeder.class);
 		when(feeder.getInfo()).thenReturn(feederInfo);
 		when(feeder.getName()).thenReturn("feeder.range");
 		return feeder;
 	}
 
 	private String readFileContent(File file) throws IOException {
-		StringBuilder buffer = new StringBuilder();
-		BufferedReader reader = new BufferedReader(new FileReader(file));
+		var buffer = new StringBuilder();
+		var reader = new BufferedReader(new FileReader(file));
 		String line;
 		while((line = reader.readLine()) != null) {
 			buffer.append(line);

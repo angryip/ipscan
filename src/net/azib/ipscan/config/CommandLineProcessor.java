@@ -61,15 +61,15 @@ public class CommandLineProcessor implements CommandProcessor, StateTransitionLi
 	}
 
 	public void parse(String ...args) {
-		for (int i = 0; i < args.length; i++) {
-			String arg = args[i];
+		for (var i = 0; i < args.length; i++) {
+			var arg = args[i];
 			
 			if (arg.startsWith("-f:")) {
 				if (feederCreator != null)
 					throw new IllegalArgumentException("Only one feeder is allowed");
 				feederCreator = findFeederCreator("feeder." + arg.substring(3));
 				feederArgs = new String[feederCreator.serializePartsLabels().length];
-				for (int j = 0; j < feederArgs.length; j++) {
+				for (var j = 0; j < feederArgs.length; j++) {
 					feederArgs[j] = args[++i];
 					if (feederArgs[j].startsWith("-"))
 						throw new IllegalArgumentException(feederCreator.getFeederName() + " requires " + feederArgs.length + " arguments");
@@ -88,7 +88,7 @@ public class CommandLineProcessor implements CommandProcessor, StateTransitionLi
 			}
 			else
 			if (arg.startsWith("-")) {
-				for (char option : arg.substring(1).toCharArray()) {
+				for (var option : arg.substring(1).toCharArray()) {
 					switch (option) {
 						case 's': autoStart = true; break;
 						case 'q': autoQuit = true; break;
@@ -109,19 +109,19 @@ public class CommandLineProcessor implements CommandProcessor, StateTransitionLi
 	@Override
 	public String toString() {
 		// TODO: use labels!
-		StringBuilder usage = new StringBuilder();
+		var usage = new StringBuilder();
 		usage.append("Pass the following arguments:\n");
 		usage.append("[options] <feeder> <exporter>\n\n");
 		usage.append("Where <feeder> is one of:\n");
-		for (FeederCreator creator : feederRegistry) {
+		for (var creator : feederRegistry) {
 			usage.append("-f:").append(shortId(creator.getFeederId()));
-			for (String partLabel : creator.serializePartsLabels()) {
+			for (var partLabel : creator.serializePartsLabels()) {
 				usage.append(" <").append(Labels.getLabel(partLabel)).append(">");
 			}
 			usage.append('\n');
 		}
 		usage.append("\n<exporter> is one of:\n");
-		for (Exporter exporter : exporters) {
+		for (var exporter : exporters) {
 			usage.append("-o filename.").append(shortId(exporter.getFilenameExtension())).append("\t\t").append(Labels.getLabel(exporter.getId())).append('\n');
 		}
 		usage.append("\nAnd possible [options] are (grouping allowed):\n");
@@ -136,7 +136,7 @@ public class CommandLineProcessor implements CommandProcessor, StateTransitionLi
 	}
 	
 	private FeederCreator findFeederCreator(String feederId) {
-		for (FeederCreator creator : feederRegistry) {
+		for (var creator : feederRegistry) {
 			if (feederId.equals(creator.getFeederId())) {
 				return creator;
 			}
@@ -162,7 +162,7 @@ public class CommandLineProcessor implements CommandProcessor, StateTransitionLi
 		else
 		if (transition == Transition.COMPLETE && state == ScanningState.IDLE && exporter != null) {
 			// TODO: introduce SAVING state in order to show nice notification in the status bar
-			ExportProcessor processor = new ExportProcessor(exporter, new File(outputFilename), appendToFile);
+			var processor = new ExportProcessor(exporter, new File(outputFilename), appendToFile);
 			processor.process(scanningResults, null);
 			if (autoQuit) {
 				System.err.println("Saved results to " + outputFilename);

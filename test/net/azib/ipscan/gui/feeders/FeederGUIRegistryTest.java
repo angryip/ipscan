@@ -1,7 +1,6 @@
 package net.azib.ipscan.gui.feeders;
 
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.feeders.Feeder;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableItem;
 import org.junit.After;
@@ -27,7 +26,7 @@ public class FeederGUIRegistryTest {
 		
 		feederGUI = new RangeFeederGUI(parent);
 		feederGUI.initialize();
-		registry = new FeederGUIRegistry(Collections.<AbstractFeederGUI>singletonList(feederGUI), feederSelectionCombo, null);
+		registry = new FeederGUIRegistry(Collections.singletonList(feederGUI), feederSelectionCombo, null);
 	}
 	
 	@After
@@ -38,7 +37,7 @@ public class FeederGUIRegistryTest {
 	@Test
 	public void addFeederNamesToTheCombo() throws Exception {
 		reset(feederSelectionCombo);
-		new FeederGUIRegistry(Collections.<AbstractFeederGUI>singletonList(feederGUI), feederSelectionCombo, null);
+		new FeederGUIRegistry(Collections.singletonList(feederGUI), feederSelectionCombo, null);
         verify(feederSelectionCombo).add(Labels.getLabel(feederGUI.getFeederId()));
 	}
 
@@ -50,15 +49,15 @@ public class FeederGUIRegistryTest {
 
 	@Test
 	public void createFeederRemembersTheLastOne() throws Exception {
-		Feeder lastFeeder = registry.createFeeder();
+		var lastFeeder = registry.createFeeder();
 		assertSame(lastFeeder, registry.lastFeeder);
 		assertNotSame(lastFeeder, registry.createFeeder());
 	}
 
 	@Test
 	public void createRescanFeederGetsOriginalFeeder() throws Exception {
-		Feeder lastFeeder = registry.createFeeder();
-		Feeder rescanFeeder = registry.createRescanFeeder(new TableItem[] {mock(TableItem.class)});
+		var lastFeeder = registry.createFeeder();
+		var rescanFeeder = registry.createRescanFeeder(new TableItem[] {mock(TableItem.class)});
 		assertEquals(lastFeeder.getId(), rescanFeeder.getId());
 	}
 }

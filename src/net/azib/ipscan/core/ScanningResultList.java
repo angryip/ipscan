@@ -95,7 +95,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	 */
 	public synchronized ScanningResult createResult(InetAddress address) {
 		info.numScanned++;
-		Integer index = resultIndexes.get(address);
+		var index = resultIndexes.get(address);
 		if (index == null) {
 			return new ScanningResult(address, fetcherRegistry.getSelectedFetchers().size());
 		}
@@ -194,7 +194,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		// however, a further speedup may be obtained by using a Set instead of binarySearch()
 		List<ScanningResult> newList = new ArrayList<>(RESULT_LIST_INITIAL_SIZE);
 		Map<InetAddress, Integer> newMap = new HashMap<>(RESULT_LIST_INITIAL_SIZE);
-		for (int i = 0; i < resultList.size(); i++) {
+		for (var i = 0; i < resultList.size(); i++) {
 			if (Arrays.binarySearch(indices, i) < 0) {
 				newList.add(resultList.get(i));
 				newMap.put(resultList.get(i).getAddress(), newList.size()-1);
@@ -214,7 +214,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		
 		// now rebuild indexes
 		resultIndexes = new HashMap<>(RESULT_LIST_INITIAL_SIZE);
-		for (int i = 0; i < resultList.size(); i++) {
+		for (var i = 0; i < resultList.size(); i++) {
 			resultIndexes.put(resultList.get(i).getAddress(), i);
 		}
 	}
@@ -227,10 +227,10 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	 */
 	public int findText(String text, int startIndex) {
 		text = text.toLowerCase();
-		for (int i = startIndex; i < resultList.size(); i++) {
-			ScanningResult scanningResult = getResult(i);
+		for (var i = startIndex; i < resultList.size(); i++) {
+			var scanningResult = getResult(i);
 			
-			for (Object value : scanningResult.getValues()) {				
+			for (var value : scanningResult.getValues()) {
 				if (value != null && value.toString().toLowerCase().contains(text)) {						
 					return i;
 				}
@@ -254,8 +254,8 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	}
 
 	public int getFetcherIndex(String fetcherId) {
-		int index = 0;
-		for (Fetcher fetcher : getFetchers()) {
+		var index = 0;
+		for (var fetcher : getFetchers()) {
 			if (fetcherId.equals(fetcher.getId())) return index;
 			index++;
 		}
@@ -280,7 +280,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		 * If scan is not finished yet, then shows the time from start until now.
 		 */
 		public long getScanTime() {
-			long endTime = this.endTime;
+			var endTime = this.endTime;
 			if (endTime == 0)
 				endTime = System.currentTimeMillis();
 			return endTime - startTime;

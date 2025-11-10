@@ -9,7 +9,6 @@ import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.util.MDNSResolver;
 import net.azib.ipscan.util.NetBIOSResolver;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
@@ -33,7 +32,7 @@ public class HostnameFetcher extends AbstractFetcher {
 
 	static {
 		try {
-			Field impl = InetAddress.class.getDeclaredField("impl");
+			var impl = InetAddress.class.getDeclaredField("impl");
 			impl.setAccessible(true);
 			inetAddressImpl = impl.get(null);
 			getHostByAddr = inetAddressImpl.getClass().getDeclaredMethod("getHostByAddr", byte[].class);
@@ -61,15 +60,15 @@ public class HostnameFetcher extends AbstractFetcher {
 				return null;
 
 			// return the returned hostname only if it is not the same as the IP address (this is how the above method works)
-			String hostname = ip.getCanonicalHostName();
+			var hostname = ip.getCanonicalHostName();
 			return ip.getHostAddress().equals(hostname) ? null : hostname;
 		}
 	}
 
 	private String resolveWithMulticastDNS(ScanningSubject subject) {
 		try {
-			MDNSResolver resolver = new MDNSResolver(subject.getAdaptedPortTimeout());
-			String name = resolver.resolve(subject.getAddress());
+			var resolver = new MDNSResolver(subject.getAdaptedPortTimeout());
+			var name = resolver.resolve(subject.getAddress());
 			resolver.close();
 			return name;
 		}
@@ -84,8 +83,8 @@ public class HostnameFetcher extends AbstractFetcher {
 
 	private String resolveWithNetBIOS(ScanningSubject subject) {
 		try {
-			NetBIOSResolver resolver = new NetBIOSResolver(subject.getAdaptedPortTimeout());
-			String[] names = resolver.resolve(subject.getAddress());
+			var resolver = new NetBIOSResolver(subject.getAdaptedPortTimeout());
+			var names = resolver.resolve(subject.getAddress());
 			resolver.close();
 			return names == null ? null : names[0];
 		}
@@ -99,7 +98,7 @@ public class HostnameFetcher extends AbstractFetcher {
 	}
 
 	public Object scan(ScanningSubject subject) {
-		String name = resolveWithRegularDNS(subject.getAddress());
+		var name = resolveWithRegularDNS(subject.getAddress());
 		if (name == null && subject.isLocal()) name = resolveWithMulticastDNS(subject);
 		if (name == null && subject.isLocal()) name = resolveWithNetBIOS(subject);
 		return name;

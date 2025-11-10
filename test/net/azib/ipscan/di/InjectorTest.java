@@ -32,7 +32,7 @@ public class InjectorTest {
 		injector.register(LocalTime.class, LocalTime.now());
 		injector.register(LocalDateTime.class, LocalDateTime.now());
 
-		List<Temporal> temporals = injector.requireAll(Temporal.class);
+		var temporals = injector.requireAll(Temporal.class);
 		assertEquals(3, temporals.size());
 		assertEquals(temporals, injector.require(WithListDeps.class).list);
 	}

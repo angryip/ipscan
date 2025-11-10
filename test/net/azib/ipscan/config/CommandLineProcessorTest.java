@@ -31,12 +31,12 @@ public class CommandLineProcessorTest {
 	public void toStringGeneratesUsageHelp() {
 		when(feederCreator.getFeederId()).thenReturn("feeder.range");
 		when(feederCreator.serializePartsLabels()).thenReturn(new String[] {"feeder.range.to"});
-		Exporter exporter = mock(Exporter.class);
+		var exporter = mock(Exporter.class);
 		when(exporters.iterator()).thenReturn(Collections.singleton(exporter).iterator());
 		when(exporter.getFilenameExtension()).thenReturn("pdf");
 		when(exporter.getId()).thenReturn("exporter.txt");
 
-		String usage = processor.toString();
+		var usage = processor.toString();
 		assertTrue(usage.contains("-f:range"));
 		assertTrue(usage.contains(Labels.getLabel("feeder.range.to")));
 		assertTrue(usage.contains(".pdf"));
@@ -49,7 +49,7 @@ public class CommandLineProcessorTest {
 	public void minimal() {
 		when(feederCreator.getFeederId()).thenReturn("feeder.feeder");
 		when(feederCreator.serializePartsLabels()).thenReturn(new String[] {"1st", "2nd"});
-		Exporter txtExporter = mock(Exporter.class);
+		var txtExporter = mock(Exporter.class);
 		when(exporters.createExporter("file.txt")).thenReturn(txtExporter);
 
 		processor.parse("-f:feeder", "arg1", "arg2", "-o", "file.txt");

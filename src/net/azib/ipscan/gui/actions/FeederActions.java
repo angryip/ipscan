@@ -9,8 +9,10 @@ import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.widgets.*;
 
-import java.net.*;
-import java.util.List;
+import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,7 +34,7 @@ public class FeederActions {
         }
 		
 		public void widgetSelected(SelectionEvent event) {
-			String hostname = hostnameText.getText();
+			var hostname = hostnameText.getText();
 			
 			try {				
 				if (hostname.equals(InetAddress.getLocalHost().getHostName())) {
@@ -40,11 +42,11 @@ public class FeederActions {
 				}
 				else {
 					// resolve remote address
-					InetAddress address = InetAddress.getByName(hostname);
+					var address = InetAddress.getByName(hostname);
 					ipText.setText(address.getHostAddress());
 
 					// now update the hostname itself using a reverse lookup
-					String realHostname = address.getCanonicalHostName();
+					var realHostname = address.getCanonicalHostName();
 					if (!address.getHostAddress().equals(realHostname)) {
 						// if a hostname was returned, not the same IP address
 						hostnameText.setText(realHostname);
@@ -69,25 +71,25 @@ public class FeederActions {
 		 */
 		private void askLocalIPAddress() {
 			try {
-				Menu popupMenu = new Menu(Display.getCurrent().getActiveShell(), SWT.POP_UP);
+				var popupMenu = new Menu(Display.getCurrent().getActiveShell(), SWT.POP_UP);
 				Listener menuItemListener = event -> {
-					MenuItem menuItem = (MenuItem) event.widget;
-					InterfaceAddress ifAddr = (InterfaceAddress) menuItem.getData();
+					var menuItem = (MenuItem) event.widget;
+					var ifAddr = (InterfaceAddress) menuItem.getData();
 					ipText.setText(ifAddr.getAddress().getHostAddress());
 					netmaskCombo.setText("/" + ifAddr.getNetworkPrefixLength());
 					setInterfaceAddress(ifAddr);
 					menuItem.getParent().dispose();
 				};
 
-				for (NetworkInterface networkInterface : getNetworkInterfaces()) {
-					List<InterfaceAddress> addresses = networkInterface.getInterfaceAddresses();
+				for (var networkInterface : getNetworkInterfaces()) {
+					var addresses = networkInterface.getInterfaceAddresses();
 					addresses.sort(comparing(i -> i.getAddress().getAddress().length));
-					for (InterfaceAddress ifaddr : addresses) {
+					for (var ifaddr : addresses) {
 						if (ifaddr == null) continue;
-                        InetAddress address = ifaddr.getAddress();
+						var address = ifaddr.getAddress();
                         if (!address.isLoopbackAddress()) {
-							MenuItem menuItem = new MenuItem(popupMenu, 0);
-							String ip = address.getHostAddress();
+							var menuItem = new MenuItem(popupMenu, 0);
+							var ip = address.getHostAddress();
 							menuItem.setText(networkInterface.getDisplayName() + ": " + ip + "/" + ifaddr.getNetworkPrefixLength());
 							menuItem.setData(ifaddr);
 							menuItem.addListener(SWT.Selection, menuItemListener);
@@ -102,7 +104,7 @@ public class FeederActions {
 				else {
 					// emulate click on the single menu item
 					if (popupMenu.getItemCount() == 1) {
-						Event event = new Event();
+						var event = new Event();
 						event.widget = popupMenu.getItem(0);
 						menuItemListener.handleEvent(event);
 						popupMenu.dispose();

@@ -81,7 +81,7 @@ public abstract class StateMachine {
 	protected void notifyAboutTransition(Transition transition) {		
 		try {
 			listenersLock.readLock().lock();
-			for (StateTransitionListener listener : transitionListeners) {
+			for (var listener : transitionListeners) {
 				listener.transitionTo(state, transition);
 			}			
 		}

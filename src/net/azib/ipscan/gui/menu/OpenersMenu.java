@@ -19,7 +19,7 @@ public class OpenersMenu extends AbstractMenu {
 		addListener(SWT.Show, showOpenersMenuListener);
 
 		// run the listener to populate the menu initially and initialize accelerators
-		Event e = new Event();
+		var e = new Event();
 		e.widget = this;
 		showOpenersMenuListener.handleEvent(e);
 	}

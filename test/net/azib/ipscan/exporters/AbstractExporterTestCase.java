@@ -45,9 +45,9 @@ public abstract class AbstractExporterTestCase {
 	
 	@Test
 	public void testStreamFlushAndClose() throws IOException {
-		final boolean[] wasClosed = new boolean[] {false, false};
-		Exporter exporter2 = createExporter();
-		OutputStream mockOutputStream = new OutputStream() {
+		final var wasClosed = new boolean[] {false, false};
+		var exporter2 = createExporter();
+		var mockOutputStream = new OutputStream() {
 			public void write(int b) throws IOException {
 			}
 			public void close() throws IOException {
@@ -108,7 +108,7 @@ public abstract class AbstractExporterTestCase {
 	
 	@Test
 	public void testClone() throws CloneNotSupportedException {
-		Exporter exporter2 = (Exporter) exporter.clone();
+		var exporter2 = (Exporter) exporter.clone();
 		assertNotSame(exporter, exporter2);
 	}
 	

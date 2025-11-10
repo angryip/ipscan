@@ -40,8 +40,8 @@ public class StatisticsDialogTest {
 	
 	@Test
 	public void dialogContent() throws Exception {
-		ScanningResultList results = mock(ScanningResultList.class);
-		ScanInfo scanInfo = new ScanInfo() {
+		var results = mock(ScanningResultList.class);
+		var scanInfo = new ScanInfo() {
 			{
 				this.startTime = System.currentTimeMillis();
 				this.endTime = this.startTime + 10000;
@@ -55,7 +55,7 @@ public class StatisticsDialogTest {
 		when(results.getFeederName()).thenReturn("SomeFeeder");
 		when(results.getFeederInfo()).thenReturn("SomeInfoHere");
 
-		String text = new StatisticsDialog(results).prepareText();
+		var text = new StatisticsDialog(results).prepareText();
 		
 		assertNotNull(text);
 		assertTrue(text.contains(Labels.getLabel("text.scan.time.total") + "10"));

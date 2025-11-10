@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -36,7 +35,7 @@ public class OpenerLauncher {
 	}
 
 	public void launch(Opener opener, int selectedItem) {
-		String openerString = prepareOpenerStringForItem(opener.execString, selectedItem);
+		var openerString = prepareOpenerStringForItem(opener.execString, selectedItem);
 		
 		// check for URLs
 		if (openerString.startsWith("http:") || openerString.startsWith("https:") || openerString.startsWith("ftp:") || openerString.startsWith("mailto:") || openerString.startsWith("\\\\")) {
@@ -73,10 +72,10 @@ public class OpenerLauncher {
 	 * This implementation supports quoting.
 	 */
 	static String[] splitCommand(String command) {
-		StringTokenizer tokenizer = new StringTokenizer(command);
+		var tokenizer = new StringTokenizer(command);
 		List<String> result = new ArrayList<>();
 		while (tokenizer.hasMoreTokens()) {
-			String token = tokenizer.nextToken(" \t");
+			var token = tokenizer.nextToken(" \t");
 			
 			try {
 				if (token.startsWith("\"")) {
@@ -105,15 +104,15 @@ public class OpenerLauncher {
 	 * @return opener string with values replaced
 	 */
 	String prepareOpenerStringForItem(String openerString, int selectedItem) {
-		Pattern paramsPattern = Pattern.compile("\\$\\{(.+?)\\}");
-		Matcher matcher = paramsPattern.matcher(openerString);
-		StringBuffer sb = new StringBuffer(64);
+		var paramsPattern = Pattern.compile("\\$\\{(.+?)\\}");
+		var matcher = paramsPattern.matcher(openerString);
+		var sb = new StringBuilder(64);
 		while (matcher.find()) {
 			// resolve the required fetcher
-			String fetcherId = matcher.group(1);
+			var fetcherId = matcher.group(1);
 
 			// retrieve the scanned value
-			Object scannedValue = getScannedValue(selectedItem, fetcherId);
+			var scannedValue = getScannedValue(selectedItem, fetcherId);
 			if (scannedValue == null || scannedValue instanceof Empty) {
 				throw new UserErrorException("opener.nullFetcherValue", fetcherId);					
 			}
@@ -125,12 +124,12 @@ public class OpenerLauncher {
 	}
 
 	private Object getScannedValue(int selectedItem, String fetcherId) {
-		int fetcherIndex = fetcherRegistry.getSelectedFetcherIndex(fetcherId);
+		var fetcherIndex = fetcherRegistry.getSelectedFetcherIndex(fetcherId);
 		if (fetcherIndex < 0) {
 			throw new UserErrorException("opener.unknownFetcher", fetcherId);
 		}
 
-		Object value = scanningResults.getResult(selectedItem).getValues().get(fetcherIndex);
+		var value = scanningResults.getResult(selectedItem).getValues().get(fetcherIndex);
 		
 		if ((value == null || value instanceof Empty) && fetcherId.equals(HostnameFetcher.ID)) {
 			// small innocent hardcode:

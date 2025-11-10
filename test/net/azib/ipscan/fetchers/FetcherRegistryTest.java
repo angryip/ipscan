@@ -1,6 +1,7 @@
 package net.azib.ipscan.fetchers;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -105,12 +106,10 @@ public class FetcherRegistryTest {
 	@Test
 	public void testListener() throws Exception {
 		final boolean listenerWasCalled[] = {false};
-		fetcherRegistry.addListener(new FetcherRegistryUpdateListener() {
-			public void handleUpdateOfSelectedFetchers(FetcherRegistry fetcherRegistry) {
-				assertSame(FetcherRegistryTest.this.fetcherRegistry, fetcherRegistry);
-				assertEquals(0, fetcherRegistry.getSelectedFetchers().size());
-				listenerWasCalled[0] = true;
-			}
+		fetcherRegistry.addListener(fetcherRegistry -> {
+			assertSame(FetcherRegistryTest.this.fetcherRegistry, fetcherRegistry);
+			Assert.assertEquals(0, fetcherRegistry.getSelectedFetchers().size());
+			listenerWasCalled[0] = true;
 		});
 		fetcherRegistry.updateSelectedFetchers(new String[]{});
 		assertTrue(listenerWasCalled[0]);
@@ -125,7 +124,7 @@ public class FetcherRegistryTest {
 	
 	@Test
 	public void openPreferencesEditor() {
-		Fetcher editableFetcher = mock(Fetcher.class);
+		var editableFetcher = mock(Fetcher.class);
 		doReturn(EditableFetcherPrefs.class).when(editableFetcher).getPreferencesClass();
 		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, editableFetcher), preferences, null);
 

@@ -24,7 +24,7 @@ public class Startup {
 		if (guiConfig.isFirstRun) {
 			new GoogleAnalytics().asyncReport("First run");
 			Display.getCurrent().asyncExec(() -> {
-				GettingStartedDialog dialog = new GettingStartedDialog();
+				var dialog = new GettingStartedDialog();
 				if (Platform.CRIPPLED_WINDOWS)
 					dialog.prependText(Labels.getLabel("text.crippledWindowsInfo"));
 

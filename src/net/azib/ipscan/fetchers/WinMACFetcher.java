@@ -17,11 +17,11 @@ public class WinMACFetcher extends MACFetcher {
 		Pointer plen = new Memory(4);
 		plen.setInt(0, 8);
 
-		int result = dll.SendARP(toIpAddr(subject.getAddress()), 0, pmac, plen);
+		var result = dll.SendARP(toIpAddr(subject.getAddress()), 0, pmac, plen);
 
 		if (result != 0) return null;
 
-		byte[] bytes = pmac.getByteArray(0, plen.getInt(0));
+		var bytes = pmac.getByteArray(0, plen.getInt(0));
 		return bytesToMAC(bytes);
 	}
 }

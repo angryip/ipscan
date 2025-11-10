@@ -45,7 +45,7 @@ public class IntegerWithUnitTest {
 		assertEquals(1, new IntegerWithUnit(123456789, null).compareTo(new IntegerWithUnit(123456, null)));
 		assertEquals(-1, new IntegerWithUnit(12, null).compareTo(new IntegerWithUnit(123456, null)));
 		assertEquals(1, new IntegerWithUnit(12, null).compareTo(null));
-		IntegerWithUnit instance = new IntegerWithUnit(211082, null);
+		var instance = new IntegerWithUnit(211082, null);
 		assertEquals(0, instance.compareTo(instance));
 	}
 }

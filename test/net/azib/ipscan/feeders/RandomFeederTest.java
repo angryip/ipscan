@@ -1,9 +1,9 @@
 package net.azib.ipscan.feeders;
 
-import static net.azib.ipscan.feeders.FeederTestUtils.*;
-import static org.junit.Assert.*;
-
 import org.junit.Test;
+
+import static net.azib.ipscan.feeders.FeederTestUtils.assertFeederException;
+import static org.junit.Assert.*;
 
 /**
  * Test of RandomFeeder
@@ -14,7 +14,7 @@ public class RandomFeederTest {
 
 	@Test
 	public void testHappyPath() throws FeederException {
-		RandomFeeder randomFeeder = new RandomFeeder("255.255.255.255", "255...0", 2);
+		var randomFeeder = new RandomFeeder("255.255.255.255", "255...0", 2);
 		assertTrue(randomFeeder.hasNext());
 		assertTrue(randomFeeder.next().getAddress().getHostAddress().startsWith("255.255.255"));
 		assertTrue(randomFeeder.hasNext());
@@ -78,7 +78,7 @@ public class RandomFeederTest {
 		RandomFeeder randomFeeder = null; 
 		randomFeeder = new RandomFeeder("1.2.3.45", "255.0.0.255", 1);
 		assertTrue(randomFeeder.hasNext());
-		String address = randomFeeder.next().getAddress().getHostAddress();
+		var address = randomFeeder.next().getAddress().getHostAddress();
 		assertTrue(address.startsWith("1."));
 		assertTrue(address.endsWith(".45"));
 		assertFalse(randomFeeder.hasNext());
@@ -105,7 +105,7 @@ public class RandomFeederTest {
 	
 	@Test
 	public void testGetPercentageComplete() throws Exception {
-		RandomFeeder randomFeeder = new RandomFeeder("100.11.12.13", "100.11.12.15", 3);
+		var randomFeeder = new RandomFeeder("100.11.12.13", "100.11.12.15", 3);
 		assertEquals(0, randomFeeder.percentageComplete());
 		randomFeeder.next();
 		assertEquals(33, randomFeeder.percentageComplete());
@@ -122,7 +122,7 @@ public class RandomFeederTest {
 
 	@Test
 	public void testGetInfo() {
-		RandomFeeder randomFeeder = new RandomFeeder("100.11.12.13", "100.11.12.15", 3);
+		var randomFeeder = new RandomFeeder("100.11.12.13", "100.11.12.15", 3);
 		assertEquals("3: 100.11.12.13 / 100.11.12.15", randomFeeder.getInfo());
 		randomFeeder = new RandomFeeder("0.0.0.0", "255.255.255.255", 129876);
 		assertEquals("129876: 0.0.0.0 / 255.255.255.255", randomFeeder.getInfo());

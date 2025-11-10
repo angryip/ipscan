@@ -8,14 +8,12 @@ package net.azib.ipscan.gui.actions;
 import net.azib.ipscan.Main;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.Version;
-import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.exporters.ExportProcessor;
 import net.azib.ipscan.exporters.ExportProcessor.ScanningResultFilter;
-import net.azib.ipscan.exporters.Exporter;
 import net.azib.ipscan.exporters.ExporterRegistry;
 import net.azib.ipscan.exporters.TXTExporter;
 import net.azib.ipscan.gui.ResultTable;
@@ -54,12 +52,12 @@ public class ScanMenuActions {
 		}
 
 		public void handleEvent(Event event) {
-			FileDialog fileDialog = new FileDialog(resultTable.getShell(), SWT.OPEN);
+			var fileDialog = new FileDialog(resultTable.getShell(), SWT.OPEN);
 
 			// gather lists of extensions and exporter names
 			List<String> extensions2 = new ArrayList<>();
 			List<String> descriptions = new ArrayList<>();
-			StringBuffer labelBuffer = new StringBuffer(Labels.getLabel("title.load"));
+			var labelBuffer = new StringBuffer(Labels.getLabel("title.load"));
 			addFileExtensions(extensions2, descriptions, labelBuffer);
 
 			List<String> extensions = new ArrayList<>();
@@ -69,7 +67,7 @@ public class ScanMenuActions {
 			fileDialog.setFilterExtensions(extensions.toArray(new String[extensions.size()]));
 			fileDialog.setFilterNames(descriptions.toArray(new String[descriptions.size()]));
 
-			String fileName = fileDialog.open();
+			var fileName = fileDialog.open();
 			if (fileName == null) return;
 
 			loadResultsFrom(fileName);
@@ -80,15 +78,15 @@ public class ScanMenuActions {
 				feederRegistry.select("feeder.range");
 				scanningResults.initNewScan(feederRegistry.current().createFeeder());
 
-				List<ScanningResult> results = txtExporter.importResults(fileName, feederRegistry.current());
+				var results = txtExporter.importResults(fileName, feederRegistry.current());
 				resultTable.clearAll();
-				for (ScanningResult result : results) {
+				for (var result : results) {
 					resultTable.addOrUpdateResultRow(result);
 				}
 
 				if (!results.isEmpty()) {
-					String lastLoadedIP = results.get(results.size()-1).getAddress().getHostAddress();
-					String[] feederIPs = feederRegistry.current().serialize();
+					var lastLoadedIP = results.get(results.size()-1).getAddress().getHostAddress();
+					var feederIPs = feederRegistry.current().serialize();
 
 					if (resumePreviousScan(lastLoadedIP, feederIPs[1]))
 						stateMachine.continueScanning();
@@ -103,7 +101,7 @@ public class ScanMenuActions {
 		private boolean resumePreviousScan(String lastIP, String endIP) {
 			if (lastIP.equals(endIP)) return false;
 
-			MessageBox box = new MessageBox(resultTable.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.SHEET);
+			var box = new MessageBox(resultTable.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.SHEET);
 			box.setText(Labels.getLabel("menu.scan.load").replace("&", ""));
 			box.setMessage(Labels.getLabel("text.scan.resume").replace("%LASTIP", lastIP).replace("%ENDIP", endIP));
 			return box.open() == SWT.YES;
@@ -111,7 +109,7 @@ public class ScanMenuActions {
 
 		private void addFileExtensions(List<String> extensions, List<String> descriptions, StringBuffer sb) {
 			sb.append(" (");
-			for (Exporter exporter : exporterRegistry) {
+			for (var exporter : exporterRegistry) {
 				extensions.add("*." + exporter.getFilenameExtension());
 				sb.append(exporter.getFilenameExtension()).append(", ");
 				descriptions.add(Labels.getLabel(exporter.getId()));
@@ -144,34 +142,34 @@ public class ScanMenuActions {
 
 			if (!stateMachine.inState(ScanningState.IDLE)) {
 				// ask the user whether to save incomplete results
-				MessageBox box = new MessageBox(resultTable.getShell(), SWT.YES | SWT.NO | SWT.ICON_WARNING | SWT.SHEET);
+				var box = new MessageBox(resultTable.getShell(), SWT.YES | SWT.NO | SWT.ICON_WARNING | SWT.SHEET);
 				box.setText(Version.NAME);
 				box.setMessage(Labels.getLabel("exception.ExporterException.scanningInProgress"));
 				if (box.open() != SWT.YES)
 					return;
 			}
 
-			FileDialog fileDialog = new FileDialog(resultTable.getShell(), SWT.SAVE);
+			var fileDialog = new FileDialog(resultTable.getShell(), SWT.SAVE);
 
 			// gather lists of extensions and exporter names
 			List<String> extensions = new ArrayList<>();
 			List<String> descriptions = new ArrayList<>();
-			StringBuffer labelBuffer = new StringBuffer(Labels.getLabel(isSelection ? "title.exportSelection" : "title.exportAll"));
+			var labelBuffer = new StringBuffer(Labels.getLabel(isSelection ? "title.exportSelection" : "title.exportAll"));
 			addFileExtensions(extensions, descriptions, labelBuffer);
 
 			fileDialog.setText(labelBuffer.toString());
 			fileDialog.setFilterExtensions(extensions.toArray(new String[extensions.size()]));
 			fileDialog.setFilterNames(descriptions.toArray(new String[descriptions.size()]));
 
-			String fileName = fileDialog.open();
+			var fileName = fileDialog.open();
 			if (fileName == null) return;
 
-			Exporter exporter = exporterRegistry.createExporter(fileName);
+			var exporter = exporterRegistry.createExporter(fileName);
 
 			statusBar.setStatusText(Labels.getLabel("state.exporting"));
 
 			// TODO: expose appending feature in the GUI
-			ExportProcessor exportProcessor = new ExportProcessor(exporter, new File(fileName), false);
+			var exportProcessor = new ExportProcessor(exporter, new File(fileName), false);
 
 			// in case of isSelection we need to create our filter
 			ScanningResultFilter filter = null;
@@ -185,7 +183,7 @@ public class ScanMenuActions {
 
 		private void addFileExtensions(List<String> extensions, List<String> descriptions, StringBuffer sb) {
 			sb.append(" (");
-			for (Exporter exporter : exporterRegistry) {
+			for (var exporter : exporterRegistry) {
 				extensions.add("*." + exporter.getFilenameExtension());
 				sb.append(exporter.getFilenameExtension()).append(", ");
 				descriptions.add(Labels.getLabel(exporter.getId()));

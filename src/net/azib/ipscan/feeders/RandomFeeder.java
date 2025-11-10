@@ -37,7 +37,7 @@ public class RandomFeeder extends AbstractFeeder {
 
 	public RandomFeeder(String prototypeIP, String mask, int count) {
 		try {
-			InetAddress ip = InetAddress.getByName(prototypeIP);
+			var ip = InetAddress.getByName(prototypeIP);
 			initInterfaces(ip);
 			this.prototypeBytes = ip.getAddress();
 		} 

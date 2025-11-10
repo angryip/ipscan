@@ -18,7 +18,7 @@ class ExtendableMenu extends Menu {
 	}
 
 	static MenuItem initMenuItem(Menu parent, String label, String acceleratorText, Integer accelerator, Listener listener, boolean disableDuringScanning) {
-		MenuItem menuItem = new MenuItem(parent, label == null ? SWT.SEPARATOR : SWT.PUSH);
+		var menuItem = new MenuItem(parent, label == null ? SWT.SEPARATOR : SWT.PUSH);
 
 		if (label != null)
 			menuItem.setText(Labels.getLabel(label) + (acceleratorText != null ? "\t" + acceleratorText : ""));

@@ -21,10 +21,10 @@ public class JavaPinger implements Pinger {
 	}
 
 	@Override public PingResult ping(ScanningSubject subject, int count) throws IOException {
-		PingResult result = new PingResult(subject.getAddress(), count);
-		for (int i = 0; i < count; i++) {
+		var result = new PingResult(subject.getAddress(), count);
+		for (var i = 0; i < count; i++) {
 			try {
-				long start = currentTimeMillis();
+				var start = currentTimeMillis();
 				if (subject.getAddress().isReachable(timeout))
 					result.addReply(currentTimeMillis() - start);
 			}

@@ -61,7 +61,7 @@ public class OpenersConfigTest {
 	
 	@Test
 	public void testOpenerDeserialize() {
-		OpenersConfig.Opener o = new OpenersConfig.Opener("uu@@uu@@@1@@@");
+		var o = new OpenersConfig.Opener("uu@@uu@@@1@@@");
 		assertEquals("uu@@uu", o.execString);
 		assertEquals(true, o.inTerminal);
 		assertEquals(null, o.workingDir);
@@ -75,7 +75,7 @@ public class OpenersConfigTest {
 	@Test
 	public void testLoad() throws Exception {
 		preferences.put(PREFERENCE_NAME, "aa###aaa@@@1@@@###bb###bbb@@@1@@@");
-		OpenersConfig config = new OpenersConfig(preferences);
+		var config = new OpenersConfig(preferences);
 
 		assertEquals("aaa", config.getOpener("aa").execString);
 		assertEquals("bbb", config.getOpener("bb").execString);
@@ -85,7 +85,7 @@ public class OpenersConfigTest {
 	@Test @SuppressWarnings("unchecked")
 	public void testOrder() throws Exception {
 		preferences.put(PREFERENCE_NAME, "aa###aaa@@@1@@@###bb###bbb@@@1@@@");
-		OpenersConfig config = new OpenersConfig(preferences);
+		var config = new OpenersConfig(preferences);
 
 		Iterator namesIterator = config.iterator();
 		assertEquals("aa", namesIterator.next());

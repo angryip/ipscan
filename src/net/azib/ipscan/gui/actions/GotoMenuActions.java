@@ -6,9 +6,7 @@
 package net.azib.ipscan.gui.actions;
 
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResult.ResultType;
-import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
@@ -44,13 +42,13 @@ public class GotoMenuActions {
 		}
 
 		public final void handleEvent(Event event) {
-			ScanningResultList results = resultTable.getScanningResults();
+			var results = resultTable.getScanningResults();
+
+			var numElements = resultTable.getItemCount();
+			var startIndex = startIndex();
 			
-			int numElements = resultTable.getItemCount();
-			int startIndex = startIndex();
-			
-			for (int i = inc(startIndex); i < numElements && i >= 0; i = inc(i)) {
-				ScanningResult scanningResult = results.getResult(i);
+			for (var i = inc(startIndex); i < numElements && i >= 0; i = inc(i)) {
+				var scanningResult = results.getResult(i);
 				
 				if (whatToSearchFor.matches(scanningResult.getType())) {
 					resultTable.setSelection(i);
@@ -80,7 +78,7 @@ public class GotoMenuActions {
 		}
 
 		protected int startIndex() {
-			int curIndex = resultTable.getSelectionIndex();
+			var curIndex = resultTable.getSelectionIndex();
 			return curIndex >= 0 ? curIndex : resultTable.getItemCount();
 		}
 	}
@@ -133,8 +131,8 @@ public class GotoMenuActions {
 		}
 		
 		public void handleEvent(Event event) {
-			InputDialog dialog = new InputDialog(Labels.getLabel("title.find"), Labels.getLabel("text.find"));
-			String text = dialog.open(lastText, Labels.getLabel("button.find.next"));
+			var dialog = new InputDialog(Labels.getLabel("title.find"), Labels.getLabel("text.find"));
+			var text = dialog.open(lastText, Labels.getLabel("button.find.next"));
 			if (text == null) {
 				return;
 			}
@@ -150,11 +148,11 @@ public class GotoMenuActions {
 		}
 
 		private void findText(String text, Shell activeShell) {
-			ScanningResultList results = resultTable.getScanningResults();
-			
-			int startIndex = resultTable.getSelectionIndex() + 1;
-			
-			int foundIndex = results.findText(text, startIndex);					
+			var results = resultTable.getScanningResults();
+
+			var startIndex = resultTable.getSelectionIndex() + 1;
+
+			var foundIndex = results.findText(text, startIndex);
 			
 			if (foundIndex >= 0) {
 				// if found, then select and finish
@@ -165,7 +163,7 @@ public class GotoMenuActions {
 			
 			if (startIndex > 0) {
 				// if started not from the beginning, offer to restart				
-				MessageBox messageBox = new MessageBox(activeShell, SWT.YES | SWT.NO | SWT.ICON_QUESTION);
+				var messageBox = new MessageBox(activeShell, SWT.YES | SWT.NO | SWT.ICON_QUESTION);
 				messageBox.setText(Labels.getLabel("title.find"));
 				messageBox.setMessage(Labels.getLabel("text.find.notFound") + "\n" + Labels.getLabel("text.find.restart"));
 				if (messageBox.open() == SWT.YES) {
@@ -175,7 +173,7 @@ public class GotoMenuActions {
 			}
 			else {
 				// searching is finished, nothing was found				
-				MessageBox messageBox = new MessageBox(activeShell, SWT.OK | SWT.ICON_INFORMATION);
+				var messageBox = new MessageBox(activeShell, SWT.OK | SWT.ICON_INFORMATION);
 				messageBox.setText(Labels.getLabel("title.find"));
 				messageBox.setMessage(Labels.getLabel("text.find.notFound"));
 				messageBox.open();

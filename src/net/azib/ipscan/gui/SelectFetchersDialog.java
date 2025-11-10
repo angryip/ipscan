@@ -6,18 +6,14 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.IPFetcher;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import static net.azib.ipscan.gui.util.LayoutHelper.*;
@@ -35,52 +31,52 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 	}
 	
 	@Override protected void populateShell() {
-		Display currentDisplay = Display.getCurrent();
-		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
+		var currentDisplay = Display.getCurrent();
+		var parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(Labels.getLabel("title.fetchers"));
 		shell.setLayout(LayoutHelper.formLayout(10, 10, 4));
-		
-		Label messageLabel = new Label(shell, SWT.WRAP);
+
+		var messageLabel = new Label(shell, SWT.WRAP);
 		messageLabel.setText(Labels.getLabel("text.fetchers.select"));
-		
-		Label selectedLabel = new Label(shell, SWT.NONE);
+
+		var selectedLabel = new Label(shell, SWT.NONE);
 		selectedLabel.setText(Labels.getLabel("text.fetchers.selectedList"));		
 		selectedLabel.setLayoutData(formData(null, null, new FormAttachment(messageLabel, 5), null));
 				
 		selectedFetchersList = lastFocusList = new List(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		selectedFetchersList.setLayoutData(formData(160, 250, new FormAttachment(0), null, new FormAttachment(selectedLabel), null));
-		Iterator<Fetcher> i = fetcherRegistry.getSelectedFetchers().iterator();
+		var i = fetcherRegistry.getSelectedFetchers().iterator();
 		i.next();	// skip IP
 		while (i.hasNext()) {
-			Fetcher fetcher = i.next();
+			var fetcher = i.next();
 			selectedFetchersList.add(fetcher.getName());
 		}
 
-		Font iconFont = iconFont(shell);
+		var iconFont = iconFont(shell);
 
-		Button upButton = new Button(shell, SWT.NONE);
+		var upButton = new Button(shell, SWT.NONE);
 		upButton.setText(Labels.getLabel("button.up"));
 		upButton.setToolTipText(Labels.getLabel("button.up.hint"));
 		upButton.setFont(iconFont);
 
-		Button downButton = new Button(shell, SWT.NONE);
+		var downButton = new Button(shell, SWT.NONE);
 		downButton.setText(Labels.getLabel("button.down"));
 		downButton.setToolTipText(Labels.getLabel("button.down.hint"));
 		downButton.setFont(iconFont);
-		
-		Button addButton = new Button(shell, SWT.NONE);
+
+		var addButton = new Button(shell, SWT.NONE);
 		addButton.setText(Labels.getLabel("button.left"));
 		addButton.setToolTipText(Labels.getLabel("button.left.hint"));
 		addButton.setFont(iconFont);
 
-		Button removeButton = new Button(shell, SWT.NONE);
+		var removeButton = new Button(shell, SWT.NONE);
 		removeButton.setText(Labels.getLabel("button.right"));
 		removeButton.setToolTipText(Labels.getLabel("button.right.hint"));
 		removeButton.setFont(iconFont);
-		
-		Button prefsButton = new Button(shell, SWT.NONE);
+
+		var prefsButton = new Button(shell, SWT.NONE);
 		prefsButton.setImage(icon("buttons/prefs"));
 		prefsButton.setToolTipText(Labels.getLabel("text.fetchers.preferences"));
 		prefsButton.setFont(iconFont);
@@ -90,8 +86,8 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		addButton.setLayoutData(formData(new FormAttachment(selectedFetchersList), null, new FormAttachment(downButton, 16), null));
 		removeButton.setLayoutData(formData(new FormAttachment(selectedFetchersList), null, new FormAttachment(addButton), null));
 		prefsButton.setLayoutData(formData(new FormAttachment(selectedFetchersList), new FormAttachment(removeButton, 0, SWT.RIGHT), new FormAttachment(removeButton, 16), null));
-		
-		Label registeredLabel = new Label(shell, SWT.NONE);
+
+		var registeredLabel = new Label(shell, SWT.NONE);
 		registeredLabel.setText(Labels.getLabel("text.fetchers.availableList"));		
 		registeredLabel.setLayoutData(formData(new FormAttachment(upButton, 10), null, new FormAttachment(messageLabel, 5), null));
 		
@@ -100,27 +96,27 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		i = fetcherRegistry.getRegisteredFetchers().iterator();
 		i.next(); // skip IP
 		while (i.hasNext()) {
-			Fetcher fetcher = i.next();
-			String fetcherName = fetcher.getName();
+			var fetcher = i.next();
+			var fetcherName = fetcher.getName();
 			registeredFetcherIdsByNames.put(fetcherName, fetcher.getId());
 			if (selectedFetchersList.indexOf(fetcherName) < 0)
 				registeredFetchersList.add(fetcherName);
 		}
 
-		Button okButton = new Button(shell, SWT.NONE);
+		var okButton = new Button(shell, SWT.NONE);
 		okButton.setText(Labels.getLabel("button.OK"));
-		
-		Button cancelButton = new Button(shell, SWT.NONE);
+
+		var cancelButton = new Button(shell, SWT.NONE);
 		cancelButton.setText(Labels.getLabel("button.cancel"));
 		
 		positionButtonsInFormLayout(okButton, cancelButton, registeredFetchersList);
 
 		upButton.addListener(SWT.Selection, new UpButtonListener(selectedFetchersList));
 		downButton.addListener(SWT.Selection, new DownButtonListener(selectedFetchersList));
-		AddRemoveButtonListener addButtonListener = new AddRemoveButtonListener(registeredFetchersList, selectedFetchersList);
+		var addButtonListener = new AddRemoveButtonListener(registeredFetchersList, selectedFetchersList);
 		addButton.addListener(SWT.Selection, addButtonListener);
 		registeredFetchersList.addListener(SWT.MouseDoubleClick, addButtonListener);
-		AddRemoveButtonListener removeButtonListener = new AddRemoveButtonListener(selectedFetchersList, registeredFetchersList);
+		var removeButtonListener = new AddRemoveButtonListener(selectedFetchersList, registeredFetchersList);
 		removeButton.addListener(SWT.Selection, removeButtonListener);
 		selectedFetchersList.addListener(SWT.MouseDoubleClick, removeButtonListener);
 		prefsButton.addListener(SWT.Selection, new PrefsListener());
@@ -130,7 +126,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 
 		// this is a workaround for limitation of FormLayout to remove the extra edge below the form
 		shell.layout();
-		Rectangle bounds = registeredFetchersList.getBounds();
+		var bounds = registeredFetchersList.getBounds();
 		messageLabel.setLayoutData(formData(bounds.x + bounds.width - 10, SWT.DEFAULT, new FormAttachment(0), null, null, null));
 		
 		shell.pack();
@@ -148,10 +144,10 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 	 */
 	void saveFetchersToRegistry(String[] fetchersNamesToSave) {
 		// IPFetcher must be implicitly there
-		String[] fetchersLabelsToRetain = new String[fetchersNamesToSave.length+1];
+		var fetchersLabelsToRetain = new String[fetchersNamesToSave.length+1];
 		fetchersLabelsToRetain[0] = IPFetcher.ID; 
 
-		for (int i = 0; i < fetchersNamesToSave.length; i++) {
+		for (var i = 0; i < fetchersNamesToSave.length; i++) {
 			fetchersLabelsToRetain[i+1] = registeredFetcherIdsByNames.get(fetchersNamesToSave[i]);
 		}
 		fetcherRegistry.updateSelectedFetchers(fetchersLabelsToRetain);
@@ -162,10 +158,10 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 	class PrefsListener implements Listener {
 		public void handleEvent(Event event) {
 			if (lastFocusList.getItemCount() == 0) return;
-			int selectionIndex = lastFocusList.getSelectionIndex();
+			var selectionIndex = lastFocusList.getSelectionIndex();
 			if (selectionIndex < 0) selectionIndex = 0;
-			String fetcherName = lastFocusList.getItem(selectionIndex);
-			for (Fetcher fetcher : fetcherRegistry.getRegisteredFetchers()) {
+			var fetcherName = lastFocusList.getItem(selectionIndex);
+			for (var fetcher : fetcherRegistry.getRegisteredFetchers()) {
 				if (fetcherName.equals(fetcher.getName())) {
 					fetcherRegistry.openPreferencesEditor(fetcher);
 					break;
@@ -184,10 +180,10 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		}
 
 		public void handleEvent(Event event) {
-			int[] selectedItems = fromList.getSelectionIndices();
+			var selectedItems = fromList.getSelectionIndices();
 
 			// first, add items back to the registered list
-			for (int selectedItem : selectedItems) {
+			for (var selectedItem : selectedItems) {
 				toList.add(fromList.getItem(selectedItem));
 			}
 			

@@ -30,7 +30,7 @@ public class SmartTextFeeder extends AbstractFeeder {
 		text = text.replaceAll("\\w+", "");
 		
 		// extract netmask
-		int slashPos = text.indexOf('/'); 
+		var slashPos = text.indexOf('/');
 		if (slashPos >= 0) {
 			//netmask = text.substring(slashPos+1);
 			text = text.substring(0, slashPos);

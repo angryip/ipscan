@@ -5,7 +5,6 @@ import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +29,8 @@ public interface WinIpHlpDll extends Library {
 	class AutoOrderedStructure extends Structure {
 		// this is a requirement of newer JNA, possibly it won't work on some JVM, but probability is quite small
 		@Override protected List<String> getFieldOrder() {
-			ArrayList<String> fields = new ArrayList<>();
-			for (Field field : getClass().getFields()) {
+			var fields = new ArrayList<String>();
+			for (var field : getClass().getFields()) {
 				if (!isStatic(field.getModifiers()))
 					fields.add(field.getName());
 			}

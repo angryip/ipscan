@@ -13,7 +13,7 @@ import static org.junit.Assert.assertArrayEquals;
 public class NetBIOSResolverTest {
 	@Test
 	public void extractNamesNoUserNoGroup() throws Exception {
-		byte[] response = ("01234567890123456789012345678901234567890123456789012345\u0001" +
+		var response = ("01234567890123456789012345678901234567890123456789012345\u0001" +
 						   "ComputerName   XYY" + 
 						   "\u00DE\u00AD\u00BE\u00EF\u0000\u0000         XYY" 
 						  ).getBytes("ISO-8859-1");
@@ -22,7 +22,7 @@ public class NetBIOSResolverTest {
 	
 	@Test
 	public void extractNamesNoUserWithGroup() throws Exception {
-		byte[] response = ("01234567890123456789012345678901234567890123456789012345\u0002" +
+		var response = ("01234567890123456789012345678901234567890123456789012345\u0002" +
 						   "ComputerName   XYY" + 
 						   "GroupName      \u0000\u0080\u0000" +
 						   "\u0001\u0002\u0003\u0004\u0005\u0006         XYY" 
@@ -32,7 +32,7 @@ public class NetBIOSResolverTest {
 		
 	@Test
 	public void extractNamesWithUserAndGroup() throws Exception {
-		byte[] response = ("01234567890123456789012345678901234567890123456789012345\u0007" +
+		var response = ("01234567890123456789012345678901234567890123456789012345\u0007" +
 						   "ComputerName   XYY" + 
 						   "SomeName       X\u007F\u0000" +
 						   "SomeName       X\u0085\u0000" +

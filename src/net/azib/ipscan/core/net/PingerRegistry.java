@@ -13,7 +13,6 @@ import net.azib.ipscan.di.Injector;
 import net.azib.ipscan.fetchers.FetcherException;
 import net.azib.ipscan.fetchers.MACFetcher;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -62,13 +61,13 @@ public class PingerRegistry {
 	 * Creates the configured pinger with configured timeout
 	 */
 	public Pinger createPinger(boolean isLAN) throws FetcherException {
-		Class<? extends Pinger> pingerClass = pingers.get(scannerConfig.selectedPinger);
+		var pingerClass = pingers.get(scannerConfig.selectedPinger);
 		if (pingerClass == null) {
-			Map.Entry<String, Class<? extends Pinger>> first = pingers.entrySet().iterator().next();
+			var first = pingers.entrySet().iterator().next();
 			scannerConfig.selectedPinger = first.getKey();
 			pingerClass = first.getValue();
 		}
-		Pinger mainPinger = createPinger(pingerClass, scannerConfig.pingTimeout);
+		var mainPinger = createPinger(pingerClass, scannerConfig.pingTimeout);
 		if (isLAN) return new ARPPinger(injector.require(MACFetcher.class), mainPinger);
 		return mainPinger;
 	}
@@ -86,14 +85,14 @@ public class PingerRegistry {
 		}
 		catch (InjectException ie) {
 			try {
-				Constructor<? extends Pinger> constructor = pingerClass.getConstructor(int.class);
-				Pinger pinger = constructor.newInstance(timeout);
+				var constructor = pingerClass.getConstructor(int.class);
+				var pinger = constructor.newInstance(timeout);
 				injector.register((Class<Pinger>) pingerClass, pinger);
 				return pinger;
 			}
 			catch (Exception e) {
-				Throwable t = e instanceof InvocationTargetException ? e.getCause() : e;
-				String message = "Unable to create pinger: " + pingerClass.getSimpleName();
+				var t = e instanceof InvocationTargetException ? e.getCause() : e;
+				var message = "Unable to create pinger: " + pingerClass.getSimpleName();
 				LOG.log(SEVERE, message, t);
 				if (t instanceof RuntimeException) throw (RuntimeException) t;
 				throw new FetcherException("pingerCreateFailure");

@@ -22,7 +22,7 @@ public class OpenersConfig extends NamedListConfig {
 		super(preferences, "openers");
 		
 		if (size() == 0) {
-			Labels labels = Labels.getInstance();
+			var labels = Labels.getInstance();
 			// add default openers
 			if (Platform.WINDOWS) add(labels.get("opener.netbios"), new Opener("\\\\${fetcher.ip}", false, null));
 			add(labels.get("opener.web"), new Opener("http://${fetcher.hostname}/", false, null));			
@@ -60,7 +60,7 @@ public class OpenersConfig extends NamedListConfig {
 		
 		Opener(String serialized) {
 			try {
-				String[] parts = serialized.split("@@@");
+				var parts = serialized.split("@@@");
 				execString = parts[0];
 				inTerminal = parts[1].charAt(0) == '1';
 				workingDir = parts.length >= 3 && parts[2].length() > 0 ? new File(parts[2]) : null;

@@ -5,8 +5,6 @@
  */
 package net.azib.ipscan.core;
 
-import net.azib.ipscan.fetchers.Fetcher;
-
 import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -119,15 +117,15 @@ public class ScanningResult {
 	 */
 	public String toString() {
 		// cross-platform newline :-)
-		String newLine = System.getProperty("line.separator");
-		
-		StringBuilder details = new StringBuilder(1024);
+		var newLine = System.getProperty("line.separator");
+
+		var details = new StringBuilder(1024);
 		Iterator<?> iterator = getValues().iterator();
-		List<Fetcher> fetchers = resultList.getFetchers();
-		for (int i = 0; iterator.hasNext(); i++) {
-			String fetcherName = fetchers.get(i).getName();
+		var fetchers = resultList.getFetchers();
+		for (var i = 0; iterator.hasNext(); i++) {
+			var fetcherName = fetchers.get(i).getName();
 			details.append(fetcherName).append(":\t");
-			Object value = iterator.next(); 
+			var value = iterator.next();
 			details.append(value != null ? value : "");
 			details.append(newLine);
 		}

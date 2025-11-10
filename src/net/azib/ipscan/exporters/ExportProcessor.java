@@ -7,11 +7,9 @@ package net.azib.ipscan.exporters;
 
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
-import net.azib.ipscan.fetchers.Fetcher;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.List;
 
 /**
  * Export Processor controls the actual exporting using the provided Exporter.
@@ -47,16 +45,16 @@ public class ExportProcessor {
 			exporter.start(outputStream, scanningResults.getFeederInfo());
 	
 			// set fetchers
-			List<Fetcher> fetchers = scanningResults.getFetchers();
-			String[] fetcherNames = new String[fetchers.size()];
-			int i = 0;
-			for (Fetcher fetcher : fetchers) {
+			var fetchers = scanningResults.getFetchers();
+			var fetcherNames = new String[fetchers.size()];
+			var i = 0;
+			for (var fetcher : fetchers) {
 				fetcherNames[i++] = fetcher.getName();
 			}			
 			exporter.setFetchers(fetcherNames);
 
-			int index = 0;
-			for (ScanningResult scanningResult : scanningResults) {
+			var index = 0;
+			for (var scanningResult : scanningResults) {
 				if (filter == null || filter.apply(index++, scanningResult)) {
 					exporter.nextAddressResults(scanningResult.getValues().toArray());
 				}

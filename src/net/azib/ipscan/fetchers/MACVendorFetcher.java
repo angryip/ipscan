@@ -24,7 +24,7 @@ public class MACVendorFetcher extends AbstractFetcher {
 
 	@Override
 	public void init() {
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/mac-vendors.txt")))) {
+		try (var reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/mac-vendors.txt")))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				if (line.isEmpty()) continue;
@@ -38,7 +38,7 @@ public class MACVendorFetcher extends AbstractFetcher {
 
 	@Override
 	public Object scan(ScanningSubject subject) {
-		String mac = (String)subject.getParameter(MACFetcher.ID);
+		var mac = (String)subject.getParameter(MACFetcher.ID);
 		if (mac == null) {
 			macFetcher.scan(subject);
 			mac = (String) subject.getParameter(MACFetcher.ID);

@@ -34,9 +34,9 @@ public final class Config {
 		language = preferences.get("language", "system");
 		gaClientId = preferences.get("gaClientId", null);
 		if (gaClientId == null) {
-			Random random = new Random();
-			long firstPart = 1000000000L + (long)(random.nextDouble() * 9000000000L);
-			long secondPart = 1000000000L + (long)(random.nextDouble() * 9000000000L);
+			var random = new Random();
+			var firstPart = 1000000000L + (long)(random.nextDouble() * 9000000000L);
+			var secondPart = 1000000000L + (long)(random.nextDouble() * 9000000000L);
 			gaClientId = firstPart + "." + secondPart;
 			preferences.put("gaClientId", gaClientId);
 		}

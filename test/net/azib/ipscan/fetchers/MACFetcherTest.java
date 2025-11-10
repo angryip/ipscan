@@ -34,7 +34,7 @@ public class MACFetcherTest {
 
 	@Test
 	public void redefinedSeparator() throws UnknownHostException {
-		ScanningSubject subject = new ScanningSubject(InetAddress.getLocalHost());
+		var subject = new ScanningSubject(InetAddress.getLocalHost());
 		fetcher.separator = ":";
 		assertEquals("00:01:02:03:04:05", fetcher.scan(subject));
 		assertEquals("00:01:02:03:04:05", subject.getParameter(MACFetcher.ID));

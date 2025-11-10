@@ -5,7 +5,6 @@ import net.azib.ipscan.config.Version;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -86,8 +85,8 @@ public class XMLExporterTest extends AbstractExporterTestCase {
 		exporter.nextAddressResults(new Object[] {InetAddress.getLocalHost().getHostAddress(), "bug>>a", -1});
 		exporter.end();
 		assertContains("<megaInfo'''");
-		
-		DocumentBuilder documentBuilder =  DocumentBuilderFactory.newInstance().newDocumentBuilder();
+
+		var documentBuilder =  DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		documentBuilder.parse(new ByteArrayInputStream(outputContent.getBytes(XMLExporter.ENCODING)));
 	}
 	

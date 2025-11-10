@@ -30,15 +30,15 @@ public class NetBIOSResolver implements Closeable {
 	public String[] resolve(InetAddress ip) throws IOException {
 		socket.send(new DatagramPacket(REQUEST_DATA, REQUEST_DATA.length, ip, NETBIOS_UDP_PORT));
 
-		byte[] response = new byte[1024];
-		DatagramPacket responsePacket = new DatagramPacket(response, response.length);
+		var response = new byte[1024];
+		var responsePacket = new DatagramPacket(response, response.length);
 		socket.receive(responsePacket);
 
 		if (responsePacket.getLength() < RESPONSE_BASE_LEN || response[RESPONSE_TYPE_POS] != RESPONSE_TYPE_NBSTAT) {
 			return null; // response was too short - no names returned
 		}
 
-		int nameCount = response[RESPONSE_BASE_LEN - 1] & 0xFF;
+		var nameCount = response[RESPONSE_BASE_LEN - 1] & 0xFF;
 		if (responsePacket.getLength() < RESPONSE_BASE_LEN + RESPONSE_NAME_BLOCK_LEN * nameCount) {
 			return null; // data was truncated or something is wrong
 		}
@@ -47,10 +47,10 @@ public class NetBIOSResolver implements Closeable {
 	}
 
 	static String[] extractNames(byte[] response, int nameCount) {
-		String computerName = nameCount > 0 ? name(response, 0) : null;
+		var computerName = nameCount > 0 ? name(response, 0) : null;
 
 		String groupName = null;
-		for (int i = 1; i < nameCount; i++) {
+		for (var i = 1; i < nameCount; i++) {
 			if (nameType(response, i) == NAME_TYPE_DOMAIN && (nameFlag(response, i) & GROUP_NAME_FLAG) > 0) {
 				groupName = name(response, i);
 				break;
@@ -58,14 +58,14 @@ public class NetBIOSResolver implements Closeable {
 		}
 
 		String userName = null;
-		for (int i = nameCount - 1; i > 0; i--) {
+		for (var i = nameCount - 1; i > 0; i--) {
 			if (nameType(response, i) == NAME_TYPE_MESSENGER) {
 				userName = name(response, i);
 				break;
 			}
 		}
 
-		String macAddress = String.format("%02X-%02X-%02X-%02X-%02X-%02X",
+		var macAddress = String.format("%02X-%02X-%02X-%02X-%02X-%02X",
 				nameByte(response, nameCount, 0), nameByte(response, nameCount, 1),
 				nameByte(response, nameCount, 2), nameByte(response, nameCount, 3),
 				nameByte(response, nameCount, 4), nameByte(response, nameCount, 5));

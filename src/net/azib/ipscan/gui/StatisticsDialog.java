@@ -8,7 +8,6 @@ package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResultList;
-import net.azib.ipscan.core.ScanningResultList.ScanInfo;
 import net.azib.ipscan.core.UserErrorException;
 
 import java.text.DecimalFormat;
@@ -42,12 +41,12 @@ public class StatisticsDialog extends InfoDialog {
 	}
 
 	String prepareText() {
-		ScanInfo scanInfo = scanningResults.getScanInfo();
+		var scanInfo = scanningResults.getScanInfo();
 		title2 = Labels.getLabel(scanInfo.isCompletedNormally() ? 
 				"text.scan.completed" : "text.scan.incomplete");
-				
-		String ln = System.getProperty("line.separator");
-		StringBuilder text = new StringBuilder();
+
+		var ln = System.getProperty("line.separator");
+		var text = new StringBuilder();
 		text.append(Labels.getLabel("text.scan.time.total"))
 			.append(timeToText(scanInfo.getScanTime())).append(ln);
 		text.append(Labels.getLabel("text.scan.time.average"))
@@ -68,9 +67,9 @@ public class StatisticsDialog extends InfoDialog {
 	 * @return provided time in human-readable form
 	 */
 	static String timeToText(double scanTime) {
-		double totalSeconds = scanTime/1000;
-		double totalMinutes = totalSeconds/60;
-		double totalHours = totalMinutes/60;
+		var totalSeconds = scanTime/1000;
+		var totalMinutes = totalSeconds/60;
+		var totalHours = totalMinutes/60;
 		NumberFormat format = new DecimalFormat("#.##");
 		if (totalHours >= 1)
 			return format.format(totalHours) + Labels.getLabel("unit.hour");

@@ -104,8 +104,8 @@ public class ToolsActions {
 
 		public void handleEvent(Event event) {
 			if (stateMachine.inState(ScanningState.IDLE)) {
-				Table resultTable = (Table) event.widget;
-				int selectionCount = resultTable.getSelectionCount();
+				var resultTable = (Table) event.widget;
+				var selectionCount = resultTable.getSelectionCount();
 				if (selectionCount > 1) 
 					statusBar.setStatusText(selectionCount + Labels.getLabel("text.hostsSelected"));
 				else
@@ -124,9 +124,9 @@ public class ToolsActions {
 		}
 
 		public void handleEvent(Event event) {
-			int count = resultTable.getItemCount();
+			var count = resultTable.getItemCount();
 			resultTable.deselectAll();
-			for (int i = 0; i < count; i++) {
+			for (var i = 0; i < count; i++) {
 				if (isDesired(results.getResult(i).getType())) {
 					resultTable.select(i);
 				}
@@ -210,10 +210,10 @@ public class ToolsActions {
 		}
 
 		public void handleEvent(Event event) {
-			int count = resultTable.getItemCount();
+			var count = resultTable.getItemCount();
 			// the most naive implementation
 			resultTable.setRedraw(false);
-			for (int i = 0; i < count; i++) {
+			for (var i = 0; i < count; i++) {
 				if (resultTable.isSelected(i)) 
 					resultTable.deselect(i);
 				else

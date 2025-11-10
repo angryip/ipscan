@@ -64,7 +64,7 @@ public class RangeFeeder extends AbstractFeeder {
 	 * Initalizes fields, used for computation of percentage of completion.
 	 */
 	private void initPercentageIncrement() {
-		byte[] endAddress = this.endIP.getAddress();
+		var endAddress = this.endIP.getAddress();
 		long rawEndIP = octetsToInt(endAddress, endAddress.length - 4);
 		long rawStartIP = octetsToInt(this.startIP.getAddress(), endAddress.length - 4);
 		// make 32-bit unsigned values
@@ -82,7 +82,7 @@ public class RangeFeeder extends AbstractFeeder {
 
 	@Override public ScanningSubject next() {
 		percentageComplete += percentageIncrement;
-		InetAddress prevIP = this.currentIP;
+		var prevIP = this.currentIP;
 		if (this.isReverse) {
 			this.currentIP = decrement(prevIP);
 		} else {

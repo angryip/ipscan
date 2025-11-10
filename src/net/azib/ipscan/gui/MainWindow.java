@@ -21,10 +21,7 @@ import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import net.azib.ipscan.gui.feeders.FeederSelectionCombo;
 import net.azib.ipscan.gui.menu.ResultsContextMenu;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
@@ -99,7 +96,7 @@ public class MainWindow {
 		shell.setLayout(new FormLayout());
 		
 		// load and set icon
-		Image image = new Image(shell.getDisplay(), getClass().getResourceAsStream("/images/icon.png"));
+		var image = new Image(shell.getDisplay(), getClass().getResourceAsStream("/images/icon.png"));
 		shell.setImage(image);
 				
 		shell.addListener(SWT.Close, event -> {
@@ -154,13 +151,13 @@ public class MainWindow {
 		// feeder selection combobox
 		this.feederSelectionCombo = feederSelectionCombo;
 		feederSelectionCombo.pack();
-		SelectionListener feederSelectionListener = widgetSelectedAdapter(e -> {
+		var feederSelectionListener = widgetSelectedAdapter(e -> {
 			feederRegistry.select(feederSelectionCombo.getSelectionIndex());
 
 			// all this 'magic' is needed in order to resize everything properly
 			// and accommodate feeders with different sizes
-			Rectangle bounds = feederRegistry.current().getBounds();
-			FormData feederAreaLayoutData = ((FormData)feederArea.getLayoutData());
+			var bounds = feederRegistry.current().getBounds();
+			var feederAreaLayoutData = ((FormData)feederArea.getLayoutData());
 			feederAreaLayoutData.height = bounds.height;
 			feederAreaLayoutData.width = bounds.width;
 			relayoutControls();
@@ -179,7 +176,7 @@ public class MainWindow {
 		controlsArea.setTabList(new Control[] {startStopButton, feederSelectionCombo});
 
 		prefsButton = createToolbarButton(controlsArea);
-		ToolItem item = new ToolItem(prefsButton, SWT.PUSH);
+		var item = new ToolItem(prefsButton, SWT.PUSH);
 		item.setImage(icon("buttons/prefs"));
 		item.setToolTipText(Labels.getLabel("title.preferences"));
 		item.addListener(SWT.Selection, preferencesListener);
@@ -194,20 +191,20 @@ public class MainWindow {
 	}
 
 	private ToolBar createToolbarButton(Composite controlsArea) {
-		ToolBar bar = new ToolBar(controlsArea, SWT.FLAT);
+		var bar = new ToolBar(controlsArea, SWT.FLAT);
 		bar.setCursor(bar.getDisplay().getSystemCursor(SWT.CURSOR_HAND));
 		return bar;
 	}
 
 	private void relayoutControls() {
-		Point feederSize = feederRegistry.current().getSize();
-		Point buttonSize = startStopButton.getSize();
-		Point comboSize = feederSelectionCombo.getSize();
+		var feederSize = feederRegistry.current().getSize();
+		var buttonSize = startStopButton.getSize();
+		var comboSize = feederSelectionCombo.getSize();
 
-		int sizeDiff = feederSize.y - buttonSize.y - comboSize.y;
+		var sizeDiff = feederSize.y - buttonSize.y - comboSize.y;
 
 		if (sizeDiff >= 0) {
-			GridLayout layout = new GridLayout(2, false);
+			var layout = new GridLayout(2, false);
 			layout.verticalSpacing = Platform.MAC_OS && sizeDiff == 11 ? 1 : sizeDiff / 3;
 			startStopButton.getParent().setLayout(layout);
 
@@ -225,8 +222,8 @@ public class MainWindow {
 		public void transitionTo(final ScanningState state, Transition transition) {
 			if (transition != Transition.START && transition != Transition.COMPLETE)
 				return;
-			
-			boolean enabled = state == ScanningState.IDLE;
+
+			var enabled = state == ScanningState.IDLE;
 			feederArea.setEnabled(enabled);
 			feederSelectionCombo.setEnabled(enabled);
 			prefsButton.setEnabled(enabled);

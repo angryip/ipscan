@@ -14,7 +14,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
@@ -48,18 +47,18 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	public void initialize() {
 		setLayout(new GridLayout(5, false));
 
-		Label ipRangeLabel = new Label(this, SWT.NONE);
+		var ipRangeLabel = new Label(this, SWT.NONE);
         startIPText = new Text(this, SWT.BORDER);
-		Label toLabel = new Label(this, SWT.NONE);
+		var toLabel = new Label(this, SWT.NONE);
         endIPText = new Text(this, SWT.BORDER);
-		Label hostnameLabel = new Label(this, SWT.NONE);
+		var hostnameLabel = new Label(this, SWT.NONE);
         hostnameText = new Text(this, SWT.BORDER);
-		Button ipUpButton = new Button(this, SWT.NONE);
+		var ipUpButton = new Button(this, SWT.NONE);
         netmaskCombo = new Combo(this, SWT.NONE);
 
 		// the longest possible IP
         startIPText.setText("255.255.255.255xx");
-        int textWidth = startIPText.computeSize(-1, -1).x;
+		var textWidth = startIPText.computeSize(-1, -1).x;
         startIPText.setText("");
 		startIPText.setLayoutData(new GridData(textWidth, -1));
 		endIPText.setLayoutData(new GridData(textWidth, -1));
@@ -67,7 +66,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		netmaskCombo.setLayoutData(new GridData(textWidth, -1));
 
 		((GridData)endIPText.getLayoutData()).horizontalSpan = 2;
-		GridData ipUpData = new GridData(); ipUpData.horizontalSpan = 2;
+		var ipUpData = new GridData(); ipUpData.horizontalSpan = 2;
 		ipUpButton.setLayoutData(ipUpData);
 
         ipRangeLabel.setText(getLabel("feeder.range") + ":");
@@ -80,7 +79,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		startIPText.addModifyListener(new StartIPModifyListener());
         endIPText.addModifyListener(new EndIPModifyListener());
 
-		FeederActions.HostnameButton hostnameListener = new FeederActions.HostnameButton(hostnameText, startIPText, netmaskCombo) {
+		var hostnameListener = new FeederActions.HostnameButton(hostnameText, startIPText, netmaskCombo) {
 			public void widgetSelected(SelectionEvent event) {
 				isEndIPUnedited = true;
 				netmaskCombo.setText(getLabel("feeder.range.netmask"));
@@ -113,15 +112,15 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 		netmaskCombo.add("255...0");
 		netmaskCombo.add("255..0.0");
 		netmaskCombo.add("255.0.0.0");
-		NetmaskListener netmaskSelectionListener = new NetmaskListener();
+		var netmaskSelectionListener = new NetmaskListener();
 		netmaskCombo.addListener(SWT.Selection, netmaskSelectionListener);
 		netmaskCombo.addListener(SWT.Traverse, netmaskSelectionListener);
 		netmaskCombo.setToolTipText(getLabel("feeder.range.netmask.tooltip"));
 
 		pack();
-		Rectangle comboBounds = netmaskCombo.getBounds();
-		Rectangle endIPBounds = endIPText.getBounds();
-		int width = endIPBounds.x + endIPBounds.width - comboBounds.x - 5;
+		var comboBounds = netmaskCombo.getBounds();
+		var endIPBounds = endIPText.getBounds();
+		var width = endIPBounds.x + endIPBounds.width - comboBounds.x - 5;
 		if (Platform.WINDOWS) width -= 22; // TODO: remove width of down arrow, this number may change with updated SWT version
 		if (Platform.MAC_OS) width += 10;
 		((GridData) netmaskCombo.getLayoutData()).widthHint = width;
@@ -188,8 +187,8 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 			}
 			
 			try {
-				String netmaskString = netmaskCombo.getText();
-				InetAddress startIP = InetAddress.getByName(startIPText.getText());
+				var netmaskString = netmaskCombo.getText();
+				var startIP = InetAddress.getByName(startIPText.getText());
 				updateStartEndWithNetmask(startIP, netmaskString);
 			}
 			catch (UnknownHostException e) {
@@ -208,7 +207,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 
 	private void updateStartEndWithNetmask(InetAddress ip, String netmaskString) {
 		try {
-			InetAddress netmask = parseNetmask(netmaskString);
+			var netmask = parseNetmask(netmaskString);
 			modifyListenersDisabled = true;
 			startIPText.setText(startRangeByNetmask(ip, netmask).getHostAddress());
 			endIPText.setText(endRangeByNetmask(ip, netmask).getHostAddress());
@@ -221,7 +220,7 @@ public class RangeFeederGUI extends AbstractFeederGUI {
 	}
 
 	@Override protected void afterLocalHostInfoFilled(InterfaceAddress ifAddr) {
-		InetAddress address = ifAddr.getAddress();
+		var address = ifAddr.getAddress();
 		if (!address.isLoopbackAddress()) {
 			updateStartEndWithNetmask(address, "/" + ifAddr.getNetworkPrefixLength());
 			isEndIPUnedited = true;

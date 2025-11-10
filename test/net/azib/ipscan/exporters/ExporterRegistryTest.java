@@ -6,7 +6,6 @@ package net.azib.ipscan.exporters;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Iterator;
 
 import static org.junit.Assert.*;
 
@@ -17,12 +16,11 @@ import static org.junit.Assert.*;
  */
 public class ExporterRegistryTest {
 	
-	private ExporterRegistry exporterRegistry = new ExporterRegistry(Arrays.<Exporter>asList(new TXTExporter(), new CSVExporter()));
+	private ExporterRegistry exporterRegistry = new ExporterRegistry(Arrays.asList(new TXTExporter(), new CSVExporter()));
 	
 	@Test
 	public void testIterator() {
-		for (Iterator<?> i = exporterRegistry.iterator(); i.hasNext(); ) {
-			Exporter exporter = (Exporter) i.next();
+		for (Exporter exporter : exporterRegistry) {
 			assertNotNull(exporter);
 			assertNotNull(exporter.getFilenameExtension());
 		}

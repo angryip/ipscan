@@ -111,7 +111,7 @@ public class GUIConfig {
 	 * @return column width corresponding to a fetcher
 	 */
 	public int getColumnWidth(Fetcher fetcher) {
-		int width = preferences.getInt("columnWidth." + fetcher.getId(), 0);
+		var width = preferences.getInt("columnWidth." + fetcher.getId(), 0);
 		if (width == 0) {
 			// use different default widths
 			if (fetcher instanceof IPFetcher || fetcher instanceof HostnameFetcher)

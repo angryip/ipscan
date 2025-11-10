@@ -37,9 +37,9 @@ public class NamedListConfig implements Iterable<String> {
 		if (preferences == null) {
 			return;
 		}
-		
-		String[] namedListPrefs = preferences.get(preferenceName, "").split("###");
-		for (int i = 0; i < namedListPrefs.length; i += 2) {
+
+		var namedListPrefs = preferences.get(preferenceName, "").split("###");
+		for (var i = 0; i < namedListPrefs.length; i += 2) {
 			if (namedListPrefs[i].length() > 0) {
 				namedList.put(namedListPrefs[i], serializeValue(namedListPrefs[i+1]));
 			}
@@ -54,8 +54,8 @@ public class NamedListConfig implements Iterable<String> {
 	 * Stores the currently available named list
 	 */
 	public void store() {
-		StringBuilder sb = new StringBuilder(32);
-		for (Map.Entry<String, Object> e : namedList.entrySet()) {
+		var sb = new StringBuilder(32);
+		for (var e : namedList.entrySet()) {
 			sb.append(e.getKey()).append("###").append(e.getValue()).append("###");
 		}
 		if (sb.length() > 3) { 
@@ -77,7 +77,7 @@ public class NamedListConfig implements Iterable<String> {
 	 * @return stored value
 	 */
 	public String get(String key) {
-		Object value = namedList.get(key);
+		var value = namedList.get(key);
 		return value != null ? value.toString() : null;
 	}
 	
@@ -109,7 +109,7 @@ public class NamedListConfig implements Iterable<String> {
 	public void update(String[] keys) {
 		// rebuild the map (to recreate the new order of elements)
 		Map<String, Object> newList = new LinkedHashMap<>();
-		for (String key : keys) {
+		for (var key : keys) {
 			newList.put(key, namedList.get(key));
 		}
 		namedList = newList;

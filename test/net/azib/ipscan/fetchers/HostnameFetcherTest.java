@@ -29,12 +29,12 @@ public class HostnameFetcherTest extends AbstractFetcherTestCase {
 			assertEquals(InetAddress.getLocalHost().getCanonicalHostName(), fetcher.scan(new ScanningSubject(InetAddress.getLocalHost())));
 		
 		try {
-			InetAddress address = InetAddress.getByName("era.ee");
+			var address = InetAddress.getByName("era.ee");
 			assertEquals("ns.era.ee", fetcher.scan(new ScanningSubject(address)));
 		}
 		catch (UnknownHostException e) { /* ignore - test is running in off-line environment */ }
-		
-		InetAddress inexistentAddress = InetAddress.getByName("192.168.253.253");
+
+		var inexistentAddress = InetAddress.getByName("192.168.253.253");
 		if (inexistentAddress.getHostName().equals("192.168.253.253"))
 			assertNull(fetcher.scan(new ScanningSubject(inexistentAddress)));			
 	}

@@ -30,7 +30,7 @@ public class FeederGUIRegistry implements FeederRegistry {
 	public FeederGUIRegistry(List<AbstractFeederGUI> allTheFeeders, FeederSelectionCombo feederSelectionCombo, GUIConfig guiConfig) {
 		this.feederGUIList = allTheFeeders;
 		this.feederSelectionCombo = feederSelectionCombo;
-		for (AbstractFeederGUI feederGUI : feederGUIList) {
+		for (var feederGUI : feederGUIList) {
 			feederSelectionCombo.add(feederGUI.getFeederName());	
 		}
 		this.guiConfig = guiConfig;
@@ -66,8 +66,8 @@ public class FeederGUIRegistry implements FeederRegistry {
 	 * Select the Feeder GUI by its name, while updating the GUI
 	 */
 	public void select(String feederId) {
-		for (int i = 0; i < feederGUIList.size(); i++) {
-			AbstractFeederGUI guiFeeder = feederGUIList.get(i);
+		for (var i = 0; i < feederGUIList.size(); i++) {
+			var guiFeeder = feederGUIList.get(i);
 			if (guiFeeder.getFeederId().equals(feederId) || guiFeeder.getFeederName().equals(feederId)) {
 				// select the feeder if found
 				feederSelectionCombo.select(i);
@@ -92,8 +92,8 @@ public class FeederGUIRegistry implements FeederRegistry {
 	 * @return initialized instance of RescanFeeder
 	 */
 	public Feeder createRescanFeeder(TableItem[] selection) {
-		String[] addresses = new String[selection.length];
-		for (int i = 0; i < selection.length; i++) {
+		var addresses = new String[selection.length];
+		for (var i = 0; i < selection.length; i++) {
 			addresses[i] = selection[i].getText();
 		}
 		return new RescanFeeder(lastFeeder, addresses);

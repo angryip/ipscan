@@ -45,8 +45,8 @@ public class IPListExporter extends AbstractExporter {
 	 * @throws ExporterException in case fetcher is not found
 	 */
 	static int findFetcherById(String fetcherId, String[] fetcherNames) {
-		String fetcherName = Labels.getLabel(fetcherId);
-		for (int i = 0; i < fetcherNames.length; i++) {
+		var fetcherName = Labels.getLabel(fetcherId);
+		for (var i = 0; i < fetcherNames.length; i++) {
 			if (fetcherName.equals(fetcherNames[i])) {
 				return i;
 			}
@@ -55,11 +55,11 @@ public class IPListExporter extends AbstractExporter {
 	}
 
 	public void nextAddressResults(Object[] results) throws IOException {
-		String address = results[ipFetcherIndex].toString(); 
-		Object ports = results[portsFetcherIndex];
+		var address = results[ipFetcherIndex].toString();
+		var ports = results[portsFetcherIndex];
 		
 		if (ports instanceof NumericRangeList) {
-			for (PortIterator i = new PortIterator(ports.toString()); i.hasNext(); ) {
+			for (var i = new PortIterator(ports.toString()); i.hasNext(); ) {
 				output.println(address + DELIMETER + i.next());
 			}
 		}

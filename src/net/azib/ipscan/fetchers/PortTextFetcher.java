@@ -52,10 +52,10 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 	}
 
 	public Object scan(ScanningSubject subject) {
-		Iterator<Integer> portIterator = getPortIterator(subject);
+		var portIterator = getPortIterator(subject);
 
 		while (portIterator.hasNext() && !currentThread().isInterrupted()) {
-			try (Socket socket = new Socket()) {
+			try (var socket = new Socket()) {
 				socket.connect(new InetSocketAddress(subject.getAddress(), portIterator.next()), subject.getAdaptedPortTimeout());
 				socket.setTcpNoDelay(true);
 				socket.setSoTimeout(scannerConfig.portTimeout * 2);
@@ -63,10 +63,10 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 
 				socket.getOutputStream().write(textToSend.getBytes());
 
-				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				var in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				String line;
 				while ((line = in.readLine()) != null) {
-					Matcher matcher = matchingRegexp.matcher(line);
+					var matcher = matchingRegexp.matcher(line);
 					if (matcher.find()) {
 						// mark that additional info is available
 						subject.setResultType(ResultType.WITH_PORTS);
@@ -92,14 +92,14 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 	}
 
 	protected String getResult(Matcher matcher, int port) {
-		String result = matcher.group(extractGroup);
+		var result = matcher.group(extractGroup);
 		return result.isEmpty() ? String.valueOf(port) : result;
 	}
 
 	private Iterator<Integer> getPortIterator(ScanningSubject subject) {
 		if (scanOpenPorts) {
 			@SuppressWarnings("unchecked")
-			SortedSet<Integer> openPorts = (SortedSet<Integer>) subject.getParameter(PARAMETER_OPEN_PORTS);
+			var openPorts = (SortedSet<Integer>) subject.getParameter(PARAMETER_OPEN_PORTS);
 			if (openPorts != null) {
 				SortedSet<Integer> ports = new TreeSet<>(openPorts);
 				ports.add(defaultPort);

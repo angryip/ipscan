@@ -13,7 +13,6 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
-import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
 import net.azib.ipscan.gui.actions.ColumnsActions;
@@ -86,13 +85,13 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 		removeAll();
 		
 		// remove all columns
-		for (TableColumn column : getColumns()) {
+		for (var column : getColumns()) {
 			column.dispose();
 		}
 		
 		// add the new selected columns back
-		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
-			TableColumn tableColumn = new TableColumn(this, SWT.NONE);
+		for (var fetcher : fetcherRegistry.getSelectedFetchers()) {
+			var tableColumn = new TableColumn(this, SWT.NONE);
 			tableColumn.setWidth(guiConfig.getColumnWidth(fetcher));
 			tableColumn.setData(fetcher);	// this is used in some listeners in ColumnsActions
 			tableColumn.addListener(SWT.Selection, columnClickListener);
@@ -102,8 +101,8 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 	}
 	
 	public void updateColumnNames() {
-		int i = 0;
-		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
+		var i = 0;
+		for (var fetcher : fetcherRegistry.getSelectedFetchers()) {
 			getColumn(i++).setText(fetcher.getFullName());
 		}
 	}
@@ -132,12 +131,12 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 
 			if (scanningResults.isRegistered(result)) {
 				// just redraw the item
-				int index = scanningResults.update(result);
+				var index = scanningResults.update(result);
 				clear(index);
 			}
 			else {
 				// first register, then add - otherwise first redraw may fail (the table is virtual)
-				int index = getItemCount();
+				var index = getItemCount();
 				scanningResults.registerAtIndex(index, result);
 				// setItemCount(index+1) - this seems to rebuild TableItems inside, so is slower
 				new TableItem(ResultTable.this, SWT.NONE);
@@ -158,7 +157,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 	 * @param newValue
 	 */
 	public void updateResult(int index, String fetcherId, Object newValue) {
-		int fetcherIndex = scanningResults.getFetcherIndex(fetcherId);
+		var fetcherIndex = scanningResults.getFetcherIndex(fetcherId);
 		if (fetcherIndex >= 0) {
 			// update the value in the results
 			scanningResults.getResult(index).setValue(fetcherIndex, newValue);
@@ -172,7 +171,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 	 * @return
 	 */
 	public ScanningResult getSelectedResult() {
-		int selectedIndex = getSelectionIndex();
+		var selectedIndex = getSelectionIndex();
 		return scanningResults.getResult(selectedIndex);
 	}
 	
@@ -195,9 +194,9 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 	 * This is used for removing of any scanned data for rescanning of items.
 	 */
 	public void resetSelection() {
-		int[] selectionIndices = getSelectionIndices();
+		var selectionIndices = getSelectionIndices();
 		// clear scanning results
-		for (int itemNum : selectionIndices) {
+		for (var itemNum : selectionIndices) {
 			scanningResults.getResult(itemNum).reset();
 		}
 		// redraw items in the table
@@ -217,15 +216,15 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 	final class SetDataListener implements Listener {
 
 		public void handleEvent(Event event) {
-			TableItem item = (TableItem)event.item;
-			int tableIndex = indexOf(item);
+			var item = (TableItem)event.item;
+			var tableIndex = indexOf(item);
 			if (tableIndex < 0) return;
-			
-			ScanningResult scanningResult = scanningResults.getResult(tableIndex);
+
+			var scanningResult = scanningResults.getResult(tableIndex);
 			List<?> values = scanningResult.getValues();
-			String[] resultStrings = new String[values.size()];
-			for (int i = 0; i < values.size(); i++) {				
-				Object value = values.get(i);
+			var resultStrings = new String[values.size()];
+			for (var i = 0; i < values.size(); i++) {
+				var value = values.get(i);
 				if (value != null)
 					resultStrings[i] = value.toString();
 			}			 

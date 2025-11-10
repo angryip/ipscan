@@ -12,7 +12,7 @@ public class LinuxMACFetcherTest {
 	@Test
 	public void resolve() {
 		assumeTrue(Platform.LINUX);
-		ScanningSubject subject = new ScanningSubject(getLocalInterface().getAddress());
+		var subject = new ScanningSubject(getLocalInterface().getAddress());
 		assertEquals(17, new LinuxMACFetcher().resolveMAC(subject).length());
 	}
 }

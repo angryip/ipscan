@@ -60,7 +60,7 @@ public class GUI implements AutoCloseable {
 				if (e instanceof SWTException && e.getCause() instanceof Exception)
 					e = (Exception) e.getCause();
 
-				String localizedMessage = getLocalizedMessage(e);
+				var localizedMessage = getLocalizedMessage(e);
 				showMessage(e instanceof UserErrorException ? SWT.ICON_WARNING : SWT.ICON_ERROR,
 					getLabel(e instanceof UserErrorException ? "text.userError" : "text.error"), localizedMessage);
 
@@ -71,10 +71,10 @@ public class GUI implements AutoCloseable {
 	}
 
 	public void showMessage(int flags, String title, String localizedMessage) {
-		Shell parent = Display.getDefault().getActiveShell();
+		var parent = Display.getDefault().getActiveShell();
 		if (parent == null && mainWindow != null) parent = mainWindow.getShell();
 		if (parent == null || parent.isDisposed()) parent = new Shell();
-		MessageBox messageBox = new MessageBox(parent, SWT.OK | SWT.SHEET | flags);
+		var messageBox = new MessageBox(parent, SWT.OK | SWT.SHEET | flags);
 		messageBox.setText(title);
 		messageBox.setMessage(localizedMessage);
 		messageBox.open();

@@ -46,7 +46,7 @@ public class MainMenu {
 	}
 
 	private void addMenuItem(Menu mainMenu, AbstractMenu menu) {
-		MenuItem menuItem = new MenuItem(mainMenu, SWT.CASCADE);
+		var menuItem = new MenuItem(mainMenu, SWT.CASCADE);
 		menuItem.setText(Labels.getLabel(menu.getId()));
 		menuItem.setMenu(menu);
 	}
@@ -69,7 +69,7 @@ public class MainMenu {
 
 		public void processMenu(Menu menu, boolean isEnabled) {
 			// processes menu items recursively
-			for (MenuItem item : menu.getItems()) {
+			for (var item : menu.getItems()) {
 				if (item.getData("disableDuringScanning") == Boolean.TRUE) {
 					item.setEnabled(isEnabled);
 				}

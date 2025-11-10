@@ -23,7 +23,7 @@ public class ExporterRegistry implements Iterable<Exporter> {
 	public ExporterRegistry(List<Exporter> registeredExporters) {
 		exporters = new LinkedHashMap<>();
 
-		for (Exporter exporter : registeredExporters) {
+		for (var exporter : registeredExporters) {
 			exporters.put(exporter.getFilenameExtension(), exporter);
 		}
 	}
@@ -41,10 +41,10 @@ public class ExporterRegistry implements Iterable<Exporter> {
 	 * @throws ExporterException in case such exporter is not registered
 	 */
 	public Exporter createExporter(String fileName) throws ExporterException {
-		int extensionPos = fileName.lastIndexOf('.') + 1;
-		String extension = fileName.substring(extensionPos);
-		
-		Exporter prototype = exporters.get(extension);
+		var extensionPos = fileName.lastIndexOf('.') + 1;
+		var extension = fileName.substring(extensionPos);
+
+		var prototype = exporters.get(extension);
 		if (prototype == null) {
 			throw new ExporterException("exporter.unknown");
 		}

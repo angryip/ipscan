@@ -64,7 +64,7 @@ public class PortIteratorTest {
 	}
 
 	private static String iterateToString(PortIterator iterator) {
-		StringBuffer sb = new StringBuffer(64);
+		var sb = new StringBuilder(64);
 		while (iterator.hasNext()) {
 			sb.append(iterator.next()).append(' ');
 		}

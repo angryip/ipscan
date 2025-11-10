@@ -33,19 +33,19 @@ public class RandomFeederGUI extends AbstractFeederGUI {
 	public void initialize() {
 		setLayout(new GridLayout(5, false));
 
-		Label ipPrototypeLabel = new Label(this, SWT.NONE);
+		var ipPrototypeLabel = new Label(this, SWT.NONE);
         ipPrototypeText = new Text(this, SWT.BORDER);
-		Label ipMaskLabel = new Label(this, SWT.NONE);
+		var ipMaskLabel = new Label(this, SWT.NONE);
         ipMaskCombo = new Combo(this, SWT.NONE);
-		Label hostnameLabel = new Label(this, SWT.NONE);
-		Text hostnameText = new Text(this, SWT.BORDER);
-		Button ipUpButton = new Button(this, SWT.NONE);
-		Label countLabel = new Label(this, SWT.NONE);
+		var hostnameLabel = new Label(this, SWT.NONE);
+		var hostnameText = new Text(this, SWT.BORDER);
+		var ipUpButton = new Button(this, SWT.NONE);
+		var countLabel = new Label(this, SWT.NONE);
         countSpinner = new Spinner(this, SWT.BORDER);
         
         // the longest possible IP
         ipPrototypeText.setText("255.255.255.255xx");
-        int textWidth = ipPrototypeText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
+		var textWidth = ipPrototypeText.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
         ipPrototypeText.setText("");
 		ipPrototypeText.setLayoutData(new GridData(textWidth, -1));
 
@@ -69,7 +69,7 @@ public class RandomFeederGUI extends AbstractFeederGUI {
         hostnameLabel.setText(getLabel("feeder.random.hostname") + ":");
 		ipMaskLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
 
-		FeederActions.HostnameButton hostnameSelectionListener = new FeederActions.HostnameButton(hostnameText, ipPrototypeText, ipMaskCombo);
+		var hostnameSelectionListener = new FeederActions.HostnameButton(hostnameText, ipPrototypeText, ipMaskCombo);
 		hostnameText.addTraverseListener(hostnameSelectionListener);
 		hostnameText.setLayoutData(new GridData(textWidth, -1));
 

@@ -23,7 +23,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.TaskItem;
 
 import java.net.InetAddress;
 
@@ -97,16 +100,16 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		stateMachine.addTransitionListener(this);
 		
 		// set the default image
-		ScanningState state = stateMachine.getState();
+		var state = stateMachine.getState();
 		button.setImage(buttonImages[state.ordinal()]);
 		button.setText(buttonTexts[state.ordinal()]);
 	}
 
 	private TaskItem getTaskBarItem() {
-		TaskBar bar = display.getSystemTaskBar();
+		var bar = display.getSystemTaskBar();
 		// TODO: test on Mac and re-enable this feature (see issue #82)
 		if (bar == null || Platform.MAC_OS) return null;
-		TaskItem item = bar.getItem(statusBar.getShell());
+		var item = bar.getItem(statusBar.getShell());
 		if (item == null) item = bar.getItem(null);
 		if (item != null) item.setProgressState(SWT.NORMAL);
 		return item;
@@ -134,7 +137,7 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	private boolean preScanChecks() {
 		// ask user for confirmation if needed
 		if (guiConfig.askScanConfirmation && resultTable.getItemCount() > 0) {
-			MessageBox box = new MessageBox(resultTable.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.SHEET);
+			var box = new MessageBox(resultTable.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.SHEET);
 			box.setText(Labels.getLabel("text.scan.new"));
 			box.setMessage(Labels.getLabel("text.scan.confirmation"));
 			return box.open() == SWT.YES;

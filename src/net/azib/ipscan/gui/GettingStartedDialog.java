@@ -20,7 +20,7 @@ public class GettingStartedDialog extends AbstractModalDialog {
 	private Button nextButton;
 
 	public GettingStartedDialog() {
-		int num = 1;
+		var num = 1;
 		String text;
 		while ((text = Labels.getInstance().getOrNull("text.gettingStarted" + num++)) != null)
 			texts.add(text);
@@ -32,14 +32,14 @@ public class GettingStartedDialog extends AbstractModalDialog {
 
 	@Override
 	protected void populateShell() {
-		Display currentDisplay = Display.getCurrent();
-		Shell parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
+		var currentDisplay = Display.getCurrent();
+		var parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
 		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
 
 		shell.setText(getLabel("title.gettingStarted"));
 		shell.setSize(new Point(600, 300));
 
-		Label iconLabel = new Label(shell, SWT.ICON);
+		var iconLabel = new Label(shell, SWT.ICON);
 		iconLabel.setLocation(10, 10);
 		
 		if (parent != null) {
@@ -47,7 +47,7 @@ public class GettingStartedDialog extends AbstractModalDialog {
 			shell.setImage(parent.getImage());
 		}		
 		iconLabel.pack();
-		int leftBound = iconLabel.getBounds().width + 20;
+		var leftBound = iconLabel.getBounds().width + 20;
 
 		allowReports = new Button(shell, SWT.CHECK);
 		allowReports.setText(getLabel("preferences.allowReports"));

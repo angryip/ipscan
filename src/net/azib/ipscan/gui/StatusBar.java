@@ -16,7 +16,6 @@ import net.azib.ipscan.gui.actions.ToolsActions.SelectWithoutPorts;
 import net.azib.ipscan.gui.actions.ToolsActions.TableSelection;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
@@ -109,10 +108,10 @@ public class StatusBar {
 	}
 
 	public void setRunningThreads(int runningThreads) {
-		if (!threadsText.isDisposed()) { 
-			boolean maxThreadsReached = runningThreads == scannerConfig.maxThreads;
+		if (!threadsText.isDisposed()) {
+			var maxThreadsReached = runningThreads == scannerConfig.maxThreads;
 			if (maxThreadsReachedBefore || maxThreadsReached) {
-				Color newColor = threadsText.getDisplay().getSystemColor(maxThreadsReached ? SWT.COLOR_RED : SWT.COLOR_WIDGET_FOREGROUND);
+				var newColor = threadsText.getDisplay().getSystemColor(maxThreadsReached ? SWT.COLOR_RED : SWT.COLOR_WIDGET_FOREGROUND);
 				threadsText.setForeground(newColor);
 			}
 			maxThreadsReachedBefore = maxThreadsReached;
@@ -141,8 +140,8 @@ public class StatusBar {
 
 		private void createPopupMenu() {
 			popupMenu = new Menu(getShell(), SWT.POP_UP);
-			for (DisplayMethod displayMethod : DisplayMethod.values()) {
-				MenuItem item = new MenuItem(popupMenu, 0);
+			for (var displayMethod : DisplayMethod.values()) {
+				var item = new MenuItem(popupMenu, 0);
 				item.setText(Labels.getLabel("text.display." + displayMethod));
 				item.setData(displayMethod);
 				item.addListener(SWT.Selection, this);

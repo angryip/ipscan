@@ -6,7 +6,7 @@ import java.util.prefs.Preferences;
 
 public class ConfigModule {
 	public void register(Injector i) {
-		Config config = Config.getConfig();
+		var config = Config.getConfig();
 		i.register(Config.class, config);
 		i.register(Labels.class, Labels.getInstance());
 		i.register(Preferences.class, config.getPreferences());

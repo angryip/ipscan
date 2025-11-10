@@ -53,7 +53,7 @@ public class RescanFeeder extends AbstractFeeder {
 		
 		try {
 			addresses = new ArrayList<>(ips.length);
-			for (String s : ips) {
+			for (var s : ips) {
 				addresses.add(InetAddress.getByName(s));
 			}
 		}

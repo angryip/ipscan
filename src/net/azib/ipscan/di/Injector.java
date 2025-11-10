@@ -20,7 +20,7 @@ public class Injector {
 
 	public <T> T require(Class<T> type) {
 		// unfortunately, HashMap.computeIfAbsent() doesn't put values properly in a recursive scenario
-		T value = (T) instances.get(type);
+		var value = (T) instances.get(type);
 		if (value == null) instances.put(type, value = createInstance(type));
 		return value;
 	}
@@ -34,7 +34,7 @@ public class Injector {
 	}
 
 	private <T> T createInstance(Class<T> type) {
-		Constructor<T> constructor = (Constructor<T>) stream(type.getConstructors())
+		var constructor = (Constructor<T>) stream(type.getConstructors())
 			.max(comparing(Constructor::getParameterCount))
 			.orElseThrow(() -> new InjectException("No public constructors"));
 		try {

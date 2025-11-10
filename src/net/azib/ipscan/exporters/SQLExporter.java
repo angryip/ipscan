@@ -38,7 +38,7 @@ public class SQLExporter extends AbstractExporter {
 	public void setFetchers(String[] fetcherNames) throws IOException {
 		if (!append) {
 			output.print("CREATE TABLE " + TABLE_NAME + " (`" + fetcherNames[0] + "` " + DATATYPE);
-			for (int i = 1; i < fetcherNames.length; i++) {
+			for (var i = 1; i < fetcherNames.length; i++) {
 				output.print(COMMA);
 				output.print(" `" + fetcherNames[i] + "` ");
 				output.print(DATATYPE);
@@ -49,8 +49,8 @@ public class SQLExporter extends AbstractExporter {
 
 	public void nextAddressResults(Object[] results) throws IOException {
 		output.print("INSERT INTO " + TABLE_NAME + " VALUES ('" + results[0] + "'");
-		for (int i = 1; i < results.length; i++) {
-			Object result = results[i];
+		for (var i = 1; i < results.length; i++) {
+			var result = results[i];
 			output.print(COMMA);
 			output.print(" ");
 			output.print("'" + result + "'");

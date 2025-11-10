@@ -14,7 +14,7 @@ public class GUITest {
 	@Test
 	public void getLocalizedMessage() {
 		// unknown exception
-		final boolean[] wasStackTraceLogged = {false};
+		final var wasStackTraceLogged = new boolean[]{false};
 		Throwable e = new Exception("hello, test!");
 		GUI.LOG.setUseParentHandlers(false);
 		GUI.LOG.addHandler(new Handler() {

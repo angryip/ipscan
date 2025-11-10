@@ -7,7 +7,6 @@ package net.azib.ipscan.gui.actions;
 
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.OpenersConfig;
-import net.azib.ipscan.config.OpenersConfig.Opener;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
@@ -101,8 +100,8 @@ public class CommandsMenuActions {
 			if (event.type == SWT.KeyDown && event.keyCode != SWT.DEL) return;
 			// deletion not allowed when scanning
 			if (!stateMachine.inState(ScanningState.IDLE)) return;
-			
-			int firstSelection = resultTable.getSelectionIndex();
+
+			var firstSelection = resultTable.getSelectionIndex();
 			if (firstSelection < 0) return;
 
 			resultTable.remove(resultTable.getSelectionIndices());
@@ -148,7 +147,7 @@ public class CommandsMenuActions {
 				// if selected from the menu, check selection
 				checkSelection(resultTable);
 			}
-			Clipboard clipboard = new Clipboard(event.display);
+			var clipboard = new Clipboard(event.display);
 			clipboard.setContents(new Object[] {resultTable.getItem(resultTable.getSelectionIndex()).getText()}, new Transfer[] {TextTransfer.getInstance()});
 			clipboard.dispose();
 		}
@@ -163,7 +162,7 @@ public class CommandsMenuActions {
 
 		public void handleEvent(Event event) {
 			checkSelection(resultTable);
-			Clipboard clipboard = new Clipboard(event.display);
+			var clipboard = new Clipboard(event.display);
 			clipboard.setContents(new Object[] {resultTable.getSelectedResult().toString()}, new Transfer[] {TextTransfer.getInstance()});
 			clipboard.dispose();
 		}
@@ -180,16 +179,16 @@ public class CommandsMenuActions {
 		}
 
 		public void handleEvent(Event event) {
-			Menu openersMenu = (Menu)event.widget;
-			MenuItem[] menuItems = openersMenu.getItems();
-			for (int i = 2; i < menuItems.length; i++) {
+			var openersMenu = (Menu)event.widget;
+			var menuItems = openersMenu.getItems();
+			for (var i = 2; i < menuItems.length; i++) {
 				menuItems[i].dispose();
 			}
 			
 			// update menu items
-			int index = 0;
-			for (String name : openersConfig) {
-				MenuItem menuItem = new MenuItem(openersMenu, SWT.CASCADE);
+			var index = 0;
+			for (var name : openersConfig) {
+				var menuItem = new MenuItem(openersMenu, SWT.CASCADE);
 				
 				index++;
 				if (index <= 9) {
@@ -235,19 +234,19 @@ public class CommandsMenuActions {
 		}
 		
 		public void handleEvent(Event event) {
-			MenuItem menuItem = (MenuItem) event.widget;
-			String name = menuItem.getText();
-			int indexOf = name.lastIndexOf('\t');
+			var menuItem = (MenuItem) event.widget;
+			var name = menuItem.getText();
+			var indexOf = name.lastIndexOf('\t');
 			if (indexOf >= 0) {
 				name = name.substring(0, indexOf);
 			}
-			Opener opener = openersConfig.getOpener(name);
+			var opener = openersConfig.getOpener(name);
 
-			int[] selectionIndices = resultTable.getSelectionIndices();
+			var selectionIndices = resultTable.getSelectionIndices();
 			if (selectionIndices.length == 0)
 				throw new UserErrorException("commands.noSelection");
 
-			for (int i : selectionIndices) {
+			for (var i : selectionIndices) {
 				try {
 					statusBar.setStatusText(Labels.getLabel("state.opening") + name);
 					openerLauncher.launch(opener, i);

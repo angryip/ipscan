@@ -40,10 +40,6 @@ public abstract class SWTTestCase {
 	
 	@After
 	public void tearDown() {
-		display.syncExec(new Runnable() {
-			public void run() {
-				disposeShell();
-			}
-		});
+		display.syncExec(() -> disposeShell());
 	}
 }

@@ -62,7 +62,7 @@ public class TXTExporter extends AbstractExporter {
 
 	public void setFetchers(String[] fetcherNames) throws IOException {
 		padLengths = new int[fetcherNames.length];
-		for (int i = 0; i < fetcherNames.length; i++) {
+		for (var i = 0; i < fetcherNames.length; i++) {
 			padLengths[i] = fetcherNames[i].length() * 3;
 			if (!append) {
 				output.write(pad(fetcherNames[i], padLengths[i]));
@@ -75,8 +75,8 @@ public class TXTExporter extends AbstractExporter {
 
 	public void nextAddressResults(Object[] results) throws IOException {
 		output.write(pad(results[0], padLengths[0]));
-		for (int i = 1; i < results.length; i++) {
-			Object result = results[i];
+		for (var i = 1; i < results.length; i++) {
+			var result = results[i];
 			output.write(pad(result, padLengths[i]));			
 		}
 		output.println();
@@ -112,11 +112,11 @@ public class TXTExporter extends AbstractExporter {
 
 			int ipIndex = 0, pingIndex = 1, portsIndex = 3;
 
-			String[] lookingFor = {
+			var lookingFor = new String[]{
 					Labels.getLabel("exporter.txt.scanned"),
 					Labels.getLabel(IPFetcher.ID)
 			};
-			int lookingForIndex = 0;
+			var lookingForIndex = 0;
 
 			String line;
 			while ((line = reader.readLine()) != null) {

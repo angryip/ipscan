@@ -12,7 +12,6 @@ import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.net.WinIpHlpDll.Icmp6EchoReply;
 import net.azib.ipscan.core.net.WinIpHlpDll.IcmpEchoReply;
 import net.azib.ipscan.core.net.WinIpHlpDll.Ip6SockAddrByRef;
-import net.azib.ipscan.core.net.WinIpHlpDll.IpAddrByVal;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -52,21 +51,21 @@ public class WindowsPinger implements Pinger {
 	}
 
 	private PingResult ping4(ScanningSubject subject, int count) throws IOException {
-		Pointer handle = dll.IcmpCreateFile();
+		var handle = dll.IcmpCreateFile();
 		if (handle == null) throw new IOException("Unable to create Windows native ICMP handle");
 
-		int sendDataSize = 32;
-		int replyDataSize = sendDataSize + (new IcmpEchoReply().size()) + 10;
+		var sendDataSize = 32;
+		var replyDataSize = sendDataSize + (new IcmpEchoReply().size()) + 10;
 		Pointer sendData = new Memory(sendDataSize);
 		sendData.clear(sendDataSize);
 		Pointer replyData = new Memory(replyDataSize);
 
-		PingResult result = new PingResult(subject.getAddress(), count);
+		var result = new PingResult(subject.getAddress(), count);
 		try {
-			IpAddrByVal ipaddr = toIpAddr(subject.getAddress());
-			for (int i = 1; i <= count && !currentThread().isInterrupted(); i++) {
-				int numReplies = dll.IcmpSendEcho(handle, ipaddr, sendData, (short) sendDataSize, null, replyData, replyDataSize, timeout);
-				IcmpEchoReply echoReply = new IcmpEchoReply(replyData);
+			var ipaddr = toIpAddr(subject.getAddress());
+			for (var i = 1; i <= count && !currentThread().isInterrupted(); i++) {
+				var numReplies = dll.IcmpSendEcho(handle, ipaddr, sendData, (short) sendDataSize, null, replyData, replyDataSize, timeout);
+				var echoReply = new IcmpEchoReply(replyData);
 				if (numReplies > 0 && echoReply.status == 0 && Arrays.equals(echoReply.address.bytes, ipaddr.bytes)) {
 					result.addReply(echoReply.roundTripTime);
 					result.setTTL(echoReply.options.ttl & 0xFF);
@@ -80,22 +79,22 @@ public class WindowsPinger implements Pinger {
 	}
 
 	private PingResult ping6(ScanningSubject subject, int count) throws IOException {
-		Pointer handle = dll.Icmp6CreateFile();
+		var handle = dll.Icmp6CreateFile();
 		if (handle == null) throw new IOException("Unable to create Windows native ICMP6 handle");
 
-		int sendDataSize = 32;
-		int replyDataSize = sendDataSize + (new Icmp6EchoReply().size()) + 10;
+		var sendDataSize = 32;
+		var replyDataSize = sendDataSize + (new Icmp6EchoReply().size()) + 10;
 		Pointer sendData = new Memory(sendDataSize);
 		sendData.clear(sendDataSize);
 		Pointer replyData = new Memory(replyDataSize);
 
-		PingResult result = new PingResult(subject.getAddress(), count);
+		var result = new PingResult(subject.getAddress(), count);
 		try {
-			Ip6SockAddrByRef ipaddr = toIp6Addr(subject.getAddress());
-			for (int i = 1; i <= count && !currentThread().isInterrupted(); i++) {
-				int numReplies = dll.Icmp6SendEcho2(handle, null, null, null, anyIp6SourceAddr, toIp6Addr(subject.getAddress()),
+			var ipaddr = toIp6Addr(subject.getAddress());
+			for (var i = 1; i <= count && !currentThread().isInterrupted(); i++) {
+				var numReplies = dll.Icmp6SendEcho2(handle, null, null, null, anyIp6SourceAddr, toIp6Addr(subject.getAddress()),
 						sendData, (short) sendDataSize, null, replyData, replyDataSize, timeout);
-				Icmp6EchoReply echoReply = new Icmp6EchoReply(replyData);
+				var echoReply = new Icmp6EchoReply(replyData);
 				if (numReplies > 0 && echoReply.status == 0 && Arrays.equals(echoReply.addressBytes, ipaddr.bytes)) {
 					result.addReply(echoReply.roundTripTime);
 				}

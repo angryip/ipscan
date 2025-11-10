@@ -7,13 +7,13 @@ import java.net.InetAddress;
 
 public class WinIpHlp {
 	public static IpAddrByVal toIpAddr(InetAddress address) {
-		IpAddrByVal addr = new IpAddrByVal();
+		var addr = new IpAddrByVal();
 		addr.bytes = address.getAddress();
 		return addr;
 	}
 
 	public static Ip6SockAddrByRef toIp6Addr(InetAddress address) {
-		Ip6SockAddrByRef addr = new Ip6SockAddrByRef();
+		var addr = new Ip6SockAddrByRef();
 		addr.bytes = address.getAddress();
 		return addr;
 	}

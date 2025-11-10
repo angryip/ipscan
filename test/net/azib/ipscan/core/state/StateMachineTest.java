@@ -72,7 +72,7 @@ public class StateMachineTest {
 	
 	@Test
 	public void stop() {
-		final int[] notificationCount = {0};
+		final var notificationCount = new int[]{0};
 		stateMachine.addTransitionListener((state, transition) -> notificationCount[0]++);
 		stateMachine.transitionTo(ScanningState.SCANNING, null);
 		assertEquals(1, notificationCount[0]);

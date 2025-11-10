@@ -32,7 +32,7 @@ public class ComponentRegistry {
 	}
 
 	public Injector init(boolean withGUI) throws Exception {
-		Injector i = new Injector();
+		var i = new Injector();
 		new ConfigModule().register(i);
 		new ComponentRegistry().register(i);
 		if (withGUI) {

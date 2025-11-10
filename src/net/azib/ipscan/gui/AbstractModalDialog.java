@@ -33,8 +33,8 @@ public abstract class AbstractModalDialog {
 		if (shell.getParent() != null) {
 			var parentBounds = shell.getParent().getBounds();
 			var childBounds = shell.getBounds();
-			int x = Math.max(0, parentBounds.x + (parentBounds.width - childBounds.width) / 2);
-			int y = Math.max(0, parentBounds.y + (parentBounds.height - childBounds.height) / 2);
+			var x = Math.max(0, parentBounds.x + (parentBounds.width - childBounds.width) / 2);
+			var y = Math.max(0, parentBounds.y + (parentBounds.height - childBounds.height) / 2);
 			shell.setLocation(x, y);
 		}
 		
@@ -109,7 +109,7 @@ public abstract class AbstractModalDialog {
 				cancelButton = fooButton;
 			}
 			// both buttons
-			int distance = size.y / 3;
+			var distance = size.y / 3;
 			cancelButton.setLocation(clientArea.width - size.x - 10, clientArea.height - size.y - 10);
 			okButton.setLocation(clientArea.width - size.x * 2 - 10 - distance, clientArea.height - size.y - 10);	
 		}
@@ -169,7 +169,7 @@ public abstract class AbstractModalDialog {
 			}
 			
 			var selectedItems = list.getSelectionIndices();
-			for (int index : selectedItems) {
+			for (var index : selectedItems) {
 				// here, index is always > 0
 				list.deselect(index);
 				var oldItem = list.getItem(index - 1);
@@ -200,9 +200,9 @@ public abstract class AbstractModalDialog {
 			}
 			
 			var selectedItems = list.getSelectionIndices();
-			for (int i = selectedItems.length - 1; i >= 0; i--) {
+			for (var i = selectedItems.length - 1; i >= 0; i--) {
 				// here, index is always < getItemCount()
-				int index = selectedItems[i];
+				var index = selectedItems[i];
 
 				list.deselect(index);
 				var oldItem = list.getItem(index + 1);

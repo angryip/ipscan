@@ -17,8 +17,8 @@ public class ScanningResultComparator implements Comparator<ScanningResult> {
 
 	@SuppressWarnings("unchecked")
 	public int compare(ScanningResult r1, ScanningResult r2) {
-		Object val1 = r1.getValues().get(index);
-		Object val2 = r2.getValues().get(index);
+		var val1 = r1.getValues().get(index);
+		var val2 = r2.getValues().get(index);
 		
 		if (val1 == null) 
 			val1 = NotAvailable.VALUE;

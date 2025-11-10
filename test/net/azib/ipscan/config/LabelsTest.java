@@ -8,10 +8,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Locale;
 import java.util.MissingResourceException;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
@@ -55,13 +53,13 @@ public class LabelsTest {
 	 */
 	@Test
 	public void testAllLabels() throws IOException {
-		File srcDir = new File(findBaseDir(), "src");
+		var srcDir = new File(findBaseDir(), "src");
 		recurseAndTestLabels(srcDir);
 	}
 	
 	public static File findBaseDir() {
-		URL url = LabelsTest.class.getClassLoader().getResource("messages.properties");
-        File parent = new File(url.getPath());
+		var url = LabelsTest.class.getClassLoader().getResource("messages.properties");
+		var parent = new File(url.getPath());
         while (!new File(parent, "build.gradle").exists())
             parent = parent.getParentFile();
 		return parent;
@@ -69,13 +67,12 @@ public class LabelsTest {
 
 	private void recurseAndTestLabels(File dir) throws IOException {
 		String files[] = dir.list();
-		for (int i = 0; i < files.length; i++) {
-			File file = new File(dir, files[i]);
+		for (String s : files) {
+			var file = new File(dir, s);
 			if (file.isDirectory()) {
 				recurseAndTestLabels(file);
 			}
-			else 
-			if (file.getName().endsWith(".java")) {
+			else if (file.getName().endsWith(".java")) {
 				findAndTestLabels(file);
 			}
 		}
@@ -83,24 +80,24 @@ public class LabelsTest {
 
 	private void findAndTestLabels(File file) throws IOException {
 		// TODO: tune these regexps
-		final Pattern LABELS_REGEX = Pattern.compile("Label.get{1,60}\"([a-z]\\w+?\\.[a-z][\\w.]+?\\w)\"");
-		final Pattern EXCEPTION_REGEX = Pattern.compile("new\\s+?(\\w+?Exception)\\(\"([\\w.]+?\\w)\"");
-		
-		BufferedReader fileReader = new BufferedReader(new FileReader(file));
-		StringBuffer sb = new StringBuffer();
+		final var LABELS_REGEX = Pattern.compile("Label.get{1,60}\"([a-z]\\w+?\\.[a-z][\\w.]+?\\w)\"");
+		final var EXCEPTION_REGEX = Pattern.compile("new\\s+?(\\w+?Exception)\\(\"([\\w.]+?\\w)\"");
+
+		var fileReader = new BufferedReader(new FileReader(file));
+		var sb = new StringBuilder();
 		String fileLine;
 		while ((fileLine = fileReader.readLine()) != null) {
 			sb.append(fileLine);
 		}
 		fileReader.close();
-		String fileContent = sb.toString();
+		var fileContent = sb.toString();
 		
 		String key = null;
 //		String value = null;
 		try {
 //			System.out.println(file.getPath());
 
-			Matcher matcher = LABELS_REGEX.matcher(fileContent);
+			var matcher = LABELS_REGEX.matcher(fileContent);
 			while (matcher.find()) {
 				// try to load the label
 				key = matcher.group(1);

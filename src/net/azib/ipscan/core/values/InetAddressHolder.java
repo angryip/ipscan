@@ -24,11 +24,11 @@ public class InetAddressHolder implements Comparable<InetAddressHolder> {
 	}
 
 	public int compareTo(InetAddressHolder that) {
-		byte[] b1 = this.a;
-		byte[] b2 = that.a;
+		var b1 = this.a;
+		var b2 = that.a;
 		
 		// compare each byte
-		for (int i = 0; i < b1.length; i++) {
+		for (var i = 0; i < b1.length; i++) {
 			if (b1[i] == b2[i])
 				continue;
 			else
@@ -59,13 +59,10 @@ public class InetAddressHolder implements Comparable<InetAddressHolder> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final InetAddressHolder other = (InetAddressHolder) obj;
+		var other = (InetAddressHolder) obj;
 		if (s == null) {
-			if (other.s != null)
-				return false;
+			return other.s == null;
 		}
-		else if (!s.equals(other.s))
-			return false;
-		return true;
+		else return s.equals(other.s);
 	}
 }

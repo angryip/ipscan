@@ -9,7 +9,6 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 import java.util.logging.Logger;
 
 import static java.util.Optional.ofNullable;
@@ -45,15 +44,15 @@ public class PluginLoader {
 	}
 
 	void loadPluginsSpecifiedInSystemProperties(List<Class<? extends Plugin>> container) {
-		String plugins = System.getProperty("ipscan.plugins");
+		var plugins = System.getProperty("ipscan.plugins");
 		if (plugins != null) {
 			loadPluginClasses(container, getClass().getClassLoader(), plugins);
 		}
 	}
 
 	private void loadPluginClasses(List<Class<? extends Plugin>> container, ClassLoader classLoader, String csvNames) {
-		String[] classes = csvNames.split("\\s*,\\s*");
-		for (String className : classes) {
+		var classes = csvNames.split("\\s*,\\s*");
+		for (var className : classes) {
 			try {
 				Class clazz = Class.forName(className, true, classLoader);
 				if (Plugin.class.isAssignableFrom(clazz))
@@ -68,23 +67,23 @@ public class PluginLoader {
 	}
 
 	void loadPluginJars(List<Class<? extends Plugin>> container, final File ownFile) {
-		File parentDir = ownFile.getParentFile();
+		var parentDir = ownFile.getParentFile();
 		if (parentDir == null || !parentDir.exists()) return;
 
-		File[] jars = parentDir.listFiles((dir, name) -> name.endsWith(".jar") && !name.equals(ownFile.getName()));
+		var jars = parentDir.listFiles((dir, name) -> name.endsWith(".jar") && !name.equals(ownFile.getName()));
 		if (jars == null) return;
 
-		for (File jar : jars) {
+		for (var jar : jars) {
 			try {
-				JarFile jarFile = new JarFile(jar);
-				Manifest manifest = jarFile.getManifest();
+				var jarFile = new JarFile(jar);
+				var manifest = jarFile.getManifest();
 				if (manifest == null) continue;
 				jarFile.close();
 
-				String classNames = manifest.getMainAttributes().getValue("IPScan-Plugin");
+				var classNames = manifest.getMainAttributes().getValue("IPScan-Plugin");
 				if (classNames == null) classNames = manifest.getMainAttributes().getValue("IPScan-Plugins");
 				if (classNames != null) {
-					PluginClassLoader loader = new PluginClassLoader(jar.toURL());
+					var loader = new PluginClassLoader(jar.toURL());
 					Labels.getInstance().load(loader);
 					loadPluginClasses(container, loader, classNames);
 				}
@@ -104,7 +103,7 @@ public class PluginLoader {
 	}
 
 	File getResourceLocation(URL resource) {
-		String ownPath = resource.getFile();
+		var ownPath = resource.getFile();
 		if (ownPath.startsWith("file:")) ownPath = ownPath.substring("file:".length());
 		if (ownPath.indexOf('!') >= 0) ownPath = ownPath.substring(0, ownPath.indexOf('!'));
 		return new File(ownPath);

@@ -22,19 +22,19 @@ public class PingerRegistryTest {
 
 	@Test
 	public void getRegisteredNames() {
-		String[] names = registry.getRegisteredNames();
+		var names = registry.getRegisteredNames();
 		assertNotNull(names);
-		for (String name : names) {
+		for (var name : names) {
 			assertNotNull(Labels.getLabel(name));
 		}
 	}
 
 	@Test
 	public void createPinger() throws Exception {
-		String[] names = registry.getRegisteredNames();
-		for (String name : names) {
+		var names = registry.getRegisteredNames();
+		for (var name : names) {
 			try {
-				Pinger pinger = registry.createPinger(name, 0);
+				var pinger = registry.createPinger(name, 0);
 				pinger.close();
 			}
 			catch (FetcherException e) {

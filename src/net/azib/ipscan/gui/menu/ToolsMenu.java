@@ -23,7 +23,7 @@ public class ToolsMenu extends AbstractMenu {
 		initMenuItem(this, "menu.tools.preferences", "Ctrl+Shift+P", SWT.MOD1 | (Platform.MAC_OS ? ',' : SWT.MOD2 | 'P'), preferences, true);
 		initMenuItem(this, "menu.tools.fetchers", "Ctrl+Shift+O", SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O'), chooseFetchers, true);
 		initMenuItem(this, null, null, null, null);
-		Menu selectMenu = initMenu(this, "menu.tools.select");
+		var selectMenu = initMenu(this, "menu.tools.select");
 		initMenuItem(this, "menu.tools.scanStatistics", "Ctrl+T", SWT.MOD1 | 'T', scanStatistics);
 
 		initMenuItem(selectMenu, "menu.tools.select.alive", null, null, selectAlive, true);
@@ -35,10 +35,10 @@ public class ToolsMenu extends AbstractMenu {
 	}
 
 	private static Menu initMenu(Menu menu, String label) {
-		MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
+		var menuItem = new MenuItem(menu, SWT.CASCADE);
 		menuItem.setText(Labels.getLabel(label));
 
-		Menu subMenu = new Menu(menu.getShell(), SWT.DROP_DOWN);
+		var subMenu = new Menu(menu.getShell(), SWT.DROP_DOWN);
 		menuItem.setMenu(subMenu);
 
 		return subMenu;

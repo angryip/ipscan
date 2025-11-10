@@ -5,7 +5,6 @@ import org.junit.Test;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.UnknownHostException;
-import java.util.regex.Matcher;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -61,7 +60,7 @@ public class InetAddressUtilsTest {
 
 	@Test
 	public void findIPs() throws Exception {
-		Matcher matcher = InetAddressUtils.HOSTNAME_REGEX.matcher("Hello, my IP is 10.10.10.123, not 128.92.34.56. Isn't it cool?");
+		var matcher = InetAddressUtils.HOSTNAME_REGEX.matcher("Hello, my IP is 10.10.10.123, not 128.92.34.56. Isn't it cool?");
 		assertTrue(matcher.find());
 		assertEquals("10.10.10.123", matcher.group());
 		assertTrue(matcher.find());
@@ -71,7 +70,7 @@ public class InetAddressUtilsTest {
 
 	@Test
 	public void findHostnames() throws Exception {
-		Matcher matcher = InetAddressUtils.HOSTNAME_REGEX.matcher("Angry IP Scanner's official site is https://angryip.org, not http://www.angryziber.com. Isn't it cool?");
+		var matcher = InetAddressUtils.HOSTNAME_REGEX.matcher("Angry IP Scanner's official site is https://angryip.org, not http://www.angryziber.com. Isn't it cool?");
 		assertTrue(matcher.find());
 		assertEquals("angryip.org", matcher.group());
 		assertTrue(matcher.find());
@@ -145,7 +144,7 @@ public class InetAddressUtilsTest {
 	
 	@Test
 	public void testMaskPrototypeBytes() throws UnknownHostException {
-		byte[] bytes = InetAddress.getByName("32.23.34.254").getAddress();
+		var bytes = InetAddress.getByName("32.23.34.254").getAddress();
 		InetAddressUtils.maskPrototypeAddressBytes(bytes, InetAddress.getByName("255.0.0.255").getAddress(), InetAddress.getByName("29.1.2.255").getAddress());
 		assertEquals("29.23.34.255", InetAddress.getByAddress(bytes).getHostAddress());
 		
@@ -164,7 +163,7 @@ public class InetAddressUtilsTest {
 		assertTrue(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("127.6.32.255"), null));
 		assertFalse(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("127.4.5.6"), null));
 
-		InterfaceAddress ifAddr = mock(InterfaceAddress.class);
+		var ifAddr = mock(InterfaceAddress.class);
 		when(ifAddr.getAddress()).thenReturn(InetAddress.getByName("192.168.0.1"));
 		when(ifAddr.getBroadcast()).thenReturn(InetAddress.getByName("192.168.0.127"));
 		assertTrue(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("192.168.0.127"), ifAddr));

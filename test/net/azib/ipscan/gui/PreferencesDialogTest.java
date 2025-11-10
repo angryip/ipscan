@@ -5,11 +5,7 @@
  */
 package net.azib.ipscan.gui;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 import net.azib.ipscan.gui.PreferencesDialog.PortsTextValidationListener;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Control;
@@ -17,6 +13,10 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * PreferencesDialogTest
@@ -29,7 +29,7 @@ public class PreferencesDialogTest {
 	
 	private KeyEvent initPortsTextListener() {
 		portsTextListener = new PortsTextValidationListener();
-		Event ev = new Event();
+		var ev = new Event();
 		ev.widget = mock(Text.class);
 		ev.doit = true;
 		return new KeyEvent(ev);
@@ -37,9 +37,9 @@ public class PreferencesDialogTest {
 	
 	@Test
 	public void portsTextTraversesOnTab() throws Exception {
-		KeyEvent e = initPortsTextListener();
+		var e = initPortsTextListener();
 		e.keyCode = SWT.TAB;
-		Shell shell = mock(Shell.class);
+		var shell = mock(Shell.class);
 		when(((Control)e.getSource()).getShell()).thenReturn(shell);
 		when(shell.traverse(SWT.TRAVERSE_TAB_NEXT)).thenReturn(true);
 
@@ -49,9 +49,9 @@ public class PreferencesDialogTest {
 	
 	@Test
 	public void portsTextTraversesOnEnter() throws Exception {
-		KeyEvent e = initPortsTextListener();
+		var e = initPortsTextListener();
 		e.keyCode = SWT.CR;
-		Shell shell = mock(Shell.class);
+		var shell = mock(Shell.class);
 		when(((Control)e.getSource()).getShell()).thenReturn(shell);
 		when(shell.traverse(SWT.TRAVERSE_RETURN)).thenReturn(true);
 
@@ -61,7 +61,7 @@ public class PreferencesDialogTest {
 
 	@Test
 	public void portsTextInsertsNewLineOnCtrlEnter() throws Exception {
-		KeyEvent e = initPortsTextListener();
+		var e = initPortsTextListener();
 		e.character = SWT.CR;
 		e.keyCode = SWT.CR;
 		e.stateMask = SWT.MOD1; // is Ctrl on most platforms
@@ -75,7 +75,7 @@ public class PreferencesDialogTest {
 
 	@Test
 	public void portsTextControlCharsBypassed() throws Exception {
-		KeyEvent e = initPortsTextListener();
+		var e = initPortsTextListener();
 		e.character = 0;	// ISO control char
 		portsTextListener.keyPressed(e);
 		assertTrue("ISO control chars must be passed through", e.doit);
@@ -83,7 +83,7 @@ public class PreferencesDialogTest {
 	
 	@Test
 	public void testPortsTextValidationListenerLogic() throws Exception {
-		PortsTextValidationListener listener = new PortsTextValidationListener();
+		var listener = new PortsTextValidationListener();
 		assertFalse(listener.validateChar('-', "", 0));
 		assertFalse(listener.validateChar('-', "-", 0));
 		assertFalse(listener.validateChar('-', ",", 0));

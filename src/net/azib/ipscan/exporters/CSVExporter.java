@@ -27,7 +27,7 @@ public class CSVExporter extends AbstractExporter {
 	public void setFetchers(String[] fetcherNames) throws IOException {
 		if (!append) {
 			output.write(csvSafeString(fetcherNames[0]));
-			for (int i = 1; i < fetcherNames.length; i++) {
+			for (var i = 1; i < fetcherNames.length; i++) {
 				output.write(DELIMETER);
 				output.write(csvSafeString(fetcherNames[i]));			
 			}
@@ -37,8 +37,8 @@ public class CSVExporter extends AbstractExporter {
 
 	public void nextAddressResults(Object[] results) throws IOException {
 		output.write(csvSafeString(results[0]));
-		for (int i = 1; i < results.length; i++) {
-			Object result = results[i];
+		for (var i = 1; i < results.length; i++) {
+			var result = results[i];
 			output.write(DELIMETER);
 			output.write(csvSafeString(result));
 		}

@@ -38,9 +38,9 @@ public class Scanner {
 	 * @param result where the results are injected
 	 */
 	public void scan(ScanningSubject subject, ScanningResult result) {
-		int fetcherIndex = 0;
-		boolean isScanningInterrupted = false;
-		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
+		var fetcherIndex = 0;
+		var isScanningInterrupted = false;
+		for (var fetcher : fetcherRegistry.getSelectedFetchers()) {
 			Object value = NotScanned.VALUE;
 			try {
 				activeFetchers.put(Thread.currentThread().getId(), fetcher);
@@ -67,7 +67,7 @@ public class Scanner {
 	}
 
 	public void interrupt(Thread thread) {
-		Fetcher fetcher = activeFetchers.get(thread.getId());
+		var fetcher = activeFetchers.get(thread.getId());
 		if (fetcher != null) fetcher.cleanup();
 	}
 	
@@ -75,7 +75,7 @@ public class Scanner {
 	 * Init everything needed for scanning, including Fetchers
 	 */
 	public void init(Feeder feeder) {
-		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
+		for (var fetcher : fetcherRegistry.getSelectedFetchers()) {
 			fetcher.init(feeder);
 		}
 	}
@@ -85,7 +85,7 @@ public class Scanner {
 	 */
 	public void cleanup() {
 		activeFetchers.clear();
-		for (Fetcher fetcher : fetcherRegistry.getSelectedFetchers()) {
+		for (var fetcher : fetcherRegistry.getSelectedFetchers()) {
 			fetcher.cleanup();
 		}
 	}

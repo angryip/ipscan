@@ -166,7 +166,7 @@ public class ScanningSubject {
 			return adaptedPortTimeout;
 		
 		// try to adapt timeout if it is enabled and pinging results are available
-		PingResult pingResult = (PingResult) getParameter(PARAMETER_PING_RESULT);
+		var pingResult = (PingResult) getParameter(PARAMETER_PING_RESULT);
 		if (pingResult != null) {
 			if (config.adaptPortTimeout && pingResult.isTimeoutAdaptationAllowed()) {
 				adaptedPortTimeout = Math.min(Math.max(pingResult.getLongestTime() * 3, config.minPortTimeout), config.portTimeout);
@@ -182,10 +182,10 @@ public class ScanningSubject {
 	}
 
 	@Override public String toString() {
-		StringBuilder sb = new StringBuilder(address.getHostAddress());
+		var sb = new StringBuilder(address.getHostAddress());
 		if (requestedPorts != null) {
 			sb.append(':');
-			for (Integer port : requestedPorts)
+			for (var port : requestedPorts)
 				sb.append(port).append(',');
 			if (sb.charAt(sb.length()-1) == ',')
 				sb.deleteCharAt(sb.length()-1);

@@ -56,7 +56,7 @@ public class AbstractFeederGUITest {
 	@Test
 	public void serializePartsAreLabels() throws Exception {
 		// TODO: make test for each FeederGUI, extending this class
-		for (String label : feederGUI.serializePartsLabels()) {
+		for (var label : feederGUI.serializePartsLabels()) {
 			Labels.getLabel(label);
 		}
 	}

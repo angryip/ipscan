@@ -31,7 +31,7 @@ public class NumericRangeList implements Comparable<NumericRangeList> {
 	public NumericRangeList(Collection<Integer> numbers, boolean displayAsRanges) {
 		// copy numbers to an array (unfortunately toArray() cannot be used because int[] is not an Object[])
 		this.numbers = new int[numbers.size()];
-		int c = 0;
+		var c = 0;
 		for (Number n : numbers) {			
 			this.numbers[c++] = n.intValue();
 		}
@@ -43,12 +43,12 @@ public class NumericRangeList implements Comparable<NumericRangeList> {
 	 * Outputs nice, human-friendly numeric list, displayed either as ranges or fully
 	 */
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		
-		int prevNumber = Integer.MAX_VALUE;
-		int rangeStartNumber = 0;
-		boolean isRange = false;		
-		int i = 0;
+		var sb = new StringBuilder();
+
+		var prevNumber = Integer.MAX_VALUE;
+		var rangeStartNumber = 0;
+		var isRange = false;
+		var i = 0;
 		
 		if (numbers.length > 0) {
 			prevNumber = numbers[0];
@@ -56,7 +56,7 @@ public class NumericRangeList implements Comparable<NumericRangeList> {
 		}
 		
 		while (++i < numbers.length) {
-			int curNumber = numbers[i];
+			var curNumber = numbers[i];
 			
 			if (displayAsRanges && prevNumber + 1 == curNumber) {
 				if (!isRange) {
@@ -84,10 +84,10 @@ public class NumericRangeList implements Comparable<NumericRangeList> {
 
 	public int compareTo(NumericRangeList that) {
 		// compare length
-		int result = this.numbers.length - that.numbers.length;
+		var result = this.numbers.length - that.numbers.length;
 		if (result == 0) {
 			// compare contents if length is the same
-			for (int i = 0; i < this.numbers.length && result == 0; i++) {
+			for (var i = 0; i < this.numbers.length && result == 0; i++) {
 				result = this.numbers[i] - that.numbers[i];
 			}
 		}

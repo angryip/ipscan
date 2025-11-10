@@ -7,7 +7,6 @@ package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.gui.PreferencesDialog;
 
-import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.prefs.Preferences;
 
@@ -44,14 +43,14 @@ public class FetcherRegistry {
 
 	private Map<String, Fetcher> createFetchersMap(List<Fetcher> fetchers) {
 		Map<String, Fetcher> registeredFetchers = new LinkedHashMap<>(fetchers.size());
-		for (Fetcher fetcher : fetchers) {
+		for (var fetcher : fetchers) {
 			registeredFetchers.put(fetcher.getId(), fetcher);
 		}
 		return Collections.unmodifiableMap(registeredFetchers);
 	}
 
 	private void loadSelectedFetchers(Preferences preferences) {
-		String fetcherPrefValue = preferences.get(PREFERENCE_SELECTED_FETCHERS, null);
+		var fetcherPrefValue = preferences.get(PREFERENCE_SELECTED_FETCHERS, null);
 		if (fetcherPrefValue == null) {
 			// no preferences previously saved, use these default values
 			selectedFetchers = new LinkedHashMap<>();
@@ -61,11 +60,11 @@ public class FetcherRegistry {
 			selectedFetchers.put(PortsFetcher.ID, registeredFetchers.get(PortsFetcher.ID));
 		}
 		else {
-			String[] fetcherPrefs = fetcherPrefValue.split("###");
+			var fetcherPrefs = fetcherPrefValue.split("###");
 			selectedFetchers = new LinkedHashMap<>(registeredFetchers.size());
 			// initialize saved selected fetchers
-			for (String fetcherPref : fetcherPrefs) {
-				Fetcher fetcher = registeredFetchers.get(fetcherPref);
+			for (var fetcherPref : fetcherPrefs) {
+				var fetcher = registeredFetchers.get(fetcherPref);
 				// make sure that this fetcher is registered
 				if (fetcher != null) {
 					selectedFetchers.put(fetcherPref, fetcher);
@@ -75,11 +74,11 @@ public class FetcherRegistry {
 	}
 	
 	private void saveSelectedFetchers(Preferences preferences) {
-		StringBuilder sb = new StringBuilder();
-		for (String fetcherName : selectedFetchers.keySet()) {
+		var sb = new StringBuilder();
+		for (var fetcherName : selectedFetchers.keySet()) {
 			sb.append(fetcherName).append("###");
 		}
-		String value = sb.toString();
+		var value = sb.toString();
 		if (value.endsWith("###"))
 			value = value.substring(0, value.length() - 3);
 		
@@ -112,8 +111,8 @@ public class FetcherRegistry {
    * @return the index, if found, or -1
    */
 	public int getSelectedFetcherIndex(String id) {
-		int index = 0;
-		for (Fetcher fetcher : selectedFetchers.values()) {
+		var index = 0;
+		for (var fetcher : selectedFetchers.values()) {
 			if (id.equals(fetcher.getId())) return index;
 			index++;
 		}
@@ -127,13 +126,13 @@ public class FetcherRegistry {
 	public void updateSelectedFetchers(String[] labels) {
 		// rebuild the map (to recreate the new order of elements)
 		Map<String, Fetcher> newList = new LinkedHashMap<>();
-		for (String label : labels) {
+		for (var label : labels) {
 			newList.put(label, registeredFetchers.get(label));
 		}
 		selectedFetchers = newList;
 		
 		// inform observers
-		for (FetcherRegistryUpdateListener listener : updateListeners) {
+		for (var listener : updateListeners) {
 			listener.handleUpdateOfSelectedFetchers(this);
 		}
 		
@@ -146,12 +145,12 @@ public class FetcherRegistry {
    * @throws FetcherException if preferences editor doesn't exist
    */
 	public void openPreferencesEditor(Fetcher fetcher) throws FetcherException {
-		Class<? extends FetcherPrefs> prefsEditorClass = fetcher.getPreferencesClass();
+		var prefsEditorClass = fetcher.getPreferencesClass();
 		if (prefsEditorClass == null)
 			throw new FetcherException("preferences.notAvailable");
 
 		try {
-			FetcherPrefs prefs = createFetcherPrefsEditor(prefsEditorClass);
+			var prefs = createFetcherPrefsEditor(prefsEditorClass);
 			prefs.openFor(fetcher);
 		}
 		catch (Exception e) {
@@ -161,7 +160,7 @@ public class FetcherRegistry {
 
 	private FetcherPrefs createFetcherPrefsEditor(Class<? extends FetcherPrefs> prefsClass) throws Exception {
 		try {
-			Constructor<? extends FetcherPrefs> constructor = prefsClass.getConstructor(PreferencesDialog.class);
+			var constructor = prefsClass.getConstructor(PreferencesDialog.class);
 			return constructor.newInstance(preferencesDialog);
 		}
 		catch (NoSuchMethodException e) {

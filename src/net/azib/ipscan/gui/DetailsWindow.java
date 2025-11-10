@@ -3,7 +3,6 @@ package net.azib.ipscan.gui;
 import net.azib.ipscan.config.CommentsConfig;
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
-import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.gui.util.LayoutHelper;
@@ -50,20 +49,20 @@ public class DetailsWindow extends AbstractModalDialog {
 		shell.setSize(guiConfig.getDetailsWindowSize());
 
 		resultIndex = resultTable.getSelectionIndex();
-		ScanningResult result = resultTable.getSelectedResult();
+		var result = resultTable.getSelectedResult();
 		
 		commentsText = new Text(shell, SWT.SEARCH);
 		commentsText.pack();
 		commentsText.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), null, new FormAttachment(100)));
-		CommentsTextListener commentsTextListener = new CommentsTextListener();
+		var commentsTextListener = new CommentsTextListener();
 		commentsText.addFocusListener(commentsTextListener);
 		commentsText.addModifyListener(commentsTextListener);
 
-		String comment = commentsConfig.getComment(result);
+		var comment = commentsConfig.getComment(result);
 		if (comment != null) commentsText.setText(comment);
 		else commentsTextListener.focusLost(null);
 
-		Text detailsText = new Text(shell, SWT.BORDER | SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
+		var detailsText = new Text(shell, SWT.BORDER | SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
 		detailsText.setText(result.toString());
 		detailsText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		detailsText.setTabs(32);
@@ -97,7 +96,7 @@ public class DetailsWindow extends AbstractModalDialog {
 		}
 
 		public void modifyText(ModifyEvent e) {
-			String newComment = commentsText.getText();
+			var newComment = commentsText.getText();
 			if (!defaultText.equals(newComment)) {
 				// store the new comment
 				commentsConfig.setComment(scanningResults.getResult(resultIndex), newComment);

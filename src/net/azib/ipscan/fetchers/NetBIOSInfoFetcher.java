@@ -30,14 +30,14 @@ public class NetBIOSInfoFetcher extends AbstractFetcher {
 	}
 
 	public Object scan(ScanningSubject subject) {
-		try (NetBIOSResolver netbios = new NetBIOSResolver(subject.getAdaptedPortTimeout())) {
-			String[] names = netbios.resolve(subject.getAddress());
+		try (var netbios = new NetBIOSResolver(subject.getAdaptedPortTimeout())) {
+			var names = netbios.resolve(subject.getAddress());
 			if (names == null) return null;
 
-			String computerName = names[0];
-			String userName = names[1];
-			String groupName = names[2];
-			String macAddress = names[3];
+			var computerName = names[0];
+			var userName = names[1];
+			var groupName = names[2];
+			var macAddress = names[3];
 
 			return (groupName != null ? groupName + "\\" : "") +
 					(userName != null ? userName + "@" : "") +

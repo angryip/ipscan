@@ -1,12 +1,10 @@
 package net.azib.ipscan.feeders;
 
 import net.azib.ipscan.config.LabelsTest;
-import net.azib.ipscan.core.ScanningSubject;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.StringReader;
-import java.util.Iterator;
 
 import static net.azib.ipscan.feeders.FeederTestUtils.assertFeederException;
 import static org.junit.Assert.*;
@@ -20,8 +18,8 @@ public class FileFeederTest {
 
 	@Test
 	public void simpleIPs() throws FeederException {
-		StringReader reader = new StringReader("10.11.12.13 10.11.12.14 10.11.12.15");
-		FileFeeder fileFeeder = new FileFeeder(reader);
+		var reader = new StringReader("10.11.12.13 10.11.12.14 10.11.12.15");
+		var fileFeeder = new FileFeeder(reader);
 		assertTrue(fileFeeder.hasNext());
 		assertEquals("10.11.12.13", fileFeeder.next().getAddress().getHostAddress());
 		assertTrue(fileFeeder.hasNext());
@@ -33,8 +31,8 @@ public class FileFeederTest {
 
 	@Test
 	public void simpleHostnames() throws FeederException {
-		StringReader reader = new StringReader("angryip.org, hello.xyz.com www.google.ee");
-		FileFeeder fileFeeder = new FileFeeder(reader);
+		var reader = new StringReader("angryip.org, hello.xyz.com www.google.ee");
+		var fileFeeder = new FileFeeder(reader);
 		assertTrue(fileFeeder.hasNext());
 		assertEquals("hello.xyz.com", fileFeeder.next().getAddress().getHostName());
 		assertTrue(fileFeeder.hasNext());
@@ -67,7 +65,7 @@ public class FileFeederTest {
 	@Test
 	public void testNothingFound() {
 		try {
-			StringReader reader = new StringReader("no ip addresses here");			
+			var reader = new StringReader("no ip addresses here");
 			new FileFeeder(reader);
 			fail();
 		}
@@ -97,8 +95,8 @@ public class FileFeederTest {
 			
 	@Test
 	public void testGetPercentageComplete() throws Exception {
-		StringReader reader = new StringReader("1.2.3.4, 2.3.4.5, mega cool 0.0.0.0");
-		FileFeeder fileFeeder = new FileFeeder(reader);
+		var reader = new StringReader("1.2.3.4, 2.3.4.5, mega cool 0.0.0.0");
+		var fileFeeder = new FileFeeder(reader);
 		assertEquals(0, fileFeeder.percentageComplete());
 		fileFeeder.next();
 		assertEquals(33, fileFeeder.percentageComplete());
@@ -116,31 +114,31 @@ public class FileFeederTest {
 	
 	@Test
 	public void testGetInfo() {
-		StringReader reader = new StringReader("255.255.255.255, 2.3.4.5, mega cool 0.0.0.0");
-		FileFeeder fileFeeder = new FileFeeder(reader);
+		var reader = new StringReader("255.255.255.255, 2.3.4.5, mega cool 0.0.0.0");
+		var fileFeeder = new FileFeeder(reader);
 		assertEquals("3", fileFeeder.getInfo());
 	}
 	
 	@Test
 	public void requestedPortsAreDetected() throws Exception {
-		StringReader reader = new StringReader("1.2.3.4:1234\n2.3.4.5:\n 7.6.5.4:789004\n 1.2.3.5:80  1.2.3.5:3128 ");
-		FileFeeder fileFeeder = new FileFeeder(reader);
+		var reader = new StringReader("1.2.3.4:1234\n2.3.4.5:\n 7.6.5.4:789004\n 1.2.3.5:80  1.2.3.5:3128 ");
+		var fileFeeder = new FileFeeder(reader);
 		
 		assertEquals(1234, (int)fileFeeder.next().requestedPortsIterator().next());
 		assertFalse(fileFeeder.next().isAnyPortRequested());
 		assertFalse(fileFeeder.next().isAnyPortRequested());
-		
-		ScanningSubject lastSubject = fileFeeder.next();
+
+		var lastSubject = fileFeeder.next();
 		assertEquals("1.2.3.5", lastSubject.getAddress().getHostAddress());
-		Iterator<Integer> portIterator = lastSubject.requestedPortsIterator();
+		var portIterator = lastSubject.requestedPortsIterator();
 		assertEquals(80, (int)portIterator.next());
 		assertEquals(3128, (int)portIterator.next());
 	}
 
 	private void assertAddressCount(String s, int addressCount) {
-		StringReader reader = new StringReader(s);			
-		FileFeeder feeder = new FileFeeder(reader);
-		int numAddresses = 0;
+		var reader = new StringReader(s);
+		var feeder = new FileFeeder(reader);
+		var numAddresses = 0;
 		while (feeder.hasNext()) {
 			feeder.next();
 			numAddresses++;

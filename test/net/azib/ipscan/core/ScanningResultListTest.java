@@ -2,7 +2,6 @@ package net.azib.ipscan.core;
 
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.ScanningResultList.ScanInfo;
-import net.azib.ipscan.core.ScanningResultList.StopScanningListener;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
@@ -15,7 +14,6 @@ import org.junit.Test;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -45,7 +43,7 @@ public class ScanningResultListTest {
 	
 	@Test
 	public void testConstructor() throws Exception {
-		StateMachine stateMachine = new StateMachine(){};
+		var stateMachine = new StateMachine(){};
 		scanningResults = new ScanningResultList(fetcherRegistry, stateMachine);
 		scanningResults.initNewScan(mockFeeder("inff"));
 		assertFalse(scanningResults.getScanInfo().isCompletedNormally());
@@ -59,7 +57,7 @@ public class ScanningResultListTest {
 	@Test
 	public void testStatisticsInCaseOfNormalFlow() throws Exception {
 		// display method: all - first register, then update
-		ScanningResult result = scanningResults.createResult(InetAddress.getByName("6.6.6.6"));
+		var result = scanningResults.createResult(InetAddress.getByName("6.6.6.6"));
 		assertFalse(result.isReady());
 		assertFalse(scanningResults.isRegistered(result));
 		scanningResults.registerAtIndex(0, result);
@@ -112,7 +110,7 @@ public class ScanningResultListTest {
 	
 	@Test
 	public void testCreateResult() throws Exception {
-		ScanningResult result = scanningResults.createResult(InetAddress.getByName("10.0.0.5"));
+		var result = scanningResults.createResult(InetAddress.getByName("10.0.0.5"));
 		assertEquals("10.0.0.5", result.getAddress().getHostAddress());
 		assertEquals(ResultType.UNKNOWN, result.getType());
 		assertEquals(4, result.getValues().size());		
@@ -131,7 +129,7 @@ public class ScanningResultListTest {
 	
 	@Test
 	public void testRegisterResult() throws Exception {
-		ScanningResult result = scanningResults.createResult(InetAddress.getByName("10.0.0.0"));
+		var result = scanningResults.createResult(InetAddress.getByName("10.0.0.0"));
 		result.setType(ResultType.DEAD);
 		scanningResults.registerAtIndex(0, result);
 		result = scanningResults.createResult(InetAddress.getByName("10.0.0.1"));
@@ -160,7 +158,7 @@ public class ScanningResultListTest {
 	public void testIterator() throws Exception {
 		assertFalse(scanningResults.iterator().hasNext());
 		scanningResults.registerAtIndex(0, scanningResults.createResult(InetAddress.getLocalHost()));
-		Iterator<ScanningResult> i = scanningResults.iterator();
+		var i = scanningResults.iterator();
 		assertTrue(i.hasNext());
 		assertEquals(InetAddress.getLocalHost(), i.next().getAddress());
 		assertFalse(i.hasNext());
@@ -178,7 +176,7 @@ public class ScanningResultListTest {
 	
 	@Test
 	public void testScanInfoCompletedNormally() throws Exception {
-		StopScanningListener stopListener = scanningResults.new StopScanningListener();
+		var stopListener = scanningResults.new StopScanningListener();
 		assertFalse(scanningResults.getScanInfo().isCompletedNormally());
 		
 		stopListener.transitionTo(ScanningState.IDLE, Transition.COMPLETE);
@@ -194,8 +192,8 @@ public class ScanningResultListTest {
 		fetchers.add(mockFetcher("hello"));
 
 		scanningResults.registerAtIndex(0, scanningResults.createResult(InetAddress.getLocalHost()));
-		
-		Feeder feeder = mockFeeder("I am the best Feeder in the World!");
+
+		var feeder = mockFeeder("I am the best Feeder in the World!");
 		scanningResults.initNewScan(feeder);
 		
 		assertTrue("initNewScan() must not clear results - otherwise rescanning will be broken", scanningResults.areResultsAvailable());
@@ -224,8 +222,8 @@ public class ScanningResultListTest {
 		scanningResults.registerAtIndex(3, scanningResults.createResult(InetAddress.getByName("127.9.9.4")));
 		
 		scanningResults.remove(new int[] {1, 2});
-		
-		Iterator<ScanningResult> i = scanningResults.iterator();
+
+		var i = scanningResults.iterator();
 		assertTrue(i.hasNext());
 		assertEquals(InetAddress.getByName("127.9.9.1"), i.next().getAddress());
 		assertTrue(i.hasNext());
@@ -251,8 +249,8 @@ public class ScanningResultListTest {
 		scanningResults.getResult(3).setValue(1, "m");
 		
 		scanningResults.sort(1, true);
-		
-		Iterator<ScanningResult> i = scanningResults.iterator();
+
+		var i = scanningResults.iterator();
 		assertEquals(InetAddress.getByName("127.9.9.2"), i.next().getAddress());
 		assertEquals(InetAddress.getByName("127.9.9.4"), i.next().getAddress());
 		assertEquals(InetAddress.getByName("127.9.9.1"), i.next().getAddress());
@@ -268,15 +266,15 @@ public class ScanningResultListTest {
 	@Test 
 	public void testGetResultAsString() throws Exception {
 		scanningResults.initNewScan(mockFeeder("abc"));
-		List<Fetcher> fetchers = scanningResults.getFetchers();
-		ScanningResult result = scanningResults.createResult(InetAddress.getByName("172.28.43.55"));
+		var fetchers = scanningResults.getFetchers();
+		var result = scanningResults.createResult(InetAddress.getByName("172.28.43.55"));
 		scanningResults.registerAtIndex(0, result);
 		result.setValue(1, "123");
 		result.setValue(2, "xxxxx");
 		result.setValue(3, null);
-		
-		String s = scanningResults.getResult(0).toString();
-		String ln = System.getProperty("line.separator");
+
+		var s = scanningResults.getResult(0).toString();
+		var ln = System.getProperty("line.separator");
 		assertTrue(s.endsWith(ln));
 		assertTrue(s.contains(fetchers.get(0).getName() + ":\t172.28.43.55" + ln));
 		assertTrue(s.contains(fetchers.get(1).getName() + ":\t123" + ln));
@@ -308,16 +306,16 @@ public class ScanningResultListTest {
 	
 	@Test
 	public void testScanTime() throws Exception {
-		ScanInfo scanInfo = scanningResults.getScanInfo();
+		var scanInfo = scanningResults.getScanInfo();
 
 		assertFalse(scanInfo.isCompletedNormally());
-		long scanTime1 = scanInfo.getScanTime();
+		var scanTime1 = scanInfo.getScanTime();
 		assertTrue("Scanning has just begun", scanTime1 >= 0 && scanTime1 <= 10);
 		
 		Thread.sleep(10);
 		scanningResults.new StopScanningListener().transitionTo(ScanningState.IDLE, Transition.COMPLETE);
 		assertTrue(scanInfo.isCompletedNormally());
-		long scanTime2 = scanInfo.getScanTime();
+		var scanTime2 = scanInfo.getScanTime();
 		assertTrue("Scanning has just finished", scanTime2 >= 10 && scanTime1 <= 20);
 		assertTrue(scanTime1 != scanTime2);
 		Thread.sleep(10);
@@ -325,13 +323,13 @@ public class ScanningResultListTest {
 	}
 	
 	private Fetcher mockFetcher(String name) {
-		Fetcher fetcher = mock(Fetcher.class);
+		var fetcher = mock(Fetcher.class);
 		when(fetcher.getName()).thenReturn(name);
 		return fetcher;
 	}
 	
 	private Feeder mockFeeder(String feederInfo) {
-		Feeder feeder = mock(Feeder.class);
+		var feeder = mock(Feeder.class);
 		when(feeder.getInfo()).thenReturn(feederInfo);
 		when(feeder.getName()).thenReturn("feeder.range");
 		return feeder;

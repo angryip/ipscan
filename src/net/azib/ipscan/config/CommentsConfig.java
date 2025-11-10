@@ -36,12 +36,12 @@ public class CommentsConfig {
 	}
 
 	public void setComment(ScanningResult result, String comment) {
-		String key = result.getAddress().getHostAddress();
+		var key = result.getAddress().getHostAddress();
 
 		if (result.getMac() != null) {
 			// remove ip-based comment if we set a mac-based one
 			preferences.remove(key);
-			String mac = result.getMac();
+			var mac = result.getMac();
 			if (mac != null) key = mac;
 		}
 

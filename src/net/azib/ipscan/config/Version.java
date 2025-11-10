@@ -3,7 +3,6 @@
  */
 package net.azib.ipscan.config;
 
-import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 
@@ -65,10 +64,10 @@ public class Version {
 
 	private static void loadVersionFromJar() {
 		try {
-			String path = Version.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+			var path = Version.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 			if (path.endsWith(".jar") || path.endsWith(".exe")) {
-				JarFile jarFile = new JarFile(path);
-				Attributes attrs = jarFile.getManifest().getMainAttributes();
+				var jarFile = new JarFile(path);
+				var attrs = jarFile.getManifest().getMainAttributes();
 				version = attrs.getValue("Version");
 				buildDate = attrs.getValue("Build-Date");
 				return;

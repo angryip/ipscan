@@ -30,16 +30,16 @@ public class MACFetcherPrefs extends AbstractModalDialog implements FetcherPrefs
 		shell.setText(fetcher.getName());
 		shell.setLayout(LayoutHelper.formLayout(10, 10, 5));
 
-		Label separatorLabel = new Label(shell, SWT.NONE);
+		var separatorLabel = new Label(shell, SWT.NONE);
 		separatorLabel.setText(Labels.getLabel("fetcher.mac.separator"));
 		separator = new Text(shell, SWT.BORDER);
 		separator.setText(fetcher.getSeparator());
 		separator.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), new FormAttachment(separatorLabel), null));
 
-		Button okButton = new Button(shell, SWT.NONE);
+		var okButton = new Button(shell, SWT.NONE);
 		okButton.setText(Labels.getLabel("button.OK"));
 
-		Button cancelButton = new Button(shell, SWT.NONE);
+		var cancelButton = new Button(shell, SWT.NONE);
 		cancelButton.setText(Labels.getLabel("button.cancel"));
 
 		positionButtonsInFormLayout(okButton, cancelButton, separator);
@@ -54,7 +54,7 @@ public class MACFetcherPrefs extends AbstractModalDialog implements FetcherPrefs
 	}
 
 	void savePreferences() {
-		String text = separator.getText();
+		var text = separator.getText();
 		fetcher.setSeparator(text);
 		fetcher.getPreferences().put("separator", text);
 	}

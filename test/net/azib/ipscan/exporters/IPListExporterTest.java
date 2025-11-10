@@ -35,7 +35,7 @@ public class IPListExporterTest extends AbstractExporterTestCase {
 	
 	@Test
 	public void testBasic() throws IOException {
-		Labels labels = Labels.getInstance();
+		var labels = Labels.getInstance();
 		
 		exporter.start(outputStream, "feederstuff");		
 		exporter.setFetchers(new String[] {"fetcher1", labels.get(IPFetcher.ID), "mega long fetcher 2", labels.get(PortsFetcher.ID)});
@@ -62,7 +62,7 @@ public class IPListExporterTest extends AbstractExporterTestCase {
 	
 	@Test
 	public void testNextAddressResultsWithNullsOrEmptyValues() throws IOException {
-		Labels labels = Labels.getInstance();
+		var labels = Labels.getInstance();
 
 		exporter.start(outputStream, "feederstuff");
 		exporter.setFetchers(new String[] {labels.get(IPFetcher.ID), "fetcher1", labels.get(PortsFetcher.ID)});
@@ -73,7 +73,7 @@ public class IPListExporterTest extends AbstractExporterTestCase {
 	
 	@Test
 	public void testFindFetcherById() {
-		Labels labels = Labels.getInstance();
+		var labels = Labels.getInstance();
 		
 		assertEquals(0, IPListExporter.findFetcherById(IPFetcher.ID, new String[] {labels.get(IPFetcher.ID)}));
 		assertEquals(3, IPListExporter.findFetcherById(IPFetcher.ID, new String[] {"a", "b", "c", labels.get(IPFetcher.ID)}));

@@ -10,8 +10,6 @@ import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.values.NotScanned;
 import net.azib.ipscan.core.values.NumericRangeList;
 
-import java.util.SortedSet;
-
 /**
  * FilteredPortsFetcher uses the scanning results of PortsFetcher to display filtered ports.
  *
@@ -28,11 +26,11 @@ public class FilteredPortsFetcher extends PortsFetcher {
 	}
 
 	public Object scan(ScanningSubject subject) {
-		boolean portsScanned = scanPorts(subject);
+		var portsScanned = scanPorts(subject);
 		if (!portsScanned)
 			return NotScanned.VALUE;
 
-		SortedSet<Integer> filteredPorts = getFilteredPorts(subject);
+		var filteredPorts = getFilteredPorts(subject);
 		return filteredPorts.size() > 0 ? new NumericRangeList(filteredPorts, displayAsRanges) : null;
 	}
 }

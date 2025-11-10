@@ -13,17 +13,17 @@ import org.eclipse.swt.widgets.Shell;
 
 public class GUIRegistry {
 	public void register(Injector i) {
-		Display display = Display.getDefault();
+		var display = Display.getDefault();
 		i.register(Display.class, display);
 		i.register(GUIConfig.class, Config.getConfig().forGUI());
 
-		Shell shell = new Shell();
+		var shell = new Shell();
 		i.register(Shell.class, shell);
 		i.register(Menu.class, new Menu(shell, SWT.BAR));
 		i.register(FeederSelectionCombo.class, new FeederSelectionCombo(i.require(ControlsArea.class)));
 		i.register(Button.class, new Button(i.require(ControlsArea.class), SWT.NONE));
 
-		SWTAwareStateMachine stateMachine = new SWTAwareStateMachine(display);
+		var stateMachine = new SWTAwareStateMachine(display);
 		i.register(SWTAwareStateMachine.class, stateMachine);
 		i.register(StateMachine.class, stateMachine);
 		i.register(RangeFeederGUI.class, RandomFeederGUI.class, FileFeederGUI.class);

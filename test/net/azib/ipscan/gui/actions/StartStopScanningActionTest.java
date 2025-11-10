@@ -6,11 +6,11 @@
 
 package net.azib.ipscan.gui.actions;
 
-import static org.junit.Assert.assertNotNull;
 import net.azib.ipscan.core.state.ScanningState;
-
 import org.eclipse.swt.widgets.Display;
 import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
 
 
 /**
@@ -22,8 +22,8 @@ public class StartStopScanningActionTest {
 	
 	@Test
 	public void testAllImagesAreDefined() throws Exception {
-		StartStopScanningAction action = new StartStopScanningAction(Display.getDefault());
-		for (ScanningState state : ScanningState.values()) {
+		var action = new StartStopScanningAction(Display.getDefault());
+		for (var state : ScanningState.values()) {
 			assertNotNull(action.buttonImages[state.ordinal()]);
 			assertNotNull(action.buttonTexts[state.ordinal()]);
 		}

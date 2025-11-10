@@ -6,7 +6,6 @@
 package net.azib.ipscan.config;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -61,18 +60,18 @@ public final class Labels {
 	}
 
 	public void load(ClassLoader loader) {
-		try (InputStream in = loader.getResourceAsStream("messages.properties")) {
+		try (var in = loader.getResourceAsStream("messages.properties")) {
 			if (in != null) fallback.load(new InputStreamReader(in, UTF_8));
 		}
 		catch (IOException e) {
 			throw new MissingResourceException(e.toString(), Labels.class.getName(), "messages");
 		}
 
-		try (InputStream in = loader.getResourceAsStream("messages_" + locale.toString() + ".properties")) {
+		try (var in = loader.getResourceAsStream("messages_" + locale.toString() + ".properties")) {
 			labels.load(new InputStreamReader(in, UTF_8));
 		}
 		catch (Exception e) {
-			try (InputStream in = loader.getResourceAsStream("messages_" + locale.getLanguage() + ".properties")) {
+			try (var in = loader.getResourceAsStream("messages_" + locale.getLanguage() + ".properties")) {
 				labels.load(new InputStreamReader(in, UTF_8));
 			}
 			catch (Exception e2) {
