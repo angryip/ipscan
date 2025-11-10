@@ -1,5 +1,6 @@
 package net.azib.ipscan.gui;
 
+import net.azib.ipscan.config.Labels;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.*;
@@ -20,10 +21,9 @@ public class GettingStartedDialog extends AbstractModalDialog {
 
 	public GettingStartedDialog() {
 		int num = 1;
-		try {
-			while (true) texts.add(getLabel("text.gettingStarted" + num++));
-		}
-		catch (Exception noMoreTexts) {}
+		String text;
+		while ((text = Labels.getInstance().getOrNull("text.gettingStarted" + num++)) != null)
+			texts.add(text);
 	}
 
 	void prependText(String text) {
