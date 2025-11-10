@@ -10,6 +10,7 @@ Changes in 3.9.3:
 - Time is now specified in 24-hour format in XML export
 - Fix exporting of very long lines as .txt
 - Strings up to 255 bytes in length can now be exported to SQL. Among other things, this enables the export of IPv6 scans to SQL
+- Updated MAC vendors
 
 Thanks to @marek22k for many fixes!
 
