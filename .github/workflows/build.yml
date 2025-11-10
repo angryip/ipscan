@@ -12,7 +12,7 @@ jobs:
         fetch-depth: 0
     - uses: actions/setup-java@v3
       with:
-        java-version: '17'
+        java-version: '21'
         distribution: 'liberica'
         cache: 'gradle'
     - name: Build & Test
@@ -26,7 +26,7 @@ jobs:
         path: build/libs
 
     - name: Release (if tag)
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
         draft: true
@@ -42,18 +42,18 @@ jobs:
         fetch-depth: 0
     - uses: actions/setup-java@v3
       with:
-        java-version: '17'
+        java-version: '21'
         distribution: 'liberica'
         architecture: aarch64
         cache: 'gradle'
     - uses: actions/setup-java@v3
       with:
-        java-version: '17'
+        java-version: '21'
         distribution: 'liberica'
         architecture: x64
 
     - run: ./gradlew test macX86 --info
-    - run: JLINK_OPTS="--module-path $JAVA_HOME_17_AARCH64/jmods" ./gradlew macArm64 --info
+    - run: JLINK_OPTS="--module-path $JAVA_HOME_21_AARCH64/jmods" ./gradlew macArm64 --info
 
       env:
         APPLE_USER: ${{ secrets.APPLE_USER }}
@@ -65,7 +65,7 @@ jobs:
         path: build/libs
 
     - name: Add to release (if tag)
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
         draft: true
@@ -80,7 +80,7 @@ jobs:
         fetch-depth: 0
     - uses: actions/setup-java@v3
       with:
-        java-version: '17'
+        java-version: '21'
         distribution: 'liberica'
         architecture: x64
         cache: 'gradle'
@@ -92,7 +92,7 @@ jobs:
         path: build/libs
 
     - name: Add to release (if tag)
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
         draft: true

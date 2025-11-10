@@ -15,6 +15,7 @@ import java.io.OutputStream;
 public class SQLExporter extends AbstractExporter {
 
 	static final String TABLE_NAME = "scan";
+	static final String DATATYPE = "varchar(255)";
 
 	static final char COMMA = ',';
 
@@ -30,17 +31,17 @@ public class SQLExporter extends AbstractExporter {
 		super.start(outputStream, feederInfo);
 
 		if (!append) {
-			output.println("DROP TABLE IF EXISTS" + TABLE_NAME + ";");
+			output.println("DROP TABLE IF EXISTS " + TABLE_NAME + ";");
 		}
 	}
 
 	public void setFetchers(String[] fetcherNames) throws IOException {
 		if (!append) {
-			output.print("CREATE TABLE " + TABLE_NAME + " (`" + fetcherNames[0] + "` varchar(20)");
+			output.print("CREATE TABLE " + TABLE_NAME + " (`" + fetcherNames[0] + "` " + DATATYPE);
 			for (int i = 1; i < fetcherNames.length; i++) {
 				output.print(COMMA);
 				output.print(" `" + fetcherNames[i] + "` ");
-				output.print("varchar(20)"); //Default type
+				output.print(DATATYPE);
 			}
 			output.println(");");
 		}

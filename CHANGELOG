@@ -1,7 +1,13 @@
 Changes in 3.9.3:
+- Bundle Java 21 with Windows and Mac builds
 - Updated SWT for all platforms, improved loading of correct SWT library on Linux
 - Add support for plugin jars containing their own messages.properties
-- Allow plugin to merge multiple ping results
+- Strings up to 255 bytes in length can now be exported to SQL. Among other things, this enables the export of IPv6 scans to SQL.
+- The UDP pinger now uses the same port as traceroute programs.
+- Switch from the legacy Date API to Java's new Time API
+- Time is now specified in 24-hour format in XML export
+- Enable exporting very long lines as .txt
+- Allow plugins to merge multiple ping results
 
 Changes in 3.9.2:
 - Linux: specify Java 17 as minimum required version in .deb and .rpm packages
