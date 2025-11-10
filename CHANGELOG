@@ -2,6 +2,7 @@ Changes in 3.9.3:
 - Bundle Java 21 with Windows and Mac builds
 - Updated SWT for all platforms, improved loading of correct SWT library on Linux
 - Add support for plugin jars containing their own messages.properties
+- The UDP pinger now uses the same port as traceroute programs.
 - Switch from the legacy Date API to Java's new Time API
 - Time is now specified in 24-hour format in XML export
 - Enable exporting very long lines as .txt

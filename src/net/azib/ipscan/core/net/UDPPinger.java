@@ -25,7 +25,7 @@ import static net.azib.ipscan.util.IOUtils.closeQuietly;
 public class UDPPinger implements Pinger {
 	private static final Logger LOG = LoggerFactory.getLogger();
 
-	private static final int PROBE_UDP_PORT = 37381;
+	private static final int PROBE_UDP_PORT = 33435;
 
 	private int timeout;
 
