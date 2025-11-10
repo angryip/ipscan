@@ -26,7 +26,7 @@ jobs:
         path: build/libs
 
     - name: Release (if tag)
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
         draft: true
@@ -65,7 +65,7 @@ jobs:
         path: build/libs
 
     - name: Add to release (if tag)
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
         draft: true
@@ -92,7 +92,7 @@ jobs:
         path: build/libs
 
     - name: Add to release (if tag)
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
         draft: true
