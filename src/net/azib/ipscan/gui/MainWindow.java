@@ -21,8 +21,7 @@ import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
 import net.azib.ipscan.gui.feeders.FeederSelectionCombo;
 import net.azib.ipscan.gui.menu.ResultsContextMenu;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -31,6 +30,7 @@ import org.eclipse.swt.widgets.*;
 
 import static net.azib.ipscan.gui.util.LayoutHelper.formData;
 import static net.azib.ipscan.gui.util.LayoutHelper.icon;
+import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
 
 /**
  * Main window of Angry IP Scanner.
@@ -154,7 +154,21 @@ public class MainWindow {
 		// feeder selection combobox
 		this.feederSelectionCombo = feederSelectionCombo;
 		feederSelectionCombo.pack();
-		IPFeederSelectionListener feederSelectionListener = new IPFeederSelectionListener();
+		SelectionListener feederSelectionListener = widgetSelectedAdapter(e -> {
+			feederRegistry.select(feederSelectionCombo.getSelectionIndex());
+
+			// all this 'magic' is needed in order to resize everything properly
+			// and accommodate feeders with different sizes
+			Rectangle bounds = feederRegistry.current().getBounds();
+			FormData feederAreaLayoutData = ((FormData)feederArea.getLayoutData());
+			feederAreaLayoutData.height = bounds.height;
+			feederAreaLayoutData.width = bounds.width;
+			relayoutControls();
+			shell.layout();
+
+			// reset main window title
+			shell.setText(feederRegistry.current().getFeederName() + " - " + Version.NAME);
+		});
 		feederSelectionCombo.addSelectionListener(feederSelectionListener);
 
 		// initialize the selected feeder GUI
@@ -205,26 +219,7 @@ public class MainWindow {
 		}
 	}
 			
-	/**
-	 * IP Feeder selection listener. Updates the GUI according to the IP Feeder selection.
-	 */
-	class IPFeederSelectionListener extends SelectionAdapter {
-		public void widgetSelected(SelectionEvent e) {
-			feederRegistry.select(feederSelectionCombo.getSelectionIndex());
-						
-			// all this 'magic' is needed in order to resize everything properly
-			// and accommodate feeders with different sizes
-			Rectangle bounds = feederRegistry.current().getBounds();
-			FormData feederAreaLayoutData = ((FormData)feederArea.getLayoutData());
-			feederAreaLayoutData.height = bounds.height;
-			feederAreaLayoutData.width = bounds.width;
-			relayoutControls();
-			shell.layout();
-			
-			// reset main window title
-			shell.setText(feederRegistry.current().getFeederName() + " - " + Version.NAME);
-		}
-	}
+	
 	
 	class EnablerDisabler implements StateTransitionListener {
 		public void transitionTo(final ScanningState state, Transition transition) {

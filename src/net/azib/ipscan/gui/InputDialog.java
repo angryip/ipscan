@@ -11,6 +11,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
+import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
+
 /**
  * Customizable InputDialog
  *
@@ -51,18 +53,14 @@ public class InputDialog extends AbstractModalDialog {
 		cancelButton = new Button(shell, SWT.NONE);
 		cancelButton.setText(Labels.getLabel("button.cancel"));
 				
-		okButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				message = text.getText();
-				shell.dispose();
-			}
-		});
-		cancelButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				message = null;
-				shell.dispose();
-			}
-		});
+		okButton.addSelectionListener(widgetSelectedAdapter(e -> {
+			message = text.getText();
+			shell.dispose();
+		}));
+		cancelButton.addSelectionListener(widgetSelectedAdapter(e -> {
+			message = null;
+			shell.dispose();
+		}));
 	}
 
 	@Override
@@ -95,6 +93,7 @@ public class InputDialog extends AbstractModalDialog {
 		open();
 		return message;
 	}
+
 	/**
 	 * Opens the dialog and waits for user to input the data.
 	 * 
@@ -103,5 +102,4 @@ public class InputDialog extends AbstractModalDialog {
 	public String open(String text) {
 		return open(text, Labels.getLabel("button.OK"));
 	}
-
 }

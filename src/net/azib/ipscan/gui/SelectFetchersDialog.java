@@ -11,8 +11,6 @@ import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.IPFetcher;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
@@ -23,6 +21,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import static net.azib.ipscan.gui.util.LayoutHelper.*;
+import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
 
 public class SelectFetchersDialog extends AbstractModalDialog {
 	private FetcherRegistry fetcherRegistry;
@@ -126,8 +125,8 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		selectedFetchersList.addListener(SWT.MouseDoubleClick, removeButtonListener);
 		prefsButton.addListener(SWT.Selection, new PrefsListener());
 
-		registeredFetchersList.addSelectionListener(new ListFocusListener());
-		selectedFetchersList.addSelectionListener(new ListFocusListener());
+		registeredFetchersList.addSelectionListener(widgetSelectedAdapter(e -> lastFocusList = (List) e.getSource()));
+		selectedFetchersList.addSelectionListener(widgetSelectedAdapter(e -> lastFocusList = (List) e.getSource()));
 
 		// this is a workaround for limitation of FormLayout to remove the extra edge below the form
 		shell.layout();
@@ -158,12 +157,7 @@ public class SelectFetchersDialog extends AbstractModalDialog {
 		fetcherRegistry.updateSelectedFetchers(fetchersLabelsToRetain);
 	}
 
-	class ListFocusListener extends SelectionAdapter {
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			lastFocusList = (List) e.getSource();
-		}
-	}
+	
 
 	class PrefsListener implements Listener {
 		public void handleEvent(Event event) {
