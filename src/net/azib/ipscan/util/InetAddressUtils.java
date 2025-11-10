@@ -30,8 +30,7 @@ import static java.util.stream.Collectors.toList;
 public class InetAddressUtils {
 	static final Logger LOG = LoggerFactory.getLogger();
 
-	// Warning! IPv4 specific code
-	public static final Pattern HOSTNAME_REGEX = Pattern.compile("\\b((([a-z]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\.)+([a-z]{2,})|\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})\\b", CASE_INSENSITIVE);
+	public static final Pattern HOSTNAME_REGEX = Pattern.compile("(\\b(((?!25?[6-9])[12]\\d|[1-9])?\\d\\.?\\b){4}\\b)|(?<!(\\w|:))(([0-9a-f]{1,4}:){7,7}[0-9a-f]{1,4}|([0-9a-f]{1,4}:){1,7}:|([0-9a-f]{1,4}:){1,6}:[0-9a-f]{1,4}|([0-9a-f]{1,4}:){1,5}(:[0-9a-f]{1,4}){1,2}|([0-9a-f]{1,4}:){1,4}(:[0-9a-f]{1,4}){1,3}|([0-9a-f]{1,4}:){1,3}(:[0-9a-f]{1,4}){1,4}|([0-9a-f]{1,4}:){1,2}(:[0-9a-f]{1,4}){1,5}|[0-9a-f]{1,4}:((:[0-9a-f]{1,4}){1,6})|:((:[0-9a-f]{1,4}){1,7}|:)|fe80:(:[0-9a-f]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-f]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))(?!(\\w|:))|(\\b(([a-z]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\.)+([a-z0-9]{2,})\\.?(?!(\\w|\\.)))", CASE_INSENSITIVE);
 
 	public static InetAddress startRangeByNetmask(InetAddress address, InetAddress netmask) {
 		byte[] addressBytes = address.getAddress();
