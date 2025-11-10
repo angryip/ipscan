@@ -31,7 +31,7 @@ public class SQLExporter extends AbstractExporter {
 		super.start(outputStream, feederInfo);
 
 		if (!append) {
-			output.println("DROP TABLE IF EXISTS" + TABLE_NAME + ";");
+			output.println("DROP TABLE IF EXISTS " + TABLE_NAME + ";");
 		}
 	}
 
