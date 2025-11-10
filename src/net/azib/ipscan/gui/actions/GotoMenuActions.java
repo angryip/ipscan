@@ -9,6 +9,7 @@ import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.ScanningResultList;
+import net.azib.ipscan.gui.FindDialog;
 import net.azib.ipscan.gui.InputDialog;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
@@ -17,6 +18,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+
+import java.util.ArrayList;
 
 /**
  * GotoActions
@@ -139,13 +142,32 @@ public class GotoMenuActions {
 				return;
 			}
 			lastText = text;
-			
-			try {
-				statusBar.setStatusText(Labels.getLabel("state.searching"));
-				findText(text, statusBar.getShell());
+			ArrayList<Integer> foundMatches = findMatches(text);
+			int selectionIndex = 0;
+
+			if(foundMatches.size() == 0){
+				MessageBox messageBox = new MessageBox(statusBar.getShell(), SWT.OK | SWT.ICON_INFORMATION);
+				messageBox.setText(Labels.getLabel("title.find"));
+				messageBox.setMessage(Labels.getLabel("text.find.notFound"));
+				messageBox.open();
+				return;
 			}
-			finally {
-				statusBar.setStatusText(null);				
+
+			while(true){
+				FindDialog find = new FindDialog(Labels.getLabel("title.find"), foundMatches.size() + " " + Labels.getLabel("text.found"));
+				resultTable.setSelection(foundMatches.get(selectionIndex));
+				resultTable.setFocus();
+				int flag = find.open(selectionIndex + 1, foundMatches.size());
+
+				if(flag == 1 && selectionIndex > 0){
+					selectionIndex--;
+				}
+				else if (flag == 0 && selectionIndex < foundMatches.size()-1) {
+					selectionIndex++;
+				}
+				else if(flag == -1){
+					break;
+				}
 			}
 		}
 
@@ -180,6 +202,30 @@ public class GotoMenuActions {
 				messageBox.setMessage(Labels.getLabel("text.find.notFound"));
 				messageBox.open();
 			}
+
+
+		}
+
+		/**
+		 * Makes an arraylist with a list of all indexes which match the input
+		 *
+		 * @return arraylist of integers
+		 */
+		private ArrayList<Integer> findMatches(String text){
+			ScanningResultList results = resultTable.getScanningResults();
+
+			ArrayList<Integer> foundMatches = new ArrayList<>();
+			int lastIndex = 0;
+			while(true){
+				if(results.findText(text, lastIndex) == -1){
+					break;
+				}
+				lastIndex = results.findText(text, lastIndex);
+				foundMatches.add(lastIndex);
+				lastIndex++;
+			}
+
+			return foundMatches;
 		}
 	}	
 	
