@@ -27,6 +27,7 @@ If applicable, add screenshots to help explain your problem.
  - Version of Angry IP Scanner
  - OS, version, CPU architecture
  - Java version, vendor (`java -version`) - or if Windows installer was used with bundled Java
+ - Last working version of Angry IP Scanner (if applicable)
  
 **Logs:**
 - Please run Angry IP Scanner from Terminal and see if any relevant logs were written. Paste them here:

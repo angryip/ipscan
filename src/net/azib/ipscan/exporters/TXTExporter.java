@@ -13,7 +13,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
-import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,7 +57,7 @@ public class TXTExporter extends AbstractExporter {
 			output.print(Labels.getLabel("exporter.txt.scanned"));
 			output.print(' ');
 			output.println(feederInfo);
-			output.println(DateFormat.getDateTimeInstance().format(new Date()));
+			output.println(LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
 			output.println();
 		}
 	}
@@ -99,8 +101,7 @@ public class TXTExporter extends AbstractExporter {
 		if (s.length() >= length) {
 			return s;
 		}
-		return s + "                                                                       "
-				   .substring(0, length - s.length());
+		return s + " ".repeat(length - s.length());
 	}
 
 	public List<ScanningResult> importResults(String fileName, AbstractFeederGUI feeder) throws IOException {

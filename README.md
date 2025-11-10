@@ -2,7 +2,7 @@
 
 This is the source code of Angry IP Scanner, licensed with GPL v2. [Official site](https://angryip.org/)
 
-The code is written mostly in Java (currently, source level 11).
+The code is written mostly in Java.
 [SWT library from Eclipse project](https://eclipse.org/swt/) is used for GUI that provides native components for each supported platform.
 
 The project runs on Linux, Windows and macOS. 
@@ -35,7 +35,7 @@ Windows installer can be built on Windows only.
 
 On Ubuntu install the following packages:
 ```
-sudo apt install openjdk-11-jdk rpm fakeroot
+sudo apt install openjdk-21-jdk rpm fakeroot
 ```
 
 Install OpenJDK on other platforms as you usually do it.
