@@ -32,11 +32,16 @@ import static net.azib.ipscan.core.net.WinIpHlpDll.dll;
  * @author Anton Keks
  */
 public class WindowsPinger implements Pinger {
+	public static final String ID = "pinger.windows";
 	private int timeout;
 	private Ip6SockAddrByRef anyIp6SourceAddr = new Ip6SockAddrByRef();
 
 	public WindowsPinger(ScannerConfig config) {
 		this.timeout = config.pingTimeout;
+	}
+
+	@Override public String getId() {
+		return ID;
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {

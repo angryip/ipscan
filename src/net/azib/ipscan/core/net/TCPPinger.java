@@ -26,6 +26,7 @@ import static net.azib.ipscan.util.IOUtils.closeQuietly;
  * @author Anton Keks
  */
 public class TCPPinger implements Pinger {
+	public static final String ID = "pinger.tcp";
 	private static final Logger LOG = LoggerFactory.getLogger();
 
 	// try different ports in sequence, starting with 80 (which is most probably not filtered)
@@ -35,6 +36,10 @@ public class TCPPinger implements Pinger {
 
 	public TCPPinger(ScannerConfig config) {
 		this.timeout = config.pingTimeout;
+	}
+
+	@Override public String getId() {
+		return ID;
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) {

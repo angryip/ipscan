@@ -23,8 +23,6 @@ import static java.util.logging.Level.WARNING;
  * @author Anton Keks
  */
 public class NetBIOSInfoFetcher extends AbstractFetcher {
-	public NetBIOSInfoFetcher() {}
-
 	private static final Logger LOG = LoggerFactory.getLogger();
 
 	public String getId() {

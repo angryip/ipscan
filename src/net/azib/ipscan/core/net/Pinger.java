@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.core.net;
 
+import net.azib.ipscan.core.Plugin;
 import net.azib.ipscan.core.ScanningSubject;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.io.IOException;
  *
  * @author Anton Keks
  */
-public interface Pinger extends AutoCloseable {
+public interface Pinger extends Plugin, AutoCloseable {
 	/**
 	 * Issues the specified number of pings and
 	 * waits for replies.
@@ -24,4 +25,8 @@ public interface Pinger extends AutoCloseable {
 	PingResult ping(ScanningSubject subject, int count) throws IOException;
 
 	@Override default void close() throws IOException {}
+
+	@Override default String getId() {
+		return "pinger." + getClass().getSimpleName().replace("Pinger", "").toLowerCase();
+	}
 }

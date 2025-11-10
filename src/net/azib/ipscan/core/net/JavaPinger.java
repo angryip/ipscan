@@ -9,14 +9,18 @@ import java.net.ConnectException;
 import static java.lang.System.currentTimeMillis;
 
 public class JavaPinger implements Pinger {
+	public static final String ID = "pinger.java";
 	private int timeout;
 
 	public JavaPinger(ScannerConfig config) {
 		this.timeout = config.pingTimeout;
 	}
 
-	@Override
-	public PingResult ping(ScanningSubject subject, int count) throws IOException {
+	@Override public String getId() {
+		return ID;
+	}
+
+	@Override public PingResult ping(ScanningSubject subject, int count) throws IOException {
 		PingResult result = new PingResult(subject.getAddress(), count);
 		for (int i = 0; i < count; i++) {
 			try {

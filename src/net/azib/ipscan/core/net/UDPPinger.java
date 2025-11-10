@@ -18,11 +18,12 @@ import static java.util.logging.Level.FINER;
 import static net.azib.ipscan.util.IOUtils.closeQuietly;
 
 /**
- * UDP Pinger. Uses an UDP port to ping, doesn't require root privileges.
+ * UDP Pinger. Uses a UDP port to ping, doesn't require root privileges.
  *
  * @author Anton Keks
  */
 public class UDPPinger implements Pinger {
+	public static final String ID = "pinger.udp";
 	private static final Logger LOG = LoggerFactory.getLogger();
 
 	private static final int PROBE_UDP_PORT = 33435;
@@ -31,6 +32,10 @@ public class UDPPinger implements Pinger {
 
 	public UDPPinger(ScannerConfig config) {
 		this.timeout = config.pingTimeout;
+	}
+
+	@Override public String getId() {
+		return ID;
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {

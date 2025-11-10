@@ -39,15 +39,18 @@ public class PingerRegistry {
 	public PingerRegistry(ScannerConfig scannerConfig, Injector injector) throws ClassNotFoundException {
 		this.scannerConfig = scannerConfig;
 		this.injector = injector;
-		
+
 		pingers = new LinkedHashMap<>();
 		if (Platform.WINDOWS)
 			pingers.put("pinger.windows", (Class<Pinger>) Class.forName(getClass().getPackage().getName() + ".WindowsPinger"));
-		pingers.put("pinger.udp", UDPPinger.class);
-		pingers.put("pinger.tcp", TCPPinger.class);
-		pingers.put("pinger.combined", CombinedUnprivilegedPinger.class);
-		pingers.put("pinger.java", JavaPinger.class);
-		pingers.put("pinger.arp", ARPPinger.class);
+		pingers.put(UDPPinger.ID, UDPPinger.class);
+		pingers.put(TCPPinger.ID, TCPPinger.class);
+		pingers.put(CombinedUnprivilegedPinger.ID, CombinedUnprivilegedPinger.class);
+		pingers.put(JavaPinger.ID, JavaPinger.class);
+		pingers.put(ARPPinger.ID, ARPPinger.class);
+
+		// Add already registered plugin pingers
+		injector.requireAll(Pinger.class).forEach(p -> pingers.put(p.getId(), p.getClass()));
 	}
 
 	public String[] getRegisteredNames() {

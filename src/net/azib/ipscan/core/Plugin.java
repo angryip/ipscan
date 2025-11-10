@@ -6,6 +6,8 @@
 
 package net.azib.ipscan.core;
 
+import net.azib.ipscan.config.Labels;
+
 /**
  * Base interface for all plugins.
  *
@@ -18,7 +20,9 @@ public interface Plugin {
 	String getId();
 	
 	/**
-	 * @return localized name of this plugin (most likely resolved using it's id)
+	 * @return localized name of this plugin (usually likely resolved using its id)
 	 */
-	String getName();
+	default String getName() {
+		return Labels.getLabel(getId());
+	}
 }

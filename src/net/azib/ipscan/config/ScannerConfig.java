@@ -33,7 +33,6 @@ public class ScannerConfig {
 	/**
 	 * Package local constructor.
 	 * It loads all preferences.
-	 * @param preferences
 	 */
 	ScannerConfig(Preferences preferences) {
 		this.preferences = preferences;

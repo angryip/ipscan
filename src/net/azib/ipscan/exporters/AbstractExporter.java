@@ -6,8 +6,6 @@
 
 package net.azib.ipscan.exporters;
 
-import net.azib.ipscan.config.Labels;
-
 import java.io.*;
 
 /**
@@ -19,10 +17,6 @@ public abstract class AbstractExporter implements Exporter {
 	protected PrintWriter output;
 	protected boolean append;
 
-	public String getName() {
-		return Labels.getLabel(getId());
-	}
-	
 	public void shouldAppendTo(File file) {
 		this.append = true;
 	}

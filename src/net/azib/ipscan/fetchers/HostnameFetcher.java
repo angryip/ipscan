@@ -46,8 +46,6 @@ public class HostnameFetcher extends AbstractFetcher {
 
 	public static final String ID = "fetcher.hostname";
 
-	public HostnameFetcher() {}
-
 	public String getId() {
 		return ID;
 	}

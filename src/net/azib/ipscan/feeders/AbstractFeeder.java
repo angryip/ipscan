@@ -6,7 +6,6 @@
 
 package net.azib.ipscan.feeders;
 
-import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.core.ScanningSubject;
 
 import java.net.InetAddress;
@@ -32,10 +31,6 @@ public abstract class AbstractFeeder implements Feeder {
 
 	@Override public ScanningSubject subject(InetAddress ip) {
 		return new ScanningSubject(ip, netIf, ifAddr);
-	}
-
-	@Override public String getName() {
-		return Labels.getLabel(getId());
 	}
 
 	@Override public boolean isLocalNetwork() {

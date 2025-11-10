@@ -19,12 +19,17 @@ import static java.lang.Math.max;
  * @author Anton Keks
  */
 public class CombinedUnprivilegedPinger implements Pinger {
+	public static final String ID = "pinger.combined";
 	private TCPPinger tcpPinger;
 	private UDPPinger udpPinger;
 
 	public CombinedUnprivilegedPinger(TCPPinger tcpPinger, UDPPinger udpPinger) {
 		this.tcpPinger = tcpPinger;
 		this.udpPinger = udpPinger;
+	}
+
+	@Override public String getId() {
+		return ID;
 	}
 
 	public PingResult ping(ScanningSubject subject, int count) throws IOException {

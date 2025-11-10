@@ -8,6 +8,7 @@ import java.io.IOException;
 import static java.lang.System.currentTimeMillis;
 
 public class ARPPinger implements Pinger {
+	public static final String ID = "pinger.arp";
 	private MACFetcher macFetcher;
 	private Pinger trigger;
 
@@ -19,6 +20,10 @@ public class ARPPinger implements Pinger {
 	ARPPinger(MACFetcher macFetcher, Pinger trigger) {
 		this.macFetcher = macFetcher;
 		this.trigger = trigger;
+	}
+
+	@Override public String getId() {
+		return ID;
 	}
 
 	@Override public PingResult ping(ScanningSubject subject, int count) throws IOException {

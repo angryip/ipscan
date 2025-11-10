@@ -17,11 +17,6 @@ import java.util.prefs.Preferences;
  * @author Anton Keks
  */
 public abstract class AbstractFetcher implements Fetcher {
-
-	public String getName() {
-		return Labels.getLabel(getId());
-	}
-
 	public String getFullName() {
 		return getName();
 	}
