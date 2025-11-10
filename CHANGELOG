@@ -2,7 +2,7 @@ Changes in 3.9.3:
 - Bundle Java 21 with Windows and Mac builds
 - Updated SWT for all platforms, improved loading of correct SWT library on Linux
 - Add support for plugin jars containing their own messages.properties
-- Add support for Pinger plugins
+- Add support for Pinger plugins #491
 - Allow plugins to merge multiple ping results
 - The UDP pinger now uses the same port as traceroute programs
 - FileFeeder: recognition of FQDNs (with trailing dots and numbers in TLDs) in IP list files

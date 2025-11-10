@@ -6,6 +6,8 @@
 package net.azib.ipscan.config;
 
 import net.azib.ipscan.core.PluginLoader;
+import net.azib.ipscan.core.net.Pinger;
+import net.azib.ipscan.core.net.PingerRegistry;
 import net.azib.ipscan.di.Injector;
 import net.azib.ipscan.exporters.*;
 import net.azib.ipscan.fetchers.*;
@@ -35,7 +37,12 @@ public class ComponentRegistry {
 		new ComponentRegistry().register(i);
 		if (withGUI) {
 			new GUIRegistry().register(i);
-			new PluginLoader().getClasses().forEach(i::require);
+			var pingerRegistry = i.require(PingerRegistry.class);
+			new PluginLoader().getClasses().forEach(c -> {
+				var plugin = i.require(c);
+				if (Pinger.class.isAssignableFrom(c))
+					pingerRegistry.register(plugin.getId(), (Class) c);
+			});
 		}
 		return i;
 	}

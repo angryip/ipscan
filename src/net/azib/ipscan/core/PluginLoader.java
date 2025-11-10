@@ -39,7 +39,7 @@ public class PluginLoader {
 
 		loadPluginsSpecifiedInSystemProperties(container);
 		loadPluginJars(container, getOwnFile());
-		loadPluginJars(container, new File(System.getProperty("user.home"), ".ipscan/placeholder"));
+		loadPluginJars(container, new File(System.getProperty("user.home"), ".ipscan/."));
 
 		return container;
 	}

@@ -42,15 +42,16 @@ public class PingerRegistry {
 
 		pingers = new LinkedHashMap<>();
 		if (Platform.WINDOWS)
-			pingers.put("pinger.windows", (Class<Pinger>) Class.forName(getClass().getPackage().getName() + ".WindowsPinger"));
-		pingers.put(UDPPinger.ID, UDPPinger.class);
-		pingers.put(TCPPinger.ID, TCPPinger.class);
-		pingers.put(CombinedUnprivilegedPinger.ID, CombinedUnprivilegedPinger.class);
-		pingers.put(JavaPinger.ID, JavaPinger.class);
-		pingers.put(ARPPinger.ID, ARPPinger.class);
+			register("pinger.windows", (Class<Pinger>) Class.forName(getClass().getPackage().getName() + ".WindowsPinger"));
+		register(JavaPinger.ID, JavaPinger.class);
+		register(UDPPinger.ID, UDPPinger.class);
+		register(TCPPinger.ID, TCPPinger.class);
+		register(CombinedUnprivilegedPinger.ID, CombinedUnprivilegedPinger.class);
+		register(ARPPinger.ID, ARPPinger.class);
+	}
 
-		// Add already registered plugin pingers
-		injector.requireAll(Pinger.class).forEach(p -> pingers.put(p.getId(), p.getClass()));
+	public void register(String id, Class<? extends Pinger> clazz) {
+		pingers.put(id, clazz);
 	}
 
 	public String[] getRegisteredNames() {
