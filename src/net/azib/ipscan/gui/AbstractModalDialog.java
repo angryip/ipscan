@@ -10,8 +10,6 @@ import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.*;
 
@@ -33,8 +31,8 @@ public abstract class AbstractModalDialog {
 		
 		// center dialog box according to the parent window
 		if (shell.getParent() != null) {
-			Rectangle parentBounds = shell.getParent().getBounds();
-			Rectangle childBounds = shell.getBounds();
+			var parentBounds = shell.getParent().getBounds();
+			var childBounds = shell.getBounds();
 			int x = Math.max(0, parentBounds.x + (parentBounds.width - childBounds.width) / 2);
 			int y = Math.max(0, parentBounds.y + (parentBounds.height - childBounds.height) / 2);
 			shell.setLocation(x, y);
@@ -44,7 +42,7 @@ public abstract class AbstractModalDialog {
 		shell.open();
 		
 		// create a separate event loop
-		Display display = Display.getCurrent();
+		var display = Display.getCurrent();
 		while (shell != null && !shell.isDisposed()) {
 			if (!display.readAndDispatch()) 
 				display.sleep();
@@ -96,9 +94,9 @@ public abstract class AbstractModalDialog {
 	 */
 	protected void positionButtons(Button okButton, Button cancelButton) {
 		shell.setDefaultButton(okButton);
-		Rectangle clientArea = shell.getClientArea();
+		var clientArea = shell.getClientArea();
 		
-		Point size = okButton.computeSize(85, SWT.DEFAULT);
+		var size = okButton.computeSize(85, SWT.DEFAULT);
 		okButton.setSize(size);
 		
 		if (cancelButton != null) {
@@ -106,7 +104,7 @@ public abstract class AbstractModalDialog {
 		
 			if (Platform.MAC_OS || Platform.LINUX) {
 				// Mac OS and Linux users expect button order to be reverse
-				Button fooButton = okButton;
+				var fooButton = okButton;
 				okButton = cancelButton;
 				cancelButton = fooButton;
 			}
@@ -131,7 +129,7 @@ public abstract class AbstractModalDialog {
 		
 		if (Platform.MAC_OS || Platform.LINUX) {
 			// Mac OS and Linux users expect button order to be reverse
-			Button fooButton = okButton;
+			var fooButton = okButton;
 			okButton = cancelButton;
 			cancelButton = fooButton;
 		}
@@ -139,7 +137,7 @@ public abstract class AbstractModalDialog {
 		cancelButton.pack();
 		cancelButton.setLayoutData(LayoutHelper.formData(Math.max(85, cancelButton.getSize().x),  SWT.DEFAULT, null, new FormAttachment(control, 0, SWT.RIGHT), new FormAttachment(control, 8), null));
 		okButton.pack();
-		Point okSize = okButton.getSize();
+		var okSize = okButton.getSize();
 		okButton.setLayoutData(LayoutHelper.formData(Math.max(85, okSize.x), SWT.DEFAULT, null, new FormAttachment(cancelButton, -okSize.y/3), new FormAttachment(control, 8), null));
 	}
 		
@@ -147,7 +145,7 @@ public abstract class AbstractModalDialog {
 	 * Adds an optional close button, depending on the platform.
 	 */
 	protected Button createCloseButton() {
-		Button button = new Button(shell, SWT.NONE);
+		var button = new Button(shell, SWT.NONE);
 		button.setText(Labels.getLabel("button.close"));
 		positionButtons(button, null);
 		button.addListener(SWT.Selection, event -> close());
@@ -170,11 +168,11 @@ public abstract class AbstractModalDialog {
 				return;
 			}
 			
-			int[] selectedItems = list.getSelectionIndices();
+			var selectedItems = list.getSelectionIndices();
 			for (int index : selectedItems) {
 				// here, index is always > 0
 				list.deselect(index);
-				String oldItem = list.getItem(index - 1);
+				var oldItem = list.getItem(index - 1);
 				list.setItem(index - 1, list.getItem(index));
 				list.setItem(index, oldItem);
 				list.select(index - 1);
@@ -201,13 +199,13 @@ public abstract class AbstractModalDialog {
 				return;
 			}
 			
-			int[] selectedItems = list.getSelectionIndices();
+			var selectedItems = list.getSelectionIndices();
 			for (int i = selectedItems.length - 1; i >= 0; i--) {
 				// here, index is always < getItemCount()
 				int index = selectedItems[i];
 
 				list.deselect(index);
-				String oldItem = list.getItem(index + 1);
+				var oldItem = list.getItem(index + 1);
 				list.setItem(index + 1, list.getItem(index));
 				list.setItem(index, oldItem);
 				list.select(index + 1);

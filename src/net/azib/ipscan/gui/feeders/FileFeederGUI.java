@@ -8,8 +8,6 @@ package net.azib.ipscan.gui.feeders;
 import net.azib.ipscan.feeders.Feeder;
 import net.azib.ipscan.feeders.FileFeeder;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -18,6 +16,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import static net.azib.ipscan.config.Labels.getLabel;
+import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
 
 /**
  * GUI for initialization of FileFeeder.
@@ -43,17 +42,15 @@ public class FileFeederGUI extends AbstractFeederGUI {
 		fileNameText.setLayoutData(new GridData(160, -1));
 
         browseButton.setText(getLabel("feeder.file.browse"));
-        browseButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				FileDialog dialog = new FileDialog(getShell());
-				dialog.setText(getLabel("feeder.file.browse"));
-				String fileName = dialog.open();
-				if (fileName != null) {
-					fileNameText.setText(fileName);
-					fileNameText.setSelection(fileName.length());
-				}
+        browseButton.addSelectionListener(widgetSelectedAdapter(e -> {
+			FileDialog dialog = new FileDialog(getShell());
+			dialog.setText(getLabel("feeder.file.browse"));
+			String fileName = dialog.open();
+			if (fileName != null) {
+				fileNameText.setText(fileName);
+				fileNameText.setSelection(fileName.length());
 			}
-		});
+		}));
                         
 		pack();
 	}

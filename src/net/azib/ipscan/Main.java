@@ -16,7 +16,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.Security;
-import java.util.Locale;
 import java.util.logging.Logger;
 
 import static net.azib.ipscan.config.Labels.getLabel;
@@ -46,15 +45,15 @@ public class Main {
 	public static void main(String... args) {
 		GUI gui = null;
 		try {
-			long startTime = System.currentTimeMillis();
+			var startTime = System.currentTimeMillis();
 			gui = new GUI();
 			disableDNSCache();
 
-			Locale locale = Config.getConfig().getLocale();
+			var locale = Config.getConfig().getLocale();
 			Labels.initialize(locale);
 			LOG.finer("Labels and Config initialized after " + (System.currentTimeMillis() - startTime));
 
-			Injector injector = new ComponentRegistry().init();
+			var injector = new ComponentRegistry().init();
 			if (Platform.MAC_OS) injector.require(MacApplicationMenu.class);
 			LOG.finer("Components initialized after " + (System.currentTimeMillis() - startTime));
 
@@ -119,7 +118,7 @@ public class Main {
 
 	private static void processCommandLine(String[] args, Injector injector) {
 		if (args.length != 0) {
-			CommandLineProcessor cli = injector.require(CommandLineProcessor.class);
+			var cli = injector.require(CommandLineProcessor.class);
 			try {
 				cli.parse(args);
 			}
@@ -136,7 +135,7 @@ public class Main {
 			System.err.println(usageText);
 		}
 		else {
-			InfoDialog dialog = new InfoDialog(Version.NAME, getLabel("title.commandline"));
+			var dialog = new InfoDialog(Version.NAME, getLabel("title.commandline"));
 			dialog.setMessage(usageText);
 			dialog.open();
 		}

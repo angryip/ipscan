@@ -17,13 +17,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static net.azib.ipscan.core.ScanningResult.ResultType.*;
-import static net.azib.ipscan.util.IOUtils.closeQuietly;
 import static net.azib.ipscan.util.InetAddressUtils.increment;
 
 /**
@@ -105,15 +103,12 @@ public class TXTExporter extends AbstractExporter {
 	}
 
 	public List<ScanningResult> importResults(String fileName, AbstractFeederGUI feeder) throws IOException {
-		List<ScanningResult> results = new ArrayList<>();
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new FileReader(fileName));
-
+		var results = new ArrayList<ScanningResult>();
+		try (var reader = new BufferedReader(new FileReader(fileName))) {
 			String startIP = null;
 			String endIP = null;
 			String lastLoadedIP = null;
-			List<String> columns = emptyList();
+			var columns = emptyList();
 
 			int ipIndex = 0, pingIndex = 1, portsIndex = 3;
 
@@ -150,10 +145,10 @@ public class TXTExporter extends AbstractExporter {
 				sp = line.split("\\s{2,}");
 				if (sp.length < columns.size()) continue;
 
-				InetAddress addr = InetAddress.getByName(sp[ipIndex]);
+				var addr = InetAddress.getByName(sp[ipIndex]);
 				lastLoadedIP = sp[ipIndex];
 
-				ScanningResult r = new ScanningResult(addr, sp.length);
+				var r = new ScanningResult(addr, sp.length);
 				if (portsIndex > 0 && sp[portsIndex].matches("\\d.*")) r.setType(WITH_PORTS);
 				else if (pingIndex > 0 && sp[pingIndex].matches("\\d.*")) r.setType(ALIVE);
 				else r.setType(DEAD);
@@ -163,15 +158,12 @@ public class TXTExporter extends AbstractExporter {
 			}
 
 			if (lastLoadedIP != null && !lastLoadedIP.equals(endIP)) {
-				InetAddress nextStartIP = increment(InetAddress.getByName(lastLoadedIP));
+				var nextStartIP = increment(InetAddress.getByName(lastLoadedIP));
 				startIP = nextStartIP.getHostAddress();
 			}
 
 			feeder.unserialize(startIP, endIP);
 			return results;
-		}
-		finally {
-			closeQuietly(reader);
 		}
 	}
 }

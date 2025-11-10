@@ -21,11 +21,9 @@ import org.eclipse.swt.widgets.MessageBox;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.WARNING;
-import static net.azib.ipscan.util.IOUtils.closeQuietly;
 
 public class HelpMenuActions {
 
@@ -109,51 +107,44 @@ public class HelpMenuActions {
 		public void check(final boolean userRequest) {
 			statusBar.setStatusText(Labels.getLabel("state.retrievingVersion"));
 
-			Runnable checkVersionCode = new Runnable() {
-				public void run() {
-					BufferedReader reader = null;
-					String message = null;
-					int messageStyle = SWT.ICON_INFORMATION;
-					try {
-						URL url = new URL(Version.LATEST_VERSION_URL);
-						URLConnection conn = url.openConnection();
-						reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-						
-						String latestVersion = reader.readLine();
-						latestVersion = latestVersion.substring(latestVersion.indexOf(' ')+1);
-						
+			Runnable checkVersionCode = () -> {
+				String message = null;
+				int messageStyle = SWT.ICON_INFORMATION;
+				try {
+					var url = new URL(Version.LATEST_VERSION_URL);
+					var conn = url.openConnection();
+					try (var reader = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+						var latestVersion = reader.readLine();
+						latestVersion = latestVersion.substring(latestVersion.indexOf(' ') + 1);
+
 						if (!Version.getVersion().equals(latestVersion)) {
 							message = Labels.getLabel("text.version.old");
 							message = message.replaceFirst("%LATEST", latestVersion);
 							message = message.replaceFirst("%VERSION", Version.getVersion());
 							messageStyle = SWT.ICON_QUESTION | SWT.YES | SWT.NO;
-						}
-						else if (userRequest) {
+						} else if (userRequest) {
 							message = Labels.getLabel("text.version.latest");
 							messageStyle = SWT.ICON_INFORMATION;
 						}
 					}
-					catch (Exception e) {
-						if (userRequest) message = Labels.getLabel("exception.UserErrorException.version.latestFailed");
-						Logger.getLogger(getClass().getName()).log(WARNING, message, e);
-					}
-					finally {
-						closeQuietly(reader);
-
-						// show the box in the SWT thread
-						final String messageToShow = message;
-						final int messageStyleToShow = messageStyle;
-						Display.getDefault().asyncExec(() -> {
-							statusBar.setStatusText(null);
-							if (messageToShow == null) return;
-							MessageBox messageBox = new MessageBox(statusBar.getShell(), messageStyleToShow | SWT.SHEET);
-							messageBox.setText(Version.getFullName());
-							messageBox.setMessage(messageToShow);
-							if (messageBox.open() == SWT.YES) {
-								BrowserLauncher.openURL(Version.DOWNLOAD_URL);
-							}
-						});
-					}
+				} catch (Exception e) {
+					if (userRequest)
+						message = Labels.getLabel("exception.UserErrorException.version.latestFailed");
+					Logger.getLogger(getClass().getName()).log(WARNING, message, e);
+				} finally {
+					// show the box in the SWT thread
+					final String messageToShow = message;
+					final int messageStyleToShow = messageStyle;
+					Display.getDefault().asyncExec(() -> {
+						statusBar.setStatusText(null);
+						if (messageToShow == null) return;
+						var messageBox = new MessageBox(statusBar.getShell(), messageStyleToShow | SWT.SHEET);
+						messageBox.setText(Version.getFullName());
+						messageBox.setMessage(messageToShow);
+						if (messageBox.open() == SWT.YES) {
+							BrowserLauncher.openURL(Version.DOWNLOAD_URL);
+						}
+					});
 				}
 			};
 			new Thread(checkVersionCode).start();

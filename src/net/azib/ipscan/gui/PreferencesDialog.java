@@ -17,13 +17,13 @@ import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.*;
+
+import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
 
 /**
  * Preferences Dialog
@@ -113,19 +113,13 @@ public class PreferencesDialog extends AbstractModalDialog {
 		shell.pack();
 		okButton.setFocus();
 
-		okButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				if (shell != null && !shell.isDisposed()) {
-					savePreferences();
-					close();
-				}
-			}
-		});
-		cancelButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		okButton.addSelectionListener(widgetSelectedAdapter(e -> {
+			if (shell != null && !shell.isDisposed()) {
+				savePreferences();
 				close();
 			}
-		});
+		}));
+		cancelButton.addSelectionListener(widgetSelectedAdapter(e -> close()));
 	}
 
 	/**
@@ -158,17 +152,17 @@ public class PreferencesDialog extends AbstractModalDialog {
 	 * This method initializes scanningTab	
 	 */
 	private void createScanningTab() {
-		RowLayout rowLayout = createRowLayout();
+		var rowLayout = createRowLayout();
 		scanningTab = new Composite(tabFolder, SWT.NONE);
 		scanningTab.setLayout(rowLayout);
 		
-		GridLayout groupLayout = new GridLayout();
+		var groupLayout = new GridLayout();
 		groupLayout.numColumns = 2;
-		Group threadsGroup = new Group(scanningTab, SWT.NONE);
+		var threadsGroup = new Group(scanningTab, SWT.NONE);
 		threadsGroup.setText(Labels.getLabel("preferences.threads"));
 		threadsGroup.setLayout(groupLayout);
 
-		GridData gridData = new GridData(80, SWT.DEFAULT);
+		var gridData = new GridData(80, SWT.DEFAULT);
 		
 		Label label;
 		
@@ -182,7 +176,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		maxThreadsText = new Text(threadsGroup, SWT.BORDER);
 		maxThreadsText.setLayoutData(gridData);
 
-		Group pingingGroup = new Group(scanningTab, SWT.NONE);
+		var pingingGroup = new Group(scanningTab, SWT.NONE);
 		pingingGroup.setLayout(groupLayout);
 		pingingGroup.setText(Labels.getLabel("preferences.pinging"));
 		
@@ -208,19 +202,19 @@ public class PreferencesDialog extends AbstractModalDialog {
 		pingingTimeoutText = new Text(pingingGroup, SWT.BORDER);
 		pingingTimeoutText.setLayoutData(gridData);
 		
-		GridData gridDataWithSpan = new GridData();
+		var gridDataWithSpan = new GridData();
 		gridDataWithSpan.horizontalSpan = 2;
 		deadHostsCheckbox = new Button(pingingGroup, SWT.CHECK);
 		deadHostsCheckbox.setText(Labels.getLabel("preferences.pinging.deadHosts"));
 		deadHostsCheckbox.setLayoutData(gridDataWithSpan);
 
-		Group skippingGroup = new Group(scanningTab, SWT.NONE);
+		var skippingGroup = new Group(scanningTab, SWT.NONE);
 		skippingGroup.setLayout(groupLayout);
 		skippingGroup.setText(Labels.getLabel("preferences.skipping"));
 		
 		skipBroadcastsCheckbox = new Button(skippingGroup, SWT.CHECK);
 		skipBroadcastsCheckbox.setText(Labels.getLabel("preferences.skipping.broadcast"));
-		GridData gridDataWithSpan2 = new GridData();
+		var gridDataWithSpan2 = new GridData();
 		gridDataWithSpan2.horizontalSpan = 2;
 		skipBroadcastsCheckbox.setLayoutData(gridDataWithSpan2);
 	}
@@ -229,37 +223,37 @@ public class PreferencesDialog extends AbstractModalDialog {
 	 * This method initializes displayTab	
 	 */
 	private void createDisplayTab() {
-		RowLayout rowLayout = createRowLayout();
+		var rowLayout = createRowLayout();
 		displayTab = new Composite(tabFolder, SWT.NONE);
 		displayTab.setLayout(rowLayout);
 		
-		GridLayout groupLayout = new GridLayout();
+		var groupLayout = new GridLayout();
 		groupLayout.numColumns = 1;
-		Group listGroup = new Group(displayTab, SWT.NONE);
+		var listGroup = new Group(displayTab, SWT.NONE);
 		listGroup.setText(Labels.getLabel("preferences.display.list"));
 		listGroup.setLayout(groupLayout);
 		listGroup.setLayoutData(new RowData(260, SWT.DEFAULT));
 		displayMethod = new Button[DisplayMethod.values().length];
-		Button allRadio = new Button(listGroup, SWT.RADIO);
+		var allRadio = new Button(listGroup, SWT.RADIO);
 		allRadio.setText(Labels.getLabel("preferences.display.list" + '.' + DisplayMethod.ALL));
 		displayMethod[DisplayMethod.ALL.ordinal()] = allRadio;
-		Button aliveRadio = new Button(listGroup, SWT.RADIO);
+		var aliveRadio = new Button(listGroup, SWT.RADIO);
 		aliveRadio.setText(Labels.getLabel("preferences.display.list" + '.' + DisplayMethod.ALIVE));
 		displayMethod[DisplayMethod.ALIVE.ordinal()] = aliveRadio;
-		Button portsRadio = new Button(listGroup, SWT.RADIO);
+		var portsRadio = new Button(listGroup, SWT.RADIO);
 		portsRadio.setText(Labels.getLabel("preferences.display.list" + '.' +  DisplayMethod.PORTS));
 		displayMethod[DisplayMethod.PORTS.ordinal()] = portsRadio;
 		
 		groupLayout = new GridLayout();
 		groupLayout.numColumns = 2;
-		Group labelsGroup = new Group(displayTab, SWT.NONE);
+		var labelsGroup = new Group(displayTab, SWT.NONE);
 		labelsGroup.setText(Labels.getLabel("preferences.display.labels"));
 		labelsGroup.setLayout(groupLayout);
 		
-		GridData gridData = new GridData();
+		var gridData = new GridData();
 		gridData.widthHint = 50;
 		
-		Label label = new Label(labelsGroup, SWT.NONE);
+		var label = new Label(labelsGroup, SWT.NONE);
 		label.setText(Labels.getLabel("preferences.display.labels.notAvailable"));
 		notAvailableText = new Text(labelsGroup, SWT.BORDER);
 		notAvailableText.setLayoutData(gridData);
@@ -271,7 +265,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 
 		groupLayout = new GridLayout();
 		groupLayout.numColumns = 1;
-		Group showStatsGroup = new Group(displayTab, SWT.NONE);
+		var showStatsGroup = new Group(displayTab, SWT.NONE);
 		showStatsGroup.setLayout(groupLayout);
 		showStatsGroup.setText(Labels.getLabel("preferences.display.confirmation"));
 		
@@ -283,7 +277,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		groupLayout = new GridLayout();
 		groupLayout.numColumns = 2;
 		
-		Group languageGroup = new Group(displayTab, SWT.NONE);
+		var languageGroup = new Group(displayTab, SWT.NONE);
 		languageGroup.setLayout(groupLayout);
 		languageGroup.setText(Labels.getLabel("preferences.language"));
 		
@@ -307,25 +301,25 @@ public class PreferencesDialog extends AbstractModalDialog {
 	 * This method initializes portsTab	
 	 */
 	private void createPortsTab() {
-		RowLayout rowLayout = createRowLayout();
+		var rowLayout = createRowLayout();
 		portsTab = new Composite(tabFolder, SWT.NONE);
 		portsTab.setLayout(rowLayout);
 		
-		GridLayout groupLayout = new GridLayout();
+		var groupLayout = new GridLayout();
 		groupLayout.numColumns = 2;
-		Group timingGroup = new Group(portsTab, SWT.NONE);
+		var timingGroup = new Group(portsTab, SWT.NONE);
 		timingGroup.setText(Labels.getLabel("preferences.ports.timing"));
 		timingGroup.setLayout(groupLayout);
 
-		GridData gridData = new GridData();
+		var gridData = new GridData();
 		gridData.widthHint = 50;
 		
-		Label label = new Label(timingGroup, SWT.NONE);
+		var label = new Label(timingGroup, SWT.NONE);
 		label.setText(Labels.getLabel("preferences.ports.timing.timeout"));
 		portTimeoutText = new Text(timingGroup, SWT.BORDER);
 		portTimeoutText.setLayoutData(gridData);
 		
-		GridData gridData1 = new GridData();
+		var gridData1 = new GridData();
 		gridData1.horizontalSpan = 2;
 		adaptTimeoutCheckbox = new Button(timingGroup, SWT.CHECK);
 		adaptTimeoutCheckbox.setText(Labels.getLabel("preferences.ports.timing.adaptTimeout"));
@@ -337,11 +331,11 @@ public class PreferencesDialog extends AbstractModalDialog {
 		minPortTimeoutText = new Text(timingGroup, SWT.BORDER);
 		minPortTimeoutText.setLayoutData(gridData);
 
-		RowLayout portsLayout = new RowLayout(SWT.VERTICAL);
+		var portsLayout = new RowLayout(SWT.VERTICAL);
 		portsLayout.fill = true;
 		portsLayout.marginHeight = 2;
 		portsLayout.marginWidth = 2;
-		Group portsGroup = new Group(portsTab, SWT.NONE);
+		var portsGroup = new Group(portsTab, SWT.NONE);
 		portsGroup.setText(Labels.getLabel("preferences.ports.ports"));
 		portsGroup.setLayout(portsLayout);
 		
@@ -361,7 +355,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 	 * @return a pre-initialized RowLayout suitable for option tabs.
 	 */
 	private RowLayout createRowLayout() {
-		RowLayout rowLayout = new RowLayout();
+		var rowLayout = new RowLayout();
 		rowLayout.type = org.eclipse.swt.SWT.VERTICAL;
 		rowLayout.spacing = 9;
 		rowLayout.marginHeight = 9;
@@ -373,7 +367,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 	private void loadPreferences() {
 		maxThreadsText.setText(Integer.toString(scannerConfig.maxThreads));
 		threadDelayText.setText(Integer.toString(scannerConfig.threadDelay));
-		String[] pingerNames = pingerRegistry.getRegisteredNames();
+		var pingerNames = pingerRegistry.getRegisteredNames();
 		for (int i = 0; i < pingerNames.length; i++) {
 			if (scannerConfig.selectedPinger.equals(pingerNames[i])) {
 				pingersCombo.select(i);
@@ -436,10 +430,10 @@ public class PreferencesDialog extends AbstractModalDialog {
 		guiConfig.askScanConfirmation = askConfirmationCheckbox.getSelection();
 		guiConfig.versionCheckEnabled = versionCheckCheckbox.getSelection();
 		globalConfig.allowReports = allowReports.getSelection();
-		String newLanguage = Labels.LANGUAGES[languageCombo.getSelectionIndex()];
+		var newLanguage = Labels.LANGUAGES[languageCombo.getSelectionIndex()];
 		if (!newLanguage.equals(globalConfig.language)) {
 			globalConfig.language = newLanguage;
-			MessageBox msgBox = new MessageBox(shell);
+			var msgBox = new MessageBox(shell);
 			msgBox.setMessage(Labels.getLabel("preferences.language.needsRestart"));
 			msgBox.open();
 		}
