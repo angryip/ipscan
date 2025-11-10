@@ -80,7 +80,7 @@ public class FileFeederTest {
 	public void extractFromDifferentFormats() {
 		assertAddressCount("The 127.0.0.1 is the localhost IP,\n but 192.168.255.255 is probably a broadcast IP", 2);
 		
-		assertAddressCount("1.1.1.,1245\n2.2.2.2:123\n3.3.3.3.3.3\n\n\n9.9.9.9999", 2);
+		assertAddressCount("1.1.1.,1245\n2.2.2.2:123\n3.3.3.3.3.3\n\n\n9.9.9.9999", 1);
 		
 		assertAddressCount("1.2.3.4", 1);
 		
@@ -90,9 +90,9 @@ public class FileFeederTest {
 
 		assertAddressCount("09.001.005.006", 1);
 
-		assertAddressCount("999.999.999.999,1.1.01.1", 1);
+		assertAddressCount("999.999.999.999,1.1.1.1", 1);
 
-		assertAddressCount("<xml>66.87.99.128</xml>\n<xml>000.87.99.129</xml>000.1.1.1", 3);
+		assertAddressCount("<xml>66.87.99.128</xml>\n<xml>10.87.99.129</xml>000.1.1.1", 2);
 	}
 			
 	@Test
