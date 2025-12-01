@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+    <id>org.angryip.ipscan</id>
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>GPL-2.0+</project_license>
+    <name>Angry IP Scanner</name>
+    <developer id="org.angryip">
+        <name>Anton Keks and contributors</name>
+    </developer>
+    <summary>Fast and friendly network scanner</summary>
+    <content_rating type="oars-1.1" />
+
+    <description>
+        <p>Angry IP Scanner (or simply ipscan) is an open-source and cross-platform network scanner designed to be fast and simple to use. It scans IP addresses and ports, as well as having many other features.</p>
+        <p>It is widely used by network administrators and just curious users around the world, including large and small enterprises, banks, and government agencies.</p>
+    </description>
+
+    <screenshots>
+        <screenshot type="default">
+            <caption>A scan was performed</caption>
+            <image type="source">https://angryip.org/screenshots/ipscan-ubuntu.png</image>
+        </screenshot>
+    </screenshots>
+
+    <branding>
+        <color type="primary" scheme_preference="light">#9cdba6</color>
+        <color type="primary" scheme_preference="dark">#0d7c66</color>
+    </branding>
+
+    <categories>
+        <category>Network</category>
+        <category>Utility</category>
+    </categories>
+
+    <keywords>
+      <keyword>angry</keyword>
+      <keyword>ipscan</keyword>
+      <keyword>ip</keyword>
+      <keyword>scan</keyword>
+      <keyword>scanner</keyword>
+    </keywords>
+
+    <url type="homepage">https://angryip.org/</url>
+    <url type="bugtracker">https://github.com/angryip/ipscan/issues/</url>
+    <url type="faq">https://angryip.org/faq/</url>
+    <url type="help">https://angryip.org/documentation/</url>
+    <url type="vcs-browser">https://github.com/angryip/ipscan/</url>
+    <url type="contribute">https://angryip.org/contribute/</url>
+
+    <launchable type="desktop-id">org.angryip.ipscan.desktop</launchable>
+    <requires>
+        <internet>always</internet>
+    </requires>
+
+    <releases>
+        <release version="3.9.1" date="2023-02-11">
+            <url>https://github.com/angryip/ipscan/releases/tag/3.9.1</url>
+        </release>
+    </releases>
+</component>
