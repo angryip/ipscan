@@ -82,7 +82,7 @@ public class FeederActions {
 				};
 
 				for (var networkInterface : getNetworkInterfaces()) {
-					var addresses = networkInterface.getInterfaceAddresses();
+					var addresses = new java.util.ArrayList<>(networkInterface.getInterfaceAddresses());
 					addresses.sort(comparing(i -> i.getAddress().getAddress().length));
 					for (var ifaddr : addresses) {
 						if (ifaddr == null) continue;
