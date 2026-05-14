@@ -53,7 +53,7 @@ public class SQLExporter extends AbstractExporter {
 			var result = results[i];
 			output.print(COMMA);
 			output.print(" ");
-			output.print("'" + result + "'");
+			output.print("'" + result.toString().replace("'", "''") + "'");
 		}
 		output.println(");");
 	}
