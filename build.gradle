@@ -29,7 +29,7 @@ String exec(def line, String dir = ".", boolean failOnError = true) {
 
 version = exec("git describe --tags", ".", false) ?: "unknown"
 
-sourceCompatibility = targetCompatibility = 17
+java.sourceCompatibility = java.targetCompatibility = 17
 
 def javaModules = ["java.base", "java.prefs", "java.logging", "jdk.crypto.ec"]
 project.ext.set("javaModules", javaModules)
