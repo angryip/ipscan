@@ -82,8 +82,8 @@ public class FeederActions {
 				};
 
 				for (var networkInterface : getNetworkInterfaces()) {
-					var addresses = new java.util.ArrayList<>(networkInterface.getInterfaceAddresses());
-					addresses.sort(comparing(i -> i.getAddress().getAddress().length));
+					var addresses = networkInterface.getInterfaceAddresses();
+					addresses = addresses.stream().sorted(comparing(i -> i.getAddress().getAddress().length)).toList();
 					for (var ifaddr : addresses) {
 						if (ifaddr == null) continue;
 						var address = ifaddr.getAddress();
