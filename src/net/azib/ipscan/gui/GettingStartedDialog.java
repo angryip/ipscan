@@ -34,10 +34,11 @@ public class GettingStartedDialog extends AbstractModalDialog {
 	protected void populateShell() {
 		var currentDisplay = Display.getCurrent();
 		var parent = currentDisplay != null ? currentDisplay.getActiveShell() : null;
-		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
+		shell = new Shell(parent, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM | SWT.RESIZE);
 
 		shell.setText(getLabel("title.gettingStarted"));
 		shell.setSize(new Point(600, 300));
+		shell.setMinimumSize(new Point(520, 300));
 
 		var iconLabel = new Label(shell, SWT.ICON);
 		iconLabel.setLocation(10, 10);
@@ -61,14 +62,13 @@ public class GettingStartedDialog extends AbstractModalDialog {
 		nextButton = new Button(shell, SWT.NONE);
 		nextButton.setText(getLabel("button.next"));
 		nextButton.setFocus();
-		
-		positionButtons(nextButton, closeButton);
-		allowReports.setBounds(leftBound, nextButton.getBounds().y, allowReports.getSize().x, nextButton.getBounds().height);
-		
+
 		gettingStartedText = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
-		gettingStartedText.setBounds(leftBound, 10, shell.getClientArea().width - leftBound - 10, closeButton.getLocation().y - 20);
 		gettingStartedText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
-		
+
+		shell.addListener(SWT.Resize, e -> layoutControls(leftBound));
+		layoutControls(leftBound);
+
 		closeButton.addListener(SWT.Selection, e -> close());
 		nextButton.addListener(SWT.Selection, e -> displayActivePage());
 
@@ -89,6 +89,12 @@ public class GettingStartedDialog extends AbstractModalDialog {
 			shell.setDefaultButton(closeButton);
 			closeButton.setFocus();
 		}
+	}
+
+	private void layoutControls(int leftBound) {
+		positionButtons(nextButton, closeButton);
+		allowReports.setBounds(leftBound, nextButton.getBounds().y, allowReports.getSize().x, nextButton.getBounds().height);
+		gettingStartedText.setBounds(leftBound, 10, shell.getClientArea().width - leftBound - 10, closeButton.getLocation().y - 20);
 	}
 	
 }
