@@ -24,7 +24,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @author Anton Keks
  */
 public final class Labels {
-	public static final String[] LANGUAGES = {"system", "en", "ru", "de", "hu", "lt", "es", "fi", "fr", "it","ja", "ga_IE", "ku", "tr", "gr", "pt_BR", "zh_CN", "zh_TW"};
+	public static final String[] LANGUAGES = {"system", "en", "ru", "de", "hu", "lt", "es", "fi", "fr", "it", "ja", "ga_IE", "ku", "tr", "gr", "pt_BR", "zh_CN", "zh_TW"};
 	private static final Logger LOG = Logger.getLogger(Labels.class.getName());
 	private static Labels instance;
 
