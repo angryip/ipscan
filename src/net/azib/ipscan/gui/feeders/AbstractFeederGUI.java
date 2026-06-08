@@ -78,14 +78,14 @@ public abstract class AbstractFeederGUI extends Composite implements FeederCreat
 						localName = InetAddress.getLocalHost().getHostName();
 					}
 					catch (UnknownHostException e) {
-						localName = localInterface.getAddress().getHostName();
+						localName = localInterface != null ? localInterface.getAddress().getHostName() : "localhost";
 					}
 				}
 				Display.getDefault().asyncExec(() -> {
 					// fill the IP and hostname fields with local hostname and IP addresses
 					if ("".equals(hostnameText.getText()))
 						hostnameText.setText(localName);
-					if ("".equals(ipText.getText())) {
+					if ("".equals(ipText.getText()) && localInterface != null) {
 						ipText.setText(localInterface.getAddress().getHostAddress());
 						afterLocalHostInfoFilled(localInterface);
 					}
