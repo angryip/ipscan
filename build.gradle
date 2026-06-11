@@ -214,7 +214,7 @@ def deb(def platform, def arch, def moreDeps = '') {
         ant.fileset(dir: "ext/deb-bundle")
     }
     ant.copy(file: "build/libs/${project.name}-${platform}-${version}.jar", todir: "${dist}/usr/lib/ipscan")
-    ant.copy(file: "resources/images/icon128.png", tofile: "${dist}/usr/share/pixmaps/ipscan.png")
+    ant.copy(file: "resources/images/icon128.png", tofile: "${dist}/usr/share/pixmaps/net.azlib.ipscan.png")
 
     ant.replace(file: "${dist}/DEBIAN/control") {
         ant.replacefilter(token: "VERSION", value: version)
