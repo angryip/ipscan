@@ -124,7 +124,7 @@ def packageTask(String platform, Closure doMore) {
             }
         }
 
-        archiveBaseName.set(project.name + '-' + platform)
+        archiveFileName.set("${project.name}-${version}-${platform == 'win64' ? 'win' : platform}.jar")
         from {
            configurations[platform].collect {
                it.isDirectory() ? it : zipTree(it)
@@ -170,9 +170,10 @@ def packageTask(String platform, Closure doMore) {
 }
 
 def minimizeTask(String platform, Closure doMore) {
+    def suffix = platform == 'win64' ? 'win' : platform
     return tasks.create("${platform}.min", proguard.gradle.ProGuardTask) {
-        injars "build/libs/${project.name}-${platform}-${version}.jar"
-        outjars "build/libs/${project.name}-${platform}-${version}.min.jar"
+        injars "build/libs/${project.name}-${version}-${suffix}.jar"
+        outjars "build/libs/${project.name}-${version}-${suffix}.min.jar"
         (project.ext.javaModules + "java.desktop").each {
             libraryjars System.getProperty('java.home') + "/jmods/${it}.jmod"
         }
@@ -193,18 +194,19 @@ def minimizeTask(String platform, Closure doMore) {
         }
 
         doLast {
-            ant.move(file: "build/libs/${project.name}-${platform}-${version}.min.jar", tofile: "build/libs/${project.name}-${platform}-${version}.jar")
+            ant.move(file: "build/libs/${project.name}-${version}-${suffix}.min.jar", tofile: "build/libs/${project.name}-${version}-${suffix}.jar")
             doMore()
         }
     }
 }
 
 def winLauncher(def platform) {
-    ant.concat(destfile: "build/libs/${project.name}-${platform}-${version}.exe", binary: true) {
+    def suffix = platform == 'win64' ? 'win' : platform
+    ant.concat(destfile: "build/libs/${project.name}-${version}-${suffix}.exe", binary: true) {
         ant.fileset(file: "ext/win-launcher/launcher.exe")
-        ant.fileset(file: "build/libs/${project.name}-${platform}-${version}.jar")
+        ant.fileset(file: "build/libs/${project.name}-${version}-${suffix}.jar")
     }
-    ant.delete(file: "build/libs/${project.name}-${platform}-${version}.jar")
+    ant.delete(file: "build/libs/${project.name}-${version}-${suffix}.jar")
 }
 
 def deb(def platform, def arch, def moreDeps = '') {
@@ -213,7 +215,7 @@ def deb(def platform, def arch, def moreDeps = '') {
     ant.copy(todir: dist) {
         ant.fileset(dir: "ext/deb-bundle")
     }
-    ant.copy(file: "build/libs/${project.name}-${platform}-${version}.jar", todir: "${dist}/usr/lib/ipscan")
+    ant.copy(file: "build/libs/${project.name}-${version}-${platform}.jar", todir: "${dist}/usr/lib/ipscan")
     ant.copy(file: "resources/images/icon128.png", tofile: "${dist}/usr/share/pixmaps/net.azib.ipscan.png")
 
     ant.replace(file: "${dist}/DEBIAN/control") {
@@ -222,7 +224,7 @@ def deb(def platform, def arch, def moreDeps = '') {
         ant.replacefilter(token: "DEPENDS ", value: moreDeps)
     }
 
-    exec("chmod +x usr/bin/ipscan usr/lib/ipscan/${project.name}-${platform}-${version}.jar", dist)
+    exec("chmod +x usr/bin/ipscan usr/lib/ipscan/${project.name}-${version}-${platform}.jar", dist)
     exec("fakeroot dpkg-deb -Zxz -b deb ${project.name}_${version}_${arch}.deb", "$dist/..")
     ant.delete(dir: dist)
 }
@@ -252,7 +254,7 @@ def macLauncher(def platform) {
     }
 
     def target = "${dist}/${name}.app/Contents/MacOS"
-    ant.move(file: "${dist}/${project.name}-${platform}-${version}.jar", todir: target)
+    ant.move(file: "${dist}/${project.name}-${version}-${platform}.jar", todir: target)
     jlink(target, "jre")
 
     ant.replace(file: "${dist}/${name}.app/Contents/Info.plist") {
@@ -263,7 +265,7 @@ def macLauncher(def platform) {
 
     ant.delete(file: "${dist}/${name}.app/Contents/MacOS/jre/bin/keytool")
 
-    def zipName = "${dist}/${project.name}-${platform}-${version}.zip"
+    def zipName = "${dist}/${project.name}-${version}-${platform}.zip"
     exec("zip -R $zipName * -x*.zip", dist)
 
     if (System.getenv("APPLE_USER")) {
@@ -321,7 +323,7 @@ task 'win-installer'(dependsOn: 'win64') {
         jlink(installerDir, "AppFiles/jre")
         ant.copy(file: "resources/images/icon.ico", todir: "${installerDir}/AppFiles")
         ant.copy(file: "LICENSE", tofile: "${installerDir}/AppFiles/license.txt")
-        ant.copy(file: "build/libs/${project.name}-win64-${version}.exe", tofile:"${installerDir}/AppFiles/ipscan.exe")
+        ant.copy(file: "build/libs/${project.name}-${version}-win.exe", tofile:"${installerDir}/AppFiles/ipscan.exe")
         if (platform.startsWith('win')) {
             exec("cmd /c $nsis\\makensis.exe Installer\\Installer.nsi", installerDir)
         }
