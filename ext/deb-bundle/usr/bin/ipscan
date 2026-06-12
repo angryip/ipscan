@@ -1,5 +1,5 @@
 #!/bin/sh
 java=$JAVA_HOME/bin/java
 [ ! -e "$java" ] && java=java
-"$java" --add-opens java.base/java.net=ALL-UNNAMED -jar /usr/lib*/ipscan/ipscan*.jar "$@"
+"$java" --add-opens java.base/java.net=ALL-UNNAMED --enable-native-access=ALL-UNNAMED -jar /usr/lib*/ipscan/ipscan*.jar "$@"
 [ $? != 0 ] && notify-send "You need Java/OpenJDK 21+ to run ipscan"
