@@ -29,5 +29,6 @@ mac:
 	./gradlew mac
 
 macArm64:
-	./gradlew macArm64
+	JAVA_HOME=$$(/usr/libexec/java_home -v 21) ./gradlew macArm64
+	@ls -lh build/libs/*-macArm64.zip
 
