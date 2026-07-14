@@ -27,4 +27,7 @@ win64:
 	
 mac:
 	./gradlew mac
-	
+
+macArm64:
+	./gradlew macArm64
+
