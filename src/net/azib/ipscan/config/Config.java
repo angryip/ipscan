@@ -1,5 +1,6 @@
 package net.azib.ipscan.config;
 
+import java.io.File;
 import java.security.SecureRandom;
 import java.util.Locale;
 import java.util.prefs.Preferences;
@@ -62,6 +63,26 @@ public final class Config {
 
 	public Preferences getPreferences() {
 		return preferences;
+	}
+
+	/**
+	 * @return directory where user data (e.g. comments) is stored persistently.
+	 *         Prefers a "config" directory next to the running jar/exe (portable mode),
+	 *         falling back to the user's home directory if it is not writable.
+	 *         This survives program updates and restarts.
+	 */
+	public File getConfigDir() {
+		try {
+			var codeSource = Config.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+			var baseDir = new File(codeSource);
+			if (baseDir.isFile()) baseDir = baseDir.getParentFile();
+			var portableDir = new File(baseDir, "config");
+			if (!portableDir.exists()) portableDir.mkdirs();
+			if (portableDir.canWrite()) return portableDir;
+		}
+		catch (Exception ignore) {
+		}
+		return new File(System.getProperty("user.home"), ".ipscan");
 	}
 
 	/** 

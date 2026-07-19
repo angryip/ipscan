@@ -5,6 +5,7 @@
  */
 package net.azib.ipscan.gui;
 
+import net.azib.ipscan.config.CommentsConfig;
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResult.ResultType;
@@ -13,6 +14,7 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
 import net.azib.ipscan.gui.actions.ColumnsActions;
@@ -20,6 +22,7 @@ import net.azib.ipscan.gui.actions.CommandsMenuActions;
 import net.azib.ipscan.gui.actions.ToolsActions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.*;
 
 import java.util.List;
@@ -32,10 +35,11 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
  * 
  * @author Anton Keks
  */
-public class ResultTable extends Table implements FetcherRegistryUpdateListener, StateTransitionListener {
+	public class ResultTable extends Table implements FetcherRegistryUpdateListener, StateTransitionListener {
 	private ScanningResultList scanningResults;
 	private GUIConfig guiConfig;
 	private FetcherRegistry fetcherRegistry;
+	private CommentsConfig commentsConfig;
 	
 	private Image[] listImages = new Image[ResultType.values().length];
 
@@ -43,13 +47,16 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 
 	private Listener columnResizeListener;
 
-	public ResultTable(Shell parent, GUIConfig guiConfig, FetcherRegistry fetcherRegistry,
+	private Text inlineCommentEditor;
+
+	public ResultTable(Shell parent, GUIConfig guiConfig, FetcherRegistry fetcherRegistry, CommentsConfig commentsConfig,
 							   ScanningResultList scanningResultList, StateMachine stateMachine,
 							   ColumnsActions.ColumnClick columnClickListener, ColumnsActions.ColumnResize columnResizeListener) {
 		super(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		this.guiConfig = guiConfig;
 		this.scanningResults = scanningResultList;
 		this.fetcherRegistry = fetcherRegistry;
+		this.commentsConfig = commentsConfig;
 		
 		setHeaderVisible(true);
 		setLinesVisible(true);
@@ -72,7 +79,10 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 		
 		// this one populates table dynamically, taking data from ScanningResultList
 		addListener(SWT.SetData, new SetDataListener());
-		
+
+		// single-click on the comment cell opens an inline editor
+		addListener(SWT.MouseDown, new InlineCommentEditListener());
+
 		// listen to state machine events
 		stateMachine.addTransitionListener(this);
 	}
@@ -230,6 +240,80 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 			}			 
 			item.setText(resultStrings);
 			item.setImage(0, listImages[scanningResult.getType().ordinal()]);
+		}
+	}
+
+	/**
+	 * Opens an inline text editor when the comment cell is double-clicked,
+	 * and saves the edited comment on focus loss or Enter.
+	 */
+	final class InlineCommentEditListener implements Listener {
+		public void handleEvent(Event event) {
+			var commentColumn = scanningResults.getFetcherIndex(CommentFetcher.ID);
+			if (commentColumn < 0) return;
+
+			var item = getItem(new Point(event.x, event.y));
+			if (item == null) return;
+
+			var row = indexOf(item);
+			if (row < 0) return;
+
+			// determine which column was double-clicked based on x offset
+			var x = event.x;
+			var col = -1;
+			for (var c = 0; c < getColumnCount(); c++) {
+				x -= getColumn(c).getWidth();
+				if (x <= 0) {
+					col = c;
+					break;
+				}
+			}
+			if (col != commentColumn) return;
+
+			openEditor(row, commentColumn, item);
+		}
+
+		private void openEditor(int row, int column, TableItem item) {
+			if (inlineCommentEditor != null && !inlineCommentEditor.isDisposed())
+				inlineCommentEditor.dispose();
+
+			var result = scanningResults.getResult(row);
+			var current = commentsConfig.getComment(result);
+
+			var rect = item.getTextBounds(column);
+			if (rect == null) return;
+
+			inlineCommentEditor = new Text(ResultTable.this, SWT.BORDER | SWT.SINGLE);
+			inlineCommentEditor.setText(current != null ? current : "");
+			inlineCommentEditor.setBounds(rect);
+			inlineCommentEditor.selectAll();
+			inlineCommentEditor.setFocus();
+
+			var commit = new Runnable() {
+				public void run() {
+					if (inlineCommentEditor == null || inlineCommentEditor.isDisposed()) return;
+					var newComment = inlineCommentEditor.getText();
+					inlineCommentEditor.dispose();
+					inlineCommentEditor = null;
+					commentsConfig.setComment(result, newComment);
+					updateResult(row, CommentFetcher.ID, newComment);
+				}
+			};
+
+			inlineCommentEditor.addListener(SWT.FocusOut, e -> commit.run());
+			inlineCommentEditor.addListener(SWT.Traverse, e -> {
+				if (e.detail == SWT.TRAVERSE_RETURN) {
+					commit.run();
+					e.doit = false;
+				}
+				else if (e.detail == SWT.TRAVERSE_ESCAPE) {
+					if (inlineCommentEditor != null && !inlineCommentEditor.isDisposed()) {
+						inlineCommentEditor.dispose();
+						inlineCommentEditor = null;
+					}
+					e.doit = false;
+				}
+			});
 		}
 	}
 
