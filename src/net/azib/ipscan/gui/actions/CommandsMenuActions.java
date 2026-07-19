@@ -5,12 +5,14 @@
  */
 package net.azib.ipscan.gui.actions;
 
+import net.azib.ipscan.config.DefaultOpenerConfig;
 import net.azib.ipscan.config.Labels;
 import net.azib.ipscan.config.OpenersConfig;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.fetchers.OpenerColumnFetcher;
 import net.azib.ipscan.gui.DetailsWindow;
 import net.azib.ipscan.gui.EditOpenersDialog;
 import net.azib.ipscan.gui.ResultTable;
@@ -39,8 +41,10 @@ public class CommandsMenuActions {
 	public ShowOpenersMenu showOpenersMenu;
 	public EditOpeners editOpeners;
 	public SelectOpener selectOpener;
+	public OpenBy openBy;
+	public SetDefaultOpener setDefaultOpener;
 
-	public CommandsMenuActions(Details details, Delete delete, Rescan rescan, CopyIP copyIP, CopyIPDetails copyIPDetails, ShowOpenersMenu showOpenersMenu, EditOpeners editOpeners, SelectOpener selectOpener) {
+	public CommandsMenuActions(Details details, Delete delete, Rescan rescan, CopyIP copyIP, CopyIPDetails copyIPDetails, ShowOpenersMenu showOpenersMenu, EditOpeners editOpeners, SelectOpener selectOpener, OpenBy openBy, SetDefaultOpener setDefaultOpener) {
 		this.details = details;
 		this.delete = delete;
 		this.rescan = rescan;
@@ -49,6 +53,8 @@ public class CommandsMenuActions {
 		this.showOpenersMenu = showOpenersMenu;
 		this.editOpeners = editOpeners;
 		this.selectOpener = selectOpener;
+		this.openBy = openBy;
+		this.setDefaultOpener = setDefaultOpener;
 	}
 
 	/**
@@ -257,6 +263,73 @@ public class CommandsMenuActions {
 				finally {
 					statusBar.setStatusText(null);
 				}
+			}
+		}
+	}
+
+	/**
+	 * Opens the selected IP(s) using each one's configured default Opener.
+	 * Does nothing if no default Opener is set for an IP.
+	 */
+	public static final class OpenBy implements Listener {
+
+		private final DefaultOpenerConfig defaultOpenerConfig;
+		private final OpenersConfig openersConfig;
+		private final StatusBar statusBar;
+		private final ResultTable resultTable;
+		private final OpenerLauncher openerLauncher;
+
+		public OpenBy(DefaultOpenerConfig defaultOpenerConfig, OpenersConfig openersConfig, StatusBar statusBar, ResultTable resultTable, OpenerLauncher openerLauncher) {
+			this.defaultOpenerConfig = defaultOpenerConfig;
+			this.openersConfig = openersConfig;
+			this.statusBar = statusBar;
+			this.resultTable = resultTable;
+			this.openerLauncher = openerLauncher;
+		}
+
+		public void handleEvent(Event event) {
+			checkSelection(resultTable);
+			var selectionIndices = resultTable.getSelectionIndices();
+			for (var i : selectionIndices) {
+				var ip = resultTable.getScanningResults().getResult(i).getAddress().getHostAddress();
+				var openerName = defaultOpenerConfig.get(ip);
+				if (openerName == null) continue;
+				var opener = openersConfig.getOpener(openerName);
+				if (opener == null) continue;
+				try {
+					statusBar.setStatusText(Labels.getLabel("state.opening") + openerName);
+					openerLauncher.launch(opener, i);
+					Thread.sleep(100);
+				}
+				catch (InterruptedException ignore) {}
+				finally {
+					statusBar.setStatusText(null);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Sets the default Opener for all currently selected IP(s).
+	 * Used from the "Set Opener" submenu.
+	 */
+	public static final class SetDefaultOpener implements Listener {
+
+		private final DefaultOpenerConfig defaultOpenerConfig;
+		private final ResultTable resultTable;
+
+		public SetDefaultOpener(DefaultOpenerConfig defaultOpenerConfig, ResultTable resultTable) {
+			this.defaultOpenerConfig = defaultOpenerConfig;
+			this.resultTable = resultTable;
+		}
+
+		public void handleEvent(Event event) {
+			checkSelection(resultTable);
+			var openerName = ((MenuItem) event.widget).getData().toString();
+			for (var i : resultTable.getSelectionIndices()) {
+				var ip = resultTable.getScanningResults().getResult(i).getAddress().getHostAddress();
+				defaultOpenerConfig.set(ip, openerName);
+				resultTable.updateResult(i, OpenerColumnFetcher.ID, openerName);
 			}
 		}
 	}
