@@ -20,6 +20,8 @@ import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.OpenerColumnFetcher;
+import net.azib.ipscan.fetchers.OpenerLaunchFetcher;
+import net.azib.ipscan.gui.actions.OpenerLauncher;
 import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsMenuActions;
@@ -46,7 +48,8 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 	private CommentsConfig commentsConfig;
 	private OpenersConfig openersConfig;
 	private DefaultOpenerConfig defaultOpenerConfig;
-	
+	private OpenerLauncher openerLauncher;
+
 	private Image[] listImages = new Image[ResultType.values().length];
 
 	private Listener columnClickListener;
@@ -58,7 +61,7 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 	public ResultTable(Shell parent, GUIConfig guiConfig, FetcherRegistry fetcherRegistry, CommentsConfig commentsConfig,
 							   ScanningResultList scanningResultList, StateMachine stateMachine,
 							   ColumnsActions.ColumnClick columnClickListener, ColumnsActions.ColumnResize columnResizeListener,
-							   OpenersConfig openersConfig, DefaultOpenerConfig defaultOpenerConfig) {
+							   OpenersConfig openersConfig, DefaultOpenerConfig defaultOpenerConfig, OpenerLauncher openerLauncher) {
 		super(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		this.guiConfig = guiConfig;
 		this.scanningResults = scanningResultList;
@@ -66,31 +69,35 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 		this.commentsConfig = commentsConfig;
 		this.openersConfig = openersConfig;
 		this.defaultOpenerConfig = defaultOpenerConfig;
-		
+		this.openerLauncher = openerLauncher;
+
 		setHeaderVisible(true);
 		setLinesVisible(true);
-		
+
 		this.columnClickListener = columnClickListener;
 		this.columnResizeListener = columnResizeListener;
 		fetcherRegistry.addListener(this);
 		// add columns according to fetchers
 		handleUpdateOfSelectedFetchers(fetcherRegistry);
-		
+
 		// load button images
 		listImages[UNKNOWN.ordinal()] = icon("list/unknown");
 		listImages[DEAD.ordinal()] = icon("list/dead");
 		listImages[ALIVE.ordinal()] = icon("list/alive");
 		listImages[WITH_PORTS.ordinal()] = icon("list/ports");
-		
+
 		addListener(SWT.KeyDown, new CommandsMenuActions.Delete(this, stateMachine));
 		addListener(SWT.KeyDown, new CommandsMenuActions.CopyIP(this));
 		addListener(SWT.KeyDown, new ToolsActions.SelectAll(this));
-		
+
 		// this one populates table dynamically, taking data from ScanningResultList
 		addListener(SWT.SetData, new SetDataListener());
 
 		// double-click on the comment cell opens an inline editor, on the opener cell a dropdown to pick an Opener
 		addListener(SWT.MouseDoubleClick, new DoubleClickColumnHandler());
+
+		// single-click on the Opener column's triangle icon launches the default Opener for that IP
+		addListener(SWT.MouseDown, new OpenerIconClickHandler());
 
 		// listen to state machine events
 		stateMachine.addTransitionListener(this);
@@ -110,7 +117,9 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 		
 		// add the new selected columns back
 		for (var fetcher : fetcherRegistry.getSelectedFetchers()) {
-			var tableColumn = new TableColumn(this, SWT.NONE);
+			// the Opener Launch column centers its triangle icon
+			var style = fetcher.getId().equals(OpenerLaunchFetcher.ID) ? SWT.CENTER : SWT.NONE;
+			var tableColumn = new TableColumn(this, style);
 			tableColumn.setWidth(guiConfig.getColumnWidth(fetcher));
 			tableColumn.setData(fetcher);	// this is used in some listeners in ColumnsActions
 			tableColumn.addListener(SWT.Selection, columnClickListener);
@@ -382,6 +391,57 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 			menu.setLocation(location);
 			menu.setVisible(true);
 		}
+	}
+
+	/**
+	 * Single-click on the triangle icon in the Opener column launches the IP
+	 * using its configured default Opener.
+	 */
+	final class OpenerIconClickHandler implements Listener {
+		public void handleEvent(Event event) {
+			try {
+				if (event.button != 1) return;
+
+				var item = getItem(new Point(event.x, event.y));
+				if (item == null) return;
+
+				var row = indexOf(item);
+				if (row < 0 || row >= getItemCount()) return;
+
+				// the whole Opener Launch column is clickable
+				var launchCol = scanningResults.getFetcherIndex(OpenerLaunchFetcher.ID);
+				if (launchCol < 0) return;
+				var x = event.x;
+				var col = -1;
+				for (var c = 0; c < getColumnCount(); c++) {
+					x -= getColumn(c).getWidth();
+					if (x <= 0) {
+						col = c;
+						break;
+					}
+				}
+				if (col != launchCol) return;
+
+				openWithDefaultOpener(row);
+			}
+			catch (Exception e) {
+				// never let an exception break the SWT event loop (which would also break the context menu)
+			}
+		}
+	}
+
+	private void openWithDefaultOpener(int row) {
+		var result = scanningResults.getResult(row);
+		if (result == null) return;
+
+		var ip = result.getAddress().getHostAddress();
+		var openerName = defaultOpenerConfig.get(ip);
+		if (openerName == null) return;
+
+		var opener = openersConfig.getOpener(openerName);
+		if (opener == null) return;
+
+		openerLauncher.launch(opener, row);
 	}
 
 	public void transitionTo(ScanningState state, Transition transition) {
