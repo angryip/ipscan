@@ -134,4 +134,20 @@ public class GUIConfig {
 	public void setColumnWidth(Fetcher fetcher, int width) {
 		preferences.putInt("columnWidth." + fetcher.getId(), width);
 	}
+
+	/**
+	 * @return the saved visual order of column fetcher ids, or null if none is stored
+	 */
+	public String[] getColumnOrder() {
+		var order = preferences.get("columnOrder", null);
+		if (order == null || order.isEmpty()) return null;
+		return order.split(",");
+	}
+
+	/**
+	 * Persist the visual order of column fetcher ids
+	 */
+	public void setColumnOrder(String[] fetcherIds) {
+		preferences.put("columnOrder", String.join(",", fetcherIds));
+	}
 }

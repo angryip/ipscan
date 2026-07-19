@@ -77,6 +77,13 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	}
 
 	/**
+	 * @return the number of currently stored results (rows in the table)
+	 */
+	public synchronized int getItemCount() {
+		return resultList.size();
+	}
+
+	/**
 	 * @return feeder configuration information that was used for the last scan
 	 */
 	public String getFeederInfo() {
@@ -266,6 +273,32 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 			index++;
 		}
 		return -1;
+	}
+
+	/**
+	 * Re-aligns the cached fetcher list and all stored results to a new selected-fetcher
+	 * order (e.g. after a fetcher was added or the columns were reordered). Existing values
+	 * are preserved at their fetchers' new positions; slots for newly added fetchers are left
+	 * empty (null) so they can be populated afterwards.
+	 *
+	 * @param newSelected the new selected fetchers in their desired order
+	 */
+	public synchronized void syncFetchers(List<Fetcher> newSelected) {
+		var oldOrder = new ArrayList<Fetcher>(selectedFetchers);
+		selectedFetchers = new ArrayList<>(newSelected);
+
+		for (var result : resultList) {
+			var oldValues = result.getValues();
+			var newValues = new Object[newSelected.size()];
+			for (var i = 0; i < newSelected.size(); i++) {
+				var oldPos = oldOrder.indexOf(newSelected.get(i));
+				if (oldPos >= 0 && oldPos < oldValues.size())
+					newValues[i] = oldValues.get(oldPos);
+				else
+					newValues[i] = null;
+			}
+			result.setValues(newValues);
+		}
 	}
 
 	/**

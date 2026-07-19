@@ -29,9 +29,12 @@ public class ColumnsActions {
 
 		public void handleEvent(Event event) {
 			var column = (TableColumn) event.widget;
-			// do not save the width of the last column on Linux, because in GTK 
+			var table = column.getParent();
+			// do not save the width of the last (visual) column on Linux, because in GTK 
 			// it is stretched to the width of the whole table and therefore is incorrect
-			if (Platform.LINUX && column.getParent().getColumn(column.getParent().getColumnCount()-1) == column) 
+			var order = table.getColumnOrder();
+			var lastVisualModelIndex = (order != null && order.length > 0) ? order[order.length - 1] : table.getColumnCount() - 1;
+			if (Platform.LINUX && table.getColumn(lastVisualModelIndex) == column)
 				return;
 
 			// save column width
@@ -104,7 +107,13 @@ public class ColumnsActions {
 				table.setSortDirection(table.getSortDirection() == SWT.UP ? SWT.DOWN : SWT.UP);
 			}
 
-			scanningResultList.sort(table.indexOf(tableColumn), table.getSortDirection() == SWT.UP);
+			// sort by the data (fetcher) index of the clicked column, not its visual position,
+			// so drag-reordering of columns does not break sorting
+			var fetcher = (Fetcher) tableColumn.getData();
+			var fetcherIndex = scanningResultList.getFetcherIndex(fetcher.getId());
+			if (fetcherIndex < 0) return;
+
+			scanningResultList.sort(fetcherIndex, table.getSortDirection() == SWT.UP);
 			((ResultTable)table).updateResults();
 		}
 	}

@@ -150,14 +150,16 @@ public class OpenerLauncher {
 	private Object getScannedValue(int selectedItem, String fetcherId) {
 		var fetcherIndex = fetcherRegistry.getSelectedFetcherIndex(fetcherId);
 		if (fetcherIndex < 0) {
-			throw new UserErrorException("opener.unknownFetcher", fetcherId);
+			// the referenced fetcher is not currently selected (e.g. its column was hidden);
+			// fall back to the IP address so the opener still works
+			return scanningResults.getResult(selectedItem).getAddress().getHostAddress();
 		}
 
 		var value = scanningResults.getResult(selectedItem).getValues().get(fetcherIndex);
 		
-		if ((value == null || value instanceof Empty) && fetcherId.equals(HostnameFetcher.ID)) {
-			// small innocent hardcode:
-			// if we request a hostname, but get null, use the IP
+		if (value == null || value instanceof Empty) {
+			// if the requested value is missing/empty, fall back to the IP address so the
+			// opener still works (e.g. hostname could not be resolved, ports not scanned, etc.)
 			value = scanningResults.getResult(selectedItem).getAddress().getHostAddress();
 		}
 		

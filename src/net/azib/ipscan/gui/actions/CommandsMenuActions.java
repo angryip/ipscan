@@ -12,8 +12,8 @@ import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.fetchers.CommentFetcher;
+import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
-import net.azib.ipscan.fetchers.OpenerColumnFetcher;
 import net.azib.ipscan.fetchers.OpenerColumnFetcher;
 import net.azib.ipscan.gui.DetailsWindow;
 import net.azib.ipscan.gui.EditOpenersDialog;
@@ -87,19 +87,20 @@ public class CommandsMenuActions {
 			// double-click on the comment or opener column is handled by the inline editor / opener dropdown,
 			// so it must not open the Details window
 			if (event.type == SWT.MouseDoubleClick) {
-				var commentCol = resultTable.getScanningResults().getFetcherIndex(CommentFetcher.ID);
-				var openerCol = resultTable.getScanningResults().getFetcherIndex(OpenerColumnFetcher.ID);
-				if (commentCol >= 0 || openerCol >= 0) {
-					var x = event.x;
-					var col = -1;
-					for (var c = 0; c < resultTable.getColumnCount(); c++) {
-						x -= resultTable.getColumn(c).getWidth();
-						if (x <= 0) {
-							col = c;
-							break;
-						}
+				var x = event.x;
+				var col = -1;
+				for (var c = 0; c < resultTable.getColumnCount(); c++) {
+					x -= resultTable.getColumn(c).getWidth();
+					if (x <= 0) {
+						col = c;
+						break;
 					}
-					if (col == commentCol || col == openerCol) return;
+				}
+				if (col >= 0) {
+					var order = resultTable.getColumnOrder();
+					var modelCol = (order != null && col < order.length) ? order[col] : col;
+					var clickedId = ((Fetcher) resultTable.getColumn(modelCol).getData()).getId();
+					if (CommentFetcher.ID.equals(clickedId) || OpenerColumnFetcher.ID.equals(clickedId)) return;
 				}
 			}
 

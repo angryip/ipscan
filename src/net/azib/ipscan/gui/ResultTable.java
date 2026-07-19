@@ -13,15 +13,21 @@ import net.azib.ipscan.config.OpenersConfig;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.ScanningResultList;
+import net.azib.ipscan.core.UserErrorException;
+import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.fetchers.CommentFetcher;
+import net.azib.ipscan.fetchers.MACFetcher;
+import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.fetchers.IPFetcher;
 import net.azib.ipscan.fetchers.OpenerColumnFetcher;
 import net.azib.ipscan.fetchers.OpenerLaunchFetcher;
 import net.azib.ipscan.gui.actions.OpenerLauncher;
+import net.azib.ipscan.gui.menu.ColumnVisibilityMenu;
 import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsMenuActions;
@@ -29,8 +35,11 @@ import net.azib.ipscan.gui.actions.ToolsActions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static net.azib.ipscan.core.ScanningResult.ResultType.*;
@@ -49,6 +58,7 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 	private OpenersConfig openersConfig;
 	private DefaultOpenerConfig defaultOpenerConfig;
 	private OpenerLauncher openerLauncher;
+	private StateMachine stateMachine;
 
 	private Image[] listImages = new Image[ResultType.values().length];
 
@@ -57,6 +67,10 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 	private Listener columnResizeListener;
 
 	private Text inlineCommentEditor;
+
+	/** custom header hover tooltip (width-capped, wrapping) */
+	private Shell tooltipShell;
+	private Text tooltipLabel;
 
 	public ResultTable(Shell parent, GUIConfig guiConfig, FetcherRegistry fetcherRegistry, CommentsConfig commentsConfig,
 							   ScanningResultList scanningResultList, StateMachine stateMachine,
@@ -70,6 +84,7 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 		this.openersConfig = openersConfig;
 		this.defaultOpenerConfig = defaultOpenerConfig;
 		this.openerLauncher = openerLauncher;
+		this.stateMachine = stateMachine;
 
 		setHeaderVisible(true);
 		setLinesVisible(true);
@@ -99,6 +114,18 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 		// single-click on the Opener column's triangle icon launches the default Opener for that IP
 		addListener(SWT.MouseDown, new OpenerIconClickHandler());
 
+		// right-click on the column header shows the column visibility (toggle) menu,
+		// otherwise the row context menu is used (it is set via setMenu by MainWindow)
+		var columnVisibilityMenu = new ColumnVisibilityMenu(getShell(), fetcherRegistry, this);
+		addListener(SWT.MenuDetect, new HeaderRightClickHandler(columnVisibilityMenu));
+
+		// header hover tooltip (width-capped, wrapping)
+		// header hover tooltip: the table header is a separate native control, so MouseHover
+		// does not fire over it; we detect the header region via MouseMove instead
+		addListener(SWT.MouseMove, new HeaderTooltipHandler());
+		addListener(SWT.MouseExit, e -> hideTooltip());
+		addListener(SWT.MouseDown, e -> hideTooltip());
+
 		// listen to state machine events
 		stateMachine.addTransitionListener(this);
 	}
@@ -107,31 +134,158 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 	 * Rebuild column list according to selected fetchers
 	 */
 	public void handleUpdateOfSelectedFetchers(FetcherRegistry fetcherRegistry) {
-		// remove all items (otherwise they will be shown incorrectly)
-		removeAll();
-		
-		// remove all columns
+		// detect a newly added fetcher (compared to what we already have results for)
+		var newSelected = new ArrayList<Fetcher>(fetcherRegistry.getSelectedFetchers());
+		var previouslyKnown = scanningResults.getFetchers();
+		Fetcher addedFetcher = null;
+		for (var f : newSelected) {
+			if (!previouslyKnown.contains(f)) {
+				addedFetcher = f;
+				break;
+			}
+		}
+
+		// re-align stored results to the new fetcher order (keeps old values, null for new slot)
+		scanningResults.syncFetchers(newSelected);
+
+		// remove all columns (the rows/results are kept so the scanned list stays visible)
 		for (var column : getColumns()) {
 			column.dispose();
 		}
-		
-		// add the new selected columns back
-		for (var fetcher : fetcherRegistry.getSelectedFetchers()) {
+
+		// determine the visual order: use the saved order if it covers the current selection
+		var savedOrder = guiConfig.getColumnOrder();
+		var ordered = new ArrayList<Fetcher>(newSelected);
+		if (savedOrder != null) {
+			ordered.clear();
+			for (var id : savedOrder) {
+				for (var f : newSelected) {
+					if (f.getId().equals(id)) {
+						ordered.add(f);
+						break;
+					}
+				}
+			}
+			// append any newly added fetchers not present in the saved order
+			for (var f : newSelected) {
+				if (!ordered.contains(f)) ordered.add(f);
+			}
+		}
+
+		// the IP column must always be the very first column and must not be movable,
+		// so its status icon (the blue/green lamp) stays fixed at the first position
+		var ipFetcher = newSelected.stream()
+				.filter(f -> IPFetcher.ID.equals(f.getId()))
+				.findFirst().orElse(null);
+		if (ipFetcher != null) {
+			ordered.remove(ipFetcher);
+			ordered.add(0, ipFetcher);
+		}
+
+		// add the new selected columns back, in the (possibly saved) order
+		var idle = stateMachine.inState(ScanningState.IDLE);
+		for (var fetcher : ordered) {
 			// the Opener Launch column centers its triangle icon
 			var style = fetcher.getId().equals(OpenerLaunchFetcher.ID) ? SWT.CENTER : SWT.NONE;
 			var tableColumn = new TableColumn(this, style);
 			tableColumn.setWidth(guiConfig.getColumnWidth(fetcher));
 			tableColumn.setData(fetcher);	// this is used in some listeners in ColumnsActions
+			// IP column is never movable; others only when not scanning
+			tableColumn.setMoveable(idle && !IPFetcher.ID.equals(fetcher.getId()));
 			tableColumn.addListener(SWT.Selection, columnClickListener);
 			tableColumn.addListener(SWT.Resize, columnResizeListener);
+			tableColumn.addListener(SWT.Move, e -> saveColumnOrder());
 		}
 		updateColumnNames();
+
+		// force the (still present) rows to be re-rendered with the new column set
+		clearAll();
+
+		// persist the resulting column order (including any newly added column)
+		saveColumnOrder();
+
+		// if a new fetcher was added and we are not scanning, populate its column for the already scanned IPs
+		if (addedFetcher != null && idle) {
+			populateNewFetcher(addedFetcher);
+		}
+	}
+
+	/**
+	 * Runs the given fetcher for all already-scanned results so its newly added column
+	 * gets filled with real data. Runs off the UI thread to avoid freezing the table.
+	 */
+	private void populateNewFetcher(Fetcher fetcher) {
+		var results = scanningResults;
+		var fetcherId = fetcher.getId();
+		new Thread(() -> {
+			try {
+				// best-effort initialization (some fetchers read config in init)
+				try { fetcher.init(null); } catch (Exception ignored) {}
+				for (var i = 0; i < results.getItemCount(); i++) {
+					var result = results.getResult(i);
+					if (result == null || !result.isReady()) continue;
+					try {
+						var subject = new ScanningSubject(result.getAddress());
+						// some fetchers (e.g. Comment) need the MAC, which is known after scanning
+						if (result.getMac() != null)
+							subject.setParameter(MACFetcher.ID, result.getMac());
+						var value = fetcher.scan(subject);
+						var index = results.getFetcherIndex(fetcherId);
+						if (index >= 0 && index < result.getValues().size())
+							result.setValue(index, value);
+						final var row = i;
+						final var finalValue = value;
+						getDisplay().asyncExec(() -> {
+							try { updateResult(row, fetcherId, finalValue); }
+							catch (Exception ignored) {}
+						});
+					}
+					catch (Exception e) {
+						// skip this IP if the fetcher fails, continue with the rest
+					}
+				}
+			}
+			catch (Exception e) {
+				// never let an exception in the background thread break anything
+			}
+		}, "FetcherPopulator-" + fetcherId).start();
+	}
+
+	/**
+	 * Persist the current visual (drag-reordered) column order.
+	 */
+	private void saveColumnOrder() {
+		try {
+			var order = getColumnOrder();
+			var saved = new String[getColumnCount()];
+			for (var c = 0; c < saved.length; c++) {
+				var modelCol = (order != null && c < order.length) ? order[c] : c;
+				saved[c] = ((Fetcher) getColumn(modelCol).getData()).getId();
+			}
+			guiConfig.setColumnOrder(saved);
+		}
+		catch (Exception e) {
+			// never let an exception break the SWT event loop
+		}
+	}
+
+	/**
+	 * Maps a visual column position to the underlying model (creation-order) column index.
+	 * Table.getColumn(int) returns model order, but visual positions follow getColumnOrder().
+	 */
+	private int modelColumnIndex(int visualCol) {
+		var order = getColumnOrder();
+		if (order != null && visualCol >= 0 && visualCol < order.length)
+			return order[visualCol];
+		return visualCol;
 	}
 	
 	public void updateColumnNames() {
-		var i = 0;
-		for (var fetcher : fetcherRegistry.getSelectedFetchers()) {
-			getColumn(i++).setText(fetcher.getFullName());
+		// set each column's header from the fetcher actually bound to that column,
+		// so it stays correct regardless of drag-reordering or a differing registry order
+		for (var c = 0; c < getColumnCount(); c++) {
+			var fetcher = (Fetcher) getColumn(c).getData();
+			getColumn(c).setText(fetcher.getFullName());
 		}
 	}
 
@@ -244,20 +398,37 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 	final class SetDataListener implements Listener {
 
 		public void handleEvent(Event event) {
+			try {
 			var item = (TableItem)event.item;
 			var tableIndex = indexOf(item);
 			if (tableIndex < 0) return;
 
 			var scanningResult = scanningResults.getResult(tableIndex);
 			List<?> values = scanningResult.getValues();
-			var resultStrings = new String[values.size()];
-			for (var i = 0; i < values.size(); i++) {
-				var value = values.get(i);
-				if (value != null)
-					resultStrings[i] = value.toString();
-			}			 
-			item.setText(resultStrings);
+
+			// set each visual column's text based on the fetcher bound to that column,
+			// so drag-reordering and newly added (still empty) columns work correctly.
+			// NOTE: Table.getColumn(i) returns the column in MODEL (creation) order, while the
+			// visual position is given by getColumnOrder(); we must map them accordingly.
+			var order = getColumnOrder();
+			var columnCount = getColumnCount();
+			for (var c = 0; c < columnCount; c++) {
+				var modelCol = (order != null && c < order.length) ? order[c] : c;
+				var fetcher = (Fetcher) getColumn(modelCol).getData();
+				var fetcherIndex = scanningResults.getFetcherIndex(fetcher.getId());
+				String text = "";
+				if (fetcherIndex >= 0 && fetcherIndex < values.size()) {
+					var value = values.get(fetcherIndex);
+					if (value != null)
+						text = value.toString();
+				}
+				item.setText(c, text);
+			}
 			item.setImage(0, listImages[scanningResult.getType().ordinal()]);
+			}
+			catch (Exception e) {
+				// never let an exception in rendering one row break the whole virtual table
+			}
 		}
 	}
 
@@ -287,16 +458,21 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 						break;
 					}
 				}
+				if (col < 0) return;
 
-				var commentColumn = scanningResults.getFetcherIndex(CommentFetcher.ID);
-				if (commentColumn >= 0 && col == commentColumn) {
-					openEditor(row, commentColumn, item);
+				// identify the clicked column by its bound fetcher (robust to drag-reordering).
+				// col is a VISUAL position, so map it to the model column via getColumnOrder().
+				var modelCol = modelColumnIndex(col);
+				var clickedFetcher = (Fetcher) getColumn(modelCol).getData();
+				var clickedId = clickedFetcher.getId();
+
+				if (CommentFetcher.ID.equals(clickedId)) {
+					openEditor(row, modelCol, item);
 					return;
 				}
 
-				var openerColumn = scanningResults.getFetcherIndex(OpenerColumnFetcher.ID);
-				if (openerColumn >= 0 && col == openerColumn) {
-					showOpenerMenu(row, openerColumn, item);
+				if (OpenerColumnFetcher.ID.equals(clickedId)) {
+					showOpenerMenu(row, modelCol, item);
 					return;
 				}
 			}
@@ -409,8 +585,6 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 				if (row < 0 || row >= getItemCount()) return;
 
 				// the whole Opener Launch column is clickable
-				var launchCol = scanningResults.getFetcherIndex(OpenerLaunchFetcher.ID);
-				if (launchCol < 0) return;
 				var x = event.x;
 				var col = -1;
 				for (var c = 0; c < getColumnCount(); c++) {
@@ -420,7 +594,13 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 						break;
 					}
 				}
-				if (col != launchCol) return;
+				if (col < 0) return;
+
+				// identify the clicked column by its bound fetcher (robust to drag-reordering).
+				// col is a VISUAL position, so map it to the model column via getColumnOrder().
+				var modelCol = modelColumnIndex(col);
+				var clickedFetcher = (Fetcher) getColumn(modelCol).getData();
+				if (!OpenerLaunchFetcher.ID.equals(clickedFetcher.getId())) return;
 
 				openWithDefaultOpener(row);
 			}
@@ -436,16 +616,188 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 
 		var ip = result.getAddress().getHostAddress();
 		var openerName = defaultOpenerConfig.get(ip);
+		if (openerName == null && openersConfig.iterator().hasNext()) {
+			// no per-IP default configured: fall back to the first available Opener
+			openerName = openersConfig.iterator().next();
+		}
 		if (openerName == null) return;
 
 		var opener = openersConfig.getOpener(openerName);
 		if (opener == null) return;
 
-		openerLauncher.launch(opener, row);
+		try {
+			openerLauncher.launch(opener, row);
+		}
+		catch (UserErrorException e) {
+			// surface a meaningful error instead of failing silently
+			var mb = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+			mb.setText(Labels.getLabel("title.error"));
+			mb.setMessage(e.getMessage());
+			mb.open();
+		}
+	}
+
+	/**
+	 * Right-click on the column header shows the column visibility (toggle) menu,
+	 * while a right-click on a row shows the normal row context menu.
+	 */
+	final class HeaderRightClickHandler implements Listener {
+		private final Menu columnVisibilityMenu;
+
+		HeaderRightClickHandler(Menu columnVisibilityMenu) {
+			this.columnVisibilityMenu = columnVisibilityMenu;
+		}
+
+		public void handleEvent(Event event) {
+			try {
+				// event.x/event.y are display-relative; convert to table-relative coordinates
+				var tableLoc = toControl(event.x, event.y);
+				// if the right-click is on the header, use the column visibility menu; otherwise keep the row menu
+				if (tableLoc.y <= getHeaderHeight()) {
+					setMenu(columnVisibilityMenu);
+				}
+				// else: leave whatever row context menu MainWindow assigned via setMenu()
+			}
+			catch (Exception e) {
+				// never let an exception break the SWT event loop
+			}
+		}
+	}
+
+	/**
+	 * Shows a width-capped, wrapping tooltip with the hovered column's "about" text.
+	 */
+	final class HeaderTooltipHandler implements Listener {
+		int lastCol = -1;
+
+		public void handleEvent(Event event) {
+			try {
+				// SWT mouse-event coordinates are already control-relative (no toControl needed)
+				var cx = event.x;
+				var cy = event.y;
+
+				// detect the header area: everything above the first row's top (or the header height)
+				// is the header; never show over data rows
+				var firstItem = getItem(0);
+				var headerBottom = (firstItem != null) ? firstItem.getBounds().y : getHeaderHeight();
+				if (headerBottom <= 0) headerBottom = getHeaderHeight();
+				if (cy >= headerBottom) {
+					hideTooltip();
+					lastCol = -1;
+					return;
+				}
+
+				// determine which visual column is under the cursor
+				var x = cx;
+				var col = -1;
+				for (var c = 0; c < getColumnCount(); c++) {
+					x -= getColumn(c).getWidth();
+					if (x <= 0) {
+						col = c;
+						break;
+					}
+				}
+				if (col < 0) {
+					hideTooltip();
+					lastCol = -1;
+					return;
+				}
+
+				var modelCol = modelColumnIndex(col);
+				var fetcher = (Fetcher) getColumn(modelCol).getData();
+				var info = fetcher.getInfo();
+				if (info == null || info.isEmpty()) {
+					hideTooltip();
+					lastCol = -1;
+					return;
+				}
+
+				// position the tooltip under the hovered column header, at the cursor's x
+				var loc = toDisplay(cx, headerBottom);
+				if (col != lastCol) {
+					showTooltip(info, loc.x, loc.y);
+					lastCol = col;
+				}
+				else {
+					moveTooltip(loc.x, loc.y);
+				}
+			}
+			catch (Exception e) {
+				// never let an exception break the SWT event loop
+			}
+		}
+	}
+
+	/** maximum width of the header hover tooltip, in pixels */
+	private static final int TOOLTIP_MAX_WIDTH = 360;
+
+	private void showTooltip(String text, int displayX, int displayY) {
+		if (tooltipShell == null || tooltipShell.isDisposed()) {
+			tooltipShell = new Shell(getShell(), SWT.ON_TOP | SWT.TOOL | SWT.NO_FOCUS);
+			var layout = new GridLayout(1, false);
+			layout.marginWidth = 4;
+			layout.marginHeight = 3;
+			tooltipShell.setLayout(layout);
+
+			tooltipLabel = new Text(tooltipShell, SWT.WRAP | SWT.MULTI | SWT.READ_ONLY);
+			tooltipLabel.setEditable(false);
+			tooltipLabel.setBackground(getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
+			tooltipLabel.setForeground(getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
+			tooltipLabel.setLayoutData(new GridData(TOOLTIP_MAX_WIDTH, SWT.DEFAULT));
+		}
+
+		tooltipLabel.setText(text);
+		tooltipShell.pack();
+
+		// place under the hovered column header, at the cursor's x
+		tooltipShell.setLocation(displayX, displayY);
+		tooltipShell.setVisible(true);
+	}
+
+	private void moveTooltip(int displayX, int displayY) {
+		if (tooltipShell != null && !tooltipShell.isDisposed() && tooltipShell.isVisible()) {
+			tooltipShell.setLocation(displayX, displayY);
+		}
+	}
+
+	private void hideTooltip() {
+		if (tooltipShell != null && !tooltipShell.isDisposed()) {
+			tooltipShell.setVisible(false);
+		}
 	}
 
 	public void transitionTo(ScanningState state, Transition transition) {
 		// change cursor while scanning
 		setCursor(getDisplay().getSystemCursor(state == ScanningState.IDLE ? SWT.CURSOR_ARROW : SWT.CURSOR_APPSTARTING));
+
+		// disable column drag-reordering while scanning (it can misalign the virtual table mid-repaint),
+		// re-enable it when idle
+		setColumnsMoveable(state == ScanningState.IDLE);
+	}
+
+	/**
+	 * Enables or disables drag-to-reorder of all columns.
+	 */
+	private void setColumnsMoveable(boolean moveable) {
+		try {
+			for (var c = 0; c < getColumnCount(); c++) {
+				var col = (orderSafe(c));
+				if (col != null) col.setMoveable(moveable);
+			}
+		}
+		catch (Exception e) {
+			// never let an exception break the SWT event loop
+		}
+	}
+
+	private TableColumn orderSafe(int visualCol) {
+		try {
+			var order = getColumnOrder();
+			var modelCol = (order != null && visualCol < order.length) ? order[visualCol] : visualCol;
+			return getColumn(modelCol);
+		}
+		catch (Exception e) {
+			return null;
+		}
 	}
 }

@@ -47,19 +47,6 @@ public class ToolsActions {
 		}
 	}
 
-	public static final class ChooseFetchers implements Listener {
-		private final SelectFetchersDialog selectFetchersDialog;
-		
-		public ChooseFetchers(SelectFetchersDialog selectFetchersDialog) {
-			this.selectFetchersDialog = selectFetchersDialog;
-		}
-
-		public void handleEvent(Event event) {
-			selectFetchersDialog.open();
-		}
-
-	}
-
 	public static final class ScanStatistics implements Listener, StateTransitionListener {
 		
 		private final StatisticsDialog statisticsDialog;
