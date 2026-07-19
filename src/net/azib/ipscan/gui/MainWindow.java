@@ -86,6 +86,9 @@ public class MainWindow {
 		Display.getCurrent().asyncExec(() -> {
 			// asynchronously run init handlers outside of the constructor
 			stateMachine.init();
+			if (guiConfig.autoStartScan) {
+				startStopScanningAction.widgetSelected(null);
+			}
 		});
 	}
 

@@ -11,6 +11,7 @@ import net.azib.ipscan.config.OpenersConfig;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
+import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.OpenerColumnFetcher;
 import net.azib.ipscan.gui.DetailsWindow;
@@ -82,6 +83,23 @@ public class CommandsMenuActions {
 		}
 
 		public void handleEvent(Event event) {
+			// double-click on the comment column opens the inline comment editor instead of Details
+			if (event.type == SWT.MouseDoubleClick) {
+				var commentCol = resultTable.getScanningResults().getFetcherIndex(CommentFetcher.ID);
+				if (commentCol >= 0) {
+					var x = event.x;
+					var col = -1;
+					for (var c = 0; c < resultTable.getColumnCount(); c++) {
+						x -= resultTable.getColumn(c).getWidth();
+						if (x <= 0) {
+							col = c;
+							break;
+						}
+					}
+					if (col == commentCol) return;
+				}
+			}
+
 			// activate only if something is selected
 			if (event.type == SWT.Selection || (resultTable.getSelectionIndex() >= 0 && (event.type == SWT.MouseDoubleClick || event.detail == SWT.TRAVERSE_RETURN))) {
 				event.doit = false;

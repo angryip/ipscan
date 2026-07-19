@@ -80,8 +80,8 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 		// this one populates table dynamically, taking data from ScanningResultList
 		addListener(SWT.SetData, new SetDataListener());
 
-		// single-click on the comment cell opens an inline editor
-		addListener(SWT.MouseDown, new InlineCommentEditListener());
+		// double-click on the comment cell opens an inline editor
+		addListener(SWT.MouseDoubleClick, new InlineCommentEditListener());
 
 		// listen to state machine events
 		stateMachine.addTransitionListener(this);
@@ -249,35 +249,45 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 	 */
 	final class InlineCommentEditListener implements Listener {
 		public void handleEvent(Event event) {
-			var commentColumn = scanningResults.getFetcherIndex(CommentFetcher.ID);
-			if (commentColumn < 0) return;
+			try {
+				if (event.button != 1) return;
 
-			var item = getItem(new Point(event.x, event.y));
-			if (item == null) return;
+				var commentColumn = scanningResults.getFetcherIndex(CommentFetcher.ID);
+				if (commentColumn < 0) return;
 
-			var row = indexOf(item);
-			if (row < 0) return;
+				var item = getItem(new Point(event.x, event.y));
+				if (item == null) return;
 
-			// determine which column was double-clicked based on x offset
-			var x = event.x;
-			var col = -1;
-			for (var c = 0; c < getColumnCount(); c++) {
-				x -= getColumn(c).getWidth();
-				if (x <= 0) {
-					col = c;
-					break;
+				var row = indexOf(item);
+				if (row < 0) return;
+
+				// determine which column was double-clicked based on x offset
+				var x = event.x;
+				var col = -1;
+				for (var c = 0; c < getColumnCount(); c++) {
+					x -= getColumn(c).getWidth();
+					if (x <= 0) {
+						col = c;
+						break;
+					}
 				}
-			}
-			if (col != commentColumn) return;
+				if (col != commentColumn) return;
 
-			openEditor(row, commentColumn, item);
+				openEditor(row, commentColumn, item);
+			}
+			catch (Exception e) {
+				// never let an exception break the SWT event loop (which would also break the context menu)
+			}
 		}
 
 		private void openEditor(int row, int column, TableItem item) {
+			if (row < 0 || row >= getItemCount()) return;
+
 			if (inlineCommentEditor != null && !inlineCommentEditor.isDisposed())
 				inlineCommentEditor.dispose();
 
 			var result = scanningResults.getResult(row);
+			if (result == null) return;
 			var current = commentsConfig.getComment(result);
 
 			var rect = item.getTextBounds(column);
