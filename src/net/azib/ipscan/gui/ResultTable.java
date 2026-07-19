@@ -672,9 +672,10 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 
 		public void handleEvent(Event event) {
 			try {
-				// SWT mouse-event coordinates are already control-relative (no toControl needed)
-				var cx = event.x;
-				var cy = event.y;
+				// SWT mouse-event coordinates are display-relative; convert to control-relative
+				var cp = toControl(event.x, event.y);
+				var cx = cp.x;
+				var cy = cp.y;
 
 				// detect the header area: everything above the first row's top (or the header height)
 				// is the header; never show over data rows
