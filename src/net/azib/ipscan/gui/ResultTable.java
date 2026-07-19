@@ -6,7 +6,10 @@
 package net.azib.ipscan.gui;
 
 import net.azib.ipscan.config.CommentsConfig;
+import net.azib.ipscan.config.DefaultOpenerConfig;
 import net.azib.ipscan.config.GUIConfig;
+import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.OpenersConfig;
 import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResult.ResultType;
 import net.azib.ipscan.core.ScanningResultList;
@@ -16,6 +19,7 @@ import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
 import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.fetchers.OpenerColumnFetcher;
 import net.azib.ipscan.fetchers.FetcherRegistryUpdateListener;
 import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsMenuActions;
@@ -40,6 +44,8 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 	private GUIConfig guiConfig;
 	private FetcherRegistry fetcherRegistry;
 	private CommentsConfig commentsConfig;
+	private OpenersConfig openersConfig;
+	private DefaultOpenerConfig defaultOpenerConfig;
 	
 	private Image[] listImages = new Image[ResultType.values().length];
 
@@ -51,12 +57,15 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 
 	public ResultTable(Shell parent, GUIConfig guiConfig, FetcherRegistry fetcherRegistry, CommentsConfig commentsConfig,
 							   ScanningResultList scanningResultList, StateMachine stateMachine,
-							   ColumnsActions.ColumnClick columnClickListener, ColumnsActions.ColumnResize columnResizeListener) {
+							   ColumnsActions.ColumnClick columnClickListener, ColumnsActions.ColumnResize columnResizeListener,
+							   OpenersConfig openersConfig, DefaultOpenerConfig defaultOpenerConfig) {
 		super(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		this.guiConfig = guiConfig;
 		this.scanningResults = scanningResultList;
 		this.fetcherRegistry = fetcherRegistry;
 		this.commentsConfig = commentsConfig;
+		this.openersConfig = openersConfig;
+		this.defaultOpenerConfig = defaultOpenerConfig;
 		
 		setHeaderVisible(true);
 		setLinesVisible(true);
@@ -80,8 +89,8 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 		// this one populates table dynamically, taking data from ScanningResultList
 		addListener(SWT.SetData, new SetDataListener());
 
-		// double-click on the comment cell opens an inline editor
-		addListener(SWT.MouseDoubleClick, new InlineCommentEditListener());
+		// double-click on the comment cell opens an inline editor, on the opener cell a dropdown to pick an Opener
+		addListener(SWT.MouseDoubleClick, new DoubleClickColumnHandler());
 
 		// listen to state machine events
 		stateMachine.addTransitionListener(this);
@@ -244,16 +253,14 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 	}
 
 	/**
-	 * Opens an inline text editor when the comment cell is double-clicked,
-	 * and saves the edited comment on focus loss or Enter.
+	 * Handles double-clicks on the result table:
+	 * - comment cell: opens an inline text editor (saved on focus loss or Enter)
+	 * - opener cell: shows a dropdown menu of all configured Openers to pick the default one
 	 */
-	final class InlineCommentEditListener implements Listener {
+	final class DoubleClickColumnHandler implements Listener {
 		public void handleEvent(Event event) {
 			try {
 				if (event.button != 1) return;
-
-				var commentColumn = scanningResults.getFetcherIndex(CommentFetcher.ID);
-				if (commentColumn < 0) return;
 
 				var item = getItem(new Point(event.x, event.y));
 				if (item == null) return;
@@ -271,9 +278,18 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 						break;
 					}
 				}
-				if (col != commentColumn) return;
 
-				openEditor(row, commentColumn, item);
+				var commentColumn = scanningResults.getFetcherIndex(CommentFetcher.ID);
+				if (commentColumn >= 0 && col == commentColumn) {
+					openEditor(row, commentColumn, item);
+					return;
+				}
+
+				var openerColumn = scanningResults.getFetcherIndex(OpenerColumnFetcher.ID);
+				if (openerColumn >= 0 && col == openerColumn) {
+					showOpenerMenu(row, openerColumn, item);
+					return;
+				}
 			}
 			catch (Exception e) {
 				// never let an exception break the SWT event loop (which would also break the context menu)
@@ -324,6 +340,47 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 					e.doit = false;
 				}
 			});
+		}
+
+		private void showOpenerMenu(int row, int column, TableItem item) {
+			if (row < 0 || row >= getItemCount()) return;
+			var result = scanningResults.getResult(row);
+			if (result == null) return;
+
+			var rect = item.getTextBounds(column);
+			if (rect == null) return;
+
+			var menu = new Menu(ResultTable.this.getShell(), SWT.POP_UP);
+			var current = defaultOpenerConfig.get(result.getAddress().getHostAddress());
+
+			for (var name : openersConfig) {
+				var menuItem = new MenuItem(menu, SWT.RADIO);
+				menuItem.setText(name);
+				menuItem.setSelection(name.equals(current));
+				menuItem.addListener(SWT.Selection, e -> {
+					for (var i : getSelectionIndices()) {
+						var ip = scanningResults.getResult(i).getAddress().getHostAddress();
+						defaultOpenerConfig.set(ip, name);
+						updateResult(i, OpenerColumnFetcher.ID, name);
+					}
+				});
+			}
+
+			// a "None" entry to clear the default Opener
+			var none = new MenuItem(menu, SWT.RADIO);
+			none.setText(Labels.getLabel("menu.commands.setOpener.none"));
+			none.setSelection(current == null);
+			none.addListener(SWT.Selection, e -> {
+				for (var i : getSelectionIndices()) {
+					var ip = scanningResults.getResult(i).getAddress().getHostAddress();
+					defaultOpenerConfig.set(ip, null);
+					updateResult(i, OpenerColumnFetcher.ID, "—");
+				}
+			});
+
+			var location = ResultTable.this.toDisplay(rect.x, rect.y + rect.height);
+			menu.setLocation(location);
+			menu.setVisible(true);
 		}
 	}
 

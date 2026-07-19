@@ -14,6 +14,7 @@ import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.OpenerColumnFetcher;
+import net.azib.ipscan.fetchers.OpenerColumnFetcher;
 import net.azib.ipscan.gui.DetailsWindow;
 import net.azib.ipscan.gui.EditOpenersDialog;
 import net.azib.ipscan.gui.ResultTable;
@@ -83,10 +84,12 @@ public class CommandsMenuActions {
 		}
 
 		public void handleEvent(Event event) {
-			// double-click on the comment column opens the inline comment editor instead of Details
+			// double-click on the comment or opener column is handled by the inline editor / opener dropdown,
+			// so it must not open the Details window
 			if (event.type == SWT.MouseDoubleClick) {
 				var commentCol = resultTable.getScanningResults().getFetcherIndex(CommentFetcher.ID);
-				if (commentCol >= 0) {
+				var openerCol = resultTable.getScanningResults().getFetcherIndex(OpenerColumnFetcher.ID);
+				if (commentCol >= 0 || openerCol >= 0) {
 					var x = event.x;
 					var col = -1;
 					for (var c = 0; c < resultTable.getColumnCount(); c++) {
@@ -96,7 +99,7 @@ public class CommandsMenuActions {
 							break;
 						}
 					}
-					if (col == commentCol) return;
+					if (col == commentCol || col == openerCol) return;
 				}
 			}
 
