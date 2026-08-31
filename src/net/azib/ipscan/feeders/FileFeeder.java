@@ -60,9 +60,15 @@ public class FileFeeder extends AbstractFeeder {
 	public FileFeeder(String fileName) {
 		this();
 		try {
-			findHosts(new FileReader(fileName));
+			var file = new File(fileName).getCanonicalFile();
+			if (!file.isFile())
+				throw new FeederException("file.notExists");
+			findHosts(new FileReader(file));
 		}
-		catch (FileNotFoundException e) {
+		catch (FeederException e) {
+			throw e;
+		}
+		catch (IOException e) {
 			throw new FeederException("file.notExists");
 		}
 	}
