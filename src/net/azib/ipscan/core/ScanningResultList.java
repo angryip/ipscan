@@ -136,7 +136,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		if (result.isReady())
 			updateStatistics(result);
 	
-		return resultIndexes.get(result.getAddress());
+		return resultIndexes.getOrDefault(result.getAddress(), -1);
 	}
 
 	/**
