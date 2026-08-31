@@ -172,7 +172,7 @@ public class ResultTable extends Table implements FetcherRegistryUpdateListener,
 	 */
 	public ScanningResult getSelectedResult() {
 		var selectedIndex = getSelectionIndex();
-		return scanningResults.getResult(selectedIndex);
+		return selectedIndex >= 0 ? scanningResults.getResult(selectedIndex) : null;
 	}
 	
 	public void remove(int[] indices) {
