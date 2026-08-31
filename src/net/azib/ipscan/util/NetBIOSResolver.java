@@ -84,8 +84,8 @@ public class NetBIOSResolver implements Closeable {
 	}
 
 	private static int nameFlag(byte[] response, int i) {
-		return response[RESPONSE_BASE_LEN + RESPONSE_NAME_BLOCK_LEN * i + RESPONSE_NAME_LEN + 1] & 0xFF +
-				(response[RESPONSE_BASE_LEN + RESPONSE_NAME_BLOCK_LEN * i + RESPONSE_NAME_LEN + 2] & 0xFF) * 0xFF;
+		return (response[RESPONSE_BASE_LEN + RESPONSE_NAME_BLOCK_LEN * i + RESPONSE_NAME_LEN + 1] & 0xFF) +
+				(response[RESPONSE_BASE_LEN + RESPONSE_NAME_BLOCK_LEN * i + RESPONSE_NAME_LEN + 2] & 0xFF) * 0x100;
 	}
 
 	private static int nameType(byte[] response, int i) {
