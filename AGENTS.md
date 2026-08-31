@@ -37,6 +37,10 @@ Output goes to `build/libs/`. Run with `java -jar <jar-file>`.
 sudo apt install openjdk-21-jdk rpm fakeroot
 ```
 
+## Code style
+
+- 4 space indents
+
 ## Testing
 
 JUnit 4 + Mockito 2.x. Test classes use `@Test`, `@Before` annotations.
