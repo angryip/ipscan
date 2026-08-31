@@ -66,11 +66,8 @@ public class HostnameFetcher extends AbstractFetcher {
 	}
 
 	private String resolveWithMulticastDNS(ScanningSubject subject) {
-		try {
-			var resolver = new MDNSResolver(subject.getAdaptedPortTimeout());
-			var name = resolver.resolve(subject.getAddress());
-			resolver.close();
-			return name;
+		try (var resolver = new MDNSResolver(subject.getAdaptedPortTimeout())) {
+			return resolver.resolve(subject.getAddress());
 		}
 		catch (SocketTimeoutException | SocketException e) {
 			return null;
@@ -82,10 +79,8 @@ public class HostnameFetcher extends AbstractFetcher {
 	}
 
 	private String resolveWithNetBIOS(ScanningSubject subject) {
-		try {
-			var resolver = new NetBIOSResolver(subject.getAdaptedPortTimeout());
+		try (var resolver = new NetBIOSResolver(subject.getAdaptedPortTimeout())) {
 			var names = resolver.resolve(subject.getAddress());
-			resolver.close();
 			return names == null ? null : names[0];
 		}
 		catch (SocketTimeoutException | SocketException e) {
