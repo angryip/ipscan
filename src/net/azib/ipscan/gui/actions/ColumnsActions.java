@@ -18,11 +18,6 @@ import net.azib.ipscan.gui.menu.ColumnsMenu;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 
-/**
- * ColumnsActions
- *
- * @author Anton Keks
- */
 public class ColumnsActions {
 	
 	public static final class ColumnResize implements Listener {

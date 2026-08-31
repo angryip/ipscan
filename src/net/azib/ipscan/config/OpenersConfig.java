@@ -9,11 +9,6 @@ import java.io.File;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
-/**
- * OpenersConfig
- *
- * @author Anton Keks
- */
 public class OpenersConfig extends NamedListConfig {
 	
 	static final Logger LOG = LoggerFactory.getLogger();

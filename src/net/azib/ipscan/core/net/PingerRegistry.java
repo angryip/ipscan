@@ -20,11 +20,6 @@ import java.util.logging.Logger;
 
 import static java.util.logging.Level.SEVERE;
 
-/**
- * PingerRegistry
- *
- * @author Anton Keks
- */
 public class PingerRegistry {
 	private static final Logger LOG = LoggerFactory.getLogger();
 	

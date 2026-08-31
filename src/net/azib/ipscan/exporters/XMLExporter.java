@@ -11,11 +11,6 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * XMLExporter
- *
- * @author Anton Keks
- */
 public class XMLExporter extends AbstractExporter {
 	static final String ENCODING = "UTF-8";
 

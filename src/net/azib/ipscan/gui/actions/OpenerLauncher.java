@@ -19,11 +19,6 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
-/**
- * OpenerLauncher
- *
- * @author Anton Keks
- */
 public class OpenerLauncher {
 	
 	private final FetcherRegistry fetcherRegistry;

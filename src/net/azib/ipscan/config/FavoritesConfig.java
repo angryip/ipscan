@@ -9,11 +9,6 @@ import net.azib.ipscan.feeders.FeederCreator;
 
 import java.util.prefs.Preferences;
 
-/**
- * FavoritesConfig
- *
- * @author Anton Keks
- */
 public class FavoritesConfig extends NamedListConfig {
 
 	public FavoritesConfig(Preferences preferences) {

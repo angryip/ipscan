@@ -16,11 +16,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-/**
- * GotoActions
- *
- * @author Anton Keks
- */
 public class GotoMenuActions {
 
 	static class NextHost implements Listener {

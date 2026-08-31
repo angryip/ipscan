@@ -19,11 +19,6 @@ import net.azib.ipscan.feeders.FeederRegistry;
 
 import java.io.File;
 
-/**
- * CommandLineProcessor
- *
- * @author Anton Keks
- */
 public class CommandLineProcessor implements CommandProcessor, StateTransitionListener {
 	private final FeederRegistry feederRegistry;
 	private final ExporterRegistry exporters;

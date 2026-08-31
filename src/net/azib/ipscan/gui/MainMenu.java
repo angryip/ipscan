@@ -16,11 +16,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
-/**
- * MainMenu
- *
- * @author Anton Keks
- */
 public class MainMenu {
 	public MainMenu(Shell parent, Menu mainMenu,
 		ScanMenu scanMenu,

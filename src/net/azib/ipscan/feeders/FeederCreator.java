@@ -7,11 +7,6 @@
 package net.azib.ipscan.feeders;
 
 
-/**
- * FeederCreator
- *
- * @author Anton Keks
- */
 public interface FeederCreator {
 	/**
 	 * Initializes a Feeder instance using the parameters, provided by the GUI.
