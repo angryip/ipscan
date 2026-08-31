@@ -29,8 +29,12 @@ public class SWTAwareStateMachine extends StateMachine {
 		if (display.isDisposed())
 			return;
 
-		// call super asynchronously in the correct thread
-		display.asyncExec(() -> SWTAwareStateMachine.super.notifyAboutTransition(transition));
+		// capture state now — it may change before the async callback runs
+		var stateAtDispatch = getState();
+		display.asyncExec(() -> {
+			if (!display.isDisposed())
+				notifyListeners(stateAtDispatch, transition);
+		});
 	}
 	
 }

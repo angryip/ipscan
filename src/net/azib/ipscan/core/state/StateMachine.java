@@ -78,12 +78,16 @@ public abstract class StateMachine {
 		}
 	}
 
-	protected void notifyAboutTransition(Transition transition) {		
+	protected void notifyAboutTransition(Transition transition) {
+		notifyListeners(state, transition);
+	}
+
+	protected void notifyListeners(ScanningState stateAtTransition, Transition transition) {
 		try {
 			listenersLock.readLock().lock();
 			for (var listener : transitionListeners) {
-				listener.transitionTo(state, transition);
-			}			
+				listener.transitionTo(stateAtTransition, transition);
+			}
 		}
 		finally {
 			listenersLock.readLock().unlock();
