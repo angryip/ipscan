@@ -117,8 +117,9 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 				// interrupt - end the loop
 			}
 			
-			// inform that no more addresses left
-			stateMachine.stop();
+			// inform that no more addresses left (skip if already killing)
+			if (stateMachine.inState(SCANNING))
+				stateMachine.stop();
 		
 			// request shutdown of the thread pool
 			// this must be done here and not asynchronously by the state machine
