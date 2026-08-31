@@ -10,6 +10,7 @@ Unreleased:
 - Security: plugin trust confirmation dialog - new plugins require user approval before loading
 - Security: shell arguments are now quoted when passed to openers to prevent command injection via DNS poisoning
 - Better escaping in XMLExporter & CSVExporter
+- Many minor stability fixes
 - Updated MAC vendors
 
 Changes in 3.9.3:
