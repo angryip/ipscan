@@ -38,31 +38,34 @@ public class Scanner {
 	 * @param result where the results are injected
 	 */
 	public void scan(ScanningSubject subject, ScanningResult result) {
-		var fetcherIndex = 0;
-		var isScanningInterrupted = false;
-		for (var fetcher : fetcherRegistry.getSelectedFetchers()) {
-			Object value = NotScanned.VALUE;
-			try {
-				activeFetchers.put(Thread.currentThread().getId(), fetcher);
-				if (!subject.isAddressAborted() && !isScanningInterrupted) {
-					// run the fetcher
-					value = fetcher.scan(subject);
-					// check if scanning was interrupted
-					isScanningInterrupted = Thread.currentThread().isInterrupted();
-					if (value == null)
-						value = isScanningInterrupted ? NotScanned.VALUE : NotAvailable.VALUE;
+		try {
+			var fetcherIndex = 0;
+			var isScanningInterrupted = false;
+			for (var fetcher : fetcherRegistry.getSelectedFetchers()) {
+				Object value = NotScanned.VALUE;
+				try {
+					activeFetchers.put(Thread.currentThread().getId(), fetcher);
+					if (!subject.isAddressAborted() && !isScanningInterrupted) {
+						// run the fetcher
+						value = fetcher.scan(subject);
+						// check if scanning was interrupted
+						isScanningInterrupted = Thread.currentThread().isInterrupted();
+						if (value == null)
+							value = isScanningInterrupted ? NotScanned.VALUE : NotAvailable.VALUE;
+					}
 				}
+				catch (Throwable e) {
+					LOG.log(Level.SEVERE, "", e);
+				}
+				// store the value
+				result.setValue(fetcherIndex, value);
+				fetcherIndex++;
 			}
-			catch (Throwable e) {
-				LOG.log(Level.SEVERE, "", e);
-			}
-			// store the value
-			result.setValue(fetcherIndex, value);
-			fetcherIndex++;
+			result.setMac((String) subject.getParameter(MACFetcher.ID));
 		}
-		result.setMac((String) subject.getParameter(MACFetcher.ID));
-		activeFetchers.remove(Thread.currentThread().getId());
-		
+		finally {
+			activeFetchers.remove(Thread.currentThread().getId());
+		}
 		result.setType(subject.getResultType());
 	}
 
