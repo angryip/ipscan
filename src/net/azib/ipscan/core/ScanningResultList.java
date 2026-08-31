@@ -26,6 +26,7 @@ import static java.util.Collections.emptyList;
  */
 public class ScanningResultList implements Iterable<ScanningResult> {
 	private static final int RESULT_LIST_INITIAL_SIZE = 1024;
+	private static final int MAX_RESULTS = 1_000_000;
 	
 	private FetcherRegistry fetcherRegistry;
 	// selected fetchers are cached here, because they may be changed in the registry already
@@ -110,7 +111,12 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	public synchronized void registerAtIndex(int index, ScanningResult result) {
 		if (resultIndexes.put(result.getAddress(), index) != null)
 			throw new IllegalStateException(result.getAddress() + " is already registered in the list");
-		
+
+		if (resultList.size() >= MAX_RESULTS) {
+			resultIndexes.remove(result.getAddress());
+			return;
+		}
+
 		result.resultList = this;
 		resultList.add(index, result);
 
