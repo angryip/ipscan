@@ -201,13 +201,55 @@ def minimizeTask(String platform, Closure doMore) {
     }
 }
 
-def winLauncher(def platform) {
+def numericVersion(String v) {
+    def m = (v =~ /^(\d+\.\d+(\.\d+)?).*/)
+    return m.matches() ? m.group(1) : v
+}
+
+def jpackage(String type, String platform, String modulePath = System.getenv("JPACKAGE_MODULE_PATH") ?: "${System.getProperty('java.home')}/jmods") {
     def suffix = platform == 'win64' ? 'win' : platform
-    ant.concat(destfile: "build/libs/${project.name}-${version}-${suffix}.exe", binary: true) {
-        ant.fileset(file: "ext/win-launcher/launcher.exe")
-        ant.fileset(file: "build/libs/${project.name}-${version}-${suffix}.jar")
+    def dist = "${buildDir.path}/libs"
+    def jarName = "${project.name}-${version}-${suffix}.jar"
+
+    def args = [
+        "jpackage",
+        "--type", type,
+        "--name", "Angry IP Scanner",
+        "--app-version", numericVersion(version),
+        "--vendor", "angryip.org",
+        "--copyright", "Copyright (c) 2026 angryip.org",
+        "--input", dist,
+        "--main-jar", jarName,
+        "--main-class", "net.azib.ipscan.Main",
+        "--module-path", modulePath,
+        "--add-modules", javaModules.join(","),
+        "--dest", dist,
+        "--java-options", "--add-opens=java.base/java.net=ALL-UNNAMED",
+        "--java-options", "--enable-native-access=ALL-UNNAMED",
+    ]
+
+    if (platform.startsWith('win')) {
+        args += [
+            "--icon", "resources/images/icon.ico",
+            "--win-menu",
+            "--win-shortcut",
+            "--win-upgrade-uuid", "4E9A4D92-3B7C-4F5A-A8D1-6E2F0C9B1D3E",
+        ]
     }
-    ant.delete(file: "build/libs/${project.name}-${version}-${suffix}.jar")
+    else if (platform.startsWith('mac')) {
+        args += [
+            "--icon", "ext/mac-bundle/Angry IP Scanner.app/Contents/Resources/ipscan.icns",
+            "--mac-package-identifier", "net.azib.ipscan",
+            "--java-options", "-XstartOnFirstThread",
+        ]
+    }
+
+    exec(args)
+
+    // jpackage creates both .app and .dmg on mac - remove the extra .app since .dmg contains it
+    if (type == "dmg") {
+        ant.delete(dir: "${dist}/Angry IP Scanner.app")
+    }
 }
 
 def deb(def platform, def arch, def moreDeps = '') {
@@ -246,40 +288,6 @@ def rpm(def platform, def arch) {
     ant.delete(dir: dist)
 }
 
-def macLauncher(def platform) {
-    def dist = buildDir.path + '/libs'
-    def name = 'Angry IP Scanner'
-    exec("cp -rp ext/mac-bundle/. $dist")
-    ant.copy(todir: dist) {
-        ant.fileset(dir: "ext/mac-bundle")
-    }
-
-    def target = "${dist}/${name}.app/Contents/MacOS"
-    ant.move(file: "${dist}/${project.name}-${version}-${platform}.jar", todir: target)
-    jlink(target, "jre")
-
-    ant.replace(file: "${dist}/${name}.app/Contents/Info.plist") {
-        ant.replacefilter(token: "APPNAME", value: name)
-        ant.replacefilter(token: "VERSION_NUM", value: version.replaceFirst('-.*', ''))
-        ant.replacefilter(token: "VERSION", value: version)
-    }
-
-    ant.delete(file: "${dist}/${name}.app/Contents/MacOS/jre/bin/keytool")
-
-    def zipName = "${dist}/${project.name}-${version}-${platform}.zip"
-    exec("zip -R $zipName * -x*.zip", dist)
-
-    if (System.getenv("APPLE_USER")) {
-        // TODO: codesign --sign Example --options runtime --entitlements test/test.entitlements --force build/Release/test.app
-        // TODO: https://developer.apple.com/documentation/xcode/notarizing_macos_software_before_distribution/customizing_the_notarization_workflow
-        println("Sending zip file to Apple for notarization")
-        exec("xcrun altool --list-providers --username ${System.getenv("APPLE_USER")} --password ${System.getenv("APPLE_PASSWORD")}", ".", false)
-        exec("xcrun altool --notarize-app --primary-bundle-id net.azib.ipscan.zip --username ${System.getenv("APPLE_USER")} --password ${System.getenv("APPLE_PASSWORD")} --file ${zipName}", ".", false)
-    }
-
-    ant.delete(dir: "${dist}/${name}.app")
-}
-
 packageTask('linux64') {
     deb('linux64', 'amd64')
     rpm('linux64', 'x86_64')
@@ -290,51 +298,15 @@ packageTask('any') {
 }
 
 packageTask('win64') {
-    winLauncher('win64')
+    jpackage('msi', 'win64')
 }
 
 packageTask('macX86') {
-    macLauncher("macX86")
+    jpackage('dmg', 'macX86')
 }
 
 packageTask('macArm64') {
-    macLauncher("macArm64")
-}
-
-def jlink(String target, String jrePath, String extraOpts = System.getenv("JLINK_OPTS") ?: "") {
-    def jreDir = new File(target, jrePath)
-    if (!jreDir.exists()) {
-        jreDir.getParentFile().mkdirs()
-        exec("jlink --output $jrePath $extraOpts --compress=zip-6 --no-header-files --no-man-pages --strip-debug --add-modules " + javaModules.join(","), target)
-        ant.delete(dir: new File(jreDir, "legal"))
-    }
-}
-
-task 'win-installer'(dependsOn: 'win64') {
-    doLast {
-        def nsisVersion = "3.08"
-        def nsis = "nsis-$nsisVersion"
-        def installerDir = 'ext/win-installer'
-        ant.get(src: "https://sourceforge.net/projects/nsis/files/NSIS%203/${nsisVersion}/${nsis}.zip/download", dest: "$installerDir/${nsis}.zip", skipexisting: 'true')
-        ant.unzip(src: "${installerDir}/${nsis}.zip", dest: installerDir)
-        ant.replace(file: "${installerDir}/InstallerConfig.nsh") {
-            ant.replacefilter(token: "VERSION_MINOR", value: "8")
-            ant.replacefilter(token: "VERSION", value: version)
-        }
-        jlink(installerDir, "AppFiles/jre")
-        ant.copy(file: "resources/images/icon.ico", todir: "${installerDir}/AppFiles")
-        ant.copy(file: "LICENSE", tofile: "${installerDir}/AppFiles/license.txt")
-        ant.copy(file: "build/libs/${project.name}-${version}-win.exe", tofile:"${installerDir}/AppFiles/ipscan.exe")
-        if (platform.startsWith('win')) {
-            exec("cmd /c $nsis\\makensis.exe Installer\\Installer.nsi", installerDir)
-        }
-        else {
-            println("Building of Windows Installer is not supported on other platforms")
-            exec("wine $nsis/makensis.exe Installer/Installer.nsi", installerDir)
-        }
-        ant.move(file: "${installerDir}/ipscan-$version-setup.exe", todir: "build/libs")
-        exec("git checkout ${installerDir}/InstallerConfig.nsh")
-    }
+    jpackage('dmg', 'macArm64')
 }
 
 task mac(dependsOn: ['macX86', 'macArm64'])
@@ -350,10 +322,9 @@ task info {
         println "  linux64       - builds only Linux 64-bit binary"
         println "  any           - doesn't bundle SWT, making it possible to run on ARM/Raspbian with libswt provided by OS (Experimental)"
         println "  mac           - builds all Mac binaries"
-        println "  macX86        - builds only MacX86 binary"
-        println "  macArm64      - builds only MacArm64 binary"
-        println "  win64         - builds only Windows 64-bit binary"
-        println "  win-installer - packages a Windows installer (with included JRE)"
+        println "  macX86        - builds only MacX86 binary (.dmg)"
+        println "  macArm64      - builds only MacArm64 binary (.dmg)"
+        println "  win64         - builds only Windows 64-bit installer (.msi)"
     }
 }
 

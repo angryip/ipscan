@@ -27,7 +27,7 @@ Gradle 9.5 wrapper (`./gradlew`). Java 21 source/target. CI uses Java 25 (Liberi
 ./gradlew clean            # clean build dir
 ```
 
-Platform-specific targets: `linux64`, `any` (platform-neutral), `win64`, `macX86`, `macArm64`, `mac`, `linux`, `win-installer`.
+Platform-specific targets: `linux64`, `any` (platform-neutral), `win64`, `macX86`, `macArm64`, `mac`, `linux`.
 
 Output goes to `build/libs/`. Run with `java -jar <jar-file>`.
 
@@ -116,8 +116,8 @@ JARs are minified with ProGuard after packaging. Config in `ext/swt.pro` and `ex
 ## Packaging
 
 - **Linux**: `.deb` (via `fakeroot dpkg-deb`) and `.rpm` (via `rpmbuild`), only on Ubuntu
-- **Windows**: `.exe` launcher (concatenated from `ext/win-launcher/launcher.exe` + jar), NSIS installer
-- **Mac**: `.app` bundle with `jlink`-ed JRE, optional Apple notarization via `APPLE_USER`/`APPLE_PASSWORD` env vars
+- **Windows**: `.msi` installer via `jpackage` (bundled JRE, Start Menu shortcut, desktop shortcut)
+- **Mac**: `.dmg` via `jpackage` (bundled JRE, `.app` bundle, optional Apple notarization via `APPLE_USER`/`APPLE_PASSWORD` env vars)
 
 ## MAC vendor database
 
