@@ -33,14 +33,16 @@ public class MDNSResolver implements Closeable {
 	}
 
 	String decodeName(byte[] data, int offset, int length) {
+		var end = offset + length;
 		var s = new StringBuilder(length);
-		for (var i = offset; i < offset + length; i++) {
-			var len = data[i];
+		for (var i = offset; i < end; i++) {
+			var len = data[i] & 0xFF;
 			if (len == 0) break;
+			if (i + 1 + len > end) break;
 			s.append(new String(data, i + 1, len)).append('.');
 			i += len;
 		}
-		s.setLength(s.length() - 1);
+		if (s.length() > 0) s.setLength(s.length() - 1);
 		return s.toString();
 	}
 
