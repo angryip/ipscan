@@ -118,7 +118,7 @@ public class StatusBar {
 			maxThreadsReachedBefore = maxThreadsReached;
 
 			threadsText.setText(Labels.getLabel("text.threads") + runningThreads +
-					(isVirtualThreads ? " (vt)" : maxThreadsReached ? Labels.getLabel("text.threads.max") : ""));
+					(maxThreadsReached ? Labels.getLabel("text.threads.max") : ""));
 		}
 	}
 	
