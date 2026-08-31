@@ -1,4 +1,4 @@
-Unreleased:
+3.10.0:
 - Minimum required Java is now 21, due to updated SWT
 - Bundle Java 25 with Windows and Mac builds
 - Virtual Threads are now used by default without the maximum upper limit
