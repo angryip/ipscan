@@ -32,7 +32,7 @@ public class SequenceIterator<E> implements Iterator<E> {
 
 	public E next() {
 		// take the next iterator if current ran out of elements
-		if (!iterators[currentIndex].hasNext())
+		if (!iterators[currentIndex].hasNext() && currentIndex < iterators.length - 1)
 			currentIndex++;
 		
 		return iterators[currentIndex].next();
