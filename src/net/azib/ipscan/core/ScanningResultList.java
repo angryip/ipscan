@@ -225,10 +225,10 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	 * @param startIndex the element to start from
 	 * @return the index of found element, or -1
 	 */
-	public int findText(String text, int startIndex) {
+	public synchronized int findText(String text, int startIndex) {
 		text = text.toLowerCase();
 		for (var i = startIndex; i < resultList.size(); i++) {
-			var scanningResult = getResult(i);
+			var scanningResult = resultList.get(i);
 			
 			for (var value : scanningResult.getValues()) {
 				if (value != null && value.toString().toLowerCase().contains(text)) {						
