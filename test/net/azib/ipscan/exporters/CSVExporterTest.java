@@ -20,11 +20,13 @@ public class CSVExporterTest extends AbstractExporterTestCase {
 	
 	@Test
 	public void testCSVSafeString() {
-		assertEquals(".a.bb.c.d.", ((CSVExporter)exporter).csvSafeString(",a,bb,c,d,"));
+		assertEquals("\",a,bb,c,d,\"", ((CSVExporter)exporter).csvSafeString(",a,bb,c,d,"));
 		assertEquals("", ((CSVExporter)exporter).csvSafeString(""));
 		assertEquals("uuuuhha;", ((CSVExporter)exporter).csvSafeString("uuuuhha;"));
 		assertEquals("", ((CSVExporter)exporter).csvSafeString(null));
 		assertEquals("123", ((CSVExporter)exporter).csvSafeString(123L));
+		assertEquals("\"he said \"\"hello\"\"\"", ((CSVExporter)exporter).csvSafeString("he said \"hello\""));
+		assertEquals("\"new\nline\"", ((CSVExporter)exporter).csvSafeString("new\nline"));
 	}
 	
 	@Test
@@ -34,7 +36,7 @@ public class CSVExporterTest extends AbstractExporterTestCase {
 		exporter.end();
 		assertContains("fet1");
 		assertContains("Mega Fetcher");
-		assertContains("oops. comma here");
+		assertContains("\"oops, comma here\"");
 	}
 	
 	@Test
@@ -43,7 +45,7 @@ public class CSVExporterTest extends AbstractExporterTestCase {
 		exporter.setFetchers(new String[] {"fet1", "hello2"});
 		exporter.nextAddressResults(new Object[] {InetAddress.getLocalHost(), "oops, comma"});
 		exporter.end();
-		assertContains("oops. comma");
+		assertContains("\"oops, comma\"");
 	}
 
 }

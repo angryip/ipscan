@@ -11,8 +11,6 @@ public class CSVExporter extends AbstractExporter {
 
 	/* CSV delimiter character */
 	static final char DELIMETER = ',';
-	/* Delimiter escaping character (if data contains DELIMETER) */
-	static final char DELIMETER_ESCAPED = '.';
 
 	public CSVExporter() {}
 
@@ -46,11 +44,15 @@ public class CSVExporter extends AbstractExporter {
 	}
 
 	/**
-	 * @return a safe string to be output in CSV format (it doesn't contain the DELIMETER)
+	 * @return a safe string to be output in CSV format, using standard RFC 4180 quoting
 	 */
 	String csvSafeString(Object o) {
 		if (o == null)
 			return "";
-		return o.toString().replace(DELIMETER, DELIMETER_ESCAPED);
+		var s = o.toString();
+		if (s.indexOf(DELIMETER) >= 0 || s.indexOf('"') >= 0 || s.indexOf('\n') >= 0 || s.indexOf('\r') >= 0) {
+			return "\"" + s.replace("\"", "\"\"") + "\"";
+		}
+		return s;
 	}
 }
