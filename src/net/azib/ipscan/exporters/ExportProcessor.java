@@ -69,6 +69,9 @@ public class ExportProcessor {
 			throw new ExporterException("exporting failed", e);
 		}
 		finally {
+			if (exporter instanceof AbstractExporter ae && ae.output != null) {
+				ae.output.flush();
+			}
 			if (outputStream != null) {
 				try {
 					outputStream.close();
