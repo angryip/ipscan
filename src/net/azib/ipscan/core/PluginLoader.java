@@ -34,11 +34,15 @@ public class PluginLoader {
     private static final Logger LOG = LoggerFactory.getLogger();
 
 	public List<Class<? extends Plugin>> getClasses() {
+		return getClasses((jar, names) -> true);
+	}
+
+	public List<Class<? extends Plugin>> getClasses(PluginTrustVerifier trustVerifier) {
 		List<Class<? extends Plugin>> container = new ArrayList<>();
 
 		loadPluginsSpecifiedInSystemProperties(container);
-		loadPluginJars(container, getOwnFile());
-		loadPluginJars(container, new File(System.getProperty("user.home"), ".ipscan/."));
+		loadPluginJars(container, getOwnFile(), trustVerifier);
+		loadPluginJars(container, new File(System.getProperty("user.home"), ".ipscan/."), trustVerifier);
 
 		return container;
 	}
@@ -66,7 +70,7 @@ public class PluginLoader {
 		}
 	}
 
-	void loadPluginJars(List<Class<? extends Plugin>> container, final File ownFile) {
+	void loadPluginJars(List<Class<? extends Plugin>> container, final File ownFile, PluginTrustVerifier trustVerifier) {
 		var parentDir = ownFile.getParentFile();
 		if (parentDir == null || !parentDir.exists()) return;
 
@@ -77,12 +81,17 @@ public class PluginLoader {
 			try {
 				var jarFile = new JarFile(jar);
 				var manifest = jarFile.getManifest();
-				if (manifest == null) continue;
-				jarFile.close();
+				if (manifest == null) { jarFile.close(); continue; }
 
 				var classNames = manifest.getMainAttributes().getValue("IPScan-Plugin");
 				if (classNames == null) classNames = manifest.getMainAttributes().getValue("IPScan-Plugins");
+				jarFile.close();
+
 				if (classNames != null) {
+					if (!trustVerifier.isTrusted(jar, classNames)) {
+						LOG.info("Plugin jar not trusted, skipping: " + jar);
+						continue;
+					}
 					var loader = new PluginClassLoader(jar.toURL());
 					Labels.getInstance().load(loader);
 					loadPluginClasses(container, loader, classNames);
