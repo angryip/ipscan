@@ -65,7 +65,8 @@ public abstract class PortTextFetcher extends AbstractFetcher {
 
 				var in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				String line;
-				while ((line = in.readLine()) != null) {
+				var linesRead = 0;
+				while ((line = in.readLine()) != null && linesRead++ < 100) {
 					var matcher = matchingRegexp.matcher(line);
 					if (matcher.find()) {
 						// mark that additional info is available
