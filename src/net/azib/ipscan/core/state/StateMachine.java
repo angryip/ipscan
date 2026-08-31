@@ -71,7 +71,7 @@ public abstract class StateMachine {
 	 * Transitions to the specified state, notifying all listeners.
 	 * Note: this method is intentionally not public, use specific methods to make desired transitions.
 	 */
-	void transitionTo(ScanningState newState, Transition transition) {
+	synchronized void transitionTo(ScanningState newState, Transition transition) {
 		if (state != newState) {
 			state = newState;
 			notifyAboutTransition(transition);
