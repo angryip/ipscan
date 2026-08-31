@@ -2,6 +2,7 @@ Unreleased:
 - Minimum required Java is now 21, due to updated SWT
 - Bundle Java 25 with Windows and Mac builds
 - Virtual Threads are now used by default without the maximum upper limit
+- MacOS build should not require Rosetta anymore
 - Added Japanese translations
 - Update all translations with newer keys
 - Fixed some rare crashes if no network connectivity
