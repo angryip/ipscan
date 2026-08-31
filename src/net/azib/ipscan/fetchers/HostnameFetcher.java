@@ -17,6 +17,7 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.logging.Logger;
 
+import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.WARNING;
 
 /**
@@ -60,7 +61,7 @@ public class HostnameFetcher extends AbstractFetcher {
 				if (e.getCause() instanceof UnknownHostException) return null;
 			}
 			catch (Exception e) {
-				LOG.log(Level.FINE, "Reflection-based DNS lookup failed", e);
+				LOG.log(FINE, "Reflection-based DNS lookup failed", e);
 			}
 		}
 		if (hostname == null) {
