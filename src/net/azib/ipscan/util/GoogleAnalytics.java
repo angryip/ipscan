@@ -35,19 +35,19 @@ public class GoogleAnalytics {
 
 			var payload = new StringBuilder();
 			payload.append("{");
-			payload.append("\"client_id\":\"").append(config.getGaClientId()).append("\",");
+			payload.append("\"client_id\":\"").append(jsonEscape(config.getGaClientId())).append("\",");
 			payload.append("\"non_personalized_ads\":true,");
 			payload.append("\"events\":[{");
-			payload.append("\"name\":\"").append(type).append("\",");
+			payload.append("\"name\":\"").append(jsonEscape(type)).append("\",");
 			payload.append("\"params\":{");
-			payload.append("\"app_version\":\"").append(Version.getVersion()).append("\",");
+			payload.append("\"app_version\":\"").append(jsonEscape(Version.getVersion())).append("\",");
 			payload.append("\"app_name\":\"ipscan\",");
-			payload.append("\"language\":\"").append(config.getLocale()).append("\",");
+			payload.append("\"language\":\"").append(jsonEscape(config.getLocale().toString())).append("\",");
 			payload.append("\"screen_resolution\":\"").append(config.forGUI().mainWindowSize[0]).append("x").append(config.forGUI().mainWindowSize[1]).append("\",");
-			payload.append("\"os_info\":\"").append(System.getProperty("os.name")).append(" ").append(System.getProperty("os.version")).append(" ").append(System.getProperty("os.arch")).append("\",");
-			payload.append("\"java_info\":\"").append("Java ").append(System.getProperty("java.version")).append("\"");
+			payload.append("\"os_info\":\"").append(jsonEscape(System.getProperty("os.name") + " " + System.getProperty("os.version") + " " + System.getProperty("os.arch"))).append("\",");
+			payload.append("\"java_info\":\"").append(jsonEscape("Java " + System.getProperty("java.version"))).append("\"");
 
-			content = content.replace("\"", "\\\"");
+			content = jsonEscape(content);
 			if ("exception".equals(type)) {
 				payload.append(",\"exception_description\":\"").append(content).append("\"");
 			} else {
@@ -93,6 +93,11 @@ public class GoogleAnalytics {
 		return e + (code >= 0 ? " (" + code + ")" : "") + (element == null ? "" : "\n" +
 			   element.getClassName() + "." + element.getMethodName() + ":" + element.getLineNumber()) +
 			   (e.getCause() != null ? ";\n" + extractFirstStackFrame(e.getCause()) : "");
+	}
+
+	private static String jsonEscape(String s) {
+		if (s == null) return "";
+		return s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t");
 	}
 
 	public void asyncReport(final String screen) {
