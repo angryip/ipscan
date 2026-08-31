@@ -28,12 +28,10 @@ redirect_from: /w/Download/
           - includes Java runtime (recommended)
         </li>
         <li>
-          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-win64-{{ site.version }}.exe">Stand-alone executable</a>
-          - requires a separate installation of 64-bit <a href="https://bell-sw.com/pages/downloads/#/java-17-lts">OpenJDK/Java 17+</a>
+          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-win.exe">Stand-alone executable</a>
+          - requires a separate installation of 64-bit <a href="https://bell-sw.com/pages/downloads/#/java-25-lts">OpenJDK/Java 21+</a>
         </li>
       </ul>
-
-      <p>Last version to run under Java 8 is <i>3.7.6</i>.</p>
 
       <h4>Legacy</h4>
 
@@ -72,10 +70,10 @@ redirect_from: /w/Download/
       </p>
       <ul>
         <li>
-          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-macArm64-{{ site.version }}.zip">Bundle for Mac ARM (M-CPUs)</a> - allow opening in Security Settings for the first time
+          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-macArm64.zip">Bundle for Mac ARM (M-CPUs)</a> - allow opening in Security Settings for the first time
         </li>
         <li>
-          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-macX86-{{ site.version }}.zip">Bundle for Mac Intel</a>
+          <a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-macX86.zip">Bundle for Mac Intel</a>
         </li>
       </ul>
 
@@ -107,10 +105,10 @@ redirect_from: /w/Download/
         <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_amd64.deb">x86 64-bit DEB Package</a> for <i>Ubuntu/Debian/Mint</i></li>
         <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-1.x86_64.rpm">x86 64-bit RPM Package</a> for Fedora/RedHat/Mageia/openSUSE</li>
         <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan_{{ site.version }}_all.deb">Any arch DEB Package</a> for <i>Raspbian/Debian</i> (e.g. 32-bit or ARM), see below</li>
-        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-any-{{ site.version }}.jar">Executable Jar</a> - you need to provide your own swt.jar to classpath</li>
+        <li><a href="{{ page.binary_url }}{{ site.version }}/ipscan-{{ site.version }}-any.jar">Executable Jar</a> - you need to provide your own swt.jar to classpath</li>
       </ul>
       <h4>Running</h4>
-      <p>Make sure you have at least Java 17 or <a href="http://en.wikipedia.org/wiki/OpenJDK">OpenJDK</a> installed - check your distribution.</p>
+      <p>Make sure you have at least Java 21 or <a href="http://en.wikipedia.org/wiki/OpenJDK">OpenJDK</a> installed (25+ recommended) - check your distribution.</p>
       <p>Last version with Java 8 support was <i>3.7.6</i>.</p>
       <p>DEB and RPM packages will install appropriate 'desktop' files, so <i>Angry IP Scanner</i> will appear in Applications menu, under either <b>Internet</b> or <b>Networking</b>. Alternatively, you can just type <code>ipscan</code> to launch the application.</p>
       <p><i>Jar</i> files are launched by either double-clicking or typing <code>java -jar <i>jar-file</i></code>.</p>
