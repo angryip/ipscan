@@ -73,7 +73,9 @@ public class MDNSResolver implements Closeable {
 		if (response[0] != request[0] || response[1] != request[1]) return null;
 		int numQueries = response[5];
 		var offset = (numQueries == 0 ? 12 : request.length) + 2 + 2 + 2 + 4 + 2;
-		return decodeName(response, offset, respPacket.getLength() - offset);
+		var nameLength = respPacket.getLength() - offset;
+		if (nameLength <= 0) return null;
+		return decodeName(response, offset, nameLength);
 	}
 
 	public void close() {
