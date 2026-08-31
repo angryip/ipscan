@@ -2,7 +2,6 @@ package net.azib.ipscan.fetchers;
 
 import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.core.ScanningSubject;
-import net.azib.ipscan.util.IOUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -20,23 +19,24 @@ public class UnixMACFetcher extends MACFetcher {
 
 	@Override public String resolveMAC(ScanningSubject subject) {
 		var ip = subject.getAddress().getHostAddress();
-		BufferedReader reader = null;
 		try {
 			// highly inefficient implementation, there must be a better way (using JNA?)
 			var process = Runtime.getRuntime().exec(arp + ip);
-			reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				if (line.contains(ip))
-					return extractMAC(line);
+			try (var reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+				String line;
+				while ((line = reader.readLine()) != null) {
+					if (line.contains(ip))
+						return extractMAC(line);
+				}
+				return getLocalMAC(subject);
 			}
-			return getLocalMAC(subject);
+			finally {
+				process.getErrorStream().close();
+				process.destroy();
+			}
 		}
 		catch (Exception e) {
 			return null;
-		}
-		finally {
-			IOUtils.closeQuietly(reader);
 		}
 	}
 
