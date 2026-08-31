@@ -33,14 +33,16 @@ public class MDNSResolver implements Closeable {
 	}
 
 	String decodeName(byte[] data, int offset, int length) {
+		var end = offset + length;
 		var s = new StringBuilder(length);
-		for (var i = offset; i < offset + length; i++) {
-			var len = data[i];
+		for (var i = offset; i < end; i++) {
+			var len = data[i] & 0xFF;
 			if (len == 0) break;
+			if (i + 1 + len > end) break;
 			s.append(new String(data, i + 1, len)).append('.');
 			i += len;
 		}
-		s.setLength(s.length() - 1);
+		if (s.length() > 0) s.setLength(s.length() - 1);
 		return s.toString();
 	}
 
@@ -61,17 +63,19 @@ public class MDNSResolver implements Closeable {
 
 	public String resolve(InetAddress ip) throws IOException {
 		var addr = ip.getAddress();
-		var requestId = addr[2] * 0xFF + addr[3];
+		var requestId = (addr[2] & 0xFF) * 0xFF + (addr[3] & 0xFF);
 		var request = dnsRequest(requestId, reverseName(addr));
 		socket.send(new DatagramPacket(request, request.length, mdnsIP, mdnsPort));
 
 		var respPacket = new DatagramPacket(new byte[512], 512);
 		socket.receive(respPacket);
 		var response = respPacket.getData();
-		if (response[0] != request[0] && response[1] != request[1]) return null;
+		if (response[0] != request[0] || response[1] != request[1]) return null;
 		int numQueries = response[5];
 		var offset = (numQueries == 0 ? 12 : request.length) + 2 + 2 + 2 + 4 + 2;
-		return decodeName(response, offset, respPacket.getLength() - offset);
+		var nameLength = respPacket.getLength() - offset;
+		if (nameLength <= 0) return null;
+		return decodeName(response, offset, nameLength);
 	}
 
 	public void close() {

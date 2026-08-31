@@ -37,7 +37,7 @@ public class ScannerConfig {
 	ScannerConfig(Preferences preferences) {
 		this.preferences = preferences;
 		
-		maxThreads = preferences.getInt("maxThreads", Platform.CRIPPLED_WINDOWS ? 10 : 100);
+		maxThreads = preferences.getInt("maxThreads", 0);
 		threadDelay = preferences.getInt("threadDelay", 20);
 		scanDeadHosts = preferences.getBoolean("scanDeadHosts", false);
 		selectedPinger = preferences.get("selectedPinger", Platform.WINDOWS ? "pinger.windows" : "pinger.java");

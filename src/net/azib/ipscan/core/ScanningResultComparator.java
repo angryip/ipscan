@@ -12,8 +12,26 @@ import java.util.Comparator;
 
 public class ScanningResultComparator implements Comparator<ScanningResult> {
 	
-	private int index;
-	private boolean ascending;
+	private final int index;
+	private final boolean ascending;
+
+	public ScanningResultComparator() {
+		this(0, true);
+	}
+
+	private ScanningResultComparator(int index, boolean ascending) {
+		this.index = index;
+		this.ascending = ascending;
+	}
+
+	/**
+	 * Returns a new comparator configured for the given column and direction.
+	 */
+	public ScanningResultComparator byIndex(int index, boolean ascending) {
+		// this ensures that all Empty objects are always at the end
+		Empty.setSortDirection(ascending);
+		return new ScanningResultComparator(index, ascending);
+	}
 
 	@SuppressWarnings("unchecked")
 	public int compare(ScanningResult r1, ScanningResult r2) {
@@ -52,13 +70,5 @@ public class ScanningResultComparator implements Comparator<ScanningResult> {
 		}
 		
 		return result * (ascending ? 1 : -1);
-	}
-
-	public void byIndex(int index, boolean ascending) {
-		this.index = index;
-		this.ascending = ascending;
-
-		// this ensures that all Empty objects are always at the end
-		Empty.setSortDirection(ascending);
 	}
 }

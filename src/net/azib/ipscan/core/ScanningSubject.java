@@ -78,7 +78,7 @@ public class ScanningSubject {
 	}
 
 	public boolean isLocalHost() {
-		return address.equals(ifAddr.getAddress());
+		return ifAddr != null && address.equals(ifAddr.getAddress());
 	}
 
 	public boolean isIPv6() {

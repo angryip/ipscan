@@ -26,22 +26,22 @@ public class ScanningResultComparatorTest {
 	
 	@Test
 	public void compareDifferentTypes() throws Exception {
-		comparator.byIndex(0, true);
+		comparator = comparator.byIndex(0, true);
 
 		// nulls are the same as n/a 
 		assertTrue(comparator.compare(res("a"), res((String)null)) < 0);
 		assertTrue(comparator.compare(res((Integer)null), res(12)) > 0);
 		
 		// n/s > n/a, so that n/s are always at the end of sorted data, preceded by n/a
-		assertTrue(comparator.compare(res(NotAvailable.VALUE), res(NotAvailable.VALUE)) == 0);
+		assertEquals(0, comparator.compare(res(NotAvailable.VALUE), res(NotAvailable.VALUE)));
 		assertTrue(comparator.compare(res(NotScanned.VALUE), res(NotAvailable.VALUE)) > 0);
 		assertTrue(comparator.compare(res(NotAvailable.VALUE), res(NotScanned.VALUE)) < 0);
 		
 		// n/a and n/s are at the end
 		assertTrue(comparator.compare(res(125), res(NotScanned.VALUE)) < 0);
 		assertTrue(comparator.compare(res(9090), res(NotAvailable.VALUE)) < 0);
-		
-		assertTrue(comparator.compare(res(9090), res(new NumericRangeList(asList(9090), false))) == 0);
+
+		assertEquals(0, comparator.compare(res(9090), res(new NumericRangeList(asList(9090), false))));
 		assertTrue(comparator.compare(res(new NumericRangeList(asList(154), false)), res(155)) < 0);
 		assertTrue(comparator.compare(res(new NumericRangeList(asList(1, 2, 3), false)), res(new NumericRangeList(asList(5, 6), false))) > 0);
 		
@@ -56,19 +56,19 @@ public class ScanningResultComparatorTest {
 	
 	@Test
 	public void differentIndexesSupported() throws Exception {
-		comparator.byIndex(0, true);
+		comparator = comparator.byIndex(0, true);
 		assertTrue(comparator.compare(res("a", "z"), res("z", "a")) < 0);
 		
-		comparator.byIndex(1, true);
+		comparator = comparator.byIndex(1, true);
 		assertTrue(comparator.compare(res("a", "z"), res("z", "a")) > 0);
 		
-		comparator.byIndex(2, false);
+		comparator = comparator.byIndex(2, false);
 		assertTrue(comparator.compare(res("a", "x", "mmm"), res("a", "y", "mmm")) == 0);
 	}
 	
 	@Test
 	public void descendingWorks() throws Exception {
-		comparator.byIndex(0, false);
+		comparator = comparator.byIndex(0, false);
 		
 		assertTrue(comparator.compare(res("a"), res(NotAvailable.VALUE)) < 0);
 		assertTrue(comparator.compare(res(NotScanned.VALUE), res(NotAvailable.VALUE)) > 0);
@@ -78,7 +78,7 @@ public class ScanningResultComparatorTest {
 	
 	@Test
 	public void stringsComparedCaseInsensitively() throws Exception {
-		comparator.byIndex(0, true);
+		comparator = comparator.byIndex(0, true);
 		
 		assertTrue(comparator.compare(res("a"), res("A")) == 0);
 		assertTrue(comparator.compare(res("Anton"), res("ANT")) > 0);
@@ -91,12 +91,12 @@ public class ScanningResultComparatorTest {
 		Object ip2 = new InetAddressHolder(InetAddress.getByName("127.0.0.30"));
 		Object ip3 = new InetAddressHolder(InetAddress.getByName("128.0.0.25"));
 
-		comparator.byIndex(1, true);		
+		comparator = comparator.byIndex(1, true);		
 		assertTrue(comparator.compare(res(ip1, "a"), res(ip1, "A")) == 0);
 		assertTrue(comparator.compare(res(ip1, "a"), res(ip2, "a")) < 0);
 		assertTrue(comparator.compare(res(ip3, "a"), res(ip2, "a")) > 0);
 		
-		comparator.byIndex(1, false);		
+		comparator = comparator.byIndex(1, false);		
 		assertTrue(comparator.compare(res(ip1, null), res(ip2, null)) > 0);
 		assertTrue(comparator.compare(res(ip3, null), res(ip2, null)) < 0);
 	}
@@ -113,7 +113,7 @@ public class ScanningResultComparatorTest {
 				res("a")
 		};
 		
-		comparator.byIndex(0, true);
+		comparator = comparator.byIndex(0, true);
 		sort(results, comparator);
 		
 		assertEquals(1, results[0].getValues().get(0));
@@ -124,7 +124,7 @@ public class ScanningResultComparatorTest {
 		assertEquals(NotScanned.VALUE, results[5].getValues().get(0));
 		assertEquals(NotScanned.VALUE, results[6].getValues().get(0));
 
-		comparator.byIndex(0, false);
+		comparator = comparator.byIndex(0, false);
 		sort(results, comparator);
 		
 		assertEquals("a", results[0].getValues().get(0));

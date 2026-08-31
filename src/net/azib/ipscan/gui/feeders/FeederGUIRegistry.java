@@ -14,11 +14,6 @@ import org.eclipse.swt.widgets.TableItem;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * FeederGUIRegistry
- *
- * @author Anton Keks
- */
 public class FeederGUIRegistry implements FeederRegistry {
 	private final List<AbstractFeederGUI> feederGUIList;
 	private final Combo feederSelectionCombo;

@@ -9,11 +9,6 @@ import net.azib.ipscan.feeders.FeederCreator;
 
 import java.util.prefs.Preferences;
 
-/**
- * FavoritesConfig
- *
- * @author Anton Keks
- */
 public class FavoritesConfig extends NamedListConfig {
 
 	public FavoritesConfig(Preferences preferences) {
@@ -31,12 +26,14 @@ public class FavoritesConfig extends NamedListConfig {
 	
 	public String getFeederId(String key) {
 		var value = get(key);
+		if (value == null) return null;
 		var indexOf = value.indexOf('\t');
 		return value.substring(0, indexOf);
 	}
 	
 	public String[] getSerializedParts(String key) {
 		var value = get(key);
+		if (value == null) return null;
 		var indexOf = value.indexOf('\t');
 		return value.substring(indexOf+1).split(":::");		
 	}

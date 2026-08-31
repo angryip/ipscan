@@ -42,11 +42,20 @@ public final class PortIterator implements Iterator<Integer>, Cloneable {
 				var range = portRanges[i];
 				var dashPos = range.indexOf('-') + 1;
 				var endPort = Integer.parseInt(range.substring(dashPos));
-				portRangeEnd[i] = endPort;
-				portRangeStart[i] = dashPos == 0 ? endPort : Integer.parseInt(range.substring(0, dashPos-1));
+				var startPort = dashPos == 0 ? endPort : Integer.parseInt(range.substring(0, dashPos-1));
+				if (startPort <= 0 || startPort >= 65536) {
+					throw new NumberFormatException(startPort + " port is out of range");
+				}
 				if (endPort <= 0 || endPort >= 65536) {
 					throw new NumberFormatException(endPort + " port is out of range");
 				}
+				if (startPort > endPort) {
+					var tmp = startPort;
+					startPort = endPort;
+					endPort = tmp;
+				}
+				portRangeStart[i] = startPort;
+				portRangeEnd[i] = endPort;
 			}
 			
 			currentPort = portRangeStart[0];

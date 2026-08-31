@@ -64,7 +64,7 @@ public class StatusBar {
 		updateConfigText();
 
 		threadsText = new Label(composite, SWT.BORDER);
-		setRunningThreads(Math.min(scannerConfig.maxThreads, 200)); // this should set the longest possible text		
+		setRunningThreads(scannerConfig.maxThreads == 0 ? 200 : Math.min(scannerConfig.maxThreads, 200)); // this should set the longest possible text
 		threadsText.pack(); // calculate the width
 		threadsText.setLayoutData(formData(threadsText.getSize().x, SWT.DEFAULT, new FormAttachment(displayMethodText), null, new FormAttachment(0), new FormAttachment(100)));
 		setRunningThreads(0); // set back to 0 at startup
@@ -109,14 +109,15 @@ public class StatusBar {
 
 	public void setRunningThreads(int runningThreads) {
 		if (!threadsText.isDisposed()) {
-			var maxThreadsReached = runningThreads == scannerConfig.maxThreads;
+			var isVirtualThreads = scannerConfig.maxThreads == 0;
+			var maxThreadsReached = !isVirtualThreads && runningThreads == scannerConfig.maxThreads;
 			if (maxThreadsReachedBefore || maxThreadsReached) {
 				var newColor = threadsText.getDisplay().getSystemColor(maxThreadsReached ? SWT.COLOR_RED : SWT.COLOR_WIDGET_FOREGROUND);
 				threadsText.setForeground(newColor);
 			}
 			maxThreadsReachedBefore = maxThreadsReached;
-			
-			threadsText.setText(Labels.getLabel("text.threads") + runningThreads + 
+
+			threadsText.setText(Labels.getLabel("text.threads") + runningThreads +
 					(maxThreadsReached ? Labels.getLabel("text.threads.max") : ""));
 		}
 	}

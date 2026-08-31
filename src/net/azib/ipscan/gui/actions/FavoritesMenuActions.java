@@ -19,11 +19,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.*;
 
-/**
- * FavoritesActions
- *
- * @author Anton Keks
- */
 public class FavoritesMenuActions {
 
 	public static final class Add implements Listener {

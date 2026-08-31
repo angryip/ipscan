@@ -11,11 +11,6 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * XMLExporter
- *
- * @author Anton Keks
- */
 public class XMLExporter extends AbstractExporter {
 	static final String ENCODING = "UTF-8";
 
@@ -56,7 +51,7 @@ public class XMLExporter extends AbstractExporter {
 			feederName = feederInfo.substring(0, colonPos);
 			feederInfo = feederInfo.substring(colonPos + 1);
 		}
-		output.print("\t<feeder" + (feederName != null ? " name=\"" + feederName.trim() +"\"" : "") + ">");
+		output.print("\t<feeder" + (feederName != null ? " name=\"" + escapeXmlAttr(feederName.trim()) + "\"" : "") + ">");
 		output.print("<![CDATA[" + feederInfo.trim() + "]]>");
 		output.println("</feeder>");
 		
@@ -77,12 +72,21 @@ public class XMLExporter extends AbstractExporter {
 		this.fetcherNames = fetcherNames;
 	}
 
+	private static String escapeXmlAttr(Object value) {
+		if (value == null) return "";
+		return value.toString()
+				.replace("&", "&amp;")
+				.replace("\"", "&quot;")
+				.replace("<", "&lt;")
+				.replace(">", "&gt;");
+	}
+
 	public void nextAddressResults(Object[] results) throws IOException {
-		output.println("\t\t<host address=\"" + results[ipFetcherIndex] + "\">");
+		output.println("\t\t<host address=\"" + escapeXmlAttr(results[ipFetcherIndex]) + "\">");
 		
 		for (var i = 0; i < results.length; i++) {
 			if (results[i] != null) {
-				output.println("\t\t\t<result name=\"" + fetcherNames[i] + "\"><![CDATA[" + results[i] + "]]></result>");
+				output.println("\t\t\t<result name=\"" + escapeXmlAttr(fetcherNames[i]) + "\"><![CDATA[" + results[i] + "]]></result>");
 			}
 		}
 		

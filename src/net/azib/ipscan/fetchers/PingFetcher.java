@@ -37,7 +37,8 @@ public class PingFetcher extends AbstractFetcher {
 
 	/** The shared pinger - this one must be static, because PingTTLFetcher will use it as well */
 	private static volatile Pinger pinger;
-	private static volatile AtomicInteger pingerUsers = new AtomicInteger();
+	private static final AtomicInteger pingerUsers = new AtomicInteger();
+	private static final Object pingerLock = new Object();
 
 	/** The registry used for creation of Pinger instances */
 	private PingerRegistry pingerRegistry;
@@ -88,24 +89,28 @@ public class PingFetcher extends AbstractFetcher {
 	}
 
 	public void init(Feeder feeder) {
-		if (pinger == null) {
-			pinger = pingerRegistry.createPinger(feeder.isLocalNetwork());
-			pingerUsers.set(1);
+		synchronized (pingerLock) {
+			if (pinger == null) {
+				pinger = pingerRegistry.createPinger(feeder.isLocalNetwork());
+				pingerUsers.set(1);
+			}
+			else
+				pingerUsers.incrementAndGet();
 		}
-		else
-			pingerUsers.incrementAndGet();
 	}
 
 	public void cleanup() {
-		try {
-			if (pingerUsers.decrementAndGet() <= 0 && pinger != null) {
-				pinger.close();
-				pinger = null;
+		synchronized (pingerLock) {
+			try {
+				if (pingerUsers.decrementAndGet() <= 0 && pinger != null) {
+					pinger.close();
+					pinger = null;
+				}
 			}
-		}
-		catch (IOException e) {
-			pinger = null;
-			throw new FetcherException(e);
+			catch (IOException e) {
+				pinger = null;
+				throw new FetcherException(e);
+			}
 		}
 	}
 }

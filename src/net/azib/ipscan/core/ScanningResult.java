@@ -116,6 +116,9 @@ public class ScanningResult {
 	 * @return human-friendly text representation of results
 	 */
 	public String toString() {
+		if (resultList == null)
+			return address.getHostAddress();
+
 		// cross-platform newline :-)
 		var newLine = System.getProperty("line.separator");
 

@@ -15,9 +15,11 @@ public class LinuxMACFetcher extends MACFetcher {
 	private int macLength = 17;
 
 	public LinuxMACFetcher() {
-		var line = arpLines().findFirst().get();
-		flagsIndex = line.indexOf("Flags");
-		macIndex = line.indexOf("HW addr");
+		var line = arpLines().findFirst().orElse(null);
+		if (line != null) {
+			flagsIndex = line.indexOf("Flags");
+			macIndex = line.indexOf("HW addr");
+		}
 	}
 
 	private static Stream<String> arpLines() {
@@ -29,6 +31,7 @@ public class LinuxMACFetcher extends MACFetcher {
 	}
 
 	@Override public String resolveMAC(ScanningSubject subject) {
+		if (macIndex == 0) return null;
 		try {
 			var ip = subject.getAddress().getHostAddress();
 			return arpLines()

@@ -26,6 +26,7 @@ import static java.util.Collections.emptyList;
  */
 public class ScanningResultList implements Iterable<ScanningResult> {
 	private static final int RESULT_LIST_INITIAL_SIZE = 1024;
+	private static final int MAX_RESULTS = 1_000_000;
 	
 	private FetcherRegistry fetcherRegistry;
 	// selected fetchers are cached here, because they may be changed in the registry already
@@ -110,7 +111,12 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	public synchronized void registerAtIndex(int index, ScanningResult result) {
 		if (resultIndexes.put(result.getAddress(), index) != null)
 			throw new IllegalStateException(result.getAddress() + " is already registered in the list");
-		
+
+		if (resultList.size() >= MAX_RESULTS) {
+			resultIndexes.remove(result.getAddress());
+			return;
+		}
+
 		result.resultList = this;
 		resultList.add(index, result);
 
@@ -136,7 +142,7 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		if (result.isReady())
 			updateStatistics(result);
 	
-		return resultIndexes.get(result.getAddress());
+		return resultIndexes.getOrDefault(result.getAddress(), -1);
 	}
 
 	/**
@@ -209,8 +215,8 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	 */
 	public synchronized void sort(int columnIndex, boolean ascending) {
 		// setup comparator
-		resultsComparator.byIndex(columnIndex, ascending);
-		resultList.sort(resultsComparator);
+		var comparator = resultsComparator.byIndex(columnIndex, ascending);
+		resultList.sort(comparator);
 		
 		// now rebuild indexes
 		resultIndexes = new HashMap<>(RESULT_LIST_INITIAL_SIZE);
@@ -225,10 +231,10 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	 * @param startIndex the element to start from
 	 * @return the index of found element, or -1
 	 */
-	public int findText(String text, int startIndex) {
+	public synchronized int findText(String text, int startIndex) {
 		text = text.toLowerCase();
 		for (var i = startIndex; i < resultList.size(); i++) {
-			var scanningResult = getResult(i);
+			var scanningResult = resultList.get(i);
 			
 			for (var value : scanningResult.getValues()) {
 				if (value != null && value.toString().toLowerCase().contains(text)) {						

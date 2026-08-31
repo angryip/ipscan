@@ -50,9 +50,16 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 		this.stateMachine = stateMachine;
 		this.progressCallback = progressCallback;
 		this.resultsCallback = resultsCallback;
-		
-		this.threadGroup = new ThreadGroup(getName());
-		this.threadPool = Executors.newFixedThreadPool(config.maxThreads, this);
+
+		if (config.maxThreads == 0) {
+			// 0 means virtual threads - no fixed pool size, no ThreadGroup
+			this.threadGroup = null;
+			this.threadPool = Executors.newVirtualThreadPerTaskExecutor();
+		}
+		else {
+			this.threadGroup = new ThreadGroup(getName());
+			this.threadPool = Executors.newFixedThreadPool(config.maxThreads, this);
+		}
 		
 		// this thread is daemon because we want JVM to terminate it
 		// automatically if user closes the program (Main thread, that is)
@@ -84,7 +91,7 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 					// make a small delay between thread creation
 					Thread.sleep(config.threadDelay);
 					
-					if ((numActiveThreads.intValue() < config.maxThreads)) {					
+					if (config.maxThreads == 0 || numActiveThreads.intValue() < config.maxThreads) {
 						subject = feeder.next();
 
 						if (config.skipBroadcastAddresses && isLikelyBroadcast(subject.getAddress(), subject.getIfAddress()))
@@ -110,8 +117,9 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 				// interrupt - end the loop
 			}
 			
-			// inform that no more addresses left
-			stateMachine.stop();
+			// inform that no more addresses left (skip if already killing)
+			if (stateMachine.inState(SCANNING))
+				stateMachine.stop();
 		
 			// request shutdown of the thread pool
 			// this must be done here and not asynchronously by the state machine
@@ -145,7 +153,10 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 	public void transitionTo(ScanningState state, Transition transition) {
 		if (state == KILLING) {
 			// try to interrupt all threads if we get to killing state
-			threadGroup.interrupt();
+			if (threadGroup != null) {
+				threadGroup.interrupt();
+			}
+			threadPool.shutdownNow();
 		}
 	}
 	

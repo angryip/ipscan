@@ -22,11 +22,6 @@ import org.eclipse.swt.widgets.Table;
 
 import static net.azib.ipscan.core.ScanningResult.ResultType.*;
 
-/**
- * ToolsActions
- * 
- * @author Anton Keks
- */
 public class ToolsActions {
 
 	public static final class Preferences implements Listener {

@@ -19,11 +19,6 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
-/**
- * OpenerLauncher
- *
- * @author Anton Keks
- */
 public class OpenerLauncher {
 	
 	private final FetcherRegistry fetcherRegistry;
@@ -35,10 +30,12 @@ public class OpenerLauncher {
 	}
 
 	public void launch(Opener opener, int selectedItem) {
-		var openerString = prepareOpenerStringForItem(opener.execString, selectedItem);
+		// check for URLs - these are opened directly, not via shell, so no sanitization needed
+		boolean isURL = opener.execString.startsWith("http:") || opener.execString.startsWith("https:") ||
+				opener.execString.startsWith("ftp:") || opener.execString.startsWith("mailto:") || opener.execString.startsWith("\\\\");
+		var openerString = prepareOpenerStringForItem(opener.execString, selectedItem, !isURL);
 		
-		// check for URLs
-		if (openerString.startsWith("http:") || openerString.startsWith("https:") || openerString.startsWith("ftp:") || openerString.startsWith("mailto:") || openerString.startsWith("\\\\")) {
+		if (isURL) {
 			BrowserLauncher.openURL(openerString);
 		}
 		else {
@@ -100,10 +97,12 @@ public class OpenerLauncher {
 	/**
 	 * Replaces references to scanned values in an opener string.
 	 * References look like ${fetcher_id}
-	 * @param openerString
+	 * @param openerString the opener template
+	 * @param selectedItem the scanned result index
+	 * @param sanitize if true, sanitize substituted values for safe shell execution
 	 * @return opener string with values replaced
 	 */
-	String prepareOpenerStringForItem(String openerString, int selectedItem) {
+	String prepareOpenerStringForItem(String openerString, int selectedItem, boolean sanitize) {
 		var paramsPattern = Pattern.compile("\\$\\{(.+?)\\}");
 		var matcher = paramsPattern.matcher(openerString);
 		var sb = new StringBuilder(64);
@@ -117,9 +116,34 @@ public class OpenerLauncher {
 				throw new UserErrorException("opener.nullFetcherValue", fetcherId);					
 			}
 			
-			matcher.appendReplacement(sb, scannedValue.toString());
+			var value = scannedValue.toString();
+			if (sanitize) value = sanitizeForShell(value);
+			matcher.appendReplacement(sb, value);
 		}
 		matcher.appendTail(sb);
+		return sb.toString();
+	}
+
+	/**
+	 * Sanitizes a value for safe inclusion in a shell command string.
+	 * Wraps the value in single quotes, escaping any embedded single quotes.
+	 * This prevents shell metacharacters in attacker-controlled data (e.g. hostnames
+	 * from reverse DNS) from being interpreted by sh, cmd, or osascript.
+	 */
+	static String sanitizeForShell(String value) {
+		if (value.isEmpty()) return "''";
+		var sb = new StringBuilder(value.length() + 2);
+		sb.append('\'');
+		for (int i = 0; i < value.length(); i++) {
+			char c = value.charAt(i);
+			if (c == '\'') {
+				// end current single-quoted segment, add escaped quote, start new segment
+				sb.append("'\\''");
+			} else {
+				sb.append(c);
+			}
+		}
+		sb.append('\'');
 		return sb.toString();
 	}
 

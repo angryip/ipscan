@@ -8,11 +8,6 @@ package net.azib.ipscan.core.state;
 
 import net.azib.ipscan.core.state.StateMachine.Transition;
 
-/**
- * StateTransitionListener
- *
- * @author Anton Keks
- */
 public interface StateTransitionListener {
 
 	/**

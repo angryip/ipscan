@@ -17,6 +17,7 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.logging.Logger;
 
+import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.WARNING;
 
 /**
@@ -51,26 +52,38 @@ public class HostnameFetcher extends AbstractFetcher {
 
 	@SuppressWarnings("PrimitiveArrayArgumentToVariableArgMethod")
 	private String resolveWithRegularDNS(InetAddress ip) {
+		String hostname = null;
 		if (getHostByAddr != null) {
 			try {
-				return (String) getHostByAddr.invoke(inetAddressImpl, ip.getAddress());
+				hostname = (String) getHostByAddr.invoke(inetAddressImpl, ip.getAddress());
 			}
 			catch (InvocationTargetException e) {
 				if (e.getCause() instanceof UnknownHostException) return null;
 			}
-			catch (Exception ignored) {}
+			catch (Exception e) {
+				LOG.log(FINE, "Reflection-based DNS lookup failed", e);
+			}
 		}
-		// fallback: getCanonicalHostName() also does a forward lookup, so it's slower
-		var hostname = ip.getCanonicalHostName();
-		return ip.getHostAddress().equals(hostname) ? null : hostname;
+		if (hostname == null) {
+			// fallback: getCanonicalHostName() also does a forward lookup, so it's slower
+			var canonical = ip.getCanonicalHostName();
+			hostname = ip.getHostAddress().equals(canonical) ? null : canonical;
+		}
+		// verify forward lookup to prevent DNS rebinding attacks
+		if (hostname != null) {
+			try {
+				if (!InetAddress.getByName(hostname).equals(ip)) return null;
+			}
+			catch (Exception e) {
+				return null;
+			}
+		}
+		return hostname;
 	}
 
 	private String resolveWithMulticastDNS(ScanningSubject subject) {
-		try {
-			var resolver = new MDNSResolver(subject.getAdaptedPortTimeout());
-			var name = resolver.resolve(subject.getAddress());
-			resolver.close();
-			return name;
+		try (var resolver = new MDNSResolver(subject.getAdaptedPortTimeout())) {
+			return resolver.resolve(subject.getAddress());
 		}
 		catch (SocketTimeoutException | SocketException e) {
 			return null;
@@ -82,10 +95,8 @@ public class HostnameFetcher extends AbstractFetcher {
 	}
 
 	private String resolveWithNetBIOS(ScanningSubject subject) {
-		try {
-			var resolver = new NetBIOSResolver(subject.getAdaptedPortTimeout());
+		try (var resolver = new NetBIOSResolver(subject.getAdaptedPortTimeout())) {
 			var names = resolver.resolve(subject.getAddress());
-			resolver.close();
 			return names == null ? null : names[0];
 		}
 		catch (SocketTimeoutException | SocketException e) {

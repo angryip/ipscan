@@ -48,14 +48,18 @@ public class SQLExporter extends AbstractExporter {
 	}
 
 	public void nextAddressResults(Object[] results) throws IOException {
-		output.print("INSERT INTO " + TABLE_NAME + " VALUES ('" + results[0] + "'");
+		output.print("INSERT INTO " + TABLE_NAME + " VALUES ('" + escapeSql(results[0]) + "'");
 		for (var i = 1; i < results.length; i++) {
-			var result = results[i];
 			output.print(COMMA);
 			output.print(" ");
-			output.print("'" + result.toString().replace("'", "''") + "'");
+			output.print("'" + escapeSql(results[i]) + "'");
 		}
 		output.println(");");
+	}
+
+	private static String escapeSql(Object value) {
+		if (value == null) return "NULL";
+		return value.toString().replace("\\", "\\\\").replace("'", "''");
 	}
 
 }

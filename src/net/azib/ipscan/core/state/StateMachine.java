@@ -71,19 +71,23 @@ public abstract class StateMachine {
 	 * Transitions to the specified state, notifying all listeners.
 	 * Note: this method is intentionally not public, use specific methods to make desired transitions.
 	 */
-	void transitionTo(ScanningState newState, Transition transition) {
+	synchronized void transitionTo(ScanningState newState, Transition transition) {
 		if (state != newState) {
 			state = newState;
 			notifyAboutTransition(transition);
 		}
 	}
 
-	protected void notifyAboutTransition(Transition transition) {		
+	protected void notifyAboutTransition(Transition transition) {
+		notifyListeners(state, transition);
+	}
+
+	protected void notifyListeners(ScanningState stateAtTransition, Transition transition) {
 		try {
 			listenersLock.readLock().lock();
 			for (var listener : transitionListeners) {
-				listener.transitionTo(state, transition);
-			}			
+				listener.transitionTo(stateAtTransition, transition);
+			}
 		}
 		finally {
 			listenersLock.readLock().unlock();

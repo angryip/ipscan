@@ -68,8 +68,8 @@ public class RangeFeeder extends AbstractFeeder {
 		long rawEndIP = octetsToInt(endAddress, endAddress.length - 4);
 		long rawStartIP = octetsToInt(this.startIP.getAddress(), endAddress.length - 4);
 		// make 32-bit unsigned values
-		rawEndIP = rawEndIP >= 0 ? rawEndIP : rawEndIP + Integer.MAX_VALUE;
-		rawStartIP = rawStartIP >= 0 ? rawStartIP : rawStartIP + Integer.MAX_VALUE;
+		rawEndIP = rawEndIP & 0xFFFFFFFFL;
+		rawStartIP = rawStartIP & 0xFFFFFFFFL;
 		// compute 1% of the whole range
 		percentageIncrement = Math.abs(100.0 / (rawEndIP - rawStartIP + 1));
 		percentageComplete = 0;

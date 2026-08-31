@@ -7,8 +7,6 @@ import java.net.InterfaceAddress;
 import java.net.UnknownHostException;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @SuppressWarnings("ConstantConditions")
 public class InetAddressUtilsTest {
@@ -158,17 +156,34 @@ public class InetAddressUtilsTest {
 	}
 	
 	@Test
-	public void testIsLikelyBroadcast() throws UnknownHostException {
+	public void testIsLikelyBroadcast() throws Exception {
 		assertTrue(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("127.0.2.0"), null));
 		assertTrue(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("127.6.32.255"), null));
 		assertFalse(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("127.4.5.6"), null));
 
-		var ifAddr = mock(InterfaceAddress.class);
-		when(ifAddr.getAddress()).thenReturn(InetAddress.getByName("192.168.0.1"));
-		when(ifAddr.getBroadcast()).thenReturn(InetAddress.getByName("192.168.0.127"));
+		var ifAddr = createInterfaceAddress(
+				InetAddress.getByName("192.168.0.1"),
+				InetAddress.getByName("192.168.0.127"),
+				(short) 25);
 		assertTrue(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("192.168.0.127"), ifAddr));
 		assertTrue(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("192.168.0.0"), ifAddr));
 		assertFalse(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("192.168.0.1"), ifAddr));
 		assertFalse(InetAddressUtils.isLikelyBroadcast(InetAddress.getByName("192.168.0.126"), ifAddr));
+	}
+
+	private static InterfaceAddress createInterfaceAddress(InetAddress address, InetAddress broadcast, short prefixLength) throws Exception {
+		var constructor = InterfaceAddress.class.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		var ifAddr = constructor.newInstance();
+		var addressField = InterfaceAddress.class.getDeclaredField("address");
+		addressField.setAccessible(true);
+		addressField.set(ifAddr, address);
+		var broadcastField = InterfaceAddress.class.getDeclaredField("broadcast");
+		broadcastField.setAccessible(true);
+		broadcastField.set(ifAddr, broadcast);
+		var maskField = InterfaceAddress.class.getDeclaredField("maskLength");
+		maskField.setAccessible(true);
+		maskField.set(ifAddr, prefixLength);
+		return ifAddr;
 	}
 }
