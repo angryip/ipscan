@@ -63,7 +63,7 @@ public class MDNSResolver implements Closeable {
 
 	public String resolve(InetAddress ip) throws IOException {
 		var addr = ip.getAddress();
-		var requestId = addr[2] * 0xFF + addr[3];
+		var requestId = (addr[2] & 0xFF) * 0xFF + (addr[3] & 0xFF);
 		var request = dnsRequest(requestId, reverseName(addr));
 		socket.send(new DatagramPacket(request, request.length, mdnsIP, mdnsPort));
 
