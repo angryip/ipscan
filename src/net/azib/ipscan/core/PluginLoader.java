@@ -79,13 +79,13 @@ public class PluginLoader {
 
 		for (var jar : jars) {
 			try {
-				var jarFile = new JarFile(jar);
-				var manifest = jarFile.getManifest();
-				if (manifest == null) { jarFile.close(); continue; }
-
-				var classNames = manifest.getMainAttributes().getValue("IPScan-Plugin");
-				if (classNames == null) classNames = manifest.getMainAttributes().getValue("IPScan-Plugins");
-				jarFile.close();
+				String classNames;
+				try (var jarFile = new JarFile(jar)) {
+					var manifest = jarFile.getManifest();
+					if (manifest == null) continue;
+					classNames = manifest.getMainAttributes().getValue("IPScan-Plugin");
+					if (classNames == null) classNames = manifest.getMainAttributes().getValue("IPScan-Plugins");
+				}
 
 				if (classNames != null) {
 					if (!trustVerifier.isTrusted(jar, classNames)) {
