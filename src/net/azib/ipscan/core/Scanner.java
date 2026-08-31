@@ -54,7 +54,7 @@ public class Scanner {
 							value = isScanningInterrupted ? NotScanned.VALUE : NotAvailable.VALUE;
 					}
 				}
-				catch (Throwable e) {
+				catch (Exception e) {
 					LOG.log(Level.SEVERE, "", e);
 				}
 				// store the value
