@@ -86,7 +86,8 @@ public class NamedListConfig implements Iterable<String> {
 	 * @return stored value
 	 */
 	public String remove(String key) {
-		return namedList.remove(key).toString();
+		var value = namedList.remove(key);
+		return value != null ? value.toString() : null;
 	}
 
 	/**
