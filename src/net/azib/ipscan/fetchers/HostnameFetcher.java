@@ -51,18 +51,33 @@ public class HostnameFetcher extends AbstractFetcher {
 
 	@SuppressWarnings("PrimitiveArrayArgumentToVariableArgMethod")
 	private String resolveWithRegularDNS(InetAddress ip) {
+		String hostname = null;
 		if (getHostByAddr != null) {
 			try {
-				return (String) getHostByAddr.invoke(inetAddressImpl, ip.getAddress());
+				hostname = (String) getHostByAddr.invoke(inetAddressImpl, ip.getAddress());
 			}
 			catch (InvocationTargetException e) {
 				if (e.getCause() instanceof UnknownHostException) return null;
 			}
-			catch (Exception ignored) {}
+			catch (Exception e) {
+				LOG.log(Level.FINE, "Reflection-based DNS lookup failed", e);
+			}
 		}
-		// fallback: getCanonicalHostName() also does a forward lookup, so it's slower
-		var hostname = ip.getCanonicalHostName();
-		return ip.getHostAddress().equals(hostname) ? null : hostname;
+		if (hostname == null) {
+			// fallback: getCanonicalHostName() also does a forward lookup, so it's slower
+			var canonical = ip.getCanonicalHostName();
+			hostname = ip.getHostAddress().equals(canonical) ? null : canonical;
+		}
+		// verify forward lookup to prevent DNS rebinding attacks
+		if (hostname != null) {
+			try {
+				if (!InetAddress.getByName(hostname).equals(ip)) return null;
+			}
+			catch (Exception e) {
+				return null;
+			}
+		}
+		return hostname;
 	}
 
 	private String resolveWithMulticastDNS(ScanningSubject subject) {
