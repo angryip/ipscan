@@ -47,6 +47,8 @@ public class MACVendorFetcher extends AbstractFetcher {
 	}
 
 	String findMACVendor(String mac) {
-		return vendors.get(mac.replace(":", "").substring(0, 6));
+		if (mac == null) return null;
+		var prefix = mac.replace(":", "");
+		return prefix.length() >= 6 ? vendors.get(prefix.substring(0, 6)) : null;
 	}
 }
