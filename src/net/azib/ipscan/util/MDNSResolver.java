@@ -68,7 +68,7 @@ public class MDNSResolver implements Closeable {
 		var respPacket = new DatagramPacket(new byte[512], 512);
 		socket.receive(respPacket);
 		var response = respPacket.getData();
-		if (response[0] != request[0] && response[1] != request[1]) return null;
+		if (response[0] != request[0] || response[1] != request[1]) return null;
 		int numQueries = response[5];
 		var offset = (numQueries == 0 ? 12 : request.length) + 2 + 2 + 2 + 4 + 2;
 		return decodeName(response, offset, respPacket.getLength() - offset);
