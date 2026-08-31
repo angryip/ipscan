@@ -209,8 +209,8 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	 */
 	public synchronized void sort(int columnIndex, boolean ascending) {
 		// setup comparator
-		resultsComparator.byIndex(columnIndex, ascending);
-		resultList.sort(resultsComparator);
+		var comparator = resultsComparator.byIndex(columnIndex, ascending);
+		resultList.sort(comparator);
 		
 		// now rebuild indexes
 		resultIndexes = new HashMap<>(RESULT_LIST_INITIAL_SIZE);
