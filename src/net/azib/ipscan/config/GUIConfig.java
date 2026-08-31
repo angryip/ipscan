@@ -44,7 +44,7 @@ public class GUIConfig {
 		lastRunVersion = preferences.get("lastRunVersion", "Unknown");
 		lastVersionCheck = preferences.getLong("lastVersionCheck", System.currentTimeMillis());
 		activeFeeder = preferences.getInt("activeFeeder", 0);
-		displayMethod = DisplayMethod.valueOf(preferences.get("displayMethod", DisplayMethod.ALL.toString()));
+		displayMethod = DisplayMethod.valueOf(preferences.get("displayMethod", DisplayMethod.ALIVE.toString()));
 		showScanStats = preferences.getBoolean("showScanStats", true);
 		askScanConfirmation = preferences.getBoolean("askScanConfirmation", true);
 
