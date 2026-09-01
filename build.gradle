@@ -109,7 +109,8 @@ def packageTask(String platform, Closure doMore) {
                'Title': 'Angry IP Scanner',
                'Version': version,
                'Build-Date': java.time.LocalDate.now().toString(),
-               'URL': 'https://angryip.org/'
+               'URL': 'https://angryip.org/',
+               'Add-Opens': 'java.base/java.net'
 
             if (platform != "any") {
                 def swtJar = configurations[platform].files.find { file ->
@@ -242,7 +243,9 @@ def rpm(def platform, def arch) {
         ant.replacefilter(token: "VERSION", value: version)
     }
     exec(new String[] {"sh", "-c", "rpmbuild --target ${arch} --define \"_topdir ${new File(dist).absolutePath}\" --define \"platform ${platform}\" -bb SPECS/ipscan.spec"}, dist)
-    ant.move(file: "${dist}/RPMS/${arch}/ipscan-${rpmVersion}-1.${arch}.rpm", todir:'build/libs')
+    ant.move(todir: 'build/libs') {
+        ant.fileset(dir: "${dist}/RPMS/${arch}", includes: "ipscan-${rpmVersion}-1.*${arch}.rpm")
+    }
     ant.delete(dir: dist)
 }
 

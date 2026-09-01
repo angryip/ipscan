@@ -15,6 +15,8 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.FINE;
@@ -78,7 +80,28 @@ public class HostnameFetcher extends AbstractFetcher {
 				return null;
 			}
 		}
-		return hostname;
+		return unescapeDNSName(hostname);
+	}
+
+	private static final Pattern DNS_ESCAPE_PATTERN = Pattern.compile("\\\\(\\d{3})");
+
+	/**
+	 * Some routers/DNS servers incorrectly send raw zone-file escape sequences
+	 * (RFC 1035 presentation format, e.g. "\032" for a space) as literal bytes
+	 * in PTR records, instead of the actual characters they represent.
+	 * This decodes such "\DDD" decimal escape sequences back into their original characters.
+	 */
+	static String unescapeDNSName(String hostname) {
+		if (hostname == null || hostname.indexOf('\\') < 0) return hostname;
+		var matcher = DNS_ESCAPE_PATTERN.matcher(hostname);
+		var result = new StringBuilder();
+		while (matcher.find()) {
+			int code = Integer.parseInt(matcher.group(1));
+			var replacement = code <= 255 ? String.valueOf((char) code) : matcher.group();
+			matcher.appendReplacement(result, Matcher.quoteReplacement(replacement));
+		}
+		matcher.appendTail(result);
+		return result.toString();
 	}
 
 	private String resolveWithMulticastDNS(ScanningSubject subject) {
