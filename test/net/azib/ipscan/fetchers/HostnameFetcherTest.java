@@ -38,4 +38,12 @@ public class HostnameFetcherTest extends AbstractFetcherTestCase {
 		if (inexistentAddress.getHostName().equals("192.168.253.253"))
 			assertNull(fetcher.scan(new ScanningSubject(inexistentAddress)));			
 	}
+
+	@Test
+	public void unescapesDNSEscapeSequences() {
+		assertEquals(" guest wan", HostnameFetcher.unescapeDNSName("\\032guest\\032wan"));
+		assertEquals("my-router", HostnameFetcher.unescapeDNSName("my-router"));
+		assertNull(HostnameFetcher.unescapeDNSName(null));
+		assertEquals("\\999invalid", HostnameFetcher.unescapeDNSName("\\999invalid"));
+	}
 }
