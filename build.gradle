@@ -244,7 +244,7 @@ def rpm(def platform, def arch) {
     }
     exec(new String[] {"sh", "-c", "rpmbuild --target ${arch} --define \"_topdir ${new File(dist).absolutePath}\" --define \"platform ${platform}\" -bb SPECS/ipscan.spec"}, dist)
     ant.move(todir: 'build/libs') {
-        ant.fileset(file: "${dist}/RPMS/${arch}/ipscan-${rpmVersion}-1.*${arch}.rpm")
+        ant.fileset(dir: "${dist}/RPMS/${arch}", includes: "ipscan-${rpmVersion}-1.*${arch}.rpm")
     }
     ant.delete(dir: dist)
 }
