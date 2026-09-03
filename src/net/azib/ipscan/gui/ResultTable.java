@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static net.azib.ipscan.core.ScanningResult.ResultType.*;
 import static net.azib.ipscan.gui.util.LayoutHelper.icon;
@@ -67,6 +68,10 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 	private Listener columnResizeListener;
 
 	private Text inlineCommentEditor;
+
+	/** guards against queued-up Opener launches when the triangle is clicked rapidly on several rows */
+	private final AtomicBoolean launching = new AtomicBoolean(false);
+	private static final int LAUNCH_COOLDOWN_MS = 1500;
 
 	/** custom header hover tooltip (width-capped, wrapping) */
 	private Shell tooltipShell;
@@ -357,6 +362,16 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 		}
 	}
 
+	public void updateOpenerAssignment(int index, String openerName) {
+		var colIndex = scanningResults.getFetcherIndex(OpenerColumnFetcher.ID);
+		var launchIndex = scanningResults.getFetcherIndex(OpenerLaunchFetcher.ID);
+		var result = scanningResults.getResult(index);
+		if (result == null) return;
+		if (colIndex >= 0) result.setValue(colIndex, openerName);
+		if (launchIndex >= 0) result.setValue(launchIndex, openerName != null ? "▶" : "");
+		if (colIndex >= 0 || launchIndex >= 0) clear(index);
+	}
+
 	/**
 	 * Returns the currently seelcted resusult
 	 * @return
@@ -430,6 +445,11 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 					var value = values.get(fetcherIndex);
 					if (value != null)
 						text = value.toString();
+				}
+				// the Opener Launch column only shows the triangle when an Opener is assigned to this row
+				if (OpenerLaunchFetcher.ID.equals(fetcher.getId())) {
+					var ip = scanningResult.getAddress().getHostAddress();
+					text = defaultOpenerConfig.get(ip) != null ? "▶" : "";
 				}
 				// TableItem.setText() indexes columns in MODEL (creation) order,
 				// so write to modelCol, not to the visual position c
@@ -560,22 +580,10 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 					for (var i : getSelectionIndices()) {
 						var ip = scanningResults.getResult(i).getAddress().getHostAddress();
 						defaultOpenerConfig.set(ip, name);
-						updateResult(i, OpenerColumnFetcher.ID, name);
+						updateOpenerAssignment(i, name);
 					}
 				});
 			}
-
-			// a "None" entry to clear the default Opener
-			var none = new MenuItem(menu, SWT.RADIO);
-			none.setText(Labels.getLabel("menu.commands.setOpener.none"));
-			none.setSelection(current == null);
-			none.addListener(SWT.Selection, e -> {
-				for (var i : getSelectionIndices()) {
-					var ip = scanningResults.getResult(i).getAddress().getHostAddress();
-					defaultOpenerConfig.set(ip, null);
-					updateResult(i, OpenerColumnFetcher.ID, "—");
-				}
-			});
 
 			var location = ResultTable.this.toDisplay(rect.x, rect.y + rect.height);
 			menu.setLocation(location);
@@ -591,6 +599,8 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 		public void handleEvent(Event event) {
 			try {
 				if (event.button != 1) return;
+				// ignore the click while a previous Opener launch is still in progress
+				if (launching.get()) return;
 
 				var item = getItem(new Point(event.x, event.y));
 				if (item == null) return;
@@ -632,26 +642,37 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 		if (result == null) return;
 
 		var ip = result.getAddress().getHostAddress();
+		// only accept the click if an Opener is assigned to this row
 		var openerName = defaultOpenerConfig.get(ip);
-		if (openerName == null && openersConfig.iterator().hasNext()) {
-			// no per-IP default configured: fall back to the first available Opener
-			openerName = openersConfig.iterator().next();
-		}
 		if (openerName == null) return;
 
 		var opener = openersConfig.getOpener(openerName);
 		if (opener == null) return;
 
-		try {
-			openerLauncher.launch(opener, row);
-		}
-		catch (UserErrorException e) {
-			// surface a meaningful error instead of failing silently
-			var mb = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-			mb.setText(Labels.getLabel("title.error"));
-			mb.setMessage(e.getMessage());
-			mb.open();
-		}
+		launching.set(true);
+		new Thread(() -> {
+			try {
+				openerLauncher.launch(opener, row);
+			}
+			catch (UserErrorException e) {
+				final var error = e;
+				getDisplay().asyncExec(() -> {
+					var mb = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+					mb.setText(Labels.getLabel("title.error"));
+					mb.setMessage(error.getMessage());
+					mb.open();
+				});
+			}
+			catch (Exception ignore) {
+				// never let an exception in the launcher thread break anything
+			}
+			finally {
+				// keep the launch "busy" for a short while so rapid successive clicks on
+				// different rows don't queue up and launch many openers at once
+				try { Thread.sleep(LAUNCH_COOLDOWN_MS); } catch (InterruptedException ignored) {}
+				launching.set(false);
+			}
+		}, "OpenerLauncher-" + row).start();
 	}
 
 	/**
