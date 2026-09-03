@@ -244,6 +244,7 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 						final var row = i;
 						final var finalValue = value;
 						getDisplay().asyncExec(() -> {
+							if (isDisposed()) return;
 							try { updateResult(row, fetcherId, finalValue); }
 							catch (Exception ignored) {}
 						});
