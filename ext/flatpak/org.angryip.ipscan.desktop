@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.5
+Type=Application
+Name=Angry IP Scanner
+Comment=Fast and friendly network scanner
+Categories=Application;Network;Utility
+Keywords=angry;ipscan;ip;scan;scanner
+Exec=ipscan
+Terminal=false
+Icon=org.angryip.ipscan
+StartupNotify=true
+StartupWMClass=Angry IP Scanner
