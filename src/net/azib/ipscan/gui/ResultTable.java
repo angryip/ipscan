@@ -431,7 +431,9 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 					if (value != null)
 						text = value.toString();
 				}
-				item.setText(c, text);
+				// TableItem.setText() indexes columns in MODEL (creation) order,
+				// so write to modelCol, not to the visual position c
+				item.setText(modelCol, text);
 			}
 			item.setImage(0, listImages[scanningResult.getType().ordinal()]);
 			}
@@ -457,20 +459,23 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 				var row = indexOf(item);
 				if (row < 0) return;
 
-				// determine which column was double-clicked based on x offset
+				// determine which visual column was double-clicked.
+				// Iterate columns in visual order (getColumnOrder) so the widths match the screen layout.
+				var order = getColumnOrder();
 				var x = event.x;
 				var col = -1;
-				for (var c = 0; c < getColumnCount(); c++) {
-					x -= getColumn(c).getWidth();
+				var colCount = getColumnCount();
+				for (var vi = 0; vi < colCount; vi++) {
+					var modelCol = (order != null && vi < order.length) ? order[vi] : vi;
+					x -= getColumn(modelCol).getWidth();
 					if (x <= 0) {
-						col = c;
+						col = vi;
 						break;
 					}
 				}
 				if (col < 0) return;
 
-				// identify the clicked column by its bound fetcher (robust to drag-reordering).
-				// col is a VISUAL position, so map it to the model column via getColumnOrder().
+				// col is the visual position; map it to the model column
 				var modelCol = modelColumnIndex(col);
 				var clickedFetcher = (Fetcher) getColumn(modelCol).getData();
 				var clickedId = clickedFetcher.getId();
@@ -593,20 +598,23 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 				var row = indexOf(item);
 				if (row < 0 || row >= getItemCount()) return;
 
-				// the whole Opener Launch column is clickable
+				// the whole Opener Launch column is clickable.
+				// Iterate columns in visual order so widths match the screen layout.
+				var order = getColumnOrder();
 				var x = event.x;
 				var col = -1;
-				for (var c = 0; c < getColumnCount(); c++) {
-					x -= getColumn(c).getWidth();
+				var colCount = getColumnCount();
+				for (var vi = 0; vi < colCount; vi++) {
+					var modelCol = (order != null && vi < order.length) ? order[vi] : vi;
+					x -= getColumn(modelCol).getWidth();
 					if (x <= 0) {
-						col = c;
+						col = vi;
 						break;
 					}
 				}
 				if (col < 0) return;
 
-				// identify the clicked column by its bound fetcher (robust to drag-reordering).
-				// col is a VISUAL position, so map it to the model column via getColumnOrder().
+				// col is the visual position; map it to the model column
 				var modelCol = modelColumnIndex(col);
 				var clickedFetcher = (Fetcher) getColumn(modelCol).getData();
 				if (!OpenerLaunchFetcher.ID.equals(clickedFetcher.getId())) return;

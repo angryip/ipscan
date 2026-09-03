@@ -15,6 +15,7 @@ import net.azib.ipscan.fetchers.CommentFetcher;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.OpenerColumnFetcher;
+import net.azib.ipscan.fetchers.OpenerLaunchFetcher;
 import net.azib.ipscan.gui.DetailsWindow;
 import net.azib.ipscan.gui.EditOpenersDialog;
 import net.azib.ipscan.gui.ResultTable;
@@ -87,20 +88,23 @@ public class CommandsMenuActions {
 			// double-click on the comment or opener column is handled by the inline editor / opener dropdown,
 			// so it must not open the Details window
 			if (event.type == SWT.MouseDoubleClick) {
+				// detect the visual column in visual order so widths match the screen layout
+				var order = resultTable.getColumnOrder();
 				var x = event.x;
 				var col = -1;
-				for (var c = 0; c < resultTable.getColumnCount(); c++) {
-					x -= resultTable.getColumn(c).getWidth();
+				var colCount = resultTable.getColumnCount();
+				for (var vi = 0; vi < colCount; vi++) {
+					var modelCol = (order != null && vi < order.length) ? order[vi] : vi;
+					x -= resultTable.getColumn(modelCol).getWidth();
 					if (x <= 0) {
-						col = c;
+						col = vi;
 						break;
 					}
 				}
 				if (col >= 0) {
-					var order = resultTable.getColumnOrder();
 					var modelCol = (order != null && col < order.length) ? order[col] : col;
 					var clickedId = ((Fetcher) resultTable.getColumn(modelCol).getData()).getId();
-					if (CommentFetcher.ID.equals(clickedId) || OpenerColumnFetcher.ID.equals(clickedId)) return;
+					if (CommentFetcher.ID.equals(clickedId) || OpenerColumnFetcher.ID.equals(clickedId) || OpenerLaunchFetcher.ID.equals(clickedId)) return;
 				}
 			}
 
