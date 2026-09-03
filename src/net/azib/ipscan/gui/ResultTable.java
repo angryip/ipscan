@@ -79,6 +79,27 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 
 	private Menu rowContextMenu;
 
+	/** width of the leading autofit button column, in pixels */
+	private static final int AUTOFIT_COLUMN_WIDTH = 46;
+
+	/**
+	 * Sizes every fetcher column to fit its content (the leading autofit button
+	 * column itself is skipped). Triggered by clicking the "<->" header button.
+	 */
+	private void autoFitAllColumns() {
+		try {
+			if (isDisposed() || !stateMachine.inState(ScanningState.IDLE)) return;
+			for (var column : getColumns()) {
+				if (isDisposed()) return;
+				if (column.getData() instanceof Fetcher && column.getResizable())
+					column.pack();
+			}
+		}
+		catch (Exception e) {
+			// never let an exception break the SWT event loop
+		}
+	}
+
 	public ResultTable(Shell parent, GUIConfig guiConfig, FetcherRegistry fetcherRegistry, CommentsConfig commentsConfig,
 							   ScanningResultList scanningResultList, StateMachine stateMachine,
 							   ColumnsActions.ColumnClick columnClickListener, ColumnsActions.ColumnResize columnResizeListener,
@@ -189,6 +210,17 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 			ordered.add(0, ipFetcher);
 		}
 
+		// fixed leading button column that auto-sizes all columns (mirrors the FX autofit button).
+		// It carries no Fetcher (getData() == null), is never movable/resizable/sortable,
+		// and its cells stay empty; every fetcher-bound logic must skip it via instanceof checks.
+		var autofitColumn = new TableColumn(this, SWT.CENTER);
+		autofitColumn.setWidth(AUTOFIT_COLUMN_WIDTH);
+		autofitColumn.setResizable(false);
+		autofitColumn.setMoveable(false);
+		autofitColumn.setText("<->");
+		autofitColumn.setData(null);
+		autofitColumn.addListener(SWT.Selection, e -> autoFitAllColumns());
+
 		// add the new selected columns back, in the (possibly saved) order
 		var idle = stateMachine.inState(ScanningState.IDLE);
 		for (var fetcher : ordered) {
@@ -270,13 +302,16 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 	 */
 	private void saveColumnOrder() {
 		try {
+			// persist only fetcher-bound columns in visual order; the leading
+			// autofit button column is fixed and not part of the saved order
 			var order = getColumnOrder();
-			var saved = new String[getColumnCount()];
-			for (var c = 0; c < saved.length; c++) {
+			var ids = new ArrayList<String>();
+			for (var c = 0; c < getColumnCount(); c++) {
 				var modelCol = (order != null && c < order.length) ? order[c] : c;
-				saved[c] = ((Fetcher) getColumn(modelCol).getData()).getId();
+				var data = getColumn(modelCol).getData();
+				if (data instanceof Fetcher fetcher) ids.add(fetcher.getId());
 			}
-			guiConfig.setColumnOrder(saved);
+			guiConfig.setColumnOrder(ids.toArray(new String[0]));
 		}
 		catch (Exception e) {
 			// never let an exception break the SWT event loop
@@ -436,7 +471,11 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 			var columnCount = getColumnCount();
 			for (var c = 0; c < columnCount; c++) {
 				var modelCol = (order != null && c < order.length) ? order[c] : c;
-				var fetcher = (Fetcher) getColumn(modelCol).getData();
+				// the leading autofit button column carries no Fetcher: leave its cells empty
+				if (!(getColumn(modelCol).getData() instanceof Fetcher fetcher)) {
+					item.setText(modelCol, "");
+					continue;
+				}
 				var fetcherIndex = scanningResults.getFetcherIndex(fetcher.getId());
 				String text = "";
 				if (fetcherIndex >= 0 && fetcherIndex < values.size()) {
@@ -452,8 +491,11 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 				// TableItem.setText() indexes columns in MODEL (creation) order,
 				// so write to modelCol, not to the visual position c
 				item.setText(modelCol, text);
+				// the status icon lives in the IP column's model slot (not always 0:
+				// the leading autofit button column occupies model index 0)
+				if (IPFetcher.ID.equals(fetcher.getId()))
+					item.setImage(modelCol, listImages[scanningResult.getType().ordinal()]);
 			}
-			item.setImage(0, listImages[scanningResult.getType().ordinal()]);
 			}
 			catch (Exception e) {
 				// never let an exception in rendering one row break the whole virtual table
@@ -495,7 +537,7 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 
 				// col is the visual position; map it to the model column
 				var modelCol = modelColumnIndex(col);
-				var clickedFetcher = (Fetcher) getColumn(modelCol).getData();
+				if (!(getColumn(modelCol).getData() instanceof Fetcher clickedFetcher)) return;
 				var clickedId = clickedFetcher.getId();
 
 				if (CommentFetcher.ID.equals(clickedId)) {
@@ -624,7 +666,7 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 
 				// col is the visual position; map it to the model column
 				var modelCol = modelColumnIndex(col);
-				var clickedFetcher = (Fetcher) getColumn(modelCol).getData();
+				if (!(getColumn(modelCol).getData() instanceof Fetcher clickedFetcher)) return;
 				if (!OpenerLaunchFetcher.ID.equals(clickedFetcher.getId())) return;
 
 				openWithDefaultOpener(row);
@@ -872,7 +914,8 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 		try {
 			for (var c = 0; c < getColumnCount(); c++) {
 				var col = (orderSafe(c));
-				if (col != null) col.setMoveable(moveable);
+				// the autofit button column is never movable
+				if (col != null && col.getData() instanceof Fetcher) col.setMoveable(moveable);
 			}
 		}
 		catch (Exception e) {

@@ -103,7 +103,8 @@ public class CommandsMenuActions {
 				}
 				if (col >= 0) {
 					var modelCol = (order != null && col < order.length) ? order[col] : col;
-					var clickedId = ((Fetcher) resultTable.getColumn(modelCol).getData()).getId();
+					if (!(resultTable.getColumn(modelCol).getData() instanceof Fetcher clickedFetcher)) return;
+					var clickedId = clickedFetcher.getId();
 					if (CommentFetcher.ID.equals(clickedId) || OpenerColumnFetcher.ID.equals(clickedId) || OpenerLaunchFetcher.ID.equals(clickedId)) return;
 				}
 			}
