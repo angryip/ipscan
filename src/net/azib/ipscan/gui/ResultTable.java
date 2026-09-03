@@ -197,6 +197,7 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 			var tableColumn = new TableColumn(this, style);
 			tableColumn.setWidth(guiConfig.getColumnWidth(fetcher));
 			tableColumn.setData(fetcher);	// this is used in some listeners in ColumnsActions
+			tableColumn.setText(fetcher.getFullName());  // set the header name immediately while the column is freshly created
 			// IP column is never movable; others only when not scanning
 			tableColumn.setMoveable(idle && !IPFetcher.ID.equals(fetcher.getId()));
 			tableColumn.addListener(SWT.Selection, columnClickListener);
@@ -209,7 +210,6 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 				});
 			});
 		}
-		updateColumnNames();
 
 		// force the (still present) rows to be re-rendered with the new column set
 		clearAll();
@@ -295,12 +295,10 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 	}
 	
 	public void updateColumnNames() {
-		// set each column's header from the fetcher actually bound to that column,
-		// so it stays correct regardless of drag-reordering or a differing registry order
-		for (var c = 0; c < getColumnCount(); c++) {
-			var fetcher = (Fetcher) getColumn(c).getData();
-			getColumn(c).setText(fetcher.getFullName());
-		}
+		// after a drag-reorder on Windows, the native header control may map
+		// setText() calls to wrong positions based on stale SWT-internal indices.
+		// Rebuild the columns from scratch to guarantee correct header names.
+		handleUpdateOfSelectedFetchers(fetcherRegistry);
 	}
 
 	protected void checkSubclass() {
