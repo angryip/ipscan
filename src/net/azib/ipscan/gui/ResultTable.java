@@ -194,7 +194,13 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 			tableColumn.setMoveable(idle && !IPFetcher.ID.equals(fetcher.getId()));
 			tableColumn.addListener(SWT.Selection, columnClickListener);
 			tableColumn.addListener(SWT.Resize, columnResizeListener);
-			tableColumn.addListener(SWT.Move, e -> saveColumnOrder());
+			tableColumn.addListener(SWT.Move, e -> {
+				// defer saving of the new visual order — SWT on Windows may not have
+				// updated getColumnOrder() yet when this native event fires
+				getDisplay().asyncExec(() -> {
+					if (!isDisposed()) saveColumnOrder();
+				});
+			});
 		}
 		updateColumnNames();
 
