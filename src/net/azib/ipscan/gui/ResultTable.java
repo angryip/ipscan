@@ -122,11 +122,11 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 		addListener(SWT.MenuDetect, new HeaderRightClickHandler(columnVisibilityMenu));
 
 		// header hover tooltip (width-capped, wrapping)
-		// header hover tooltip: the table header is a separate native control, so MouseHover
-		// does not fire over it; we detect the header region via MouseMove instead
-		addListener(SWT.MouseMove, new HeaderTooltipHandler());
-		addListener(SWT.MouseExit, e -> hideTooltip());
-		addListener(SWT.MouseDown, e -> hideTooltip());
+		// On Win32 the table header is a separate native control, so Table-level mouse events
+		// don't fire over it, and even Display-level SWT.MouseMove events do not reach SWT
+		// for the native SysHeader32. Poll cursor position via timer instead (see PR #527).
+		var tooltip = new HeaderTooltipPoller();
+		addListener(SWT.Dispose, e -> tooltip.dispose());
 
 		// listen to state machine events
 		stateMachine.addTransitionListener(this);
@@ -680,66 +680,118 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 	}
 
 	/**
-	 * Shows a width-capped, wrapping tooltip with the hovered column's "about" text.
+	 * Polls cursor position to show a width-capped, wrapping tooltip for the hovered column header.
+	 * Uses polling instead of events because SWT on Windows does not generate mouse events
+	 * over the native SysHeader32 control (see PR #527).
 	 */
-	final class HeaderTooltipHandler implements Listener {
-		int lastCol = -1;
+	final class HeaderTooltipPoller implements Runnable {
+		private int lastCol = -1;
+		private long headerEntryTime;
+		private static final int POLL_INTERVAL = 100;
+		private static final int DELAY_MS = 2000;
 
-		public void handleEvent(Event event) {
+		HeaderTooltipPoller() {
+			getDisplay().timerExec(POLL_INTERVAL, this);
+		}
+
+		void dispose() {
+			getDisplay().timerExec(-1, this);
+			hideTooltip();
+		}
+
+		public void run() {
+			if (isDisposed()) return;
 			try {
-				// SWT mouse-event coordinates are display-relative; convert to control-relative
-				var cp = toControl(event.x, event.y);
-				var cx = cp.x;
-				var cy = cp.y;
-
-				// detect the header area: everything above the first row's top (or the header height)
-				// is the header; never show over data rows
-				var firstItem = getItem(0);
-				var headerBottom = (firstItem != null) ? firstItem.getBounds().y : getHeaderHeight();
-				if (headerBottom <= 0) headerBottom = getHeaderHeight();
-				if (cy >= headerBottom) {
-					hideTooltip();
-					lastCol = -1;
-					return;
-				}
-
-				// determine which visual column is under the cursor
-				var x = cx;
-				var col = -1;
-				for (var c = 0; c < getColumnCount(); c++) {
-					x -= getColumn(c).getWidth();
-					if (x <= 0) {
-						col = c;
-						break;
-					}
-				}
-				if (col < 0) {
-					hideTooltip();
-					lastCol = -1;
-					return;
-				}
-
-				var modelCol = modelColumnIndex(col);
-				var fetcher = (Fetcher) getColumn(modelCol).getData();
-				var info = fetcher.getInfo();
-				if (info == null || info.isEmpty()) {
-					hideTooltip();
-					lastCol = -1;
-					return;
-				}
-
-				// position the tooltip under the hovered column header, at the cursor's x
-				var loc = toDisplay(cx, headerBottom);
-				if (col != lastCol) {
-					showTooltip(info, loc.x, loc.y);
-					lastCol = col;
-				}
-				else {
-					moveTooltip(loc.x, loc.y);
-				}
+				poll();
 			}
 			catch (Exception e) {
 				// never let an exception break the SWT event loop
+			}
+			if (!isDisposed()) {
+				getDisplay().timerExec(POLL_INTERVAL, this);
+			}
+		}
+
+		private void poll() {
+			var display = getDisplay();
+			var parentShell = getShell();
+			if (display.getActiveShell() != parentShell) {
+				hideTooltip();
+				lastCol = -1;
+				headerEntryTime = 0;
+				return;
+			}
+			var cursorPos = display.getCursorLocation();
+			var sz = getSize();
+			if (sz.x <= 0 || sz.y <= 0) return;
+
+			var origin = toDisplay(0, 0);
+			if (cursorPos.x < origin.x || cursorPos.x >= origin.x + sz.x ||
+				cursorPos.y < origin.y || cursorPos.y >= origin.y + sz.y) {
+				hideTooltip();
+				lastCol = -1;
+				headerEntryTime = 0;
+				return;
+			}
+
+			var cp = toControl(cursorPos.x, cursorPos.y);
+			var cy = cp.y;
+			var cx = cp.x;
+
+			var headerBottom = getHeaderHeight();
+			if (headerBottom <= 0) return;
+
+			if (cy >= headerBottom) {
+				hideTooltip();
+				lastCol = -1;
+				headerEntryTime = 0;
+				return;
+			}
+
+			if (headerEntryTime == 0) {
+				headerEntryTime = System.currentTimeMillis();
+			}
+			if (System.currentTimeMillis() - headerEntryTime < DELAY_MS) return;
+
+			var col = -1;
+			var colX = 0;
+			var order = getColumnOrder();
+			var colCount = getColumnCount();
+			for (var vi = 0; vi < colCount; vi++) {
+				var modelCol = (order != null && vi < order.length) ? order[vi] : vi;
+				colX += getColumn(modelCol).getWidth();
+				if (cx < colX) {
+					col = vi;
+					break;
+				}
+			}
+			if (col < 0) {
+				hideTooltip();
+				lastCol = -1;
+				return;
+			}
+
+			var modelCol = modelColumnIndex(col);
+			var colData = getColumn(modelCol).getData();
+			if (!(colData instanceof Fetcher)) {
+				hideTooltip();
+				lastCol = -1;
+				return;
+			}
+			var info = ((Fetcher) colData).getInfo();
+			if (info == null || info.isEmpty()) {
+				hideTooltip();
+				lastCol = -1;
+				return;
+			}
+
+			var loc = toDisplay(cx, headerBottom);
+			if (col != lastCol) {
+				showTooltip(info, loc.x, loc.y);
+				lastCol = col;
+			}
+			else if (tooltipShell != null && !tooltipShell.isDisposed()) {
+				tooltipShell.setLocation(loc.x, loc.y);
 			}
 		}
 	}
@@ -750,6 +802,7 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 	private void showTooltip(String text, int displayX, int displayY) {
 		if (tooltipShell == null || tooltipShell.isDisposed()) {
 			tooltipShell = new Shell(getShell(), SWT.ON_TOP | SWT.TOOL | SWT.NO_FOCUS);
+			tooltipShell.setBackground(getShell().getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
 			var layout = new GridLayout(1, false);
 			layout.marginWidth = 4;
 			layout.marginHeight = 3;
@@ -757,27 +810,21 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 
 			tooltipLabel = new Text(tooltipShell, SWT.WRAP | SWT.MULTI | SWT.READ_ONLY);
 			tooltipLabel.setEditable(false);
-			tooltipLabel.setBackground(getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
-			tooltipLabel.setForeground(getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
+			tooltipLabel.setBackground(tooltipShell.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
+			tooltipLabel.setForeground(tooltipShell.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
 			tooltipLabel.setLayoutData(new GridData(TOOLTIP_MAX_WIDTH, SWT.DEFAULT));
 		}
 
 		tooltipLabel.setText(text);
 		tooltipShell.pack();
-
-		// place under the hovered column header, at the cursor's x
 		tooltipShell.setLocation(displayX, displayY);
-		tooltipShell.setVisible(true);
-	}
-
-	private void moveTooltip(int displayX, int displayY) {
-		if (tooltipShell != null && !tooltipShell.isDisposed() && tooltipShell.isVisible()) {
-			tooltipShell.setLocation(displayX, displayY);
+		if (!tooltipShell.isVisible()) {
+			tooltipShell.setVisible(true);
 		}
 	}
 
 	private void hideTooltip() {
-		if (tooltipShell != null && !tooltipShell.isDisposed()) {
+		if (tooltipShell != null && !tooltipShell.isDisposed() && tooltipShell.isVisible()) {
 			tooltipShell.setVisible(false);
 		}
 	}
