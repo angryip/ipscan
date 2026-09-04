@@ -5,3 +5,18 @@
 /build
 /lib/*src.zip
 .DS_Store
+
+# Eclipse/Gradle build output
+/bin
+
+# Runtime logs
+*.log
+hs_err_pid*.log
+
+# Local IDE settings
+/.vscode/
+
+# Local launcher scripts and plugins
+/*.bat
+/*.log
+ipscan-tasmota-plugin-*.jar
