@@ -33,6 +33,7 @@ import net.azib.ipscan.gui.actions.ColumnsActions;
 import net.azib.ipscan.gui.actions.CommandsMenuActions;
 import net.azib.ipscan.gui.actions.ToolsActions;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -73,14 +74,14 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 	private final AtomicBoolean launching = new AtomicBoolean(false);
 	private static final int LAUNCH_COOLDOWN_MS = 1500;
 
+	/** column (model) index -> fetcher index in ScanningResultList, precomputed to avoid per-cell lookups during virtual table rendering */
+	private int[] columnFetcherIndexMap;
+
 	/** custom header hover tooltip (width-capped, wrapping) */
 	private Shell tooltipShell;
 	private Text tooltipLabel;
 
 	private Menu rowContextMenu;
-
-	/** width of the leading autofit button column, in pixels */
-	private static final int AUTOFIT_COLUMN_WIDTH = 46;
 
 	/**
 	 * Sizes every fetcher column to fit its content (the leading autofit button
@@ -214,12 +215,14 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 		// It carries no Fetcher (getData() == null), is never movable/resizable/sortable,
 		// and its cells stay empty; every fetcher-bound logic must skip it via instanceof checks.
 		var autofitColumn = new TableColumn(this, SWT.CENTER);
-		autofitColumn.setWidth(AUTOFIT_COLUMN_WIDTH);
 		autofitColumn.setResizable(false);
 		autofitColumn.setMoveable(false);
 		autofitColumn.setText("<->");
 		autofitColumn.setData(null);
 		autofitColumn.addListener(SWT.Selection, e -> autoFitAllColumns());
+		// NOTE: the column is sized (pack()) only after clearAll() below — at this
+		// point the table items may still hold stale text from the previous column
+		// set, which would make pack() measure garbage and give a random width
 
 		// add the new selected columns back, in the (possibly saved) order
 		var idle = stateMachine.inState(ScanningState.IDLE);
@@ -243,8 +246,34 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 			});
 		}
 
+		// precompute column-to-fetcher-index mapping for fast virtual-table rendering
+		// (the leading autofit button column has no Fetcher and maps to -1)
+		var colCount = getColumnCount();
+		columnFetcherIndexMap = new int[colCount];
+		for (var c = 0; c < colCount; c++) {
+			var data = getColumn(c).getData();
+			columnFetcherIndexMap[c] = data instanceof Fetcher fetcher ? scanningResults.getFetcherIndex(fetcher.getId()) : -1;
+		}
+
 		// force the (still present) rows to be re-rendered with the new column set
 		clearAll();
+
+		// now the items are cleared, so pack() sizes the autofit column exactly to
+		// its "<->" header text (pack() accounts for the native header margins and
+		// the current DPI scale) — keeping it a fixed small width on every rebuild
+		autofitColumn.pack();
+
+		// force a full repaint: after a column rebuild Win32 does not always
+		// invalidate the table's client area (e.g. when a modal dialog that
+		// covered the table has just closed), leaving the results blank until
+		// the mouse moves over them
+		try {
+			redraw();
+			update();
+		}
+		catch (Exception e) {
+			// never let an exception break the SWT event loop
+		}
 
 		// persist the resulting column order (including any newly added column)
 		saveColumnOrder();
@@ -262,39 +291,93 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 	private void populateNewFetcher(Fetcher fetcher) {
 		var results = scanningResults;
 		var fetcherId = fetcher.getId();
+		// batch UI updates: one asyncExec per 100 rows instead of one per row
+		final var batchSize = 100;
 		new Thread(() -> {
 			try {
 				// best-effort initialization (some fetchers read config in init)
 				try { fetcher.init(null); } catch (Exception ignored) {}
-				for (var i = 0; i < results.getItemCount(); i++) {
-					var result = results.getResult(i);
-					if (result == null || !result.isReady()) continue;
+
+				// refresh immediately, BEFORE any (potentially slow) network scans run:
+				// the rebuilt column set (incl. the new header) and the still-empty new
+				// column must appear right away, not only after the first batch finishes
+				getDisplay().asyncExec(() -> {
+					if (isDisposed()) return;
 					try {
-						var subject = new ScanningSubject(result.getAddress());
-						// some fetchers (e.g. Comment) need the MAC, which is known after scanning
-						if (result.getMac() != null)
-							subject.setParameter(MACFetcher.ID, result.getMac());
-						var value = fetcher.scan(subject);
-						var index = results.getFetcherIndex(fetcherId);
-						if (index >= 0 && index < result.getValues().size())
-							result.setValue(index, value);
-						final var row = i;
-						final var finalValue = value;
-						getDisplay().asyncExec(() -> {
-							if (isDisposed()) return;
-							try { updateResult(row, fetcherId, finalValue); }
+						setRedraw(false);
+						clearAll();
+					}
+					catch (Exception ignored) {
+					}
+					finally {
+						try { setRedraw(true); } catch (Exception ignored) {}
+					}
+					try {
+						nudgeLastColumnForHeaderRepaint();
+						update();
+					}
+					catch (Exception ignored) {}
+				});
+
+				var total = results.getItemCount();
+				var position = results.getFetcherIndex(fetcherId);
+				for (var batchStart = 0; batchStart < total; batchStart += batchSize) {
+					var batchEnd = Math.min(batchStart + batchSize, total);
+					for (var i = batchStart; i < batchEnd; i++) {
+						var result = results.getResult(i);
+						if (result == null || !result.isReady()) continue;
+						try {
+							var subject = new ScanningSubject(result.getAddress());
+							// some fetchers (e.g. Comment) need the MAC, which is known after scanning
+							if (result.getMac() != null)
+								subject.setParameter(MACFetcher.ID, result.getMac());
+							var value = fetcher.scan(subject);
+							if (position >= 0 && position < result.getValues().size())
+								result.setValue(position, value);
+						}
+						catch (Exception e) {
+							// skip this IP if the fetcher fails, continue with the rest
+						}
+					}
+					final var start = batchStart;
+					final var end = batchEnd;
+					getDisplay().asyncExec(() -> {
+						if (isDisposed()) return;
+						try {
+							setRedraw(false);
+							for (var r = start; r < end; r++)
+								clear(r);
+						}
+						catch (Exception ignored) {
+						}
+						finally {
+							try {
+								setRedraw(true);
+								update();
+							}
 							catch (Exception ignored) {}
-						});
-					}
-					catch (Exception e) {
-						// skip this IP if the fetcher fails, continue with the rest
-					}
+						}
+					});
 				}
 			}
 			catch (Exception e) {
 				// never let an exception in the background thread break anything
 			}
 		}, "FetcherPopulator-" + fetcherId).start();
+	}
+
+	/**
+	 * Win32 quirk: the native header (SysHeader32) does not always invalidate
+	 * when columns are recreated while the table has items. Nudging the last
+	 * column's width by 1px and back forces the header to repaint immediately.
+	 */
+	private void nudgeLastColumnForHeaderRepaint() {
+		var cols = getColumns();
+		if (cols.length == 0) return;
+		var last = cols[cols.length - 1];
+		var width = last.getWidth();
+		last.setWidth(width + 1);
+		last.setWidth(width);
 	}
 
 	/**
@@ -476,7 +559,7 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 					item.setText(modelCol, "");
 					continue;
 				}
-				var fetcherIndex = scanningResults.getFetcherIndex(fetcher.getId());
+				var fetcherIndex = columnFetcherIndexMap != null ? columnFetcherIndexMap[modelCol] : scanningResults.getFetcherIndex(fetcher.getId());
 				String text = "";
 				if (fetcherIndex >= 0 && fetcherIndex < values.size()) {
 					var value = values.get(fetcherIndex);
@@ -757,7 +840,7 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 		private int lastCol = -1;
 		private long headerEntryTime;
 		private static final int POLL_INTERVAL = 100;
-		private static final int DELAY_MS = 2000;
+		private static final int DELAY_MS = 1000;
 
 		HeaderTooltipPoller() {
 			getDisplay().timerExec(POLL_INTERVAL, this);
@@ -842,12 +925,15 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 
 			var modelCol = modelColumnIndex(col);
 			var colData = getColumn(modelCol).getData();
-			if (!(colData instanceof Fetcher)) {
-				hideTooltip();
-				lastCol = -1;
-				return;
+			String info;
+			if (colData instanceof Fetcher fetcher) {
+				info = fetcher.getInfo();
 			}
-			var info = ((Fetcher) colData).getInfo();
+			else {
+				// the leading autofit ("<->") button column has no Fetcher behind it,
+				// show a hint about what clicking it does instead
+				info = Labels.getLabel("table.column.autofit");
+			}
 			if (info == null || info.isEmpty()) {
 				hideTooltip();
 				lastCol = -1;
@@ -881,8 +967,23 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 			tooltipLabel.setEditable(false);
 			tooltipLabel.setBackground(tooltipShell.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
 			tooltipLabel.setForeground(tooltipShell.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
-			tooltipLabel.setLayoutData(new GridData(TOOLTIP_MAX_WIDTH, SWT.DEFAULT));
 		}
+
+		// width: exactly the widest text line (plus a few pixels of slack so
+		// nothing wraps unintentionally), capped at TOOLTIP_MAX_WIDTH — long
+		// fetcher descriptions wrap as before, short hints (e.g. the autofit
+		// column's) shrink to fit their text
+		var gc = new GC(tooltipLabel);
+		var widestLine = 0;
+		try {
+			for (var line : text.split("\n", -1)) {
+				widestLine = Math.max(widestLine, gc.textExtent(line).x);
+			}
+		}
+		finally {
+			gc.dispose();
+		}
+		tooltipLabel.setLayoutData(new GridData(Math.min(TOOLTIP_MAX_WIDTH, widestLine + 4), SWT.DEFAULT));
 
 		tooltipLabel.setText(text);
 		tooltipShell.pack();
