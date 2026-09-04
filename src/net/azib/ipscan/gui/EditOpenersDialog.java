@@ -10,6 +10,8 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.*;
 
 import java.io.File;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static net.azib.ipscan.gui.util.LayoutHelper.formData;
 import static net.azib.ipscan.gui.util.LayoutHelper.iconFont;
@@ -25,6 +27,9 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	private Text workingDirText;
 	private Button isInTerminalCheckbox;
 	private int currentSelectionIndex;
+
+	/** working copy of the openers; the shared OpenersConfig is only touched when OK is pressed */
+	private final Map<String, OpenersConfig.Opener> working = new LinkedHashMap<>();
 	
 	public EditOpenersDialog(FetcherRegistry fetcherRegistry, OpenersConfig openersConfig) {
 		this.fetcherRegistry = fetcherRegistry;
@@ -49,6 +54,8 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		openersList.setLayoutData(formData(140, 200, null, null, new FormAttachment(messageLabel, 10), new FormAttachment(editFieldsGroup, 0, SWT.BOTTOM)));
 		for (var name : openersConfig) {
 			openersList.add(name);
+			// snapshot values so edits can be undone with Cancel
+			working.put(name, openersConfig.getOpener(name));
 		}
 		openersList.addListener(SWT.Selection, new ItemSelectListener());
 
@@ -151,8 +158,14 @@ public class EditOpenersDialog extends AbstractModalDialog {
 		// save any possible changes in text boxes
 		saveCurrentFields();			
 
-		// now save everything else (order, etc)
+		// apply the working copy to the shared config only now, when OK is pressed:
+		// update() rebuilds the list in the shown order and drops deleted/renamed-away
+		// entries, then edited values from the working copy are written over it
 		openersConfig.update(openersList.getItems());
+		for (var e : working.entrySet()) {
+			if (openersConfig.getOpener(e.getKey()) != null)
+				openersConfig.add(e.getKey(), e.getValue());
+		}
 		openersConfig.store();
 	}
 
@@ -161,7 +174,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 
 		var openerName = openerNameText.getText();
 		var workingDir = workingDirText.getText().length() > 0 ? new File(workingDirText.getText()) : null;
-		openersConfig.add(openerName, new OpenersConfig.Opener(openerStringText.getText(), isInTerminalCheckbox.getSelection(), workingDir));
+		working.put(openerName, new OpenersConfig.Opener(openerStringText.getText(), isInTerminalCheckbox.getSelection(), workingDir));
 		openersList.setItem(currentSelectionIndex, openerName);
 	}
 	
@@ -171,7 +184,7 @@ public class EditOpenersDialog extends AbstractModalDialog {
 
 		var openerName = openersList.getItem(currentSelectionIndex);
 		editFieldsGroup.setText(openerName);
-		var opener = openersConfig.getOpener(openerName);
+		var opener = working.get(openerName);
 		openerNameText.setText(openerName);
 		openerStringText.setText(opener.execString);
 		workingDirText.setText(opener.workingDir != null ? opener.workingDir.toString() : "");
@@ -196,6 +209,11 @@ public class EditOpenersDialog extends AbstractModalDialog {
 	class DeleteButtonListener implements Listener {
 		public void handleEvent(Event event) {
 			var oldIndex = openersList.getSelectionIndex();
+			for (var idx : openersList.getSelectionIndices()) {
+				// drop deleted openers from the working copy as well,
+				// so a re-added opener with the same name starts fresh
+				working.remove(openersList.getItem(idx));
+			}
 			openersList.remove(openersList.getSelectionIndices());
 			if (oldIndex >= openersList.getItemCount()) oldIndex = openersList.getItemCount()-1;
 			openersList.setSelection(oldIndex);
