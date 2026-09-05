@@ -192,6 +192,33 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 	}
 
 	/**
+	 * @return a thread-safe snapshot of the currently stored results,
+	 * safe to iterate while a scan is concurrently adding results
+	 */
+	public synchronized List<ScanningResult> getResultsSnapshot() {
+		return new ArrayList<>(resultList);
+	}
+
+	/**
+	 * Removes all results except those with the provided addresses.
+	 * Unlike the index-based {@link #remove(int[])}, this is immune to index shifts
+	 * caused by results being added concurrently during an active scan.
+	 * @param keepAddresses addresses of the results that must remain in the list
+	 */
+	public synchronized void removeExcept(Set<InetAddress> keepAddresses) {
+		List<ScanningResult> newList = new ArrayList<>(RESULT_LIST_INITIAL_SIZE);
+		Map<InetAddress, Integer> newMap = new HashMap<>(RESULT_LIST_INITIAL_SIZE);
+		for (var result : resultList) {
+			if (keepAddresses.contains(result.getAddress())) {
+				newList.add(result);
+				newMap.put(result.getAddress(), newList.size() - 1);
+			}
+		}
+		resultList = newList;
+		resultIndexes = newMap;
+	}
+
+	/**
 	 * @return the results of the IP address, corresponding to an index
 	 */
 	public synchronized ScanningResult getResult(int index) {

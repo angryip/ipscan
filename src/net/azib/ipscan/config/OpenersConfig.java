@@ -31,6 +31,12 @@ public class OpenersConfig extends NamedListConfig {
 		defaults.put(labels.get("opener.geolocate"), new Opener(Version.IP_LOCATE_URL + "?ip=${fetcher.ip}", false, null));
 		defaults.put(labels.get("opener.email"), new Opener("mailto:somebody@example.com?subject=${fetcher.ip} (${fetcher.hostname})", true, null));
 
+		var toRemove = new java.util.ArrayList<String>();
+		for (var key : namedList.keySet()) {
+			if (key.startsWith("opener.")) toRemove.add(key);
+		}
+		for (var key : toRemove) namedList.remove(key);
+
 		for (var entry : defaults.entrySet()) {
 			if (getOpener(entry.getKey()) == null) {
 				add(entry.getKey(), entry.getValue());

@@ -150,4 +150,12 @@ public class GUIConfig {
 	public void setColumnOrder(String[] fetcherIds) {
 		preferences.put("columnOrder", String.join(",", fetcherIds));
 	}
+
+	public String getFeederData(String feederId) {
+		return preferences.get("feederData." + feederId, null);
+	}
+
+	public void setFeederData(String feederId, String data) {
+		preferences.put("feederData." + feederId, data);
+	}
 }

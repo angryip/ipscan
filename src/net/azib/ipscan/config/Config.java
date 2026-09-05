@@ -1,6 +1,7 @@
 package net.azib.ipscan.config;
 
 import java.io.File;
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Locale;
 import java.util.prefs.Preferences;
@@ -25,6 +26,8 @@ public final class Config {
 	private FavoritesConfig favoritesConfig;
 	/** openers are stored here */
 	private OpenersConfig openersConfig;
+	/** default openers per IP are stored here */
+	private DefaultOpenerConfig defaultOpenerConfig;
 
 	Config() {
 		preferences = Preferences.userRoot().node("ipscan");
@@ -32,6 +35,7 @@ public final class Config {
 		guiConfig = new GUIConfig(preferences);
 		favoritesConfig = new FavoritesConfig(preferences);
 		openersConfig = new OpenersConfig(preferences);
+		defaultOpenerConfig = new DefaultOpenerConfig(this);
 		language = preferences.get("language", "system");
 		gaClientId = preferences.get("gaClientId", null);
 		if (gaClientId == null) {
@@ -78,11 +82,29 @@ public final class Config {
 			if (baseDir.isFile()) baseDir = baseDir.getParentFile();
 			var portableDir = new File(baseDir, "config");
 			if (!portableDir.exists()) portableDir.mkdirs();
-			if (portableDir.canWrite()) return portableDir;
+			if (portableDir.canWrite() && isWritable(portableDir)) return portableDir;
 		}
 		catch (Exception ignore) {
 		}
 		return new File(System.getProperty("user.home"), ".ipscan");
+	}
+
+	/**
+	 * On Windows, {@link java.io.File#canWrite()} checks only the read-only
+	 * attribute flag, not the actual ACL / security descriptor. Directories
+	 * such as <code>C:\Program Files</code> are therefore reported as writable
+	 * even though the user cannot create files there without elevation.
+	 * We must actually attempt to create a file to know for sure.
+	 */
+	private static boolean isWritable(File dir) {
+		try {
+			var test = File.createTempFile("ips", null, dir);
+			test.delete();
+			return true;
+		}
+		catch (IOException e) {
+			return false;
+		}
 	}
 
 	/** 
@@ -93,9 +115,9 @@ public final class Config {
 	}
 	
 	/**
-	 * @return Favorites config (only local access)
+	 * @return Favorites config
 	 */
-	FavoritesConfig forFavorites() {
+	public FavoritesConfig forFavorites() {
 		return favoritesConfig;
 	}
 
@@ -104,6 +126,10 @@ public final class Config {
 	 */
 	public OpenersConfig forOpeners() {
 		return openersConfig;
+	}
+
+	public DefaultOpenerConfig forDefaultOpeners() {
+		return defaultOpenerConfig;
 	}
 	
 	/**
