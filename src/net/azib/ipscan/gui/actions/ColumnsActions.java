@@ -14,7 +14,6 @@ import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.fetchers.Fetcher;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.gui.ResultTable;
-import net.azib.ipscan.gui.menu.ColumnsMenu;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 
@@ -29,9 +28,12 @@ public class ColumnsActions {
 
 		public void handleEvent(Event event) {
 			var column = (TableColumn) event.widget;
-			// do not save the width of the last column on Linux, because in GTK 
+			var table = column.getParent();
+			// do not save the width of the last (visual) column on Linux, because in GTK 
 			// it is stretched to the width of the whole table and therefore is incorrect
-			if (Platform.LINUX && column.getParent().getColumn(column.getParent().getColumnCount()-1) == column) 
+			var order = table.getColumnOrder();
+			var lastVisualModelIndex = (order != null && order.length > 0) ? order[order.length - 1] : table.getColumnCount() - 1;
+			if (Platform.LINUX && table.getColumn(lastVisualModelIndex) == column)
 				return;
 
 			// save column width
@@ -41,45 +43,40 @@ public class ColumnsActions {
 
 	public static final class ColumnClick implements Listener {
 		
-		private final Menu columnsMenu;
+		private final ScanningResultList scanningResultList;
 		private final StateMachine stateMachine;
 		
-		public ColumnClick(ColumnsMenu columnsMenu, StateMachine stateMachine) {
-			this.columnsMenu = columnsMenu;
+		public ColumnClick(ScanningResultList scanningResultList, StateMachine stateMachine) {
+			this.scanningResultList = scanningResultList;
 			this.stateMachine = stateMachine;
 		}
 
 		public void handleEvent(Event e) {
-			// modify menu text a bit
+			// a (left) click on a column header sorts by that column; clicking it again
+			// reverses the sort direction. The column (right-click) menu is shown separately.
+			// Selection events on a TableColumn carry button == 0, so we only skip right-clicks.
+			if (e.button == 3) return;
+			if (!stateMachine.inState(ScanningState.IDLE)) return;
+
 			var tableColumn = (TableColumn) e.widget;
+			var table = tableColumn.getParent();
+
+			if (table.getSortColumn() != tableColumn) {
+				table.setSortColumn(tableColumn);
+				table.setSortDirection(SWT.UP);
+			}
+			else {
+				table.setSortDirection(table.getSortDirection() == SWT.UP ? SWT.DOWN : SWT.UP);
+			}
+
+			// sort by the data (fetcher) index of the clicked column, not its visual position,
+			// so drag-reordering of columns does not break sorting
 			var fetcher = (Fetcher) tableColumn.getData();
+			var fetcherIndex = scanningResultList.getFetcherIndex(fetcher.getId());
+			if (fetcherIndex < 0) return;
 
-			var sortMenuItem = columnsMenu.getItem(0);
-			var preferencesMenuItem = columnsMenu.getItem(1);
-			var aboutMenuItem = columnsMenu.getItem(2);
-
-			if (tableColumn.getParent().getSortColumn() == tableColumn)
-				sortMenuItem.setText(Labels.getLabel("menu.columns.sortDirection"));
-			else
-				sortMenuItem.setText(Labels.getLabel("menu.columns.sortBy") + " " + fetcher.getName());
-
-			// disable these menu items if scanning
-			sortMenuItem.setEnabled(stateMachine.inState(ScanningState.IDLE));
-
-			preferencesMenuItem.setText(fetcher.getName() + " " + Labels.getLabel("menu.columns.preferences"));
-			preferencesMenuItem.setEnabled(fetcher.getPreferencesClass() != null && stateMachine.inState(ScanningState.IDLE));
-
-			aboutMenuItem.setText(Labels.getLabel("menu.columns.about") + " " + fetcher.getName());
-			
-			// focus the table to make Enter work after using the menu
-			tableColumn.getParent().forceFocus();
-			
-			// remember the clicked column (see SortBy, FetcherPreferences, and AboutFetcher below)
-			columnsMenu.setData(tableColumn);
-			
-			// show the menu
-			columnsMenu.setLocation(e.display.getCursorLocation());
-			columnsMenu.setVisible(true);
+			scanningResultList.sort(fetcherIndex, table.getSortDirection() == SWT.UP);
+			((ResultTable)table).updateResults();
 		}
 	}
 
@@ -104,7 +101,13 @@ public class ColumnsActions {
 				table.setSortDirection(table.getSortDirection() == SWT.UP ? SWT.DOWN : SWT.UP);
 			}
 
-			scanningResultList.sort(table.indexOf(tableColumn), table.getSortDirection() == SWT.UP);
+			// sort by the data (fetcher) index of the clicked column, not its visual position,
+			// so drag-reordering of columns does not break sorting
+			var fetcher = (Fetcher) tableColumn.getData();
+			var fetcherIndex = scanningResultList.getFetcherIndex(fetcher.getId());
+			if (fetcherIndex < 0) return;
+
+			scanningResultList.sort(fetcherIndex, table.getSortDirection() == SWT.UP);
 			((ResultTable)table).updateResults();
 		}
 	}

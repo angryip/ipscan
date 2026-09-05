@@ -13,16 +13,14 @@ import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
  * Mac-specific application menu handler
  * in order to conform better to Mac standards.
  */
-public class MacApplicationMenu {
+	public class MacApplicationMenu {
 	private AboutDialog aboutDialog;
 	private PreferencesDialog preferencesDialog;
-	private SelectFetchersDialog selectFetchersDialog;
 	private CheckVersion checkVersion;
 
-	public MacApplicationMenu(Display display, AboutDialog aboutDialog, PreferencesDialog preferencesDialog, SelectFetchersDialog selectFetchersDialog, CheckVersion checkVersion) {
+	public MacApplicationMenu(Display display, AboutDialog aboutDialog, PreferencesDialog preferencesDialog, CheckVersion checkVersion) {
 		this.aboutDialog = aboutDialog;
 		this.preferencesDialog = preferencesDialog;
-		this.selectFetchersDialog = selectFetchersDialog;
 		this.checkVersion = checkVersion;
 		display.syncExec(() -> initApplicationMenu(display));
 	}
@@ -36,10 +34,6 @@ public class MacApplicationMenu {
 
 		var about = getItem(systemMenu, SWT.ID_ABOUT);
 		if (about != null) about.addSelectionListener(widgetSelectedAdapter(e -> aboutDialog.open()));
-
-		var fetchers = new MenuItem(systemMenu, SWT.NONE, systemMenu.indexOf(prefs) + 1);
-		fetchers.setText(Labels.getLabel("menu.tools.fetchers"));
-		fetchers.addSelectionListener(widgetSelectedAdapter(e -> selectFetchersDialog.open()));
 
 		var checkVersion = new MenuItem(systemMenu, SWT.NONE, systemMenu.indexOf(about) + 1);
 		checkVersion.setText(Labels.getLabel("menu.help.checkVersion"));

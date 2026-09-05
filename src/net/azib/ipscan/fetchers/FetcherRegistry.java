@@ -58,6 +58,9 @@ public class FetcherRegistry {
 			selectedFetchers.put(PingFetcher.ID, registeredFetchers.get(PingFetcher.ID));
 			selectedFetchers.put(HostnameFetcher.ID, registeredFetchers.get(HostnameFetcher.ID));
 			selectedFetchers.put(PortsFetcher.ID, registeredFetchers.get(PortsFetcher.ID));
+			var openerFetcher = registeredFetchers.get(OpenerColumnFetcher.ID);
+			if (openerFetcher != null)
+				selectedFetchers.put(OpenerColumnFetcher.ID, openerFetcher);
 		}
 		else {
 			var fetcherPrefs = fetcherPrefValue.split("###");

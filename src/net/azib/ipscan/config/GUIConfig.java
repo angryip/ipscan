@@ -24,6 +24,7 @@ public class GUIConfig {
 	public DisplayMethod displayMethod;
 	public boolean showScanStats;
 	public boolean askScanConfirmation;
+	public boolean autoStartScan;
 	
 	public int[] mainWindowSize;
 	public int[] mainWindowPosition;
@@ -47,6 +48,7 @@ public class GUIConfig {
 		displayMethod = DisplayMethod.valueOf(preferences.get("displayMethod", DisplayMethod.ALIVE.toString()));
 		showScanStats = preferences.getBoolean("showScanStats", true);
 		askScanConfirmation = preferences.getBoolean("askScanConfirmation", true);
+		autoStartScan = preferences.getBoolean("autoStartScan", false);
 
 		isMainWindowMaximized = preferences.getBoolean("windowMaximized", false);
 		mainWindowSize = new int[] {preferences.getInt("windowWidth", 800), preferences.getInt("windowHeight", 450)};
@@ -63,6 +65,7 @@ public class GUIConfig {
 		preferences.put("displayMethod", displayMethod.toString());
 		preferences.putBoolean("showScanStats", showScanStats);
 		preferences.putBoolean("askScanConfirmation", askScanConfirmation);
+		preferences.putBoolean("autoStartScan", autoStartScan);
 
 		preferences.putBoolean("windowMaximized", isMainWindowMaximized);
 		if (!isMainWindowMaximized) {
@@ -130,5 +133,29 @@ public class GUIConfig {
 	 */
 	public void setColumnWidth(Fetcher fetcher, int width) {
 		preferences.putInt("columnWidth." + fetcher.getId(), width);
+	}
+
+	/**
+	 * @return the saved visual order of column fetcher ids, or null if none is stored
+	 */
+	public String[] getColumnOrder() {
+		var order = preferences.get("columnOrder", null);
+		if (order == null || order.isEmpty()) return null;
+		return order.split(",");
+	}
+
+	/**
+	 * Persist the visual order of column fetcher ids
+	 */
+	public void setColumnOrder(String[] fetcherIds) {
+		preferences.put("columnOrder", String.join(",", fetcherIds));
+	}
+
+	public String getFeederData(String feederId) {
+		return preferences.get("feederData." + feederId, null);
+	}
+
+	public void setFeederData(String feederId, String data) {
+		preferences.put("feederData." + feederId, data);
 	}
 }
