@@ -70,6 +70,8 @@ public class Version {
 				var attrs = jarFile.getManifest().getMainAttributes();
 				version = attrs.getValue("Version");
 				buildDate = attrs.getValue("Build-Date");
+				if (version == null) version = "current";
+				if (buildDate == null) buildDate = "today";
 				return;
 			}
 		}
