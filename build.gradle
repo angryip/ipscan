@@ -148,7 +148,6 @@ def packageTask(String platform, Closure doMore) {
            // Win32
            'swt-awt-*.dll',
            'swt-wgl-*.dll',
-           'swt-gdip-*.dll',
            'swt-webkit-*.dll',
            // Mac
            'libswt-awt-*.jnilib',
