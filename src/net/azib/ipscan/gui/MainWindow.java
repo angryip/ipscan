@@ -49,7 +49,6 @@ public class MainWindow {
 	
 	private StatusBar statusBar;
 	private ToolBar prefsButton;
-	private ToolBar fetchersButton;
 
 	/**
 	 * Creates and initializes the main window.
@@ -59,7 +58,7 @@ public class MainWindow {
 					  Button startStopButton, StartStopScanningAction startStopScanningAction,
 					  ResultTable resultTable, StatusBar statusBar, ResultsContextMenu resultsContextMenu,
 					  FeederGUIRegistry feederGUIRegistry, final StateMachine stateMachine,
-					  ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListener,
+					  ToolsActions.Preferences preferencesListener,
 					  MainMenu menuBar /* don't delete: initiates main menu creation */
 	) {
 		this.shell = shell;
@@ -68,7 +67,7 @@ public class MainWindow {
 
 		initShell(shell);
 		initFeederArea(feederArea, feederGUIRegistry);
-		initControlsArea(controlsArea, feederSelectionCombo, startStopButton, startStopScanningAction, preferencesListener, chooseFetchersListener);
+		initControlsArea(controlsArea, feederSelectionCombo, startStopButton, startStopScanningAction, preferencesListener);
 		initTableAndStatusBar(resultTable, resultsContextMenu, statusBar);
 
 		// after all controls are initialized, resize and open
@@ -86,6 +85,9 @@ public class MainWindow {
 		Display.getCurrent().asyncExec(() -> {
 			// asynchronously run init handlers outside of the constructor
 			stateMachine.init();
+			if (guiConfig.autoStartScan) {
+				startStopScanningAction.widgetSelected(null);
+			}
 		});
 	}
 
@@ -138,7 +140,7 @@ public class MainWindow {
 	/**
 	 * This method initializes main controls of the main window	
 	 */
-	private void initControlsArea(Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ToolsActions.Preferences preferencesListener, ToolsActions.ChooseFetchers chooseFetchersListsner) {
+	private void initControlsArea(Composite controlsArea, Combo feederSelectionCombo, Button startStopButton, StartStopScanningAction startStopScanningAction, ToolsActions.Preferences preferencesListener) {
 		controlsArea.setLayoutData(formData(new FormAttachment(feederArea), null, new FormAttachment(0), new FormAttachment(feederArea, 0, SWT.BOTTOM)));
 
 		// start/stop button
@@ -181,12 +183,6 @@ public class MainWindow {
 		item.setToolTipText(Labels.getLabel("title.preferences"));
 		item.addListener(SWT.Selection, preferencesListener);
 
-		fetchersButton = createToolbarButton(controlsArea);
-		item = new ToolItem(fetchersButton, SWT.PUSH);
-		item.setImage(icon("buttons/fetchers"));
-		item.setToolTipText(Labels.getLabel("title.fetchers"));
-		item.addListener(SWT.Selection, chooseFetchersListsner);
-
 		feederSelectionListener.widgetSelected(null);
 	}
 
@@ -227,7 +223,6 @@ public class MainWindow {
 			feederArea.setEnabled(enabled);
 			feederSelectionCombo.setEnabled(enabled);
 			prefsButton.setEnabled(enabled);
-			fetchersButton.setEnabled(enabled);
 			statusBar.setEnabled(enabled);
 		}
 	}

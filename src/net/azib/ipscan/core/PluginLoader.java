@@ -6,6 +6,8 @@ import net.azib.ipscan.config.LoggerFactory;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarFile;
@@ -115,7 +117,8 @@ public class PluginLoader {
 		var ownPath = resource.getFile();
 		if (ownPath.startsWith("file:")) ownPath = ownPath.substring("file:".length());
 		if (ownPath.indexOf('!') >= 0) ownPath = ownPath.substring(0, ownPath.indexOf('!'));
-		return new File(ownPath);
+		// resource URLs are percent-encoded (e.g. spaces as %20); decode for filesystem use
+		return new File(URLDecoder.decode(ownPath, StandardCharsets.UTF_8));
 	}
 
 	static class PluginClassLoader extends URLClassLoader {

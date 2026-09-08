@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 
 import static org.junit.Assert.*;
 
@@ -21,12 +22,19 @@ abstract class AbstractPingerTest {
 	@Test
 	public void pingAlive() throws IOException {
 		var ifAddr = InetAddressUtils.getLocalInterface();
-		var result = pinger.ping(new ScanningSubject(ifAddr.getAddress()), 2);
-		assertTrue(result.isAlive());
-		assertEquals(2, result.getPacketCount());
-		assertEquals(2, result.getReplyCount());
-		assertTrue(result.getAverageTime() <= 10);
-		assertTrue(result.getTTL() >= 0);
+		// open a local listening port so that port-based pingers (e.g. TCP) always have
+		// a guaranteed open port - avoids false negatives caused by firewalls silently
+		// dropping probes of closed ports; other pinger types simply ignore it
+		try (var server = new ServerSocket(0)) {
+			var subject = new ScanningSubject(ifAddr.getAddress());
+			subject.addRequestedPort(server.getLocalPort());
+			var result = pinger.ping(subject, 2);
+			assertTrue(result.isAlive());
+			assertEquals(2, result.getPacketCount());
+			assertEquals(2, result.getReplyCount());
+			assertTrue(result.getAverageTime() <= 10);
+			assertTrue(result.getTTL() >= 0);
+		}
 	}
 
 	@Test
