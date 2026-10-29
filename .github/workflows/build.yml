@@ -61,6 +61,11 @@ jobs:
         APPLE_USER: ${{ secrets.APPLE_USER }}
         APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
 
+    - name: Verify macOS architectures (native, no Rosetta)
+      run: |
+        sh ext/verify-mac-arch.sh build/libs/ipscan-*-macX86.zip "Angry IP Scanner" x86_64
+        sh ext/verify-mac-arch.sh build/libs/ipscan-*-macArm64.zip "Angry IP Scanner" arm64
+
     - uses: actions/upload-artifact@v5
       with:
         name: macOS binaries
