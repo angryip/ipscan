@@ -117,7 +117,7 @@ public class HelpMenuActions {
 						var latestVersion = reader.readLine();
 						latestVersion = latestVersion.substring(latestVersion.indexOf(' ') + 1);
 
-						if (!Version.getVersion().equals(latestVersion)) {
+						if (Version.compareTo(Version.getVersion(), latestVersion) < 0) {
 							message = Labels.getLabel("text.version.old");
 							message = message.replaceFirst("%LATEST", latestVersion);
 							message = message.replaceFirst("%VERSION", Version.getVersion());

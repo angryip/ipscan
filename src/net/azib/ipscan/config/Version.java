@@ -83,4 +83,42 @@ public class Version {
 	public static String getFullName() {
 		return NAME + " " + getVersion();
 	}
+
+	/**
+	 * Compares two version strings.
+	 * @return negative if v1 < v2, positive if v1 > v2, 0 if equal
+	 */
+	public static int compareTo(String v1, String v2) {
+		if (v1 == null && v2 == null) return 0;
+		if (v1 == null) return -1;
+		if (v2 == null) return 1;
+
+		String[] parts1 = v1.split("[\\.-]");
+		String[] parts2 = v2.split("[\\.-]");
+
+		int length = Math.max(parts1.length, parts2.length);
+		for (int i = 0; i < length; i++) {
+			int p1 = i < parts1.length ? parseVersionPart(parts1[i]) : 0;
+			int p2 = i < parts2.length ? parseVersionPart(parts2[i]) : 0;
+			if (p1 < p2) return -1;
+			if (p1 > p2) return 1;
+		}
+		return 0;
+	}
+
+	private static int parseVersionPart(String part) {
+		try {
+			StringBuilder num = new StringBuilder();
+			for (char c : part.toCharArray()) {
+				if (Character.isDigit(c)) {
+					num.append(c);
+				} else {
+					break;
+				}
+			}
+			return num.length() > 0 ? Integer.parseInt(num.toString()) : 0;
+		} catch (NumberFormatException e) {
+			return 0;
+		}
+	}
 }
