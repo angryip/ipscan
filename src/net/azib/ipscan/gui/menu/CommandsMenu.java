@@ -17,7 +17,8 @@ public class CommandsMenu extends AbstractMenu {
 
 		initMenuItem(this, "menu.commands.details", null, null, actions.details);
 		initMenuItem(this, null, null, null, null);
-		initMenuItem(this, "menu.commands.rescan", "Ctrl+R", SWT.MOD1 | 'R', actions.rescan, true);
+		// not disabled during scanning: Ctrl+R can add more IPs to a rescan in progress
+		initMenuItem(this, "menu.commands.rescan", "Ctrl+R", SWT.MOD1 | 'R', actions.rescan);
 		initMenuItem(this, "menu.commands.delete", Platform.MAC_OS ? "⌦" : "Del", /* this is not a global key binding */ null, actions.delete, true);
 		initMenuItem(this, null, null, null, null);
 		initMenuItem(this, "menu.commands.copy", Platform.MAC_OS ? "⌘C" : "Ctrl+C", /* this is not a global key binding */ null, actions.copyIP);

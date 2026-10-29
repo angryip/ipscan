@@ -20,7 +20,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public abstract class StateMachine {
 	
-	public enum Transition {INIT, START, STOP, NEXT, COMPLETE, RESET, RESCAN, CONTINUE}
+	public enum Transition {INIT, START, STOP, NEXT, COMPLETE, RESET, RESCAN, RESUME, CONTINUE}
 	
 	private volatile ScanningState state = ScanningState.IDLE;
 	
@@ -123,14 +123,27 @@ public abstract class StateMachine {
 
 	/**
 	 * Transitions back to the idle state
+	 * @return true if the scan was completed, false if the scan was resumed in the meantime
 	 */
-	public void complete() {
+	public synchronized boolean complete() {
 		if (state == ScanningState.STOPPING || state == ScanningState.KILLING) {
 			transitionTo(ScanningState.IDLE, Transition.COMPLETE);
-		}		
-		else {
-			throw new IllegalStateException("Attempt to complete from " + state);
+			return true;
 		}
+		return false;
+	}
+
+	/**
+	 * Resumes scanning that is currently stopping, e.g. when more addresses
+	 * are added to a rescan that has already finished its current addresses.
+	 * @return true if scanning was resumed
+	 */
+	public synchronized boolean resumeScanning() {
+		if (state == ScanningState.STOPPING) {
+			transitionTo(ScanningState.SCANNING, Transition.RESUME);
+			return true;
+		}
+		return false;
 	}
 
 	/**

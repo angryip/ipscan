@@ -29,7 +29,10 @@ public class RescanFeeder extends AbstractFeeder {
 	 */
 	public RescanFeeder(Feeder originalFeeder, String ... ips) {
 		this.originalFeeder = originalFeeder;
-		initAddresses(ips);
+		if (ips.length == 0)
+			throw new IllegalArgumentException("no IP addresses specified");
+		addresses = new ArrayList<>(ips.length);
+		addAddresses(ips);
 	}
 
 	/**
@@ -44,34 +47,45 @@ public class RescanFeeder extends AbstractFeeder {
 	}
 
 	/**
-	 * Initializes the RescanFeeder with required parameters
+	 * Appends more addresses to this rescan, so they are scanned too.
+	 * Note: this is used while the rescan is still in progress.
 	 * @param ips an array of IP addresses as Strings
+	 * @return the number of addresses that were actually added
 	 */
-	private int initAddresses(String ... ips) {
-		if (ips.length == 0)
-			throw new IllegalArgumentException("no IP addresses specified");
-		
-		try {
-			addresses = new ArrayList<>(ips.length);
-			for (var s : ips) {
-				addresses.add(InetAddress.getByName(s));
+	public synchronized int addAddresses(String ... ips) {
+		var added = 0;
+		for (var s : ips) {
+			try {
+				var address = InetAddress.getByName(s);
+				// don't add addresses that are still waiting to be scanned
+				if (!isPending(address)) {
+					addresses.add(address);
+					added++;
+				}
+			}
+			catch (UnknownHostException e) {
+				throw new FeederException("malformedIP");
 			}
 		}
-		catch (UnknownHostException e) {
-			throw new FeederException("malformedIP");
-		}
-		return ips.length;
+		return added;
 	}
-		
-	@Override public boolean hasNext() {
+
+	private boolean isPending(InetAddress address) {
+		for (var i = current; i < addresses.size(); i++) {
+			if (addresses.get(i).equals(address)) return true;
+		}
+		return false;
+	}
+
+	@Override public synchronized boolean hasNext() {
 		return current < addresses.size(); 
 	}
 
-	@Override public ScanningSubject next() {
+	@Override public synchronized ScanningSubject next() {
 		return originalFeeder.subject(addresses.get(current++));
 	}
 
-	@Override public int percentageComplete() {
+	@Override public synchronized int percentageComplete() {
 		return current * 100 / addresses.size();
 	}
 	

@@ -16,6 +16,7 @@ import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.core.state.StateMachine.Transition;
 import net.azib.ipscan.core.state.StateTransitionListener;
+import net.azib.ipscan.feeders.RescanFeeder;
 import net.azib.ipscan.gui.ResultTable;
 import net.azib.ipscan.gui.StatusBar;
 import net.azib.ipscan.gui.feeders.FeederGUIRegistry;
@@ -42,6 +43,7 @@ import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 public class StartStopScanningAction implements SelectionListener, ScanningProgressCallback, StateTransitionListener {
 	private ScannerDispatcherThreadFactory scannerThreadFactory;
 	private ScannerDispatcherThread scannerThread;
+	private RescanFeeder rescanFeeder;
 	private GUIConfig guiConfig;
 	private PingerRegistry pingerRegistry;
 
@@ -144,7 +146,21 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 		}
 		return true;
 	}
-	
+
+	/**
+	 * Adds the currently selected results to the rescan that is still in progress,
+	 * so they are scanned along with the previously selected ones.
+	 * @return true if the selection was added to the running rescan
+	 */
+	public boolean addSelectionToRescan() {
+		if (rescanFeeder == null)
+			return false;
+
+		resultTable.resetSelection();
+		rescanFeeder.addAddresses(feederRegistry.getAddresses(resultTable.getSelection()));
+		return true;
+	}
+
 	public void transitionTo(final ScanningState state, final Transition transition) {
 		if (statusBar.isDisposed() || transition == Transition.INIT)
 			return;
@@ -156,9 +172,11 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				button.setEnabled(true);
 				updateProgress(null, 0, 0);
 				statusBar.setStatusText(null);
+				rescanFeeder = null;
 				break;
 			case STARTING:
 				// start the scan from scratch!
+				rescanFeeder = null;
 				if (transition != Transition.CONTINUE)
 					resultTable.removeAll();
 
@@ -176,7 +194,8 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				// restart the scanning - rescan
 				resultTable.resetSelection();
 				try {
-					scannerThread = scannerThreadFactory.createScannerThread(feederRegistry.createRescanFeeder(resultTable.getSelection()), StartStopScanningAction.this, createResultsCallback(state));
+					rescanFeeder = feederRegistry.createRescanFeeder(resultTable.getSelection());
+					scannerThread = scannerThreadFactory.createScannerThread(rescanFeeder, StartStopScanningAction.this, createResultsCallback(state));
 					stateMachine.startScanning();
 					mainWindowTitle = statusBar.getShell().getText();
 				}
@@ -186,7 +205,9 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 				}
 				break;
 			case SCANNING:
-				scannerThread.start();
+				// don't start the thread again if the scan was merely resumed
+				if (transition == Transition.START)
+					scannerThread.start();
 				break;
 			case STOPPING:
 				statusBar.setStatusText(Labels.getLabel("state.waitForThreads"));

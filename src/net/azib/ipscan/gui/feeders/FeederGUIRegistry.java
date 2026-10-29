@@ -86,11 +86,19 @@ public class FeederGUIRegistry implements FeederRegistry {
 	 * @param selection selected table items to derive IP addresses from
 	 * @return initialized instance of RescanFeeder
 	 */
-	public Feeder createRescanFeeder(TableItem[] selection) {
+	public RescanFeeder createRescanFeeder(TableItem[] selection) {
+		return new RescanFeeder(lastFeeder, getAddresses(selection));
+	}
+
+	/**
+	 * @param selection selected table items to derive IP addresses from
+	 * @return the addresses shown in the selected table items
+	 */
+	public String[] getAddresses(TableItem[] selection) {
 		var addresses = new String[selection.length];
 		for (var i = 0; i < selection.length; i++) {
 			addresses[i] = selection[i].getText();
 		}
-		return new RescanFeeder(lastFeeder, addresses);
+		return addresses;
 	}
 }

@@ -87,11 +87,30 @@ public class StateMachineTest {
 	@Test
 	public void complete() {
 		stateMachine.transitionTo(ScanningState.STOPPING, null);
-		stateMachine.complete();
+		assertTrue(stateMachine.complete());
 		assertEquals(ScanningState.IDLE, stateMachine.getState());
 		
 		stateMachine.transitionTo(ScanningState.KILLING, null);
-		stateMachine.complete();
+		assertTrue(stateMachine.complete());
+		assertEquals(ScanningState.IDLE, stateMachine.getState());
+
+		assertFalse("cannot complete when not stopping", stateMachine.complete());
+	}
+
+	@Test
+	public void resumeScanning() {
+		stateMachine.transitionTo(ScanningState.STOPPING, null);
+		assertTrue(stateMachine.resumeScanning());
+		assertEquals(ScanningState.SCANNING, stateMachine.getState());
+		assertFalse("can only resume from stopping", stateMachine.resumeScanning());
+		assertEquals(ScanningState.SCANNING, stateMachine.getState());
+	}
+
+	@Test
+	public void completeAndResumeAreMutuallyExclusive() {
+		stateMachine.transitionTo(ScanningState.STOPPING, null);
+		assertTrue(stateMachine.complete());
+		assertFalse(stateMachine.resumeScanning());
 		assertEquals(ScanningState.IDLE, stateMachine.getState());
 	}
 

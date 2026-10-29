@@ -18,8 +18,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static net.azib.ipscan.core.state.ScanningState.KILLING;
-import static net.azib.ipscan.core.state.ScanningState.SCANNING;
+import static net.azib.ipscan.core.state.ScanningState.*;
 import static net.azib.ipscan.util.InetAddressUtils.isLikelyBroadcast;
 
 /**
@@ -83,44 +82,34 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 		try {
 			// register this scan specific listener
 			stateMachine.addTransitionListener(this);
-			long lastNotifyTime = 0; 
 
 			try {
-				ScanningSubject subject = null;
-				while(feeder.hasNext() && stateMachine.inState(SCANNING)) {
-					// make a small delay between thread creation
-					Thread.sleep(config.threadDelay);
-					
-					if (config.maxThreads == 0 || numActiveThreads.intValue() < config.maxThreads) {
-						subject = feeder.next();
+				while (true) {
+					dispatchAddresses();
 
-						if (config.skipBroadcastAddresses && isLikelyBroadcast(subject.getAddress(), subject.getIfAddress()))
-							continue;
+					// inform that no more addresses left (skip if already killing)
+					if (stateMachine.inState(SCANNING))
+						stateMachine.stop();
 
-						var result = scanningResultList.createResult(subject.getAddress());
-						resultsCallback.prepareForResults(result);
-																
-						// scan each IP in parallel, in a separate thread
-						var scanningTask = new AddressScannerTask(subject, result);
-						threadPool.execute(scanningTask);
-					}
-					
-					// notify listeners of the progress we are doing (limiting the update rate)
-					var now = System.currentTimeMillis();
-					if (now - lastNotifyTime >= UI_UPDATE_INTERVAL_MS && subject != null) {
-						lastNotifyTime = now;
-						progressCallback.updateProgress(subject.getAddress(), numActiveThreads.intValue(), feeder.percentageComplete());
-					}
+					if (stateMachine.inState(KILLING))
+						break;
+
+					// continue if the scan was resumed with more addresses (e.g. rescan)
+					if (waitForRunningTasks())
+						continue;
+
+					// commit to finishing, unless the scan was resumed at the last moment
+					if (stateMachine.inState(STOPPING) && !stateMachine.complete())
+						continue;
+					break;
 				}
 			}
 			catch (InterruptedException e) {
 				// interrupt - end the loop
+				if (stateMachine.inState(SCANNING))
+					stateMachine.stop();
 			}
-			
-			// inform that no more addresses left (skip if already killing)
-			if (stateMachine.inState(SCANNING))
-				stateMachine.stop();
-		
+
 			// request shutdown of the thread pool
 			// this must be done here and not asynchronously by the state machine
 			threadPool.shutdown();
@@ -144,6 +133,52 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 			// unregister specific listener
 			stateMachine.removeTransitionListener(this);
 		}
+	}
+
+	/**
+	 * Dispatches all addresses that are currently available in the feeder.
+	 */
+	private void dispatchAddresses() throws InterruptedException {
+		ScanningSubject subject = null;
+		long lastNotifyTime = 0;
+
+		while (feeder.hasNext() && stateMachine.inState(SCANNING)) {
+			// make a small delay between thread creation
+			Thread.sleep(config.threadDelay);
+
+			if (config.maxThreads == 0 || numActiveThreads.intValue() < config.maxThreads) {
+				subject = feeder.next();
+
+				if (config.skipBroadcastAddresses && isLikelyBroadcast(subject.getAddress(), subject.getIfAddress()))
+					continue;
+
+				var result = scanningResultList.createResult(subject.getAddress());
+				resultsCallback.prepareForResults(result);
+
+				// scan each IP in parallel, in a separate thread
+				var scanningTask = new AddressScannerTask(subject, result);
+				threadPool.execute(scanningTask);
+			}
+
+			// notify listeners of the progress we are doing (limiting the update rate)
+			var now = System.currentTimeMillis();
+			if (now - lastNotifyTime >= UI_UPDATE_INTERVAL_MS && subject != null) {
+				lastNotifyTime = now;
+				progressCallback.updateProgress(subject.getAddress(), numActiveThreads.intValue(), feeder.percentageComplete());
+			}
+		}
+	}
+
+	/**
+	 * Waits for all currently running scanning tasks to finish.
+	 * @return true if scanning was resumed in the meantime, so more addresses can be dispatched
+	 */
+	private boolean waitForRunningTasks() throws InterruptedException {
+		while (stateMachine.inState(STOPPING) && numActiveThreads.get() > 0) {
+			progressCallback.updateProgress(null, numActiveThreads.get(), 100);
+			Thread.sleep(UI_UPDATE_INTERVAL_MS);
+		}
+		return stateMachine.inState(SCANNING);
 	}
 	
 	/**

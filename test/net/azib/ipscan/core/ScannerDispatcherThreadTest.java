@@ -7,7 +7,10 @@ package net.azib.ipscan.core;
 
 import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningResultList.ScanInfo;
+import net.azib.ipscan.core.state.ScanningState;
+import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.feeders.Feeder;
+import net.azib.ipscan.feeders.RescanFeeder;
 import net.azib.ipscan.fetchers.FetcherRegistry;
 import net.azib.ipscan.fetchers.IPFetcher;
 import org.junit.Test;
@@ -15,11 +18,13 @@ import org.objenesis.ObjenesisHelper;
 
 import java.net.InetAddress;
 import java.util.Collections;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 /**
  * ScannerThreadTest
@@ -54,6 +59,68 @@ public class ScannerDispatcherThreadTest {
 		assertEquals(thread, ((ThreadPoolExecutor) thread.threadPool).getThreadFactory());
 	}
 	
+	@Test
+	public void stoppingScanCanBeResumedWithMoreAddresses() throws Exception {
+		var registry = mock(FetcherRegistry.class);
+		when(registry.getSelectedFetchers()).thenReturn(Collections.singleton(new IPFetcher()));
+
+		var stateMachine = new StateMachine() {};
+		stateMachine.transitionToNext(); // to STARTING
+
+		var feeder = new RescanFeeder(mockFeeder(), "127.0.0.1");
+		var scanningResults = new ScanningResultList(registry);
+
+		var config = mock(ScannerConfig.class);
+		config.maxThreads = 0;
+		config.threadDelay = 1;
+
+		var scanner = mock(Scanner.class);
+		var scanStarted = new CountDownLatch(1);
+		var scanFinished = new CountDownLatch(1);
+		doAnswer(i -> {
+			scanStarted.countDown();
+			scanFinished.await();
+			return null;
+		}).when(scanner).scan(any(), any());
+
+		var thread = new ScannerDispatcherThread(feeder, scanner, stateMachine, mock(ScanningProgressCallback.class),
+			scanningResults, config, mock(ScanningResultCallback.class));
+
+		stateMachine.startScanning();
+		thread.start();
+		try {
+			assertTrue("no address was dispatched", scanStarted.await(5, TimeUnit.SECONDS));
+
+			// the only address is being scanned, so the scan is stopping and waiting for it
+			waitForState(stateMachine, ScanningState.STOPPING);
+
+			assertEquals(1, feeder.addAddresses("127.0.0.2"));
+			assertTrue("stopping scan should be resumable", stateMachine.resumeScanning());
+			scanFinished.countDown();
+
+			waitForState(stateMachine, ScanningState.IDLE);
+			assertEquals(2, scanningResults.getScanInfo().getHostCount());
+		}
+		finally {
+			scanFinished.countDown();
+			thread.join(5000);
+		}
+	}
+
+	private void waitForState(StateMachine stateMachine, ScanningState state) throws InterruptedException {
+		var deadline = System.currentTimeMillis() + 5000;
+		while (!stateMachine.inState(state)) {
+			assertTrue("timed out waiting for " + state, System.currentTimeMillis() < deadline);
+			Thread.sleep(10);
+		}
+	}
+
+	private Feeder mockFeeder() {
+		var feeder = mock(Feeder.class);
+		when(feeder.subject(any())).thenAnswer(i -> new ScanningSubject(i.getArgument(0)));
+		return feeder;
+	}
+
 	@Test
 	public void threadFactoryProducesDaemons() throws Exception {
 		var thread = ObjenesisHelper.newInstance(ScannerDispatcherThread.class);

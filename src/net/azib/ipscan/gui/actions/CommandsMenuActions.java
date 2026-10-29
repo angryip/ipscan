@@ -114,15 +114,31 @@ public class CommandsMenuActions {
 	public static final class Rescan implements Listener {
 		private final ResultTable resultTable;
 		private final StateMachine stateMachine;
+		private final StartStopScanningAction startStopScanningAction;
 
-		public Rescan(ResultTable resultTable, StateMachine stateMachine) {
+		public Rescan(ResultTable resultTable, StateMachine stateMachine, StartStopScanningAction startStopScanningAction) {
 			this.resultTable = resultTable;
 			this.stateMachine = stateMachine;
+			this.startStopScanningAction = startStopScanningAction;
 		}
 
 		public void handleEvent(Event event) {
 			checkSelection(resultTable);
-			stateMachine.rescan();
+			if (stateMachine.inState(ScanningState.IDLE)) {
+				stateMachine.rescan();
+			}
+			else if (stateMachine.inState(ScanningState.STOPPING)) {
+				// the rescan has run out of addresses, but can be resumed with more of them
+				if (startStopScanningAction.addSelectionToRescan() && !stateMachine.resumeScanning()
+						&& stateMachine.inState(ScanningState.IDLE)) {
+					// it finished in the meantime - start a new rescan of the same selection
+					stateMachine.rescan();
+				}
+			}
+			else if (stateMachine.inState(ScanningState.SCANNING)) {
+				// add more IPs to the rescan that is still in progress
+				startStopScanningAction.addSelectionToRescan();
+			}
 		}
 	}
 	

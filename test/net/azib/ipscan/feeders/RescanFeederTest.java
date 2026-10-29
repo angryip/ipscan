@@ -54,6 +54,32 @@ public class RescanFeederTest {
 		assertFalse(feeder.hasNext());
 		assertEquals(100, feeder.percentageComplete());
 	}
+
+	@Test
+	public void addressesCanBeAddedWhileScanning() {
+		var rescanFeeder = new RescanFeeder(mockFeeder(), "127.0.0.1", "127.0.0.2");
+		assertEquals("127.0.0.1", rescanFeeder.next().getAddress().getHostAddress());
+
+		assertEquals(1, rescanFeeder.addAddresses("127.0.0.3"));
+
+		assertEquals("127.0.0.2", rescanFeeder.next().getAddress().getHostAddress());
+		assertEquals("127.0.0.3", rescanFeeder.next().getAddress().getHostAddress());
+		assertFalse(rescanFeeder.hasNext());
+	}
+
+	@Test
+	public void addressesWaitingToBeScannedAreNotAddedTwice() {
+		var rescanFeeder = new RescanFeeder(mockFeeder(), "127.0.0.1", "127.0.0.2");
+		rescanFeeder.next();
+
+		assertEquals(0, rescanFeeder.addAddresses("127.0.0.2"));
+		// already scanned addresses are added back for rescanning
+		assertEquals(1, rescanFeeder.addAddresses("127.0.0.1"));
+
+		assertEquals("127.0.0.2", rescanFeeder.next().getAddress().getHostAddress());
+		assertEquals("127.0.0.1", rescanFeeder.next().getAddress().getHostAddress());
+		assertFalse(rescanFeeder.hasNext());
+	}
 	
 	private Feeder mockFeeder() {
 		var feeder = mock(Feeder.class);
