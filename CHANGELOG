@@ -1,4 +1,5 @@
 Unreleased:
+- Windows: fix a crash when displaying some dialog boxes due to a missing library
 - Mac: explicitly require macOS 11 or newer and show a clear error instead of failing to launch
 - Switch upgrading users to unlimited virtual threads
 
