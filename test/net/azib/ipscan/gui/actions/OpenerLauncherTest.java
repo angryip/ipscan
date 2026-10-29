@@ -122,6 +122,9 @@ public class OpenerLauncherTest {
 		assertArrayEquals(new String[] {"echo", "hello world", "muha-ha"}, OpenerLauncher.splitCommand("echo \"hello world\" muha-ha"));
 		assertArrayEquals(new String[] {"mix \"1", "mix '2"}, OpenerLauncher.splitCommand("'mix \"1' \"mix '2\""));
 		assertArrayEquals(new String[] {"\"aaa"}, OpenerLauncher.splitCommand("\"aaa"));
+		// single quoted value with no embedded whitespace (as produced by sanitizeForShell) must be fully unquoted
+		assertArrayEquals(new String[] {"notepad", "192.168.1.1"}, OpenerLauncher.splitCommand("notepad '192.168.1.1'"));
+		assertArrayEquals(new String[] {"notepad", "192.168.1.1"}, OpenerLauncher.splitCommand("notepad \"192.168.1.1\""));
 	}
 	
 	private Feeder mockFeeder(String feederInfo) {

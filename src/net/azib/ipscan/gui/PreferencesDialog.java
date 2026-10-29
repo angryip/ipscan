@@ -343,7 +343,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		label = new Label(portsGroup, SWT.WRAP);
 		label.setText(Labels.getLabel("preferences.ports.portsDescription"));
 		//label.setLayoutData(new RowData(300, SWT.DEFAULT));
-		portsText = new Text(portsGroup, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL);
+		portsText = new Text(portsGroup, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
 		portsText.setLayoutData(new RowData(SWT.DEFAULT, 60));
 		portsText.addKeyListener(new PortsTextValidationListener());
 		

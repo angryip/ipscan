@@ -75,6 +75,12 @@ public class OpenerLauncher {
 			var token = tokenizer.nextToken(" \t");
 			
 			try {
+				// a token fully wrapped in matching quotes with no embedded whitespace
+				// (e.g. a value substituted by an opener, such as 'x'  or  "x") - unwrap directly
+				if (token.length() > 1 && ((token.startsWith("\"") && token.endsWith("\"")) || (token.startsWith("'") && token.endsWith("'")))) {
+					token = token.substring(1, token.length() - 1);
+				}
+				else
 				if (token.startsWith("\"")) {
 					token = token.substring(1) + tokenizer.nextToken("\"");
 					tokenizer.nextToken(" \t");
