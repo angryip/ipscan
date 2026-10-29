@@ -3,6 +3,10 @@ Unreleased:
 - Mac: explicitly require macOS 11 or newer and show a clear error instead of failing to launch
 - Switch upgrading users to unlimited virtual threads
 
+3.11.0:
+There are rumors of this build circulating on the Internet, but it is not an official release.
+It was never released to the public and is not supported. Please do not use it.
+
 3.10.0:
 - Minimum required Java is now 21, due to updated SWT
 - Bundle Java 25 with Windows and Mac builds
