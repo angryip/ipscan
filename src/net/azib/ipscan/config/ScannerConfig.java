@@ -5,6 +5,9 @@
  */
 package net.azib.ipscan.config;
 
+import net.azib.ipscan.core.PortIterator;
+
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
 /**
@@ -13,6 +16,10 @@ import java.util.prefs.Preferences;
  * @author Anton Keks
  */
 public class ScannerConfig {
+	static final String DEFAULT_PORT_STRING = "80,443,8080";
+
+	private static final Logger LOG = LoggerFactory.getLogger();
+
 	private Preferences preferences;
 
 	public int maxThreads;
@@ -47,10 +54,25 @@ public class ScannerConfig {
 		portTimeout = preferences.getInt("portTimeout", 2000);
 		adaptPortTimeout = preferences.getBoolean("adaptPortTimeout", !Platform.CRIPPLED_WINDOWS);
 		minPortTimeout = preferences.getInt("minPortTimeout", 100);
-		portString = preferences.get("portString", "80,443,8080");
+		portString = preferences.get("portString", DEFAULT_PORT_STRING);
+		if (!isValidPortString(portString)) {
+			// older versions allowed port 0, so an invalid value may be persisted
+			LOG.warning("Ignoring invalid port string in preferences: " + portString);
+			portString = DEFAULT_PORT_STRING;
+		}
 		useRequestedPorts = preferences.getBoolean("useRequestedPorts", true);
 		notAvailableText = preferences.get("notAvailableText", Labels.getLabel("fetcher.value.notAvailable"));
 		notScannedText = preferences.get("notScannedText", Labels.getLabel("fetcher.value.notScanned"));
+	}
+
+	private static boolean isValidPortString(String portString) {
+		try {
+			new PortIterator(portString);
+			return true;
+		}
+		catch (NumberFormatException e) {
+			return false;
+		}
 	}
 		
 	/**
