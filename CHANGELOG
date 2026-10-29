@@ -1,3 +1,6 @@
+Unreleased:
+- Mac: explicitly require macOS 11 or newer and show a clear error instead of failing to launch
+
 3.10.0:
 - Minimum required Java is now 21, due to updated SWT
 - Bundle Java 25 with Windows and Mac builds

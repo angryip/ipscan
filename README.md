@@ -5,7 +5,12 @@ This is the source code of Angry IP Scanner, licensed with GPL v2. [Official sit
 The code is written mostly in Java.
 [SWT library from Eclipse project](https://eclipse.org/swt/) is used for GUI that provides native components for each supported platform.
 
-The project runs on Linux, Windows and macOS. 
+The project runs on Linux, Windows and macOS.
+
+## Requirements
+
+Java 21 or newer is required to run the jar files.
+The macOS app bundle includes its own Java runtime, but requires macOS 11 (Big Sur) or newer.
 
 ## Helping / Contributing
 

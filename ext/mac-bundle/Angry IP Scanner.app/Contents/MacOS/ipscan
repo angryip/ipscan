@@ -2,4 +2,10 @@
 BASEDIR=$(dirname "$0")
 java="$BASEDIR/jre/bin/java"
 if [ ! -e "$java" ]; then java=java; fi
+macos=$(sw_vers -productVersion)
+if [ -n "$macos" ] && [ "${macos%%.*}" -lt 11 ]; then
+  echo "Angry IP Scanner requires macOS 11.0 or newer, but this is $macos" >&2
+  echo "Version 3.9.3 is the last one supporting older macOS: https://github.com/angryip/ipscan/releases/tag/3.9.3" >&2
+  exit 1
+fi
 exec "$java" --add-opens java.base/java.net=ALL-UNNAMED --enable-native-access=ALL-UNNAMED -XstartOnFirstThread -jar "$BASEDIR"/*.jar
