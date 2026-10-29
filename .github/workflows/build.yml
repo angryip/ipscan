@@ -10,6 +10,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        submodules: recursive
     - uses: actions/setup-java@v5
       with:
         java-version: '25'
@@ -40,6 +41,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        submodules: recursive
     - uses: actions/setup-java@v5
       with:
         java-version: '25'
@@ -78,6 +80,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        submodules: recursive
     - uses: actions/setup-java@v5
       with:
         java-version: '25'

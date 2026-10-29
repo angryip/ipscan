@@ -1,0 +1,3 @@
+[submodule "ext/win-installer/NsisMultiUser"]
+	path = ext/win-installer/NsisMultiUser
+	url = https://github.com/Drizin/NsisMultiUser.git
