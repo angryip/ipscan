@@ -64,7 +64,7 @@ public class StatusBar {
 		updateConfigText();
 
 		threadsText = new Label(composite, SWT.BORDER);
-		setRunningThreads(scannerConfig.maxThreads == 0 ? 200 : Math.min(scannerConfig.maxThreads, 200)); // this should set the longest possible text
+		setRunningThreads(scannerConfig.maxThreads == 0 ? 20001 : Math.min(scannerConfig.maxThreads, 200)); // this should set the longest possible text
 		threadsText.pack(); // calculate the width
 		threadsText.setLayoutData(formData(threadsText.getSize().x, SWT.DEFAULT, new FormAttachment(displayMethodText), null, new FormAttachment(0), new FormAttachment(100)));
 		setRunningThreads(0); // set back to 0 at startup
