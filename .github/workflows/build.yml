@@ -7,11 +7,11 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         fetch-depth: 0
         submodules: recursive
-    - uses: actions/setup-java@v5
+    - uses: actions/setup-java@v6
       with:
         java-version: '25'
         distribution: 'liberica'
@@ -21,13 +21,13 @@ jobs:
     - name: Extract CHANGELOG
       run: sed '/^$/q' CHANGELOG > build/libs/README
 
-    - uses: actions/upload-artifact@v5
+    - uses: actions/upload-artifact@v7
       with:
         name: Linux binaries
         path: build/libs
 
     - name: Release (if tag)
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       if: startsWith(github.ref, 'refs/tags/')
       with:
         draft: true
@@ -38,17 +38,17 @@ jobs:
     runs-on: macos-15
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         fetch-depth: 0
         submodules: recursive
-    - uses: actions/setup-java@v5
+    - uses: actions/setup-java@v6
       with:
         java-version: '25'
         distribution: 'liberica'
         architecture: aarch64
         cache: 'gradle'
-    - uses: actions/setup-java@v5
+    - uses: actions/setup-java@v6
       with:
         java-version: '25'
         distribution: 'liberica'
@@ -66,13 +66,13 @@ jobs:
         sh ext/verify-mac-arch.sh build/libs/ipscan-*-macX86.zip "Angry IP Scanner" x86_64
         sh ext/verify-mac-arch.sh build/libs/ipscan-*-macArm64.zip "Angry IP Scanner" arm64
 
-    - uses: actions/upload-artifact@v5
+    - uses: actions/upload-artifact@v7
       with:
         name: macOS binaries
         path: build/libs
 
     - name: Add to release (if tag)
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       if: startsWith(github.ref, 'refs/tags/')
       with:
         draft: true
@@ -82,11 +82,11 @@ jobs:
     runs-on: windows-2022
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         fetch-depth: 0
         submodules: recursive
-    - uses: actions/setup-java@v5
+    - uses: actions/setup-java@v6
       with:
         java-version: '25'
         distribution: 'liberica'
@@ -94,13 +94,13 @@ jobs:
         cache: 'gradle'
     - run: ./gradlew test win-installer --info
 
-    - uses: actions/upload-artifact@v5
+    - uses: actions/upload-artifact@v7
       with:
         name: Windows binaries
         path: build/libs
 
     - name: Add to release (if tag)
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       if: startsWith(github.ref, 'refs/tags/')
       with:
         draft: true
