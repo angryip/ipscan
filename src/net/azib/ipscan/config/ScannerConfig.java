@@ -17,6 +17,8 @@ import java.util.prefs.Preferences;
  */
 public class ScannerConfig {
 	static final String DEFAULT_PORT_STRING = "80,443,8080";
+	/** Older versions used this as the default maximum number of threads */
+	static final int LEGACY_DEFAULT_MAX_THREADS = 100;
 
 	private static final Logger LOG = LoggerFactory.getLogger();
 
@@ -45,6 +47,10 @@ public class ScannerConfig {
 		this.preferences = preferences;
 		
 		maxThreads = preferences.getInt("maxThreads", 0);
+		if (maxThreads == LEGACY_DEFAULT_MAX_THREADS) {
+			// the old default is indistinguishable from an explicit setting, so migrate to virtual threads
+			maxThreads = 0;
+		}
 		threadDelay = preferences.getInt("threadDelay", 20);
 		scanDeadHosts = preferences.getBoolean("scanDeadHosts", false);
 		selectedPinger = preferences.get("selectedPinger", Platform.WINDOWS ? "pinger.windows" : "pinger.java");
