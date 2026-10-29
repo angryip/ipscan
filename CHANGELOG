@@ -3,6 +3,7 @@ Unreleased:
 - Mac: explicitly require macOS 11 or newer and show a clear error instead of failing to launch
 - Switch upgrading users to unlimited virtual threads
 - Rescan now works for multiple IPs in succession
+- Polish translation added
 
 3.11.0:
 There are rumors of this build circulating on the Internet, but it is not an official release.
