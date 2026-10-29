@@ -162,7 +162,7 @@ public class PreferencesDialog extends AbstractModalDialog {
 		threadsGroup.setText(Labels.getLabel("preferences.threads"));
 		threadsGroup.setLayout(groupLayout);
 
-		var gridData = new GridData(80, SWT.DEFAULT);
+		var gridData = new GridData(120, SWT.DEFAULT);
 		
 		Label label;
 		
