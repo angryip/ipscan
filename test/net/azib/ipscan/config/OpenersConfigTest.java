@@ -79,7 +79,8 @@ public class OpenersConfigTest {
 
 		assertEquals("aaa", config.getOpener("aa").execString);
 		assertEquals("bbb", config.getOpener("bb").execString);
-		assertEquals(2, config.size());
+		// user-defined openers are kept; missing default openers are re-added
+		assertTrue(config.size() > 2);
 	}
 	
 	@Test @SuppressWarnings("unchecked")
@@ -90,7 +91,8 @@ public class OpenersConfigTest {
 		Iterator namesIterator = config.iterator();
 		assertEquals("aa", namesIterator.next());
 		assertEquals("bb", namesIterator.next());
-		assertFalse(namesIterator.hasNext());
+		// missing defaults are appended after the user-defined openers
+		assertTrue(namesIterator.hasNext());
 	}
 	
 	@Test

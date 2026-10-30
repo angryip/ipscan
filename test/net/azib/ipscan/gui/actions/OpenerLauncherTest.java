@@ -1,6 +1,7 @@
 package net.azib.ipscan.gui.actions;
 
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.config.Platform;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.values.InetAddressHolder;
@@ -36,6 +37,8 @@ public class OpenerLauncherTest {
 		when(fetcherRegistry.getSelectedFetcherIndex(PingFetcher.ID)).thenReturn(2);
 		when(fetcherRegistry.getSelectedFetcherIndex("fetcher.comment")).thenReturn(3);
 		when(fetcherRegistry.getSelectedFetcherIndex("noSuchFetcher")).thenReturn(-1);
+		// the comment fetcher is registered (just hidden by default in this mock), unlike the typo below
+		when(fetcherRegistry.isRegisteredFetcher("fetcher.comment")).thenReturn(true);
 
 		var scanningResults = new ScanningResultList(fetcherRegistry);
 		scanningResults.initNewScan(mockFeeder("info"));
@@ -53,10 +56,10 @@ public class OpenerLauncherTest {
 		assertEquals("http://127.0.0.1:80/www", ol.prepareOpenerStringForItem("http://${fetcher.ip}:80/www", 0, false));
 		assertEquals(result.getValues().get(2) + ", xx", ol.prepareOpenerStringForItem("${fetcher.ping}, xx", 0, false));
 
-		// sanitize=true: values wrapped in single quotes (used for shell openers)
-		assertEquals("\\\\'127.0.0.1'", ol.prepareOpenerStringForItem("\\\\${fetcher.ip}", 0, true));
-		assertEquals("'HOSTNAME'$$$'127.0.0.1'xxx${}", ol.prepareOpenerStringForItem("${fetcher.hostname}$$$${fetcher.ip}xxx${}", 0, true));
-		assertEquals("http://'127.0.0.1':80/www", ol.prepareOpenerStringForItem("http://${fetcher.ip}:80/www", 0, true));
+		// sanitize=true: values wrapped in quotes suitable for the platform's shell
+		assertEquals("\\\\" + q("127.0.0.1"), ol.prepareOpenerStringForItem("\\\\${fetcher.ip}", 0, true));
+		assertEquals(q("HOSTNAME") + "$$$" + q("127.0.0.1") + "xxx${}", ol.prepareOpenerStringForItem("${fetcher.hostname}$$$${fetcher.ip}xxx${}", 0, true));
+		assertEquals("http://" + q("127.0.0.1") + ":80/www", ol.prepareOpenerStringForItem("http://${fetcher.ip}:80/www", 0, true));
 				
 		try {
 			ol.prepareOpenerStringForItem("${noSuchFetcher}", 0, false);
@@ -66,28 +69,22 @@ public class OpenerLauncherTest {
 			assertEquals(Labels.getLabel("exception.UserErrorException.opener.unknownFetcher") + "noSuchFetcher", e.getMessage());
 		}
 
-		try {
-			ol.prepareOpenerStringForItem("${fetcher.comment}", 0, false);
-			fail();
-		}
-		catch (UserErrorException e) {
-			assertEquals(Labels.getLabel("exception.UserErrorException.opener.nullFetcherValue") + "fetcher.comment", e.getMessage());
-		}
+		// missing fetcher value now falls back to the IP instead of throwing
+		assertEquals("127.0.0.1", ol.prepareOpenerStringForItem("${fetcher.comment}", 0, false));
 
-		try {
-			result.setValue(3, NotAvailable.VALUE);
-			ol.prepareOpenerStringForItem("${fetcher.comment}", 0, false);
-			fail();
-		}
-		catch (UserErrorException e) {
-			assertEquals(Labels.getLabel("exception.UserErrorException.opener.nullFetcherValue") + "fetcher.comment", e.getMessage());
-		}
+		result.setValue(3, NotAvailable.VALUE);
+		assertEquals("127.0.0.1", ol.prepareOpenerStringForItem("${fetcher.comment}", 0, false));
 		
 		result.setValue(1, null);
 		assertEquals("Hostname opening should fall back to the IP", "127.0.0.1", ol.prepareOpenerStringForItem("${" + HostnameFetcher.ID + "}", 0, false));
-		assertEquals("Hostname opening should fall back to the IP", "'127.0.0.1'", ol.prepareOpenerStringForItem("${" + HostnameFetcher.ID + "}", 0, true));
+		assertEquals("Hostname opening should fall back to the IP", q("127.0.0.1"), ol.prepareOpenerStringForItem("${" + HostnameFetcher.ID + "}", 0, true));
 		result.setValue(1, NotAvailable.VALUE);
 		assertEquals("Hostname opening should fall back to the IP", "127.0.0.1", ol.prepareOpenerStringForItem("${" + HostnameFetcher.ID + "}", 0, false));
+	}
+
+	/** quotes a value the way the current platform's shell does */
+	private static String q(String value) {
+		return Platform.WINDOWS ? "\"" + value + "\"" : "'" + value + "'";
 	}
 	
 	@Test
@@ -113,6 +110,23 @@ public class OpenerLauncherTest {
 
 		// AppleScript injection attempt
 		assertEquals("'\" & do shell script \"evil\" & \"'", OpenerLauncher.sanitizeForShell("\" & do shell script \"evil\" & \""));
+	}
+
+	@Test
+	public void testSanitizeForCmd() {
+		// normal values are wrapped in double quotes (cmd.exe ignores single quotes!)
+		assertEquals("\"hostname\"", OpenerLauncher.sanitizeForCmd("hostname"));
+		assertEquals("\"192.168.1.1\"", OpenerLauncher.sanitizeForCmd("192.168.1.1"));
+
+		// empty value
+		assertEquals("\"\"", OpenerLauncher.sanitizeForCmd(""));
+
+		// embedded double quotes are escaped cmd-style
+		assertEquals("\"it\"\"s\"", OpenerLauncher.sanitizeForCmd("it\"s"));
+
+		// cmd metacharacters are neutralized inside double quotes
+		assertEquals("\"a&b|c>d<e\"", OpenerLauncher.sanitizeForCmd("a&b|c>d<e"));
+		assertEquals("\"'; rm -rf /'\"", OpenerLauncher.sanitizeForCmd("'; rm -rf /'"));
 	}
 
 	@Test

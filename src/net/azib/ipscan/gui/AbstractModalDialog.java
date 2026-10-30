@@ -167,26 +167,13 @@ public abstract class AbstractModalDialog {
 				// do not move anything if either nothing is selected or only the first item is selected
 				return;
 			}
-			
-			var selectedItems = list.getSelectionIndices();
-			for (var index : selectedItems) {
-				// here, index is always > 0
-				list.deselect(index);
-				var oldItem = list.getItem(index - 1);
-				list.setItem(index - 1, list.getItem(index));
-				list.setItem(index, oldItem);
-				list.select(index - 1);
-			}
-			
-			if (!Platform.MAC_OS) {
-				// this doesn't look good on Mac
-				list.setTopIndex(selectedItems[0] - 2);	
-			}
+
+			moveSelection(list, -1);
 		}
 	}
 
 	protected static class DownButtonListener implements Listener {
-		
+
 		private List list;
 
 		public DownButtonListener(List list) {
@@ -198,24 +185,48 @@ public abstract class AbstractModalDialog {
 				// do not move anything if either nothing is selected or only the last item is selected
 				return;
 			}
-			
-			var selectedItems = list.getSelectionIndices();
-			for (var i = selectedItems.length - 1; i >= 0; i--) {
-				// here, index is always < getItemCount()
-				var index = selectedItems[i];
 
-				list.deselect(index);
-				var oldItem = list.getItem(index + 1);
-				list.setItem(index + 1, list.getItem(index));
-				list.setItem(index, oldItem);
-				list.select(index + 1);
-			}
-			
-			if (!Platform.MAC_OS) {
-				// this doesn't look good on Mac
-				list.setTopIndex(selectedItems[0]);	
+			moveSelection(list, 1);
+		}
+	}
+
+	/**
+	 * Moves all selected items one step up (-1) or down (+1) as a group,
+	 * without corrupting the list when multiple (possibly non-contiguous) items are selected.
+	 */
+	private static void moveSelection(List list, int direction) {
+		var items = list.getItems();
+		var selected = list.getSelectionIndices();
+		if (selected.length == 0) return;
+
+		var newOrder = new java.util.ArrayList<String>(java.util.Arrays.asList(items));
+
+		if (direction < 0) {
+			// moving up: process from top to bottom
+			for (var i = 0; i < selected.length; i++) {
+				var idx = selected[i];
+				if (idx > 0 && !list.isSelected(idx - 1)) {
+					// swap with the previous item (only if it is not itself being moved)
+					var tmp = newOrder.get(idx - 1);
+					newOrder.set(idx - 1, newOrder.get(idx));
+					newOrder.set(idx, tmp);
+				}
 			}
 		}
+		else {
+			// moving down: process from bottom to top
+			for (var i = selected.length - 1; i >= 0; i--) {
+				var idx = selected[i];
+				if (idx < newOrder.size() - 1 && !list.isSelected(idx + 1)) {
+					var tmp = newOrder.get(idx + 1);
+					newOrder.set(idx + 1, newOrder.get(idx));
+					newOrder.set(idx, tmp);
+				}
+			}
+		}
+
+		list.setItems(newOrder.toArray(new String[0]));
+		list.select(selected);
 	}
 
 }

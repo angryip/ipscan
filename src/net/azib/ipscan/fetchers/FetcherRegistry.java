@@ -58,6 +58,9 @@ public class FetcherRegistry {
 			selectedFetchers.put(PingFetcher.ID, registeredFetchers.get(PingFetcher.ID));
 			selectedFetchers.put(HostnameFetcher.ID, registeredFetchers.get(HostnameFetcher.ID));
 			selectedFetchers.put(PortsFetcher.ID, registeredFetchers.get(PortsFetcher.ID));
+			var openerFetcher = registeredFetchers.get(OpenerColumnFetcher.ID);
+			if (openerFetcher != null)
+				selectedFetchers.put(OpenerColumnFetcher.ID, openerFetcher);
 		}
 		else {
 			var fetcherPrefs = fetcherPrefValue.split("###");
@@ -117,6 +120,15 @@ public class FetcherRegistry {
 			index++;
 		}
 		return -1;
+	}
+
+  /**
+   * Checks whether a fetcher with the given id is registered at all.
+   * Useful for distinguishing a typo in a fetcher reference from a fetcher
+   * that is registered but not currently selected.
+   */
+	public boolean isRegisteredFetcher(String id) {
+		return registeredFetchers.containsKey(id);
 	}
 
   /**

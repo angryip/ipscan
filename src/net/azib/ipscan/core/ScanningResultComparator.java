@@ -35,6 +35,22 @@ public class ScanningResultComparator implements Comparator<ScanningResult> {
 
 	@SuppressWarnings("unchecked")
 	public int compare(ScanningResult r1, ScanningResult r2) {
+		try {
+			return compareInternal(r1, r2);
+		}
+		catch (ClassCastException e) {
+			// a typed compareTo could not accept the other value's type; fall back to text comparison
+			var s1 = String.valueOf(r1.getValues().get(index));
+			var s2 = String.valueOf(r2.getValues().get(index));
+			var result = s1.compareToIgnoreCase(s2);
+			if (result == 0 && index != 0) {
+				result = String.valueOf(r1.getValues().get(0)).compareToIgnoreCase(String.valueOf(r2.getValues().get(0)));
+			}
+			return result * (ascending ? 1 : -1);
+		}
+	}
+
+	private int compareInternal(ScanningResult r1, ScanningResult r2) {
 		var val1 = r1.getValues().get(index);
 		var val2 = r2.getValues().get(index);
 		

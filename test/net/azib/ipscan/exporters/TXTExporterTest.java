@@ -4,6 +4,7 @@ import net.azib.ipscan.config.Version;
 import net.azib.ipscan.gui.feeders.AbstractFeederGUI;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
@@ -69,7 +70,8 @@ public class TXTExporterTest extends AbstractExporterTestCase {
 
 	@Test
 	public void importFromFile() throws Exception {
-		var file = getClass().getResource("import.txt").getPath();
+		// toURI() decodes percent-encoding (e.g. %20 for spaces in the path)
+		var file = new File(getClass().getResource("import.txt").toURI()).getPath();
 		var feederGUI = mock(AbstractFeederGUI.class);
 
 		var results = ((TXTExporter) exporter).importResults(file, feederGUI);
@@ -80,7 +82,7 @@ public class TXTExporterTest extends AbstractExporterTestCase {
 
 	@Test
 	public void importFromBrokenFile() throws Exception {
-		var file = getClass().getResource("import-broken.txt").getPath();
+		var file = new File(getClass().getResource("import-broken.txt").toURI()).getPath();
 		var feederGUI = mock(AbstractFeederGUI.class);
 
 		var results = ((TXTExporter) exporter).importResults(file, feederGUI);

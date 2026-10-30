@@ -3,8 +3,10 @@ package net.azib.ipscan.gui;
 import net.azib.ipscan.config.CommentsConfig;
 import net.azib.ipscan.config.GUIConfig;
 import net.azib.ipscan.config.Labels;
+import net.azib.ipscan.core.ScanningResult;
 import net.azib.ipscan.core.ScanningResultList;
 import net.azib.ipscan.fetchers.CommentFetcher;
+import net.azib.ipscan.fetchers.OpenerLaunchFetcher;
 import net.azib.ipscan.gui.util.LayoutHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
@@ -63,7 +65,7 @@ public class DetailsWindow extends AbstractModalDialog {
 		else commentsTextListener.focusLost(null);
 
 		var detailsText = new Text(shell, SWT.BORDER | SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
-		detailsText.setText(result.toString());
+		detailsText.setText(buildDetailsText(result));
 		detailsText.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		detailsText.setTabs(32);
 		detailsText.setLayoutData(LayoutHelper.formData(new FormAttachment(0), new FormAttachment(100), new FormAttachment(0), new FormAttachment(commentsText)));
@@ -78,6 +80,22 @@ public class DetailsWindow extends AbstractModalDialog {
 		shell.addListener(SWT.Close, event -> guiConfig.setDetailsWindowSize(shell.getSize()));
 	}
 	
+	private String buildDetailsText(ScanningResult result) {
+		var newLine = System.getProperty("line.separator");
+		var details = new StringBuilder(1024);
+		var fetchers = scanningResults.getFetchers();
+		var values = result.getValues();
+		for (var i = 0; i < fetchers.size() && i < values.size(); i++) {
+			// hide the Opener Launch column (it only holds a clickable triangle icon)
+			if (fetchers.get(i).getId().equals(OpenerLaunchFetcher.ID)) continue;
+			details.append(fetchers.get(i).getName()).append(":\t");
+			var value = values.get(i);
+			details.append(value != null ? value : "");
+			details.append(newLine);
+		}
+		return details.toString();
+	}
+
 	class CommentsTextListener implements FocusListener, ModifyListener {
 		String defaultText = Labels.getLabel("text.comment.edit");
 		

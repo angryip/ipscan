@@ -47,19 +47,6 @@ public class ToolsActions {
 		}
 	}
 
-	public static final class ChooseFetchers implements Listener {
-		private final SelectFetchersDialog selectFetchersDialog;
-		
-		public ChooseFetchers(SelectFetchersDialog selectFetchersDialog) {
-			this.selectFetchersDialog = selectFetchersDialog;
-		}
-
-		public void handleEvent(Event event) {
-			selectFetchersDialog.open();
-		}
-
-	}
-
 	public static final class ScanStatistics implements Listener, StateTransitionListener {
 		
 		private final StatisticsDialog statisticsDialog;
@@ -207,14 +194,20 @@ public class ToolsActions {
 		public void handleEvent(Event event) {
 			var count = resultTable.getItemCount();
 			// the most naive implementation
-			resultTable.setRedraw(false);
-			for (var i = 0; i < count; i++) {
-				if (resultTable.isSelected(i)) 
-					resultTable.deselect(i);
-				else
-					resultTable.select(i);
+			try {
+				resultTable.setRedraw(false);
+				for (var i = 0; i < count; i++) {
+					if (resultTable.isSelected(i))
+						resultTable.deselect(i);
+					else
+						resultTable.select(i);
+				}
 			}
-			resultTable.setRedraw(true);
+			finally {
+				// must be guaranteed: if the loop above throws while redraw is
+				// disabled, the table would stay blank until restarted
+				resultTable.setRedraw(true);
+			}
 			resultTable.redraw();
 			event.widget = resultTable;
       resultTable.notifyListeners(SWT.Selection, event);

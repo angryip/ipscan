@@ -116,14 +116,11 @@ public class OpenerLauncher {
 			// resolve the required fetcher
 			var fetcherId = matcher.group(1);
 
-			// retrieve the scanned value
+			// retrieve the scanned value (never null or empty - falls back to the IP if missing)
 			var scannedValue = getScannedValue(selectedItem, fetcherId);
-			if (scannedValue == null || scannedValue instanceof Empty) {
-				throw new UserErrorException("opener.nullFetcherValue", fetcherId);					
-			}
 			
 			var value = scannedValue.toString();
-			if (sanitize) value = sanitizeForShell(value);
+			if (sanitize) value = Platform.WINDOWS ? sanitizeForCmd(value) : sanitizeForShell(value);
 			matcher.appendReplacement(sb, value);
 		}
 		matcher.appendTail(sb);
@@ -131,10 +128,11 @@ public class OpenerLauncher {
 	}
 
 	/**
-	 * Sanitizes a value for safe inclusion in a shell command string.
+	 * Sanitizes a value for safe inclusion in a POSIX shell command string (sh, bash, etc.,
+	 * also used for macOS Terminal which is driven via osascript).
 	 * Wraps the value in single quotes, escaping any embedded single quotes.
 	 * This prevents shell metacharacters in attacker-controlled data (e.g. hostnames
-	 * from reverse DNS) from being interpreted by sh, cmd, or osascript.
+	 * from reverse DNS) from being interpreted by sh or osascript.
 	 */
 	static String sanitizeForShell(String value) {
 		if (value.isEmpty()) return "''";
@@ -153,17 +151,48 @@ public class OpenerLauncher {
 		return sb.toString();
 	}
 
+	/**
+	 * Sanitizes a value for safe inclusion in a Windows cmd command line
+	 * (both Runtime.exec and the cmd /k terminal launcher).
+	 * cmd.exe does not treat single quotes as quoting, so values are wrapped
+	 * in double quotes instead, with embedded double quotes escaped cmd-style.
+	 * Note: percent signs cannot be reliably neutralized in cmd, but
+	 * hostnames, IPs, ports and MACs cannot contain them anyway.
+	 */
+	static String sanitizeForCmd(String value) {
+		if (value.isEmpty()) return "\"\"";
+		var sb = new StringBuilder(value.length() + 2);
+		sb.append('"');
+		for (int i = 0; i < value.length(); i++) {
+			char c = value.charAt(i);
+			if (c == '"') {
+				// escape embedded double quotes cmd-style
+				sb.append("\"\"");
+			} else {
+				sb.append(c);
+			}
+		}
+		sb.append('"');
+		return sb.toString();
+	}
+
 	private Object getScannedValue(int selectedItem, String fetcherId) {
 		var fetcherIndex = fetcherRegistry.getSelectedFetcherIndex(fetcherId);
 		if (fetcherIndex < 0) {
-			throw new UserErrorException("opener.unknownFetcher", fetcherId);
+			if (!fetcherRegistry.isRegisteredFetcher(fetcherId)) {
+				// the referenced fetcher doesn't exist at all - this is a typo in the opener string
+				throw new UserErrorException("opener.unknownFetcher", fetcherId);
+			}
+			// the fetcher is registered but not currently selected (e.g. its column was hidden);
+			// fall back to the IP address so the opener still works
+			return scanningResults.getResult(selectedItem).getAddress().getHostAddress();
 		}
 
 		var value = scanningResults.getResult(selectedItem).getValues().get(fetcherIndex);
 		
-		if ((value == null || value instanceof Empty) && fetcherId.equals(HostnameFetcher.ID)) {
-			// small innocent hardcode:
-			// if we request a hostname, but get null, use the IP
+		if (value == null || value instanceof Empty) {
+			// the value is missing (e.g. hostname could not be resolved, ports not scanned, etc.);
+			// fall back to the IP address so the opener still works
 			value = scanningResults.getResult(selectedItem).getAddress().getHostAddress();
 		}
 		

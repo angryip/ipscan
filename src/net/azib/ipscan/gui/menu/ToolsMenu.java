@@ -11,7 +11,6 @@ import org.eclipse.swt.widgets.Shell;
 public class ToolsMenu extends AbstractMenu {
 	public ToolsMenu(Shell parent,
 				ToolsActions.Preferences preferences,
-				ToolsActions.ChooseFetchers chooseFetchers,
 				ToolsActions.ScanStatistics scanStatistics,
 				ToolsActions.SelectAlive selectAlive,
 				ToolsActions.SelectDead selectDead,
@@ -21,7 +20,6 @@ public class ToolsMenu extends AbstractMenu {
 		super(parent);
 
 		initMenuItem(this, "menu.tools.preferences", "Ctrl+Shift+P", SWT.MOD1 | (Platform.MAC_OS ? ',' : SWT.MOD2 | 'P'), preferences, true);
-		initMenuItem(this, "menu.tools.fetchers", "Ctrl+Shift+O", SWT.MOD1 | SWT.MOD2 | (Platform.MAC_OS ? ',' : 'O'), chooseFetchers, true);
 		initMenuItem(this, null, null, null, null);
 		var selectMenu = initMenu(this, "menu.tools.select");
 		initMenuItem(this, "menu.tools.scanStatistics", "Ctrl+T", SWT.MOD1 | 'T', scanStatistics);
