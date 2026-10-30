@@ -4,6 +4,8 @@ Unreleased:
 - Switch upgrading users to unlimited virtual threads
 - Rescan now works for multiple IPs in succession
 - Polish translation added
+- Display each fetcher results as they arrive, not only after all fetchers have finished
+- Improve LAN ping TTL reporting if the host only responds to ARP and not ICMP/TCP/UDP
 
 3.11.0:
 There are rumors of this build circulating on the Internet, but it is not an official release.
