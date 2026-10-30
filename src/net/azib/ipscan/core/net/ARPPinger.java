@@ -33,7 +33,9 @@ public class ARPPinger implements Pinger {
 			var start = currentTimeMillis();
 			if (trigger != null) {
 				// this should issue an ARP request for the IP
-				result.merge(trigger.ping(subject, 1));
+				var ping = trigger.ping(subject, 1);
+				result.merge(ping);
+				if (ping.getReplyCount() == 0) start = currentTimeMillis();
 			}
 			var mac = macFetcher.scan(subject);
 			if (mac != null) result.addReply(currentTimeMillis() - start);
