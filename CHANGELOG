@@ -6,6 +6,7 @@ Unreleased:
 - Polish translation added
 - Display each fetcher results as they arrive, not only after all fetchers have finished
 - Improve LAN ping TTL reporting if the host only responds to ARP and not ICMP/TCP/UDP
+- Updated MAC vendors
 
 3.11.0:
 There are rumors of this build circulating on the Internet, but it is not an official release.
