@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -57,6 +58,30 @@ public class ScannerTest {
 		assertEquals(NotScanned.VALUE, scanningResult.getValues().get(3));
 	}
 	
+	@Test
+	public void testIntermediateResultsAreReported() throws Exception {
+		var callbacks = new ArrayList<ResultType>();
+		var callback = new ScanningResultCallback() {
+			public void prepareForResults(ScanningResult result) {
+			}
+
+			public void fetcherCompleted(ScanningResult result) {
+				callbacks.add(result.getType());
+			}
+
+			public void consumeResults(ScanningResult result) {
+			}
+		};
+
+		var scanningResult = new ScanningResult(InetAddress.getLocalHost(), 4);
+		scanner.scan(new ScanningSubject(InetAddress.getLocalHost()), scanningResult, callback);
+
+		// the last fetcher is not executed, because the address is aborted by the third one
+		assertEquals(3, callbacks.size());
+		// the result type is available after the first fetcher, without waiting for all of them
+		assertEquals(ResultType.ALIVE, callbacks.get(0));
+	}
+
 	@Test
 	public void testScanInterrupted() throws Exception {
 		fetcherRegistry = mock(FetcherRegistry.class);

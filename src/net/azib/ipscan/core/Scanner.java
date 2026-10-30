@@ -38,15 +38,27 @@ public class Scanner {
 	 * @param result where the results are injected
 	 */
 	public void scan(ScanningSubject subject, ScanningResult result) {
+		scan(subject, result, null);
+	}
+
+	/**
+	 * Executes all registered fetchers for the current IP address.
+	 * @param subject containing the IP address to scan
+	 * @param result where the results are injected
+	 * @param callback notifies about intermediate results after each fetcher, can be null
+	 */
+	public void scan(ScanningSubject subject, ScanningResult result, ScanningResultCallback callback) {
 		try {
 			var fetcherIndex = 0;
 			var isScanningInterrupted = false;
 			for (var fetcher : fetcherRegistry.getSelectedFetchers()) {
 				Object value = NotScanned.VALUE;
+				var fetcherExecuted = false;
 				try {
 					activeFetchers.put(Thread.currentThread().getId(), fetcher);
 					if (!subject.isAddressAborted() && !isScanningInterrupted) {
 						// run the fetcher
+						fetcherExecuted = true;
 						value = fetcher.scan(subject);
 						// check if scanning was interrupted
 						isScanningInterrupted = Thread.currentThread().isInterrupted();
@@ -59,9 +71,13 @@ public class Scanner {
 				}
 				// store the value
 				result.setValue(fetcherIndex, value);
+				result.setMac((String) subject.getParameter(MACFetcher.ID));
+				result.setType(subject.getResultType());
+				// notify about intermediate results, but avoid updates for fetchers that were skipped
+				if (fetcherExecuted && callback != null)
+					callback.fetcherCompleted(result);
 				fetcherIndex++;
 			}
-			result.setMac((String) subject.getParameter(MACFetcher.ID));
 		}
 		finally {
 			activeFetchers.remove(Thread.currentThread().getId());

@@ -81,7 +81,7 @@ public class ScannerDispatcherThreadTest {
 			scanStarted.countDown();
 			scanFinished.await();
 			return null;
-		}).when(scanner).scan(any(), any());
+		}).when(scanner).scan(any(), any(), any());
 
 		var thread = new ScannerDispatcherThread(feeder, scanner, stateMachine, mock(ScanningProgressCallback.class),
 			scanningResults, config, mock(ScanningResultCallback.class));

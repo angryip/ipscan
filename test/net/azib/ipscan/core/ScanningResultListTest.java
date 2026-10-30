@@ -100,6 +100,29 @@ public class ScanningResultListTest {
 	}
 	
 	@Test
+	public void testStatisticsWhenResultTypeChangesDuringScanning() throws Exception {
+		var result = scanningResults.createResult(InetAddress.getByName("8.8.8.8"));
+		scanningResults.registerAtIndex(0, result);
+
+		// after pinging
+		result.setType(ResultType.ALIVE);
+		scanningResults.update(result);
+		assertEquals(1, scanningResults.getScanInfo().getAliveCount());
+		assertEquals(0, scanningResults.getScanInfo().getWithPortsCount());
+
+		// after scanning ports
+		result.setType(ResultType.WITH_PORTS);
+		scanningResults.update(result);
+		assertEquals(1, scanningResults.getScanInfo().getAliveCount());
+		assertEquals(1, scanningResults.getScanInfo().getWithPortsCount());
+
+		// repeated updates must not increase the counters again
+		scanningResults.update(result);
+		assertEquals(1, scanningResults.getScanInfo().getAliveCount());
+		assertEquals(1, scanningResults.getScanInfo().getWithPortsCount());
+	}
+
+	@Test
 	public void testResultType() throws Exception {
 		// in some places this kind of greater/lower than comparisions are used
 		// so we need to ensure that they are in the correct order

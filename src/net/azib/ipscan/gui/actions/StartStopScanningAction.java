@@ -226,37 +226,31 @@ public class StartStopScanningAction implements SelectionListener, ScanningProgr
 	 */
 	private ScanningResultCallback createResultsCallback(ScanningState state) {
 		// rescanning must follow the same strategy of displaying all hosts (even the dead ones), because the results are already in the list
-		if (guiConfig.displayMethod == DisplayMethod.ALL || state == RESTARTING) {
-			return new ScanningResultCallback() {
-				public void prepareForResults(ScanningResult result) {
+		var displayAll = guiConfig.displayMethod == DisplayMethod.ALL || state == RESTARTING;
+		return new ScanningResultCallback() {
+			public void prepareForResults(ScanningResult result) {
+				if (displayAll)
 					resultTable.addOrUpdateResultRow(result);
-				}
-				public void consumeResults(ScanningResult result) {
+			}
+
+			public void fetcherCompleted(ScanningResult result) {
+				if (displayAll || isToBeDisplayed(result))
 					resultTable.addOrUpdateResultRow(result);
-				}
-			};
-		}
-		if (guiConfig.displayMethod == DisplayMethod.ALIVE) {
-			return new ScanningResultCallback() {
-				public void prepareForResults(ScanningResult result) {
-				}
-				public void consumeResults(ScanningResult result) {
-					if (result.getType().ordinal() >= ResultType.ALIVE.ordinal())
-						resultTable.addOrUpdateResultRow(result);
-				}
-			};
-		}
-		if (guiConfig.displayMethod == DisplayMethod.PORTS) {
-			return new ScanningResultCallback() {
-				public void prepareForResults(ScanningResult result) {
-				}
-				public void consumeResults(ScanningResult result) {
-					if (result.getType() == ResultType.WITH_PORTS)
-						resultTable.addOrUpdateResultRow(result);
-				}
-			};
-		}
-		throw new UnsupportedOperationException(guiConfig.displayMethod.toString());
+			}
+
+			public void consumeResults(ScanningResult result) {
+				if (displayAll || isToBeDisplayed(result))
+					resultTable.addOrUpdateResultRow(result);
+			}
+
+			private boolean isToBeDisplayed(ScanningResult result) {
+				if (guiConfig.displayMethod == DisplayMethod.ALIVE)
+					return result.getType().ordinal() >= ResultType.ALIVE.ordinal();
+				if (guiConfig.displayMethod == DisplayMethod.PORTS)
+					return result.getType() == ResultType.WITH_PORTS;
+				return false;
+			}
+		};
 	}
 
 	public void updateProgress(final InetAddress currentAddress, final int runningThreads, final int percentageComplete) {

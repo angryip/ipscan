@@ -25,11 +25,6 @@ import org.eclipse.swt.widgets.*;
 
 import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
 
-/**
- * Preferences Dialog
- *
- * @author Anton Keks
- */
 public class PreferencesDialog extends AbstractModalDialog {
 	private final PingerRegistry pingerRegistry;
 	private final Config globalConfig;
@@ -122,9 +117,6 @@ public class PreferencesDialog extends AbstractModalDialog {
 		cancelButton.addSelectionListener(widgetSelectedAdapter(e -> close()));
 	}
 
-	/**
-	 * This method initializes tabFolder	
-	 */
 	private void createTabFolder() {
 		tabFolder = new TabFolder(shell, SWT.NONE);
 		
@@ -148,9 +140,6 @@ public class PreferencesDialog extends AbstractModalDialog {
 		tabFolder.pack();
 	}
 
-	/**
-	 * This method initializes scanningTab	
-	 */
 	private void createScanningTab() {
 		var rowLayout = createRowLayout();
 		scanningTab = new Composite(tabFolder, SWT.NONE);
@@ -220,9 +209,6 @@ public class PreferencesDialog extends AbstractModalDialog {
 		skipBroadcastsCheckbox.setLayoutData(gridDataWithSpan2);
 	}
 
-	/**
-	 * This method initializes displayTab	
-	 */
 	private void createDisplayTab() {
 		var rowLayout = createRowLayout();
 		displayTab = new Composite(tabFolder, SWT.NONE);
@@ -298,9 +284,6 @@ public class PreferencesDialog extends AbstractModalDialog {
 		allowReports.setText(Labels.getLabel("preferences.allowReports"));
 	}
 	
-	/**
-	 * This method initializes portsTab	
-	 */
 	private void createPortsTab() {
 		var rowLayout = createRowLayout();
 		portsTab = new Composite(tabFolder, SWT.NONE);

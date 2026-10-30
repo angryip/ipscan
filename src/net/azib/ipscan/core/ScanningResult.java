@@ -33,6 +33,8 @@ public class ScanningResult {
 	private Object[] values;
 	/** Scanning result type */ 
 	private ResultType type;
+	/** Result type that is already reflected in the scan statistics */
+	private ResultType statisticsType = ResultType.UNKNOWN;
 	
 	/** reference to the containing list */
 	ScanningResultList resultList;
@@ -57,6 +59,7 @@ public class ScanningResult {
 		values = new Object[values.length];
 		values[0] = address.getHostAddress();
 		type = ResultType.UNKNOWN;
+		statisticsType = ResultType.UNKNOWN;
 	}
 
 	public InetAddress getAddress() {
@@ -64,7 +67,7 @@ public class ScanningResult {
 	}
 	
 	/**
-	 * @return true if the result is ready (completely scanned)
+	 * @return true if the result type is already known (e.g. right after pinging)
 	 */
 	public boolean isReady() {
 		return type != ResultType.UNKNOWN;
@@ -108,6 +111,20 @@ public class ScanningResult {
 
 	public String getMac() {
 		return mac;
+	}
+
+	/**
+	 * @return the result type that is already reflected in the scan statistics
+	 */
+	ResultType getStatisticsType() {
+		return statisticsType;
+	}
+
+	/**
+	 * Remembers the result type that has been reflected in the scan statistics.
+	 */
+	void setStatisticsType(ResultType statisticsType) {
+		this.statisticsType = statisticsType;
 	}
 
 	/**

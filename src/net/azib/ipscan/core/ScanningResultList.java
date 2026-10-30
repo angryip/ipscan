@@ -250,13 +250,28 @@ public class ScanningResultList implements Iterable<ScanningResult> {
 		if (info == null) {
 			return;
 		}
-		if (result.getType() == ResultType.ALIVE) {
+		var oldType = result.getStatisticsType();
+		var newType = result.getType();
+		if (oldType == newType) {
+			return;
+		}
+		// remove the previous contribution of this result
+		if (oldType == ResultType.ALIVE) {
+			info.numAlive--;
+		}
+		else if (oldType == ResultType.WITH_PORTS) {
+			info.numAlive--;
+			info.numWithPorts--;
+		}
+		// add the new contribution
+		if (newType == ResultType.ALIVE) {
 			info.numAlive++;
 		}
-		else if (result.getType() == ResultType.WITH_PORTS) {
+		else if (newType == ResultType.WITH_PORTS) {
 			info.numAlive++;
 			info.numWithPorts++;
 		}
+		result.setStatisticsType(newType);
 	}
 
 	public int getFetcherIndex(String fetcherId) {

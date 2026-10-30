@@ -231,7 +231,7 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 			Thread.currentThread().setName(getClass().getSimpleName() + ": " + subject);
 			
 			try {
-				scanner.scan(subject, result);
+				scanner.scan(subject, result, resultsCallback);
 				resultsCallback.consumeResults(result);
 			}
 			finally {
