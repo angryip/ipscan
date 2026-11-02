@@ -172,6 +172,13 @@ def packageTask(String platform, Closure doMore) {
 
 def minimizeTask(String platform, Closure doMore) {
     def suffix = platform == 'win64' ? 'win' : platform
+    def jmods = new File(System.getProperty('java.home'), 'jmods')
+    if (!jmods.exists()) {
+        println "WARNING: jmods not found in ${jmods.parent}, skipping ProGuard minification"
+        return tasks.create("${platform}.min") {
+            doLast { doMore() }
+        }
+    }
     return tasks.create("${platform}.min", proguard.gradle.ProGuardTask) {
         injars "build/libs/${project.name}-${version}-${suffix}.jar"
         outjars "build/libs/${project.name}-${version}-${suffix}.min.jar"
