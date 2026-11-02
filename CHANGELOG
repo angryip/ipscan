@@ -1,3 +1,6 @@
+Unreleased 3.12.1:
+- Windows: force to uninstall a previous version before installing a new one with different admin rights
+
 3.12.0:
 - Windows: fix a crash when displaying some dialog boxes due to a missing library
 - Mac: explicitly require macOS 11 or newer and show a clear error instead of failing to launch

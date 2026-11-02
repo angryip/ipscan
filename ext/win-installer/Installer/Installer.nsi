@@ -52,12 +52,19 @@ CRCCheck on
 !define MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_VALUENAME ""
 !define MULTIUSER_INSTALLMODE_ALLOW_ELEVATION 1
 !define MULTIUSER_INSTALLMODE_ALLOW_ELEVATION_IF_SILENT 1
+!define MULTIUSER_INSTALLMODE_ALLOW_BOTH_INSTALLATIONS 0
 
 !include MUI2.nsh
 !include UAC.nsh
 !include NsisMultiUser.nsh
 
 !include x64.nsh
+
+;Variables
+Var PreviousInstallMode ; install mode of an existing copy that has to be removed before installing
+Var PreviousInstallFolder
+Var PreviousUninstallerParams
+Var PreviousUninstallAttempts
 
 
 ;Modern UI 2 details
@@ -123,10 +130,78 @@ Function .onInit
 	SectionSetSize ${MAINSECTIONIDX} ${InstallSize}
 FunctionEnd
 
+;Check whether a copy installed in the other mode has to be removed first
+Function CheckPreviousInstallation
+	StrCpy $PreviousInstallMode ""
+	${If} $MultiUser.InstallMode == "AllUsers"
+	${AndIf} $HasPerUserInstallation = 1
+		StrCpy $PreviousInstallMode "CurrentUser"
+	${ElseIf} $MultiUser.InstallMode == "CurrentUser"
+	${AndIf} $HasPerMachineInstallation = 1
+		StrCpy $PreviousInstallMode "AllUsers"
+	${EndIf}
+
+	${If} $PreviousInstallMode == "AllUsers"
+		StrCpy $PreviousInstallFolder "$PerMachineInstallationFolder"
+		StrCpy $PreviousUninstallerParams "/allusers /S /keepsettings"
+	${ElseIf} $PreviousInstallMode == "CurrentUser"
+		StrCpy $PreviousInstallFolder "$PerUserInstallationFolder"
+		StrCpy $PreviousUninstallerParams "/currentuser /S /keepsettings"
+	${EndIf}
+FunctionEnd
+
+Function RunPreviousUninstaller
+	StrCpy $0 -1
+	ExecWait '"$PreviousInstallFolder\uninstall.exe" $PreviousUninstallerParams _?=$PreviousInstallFolder' $0
+FunctionEnd
+
+Function CheckPreviousInstallationRemoved
+	${If} $PreviousInstallMode == "AllUsers"
+		ReadRegStr $0 HKLM "Software\${ApplicationName}" ""
+	${Else}
+		ReadRegStr $0 HKCU "Software\${ApplicationName}" ""
+	${EndIf}
+FunctionEnd
+
 ;Installer section
 
 
 Section Main
+	;Only one installation mode is allowed, so remove a copy installed in the other mode first
+	Call CheckPreviousInstallation
+	${If} $PreviousInstallMode != ""
+		DetailPrint "Removing previous installation for $PreviousInstallMode..."
+		HideWindow
+		ClearErrors
+		${If} $PreviousInstallMode == "AllUsers"
+			Call RunPreviousUninstaller
+		${Else}
+			!insertmacro UAC_AsUser_Call Function RunPreviousUninstaller ${UAC_SYNCREGISTERS}
+		${EndIf}
+		${If} ${Errors}
+		${OrIf} $0 <> 0
+			SetErrorLevel 2
+			BringToFront
+			Abort "Error removing the previous installation. Please uninstall Angry IP Scanner and run this installer again."
+		${EndIf}
+		BringToFront
+		;the uninstaller may still be finishing if it had to elevate, wait until it unregisters itself
+		StrCpy $PreviousUninstallAttempts 0
+		${Do}
+			Sleep 500
+			!insertmacro UAC_AsUser_Call Function CheckPreviousInstallationRemoved ${UAC_SYNCREGISTERS}
+			${If} $0 == ""
+				${ExitDo}
+			${EndIf}
+			IntOp $PreviousUninstallAttempts $PreviousUninstallAttempts + 1
+		${LoopUntil} $PreviousUninstallAttempts >= 10
+		${If} $0 != ""
+			SetErrorLevel 2
+			BringToFront
+			Abort "Could not remove the previous installation in '$PreviousInstallFolder'. Please uninstall it and run this installer again."
+		${EndIf}
+	${EndIf}
+
 	SetOutPath "$INSTDIR"
 	File /r "..\AppFiles\*"
 
@@ -172,9 +247,21 @@ FunctionEnd
 Section "Uninstall"
 	ExecWait "TaskKill /IM ${ApplicationEXEName} /T /F"
 	RMDir /r "$INSTDIR"
+
+	;The uninstaller cannot delete itself when $INSTDIR was passed via _?=
+	${If} ${FileExists} "$INSTDIR\uninstall.exe"
+		Exec 'cmd.exe /c (del /f /q "$INSTDIR\uninstall.exe") && (rmdir "$INSTDIR")'
+	${EndIf}
+
 	Delete "$SMPROGRAMS\${ApplicationName}.lnk"
 
 	DeleteRegKey SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}"
 	DeleteRegKey /ifempty SHCTX "Software\${ApplicationName}"
-	DeleteRegKey HKCU "Software\JavaSoft\Prefs\${InstallerFileName}"
+
+	;Keep the user's settings when the installer removes the old copy to switch the install mode
+	${GetParameters} $R0
+	${GetOptions} $R0 "/keepsettings" $R1
+	${If} ${Errors}
+		DeleteRegKey HKCU "Software\JavaSoft\Prefs\${InstallerFileName}"
+	${EndIf}
 SectionEnd
