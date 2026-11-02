@@ -67,6 +67,10 @@
    *** regionToRects(...);
    *** *Proc(...);
  }
+# called from native code as a DPI change callback
+-keepclassmembers class org.eclipse.swt.widgets.Control$DPIChangeProcessingCallback {
+   *** run(...);
+}
 -keepclassmembers class org.eclipse.swt.widgets.Display {
    *** *Proc(...);
    *** changeValue(...);
