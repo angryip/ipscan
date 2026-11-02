@@ -62,6 +62,7 @@ CRCCheck on
 
 ;Variables
 Var PreviousInstallMode ; install mode of an existing copy that has to be removed before installing
+Var PreviousInstallModeName
 Var PreviousInstallFolder
 Var PreviousUninstallerParams
 Var PreviousUninstallAttempts
@@ -142,9 +143,11 @@ Function CheckPreviousInstallation
 	${EndIf}
 
 	${If} $PreviousInstallMode == "AllUsers"
+		StrCpy $PreviousInstallModeName "for all users"
 		StrCpy $PreviousInstallFolder "$PerMachineInstallationFolder"
 		StrCpy $PreviousUninstallerParams "/allusers /S /keepsettings"
 	${ElseIf} $PreviousInstallMode == "CurrentUser"
+		StrCpy $PreviousInstallModeName "for the current user"
 		StrCpy $PreviousInstallFolder "$PerUserInstallationFolder"
 		StrCpy $PreviousUninstallerParams "/currentuser /S /keepsettings"
 	${EndIf}
@@ -161,6 +164,14 @@ Function CheckPreviousInstallationRemoved
 	${Else}
 		ReadRegStr $0 HKCU "Software\${ApplicationName}" ""
 	${EndIf}
+FunctionEnd
+
+;Explain how to recover when a previous installation (e.g. 3.12.0 with a broken uninstaller) cannot be removed
+Function AbortPreviousInstallationRemoval
+	SetErrorLevel 2
+	BringToFront
+	StrCpy $0 "Could not remove the previous Angry IP Scanner installation in$\r$\n$\"$PreviousInstallFolder$\".$\r$\n$\r$\nIf the uninstaller is broken: run this installer again, choose $\"$PreviousInstallModeName$\" (the same mode as the existing installation) and install over it to repair the uninstaller. Then uninstall Angry IP Scanner and run this installer again.$\r$\n$\r$\nOtherwise, uninstall it manually and run this installer again."
+	Abort $0
 FunctionEnd
 
 ;Installer section
@@ -180,9 +191,7 @@ Section Main
 		${EndIf}
 		${If} ${Errors}
 		${OrIf} $0 <> 0
-			SetErrorLevel 2
-			BringToFront
-			Abort "Error removing the previous installation. Please uninstall Angry IP Scanner and run this installer again."
+			Call AbortPreviousInstallationRemoval
 		${EndIf}
 		BringToFront
 		;the uninstaller may still be finishing if it had to elevate, wait until it unregisters itself
@@ -196,9 +205,7 @@ Section Main
 			IntOp $PreviousUninstallAttempts $PreviousUninstallAttempts + 1
 		${LoopUntil} $PreviousUninstallAttempts >= 10
 		${If} $0 != ""
-			SetErrorLevel 2
-			BringToFront
-			Abort "Could not remove the previous installation in '$PreviousInstallFolder'. Please uninstall it and run this installer again."
+			Call AbortPreviousInstallationRemoval
 		${EndIf}
 	${EndIf}
 
