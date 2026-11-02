@@ -123,6 +123,10 @@ public interface WinIpHlpDll extends Library {
 		public int flowInfo;
 		public byte[] bytes = new byte[16];
 		public int scopeId;
+
+		public Ip6AddressEx() {
+			setAlignType(ALIGN_NONE);
+		}
 	}
 
 	class IpOptionInformation extends AutoOrderedStructure {

@@ -1,3 +1,6 @@
+Unreleased:
+- Windows: fix IPv6 pinging (packed IPV6_ADDRESS_EX reply layout)
+
 3.12.1:
 - Do not report a host as dead when pinging fails with an I/O error
 - Enable MAC and MAC Vendor fetchers by default for new users
