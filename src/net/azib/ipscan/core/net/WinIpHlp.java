@@ -3,6 +3,7 @@ package net.azib.ipscan.core.net;
 import net.azib.ipscan.core.net.WinIpHlpDll.Ip6SockAddrByRef;
 import net.azib.ipscan.core.net.WinIpHlpDll.IpAddrByVal;
 
+import java.net.Inet6Address;
 import java.net.InetAddress;
 
 public class WinIpHlp {
@@ -15,6 +16,8 @@ public class WinIpHlp {
 	public static Ip6SockAddrByRef toIp6Addr(InetAddress address) {
 		var addr = new Ip6SockAddrByRef();
 		addr.bytes = address.getAddress();
+		if (address instanceof Inet6Address inet6)
+			addr.scopeId = inet6.getScopeId();
 		return addr;
 	}
 }

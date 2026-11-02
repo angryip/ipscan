@@ -33,7 +33,6 @@ import static net.azib.ipscan.core.net.WinIpHlpDll.dll;
 public class WindowsPinger implements Pinger {
 	public static final String ID = "pinger.windows";
 	private int timeout;
-	private Ip6SockAddrByRef anyIp6SourceAddr = new Ip6SockAddrByRef();
 
 	public WindowsPinger(ScannerConfig config) {
 		this.timeout = config.pingTimeout;
@@ -96,11 +95,13 @@ public class WindowsPinger implements Pinger {
 		var result = new PingResult(subject.getAddress(), count);
 		try {
 			var ipaddr = toIp6Addr(subject.getAddress());
+			// JNA structures are not thread-safe, so don't share this instance between scans
+			var anyIp6SourceAddr = new Ip6SockAddrByRef();
 			for (var i = 1; i <= count && !currentThread().isInterrupted(); i++) {
 				var numReplies = dll.Icmp6SendEcho2(handle, null, null, null, anyIp6SourceAddr, toIp6Addr(subject.getAddress()),
 						sendData, (short) sendDataSize, null, replyData, replyDataSize, timeout);
 				var echoReply = new Icmp6EchoReply(replyData);
-				if (numReplies > 0 && echoReply.status == 0 && Arrays.equals(echoReply.addressBytes, ipaddr.bytes)) {
+				if (numReplies > 0 && echoReply.status == 0 && Arrays.equals(echoReply.address.bytes, ipaddr.bytes)) {
 					result.addReply(echoReply.roundTripTime);
 				}
 			}

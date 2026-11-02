@@ -103,7 +103,8 @@ public interface WinIpHlpDll extends Library {
 	}
 
 	class Ip6SockAddr extends AutoOrderedStructure {
-		public short family = 10;
+		// AF_INET6 is 23 on Windows (it is 10 on Linux)
+		public short family = 23;
 		public short port;
 		public int flowInfo;
 		public byte[] bytes = new byte[16];
@@ -111,6 +112,17 @@ public interface WinIpHlpDll extends Library {
 	}
 
 	class Ip6SockAddrByRef extends Ip6SockAddr implements Structure.ByReference {
+	}
+
+	/**
+	 * IPV6_ADDRESS_EX, used as the Address field of ICMPV6_ECHO_REPLY.
+	 * Note that it has no family field, unlike SOCKADDR_IN6.
+	 */
+	class Ip6AddressEx extends AutoOrderedStructure {
+		public short port;
+		public int flowInfo;
+		public byte[] bytes = new byte[16];
+		public int scopeId;
 	}
 
 	class IpOptionInformation extends AutoOrderedStructure {
@@ -148,10 +160,7 @@ public interface WinIpHlpDll extends Library {
 	}
 
 	class Icmp6EchoReply extends AutoOrderedStructure {
-		public short port;
-		public byte[] flowInfo = new byte[4];
-		public byte[] addressBytes = new byte[16];
-		public int scopeId;
+		public Ip6AddressEx address;
 		public int status;
 		public int roundTripTime;
 
