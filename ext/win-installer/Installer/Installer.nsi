@@ -48,11 +48,10 @@ CRCCheck on
 !define MULTIUSER_INSTALLMODE_64_BIT 1
 !define MULTIUSER_INSTALLMODE_DISPLAYNAME "${ApplicationName}"
 !define MULTIUSER_INSTALLMODE_INSTDIR "${DefaultDirectory}"
-!define MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_KEY "Software\${ApplicationName}"
+!define MULTIUSER_INSTALLMODE_INSTALL_REGISTRY_KEY "${ApplicationName}"
 !define MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_VALUENAME ""
-!define MULTIUSER_INSTALLMODE_DEFAULT_REGISTRY_KEY "Software\${ApplicationName}"
-!define MULTIUSER_INSTALLMODE_DEFAULT_REGISTRY_VALUENAME ""
 !define MULTIUSER_INSTALLMODE_ALLOW_ELEVATION 1
+!define MULTIUSER_INSTALLMODE_ALLOW_ELEVATION_IF_SILENT 1
 
 !include MUI2.nsh
 !include UAC.nsh
@@ -141,10 +140,15 @@ Section Main
 	CreateShortCut "$SMPROGRAMS\${ApplicationName}.lnk" "$INSTDIR\${ApplicationEXEName}"
 	
 	;Add/remove programs
+	${If} $MultiUser.InstallMode == "AllUsers"
+		StrCpy $0 "/allusers"
+	${Else}
+		StrCpy $0 "/currentuser"
+	${EndIf}
 	WriteRegStr SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}" "DisplayName" "${ApplicationName}"
-	WriteRegStr SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
-	WriteRegStr SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
-	WriteRegStr SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}" "InstallLocation" "$\"$INSTDIR$\""
+	WriteRegStr SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\" $0"
+	WriteRegStr SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" $0 /S"
+	WriteRegStr SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}" "InstallLocation" "$INSTDIR"
 	WriteRegStr SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}" "DisplayIcon" "$\"$INSTDIR\icon.ico$\""
 	WriteRegStr SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}" "Publisher" "${ApplicationName}"
 	;WriteRegStr SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}" "HelpLink" "URLHERE"
