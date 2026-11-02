@@ -1,6 +1,7 @@
 Unreleased:
 - Windows: fix IPv6 pinging (packed IPV6_ADDRESS_EX reply layout)
 - Fix inflated ping times when ARP is used in addition to the selected pinger
+- Cache failed MAC lookups to speed up detection of dead hosts
 
 3.12.1:
 - Do not report a host as dead when pinging fails with an I/O error

@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class MACFetcherTest {
 	private MACFetcher fetcher = new MACFetcher() {
@@ -41,5 +42,22 @@ public class MACFetcherTest {
 		fetcher.separator = "-";
 		assertEquals("00-01-02-03-04-05", fetcher.scan(subject));
 		assertEquals("00:01:02:03:04:05", subject.getParameter(MACFetcher.ID));
+	}
+
+	@Test
+	public void cachesFailedLookup() throws UnknownHostException {
+		var fetcher = new MACFetcher() {
+			int calls;
+
+			@Override protected String resolveMAC(ScanningSubject subject) {
+				calls++;
+				return null;
+			}
+		};
+		var subject = new ScanningSubject(InetAddress.getLocalHost());
+
+		assertNull(fetcher.scan(subject));
+		assertNull(fetcher.scan(subject));
+		assertEquals(1, fetcher.calls);
 	}
 }

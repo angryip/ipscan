@@ -16,10 +16,9 @@ public abstract class MACFetcher extends AbstractFetcher {
 	}
 
 	@Override public final String scan(ScanningSubject subject) {
-		var mac = (String) subject.getParameter(ID);
-		if (mac == null) mac = resolveMAC(subject);
-		subject.setParameter(ID, mac);
-		return replaceSeparator(mac);
+		if (!subject.hasParameter(ID))
+			subject.setParameter(ID, resolveMAC(subject));
+		return replaceSeparator((String) subject.getParameter(ID));
 	}
 
 	protected abstract String resolveMAC(ScanningSubject subject);
