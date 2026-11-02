@@ -1,15 +1,15 @@
-Unreleased 3.12.1:
+3.12.1:
 - Do not report a host as dead when pinging fails with an I/O error
-- Windows: fix IPv6 pinging (address family, reply layout, and scope ID)
-- Security: prevent command injection through Windows terminal openers
-- Windows: use the actual version in installer metadata
-- Windows: show fatal startup errors instead of failing silently
-- Windows: handle ICMP API failures and size IPv6 reply buffers correctly
-- Windows: detect failures to create native ICMP handles instead of treating them as dead hosts
-- Windows: force to uninstall a previous version before installing a new one with different admin rights
-- Windows: fix a crash when moving the window between monitors with different scaling
 - Enable MAC and MAC Vendor fetchers by default for new users
 - Copy MAC address from the results menu when the MAC fetcher is active
+- Windows:
+    - force to uninstall a previous version before installing a new one with different admin rights
+    - fix IPv6 pinging (address family, reply layout, and scope ID)
+    - security: prevent command injection through Windows terminal openers
+    - use the actual version in installer metadata
+    - show fatal startup errors instead of failing silently
+    - handle ICMP API failures and size IPv6 reply buffers correctly
+    - fix a crash when moving the window between monitors with different scaling
 
 3.12.0:
 - Windows: fix a crash when displaying some dialog boxes due to a missing library
