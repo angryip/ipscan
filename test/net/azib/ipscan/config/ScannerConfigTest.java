@@ -6,8 +6,7 @@ import java.util.prefs.Preferences;
 
 import static net.azib.ipscan.config.ScannerConfig.DEFAULT_PORT_STRING;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ScannerConfigTest {
 	private final Preferences preferences = mock(Preferences.class);
@@ -19,15 +18,21 @@ public class ScannerConfigTest {
 	}
 
 	@Test
-	public void migratesLegacyDefaultMaxThreadsToVirtualThreads() {
-		assertEquals(0, maxThreadsFor(ScannerConfig.LEGACY_DEFAULT_MAX_THREADS));
+	public void defaultsTo100MaxThreads() {
+		new ScannerConfig(preferences);
+		verify(preferences).getInt("maxThreads", 100);
+	}
+
+	@Test
+	public void migratesVirtualThreadsToDefaultMaxThreads() {
+		assertEquals(100, maxThreadsFor(0));
 	}
 
 	@Test
 	public void keepsOtherMaxThreadsValues() {
 		assertEquals(10, maxThreadsFor(10));
+		assertEquals(100, maxThreadsFor(100));
 		assertEquals(500, maxThreadsFor(500));
-		assertEquals(0, maxThreadsFor(0));
 	}
 
 	@Test
@@ -43,7 +48,7 @@ public class ScannerConfigTest {
 	}
 
 	private int maxThreadsFor(int storedMaxThreads) {
-		when(preferences.getInt("maxThreads", 0)).thenReturn(storedMaxThreads);
+		when(preferences.getInt("maxThreads", ScannerConfig.DEFAULT_MAX_THREADS)).thenReturn(storedMaxThreads);
 		return new ScannerConfig(preferences).maxThreads;
 	}
 }

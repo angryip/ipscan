@@ -17,8 +17,7 @@ import java.util.prefs.Preferences;
  */
 public class ScannerConfig {
 	static final String DEFAULT_PORT_STRING = "80,443,8080";
-	/** Older versions used this as the default maximum number of threads */
-	static final int LEGACY_DEFAULT_MAX_THREADS = 100;
+	static final int DEFAULT_MAX_THREADS = 100;
 
 	private static final Logger LOG = LoggerFactory.getLogger();
 
@@ -46,10 +45,10 @@ public class ScannerConfig {
 	ScannerConfig(Preferences preferences) {
 		this.preferences = preferences;
 		
-		maxThreads = preferences.getInt("maxThreads", 0);
-		if (maxThreads == LEGACY_DEFAULT_MAX_THREADS) {
-			// the old default is indistinguishable from an explicit setting, so migrate to virtual threads
-			maxThreads = 0;
+		maxThreads = preferences.getInt("maxThreads", DEFAULT_MAX_THREADS);
+		if (maxThreads <= 0) {
+			// virtual threads used to be the default, but they can get pinned, so use fixed threads instead
+			maxThreads = DEFAULT_MAX_THREADS;
 		}
 		threadDelay = preferences.getInt("threadDelay", 20);
 		scanDeadHosts = preferences.getBoolean("scanDeadHosts", false);
