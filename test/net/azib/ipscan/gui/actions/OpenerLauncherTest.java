@@ -116,6 +116,25 @@ public class OpenerLauncherTest {
 	}
 
 	@Test
+	public void testSanitizeForWindowsCmd() {
+		// values are wrapped in double quotes, which protect most cmd.exe metacharacters
+		assertEquals("\"hostname\"", OpenerLauncher.sanitizeForWindowsCmd("hostname"));
+		assertEquals("\"192.168.1.1\"", OpenerLauncher.sanitizeForWindowsCmd("192.168.1.1"));
+		assertEquals("\"\"", OpenerLauncher.sanitizeForWindowsCmd(""));
+		assertEquals("\"a&b|c>d<e\"", OpenerLauncher.sanitizeForWindowsCmd("a&b|c>d<e"));
+
+		// percent signs still need escaping inside batch files
+		assertEquals("\"a%%PATH%%b\"", OpenerLauncher.sanitizeForWindowsCmd("a%PATH%b"));
+
+		// these can break out of quoting or are expanded even inside quotes
+		assertEquals("\"ab\"", OpenerLauncher.sanitizeForWindowsCmd("a\"b"));
+		assertEquals("\"ab\"", OpenerLauncher.sanitizeForWindowsCmd("a!b"));
+		assertEquals("\"ab\"", OpenerLauncher.sanitizeForWindowsCmd("a^b"));
+		assertEquals("\"ab\"", OpenerLauncher.sanitizeForWindowsCmd("a\r\nb"));
+		assertEquals("\"it's\"", OpenerLauncher.sanitizeForWindowsCmd("it's"));
+	}
+
+	@Test
 	public void testCommandSplitting() throws Exception {
 		assertArrayEquals(new String[] {"hello", "world"}, OpenerLauncher.splitCommand("hello world"));
 		assertArrayEquals(new String[] {"echo", "hello world", "muha-ha"}, OpenerLauncher.splitCommand("echo 'hello world' muha-ha"));

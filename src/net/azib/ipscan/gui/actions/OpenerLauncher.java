@@ -33,7 +33,7 @@ public class OpenerLauncher {
 		// check for URLs - these are opened directly, not via shell, so no sanitization needed
 		boolean isURL = opener.execString.startsWith("http:") || opener.execString.startsWith("https:") ||
 				opener.execString.startsWith("ftp:") || opener.execString.startsWith("mailto:") || opener.execString.startsWith("\\\\");
-		var openerString = prepareOpenerStringForItem(opener.execString, selectedItem, !isURL);
+		var openerString = prepareOpenerStringForItem(opener.execString, selectedItem, !isURL, opener.inTerminal);
 		
 		if (isURL) {
 			BrowserLauncher.openURL(openerString);
@@ -109,6 +109,10 @@ public class OpenerLauncher {
 	 * @return opener string with values replaced
 	 */
 	String prepareOpenerStringForItem(String openerString, int selectedItem, boolean sanitize) {
+		return prepareOpenerStringForItem(openerString, selectedItem, sanitize, false);
+	}
+
+	String prepareOpenerStringForItem(String openerString, int selectedItem, boolean sanitize, boolean inTerminal) {
 		var paramsPattern = Pattern.compile("\\$\\{(.+?)\\}");
 		var matcher = paramsPattern.matcher(openerString);
 		var sb = new StringBuilder(64);
@@ -123,7 +127,7 @@ public class OpenerLauncher {
 			}
 			
 			var value = scannedValue.toString();
-			if (sanitize) value = sanitizeForShell(value);
+			if (sanitize) value = Platform.WINDOWS && inTerminal ? sanitizeForWindowsCmd(value) : sanitizeForShell(value);
 			matcher.appendReplacement(sb, value);
 		}
 		matcher.appendTail(sb);
@@ -150,6 +154,25 @@ public class OpenerLauncher {
 			}
 		}
 		sb.append('\'');
+		return sb.toString();
+	}
+
+	/**
+	 * Sanitizes a value for inclusion in a Windows batch file.
+	 * cmd.exe does not treat single quotes as quoting, so wrap the value in
+	 * double quotes and neutralize characters that are special even inside them.
+	 */
+	static String sanitizeForWindowsCmd(String value) {
+		var sb = new StringBuilder(value.length() + 2);
+		sb.append('"');
+		for (var i = 0; i < value.length(); i++) {
+			var c = value.charAt(i);
+			if (c == '%')
+				sb.append("%%");
+			else if (c != '"' && c != '!' && c != '^' && c != '\r' && c != '\n')
+				sb.append(c);
+		}
+		sb.append('"');
 		return sb.toString();
 	}
 

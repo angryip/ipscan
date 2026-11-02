@@ -44,7 +44,7 @@ public class TerminalLauncher {
 							     "@start cmd /k " + execString);
 				}
 
-				Runtime.getRuntime().exec(batFile.getAbsolutePath(), null, workingDir);
+				Runtime.getRuntime().exec(new String[] {"cmd", "/c", batFile.getAbsolutePath()}, null, workingDir);
 			}
 			else if (Platform.MAC_OS) {
 				Runtime.getRuntime().exec(new String[] {"osascript", "-e", "tell application \"Terminal\" to do script \"" + execString + "\""}, null, workingDir);
