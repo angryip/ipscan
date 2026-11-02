@@ -320,8 +320,8 @@ task 'win-installer'(dependsOn: 'win64') {
         ant.get(src: "https://sourceforge.net/projects/nsis/files/NSIS%203/${nsisVersion}/${nsis}.zip/download", dest: "$installerDir/${nsis}.zip", skipexisting: 'true')
         ant.unzip(src: "${installerDir}/${nsis}.zip", dest: installerDir)
         def versionParts = version.tokenize('.')
-        def versionMajor = versionParts.length > 0 && versionParts[0].isInteger() ? versionParts[0] : "0"
-        def versionMinor = versionParts.length > 1 && versionParts[1].isInteger() ? versionParts[1] : "0"
+        def versionMajor = versionParts.size() > 0 && versionParts[0].isInteger() ? versionParts[0] : "0"
+        def versionMinor = versionParts.size() > 1 && versionParts[1].isInteger() ? versionParts[1] : "0"
         ant.replace(file: "${installerDir}/InstallerConfig.nsh") {
             ant.replacefilter(token: "PROJECT_MAJOR", value: versionMajor)
             ant.replacefilter(token: "PROJECT_MINOR", value: versionMinor)
