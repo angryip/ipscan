@@ -11844,7 +11844,7 @@
 00A054Private
 00A055Data
 00A056MICROPROSS
-00A057LANCOM
+00A057Rohde & Schwarzand Cybersecurity
 00A058GLORY
 00A059HAMILTON HALLMARK
 00A05AKOFAX IMAGE PRODUCTS
@@ -14039,6 +14039,7 @@
 08F4ABApple
 08F4F0Cisco
 08F606zte
+08F679Huawei
 08F69CApple
 08F6F8GET Engineering
 08F728GLOBO Multimedia Sp. z o.o. Sp.k.
@@ -16492,6 +16493,7 @@
 20AB53Motorola Mobility LLC, a Lenovo
 20AC9CChina Telecom
 20AD56AUMOVIO
+20AD72eero
 20AEB6Huawei
 20AF1BSteelSeries ApS
 20B001VantivaBelgium
@@ -17841,7 +17843,7 @@
 2CD3ADTexas Instruments
 2CD444FUJITSU
 2CD748Itron
-2CD7FFLANCOM
+2CD7FFRohde & Schwarzand Cybersecurity
 2CD8AEShenzhen SEI Robotics
 2CD8DEAltoBeam
 2CD974Hui Zhou Gaoshengda
@@ -17878,6 +17880,7 @@
 2CEADAICC Intelligent Platforms
 2CEADCASKEY COMPUTER
 2CEAFCIntel Corporate
+2CEB66Huawei
 2CECA6HUAWEI
 2CECF7Shenzhen SDMC
 2CED89HUAWEI
@@ -17920,6 +17923,7 @@
 300505Intel Corporate
 30053FJTI
 30055CBrother
+3005C8Huawei
 30074DSamsung
 30075CNetis
 3007A3Shenzhen Skyworth Digital 
@@ -18385,6 +18389,7 @@
 341B22Grandbeing
 341B2DCisco
 341CF0Xiaomi
+341E64Huawei
 341E6BHUAWEI
 341FC4Shenzhen V-Link
 341FE4Commscope
@@ -18394,6 +18399,7 @@
 342109Jensen Scandinavia
 3422CFAUMOVIO
 342387Hon Hai Precision Ind.
+34238Eeero
 3423BASamsung
 34243Ezte
 34255DShenzhen Loadcom
@@ -21141,6 +21147,7 @@
 4C63ADHuawei
 4C63EBApplication
 4C6460ITEL MOBILE
+4C64C9Huawei
 4C64D9Guangdong Leawin Group
 4C65A8IEEE
 4C6641Samsung
@@ -21466,6 +21473,7 @@
 50236DNintendo
 5023A2Apple
 50252BNethra Imaging
+5025FEHuawei
 502690FUJITSU
 5026D2AVIRE Trading
 5026EFMurata Manufacturing
@@ -21984,6 +21992,7 @@
 543E64FiberhomeTechnologies
 5440ADSamsung
 544249Sony
+544387Huawei
 5443B2Espressif
 544408Nokia
 54443BHUAWEI
@@ -23205,6 +23214,7 @@
 603ECACambridge Medical Robotics
 603FC5COX
 603FFBTelink Micro
+60415AGoogle
 60427FSHENZHEN CHUANGWEI-RGB
 60447AWater-i.d.
 6044F5Easy Digital
@@ -25172,6 +25182,7 @@
 70BC48Cisco
 70BD96Cisco
 70BDD2AdvaSecurity
+70BE8EHuawei
 70BF3ECharles River Laboratories
 70BF92GN Audio
 70C288Intel Corporate
@@ -26867,6 +26878,7 @@
 806DDEBeken
 806F1CHuawei
 806FB0Texas Instruments
+807039Huawei
 80711FJuniper
 80717AHUAWEI
 807215SKY UK
@@ -27424,6 +27436,7 @@
 84C0EFSamsung
 84C1C1Juniper
 84C2E4Jiangsu Qinheng
+84C300Shenzhen SDMCCP,.LTD
 84C3E8Vaillant
 84C5A6Intel Corporate
 84C665Taicang T&W
@@ -28257,6 +28270,7 @@
 8C9A8FSagemcom Broadband
 8C9B2DPLANTRONICS
 8C9F3BQingdao Hisense
+8CA02CArcadyan
 8CA048Beijing NeTopChip
 8CA229Huawei
 8CA2F5Huawei
@@ -28463,6 +28477,7 @@
 901A4FEM Microelectronic
 901ACACommscope
 901B0EFujitsuSolutions
+901C23Huawei
 901C9EAlcatel-Lucent Enterprise
 901D27zte
 901DFFZOWEECo.
@@ -29311,6 +29326,7 @@
 94FBB2SHENZHEN GONGJINCO.,LT
 94FC04Dongguan Amsamotion Automation
 94FC87Hirschmann Automation and Control
+94FC9AGoogle
 94FD1DWhereWhen
 94FD2EShanghai Uniscope
 94FE22HUAWEI
