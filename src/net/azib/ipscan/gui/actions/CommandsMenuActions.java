@@ -11,6 +11,7 @@ import net.azib.ipscan.core.UserErrorException;
 import net.azib.ipscan.core.state.ScanningState;
 import net.azib.ipscan.core.state.StateMachine;
 import net.azib.ipscan.fetchers.FetcherRegistry;
+import net.azib.ipscan.fetchers.MACFetcher;
 import net.azib.ipscan.gui.DetailsWindow;
 import net.azib.ipscan.gui.EditOpenersDialog;
 import net.azib.ipscan.gui.ResultTable;
@@ -35,16 +36,18 @@ public class CommandsMenuActions {
 	public Delete delete;
 	public Rescan rescan;
 	public CopyIP copyIP;
+	public CopyMAC copyMAC;
 	public CopyIPDetails copyIPDetails;
 	public ShowOpenersMenu showOpenersMenu;
 	public EditOpeners editOpeners;
 	public SelectOpener selectOpener;
 
-	public CommandsMenuActions(Details details, Delete delete, Rescan rescan, CopyIP copyIP, CopyIPDetails copyIPDetails, ShowOpenersMenu showOpenersMenu, EditOpeners editOpeners, SelectOpener selectOpener) {
+	public CommandsMenuActions(Details details, Delete delete, Rescan rescan, CopyIP copyIP, CopyMAC copyMAC, CopyIPDetails copyIPDetails, ShowOpenersMenu showOpenersMenu, EditOpeners editOpeners, SelectOpener selectOpener) {
 		this.details = details;
 		this.delete = delete;
 		this.rescan = rescan;
 		this.copyIP = copyIP;
+		this.copyMAC = copyMAC;
 		this.copyIPDetails = copyIPDetails;
 		this.showOpenersMenu = showOpenersMenu;
 		this.editOpeners = editOpeners;
@@ -163,9 +166,27 @@ public class CommandsMenuActions {
 				// if selected from the menu, check selection
 				checkSelection(resultTable);
 			}
-			var clipboard = new Clipboard(event.display);
-			clipboard.setContents(new Object[] {resultTable.getItem(resultTable.getSelectionIndex()).getText()}, new Transfer[] {TextTransfer.getInstance()});
-			clipboard.dispose();
+			copyToClipboard(event, resultTable.getItem(resultTable.getSelectionIndex()).getText());
+		}
+	}
+
+	/**
+	 * Copies the MAC address of the selected result to the clipboard.
+	 */
+	public static final class CopyMAC implements Listener {
+		private final ResultTable resultTable;
+
+		public CopyMAC(ResultTable resultTable) {
+			this.resultTable = resultTable;
+		}
+
+		public void handleEvent(Event event) {
+			checkSelection(resultTable);
+			var fetcherIndex = resultTable.getScanningResults().getFetcherIndex(MACFetcher.ID);
+			if (fetcherIndex < 0) return;
+
+			var value = resultTable.getSelectedResult().getValues().get(fetcherIndex);
+			copyToClipboard(event, value != null ? value.toString() : "");
 		}
 	}
 	
@@ -178,10 +199,14 @@ public class CommandsMenuActions {
 
 		public void handleEvent(Event event) {
 			checkSelection(resultTable);
-			var clipboard = new Clipboard(event.display);
-			clipboard.setContents(new Object[] {resultTable.getSelectedResult().toString()}, new Transfer[] {TextTransfer.getInstance()});
-			clipboard.dispose();
+			copyToClipboard(event, resultTable.getSelectedResult().toString());
 		}
+	}
+
+	private static void copyToClipboard(Event event, String text) {
+		var clipboard = new Clipboard(event.display);
+		clipboard.setContents(new Object[] {text}, new Transfer[] {TextTransfer.getInstance()});
+		clipboard.dispose();
 	}
 	
 	public static final class ShowOpenersMenu implements Listener {
