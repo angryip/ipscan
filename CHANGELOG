@@ -1,5 +1,6 @@
 Unreleased 3.12.1:
 - Do not report a host as dead when pinging fails with an I/O error
+- Windows: detect failures to create native ICMP handles instead of treating them as dead hosts
 - Windows: force to uninstall a previous version before installing a new one with different admin rights
 - Windows: fix a crash when moving the window between monitors with different scaling
 - Enable MAC and MAC Vendor fetchers by default for new users

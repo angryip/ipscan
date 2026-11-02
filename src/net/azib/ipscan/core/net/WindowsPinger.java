@@ -50,9 +50,14 @@ public class WindowsPinger implements Pinger {
 			return ping4(subject, count);
 	}
 
+	private static boolean isValidHandle(Pointer handle) {
+		// IcmpCreateFile returns INVALID_HANDLE_VALUE (-1), which JNA maps to a non-null Pointer
+		return handle != null && Pointer.nativeValue(handle) != -1L;
+	}
+
 	private PingResult ping4(ScanningSubject subject, int count) throws IOException {
 		var handle = dll.IcmpCreateFile();
-		if (handle == null) throw new IOException("Unable to create Windows native ICMP handle");
+		if (!isValidHandle(handle)) throw new IOException("Unable to create Windows native ICMP handle");
 
 		var sendDataSize = 32;
 		var replyDataSize = sendDataSize + (new IcmpEchoReply().size()) + 10;
@@ -80,7 +85,7 @@ public class WindowsPinger implements Pinger {
 
 	private PingResult ping6(ScanningSubject subject, int count) throws IOException {
 		var handle = dll.Icmp6CreateFile();
-		if (handle == null) throw new IOException("Unable to create Windows native ICMP6 handle");
+		if (!isValidHandle(handle)) throw new IOException("Unable to create Windows native ICMP6 handle");
 
 		var sendDataSize = 32;
 		var replyDataSize = sendDataSize + (new Icmp6EchoReply().size()) + 10;
