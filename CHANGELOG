@@ -4,6 +4,7 @@ Unreleased 3.12.1:
 - Security: prevent command injection through Windows terminal openers
 - Windows: use the actual version in installer metadata
 - Windows: show fatal startup errors instead of failing silently
+- Windows: handle ICMP API failures and size IPv6 reply buffers correctly
 - Windows: detect failures to create native ICMP handles instead of treating them as dead hosts
 - Windows: force to uninstall a previous version before installing a new one with different admin rights
 - Windows: fix a crash when moving the window between monitors with different scaling
