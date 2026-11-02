@@ -62,10 +62,19 @@ CRCCheck on
 
 ;Variables
 Var PreviousInstallMode ; install mode of an existing copy that has to be removed before installing
-Var PreviousInstallModeName
 Var PreviousInstallFolder
-Var PreviousUninstallerParams
 Var PreviousUninstallAttempts
+Var LegacyInstallFolder
+Var CleanupFolder
+
+!macro RemoveLegacyInstallInfo
+	${If} ${RunningX64}
+		SetRegView 32
+		DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}"
+		DeleteRegKey HKLM "Software\${ApplicationName}"
+		SetRegView 64
+	${EndIf}
+!macroend
 
 
 ;Modern UI 2 details
@@ -126,6 +135,15 @@ Var PreviousUninstallAttempts
 
 ;Installer initialization
 Function .onInit
+	${GetParameters} $R0
+	${GetOptions} $R0 "/removeprevious" $R1
+	${IfNot} ${Errors}
+		Call RemovePreviousAllUsersInstallation
+		SetErrorLevel 0
+		Quit
+	${EndIf}
+	ClearErrors
+
 	!insertmacro MULTIUSER_INIT
 	
 	SectionSetSize ${MAINSECTIONIDX} ${InstallSize}
@@ -143,34 +161,80 @@ Function CheckPreviousInstallation
 	${EndIf}
 
 	${If} $PreviousInstallMode == "AllUsers"
-		StrCpy $PreviousInstallModeName "for all users"
 		StrCpy $PreviousInstallFolder "$PerMachineInstallationFolder"
-		StrCpy $PreviousUninstallerParams "/allusers /S /keepsettings"
 	${ElseIf} $PreviousInstallMode == "CurrentUser"
-		StrCpy $PreviousInstallModeName "for the current user"
 		StrCpy $PreviousInstallFolder "$PerUserInstallationFolder"
-		StrCpy $PreviousUninstallerParams "/currentuser /S /keepsettings"
 	${EndIf}
 FunctionEnd
 
-Function RunPreviousUninstaller
-	StrCpy $0 -1
-	ExecWait '"$PreviousInstallFolder\uninstall.exe" $PreviousUninstallerParams _?=$PreviousInstallFolder' $0
+Function RemovePreviousAllUsersInstallation
+	SetShellVarContext all
+	ExecWait "TaskKill /IM ${ApplicationEXEName} /T /F"
+	${If} ${RunningX64}
+		SetRegView 64
+	${EndIf}
+	ReadRegStr $CleanupFolder HKLM "Software\${ApplicationName}" ""
+	${If} $CleanupFolder != ""
+		RMDir /r "$CleanupFolder"
+	${EndIf}
+	Delete "$SMPROGRAMS\${ApplicationName}.lnk"
+	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}"
+	DeleteRegKey HKLM "Software\${ApplicationName}"
+	${If} ${RunningX64}
+		SetRegView 32
+		ReadRegStr $CleanupFolder HKLM "Software\${ApplicationName}" ""
+		SetRegView 64
+		${If} $CleanupFolder != ""
+			RMDir /r "$CleanupFolder"
+		${EndIf}
+	${EndIf}
+	!insertmacro RemoveLegacyInstallInfo
+	${If} $MultiUser.InstallMode == "AllUsers"
+		SetShellVarContext all
+	${Else}
+		SetShellVarContext current
+	${EndIf}
+FunctionEnd
+
+Function RemovePreviousCurrentUserInstallation
+	SetShellVarContext current
+	ExecWait "TaskKill /IM ${ApplicationEXEName} /T /F"
+	ReadRegStr $CleanupFolder HKCU "Software\${ApplicationName}" ""
+	${If} $CleanupFolder != ""
+		RMDir /r "$CleanupFolder"
+	${EndIf}
+	Delete "$SMPROGRAMS\${ApplicationName}.lnk"
+	DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}"
+	DeleteRegKey HKCU "Software\${ApplicationName}"
+	${If} $MultiUser.InstallMode == "AllUsers"
+		SetShellVarContext all
+	${Else}
+		SetShellVarContext current
+	${EndIf}
 FunctionEnd
 
 Function CheckPreviousInstallationRemoved
 	${If} $PreviousInstallMode == "AllUsers"
-		ReadRegStr $0 HKLM "Software\${ApplicationName}" ""
+		ReadRegStr $0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}" "InstallLocation"
 	${Else}
-		ReadRegStr $0 HKCU "Software\${ApplicationName}" ""
+		ReadRegStr $0 HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}" "InstallLocation"
 	${EndIf}
 FunctionEnd
 
-;Explain how to recover when a previous installation (e.g. 3.12.0 with a broken uninstaller) cannot be removed
+Function CheckLegacyInstallation
+	StrCpy $LegacyInstallFolder ""
+	${If} ${RunningX64}
+		SetRegView 32
+		ReadRegStr $LegacyInstallFolder HKLM "Software\${ApplicationName}" ""
+		SetRegView 64
+	${EndIf}
+FunctionEnd
+
+;Explain how to recover when a previous installation cannot be removed
 Function AbortPreviousInstallationRemoval
 	SetErrorLevel 2
 	BringToFront
-	StrCpy $0 "Could not remove the previous Angry IP Scanner installation in$\r$\n$\"$PreviousInstallFolder$\".$\r$\n$\r$\nIf the uninstaller is broken: run this installer again, choose $\"$PreviousInstallModeName$\" (the same mode as the existing installation) and install over it to repair the uninstaller. Then uninstall Angry IP Scanner and run this installer again.$\r$\n$\r$\nOtherwise, uninstall it manually and run this installer again."
+	StrCpy $0 "Could not remove the previous Angry IP Scanner installation in$\r$\n$\"$PreviousInstallFolder$\".$\r$\n$\r$\nMake sure Angry IP Scanner is not running and that you allow the installer to make changes to your computer, then run this installer again.$\r$\n$\r$\nIf the problem persists, remove the folder and the Angry IP Scanner registry entries manually."
 	Abort $0
 FunctionEnd
 
@@ -185,16 +249,19 @@ Section Main
 		HideWindow
 		ClearErrors
 		${If} $PreviousInstallMode == "AllUsers"
-			Call RunPreviousUninstaller
+			${If} ${UAC_IsAdmin}
+				Call RemovePreviousAllUsersInstallation
+			${Else}
+				ExecShellWait "runas" "$EXEPATH" "/removeprevious"
+			${EndIf}
 		${Else}
-			!insertmacro UAC_AsUser_Call Function RunPreviousUninstaller ${UAC_SYNCREGISTERS}
+			!insertmacro UAC_AsUser_Call Function RemovePreviousCurrentUserInstallation ${UAC_SYNCREGISTERS}
 		${EndIf}
 		${If} ${Errors}
-		${OrIf} $0 <> 0
 			Call AbortPreviousInstallationRemoval
 		${EndIf}
 		BringToFront
-		;the uninstaller may still be finishing if it had to elevate, wait until it unregisters itself
+		ClearErrors
 		StrCpy $PreviousUninstallAttempts 0
 		${Do}
 			Sleep 500
@@ -203,9 +270,31 @@ Section Main
 				${ExitDo}
 			${EndIf}
 			IntOp $PreviousUninstallAttempts $PreviousUninstallAttempts + 1
-		${LoopUntil} $PreviousUninstallAttempts >= 10
+		${LoopUntil} $PreviousUninstallAttempts >= 20
 		${If} $0 != ""
 			Call AbortPreviousInstallationRemoval
+		${EndIf}
+		${If} $PreviousInstallMode == "AllUsers"
+			DeleteRegKey HKLM "Software\${ApplicationName}"
+		${Else}
+			DeleteRegKey HKCU "Software\${ApplicationName}"
+		${EndIf}
+	${EndIf}
+
+	Call CheckLegacyInstallation
+	${If} $LegacyInstallFolder != ""
+		${If} ${UAC_IsAdmin}
+			!insertmacro RemoveLegacyInstallInfo
+			${If} $LegacyInstallFolder != $INSTDIR
+				RMDir /r "$LegacyInstallFolder"
+			${EndIf}
+		${Else}
+			StrCpy $PreviousInstallFolder "$LegacyInstallFolder"
+			ClearErrors
+			ExecShellWait "runas" "$EXEPATH" "/removeprevious"
+			${If} ${Errors}
+				Call AbortPreviousInstallationRemoval
+			${EndIf}
 		${EndIf}
 	${EndIf}
 
@@ -263,7 +352,8 @@ Section "Uninstall"
 	Delete "$SMPROGRAMS\${ApplicationName}.lnk"
 
 	DeleteRegKey SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ApplicationName}"
-	DeleteRegKey /ifempty SHCTX "Software\${ApplicationName}"
+	DeleteRegKey SHCTX "Software\${ApplicationName}"
+	!insertmacro RemoveLegacyInstallInfo
 
 	;Keep the user's settings when the installer removes the old copy to switch the install mode
 	${GetParameters} $R0
