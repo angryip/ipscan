@@ -99,12 +99,17 @@ public class Main {
 	private static void showFallbackError(String message) {
 		try {
 			System.err.println(message);
-			try {
-				var crashFile = Path.of(System.getProperty("user.home"), ".swt", "ipscan-crash.txt");
-				Files.createDirectories(crashFile.getParent());
-				Files.writeString(crashFile, message);
+			if (Platform.WINDOWS) {
+				try {
+					Class.forName("net.azib.ipscan.core.net.WinMessageBox")
+						.getMethod("show", String.class, String.class)
+						.invoke(null, message, Version.NAME);
+					return;
+				}
+				catch (Throwable ignore) {
+					// fall back to Swing below
+				}
 			}
-			catch (Exception ignore) {}
 			if (Platform.MAC_OS)
 				Runtime.getRuntime().exec(new String[] {"osascript", "-e", "display notification \"" + message + "\" with title \"Angry IP Scanner\""});
 			else
