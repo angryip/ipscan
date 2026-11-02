@@ -21,10 +21,21 @@ public class PingResult {
 	private int packetCount;
 	private int replyCount;
 	private boolean timeoutAdaptationAllowed;
+	private boolean failed;
 	
 	public PingResult(InetAddress address, int packetCount) {
 		this.address = address;
 		this.packetCount = packetCount;
+	}
+
+	public static PingResult failed(InetAddress address) {
+		var result = new PingResult(address, 0);
+		result.failed = true;
+		return result;
+	}
+
+	public boolean isFailed() {
+		return failed;
 	}
 
 	public void addReply(long time) {

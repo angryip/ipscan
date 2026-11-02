@@ -63,24 +63,26 @@ public class PingFetcher extends AbstractFetcher {
 
 		PingResult result;
 		try {
+			// the pinger already sends the configured number of probes
 			result = pinger.ping(subject, config.pingCount);
 		}
 		catch (IOException e) {
-			// if this is not a timeout
-			LOG.log(Level.WARNING, "Pinging failed", e);
-			// return an empty ping result
-			result = new PingResult(subject.getAddress(), 0);
+			// the ping could not be performed at all, so this is not a dead host
+			LOG.log(Level.WARNING, "Pinging failed for " + subject, e);
+			result = PingResult.failed(subject.getAddress());
 		}
 		// remember the result for other fetchers to use
 		subject.setParameter(PARAMETER_PING_RESULT, result);
+		// a failed ping says nothing about the host, so keep its result type unknown
+		if (!result.isFailed())
+			subject.setResultType(result.isAlive() ? ResultType.ALIVE : ResultType.DEAD);
 		return result;
 	}
 
 	public Object scan(ScanningSubject subject) {
 		var result = executePing(subject);
-		subject.setResultType(result.isAlive() ? ResultType.ALIVE : ResultType.DEAD);
 		
-		if (!result.isAlive() && !config.scanDeadHosts) {
+		if (!result.isFailed() && !result.isAlive() && !config.scanDeadHosts) {
 			// the host is dead, we are not going to continue...
 			subject.abortAddressScanning();
 		}

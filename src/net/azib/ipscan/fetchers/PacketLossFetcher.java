@@ -4,9 +4,6 @@ import net.azib.ipscan.config.ScannerConfig;
 import net.azib.ipscan.core.ScanningSubject;
 import net.azib.ipscan.core.net.PingerRegistry;
 
-import static net.azib.ipscan.core.ScanningResult.ResultType.ALIVE;
-import static net.azib.ipscan.core.ScanningResult.ResultType.DEAD;
-
 /**
  * PacketLossFetcher shares pinging results with PingFetcher
  * and returns the packet loss field of the received packet.
@@ -25,7 +22,7 @@ public class PacketLossFetcher extends PingFetcher {
 
 	public Object scan(ScanningSubject subject) {
 		var result = executePing(subject);
-		subject.setResultType(result.isAlive() ? ALIVE : DEAD);
+		if (result.isFailed()) return null;
 
 		return result.getPacketLoss() + "/" + result.getPacketCount() + " (" + result.getPacketLossPercent() + "%)";
 	}
