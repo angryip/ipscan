@@ -101,6 +101,11 @@ public class PingResult {
 	public PingResult merge(PingResult result) {
 		this.packetCount += result.packetCount;
 		this.replyCount += result.replyCount;
+		this.totalTime += result.totalTime;
+		this.longestTime = Math.max(this.longestTime, result.longestTime);
+		if (this.ttl == 0)
+			this.ttl = result.ttl;
+		this.timeoutAdaptationAllowed |= result.timeoutAdaptationAllowed;
 		return this;
 	}
 }
