@@ -1,5 +1,6 @@
 package net.azib.ipscan.fetchers;
 
+import net.azib.ipscan.core.ScanningSubject;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,6 +26,8 @@ public class FetcherRegistryTest {
 	private HostnameFetcher hostnameFetcher;
 	private CommentFetcher commentFetcher;
 	private PortsFetcher portsFetcher;
+	private MACFetcher macFetcher;
+	private MACVendorFetcher macVendorFetcher;
 	private FetcherRegistry fetcherRegistry;
 
 	@Before
@@ -37,7 +40,13 @@ public class FetcherRegistryTest {
 		hostnameFetcher = new HostnameFetcher();
 		commentFetcher = new CommentFetcher(null);
 		portsFetcher = new PortsFetcher(null);
-		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, pingFetcher, hostnameFetcher, commentFetcher, portsFetcher), preferences, null);
+		macFetcher = new MACFetcher() {
+			@Override protected String resolveMAC(ScanningSubject subject) {
+				return null;
+			}
+		};
+		macVendorFetcher = new MACVendorFetcher(macFetcher);
+		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, pingFetcher, hostnameFetcher, commentFetcher, portsFetcher, macFetcher, macVendorFetcher), preferences, null);
 	}
 	
 	@After
@@ -48,9 +57,9 @@ public class FetcherRegistryTest {
 	@Test
 	public void testCreate() throws Exception {
 		// specified values
-		assertEquals(5, fetcherRegistry.getRegisteredFetchers().size());
+		assertEquals(7, fetcherRegistry.getRegisteredFetchers().size());
 		// default values
-		assertEquals(4, fetcherRegistry.getSelectedFetchers().size());
+		assertEquals(6, fetcherRegistry.getSelectedFetchers().size());
 	}
 	
 	@Test(expected=UnsupportedOperationException.class)
@@ -64,6 +73,8 @@ public class FetcherRegistryTest {
 		assertEquals(1, fetcherRegistry.getSelectedFetcherIndex(pingFetcher.getId()));
 		assertEquals(2, fetcherRegistry.getSelectedFetcherIndex(hostnameFetcher.getId()));
 		assertEquals(3, fetcherRegistry.getSelectedFetcherIndex(portsFetcher.getId()));
+		assertEquals(4, fetcherRegistry.getSelectedFetcherIndex(macFetcher.getId()));
+		assertEquals(5, fetcherRegistry.getSelectedFetcherIndex(macVendorFetcher.getId()));
 		assertEquals(-1, fetcherRegistry.getSelectedFetcherIndex(commentFetcher.getId()));
 	}
 	
@@ -71,7 +82,7 @@ public class FetcherRegistryTest {
 	public void testLoadPreferences() throws Exception {
 		preferences.remove(FetcherRegistry.PREFERENCE_SELECTED_FETCHERS);
 		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, hostnameFetcher, commentFetcher), preferences, null);
-		assertEquals(4, fetcherRegistry.getSelectedFetchers().size());
+		assertEquals(2, fetcherRegistry.getSelectedFetchers().size());
 		
 		preferences.put(FetcherRegistry.PREFERENCE_SELECTED_FETCHERS, hostnameFetcher.getId() + "###" + commentFetcher.getId());
 		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, hostnameFetcher, commentFetcher), preferences, null);

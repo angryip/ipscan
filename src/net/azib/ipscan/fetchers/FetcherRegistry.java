@@ -54,10 +54,12 @@ public class FetcherRegistry {
 		if (fetcherPrefValue == null) {
 			// no preferences previously saved, use these default values
 			selectedFetchers = new LinkedHashMap<>();
-			selectedFetchers.put(IPFetcher.ID, registeredFetchers.get(IPFetcher.ID));
-			selectedFetchers.put(PingFetcher.ID, registeredFetchers.get(PingFetcher.ID));
-			selectedFetchers.put(HostnameFetcher.ID, registeredFetchers.get(HostnameFetcher.ID));
-			selectedFetchers.put(PortsFetcher.ID, registeredFetchers.get(PortsFetcher.ID));
+			addDefaultFetcher(IPFetcher.ID);
+			addDefaultFetcher(PingFetcher.ID);
+			addDefaultFetcher(HostnameFetcher.ID);
+			addDefaultFetcher(PortsFetcher.ID);
+			addDefaultFetcher(MACFetcher.ID);
+			addDefaultFetcher(MACVendorFetcher.ID);
 		}
 		else {
 			var fetcherPrefs = fetcherPrefValue.split("###");
@@ -70,6 +72,13 @@ public class FetcherRegistry {
 					selectedFetchers.put(fetcherPref, fetcher);
 				}
 			}
+		}
+	}
+
+	private void addDefaultFetcher(String id) {
+		var fetcher = registeredFetchers.get(id);
+		if (fetcher != null) {
+			selectedFetchers.put(id, fetcher);
 		}
 	}
 	
