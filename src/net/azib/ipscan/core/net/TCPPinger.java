@@ -53,7 +53,7 @@ public class TCPPinger implements Pinger {
 		Socket socket;
 		for (var i = 0; i < count && !Thread.currentThread().isInterrupted(); i++) {
 			socket = new Socket();
-			// cycle through different ports until a working one is found
+			// cycle through different ports until a responding one is found
 			var probePort = workingPort >= 0 ? workingPort : PROBE_TCP_PORTS[i % PROBE_TCP_PORTS.length];
 			// change the first port to the requested one, if it is available
 			if (i == 0 && subject.isAnyPortRequested())
@@ -69,7 +69,6 @@ public class TCPPinger implements Pinger {
 				if (socket.isConnected()) {
 					// it worked - success
 					success(result, startTime);
-					// it worked! - remember the current port
 					workingPort = probePort;
 				}
 			}
@@ -82,6 +81,7 @@ public class TCPPinger implements Pinger {
 				if (msg.contains(/*Connection*/"refused")) {
 					// we've got an RST packet from the host - it is alive
 					success(result, startTime);
+					workingPort = probePort;
 				}
 				// this should result in NoRouteToHostException or ConnectException, but not all Java implementation respect that
 				else if (e instanceof NoRouteToHostException || msg.contains(/*No*/"route to host") || msg.contains(/*Host is*/"down") || msg.contains(/*Network*/"unreachable") || msg.contains(/*Socket*/"closed") || msg.contains("Invalid argument")) {
