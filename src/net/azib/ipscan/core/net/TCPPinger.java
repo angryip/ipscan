@@ -16,6 +16,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.logging.Logger;
 
+import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.util.logging.Level.INFO;
 import static net.azib.ipscan.util.IOUtils.closeQuietly;
@@ -33,9 +34,12 @@ public class TCPPinger implements Pinger {
 	private static final int[] PROBE_TCP_PORTS = {80, 7, 443, 139, 22};
 
 	private int timeout;
+	private int minTimeout;
 
 	public TCPPinger(ScannerConfig config) {
 		this.timeout = config.pingTimeout;
+		// zero timeout would mean infinite
+		this.minTimeout = max(config.minPortTimeout, 1);
 	}
 
 	@Override public String getId() {
@@ -60,7 +64,7 @@ public class TCPPinger implements Pinger {
 				// set some optimization options
 				socket.setReuseAddress(true);
 				socket.setReceiveBufferSize(32);
-				var timeout = result.isTimeoutAdaptationAllowed() ? min(result.getLongestTime() * 2, this.timeout) : this.timeout;
+				var timeout = result.isTimeoutAdaptationAllowed() ? min(max(result.getLongestTime() * 2, minTimeout), this.timeout) : this.timeout;
 				socket.connect(new InetSocketAddress(subject.getAddress(), probePort), timeout);
 				if (socket.isConnected()) {
 					// it worked - success
