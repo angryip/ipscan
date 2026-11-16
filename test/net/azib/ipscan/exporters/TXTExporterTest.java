@@ -79,6 +79,17 @@ public class TXTExporterTest extends AbstractExporterTestCase {
 	}
 
 	@Test
+	public void importFromFileOfNonRangeFeeder() throws Exception {
+		var file = getClass().getResource("import-file-feeder.txt").getPath();
+		var feederGUI = mock(AbstractFeederGUI.class);
+
+		var results = ((TXTExporter) exporter).importResults(file, feederGUI);
+
+		assertEquals(7, results.size());
+		verify(feederGUI).unserialize("192.168.0.18", "192.168.0.18");
+	}
+
+	@Test
 	public void importFromBrokenFile() throws Exception {
 		var file = getClass().getResource("import-broken.txt").getPath();
 		var feederGUI = mock(AbstractFeederGUI.class);

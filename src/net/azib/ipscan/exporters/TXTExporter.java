@@ -127,8 +127,11 @@ public class TXTExporter extends AbstractExporter {
 
 					if (lookingFor[lookingForIndex].equals(sp[0])) {
 						if (lookingForIndex == 0) {
-							startIP = sp[1];
-							endIP = sp[3];
+							// only IP ranges are exported as "start - end"
+							if (sp.length > 3) {
+								startIP = sp[1];
+								endIP = sp[3];
+							}
 							lookingForIndex++;
 						}
 						else if (lookingForIndex == 1) {
@@ -157,7 +160,11 @@ public class TXTExporter extends AbstractExporter {
 				results.add(r);
 			}
 
-			if (lastLoadedIP != null && !lastLoadedIP.equals(endIP)) {
+			if (endIP == null) {
+				// scans of other feeders cannot be resumed
+				startIP = endIP = lastLoadedIP;
+			}
+			else if (lastLoadedIP != null && !lastLoadedIP.equals(endIP)) {
 				var nextStartIP = increment(InetAddress.getByName(lastLoadedIP));
 				startIP = nextStartIP.getHostAddress();
 			}

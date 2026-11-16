@@ -1,3 +1,6 @@
+Unreleased:
+- Fix loading of results exported from other feeders than IP Range #387
+
 3.12.1:
 - Do not report a host as dead when pinging fails with an I/O error
 - Enable MAC and MAC Vendor fetchers by default for new users
