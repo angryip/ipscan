@@ -15,10 +15,12 @@ public class LinuxMACFetcher extends MACFetcher {
 	private int macLength = 17;
 
 	public LinuxMACFetcher() {
-		var line = arpLines().findFirst().orElse(null);
-		if (line != null) {
-			flagsIndex = line.indexOf("Flags");
-			macIndex = line.indexOf("HW addr");
+		try (var lines = arpLines()) {
+			var line = lines.findFirst().orElse(null);
+			if (line != null) {
+				flagsIndex = line.indexOf("Flags");
+				macIndex = line.indexOf("HW addr");
+			}
 		}
 	}
 
@@ -32,9 +34,9 @@ public class LinuxMACFetcher extends MACFetcher {
 
 	@Override public String resolveMAC(ScanningSubject subject) {
 		if (macIndex == 0) return null;
-		try {
+		try (var lines = arpLines()) {
 			var ip = subject.getAddress().getHostAddress();
-			return arpLines()
+			return lines
 				.filter(line -> line.startsWith(ip + " ") && !line.substring(flagsIndex, flagsIndex + 3).equals("0x0")).findFirst()
 				.map(line -> line.substring(macIndex, macIndex + macLength).toUpperCase())
 				.orElse(getLocalMAC(subject));
