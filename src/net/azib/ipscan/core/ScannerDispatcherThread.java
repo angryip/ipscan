@@ -159,6 +159,10 @@ public class ScannerDispatcherThread extends Thread implements ThreadFactory, St
 				var scanningTask = new AddressScannerTask(subject, result);
 				threadPool.execute(scanningTask);
 			}
+			else if (config.threadDelay == 0) {
+				// don't spin while waiting for a free thread
+				Thread.sleep(1);
+			}
 
 			// notify listeners of the progress we are doing (limiting the update rate)
 			var now = System.currentTimeMillis();
