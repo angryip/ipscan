@@ -75,7 +75,7 @@ public class TCPPinger implements Pinger {
 			catch (SocketTimeoutException ignore) {
 			}
 			catch (IOException e) {
-				var msg = e.getMessage();
+				var msg = String.valueOf(e.getMessage());
 
 				// RST should result in ConnectException, but on macOS ConnectionException can also come with e.g. "No route to host"
 				if (msg.contains(/*Connection*/"refused")) {

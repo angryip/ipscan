@@ -66,13 +66,13 @@ public class UDPPinger implements Pinger {
 					break;
 				}
 				catch (SocketException e) {
-					if (e.getMessage().contains(/*No*/"route to host")) {
+					if (String.valueOf(e.getMessage()).contains(/*No*/"route to host")) {
 						// sometimes 'No route to host' also gets here...
 						break;
 					}
 				}
 				catch (IOException e) {
-					if (e.getMessage().startsWith("Network is unreachable"))
+					if (String.valueOf(e.getMessage()).startsWith("Network is unreachable"))
 						break;
 					LOG.log(FINER, subject.toString(), e);
 				}
