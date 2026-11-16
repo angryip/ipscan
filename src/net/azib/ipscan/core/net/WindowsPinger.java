@@ -99,7 +99,7 @@ public class WindowsPinger implements Pinger {
 				var numReplies = dll.IcmpSendEcho(handle, ipaddr, sendData, (short) sendDataSize, null, replyData, replyDataSize, timeout);
 				checkIcmpError(numReplies);
 				var echoReply = new IcmpEchoReply(replyData);
-				if (numReplies > 0 && echoReply.status == 0 && Arrays.equals(echoReply.address.bytes, ipaddr.bytes)) {
+				if (numReplies > 0 && echoReply.status == 0 && echoReply.address == ipaddr) {
 					result.addReply(echoReply.roundTripTime);
 					result.setTTL(echoReply.options.ttl & 0xFF);
 				}

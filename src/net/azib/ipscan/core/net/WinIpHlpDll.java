@@ -58,7 +58,7 @@ public interface WinIpHlpDll extends Library {
 	 */
 	int IcmpSendEcho(
 			Pointer hIcmp,
-			IpAddrByVal destinationAddress,
+			int destinationAddress,
 			Pointer requestData,
 			short requestSize,
 			IpOptionInformationByRef requestOptions,
@@ -89,18 +89,11 @@ public interface WinIpHlpDll extends Library {
 	 * Wrapper for Microsoft's <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa366358(v=vs.85).aspx">SendARP</a>
 	 */
 	int SendARP(
-			IpAddrByVal destIP,
+			int destIP,
 			int srcIP,
 			Pointer pMacAddr,
 			Pointer pPhyAddrLen
 	);
-
-	class IpAddr extends AutoOrderedStructure {
-		public byte[] bytes = new byte[4];
-	}
-
-	class IpAddrByVal extends IpAddr implements Structure.ByValue {
-	}
 
 	class Ip6SockAddr extends AutoOrderedStructure {
 		// AF_INET6 is 23 on Windows (it is 10 on Linux)
@@ -146,7 +139,7 @@ public interface WinIpHlpDll extends Library {
 	}
 
 	class IcmpEchoReply extends AutoOrderedStructure {
-		public IpAddrByVal address;
+		public int address;
 		public int status;
 		public int roundTripTime;
 		public short dataSize;
