@@ -33,8 +33,10 @@ public abstract class AbstractModalDialog {
 		if (shell.getParent() != null) {
 			var parentBounds = shell.getParent().getBounds();
 			var childBounds = shell.getBounds();
-			var x = Math.max(0, parentBounds.x + (parentBounds.width - childBounds.width) / 2);
-			var y = Math.max(0, parentBounds.y + (parentBounds.height - childBounds.height) / 2);
+			// stay on the parent's monitor: other monitors can have negative coordinates
+			var monitorArea = shell.getParent().getMonitor().getClientArea();
+			var x = Math.max(monitorArea.x, parentBounds.x + (parentBounds.width - childBounds.width) / 2);
+			var y = Math.max(monitorArea.y, parentBounds.y + (parentBounds.height - childBounds.height) / 2);
 			shell.setLocation(x, y);
 		}
 		

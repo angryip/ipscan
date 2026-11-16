@@ -1,5 +1,6 @@
 Unreleased:
 - Fix loading of results exported from other feeders than IP Range #387
+- Open dialogs on the same monitor as the main window, even if it is above or to the left of the primary one #346
 
 3.12.1:
 - Do not report a host as dead when pinging fails with an I/O error
