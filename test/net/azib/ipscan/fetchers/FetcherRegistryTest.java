@@ -72,10 +72,10 @@ public class FetcherRegistryTest {
 		assertEquals(0, fetcherRegistry.getSelectedFetcherIndex(ipFetcher.getId()));
 		assertEquals(1, fetcherRegistry.getSelectedFetcherIndex(pingFetcher.getId()));
 		assertEquals(2, fetcherRegistry.getSelectedFetcherIndex(hostnameFetcher.getId()));
-		assertEquals(3, fetcherRegistry.getSelectedFetcherIndex(commentFetcher.getId()));
-		assertEquals(4, fetcherRegistry.getSelectedFetcherIndex(portsFetcher.getId()));
-		assertEquals(5, fetcherRegistry.getSelectedFetcherIndex(macFetcher.getId()));
-		assertEquals(6, fetcherRegistry.getSelectedFetcherIndex(macVendorFetcher.getId()));
+		assertEquals(3, fetcherRegistry.getSelectedFetcherIndex(portsFetcher.getId()));
+		assertEquals(4, fetcherRegistry.getSelectedFetcherIndex(macFetcher.getId()));
+		assertEquals(5, fetcherRegistry.getSelectedFetcherIndex(macVendorFetcher.getId()));
+		assertEquals(6, fetcherRegistry.getSelectedFetcherIndex(commentFetcher.getId()));
 	}
 	
 	@Test
