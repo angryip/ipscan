@@ -13,7 +13,7 @@
 !define InstallerFileName "ipscan"
 	
 ;AppVersionFull is a full 4 number dotted version number.  No letters, spaces, etc, dots only ex: 1.2.3.4
-!define AppVersionFull "PROJECT_MAJOR.PROJECT_MINOR.0.0"
+!define AppVersionFull "PROJECT_MAJOR.PROJECT_MINOR.PROJECT_PATCH.0"
 
 ;AppVersionFriendly is the 'official' version number shown in the installer and installer file name.
 ;	Do not included spaces or invalid Windows file/directory characters

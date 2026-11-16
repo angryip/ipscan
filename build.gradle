@@ -208,10 +208,42 @@ def minimizeTask(String platform, Closure doMore) {
     }
 }
 
+def numericVersionPart(String part) {
+    def matcher = part =~ /\d+/
+    matcher.find() ? matcher.group() : '0'
+}
+
+def versionNumbers() {
+    def parts = version.tokenize('.')
+    [0, 1, 2].collect { numericVersionPart(parts.size() > it ? parts[it] : '0') }
+}
+
+def launcherExePath() {
+    "build/launcher/ipscan.exe"
+}
+
+// Patches VERSIONINFO in the precompiled launcher, so it doesn't need to be recompiled on Windows
+def patchLauncherVersion(String exeFile) {
+    def rcedit = "build/tools/rcedit-x64.exe"
+    if (!project.file(rcedit).exists()) {
+        ant.mkdir(dir: "build/tools")
+        ant.get(src: "https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x64.exe", dest: rcedit, skipexisting: 'true')
+    }
+    def fileVersion = versionNumbers().join('.') + '.0'
+    def cmd = "$rcedit $exeFile --set-file-version $fileVersion --set-product-version $fileVersion --set-version-string ProductVersion $version"
+    exec(System.getProperty("os.name").contains("Windows") ? cmd : "wine $cmd")
+}
+
+def prepareLauncher() {
+    ant.copy(file: "ext/win-launcher/launcher.exe", tofile: launcherExePath())
+    patchLauncherVersion(launcherExePath())
+}
+
 def winLauncher(def platform) {
     def suffix = platform == 'win64' ? 'win' : platform
+    prepareLauncher()
     ant.concat(destfile: "build/libs/${project.name}-${version}-${suffix}.exe", binary: true) {
-        ant.fileset(file: "ext/win-launcher/launcher.exe")
+        ant.fileset(file: launcherExePath())
         ant.fileset(file: "build/libs/${project.name}-${version}-${suffix}.jar")
     }
     // the plain jar is kept aside for the installer, which ships it next to the launcher
@@ -327,19 +359,18 @@ task 'win-installer'(dependsOn: 'win64') {
         def installerDir = 'ext/win-installer'
         ant.get(src: "https://sourceforge.net/projects/nsis/files/NSIS%203/${nsisVersion}/${nsis}.zip/download", dest: "$installerDir/${nsis}.zip", skipexisting: 'true')
         ant.unzip(src: "${installerDir}/${nsis}.zip", dest: installerDir)
-        def versionParts = version.tokenize('.')
-        def versionMajor = versionParts.size() > 0 && versionParts[0].isInteger() ? versionParts[0] : "0"
-        def versionMinor = versionParts.size() > 1 && versionParts[1].isInteger() ? versionParts[1] : "0"
+        def (versionMajor, versionMinor, versionPatch) = versionNumbers()
         ant.replace(file: "${installerDir}/InstallerConfig.nsh") {
             ant.replacefilter(token: "PROJECT_MAJOR", value: versionMajor)
             ant.replacefilter(token: "PROJECT_MINOR", value: versionMinor)
+            ant.replacefilter(token: "PROJECT_PATCH", value: versionPatch)
             ant.replacefilter(token: "VERSION", value: version)
         }
         jlink(installerDir, "AppFiles/jre")
         ant.copy(file: "resources/images/icon.ico", todir: "${installerDir}/AppFiles")
         ant.copy(file: "LICENSE", tofile: "${installerDir}/AppFiles/license.txt")
         // ship the launcher and the jar as separate files, unlike the portable self-extracting exe
-        ant.copy(file: "ext/win-launcher/launcher.exe", tofile: "${installerDir}/AppFiles/ipscan.exe")
+        ant.copy(file: launcherExePath(), tofile: "${installerDir}/AppFiles/ipscan.exe")
         ant.copy(file: "build/installer/win/${project.name}.jar", tofile: "${installerDir}/AppFiles/ipscan.jar")
         if (platform.startsWith('win')) {
             exec("cmd /c $nsis\\makensis.exe Installer\\Installer.nsi", installerDir)
