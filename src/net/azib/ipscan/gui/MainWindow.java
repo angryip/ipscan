@@ -22,9 +22,11 @@ import net.azib.ipscan.gui.feeders.FeederSelectionCombo;
 import net.azib.ipscan.gui.menu.ResultsContextMenu;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
+import static java.util.Arrays.stream;
 import static net.azib.ipscan.gui.util.LayoutHelper.formData;
 import static net.azib.ipscan.gui.util.LayoutHelper.icon;
 import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
@@ -74,8 +76,10 @@ public class MainWindow {
 		// after all controls are initialized, resize and open
 		shell.setSize(guiConfig.getMainWindowSize());
 
-		// remember stored position in the screen by preferences
-		shell.setLocation(guiConfig.getMainWindowPosition());
+		// restore stored position, unless it is not visible anymore, e.g. if an external screen was disconnected
+		var position = guiConfig.getMainWindowPosition();
+		if (stream(shell.getDisplay().getMonitors()).anyMatch(m -> m.getClientArea().intersects(new Rectangle(position.x, position.y, shell.getSize().x, shell.getSize().y))))
+			shell.setLocation(position);
 
 		shell.open();
 		if (guiConfig.isMainWindowMaximized) {
