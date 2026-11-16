@@ -17,10 +17,10 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import static java.util.logging.Level.WARNING;
 import static net.azib.ipscan.util.InetAddressUtils.HOSTNAME_REGEX;
@@ -40,7 +40,7 @@ public class FileFeeder extends AbstractFeeder {
 	/** Found IP address Strings are put here */
 	private Map<String, ScanningSubject> foundHosts;
 	private Iterator<ScanningSubject> foundIPAddressesIterator;
-	private Stream<NetworkInterface> networkInterfaces;
+	private List<NetworkInterface> networkInterfaces = List.of();
 	
 	private int currentIndex;
 
@@ -50,7 +50,7 @@ public class FileFeeder extends AbstractFeeder {
 	
 	public FileFeeder() {
 		try {
-			networkInterfaces = NetworkInterface.networkInterfaces();
+			networkInterfaces = NetworkInterface.networkInterfaces().toList();
 		}
 		catch (SocketException e) {
 			LOG.log(WARNING, "", e);
@@ -107,7 +107,7 @@ public class FileFeeder extends AbstractFeeder {
 						var subject = foundHosts.get(host);
 						if (subject == null) {
 							var address = InetAddress.getByName(host);
-							subject = new ScanningSubject(address, InetAddressUtils.getInterface(address, networkInterfaces));
+							subject = new ScanningSubject(address, InetAddressUtils.getInterface(address, networkInterfaces.stream()));
 						}
 						
 						if (!matcher.hitEnd() && fileLine.charAt(matcher.end()) == ':') {

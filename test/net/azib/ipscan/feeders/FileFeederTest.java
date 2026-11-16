@@ -30,6 +30,13 @@ public class FileFeederTest {
 	}
 
 	@Test
+	public void allLocalAddressesGetInterface() {
+		var fileFeeder = new FileFeeder(new StringReader("127.0.0.1 127.0.0.2"));
+		assertNotNull(fileFeeder.next().getInterface());
+		assertNotNull(fileFeeder.next().getInterface());
+	}
+
+	@Test
 	public void simpleHostnames() throws FeederException {
 		var reader = new StringReader("angryip.org, hello.xyz.com www.google.ee");
 		var fileFeeder = new FileFeeder(reader);
