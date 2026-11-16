@@ -24,7 +24,17 @@
 ;General installer details
 Name "${ApplicationName} ${AppVersionFriendly}"
 OutFile "..\${InstallerFileName}-${AppVersionFriendly}-setup.exe"
-BrandingText "${FooterText}"
+
+;File properties shown by Windows Explorer
+VIProductVersion "${AppVersionFull}"
+VIAddVersionKey "ProductName" "${ApplicationName}"
+VIAddVersionKey "FileDescription" "${ApplicationName} Installer"
+VIAddVersionKey "CompanyName" "angryip.org"
+VIAddVersionKey "LegalCopyright" "(C) 2026 Anton Keks and contributors"
+VIAddVersionKey "FileVersion" "${AppVersionFriendly}"
+VIAddVersionKey "ProductVersion" "${AppVersionFriendly}"
+VIAddVersionKey "InternalName" "ipscan"
+VIAddVersionKey "OriginalFilename" "ipscan-${AppVersionFriendly}-setup.exe"
 
 
 ;Runtime switches
@@ -127,7 +137,59 @@ Var CleanupFolder
 !insertmacro MUI_LANGUAGE "SimpChinese"
 !insertmacro MUI_LANGUAGE "TradChinese"
 
+; NsisMultiUser only has English placeholders for Italian, so skip its block and define ours below
+!define IPScanItalianLangId ${LANG_ITALIAN}
+!undef LANG_ITALIAN
 !insertmacro MULTIUSER_LANGUAGE_INIT
+!define LANG_ITALIAN ${IPScanItalianLangId}
+
+; Italian translations for the NsisMultiUser pages
+LangString MULTIUSER_PAGE_TITLE ${LANG_ITALIAN} "Scegli utenti"
+LangString MULTIUSER_INSTALL_PAGE_SUBTITLE ${LANG_ITALIAN} "Scegli per quali utenti installare $(^NameDA)."
+LangString MULTIUSER_UNINSTALL_PAGE_SUBTITLE ${LANG_ITALIAN} "Scegli per quali utenti rimuovere $(^NameDA)."
+LangString MULTIUSER_INSTALL_HEADER ${LANG_ITALIAN} "Seleziona se installare $(^NameDA) per tutti gli utenti o solo per l'utente corrente."
+LangString MULTIUSER_UNINSTALL_HEADER ${LANG_ITALIAN} "$(^NameDA) è installato sia per tutti gli utenti sia per l'utente corrente.$\r$\nSeleziona quale installazione rimuovere."
+LangString MULTIUSER_ALL_USERS ${LANG_ITALIAN} "Per &chiunque utilizzi questo computer (tutti gli utenti)"
+LangString MULTIUSER_CURRENT_USER ${LANG_ITALIAN} "Per &me ({USER})"
+LangString MULTIUSER_ALL_USERS_UMUI ${LANG_ITALIAN} "Per chiunque utilizzi questo computer (tutti gli utenti)"
+LangString MULTIUSER_CURRENT_USER_UMUI ${LANG_ITALIAN} "Per me ({USER})"
+LangString MULTIUSER_NEW_INSTALLATION_ALL_USERS ${LANG_ITALIAN} "Nuova installazione per tutti gli utenti."
+LangString MULTIUSER_NEW_INSTALLATION_CURRENT_USER ${LANG_ITALIAN} "Nuova installazione per l'utente corrente."
+LangString MULTIUSER_INSTALLED_ALL_USERS ${LANG_ITALIAN} "La versione {VERSION} è installata per tutti gli utenti in $\"{FOLDER}$\"."
+LangString MULTIUSER_INSTALLED_CURRENT_USER ${LANG_ITALIAN} "La versione {VERSION} è installata per l'utente corrente in $\"{FOLDER}$\"."
+LangString MULTIUSER_REINSTALL_SAME_VERSION_ALL_USERS ${LANG_ITALIAN} "Reinstalla la versione {VERSION} per tutti gli utenti."
+LangString MULTIUSER_REINSTALL_SAME_VERSION_CURRENT_USER ${LANG_ITALIAN} "Reinstalla la versione {VERSION} per l'utente corrente."
+LangString MULTIUSER_REINSTALL_DIFF_VERSION_ALL_USERS ${LANG_ITALIAN} "Disinstalla la versione {OLD_VERSION} e installa la versione {VERSION} per tutti gli utenti."
+LangString MULTIUSER_REINSTALL_DIFF_VERSION_CURRENT_USER ${LANG_ITALIAN} "Disinstalla la versione {OLD_VERSION} e installa la versione {VERSION} per l'utente corrente."
+LangString MULTIUSER_RUN_AS_ADMIN ${LANG_ITALIAN} "Devi eseguire questo programma come amministratore."
+LangString MULTIUSER_ADMIN_CREDENTIALS_REQUIRED ${LANG_ITALIAN} "Sono richieste credenziali di amministratore."
+LangString MULTIUSER_ADMIN_UNINSTALL_CREDENTIALS_REQUIRED ${LANG_ITALIAN} "Sono richieste credenziali di amministratore per la disinstallazione."
+LangString MULTIUSER_INVALID_PARAMS ${LANG_ITALIAN} "Combinazione di parametri non valida."
+LangString MULTIUSER_NOT_INSTALLED ${LANG_ITALIAN} "Non è presente alcuna installazione di $(^NameDA)."
+LangString MULTIUSER_INSTALLATION_FOR_CURRENT_USER_NOT_SUPPORTED ${LANG_ITALIAN} "Il sistema operativo non supporta l'installazione per l'utente corrente."
+LangString MULTIUSER_ADMIN_ACCOUNT_LOGIN_REQUIRED ${LANG_ITALIAN} "Devi accedere con un account membro del gruppo Administrators per continuare."
+LangString MULTIUSER_ELEVATION_NOT_SUPPORTED ${LANG_ITALIAN} "Il sistema operativo non supporta l'elevazione dei privilegi."
+LangString MULTIUSER_LOGON_SERVICE_NOT_RUNNING ${LANG_ITALIAN} "Impossibile elevare i privilegi: il servizio Accesso secondario non è in esecuzione."
+LangString MULTIUSER_ELEVATION_ERROR ${LANG_ITALIAN} "Impossibile elevare i privilegi, errore {ERROR}."
+
+; Footer text, translated only where available (English is the fallback for the rest)
+LangString FooterText ${LANG_ENGLISH} "Fast and Friendly Network Scanner"
+LangString FooterText ${LANG_RUSSIAN} "Fast and Friendly Network Scanner"
+LangString FooterText ${LANG_GERMAN} "Fast and Friendly Network Scanner"
+LangString FooterText ${LANG_HUNGARIAN} "Fast and Friendly Network Scanner"
+LangString FooterText ${LANG_LITHUANIAN} "Fast and Friendly Network Scanner"
+LangString FooterText ${LANG_SPANISH} "Fast and Friendly Network Scanner"
+LangString FooterText ${LANG_FINNISH} "Fast and Friendly Network Scanner"
+LangString FooterText ${LANG_FRENCH} "Fast and Friendly Network Scanner"
+LangString FooterText ${LANG_ITALIAN} "Scanner di rete veloce e amichevole"
+LangString FooterText ${LANG_JAPANESE} "Fast and Friendly Network Scanner"
+LangString FooterText ${LANG_TURKISH} "Fast and Friendly Network Scanner"
+LangString FooterText ${LANG_GREEK} "Fast and Friendly Network Scanner"
+LangString FooterText ${LANG_PORTUGUESEBR} "Fast and Friendly Network Scanner"
+LangString FooterText ${LANG_SIMPCHINESE} "Fast and Friendly Network Scanner"
+LangString FooterText ${LANG_TRADCHINESE} "Fast and Friendly Network Scanner"
+
+BrandingText "$(FooterText)"
 
 
 ;Macro for verifying admin on Windows 2000/XP

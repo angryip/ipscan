@@ -5,9 +5,6 @@
 	
 ;The name of the applications EXE file.  Used to create a shortcut and ensure it is not running during install
 !define ApplicationEXEName "ipscan.exe"
-
-;FooterText appears in the lower left of the installer pages
-!define FooterText "Fast and Friendly Network Scanner"	
 	
 ;DefaultDirectory is the default directory to install to within Program Files
 !define DefaultDirectory "Angry IP Scanner"
