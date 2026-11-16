@@ -60,6 +60,7 @@ public class FetcherRegistry {
 			addDefaultFetcher(PortsFetcher.ID);
 			addDefaultFetcher(MACFetcher.ID);
 			addDefaultFetcher(MACVendorFetcher.ID);
+			addDefaultFetcher(CommentFetcher.ID);
 		}
 		else {
 			var fetcherPrefs = fetcherPrefValue.split("###");

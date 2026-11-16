@@ -1,4 +1,5 @@
 Unreleased:
+- Enable Comments fetcher by default for new users
 - Fix loading of results exported from other feeders than IP Range #387
 - Open dialogs on the same monitor as the main window, even if it is above or to the left of the primary one #346
 - Do not restore the main window outside of the visible area, e.g. after disconnecting an external screen #393

@@ -59,7 +59,7 @@ public class FetcherRegistryTest {
 		// specified values
 		assertEquals(7, fetcherRegistry.getRegisteredFetchers().size());
 		// default values
-		assertEquals(6, fetcherRegistry.getSelectedFetchers().size());
+		assertEquals(7, fetcherRegistry.getSelectedFetchers().size());
 	}
 	
 	@Test(expected=UnsupportedOperationException.class)
@@ -72,17 +72,17 @@ public class FetcherRegistryTest {
 		assertEquals(0, fetcherRegistry.getSelectedFetcherIndex(ipFetcher.getId()));
 		assertEquals(1, fetcherRegistry.getSelectedFetcherIndex(pingFetcher.getId()));
 		assertEquals(2, fetcherRegistry.getSelectedFetcherIndex(hostnameFetcher.getId()));
-		assertEquals(3, fetcherRegistry.getSelectedFetcherIndex(portsFetcher.getId()));
-		assertEquals(4, fetcherRegistry.getSelectedFetcherIndex(macFetcher.getId()));
-		assertEquals(5, fetcherRegistry.getSelectedFetcherIndex(macVendorFetcher.getId()));
-		assertEquals(-1, fetcherRegistry.getSelectedFetcherIndex(commentFetcher.getId()));
+		assertEquals(3, fetcherRegistry.getSelectedFetcherIndex(commentFetcher.getId()));
+		assertEquals(4, fetcherRegistry.getSelectedFetcherIndex(portsFetcher.getId()));
+		assertEquals(5, fetcherRegistry.getSelectedFetcherIndex(macFetcher.getId()));
+		assertEquals(6, fetcherRegistry.getSelectedFetcherIndex(macVendorFetcher.getId()));
 	}
 	
 	@Test
 	public void testLoadPreferences() throws Exception {
 		preferences.remove(FetcherRegistry.PREFERENCE_SELECTED_FETCHERS);
 		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, hostnameFetcher, commentFetcher), preferences, null);
-		assertEquals(2, fetcherRegistry.getSelectedFetchers().size());
+		assertEquals(3, fetcherRegistry.getSelectedFetchers().size());
 		
 		preferences.put(FetcherRegistry.PREFERENCE_SELECTED_FETCHERS, hostnameFetcher.getId() + "###" + commentFetcher.getId());
 		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, hostnameFetcher, commentFetcher), preferences, null);
