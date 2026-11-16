@@ -103,12 +103,10 @@ public class PortsFetcher extends AbstractFetcher {
 					socket.setReceiveBufferSize(32);
 					// now connect
 					socket.connect(new InetSocketAddress(subject.getAddress(), port), portTimeout);
-					// some more options
+					// the port is open even if setting of the options below fails
+					openPorts.add(port);
+					// close with RST, without waiting
 					socket.setSoLinger(true, 0);
-					socket.setSendBufferSize(16);
-					socket.setTcpNoDelay(true);
-					
-					if (socket.isConnected()) openPorts.add(port);
 				}
 				catch (SocketTimeoutException e) {
 					filteredPorts.add(port);
