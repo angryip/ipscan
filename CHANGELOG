@@ -1,4 +1,4 @@
-Unreleased:
+3.12.2:
 - Windows installer: Italian and Spanish translations and file properties #562
 - Windows: default silent install and uninstall to the current user when no install mode is specified #561
 - Windows: rebuild launcher to avoid concatenation in the installer, hopefully flagging less virus heuristics #565
