@@ -94,16 +94,9 @@ public class InetAddressUtils {
 		try {
 			var newAddress = address.getAddress();
 			for (var i = newAddress.length-1; i >= 0; i--) {
-				if (isIncrement) {
-					if (++newAddress[i] != 0x00) {
-						break;
-					}
-				} else {
-					if (--newAddress[i] != 0x00) {
-						break;
-					}
-				}
-
+				// carry/borrow to the next byte only on overflow
+				if (isIncrement ? ++newAddress[i] != 0x00 : newAddress[i]-- != 0x00)
+					break;
 			}
 			return InetAddress.getByAddress(newAddress);
 		}

@@ -29,6 +29,15 @@ public class RangeFeederTest {
 	}
 
 	@Test
+	public void reverseOverByteBoundary() {
+		var feeder = new RangeFeeder("10.11.13.1", "10.11.12.255");
+		assertEquals("10.11.13.1", feeder.next().getAddress().getHostAddress());
+		assertEquals("10.11.13.0", feeder.next().getAddress().getHostAddress());
+		assertEquals("10.11.12.255", feeder.next().getAddress().getHostAddress());
+		assertFalse(feeder.hasNext());
+	}
+
+	@Test
 	public void malformedIP() {
 		try {
 			new RangeFeeder("10.11.12.blah.", "10.11.12.10");

@@ -110,6 +110,13 @@ public class InetAddressUtilsTest {
 	}
 
 	@Test
+	public void testDecrement() throws UnknownHostException {
+		assertEquals("127.0.0.0", InetAddressUtils.decrement(InetAddress.getByName("127.0.0.1")).getHostAddress());
+		assertEquals("127.255.255.255", InetAddressUtils.decrement(InetAddress.getByName("128.0.0.0")).getHostAddress());
+		assertEquals("255.255.255.255", InetAddressUtils.decrement(InetAddress.getByName("0.0.0.0")).getHostAddress());
+	}
+
+	@Test
 	public void testGreaterThan() throws UnknownHostException {
 		assertTrue(InetAddressUtils.greaterThan(InetAddress.getByName("127.0.0.1"), InetAddress.getByName("127.0.0.0")));
 		assertTrue(InetAddressUtils.greaterThan(InetAddress.getByName("129.0.0.1"), InetAddress.getByName("128.0.0.0")));
