@@ -1,5 +1,6 @@
-// A simple Windows launcher that will run javaw.exe passing own file as -jar parameter.
-// This compiled exe file must be prepended to the built jar file.
+// A simple Windows launcher that will run javaw.exe passing either a jar file with the same
+// name next to this exe, or (if there is none) own file as -jar parameter.
+// This compiled exe file must be prepended to the built jar file when used without a separate jar.
 #include "windows.h"
 #include "stdio.h"
 
@@ -11,14 +12,14 @@ void closeProcessHandles() {
 	CloseHandle(processInformation.hProcess);
 }
 
-BOOL execute(LPSTR cmdline, DWORD *exitCode) {
-	STARTUPINFO si;
+BOOL execute(LPWSTR cmdline, DWORD *exitCode) {
+	STARTUPINFOW si;
 
-    memset(&processInformation, 0, sizeof(processInformation));
-    memset(&si, 0, sizeof(si));
-    si.cb = sizeof(si);
+	memset(&processInformation, 0, sizeof(processInformation));
+	memset(&si, 0, sizeof(si));
+	si.cb = sizeof(si);
 
-	if (CreateProcess(NULL, cmdline, NULL, NULL, TRUE, processPriority, NULL, NULL, &si, &processInformation)) {
+	if (CreateProcessW(NULL, cmdline, NULL, NULL, TRUE, processPriority, NULL, NULL, &si, &processInformation)) {
 		WaitForSingleObject(processInformation.hProcess, INFINITE);
 		GetExitCodeProcess(processInformation.hProcess, exitCode);
 		closeProcessHandles();
@@ -29,48 +30,66 @@ BOOL execute(LPSTR cmdline, DWORD *exitCode) {
 	return FALSE;
 }
 
-void buildCmdLine(LPSTR buf, LPCSTR ownFilename, LPSTR args) {
-	strncat(buf, " -jar \"", MAX_PATH - strlen(buf));
-	strncat(buf, ownFilename, MAX_PATH - strlen(buf));
-	strncat(buf, "\" ", MAX_PATH - strlen(buf));
-	strncat(buf, args, MAX_PATH - strlen(buf));
+void append(LPWSTR buf, DWORD size, LPCWSTR str) {
+	wcsncat(buf, str, size - wcslen(buf) - 1);
 }
 
-char *caption = "Angry IP Scanner";
-char *localCmd = "\\jre\\bin\\javaw";
-char *javaHomeCmd = "\"%JAVA_HOME%\\bin\\javaw\"";
-char *cmd = "javaw";
+void buildCmdLine(LPWSTR buf, LPCWSTR ownFilename, LPWSTR args) {
+	append(buf, MAX_PATH, L" -jar \"");
+	append(buf, MAX_PATH, ownFilename);
+	append(buf, MAX_PATH, L"\" ");
+	append(buf, MAX_PATH, args);
+}
 
-int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR args, int nCmdShow) {
+// Prefer a jar file with the same name next to this exe (installer layout),
+// falling back to own file with an appended jar (portable single-file layout).
+void resolveJar(LPWSTR jarName, LPCWSTR ownFilename) {
+	wcscpy(jarName, ownFilename);
+	LPWSTR ext = wcsrchr(jarName, L'.');
+	if (ext && !wcschr(ext, L'\\'))
+		wcscpy(ext, L".jar");
+	else
+		append(jarName, MAX_PATH, L".jar");
+	if (GetFileAttributesW(jarName) == INVALID_FILE_ATTRIBUTES)
+		wcscpy(jarName, ownFilename);
+}
+
+LPWSTR caption = L"Angry IP Scanner";
+LPWSTR localCmd = L"\\jre\\bin\\javaw";
+LPWSTR javaHomeCmd = L"\"%JAVA_HOME%\\bin\\javaw\"";
+LPWSTR cmd = L"javaw";
+
+int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR args, int nCmdShow) {
 	DWORD exitCode;
-	char cmdLine[MAX_PATH], ownFilename[MAX_PATH], ownDir[MAX_PATH];
-	GetModuleFileName(NULL, ownFilename, MAX_PATH);
+	WCHAR cmdLine[MAX_PATH], ownFilename[MAX_PATH], jarName[MAX_PATH], ownDir[MAX_PATH];
+	GetModuleFileNameW(NULL, ownFilename, MAX_PATH);
+	resolveJar(jarName, ownFilename);
 
-    strcpy(ownDir, ownFilename);
-    char *lastSlash = strrchr(ownDir, '\\');
-    *lastSlash = '\0';
-    strcpy(cmdLine, ownDir);
-    strncat(cmdLine, localCmd, MAX_PATH - strlen(cmdLine));
+	wcscpy(ownDir, ownFilename);
+	LPWSTR lastSlash = wcsrchr(ownDir, L'\\');
+	*lastSlash = L'\0';
+	wcscpy(cmdLine, ownDir);
+	append(cmdLine, MAX_PATH, localCmd);
 
-	buildCmdLine(cmdLine, ownFilename, args);
+	buildCmdLine(cmdLine, jarName, args);
 	if (!execute(cmdLine, &exitCode)) {
-        ExpandEnvironmentStrings(javaHomeCmd, cmdLine, MAX_PATH);
+		ExpandEnvironmentStringsW(javaHomeCmd, cmdLine, MAX_PATH);
 
-        buildCmdLine(cmdLine, ownFilename, args);
-        if (!execute(cmdLine, &exitCode)) {
-            strcpy(cmdLine, cmd);
+		buildCmdLine(cmdLine, jarName, args);
+		if (!execute(cmdLine, &exitCode)) {
+			wcscpy(cmdLine, cmd);
 
-            buildCmdLine(cmdLine, ownFilename, args);
-            if (!execute(cmdLine, &exitCode)) {
-                char error[1000];
-                strcpy(error, "Failed to execute:\n");
-                strncat(error, cmdLine, 1000 - strlen(error));
-                strncat(error, "\n\nJava/OpenJDK is required to run this program, but was not found.\n\nDo you want to open a download page?", 1000 - strlen(error));
-                if (MessageBox(0, error, caption, MB_YESNO | MB_ICONERROR) == IDYES) {
-                    ShellExecute(NULL, "open", "https://adoptium.net/", NULL, NULL, SW_SHOWNORMAL);
-                }
-            }
-        }
-    }
+			buildCmdLine(cmdLine, jarName, args);
+			if (!execute(cmdLine, &exitCode)) {
+				WCHAR error[1000];
+				wcscpy(error, L"Failed to execute:\n");
+				append(error, 1000, cmdLine);
+				append(error, 1000, L"\n\nJava/OpenJDK is required to run this program, but was not found.\n\nDo you want to open a download page?");
+				if (MessageBoxW(0, error, caption, MB_YESNO | MB_ICONERROR) == IDYES) {
+					ShellExecuteW(NULL, L"open", L"https://adoptium.net/", NULL, NULL, SW_SHOWNORMAL);
+				}
+			}
+		}
+	}
 	return exitCode;
 }

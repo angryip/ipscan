@@ -214,7 +214,8 @@ def winLauncher(def platform) {
         ant.fileset(file: "ext/win-launcher/launcher.exe")
         ant.fileset(file: "build/libs/${project.name}-${version}-${suffix}.jar")
     }
-    ant.delete(file: "build/libs/${project.name}-${version}-${suffix}.jar")
+    // the plain jar is kept aside for the installer, which ships it next to the launcher
+    ant.move(file: "build/libs/${project.name}-${version}-${suffix}.jar", tofile: "build/installer/${suffix}/${project.name}.jar")
 }
 
 def deb(def platform, def arch, def moreDeps = '') {
@@ -337,7 +338,9 @@ task 'win-installer'(dependsOn: 'win64') {
         jlink(installerDir, "AppFiles/jre")
         ant.copy(file: "resources/images/icon.ico", todir: "${installerDir}/AppFiles")
         ant.copy(file: "LICENSE", tofile: "${installerDir}/AppFiles/license.txt")
-        ant.copy(file: "build/libs/${project.name}-${version}-win.exe", tofile:"${installerDir}/AppFiles/ipscan.exe")
+        // ship the launcher and the jar as separate files, unlike the portable self-extracting exe
+        ant.copy(file: "ext/win-launcher/launcher.exe", tofile: "${installerDir}/AppFiles/ipscan.exe")
+        ant.copy(file: "build/installer/win/${project.name}.jar", tofile: "${installerDir}/AppFiles/ipscan.jar")
         if (platform.startsWith('win')) {
             exec("cmd /c $nsis\\makensis.exe Installer\\Installer.nsi", installerDir)
         }

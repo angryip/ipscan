@@ -1,7 +1,7 @@
 Unreleased:
-- Updated translations for all languages
 - Windows installer: Italian and Spanish translations and file properties #562
 - Windows: default silent install and uninstall to the current user when no install mode is specified #561
+- Windows: rebuild launcher to avoid concatenation in the installer, hopefully flagging less virus heuristics #565
 - Enable Comments fetcher by default for new users
 - Fix loading of results exported from other feeders than IP Range #387
 - Open dialogs on the same monitor as the main window, even if it is above or to the left of the primary one #346
@@ -15,6 +15,7 @@ Unreleased:
 - UDP pinger: count actual UDP replies as alive
 - Hostname fetcher: accept hostnames that resolve to multiple addresses, e.g. both IPv4 and IPv6
 - Do not use 100% of a CPU core while waiting for a free thread if thread delay is 0
+- Updated translations for all languages
 
 3.12.1:
 - Do not report a host as dead when pinging fails with an I/O error
