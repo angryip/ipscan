@@ -55,6 +55,8 @@ public class UDPPinger implements Pinger {
 				try {
 					socket.send(packet);
 					socket.receive(packet);
+					// something has actually replied on the probe port
+					result.addReply(System.currentTimeMillis() - startTime);
 				}
 				catch (PortUnreachableException e) {
 					result.addReply(System.currentTimeMillis() - startTime);
