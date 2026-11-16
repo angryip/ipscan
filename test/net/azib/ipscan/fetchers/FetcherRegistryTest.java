@@ -55,7 +55,7 @@ public class FetcherRegistryTest {
 	}
 
 	@Test
-	public void testCreate() throws Exception {
+	public void testCreate() {
 		// specified values
 		assertEquals(7, fetcherRegistry.getRegisteredFetchers().size());
 		// default values
@@ -63,12 +63,12 @@ public class FetcherRegistryTest {
 	}
 	
 	@Test(expected=UnsupportedOperationException.class)
-	public void testModifyRegisteredFetchers() throws Exception {
+	public void testModifyRegisteredFetchers() {
 		fetcherRegistry.getRegisteredFetchers().clear();
 	}
 	
 	@Test
-	public void testGetSelectedFetcherIndex() throws Exception {
+	public void testGetSelectedFetcherIndex() {
 		assertEquals(0, fetcherRegistry.getSelectedFetcherIndex(ipFetcher.getId()));
 		assertEquals(1, fetcherRegistry.getSelectedFetcherIndex(pingFetcher.getId()));
 		assertEquals(2, fetcherRegistry.getSelectedFetcherIndex(hostnameFetcher.getId()));
@@ -79,7 +79,7 @@ public class FetcherRegistryTest {
 	}
 	
 	@Test
-	public void testLoadPreferences() throws Exception {
+	public void testLoadPreferences() {
 		preferences.remove(FetcherRegistry.PREFERENCE_SELECTED_FETCHERS);
 		fetcherRegistry = new FetcherRegistry(asList(ipFetcher, hostnameFetcher, commentFetcher), preferences, null);
 		assertEquals(3, fetcherRegistry.getSelectedFetchers().size());
@@ -97,7 +97,7 @@ public class FetcherRegistryTest {
 	}
 	
 	@Test
-	public void testUpdateSelectedFetchers() throws Exception {
+	public void testUpdateSelectedFetchers() {
 		// retain only one selected fetcher
 		fetcherRegistry.updateSelectedFetchers(new String[] {ipFetcher.getId()});
 		assertEquals(1, fetcherRegistry.getSelectedFetchers().size());
@@ -115,7 +115,7 @@ public class FetcherRegistryTest {
 	}
 	
 	@Test
-	public void testListener() throws Exception {
+	public void testListener() {
 		final boolean listenerWasCalled[] = {false};
 		fetcherRegistry.addListener(fetcherRegistry -> {
 			assertSame(FetcherRegistryTest.this.fetcherRegistry, fetcherRegistry);
