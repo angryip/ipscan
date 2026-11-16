@@ -19,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.logging.Logger;
 
+import static java.util.Arrays.asList;
 import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.WARNING;
 
@@ -74,7 +75,8 @@ public class HostnameFetcher extends AbstractFetcher {
 		// verify forward lookup to prevent DNS rebinding attacks
 		if (hostname != null) {
 			try {
-				if (!InetAddress.getByName(hostname).equals(ip)) return null;
+				// the name can resolve to several addresses, e.g. both IPv4 and IPv6
+				if (!asList(InetAddress.getAllByName(hostname)).contains(ip)) return null;
 			}
 			catch (Exception e) {
 				return null;
