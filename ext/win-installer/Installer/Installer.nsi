@@ -137,11 +137,14 @@ Var CleanupFolder
 !insertmacro MUI_LANGUAGE "SimpChinese"
 !insertmacro MUI_LANGUAGE "TradChinese"
 
-; NsisMultiUser only has English placeholders for Italian, so skip its block and define ours below
+; NsisMultiUser only has English placeholders for Italian and Spanish, so skip those blocks and define ours below
 !define IPScanItalianLangId ${LANG_ITALIAN}
+!define IPScanSpanishLangId ${LANG_SPANISH}
 !undef LANG_ITALIAN
+!undef LANG_SPANISH
 !insertmacro MULTIUSER_LANGUAGE_INIT
 !define LANG_ITALIAN ${IPScanItalianLangId}
+!define LANG_SPANISH ${IPScanSpanishLangId}
 
 ; Italian translations for the NsisMultiUser pages
 LangString MULTIUSER_PAGE_TITLE ${LANG_ITALIAN} "Scegli utenti"
@@ -172,13 +175,42 @@ LangString MULTIUSER_ELEVATION_NOT_SUPPORTED ${LANG_ITALIAN} "Il sistema operati
 LangString MULTIUSER_LOGON_SERVICE_NOT_RUNNING ${LANG_ITALIAN} "Impossibile elevare i privilegi: il servizio Accesso secondario non è in esecuzione."
 LangString MULTIUSER_ELEVATION_ERROR ${LANG_ITALIAN} "Impossibile elevare i privilegi, errore {ERROR}."
 
+; Spanish translations for the NsisMultiUser pages
+LangString MULTIUSER_PAGE_TITLE ${LANG_SPANISH} "Elegir usuarios"
+LangString MULTIUSER_INSTALL_PAGE_SUBTITLE ${LANG_SPANISH} "Elige para qué usuarios instalar $(^NameDA)."
+LangString MULTIUSER_UNINSTALL_PAGE_SUBTITLE ${LANG_SPANISH} "Elige para qué usuarios quitar $(^NameDA)."
+LangString MULTIUSER_INSTALL_HEADER ${LANG_SPANISH} "Selecciona si instalar $(^NameDA) para todos los usuarios o solo para el usuario actual."
+LangString MULTIUSER_UNINSTALL_HEADER ${LANG_SPANISH} "$(^NameDA) está instalado tanto para todos los usuarios como para el usuario actual.$\r$\nSelecciona qué instalación deseas quitar."
+LangString MULTIUSER_ALL_USERS ${LANG_SPANISH} "Para &cualquiera que use este equipo (todos los usuarios)"
+LangString MULTIUSER_CURRENT_USER ${LANG_SPANISH} "Para &mí ({USER})"
+LangString MULTIUSER_ALL_USERS_UMUI ${LANG_SPANISH} "Para cualquiera que use este equipo (todos los usuarios)"
+LangString MULTIUSER_CURRENT_USER_UMUI ${LANG_SPANISH} "Para mí ({USER})"
+LangString MULTIUSER_NEW_INSTALLATION_ALL_USERS ${LANG_SPANISH} "Instalación nueva para todos los usuarios."
+LangString MULTIUSER_NEW_INSTALLATION_CURRENT_USER ${LANG_SPANISH} "Instalación nueva para el usuario actual."
+LangString MULTIUSER_INSTALLED_ALL_USERS ${LANG_SPANISH} "La versión {VERSION} está instalada para todos los usuarios en $\"{FOLDER}$\"."
+LangString MULTIUSER_INSTALLED_CURRENT_USER ${LANG_SPANISH} "La versión {VERSION} está instalada para el usuario actual en $\"{FOLDER}$\"."
+LangString MULTIUSER_REINSTALL_SAME_VERSION_ALL_USERS ${LANG_SPANISH} "Reinstalar la versión {VERSION} para todos los usuarios."
+LangString MULTIUSER_REINSTALL_SAME_VERSION_CURRENT_USER ${LANG_SPANISH} "Reinstalar la versión {VERSION} para el usuario actual."
+LangString MULTIUSER_REINSTALL_DIFF_VERSION_ALL_USERS ${LANG_SPANISH} "Desinstalar la versión {OLD_VERSION} e instalar la versión {VERSION} para todos los usuarios."
+LangString MULTIUSER_REINSTALL_DIFF_VERSION_CURRENT_USER ${LANG_SPANISH} "Desinstalar la versión {OLD_VERSION} e instalar la versión {VERSION} para el usuario actual."
+LangString MULTIUSER_RUN_AS_ADMIN ${LANG_SPANISH} "Debes ejecutar este programa como administrador."
+LangString MULTIUSER_ADMIN_CREDENTIALS_REQUIRED ${LANG_SPANISH} "Se requieren credenciales de administrador."
+LangString MULTIUSER_ADMIN_UNINSTALL_CREDENTIALS_REQUIRED ${LANG_SPANISH} "Se requieren credenciales de administrador para desinstalar."
+LangString MULTIUSER_INVALID_PARAMS ${LANG_SPANISH} "Combinación de parámetros no válida."
+LangString MULTIUSER_NOT_INSTALLED ${LANG_SPANISH} "No hay ninguna instalación de $(^NameDA)."
+LangString MULTIUSER_INSTALLATION_FOR_CURRENT_USER_NOT_SUPPORTED ${LANG_SPANISH} "El sistema operativo no admite instalaciones para el usuario actual."
+LangString MULTIUSER_ADMIN_ACCOUNT_LOGIN_REQUIRED ${LANG_SPANISH} "Debes iniciar sesión con una cuenta que pertenezca al grupo de administradores para continuar."
+LangString MULTIUSER_ELEVATION_NOT_SUPPORTED ${LANG_SPANISH} "El sistema operativo no admite la elevación de privilegios."
+LangString MULTIUSER_LOGON_SERVICE_NOT_RUNNING ${LANG_SPANISH} "No se pueden elevar los privilegios: el servicio Inicio de sesión secundario no está en ejecución."
+LangString MULTIUSER_ELEVATION_ERROR ${LANG_SPANISH} "No se pueden elevar los privilegios, error {ERROR}."
+
 ; Footer text, translated only where available (English is the fallback for the rest)
 LangString FooterText ${LANG_ENGLISH} "Fast and Friendly Network Scanner"
 LangString FooterText ${LANG_RUSSIAN} "Fast and Friendly Network Scanner"
 LangString FooterText ${LANG_GERMAN} "Fast and Friendly Network Scanner"
 LangString FooterText ${LANG_HUNGARIAN} "Fast and Friendly Network Scanner"
 LangString FooterText ${LANG_LITHUANIAN} "Fast and Friendly Network Scanner"
-LangString FooterText ${LANG_SPANISH} "Fast and Friendly Network Scanner"
+LangString FooterText ${LANG_SPANISH} "Escáner de red rápido y amigable"
 LangString FooterText ${LANG_FINNISH} "Fast and Friendly Network Scanner"
 LangString FooterText ${LANG_FRENCH} "Fast and Friendly Network Scanner"
 LangString FooterText ${LANG_ITALIAN} "Scanner di rete veloce e amichevole"
