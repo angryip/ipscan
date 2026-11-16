@@ -38,7 +38,7 @@ public class FetcherRegistryTest {
 		ipFetcher = new IPFetcher();
 		pingFetcher = new PingFetcher(null, null);
 		hostnameFetcher = new HostnameFetcher();
-		commentFetcher = new CommentFetcher(null);
+		commentFetcher = new CommentFetcher(null, null);
 		portsFetcher = new PortsFetcher(null);
 		macFetcher = new MACFetcher() {
 			@Override protected String resolveMAC(ScanningSubject subject) {

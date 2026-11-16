@@ -16,9 +16,16 @@ public abstract class MACFetcher extends AbstractFetcher {
 	}
 
 	@Override public final String scan(ScanningSubject subject) {
+		return replaceSeparator(getMAC(subject));
+	}
+
+	/**
+	 * @return MAC address with the default separator, resolving it if it was not done yet
+	 */
+	public String getMAC(ScanningSubject subject) {
 		if (!subject.hasParameter(ID))
 			subject.setParameter(ID, resolveMAC(subject));
-		return replaceSeparator((String) subject.getParameter(ID));
+		return (String) subject.getParameter(ID);
 	}
 
 	protected abstract String resolveMAC(ScanningSubject subject);

@@ -16,9 +16,11 @@ public class CommentFetcher extends AbstractFetcher {
 	public static final String ID = "fetcher.comment";
 	
 	private CommentsConfig commentsConfig;
+	private MACFetcher macFetcher;
 
-	public CommentFetcher(CommentsConfig commentsConfig) {
+	public CommentFetcher(CommentsConfig commentsConfig, MACFetcher macFetcher) {
 		this.commentsConfig = commentsConfig;
+		this.macFetcher = macFetcher;
 	}
 
 	public String getId() {
@@ -26,7 +28,7 @@ public class CommentFetcher extends AbstractFetcher {
 	}
 
 	public Object scan(ScanningSubject subject) {
-		var mac = (String) subject.getParameter(MACFetcher.ID);
-		return commentsConfig.getComment(subject.getAddress(), mac);
+		// comments are stored by MAC if it is known, so it is needed even if MAC is fetched later or not at all
+		return commentsConfig.getComment(subject.getAddress(), macFetcher.getMAC(subject));
 	}
 }
