@@ -144,6 +144,23 @@ Function .onInit
 	${EndIf}
 	ClearErrors
 
+	; Default to a per-user installation in silent mode if no install mode was given.
+	; NsisMultiUser requires an explicit mode in silent mode, so relaunch with /currentuser.
+	${If} ${Silent}
+		${GetOptions} $R0 "/allusers" $R1
+		${If} ${Errors}
+			${GetOptions} $R0 "/currentuser" $R2
+			${If} ${Errors}
+				ClearErrors
+				StrCpy $0 0
+				ExecWait '"$EXEPATH" /currentuser /S $R0' $0
+				SetErrorLevel $0
+				Quit
+			${EndIf}
+		${EndIf}
+		ClearErrors
+	${EndIf}
+
 	!insertmacro MULTIUSER_INIT
 	
 	SectionSetSize ${MAINSECTIONIDX} ${InstallSize}
@@ -336,6 +353,30 @@ SectionEnd
 
 ;Uninstaller initialization
 Function un.onInit
+	; Default to a per-user uninstall in silent mode if no install mode was given.
+	; NsisMultiUser requires an explicit mode in silent mode, so relaunch with /currentuser.
+	${If} ${Silent}
+		${GetParameters} $R0
+		${GetOptions} $R0 "/allusers" $R1
+		${If} ${Errors}
+			${GetOptions} $R0 "/currentuser" $R2
+			${If} ${Errors}
+				ClearErrors
+				StrCpy $1 ""
+				${GetOptions} $R0 "/keepsettings" $2
+				${IfNot} ${Errors}
+					StrCpy $1 "/keepsettings"
+				${EndIf}
+				ClearErrors
+				StrCpy $0 0
+				ExecWait '"$EXEPATH" /currentuser /S $1' $0
+				SetErrorLevel $0
+				Quit
+			${EndIf}
+		${EndIf}
+		ClearErrors
+	${EndIf}
+
 	!insertmacro MULTIUSER_UNINIT
 FunctionEnd
 
