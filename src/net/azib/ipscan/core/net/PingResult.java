@@ -105,7 +105,7 @@ public class PingResult {
 		this.longestTime = Math.max(this.longestTime, result.longestTime);
 		if (this.ttl == 0)
 			this.ttl = result.ttl;
-		this.timeoutAdaptationAllowed |= result.timeoutAdaptationAllowed;
+		this.timeoutAdaptationAllowed |= result.timeoutAdaptationAllowed || replyCount > 2;
 		return this;
 	}
 }

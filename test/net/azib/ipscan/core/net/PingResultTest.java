@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.net.InetAddress;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PingResultTest {
 	@Test
@@ -26,5 +27,6 @@ public class PingResultTest {
 		assertEquals(25, first.getAverageTime());
 		assertEquals(40, first.getLongestTime());
 		assertEquals(64, first.getTTL());
+		assertTrue(first.isTimeoutAdaptationAllowed());
 	}
 }
