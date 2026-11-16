@@ -1,4 +1,5 @@
 Unreleased:
+- Updated translations for all languages
 - Windows installer: Italian translation and file properties #562
 - Windows: default silent install and uninstall to the current user when no install mode is specified #561
 - Enable Comments fetcher by default for new users
